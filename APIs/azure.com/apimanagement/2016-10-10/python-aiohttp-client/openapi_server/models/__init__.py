@@ -1,9 +1,0 @@
-# coding: utf-8
-
-# import models into model package
-from openapi_server.models.error_body_contract import ErrorBodyContract
-from openapi_server.models.error_field_contract import ErrorFieldContract
-from openapi_server.models.policy_snippet_contract import PolicySnippetContract
-from openapi_server.models.policy_snippets_collection import PolicySnippetsCollection
-from openapi_server.models.region_contract import RegionContract
-from openapi_server.models.region_list_result import RegionListResult

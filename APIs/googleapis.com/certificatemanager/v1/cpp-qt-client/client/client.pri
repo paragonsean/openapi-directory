@@ -1,0 +1,85 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIAuthorizationAttemptInfo.h \
+    $${PWD}/OAICertificate.h \
+    $${PWD}/OAICertificateAuthorityConfig.h \
+    $${PWD}/OAICertificateAuthorityServiceConfig.h \
+    $${PWD}/OAICertificateIssuanceConfig.h \
+    $${PWD}/OAICertificateMap.h \
+    $${PWD}/OAICertificateMapEntry.h \
+    $${PWD}/OAIDnsAuthorization.h \
+    $${PWD}/OAIDnsResourceRecord.h \
+    $${PWD}/OAIGclbTarget.h \
+    $${PWD}/OAIIntermediateCA.h \
+    $${PWD}/OAIIpConfig.h \
+    $${PWD}/OAIListCertificateIssuanceConfigsResponse.h \
+    $${PWD}/OAIListCertificateMapEntriesResponse.h \
+    $${PWD}/OAIListCertificateMapsResponse.h \
+    $${PWD}/OAIListCertificatesResponse.h \
+    $${PWD}/OAIListDnsAuthorizationsResponse.h \
+    $${PWD}/OAIListLocationsResponse.h \
+    $${PWD}/OAIListOperationsResponse.h \
+    $${PWD}/OAIListTrustConfigsResponse.h \
+    $${PWD}/OAILocation.h \
+    $${PWD}/OAIManagedCertificate.h \
+    $${PWD}/OAIOperation.h \
+    $${PWD}/OAIOperationMetadata.h \
+    $${PWD}/OAIProvisioningIssue.h \
+    $${PWD}/OAISelfManagedCertificate.h \
+    $${PWD}/OAIStatus.h \
+    $${PWD}/OAITrustAnchor.h \
+    $${PWD}/OAITrustConfig.h \
+    $${PWD}/OAITrustStore.h \
+# APIs
+    $${PWD}/OAIProjectsApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIAuthorizationAttemptInfo.cpp \
+    $${PWD}/OAICertificate.cpp \
+    $${PWD}/OAICertificateAuthorityConfig.cpp \
+    $${PWD}/OAICertificateAuthorityServiceConfig.cpp \
+    $${PWD}/OAICertificateIssuanceConfig.cpp \
+    $${PWD}/OAICertificateMap.cpp \
+    $${PWD}/OAICertificateMapEntry.cpp \
+    $${PWD}/OAIDnsAuthorization.cpp \
+    $${PWD}/OAIDnsResourceRecord.cpp \
+    $${PWD}/OAIGclbTarget.cpp \
+    $${PWD}/OAIIntermediateCA.cpp \
+    $${PWD}/OAIIpConfig.cpp \
+    $${PWD}/OAIListCertificateIssuanceConfigsResponse.cpp \
+    $${PWD}/OAIListCertificateMapEntriesResponse.cpp \
+    $${PWD}/OAIListCertificateMapsResponse.cpp \
+    $${PWD}/OAIListCertificatesResponse.cpp \
+    $${PWD}/OAIListDnsAuthorizationsResponse.cpp \
+    $${PWD}/OAIListLocationsResponse.cpp \
+    $${PWD}/OAIListOperationsResponse.cpp \
+    $${PWD}/OAIListTrustConfigsResponse.cpp \
+    $${PWD}/OAILocation.cpp \
+    $${PWD}/OAIManagedCertificate.cpp \
+    $${PWD}/OAIOperation.cpp \
+    $${PWD}/OAIOperationMetadata.cpp \
+    $${PWD}/OAIProvisioningIssue.cpp \
+    $${PWD}/OAISelfManagedCertificate.cpp \
+    $${PWD}/OAIStatus.cpp \
+    $${PWD}/OAITrustAnchor.cpp \
+    $${PWD}/OAITrustConfig.cpp \
+    $${PWD}/OAITrustStore.cpp \
+# APIs
+    $${PWD}/OAIProjectsApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

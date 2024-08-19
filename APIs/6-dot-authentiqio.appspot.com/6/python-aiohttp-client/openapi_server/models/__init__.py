@@ -1,0 +1,16 @@
+# coding: utf-8
+
+# import models into model package
+from openapi_server.models.authentiq_id import AuthentiqID
+from openapi_server.models.claims import Claims
+from openapi_server.models.error import Error
+from openapi_server.models.jwt import JWT
+from openapi_server.models.jwt1 import JWT1
+from openapi_server.models.key_bind200_response import KeyBind200Response
+from openapi_server.models.key_register201_response import KeyRegister201Response
+from openapi_server.models.key_revoke200_response import KeyRevoke200Response
+from openapi_server.models.key_revoke_nosecret200_response import KeyRevokeNosecret200Response
+from openapi_server.models.push_login_request200_response import PushLoginRequest200Response
+from openapi_server.models.push_token import PushToken
+from openapi_server.models.sign_request201_response import SignRequest201Response
+from openapi_server.models.sign_update200_response import SignUpdate200Response

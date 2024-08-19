@@ -1,0 +1,14 @@
+# ThePlaidApi.PaymentScheme
+
+## Enum
+
+
+* `LOCAL_DEFAULT` (value: `"LOCAL_DEFAULT"`)
+
+* `LOCAL_INSTANT` (value: `"LOCAL_INSTANT"`)
+
+* `SEPA_CREDIT_TRANSFER` (value: `"SEPA_CREDIT_TRANSFER"`)
+
+* `SEPA_CREDIT_TRANSFER_INSTANT` (value: `"SEPA_CREDIT_TRANSFER_INSTANT"`)
+
+

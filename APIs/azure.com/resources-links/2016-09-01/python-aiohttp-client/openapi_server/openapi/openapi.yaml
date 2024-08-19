@@ -1,0 +1,447 @@
+openapi: 3.0.1
+info:
+  description: "Azure resources can be linked together to form logical relationships.\
+    \ You can establish links between resources belonging to different resource groups.\
+    \ However, all the linked resources must belong to the same subscription. Each\
+    \ resource can be linked to 50 other resources. If any of the linked resources\
+    \ are deleted or moved, the link owner must clean up the remaining link."
+  title: ManagementLinkClient
+  version: 2016-09-01
+  x-apisguru-categories:
+  - cloud
+  x-logo:
+    url: https://assets.onestore.ms/cdnfiles/onestorerolling-1606-01000/shell/v3/images/logo/microsoft.png
+  x-origin:
+  - format: swagger
+    url: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/resources/resource-manager/Microsoft.Resources/stable/2016-09-01/links.json
+    version: "2.0"
+  x-providerName: azure.com
+  x-serviceName: resources-links
+  x-tags:
+  - Azure
+  - Microsoft
+servers:
+- url: https://management.azure.com/
+security:
+- azure_auth:
+  - user_impersonation
+paths:
+  /providers/Microsoft.Resources/operations:
+    get:
+      description: Lists all of the available Microsoft.Resources REST API operations.
+      operationId: operations_list
+      parameters:
+      - description: The API version to use for the operation.
+        in: query
+        name: api-version
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OperationListResult'
+          description: OK. The request has succeeded.
+      tags:
+      - Operations
+      x-ms-pageable:
+        nextLinkName: nextLink
+      x-openapi-router-controller: openapi_server.controllers.operations_controller
+  /subscriptions/{subscriptionId}/providers/Microsoft.Resources/links:
+    get:
+      description: Gets all the linked resources for the subscription.
+      operationId: resource_links_list_at_subscription
+      parameters:
+      - description: "The filter to apply on the list resource links operation. The\
+          \ supported filter for list resource links is targetId. For example, $filter=targetId\
+          \ eq {value}"
+        in: query
+        name: $filter
+        schema:
+          type: string
+      - description: The API version to use for the operation.
+        in: query
+        name: api_version
+        required: true
+        schema:
+          type: string
+      - description: The ID of the target subscription.
+        in: path
+        name: subscriptionId
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceLinkResult'
+          description: Returns an array of resource links for the subscription.
+      tags:
+      - ResourceLinks
+      x-ms-odata: '#/definitions/ResourceLinkFilter'
+      x-ms-pageable:
+        nextLinkName: nextLink
+      x-openapi-router-controller: openapi_server.controllers.resource_links_controller
+  /{linkId}:
+    delete:
+      description: Deletes a resource link with the specified ID.
+      operationId: resource_links_delete
+      parameters:
+      - description: "The fully qualified ID of the resource link. Use the format,\
+          \ /subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/{provider-namespace}/{resource-type}/{resource-name}/Microsoft.Resources/links/{link-name}.\
+          \ For example, /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myGroup/Microsoft.Web/sites/mySite/Microsoft.Resources/links/myLink"
+        in: path
+        name: linkId
+        required: true
+        schema:
+          type: string
+          x-ms-skip-url-encoding: true
+        x-ms-skip-url-encoding: true
+      - description: The API version to use for the operation.
+        in: query
+        name: api_version
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content: {}
+          description: OK
+        "204":
+          content: {}
+          description: No Content
+      tags:
+      - ResourceLinks
+      x-openapi-router-controller: openapi_server.controllers.resource_links_controller
+    get:
+      description: Gets a resource link with the specified ID.
+      operationId: resource_links_get
+      parameters:
+      - description: "The fully qualified Id of the resource link. For example, /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myGroup/Microsoft.Web/sites/mySite/Microsoft.Resources/links/myLink"
+        in: path
+        name: linkId
+        required: true
+        schema:
+          type: string
+          x-ms-skip-url-encoding: true
+        x-ms-skip-url-encoding: true
+      - description: The API version to use for the operation.
+        in: query
+        name: api_version
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceLink'
+          description: OK - Returns information about the resource link.
+      tags:
+      - ResourceLinks
+      x-openapi-router-controller: openapi_server.controllers.resource_links_controller
+    put:
+      description: Creates or updates a resource link between the specified resources.
+      operationId: resource_links_create_or_update
+      parameters:
+      - description: "The fully qualified ID of the resource link. Use the format,\
+          \ /subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/{provider-namespace}/{resource-type}/{resource-name}/Microsoft.Resources/links/{link-name}.\
+          \ For example, /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myGroup/Microsoft.Web/sites/mySite/Microsoft.Resources/links/myLink"
+        in: path
+        name: linkId
+        required: true
+        schema:
+          type: string
+          x-ms-skip-url-encoding: true
+        x-ms-skip-url-encoding: true
+      - description: The API version to use for the operation.
+        in: query
+        name: api_version
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ResourceLink'
+        description: Parameters for creating or updating a resource link.
+        required: true
+        x-body-name: parameters
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceLink'
+          description: OK - Returns information about the link.
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceLink'
+          description: Created - Returns information about the link.
+      tags:
+      - ResourceLinks
+      x-codegen-request-body-name: parameters
+      x-openapi-router-controller: openapi_server.controllers.resource_links_controller
+  /{scope}/providers/Microsoft.Resources/links:
+    get:
+      description: Gets a list of resource links at and below the specified source
+        scope.
+      operationId: resource_links_list_at_source_scope
+      parameters:
+      - description: "The fully qualified ID of the scope for getting the resource\
+          \ links. For example, to list resource links at and under a resource group,\
+          \ set the scope to /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myGroup."
+        in: path
+        name: scope
+        required: true
+        schema:
+          type: string
+          x-ms-skip-url-encoding: true
+        x-ms-skip-url-encoding: true
+      - description: "The filter to apply when getting resource links. To get links\
+          \ only at the specified scope (not below the scope), use Filter.atScope()."
+        in: query
+        name: $filter
+        schema:
+          enum:
+          - atScope()
+          type: string
+          x-ms-enum:
+            modelAsString: false
+            name: Filter
+        x-ms-enum:
+          modelAsString: false
+          name: Filter
+      - description: The API version to use for the operation.
+        in: query
+        name: api_version
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceLinkResult'
+          description: OK - Returns an array of links at the specified scope.
+      tags:
+      - ResourceLinks
+      x-ms-odata: '#/definitions/ResourceLinkFilter'
+      x-ms-pageable:
+        nextLinkName: nextLink
+      x-openapi-router-controller: openapi_server.controllers.resource_links_controller
+components:
+  parameters:
+    ApiVersionParameter:
+      description: The API version to use for the operation.
+      in: query
+      name: api-version
+      required: true
+      schema:
+        type: string
+    SubscriptionIdParameter:
+      description: The ID of the target subscription.
+      in: path
+      name: subscriptionId
+      required: true
+      schema:
+        type: string
+  schemas:
+    Operation:
+      description: Microsoft.Resources operation
+      example:
+        display:
+          provider: provider
+          resource: resource
+          description: description
+          operation: operation
+        name: name
+      properties:
+        display:
+          $ref: '#/components/schemas/Operation_display'
+        name:
+          description: "Operation name: {provider}/{resource}/{operation}"
+          title: name
+          type: string
+      title: Operation
+      type: object
+    OperationListResult:
+      description: Result of the request to list Microsoft.Resources operations. It
+        contains a list of operations and a URL link to get the next set of results.
+      example:
+        value:
+        - display:
+            provider: provider
+            resource: resource
+            description: description
+            operation: operation
+          name: name
+        - display:
+            provider: provider
+            resource: resource
+            description: description
+            operation: operation
+          name: name
+        nextLink: nextLink
+      properties:
+        nextLink:
+          description: URL to get the next set of operation list results if there
+            are any.
+          title: nextLink
+          type: string
+        value:
+          description: List of Microsoft.Resources operations.
+          items:
+            $ref: '#/components/schemas/Operation'
+          title: value
+          type: array
+      title: OperationListResult
+      type: object
+    ResourceLink:
+      description: The resource link.
+      example:
+        name: name
+        id: id
+        type: "{}"
+        properties:
+          sourceId: sourceId
+          notes: notes
+          targetId: targetId
+      properties:
+        id:
+          description: The fully qualified ID of the resource link.
+          readOnly: true
+          title: id
+          type: string
+        name:
+          description: The name of the resource link.
+          readOnly: true
+          title: name
+          type: string
+        properties:
+          $ref: '#/components/schemas/ResourceLinkProperties'
+        type:
+          description: The resource link object.
+          properties: {}
+          readOnly: true
+          title: type
+          type: object
+      title: ResourceLink
+      type: object
+      x-ms-azure-resource: true
+    ResourceLinkFilter:
+      description: Resource link filter.
+      properties:
+        targetId:
+          description: The ID of the target resource.
+          type: string
+      required:
+      - targetId
+      type: object
+    ResourceLinkProperties:
+      description: The resource link properties.
+      example:
+        sourceId: sourceId
+        notes: notes
+        targetId: targetId
+      properties:
+        notes:
+          description: Notes about the resource link.
+          title: notes
+          type: string
+        sourceId:
+          description: 'The fully qualified ID of the source resource in the link. '
+          readOnly: true
+          title: sourceId
+          type: string
+        targetId:
+          description: The fully qualified ID of the target resource in the link.
+          title: targetId
+          type: string
+      required:
+      - targetId
+      title: ResourceLinkProperties
+      type: object
+    ResourceLinkResult:
+      description: List of resource links.
+      example:
+        value:
+        - name: name
+          id: id
+          type: "{}"
+          properties:
+            sourceId: sourceId
+            notes: notes
+            targetId: targetId
+        - name: name
+          id: id
+          type: "{}"
+          properties:
+            sourceId: sourceId
+            notes: notes
+            targetId: targetId
+        nextLink: nextLink
+      properties:
+        nextLink:
+          description: The URL to use for getting the next set of results.
+          readOnly: true
+          title: nextLink
+          type: string
+        value:
+          description: An array of resource links.
+          items:
+            $ref: '#/components/schemas/ResourceLink'
+          title: value
+          type: array
+      required:
+      - value
+      title: ResourceLinkResult
+      type: object
+    Operation_display:
+      description: The object that represents the operation.
+      example:
+        provider: provider
+        resource: resource
+        description: description
+        operation: operation
+      properties:
+        description:
+          description: Description of the operation.
+          title: description
+          type: string
+        operation:
+          description: "Operation type: Read, write, delete, etc."
+          title: operation
+          type: string
+        provider:
+          description: "Service provider: Microsoft.Resources"
+          title: provider
+          type: string
+        resource:
+          description: "Resource on which the operation is performed: Profile, endpoint,\
+            \ etc."
+          title: resource
+          type: string
+      title: Operation_display
+      type: object
+  securitySchemes:
+    azure_auth:
+      description: Azure Active Directory OAuth2 Flow
+      flows:
+        implicit:
+          authorizationUrl: https://login.microsoftonline.com/common/oauth2/authorize
+          scopes:
+            user_impersonation: impersonate your user account
+      type: oauth2
+      x-tokenInfoFunc: openapi_server.controllers.security_controller.info_from_azure_auth
+      x-scopeValidateFunc: openapi_server.controllers.security_controller.validate_scope_azure_auth
+x-original-swagger-version: "2.0"

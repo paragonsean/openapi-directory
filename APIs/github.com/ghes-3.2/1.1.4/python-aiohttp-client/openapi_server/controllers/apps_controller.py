@@ -1,0 +1,475 @@
+from typing import List, Dict
+from aiohttp import web
+
+from openapi_server.models.apps_check_token_request import AppsCheckTokenRequest
+from openapi_server.models.apps_create_content_attachment_request import AppsCreateContentAttachmentRequest
+from openapi_server.models.apps_create_from_manifest201_response import AppsCreateFromManifest201Response
+from openapi_server.models.apps_create_installation_access_token_request import AppsCreateInstallationAccessTokenRequest
+from openapi_server.models.apps_delete_authorization_request import AppsDeleteAuthorizationRequest
+from openapi_server.models.apps_list_installation_repos_for_authenticated_user200_response import AppsListInstallationReposForAuthenticatedUser200Response
+from openapi_server.models.apps_list_repos_accessible_to_installation200_response import AppsListReposAccessibleToInstallation200Response
+from openapi_server.models.apps_scope_token_request import AppsScopeTokenRequest
+from openapi_server.models.apps_update_webhook_config_for_app_request import AppsUpdateWebhookConfigForAppRequest
+from openapi_server.models.authorization import Authorization
+from openapi_server.models.basic_error import BasicError
+from openapi_server.models.content_reference_attachment import ContentReferenceAttachment
+from openapi_server.models.hook_delivery import HookDelivery
+from openapi_server.models.hook_delivery_item import HookDeliveryItem
+from openapi_server.models.installation import Installation
+from openapi_server.models.installation_token import InstallationToken
+from openapi_server.models.integration import Integration
+from openapi_server.models.nullable_authorization import NullableAuthorization
+from openapi_server.models.orgs_list_app_installations200_response import OrgsListAppInstallations200Response
+from openapi_server.models.reactions_create_for_commit_comment415_response import ReactionsCreateForCommitComment415Response
+from openapi_server.models.scim_error import ScimError
+from openapi_server.models.validation_error import ValidationError
+from openapi_server.models.validation_error_simple import ValidationErrorSimple
+from openapi_server.models.webhook_config import WebhookConfig
+from openapi_server import util
+
+
+async def apps_add_repo_to_installation_for_authenticated_user(request: web.Request, installation_id, repository_id) -> web.Response:
+    """Add a repository to an app installation
+
+    Add a single repository to an installation. The authenticated user must have admin access to the repository.  You must use a personal access token (which you can create via the [command line](https://docs.github.com/enterprise-server@3.2/github/authenticating-to-github/creating-a-personal-access-token) or [Basic Authentication](https://docs.github.com/enterprise-server@3.2/rest/overview/other-authentication-methods#basic-authentication)) to access this endpoint.
+
+    :param installation_id: The unique identifier of the installation.
+    :type installation_id: int
+    :param repository_id: The unique identifier of the repository.
+    :type repository_id: int
+
+    """
+    return web.Response(status=200)
+
+
+async def apps_check_authorization(request: web.Request, client_id, access_token) -> web.Response:
+    """Check an authorization
+
+    **Deprecation Notice:** GitHub Enterprise Server will discontinue OAuth endpoints that contain &#x60;access_token&#x60; in the path parameter. We have introduced new endpoints that allow you to securely manage tokens for OAuth Apps by moving &#x60;access_token&#x60; to the request body. For more information, see the [blog post](https://developer.github.com/changes/2020-02-14-deprecating-oauth-app-endpoint/).  OAuth applications can use a special API method for checking OAuth token validity without exceeding the normal rate limits for failed login attempts. Authentication works differently with this particular endpoint. You must use [Basic Authentication](https://docs.github.com/enterprise-server@3.2/rest/overview/other-authentication-methods#basic-authentication) when accessing this endpoint, using the OAuth application&#39;s &#x60;client_id&#x60; and &#x60;client_secret&#x60; as the username and password. Invalid tokens will return &#x60;404 NOT FOUND&#x60;.
+
+    :param client_id: The client ID of the GitHub app.
+    :type client_id: str
+    :param access_token: 
+    :type access_token: str
+
+    """
+    return web.Response(status=200)
+
+
+async def apps_check_token(request: web.Request, client_id, body) -> web.Response:
+    """Check a token
+
+    OAuth applications can use a special API method for checking OAuth token validity without exceeding the normal rate limits for failed login attempts. Authentication works differently with this particular endpoint. You must use [Basic Authentication](https://docs.github.com/enterprise-server@3.2/rest/overview/other-authentication-methods#basic-authentication) to use this endpoint, where the username is the OAuth application &#x60;client_id&#x60; and the password is its &#x60;client_secret&#x60;. Invalid tokens will return &#x60;404 NOT FOUND&#x60;.
+
+    :param client_id: The client ID of the GitHub app.
+    :type client_id: str
+    :param body: 
+    :type body: dict | bytes
+
+    """
+    body = AppsCheckTokenRequest.from_dict(body)
+    return web.Response(status=200)
+
+
+async def apps_create_content_attachment(request: web.Request, owner, repo, content_reference_id, body) -> web.Response:
+    """Create a content attachment
+
+    Creates an attachment under a content reference URL in the body or comment of an issue or pull request. Use the &#x60;id&#x60; and &#x60;repository&#x60; &#x60;full_name&#x60; of the content reference from the [&#x60;content_reference&#x60; event](https://docs.github.com/enterprise-server@3.2/webhooks/event-payloads/#content_reference) to create an attachment.  The app must create a content attachment within six hours of the content reference URL being posted. See \&quot;[Using content attachments](https://docs.github.com/enterprise-server@3.2/apps/using-content-attachments/)\&quot; for details about content attachments.  You must use an [installation access token](https://docs.github.com/enterprise-server@3.2/apps/building-github-apps/authenticating-with-github-apps/#authenticating-as-an-installation) to access this endpoint.
+
+    :param owner: The owner of the repository. Determined from the &#x60;repository&#x60; &#x60;full_name&#x60; of the &#x60;content_reference&#x60; event.
+    :type owner: str
+    :param repo: The name of the repository. Determined from the &#x60;repository&#x60; &#x60;full_name&#x60; of the &#x60;content_reference&#x60; event.
+    :type repo: str
+    :param content_reference_id: The &#x60;id&#x60; of the &#x60;content_reference&#x60; event.
+    :type content_reference_id: int
+    :param body: 
+    :type body: dict | bytes
+
+    """
+    body = AppsCreateContentAttachmentRequest.from_dict(body)
+    return web.Response(status=200)
+
+
+async def apps_create_from_manifest(request: web.Request, code) -> web.Response:
+    """Create a GitHub App from a manifest
+
+    Use this endpoint to complete the handshake necessary when implementing the [GitHub App Manifest flow](https://docs.github.com/enterprise-server@3.2/apps/building-github-apps/creating-github-apps-from-a-manifest/). When you create a GitHub App with the manifest flow, you receive a temporary &#x60;code&#x60; used to retrieve the GitHub App&#39;s &#x60;id&#x60;, &#x60;pem&#x60; (private key), and &#x60;webhook_secret&#x60;.
+
+    :param code: 
+    :type code: str
+
+    """
+    return web.Response(status=200)
+
+
+async def apps_create_installation_access_token(request: web.Request, installation_id, body=None) -> web.Response:
+    """Create an installation access token for an app
+
+    Creates an installation access token that enables a GitHub App to make authenticated API requests for the app&#39;s installation on an organization or individual account. Installation tokens expire one hour from the time you create them. Using an expired token produces a status code of &#x60;401 - Unauthorized&#x60;, and requires creating a new installation token. By default the installation token has access to all repositories that the installation can access. To restrict the access to specific repositories, you can provide the &#x60;repository_ids&#x60; when creating the token. When you omit &#x60;repository_ids&#x60;, the response does not contain the &#x60;repositories&#x60; key.  You must use a [JWT](https://docs.github.com/enterprise-server@3.2/apps/building-github-apps/authenticating-with-github-apps/#authenticating-as-a-github-app) to access this endpoint.
+
+    :param installation_id: The unique identifier of the installation.
+    :type installation_id: int
+    :param body: 
+    :type body: dict | bytes
+
+    """
+    body = AppsCreateInstallationAccessTokenRequest.from_dict(body)
+    return web.Response(status=200)
+
+
+async def apps_delete_authorization(request: web.Request, client_id, body) -> web.Response:
+    """Delete an app authorization
+
+    OAuth application owners can revoke a grant for their OAuth application and a specific user. You must use [Basic Authentication](https://docs.github.com/enterprise-server@3.2/rest/overview/other-authentication-methods#basic-authentication) when accessing this endpoint, using the OAuth application&#39;s &#x60;client_id&#x60; and &#x60;client_secret&#x60; as the username and password. You must also provide a valid OAuth &#x60;access_token&#x60; as an input parameter and the grant for the token&#39;s owner will be deleted. Deleting an OAuth application&#39;s grant will also delete all OAuth tokens associated with the application for the user. Once deleted, the application will have no access to the user&#39;s account and will no longer be listed on [the application authorizations settings screen within GitHub](https://github.com/settings/applications#authorized).
+
+    :param client_id: The client ID of the GitHub app.
+    :type client_id: str
+    :param body: 
+    :type body: dict | bytes
+
+    """
+    body = AppsDeleteAuthorizationRequest.from_dict(body)
+    return web.Response(status=200)
+
+
+async def apps_delete_installation(request: web.Request, installation_id) -> web.Response:
+    """Delete an installation for the authenticated app
+
+    Uninstalls a GitHub App on a user, organization, or business account. If you prefer to temporarily suspend an app&#39;s access to your account&#39;s resources, then we recommend the \&quot;[Suspend an app installation](https://docs.github.com/enterprise-server@3.2/rest/reference/apps/#suspend-an-app-installation)\&quot; endpoint.  You must use a [JWT](https://docs.github.com/enterprise-server@3.2/apps/building-github-apps/authenticating-with-github-apps/#authenticating-as-a-github-app) to access this endpoint.
+
+    :param installation_id: The unique identifier of the installation.
+    :type installation_id: int
+
+    """
+    return web.Response(status=200)
+
+
+async def apps_delete_token(request: web.Request, client_id, body) -> web.Response:
+    """Delete an app token
+
+    OAuth application owners can revoke a single token for an OAuth application. You must use [Basic Authentication](https://docs.github.com/enterprise-server@3.2/rest/overview/other-authentication-methods#basic-authentication) when accessing this endpoint, using the OAuth application&#39;s &#x60;client_id&#x60; and &#x60;client_secret&#x60; as the username and password.
+
+    :param client_id: The client ID of the GitHub app.
+    :type client_id: str
+    :param body: 
+    :type body: dict | bytes
+
+    """
+    body = AppsDeleteAuthorizationRequest.from_dict(body)
+    return web.Response(status=200)
+
+
+async def apps_get_authenticated(request: web.Request, ) -> web.Response:
+    """Get the authenticated app
+
+    Returns the GitHub App associated with the authentication credentials used. To see how many app installations are associated with this GitHub App, see the &#x60;installations_count&#x60; in the response. For more details about your app&#39;s installations, see the \&quot;[List installations for the authenticated app](https://docs.github.com/enterprise-server@3.2/rest/reference/apps#list-installations-for-the-authenticated-app)\&quot; endpoint.  You must use a [JWT](https://docs.github.com/enterprise-server@3.2/apps/building-github-apps/authenticating-with-github-apps/#authenticating-as-a-github-app) to access this endpoint.
+
+
+    """
+    return web.Response(status=200)
+
+
+async def apps_get_by_slug(request: web.Request, app_slug) -> web.Response:
+    """Get an app
+
+    **Note**: The &#x60;:app_slug&#x60; is just the URL-friendly name of your GitHub App. You can find this on the settings page for your GitHub App (e.g., &#x60;https://github.com/settings/apps/:app_slug&#x60;).  If the GitHub App you specify is public, you can access this endpoint without authenticating. If the GitHub App you specify is private, you must authenticate with a [personal access token](https://docs.github.com/articles/creating-a-personal-access-token-for-the-command-line/) or an [installation access token](https://docs.github.com/enterprise-server@3.2/apps/building-github-apps/authenticating-with-github-apps/#authenticating-as-an-installation) to access this endpoint.
+
+    :param app_slug: 
+    :type app_slug: str
+
+    """
+    return web.Response(status=200)
+
+
+async def apps_get_installation(request: web.Request, installation_id) -> web.Response:
+    """Get an installation for the authenticated app
+
+    Enables an authenticated GitHub App to find an installation&#39;s information using the installation id.  You must use a [JWT](https://docs.github.com/enterprise-server@3.2/apps/building-github-apps/authenticating-with-github-apps/#authenticating-as-a-github-app) to access this endpoint.
+
+    :param installation_id: The unique identifier of the installation.
+    :type installation_id: int
+
+    """
+    return web.Response(status=200)
+
+
+async def apps_get_org_installation(request: web.Request, org) -> web.Response:
+    """Get an organization installation for the authenticated app
+
+    Enables an authenticated GitHub App to find the organization&#39;s installation information.  You must use a [JWT](https://docs.github.com/enterprise-server@3.2/apps/building-github-apps/authenticating-with-github-apps/#authenticating-as-a-github-app) to access this endpoint.
+
+    :param org: The organization name. The name is not case sensitive.
+    :type org: str
+
+    """
+    return web.Response(status=200)
+
+
+async def apps_get_repo_installation(request: web.Request, owner, repo) -> web.Response:
+    """Get a repository installation for the authenticated app
+
+    Enables an authenticated GitHub App to find the repository&#39;s installation information. The installation&#39;s account type will be either an organization or a user account, depending which account the repository belongs to.  You must use a [JWT](https://docs.github.com/enterprise-server@3.2/apps/building-github-apps/authenticating-with-github-apps/#authenticating-as-a-github-app) to access this endpoint.
+
+    :param owner: The account owner of the repository. The name is not case sensitive.
+    :type owner: str
+    :param repo: The name of the repository. The name is not case sensitive.
+    :type repo: str
+
+    """
+    return web.Response(status=200)
+
+
+async def apps_get_user_installation(request: web.Request, username) -> web.Response:
+    """Get a user installation for the authenticated app
+
+    Enables an authenticated GitHub App to find the user’s installation information.  You must use a [JWT](https://docs.github.com/enterprise-server@3.2/apps/building-github-apps/authenticating-with-github-apps/#authenticating-as-a-github-app) to access this endpoint.
+
+    :param username: The handle for the GitHub user account.
+    :type username: str
+
+    """
+    return web.Response(status=200)
+
+
+async def apps_get_webhook_config_for_app(request: web.Request, ) -> web.Response:
+    """Get a webhook configuration for an app
+
+    Returns the webhook configuration for a GitHub App. For more information about configuring a webhook for your app, see \&quot;[Creating a GitHub App](/developers/apps/creating-a-github-app).\&quot;  You must use a [JWT](https://docs.github.com/enterprise-server@3.2/apps/building-github-apps/authenticating-with-github-apps/#authenticating-as-a-github-app) to access this endpoint.
+
+
+    """
+    return web.Response(status=200)
+
+
+async def apps_get_webhook_delivery(request: web.Request, delivery_id) -> web.Response:
+    """Get a delivery for an app webhook
+
+    Returns a delivery for the webhook configured for a GitHub App.  You must use a [JWT](https://docs.github.com/enterprise-server@3.2/apps/building-github-apps/authenticating-with-github-apps/#authenticating-as-a-github-app) to access this endpoint.
+
+    :param delivery_id: 
+    :type delivery_id: int
+
+    """
+    return web.Response(status=200)
+
+
+async def apps_list_installation_repos_for_authenticated_user(request: web.Request, installation_id, per_page=None, page=None) -> web.Response:
+    """List repositories accessible to the user access token
+
+    List repositories that the authenticated user has explicit permission (&#x60;:read&#x60;, &#x60;:write&#x60;, or &#x60;:admin&#x60;) to access for an installation.  The authenticated user has explicit permission to access repositories they own, repositories where they are a collaborator, and repositories that they can access through an organization membership.  You must use a [user-to-server OAuth access token](https://docs.github.com/enterprise-server@3.2/apps/building-github-apps/identifying-and-authorizing-users-for-github-apps/#identifying-users-on-your-site), created for a user who has authorized your GitHub App, to access this endpoint.  The access the user has to each repository is included in the hash under the &#x60;permissions&#x60; key.
+
+    :param installation_id: The unique identifier of the installation.
+    :type installation_id: int
+    :param per_page: The number of results per page (max 100).
+    :type per_page: int
+    :param page: Page number of the results to fetch.
+    :type page: int
+
+    """
+    return web.Response(status=200)
+
+
+async def apps_list_installations(request: web.Request, per_page=None, page=None, since=None, outdated=None) -> web.Response:
+    """List installations for the authenticated app
+
+    You must use a [JWT](https://docs.github.com/enterprise-server@3.2/apps/building-github-apps/authenticating-with-github-apps/#authenticating-as-a-github-app) to access this endpoint.  The permissions the installation has are included under the &#x60;permissions&#x60; key.
+
+    :param per_page: The number of results per page (max 100).
+    :type per_page: int
+    :param page: Page number of the results to fetch.
+    :type page: int
+    :param since: Only show notifications updated after the given time. This is a timestamp in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format: &#x60;YYYY-MM-DDTHH:MM:SSZ&#x60;.
+    :type since: str
+    :param outdated: 
+    :type outdated: str
+
+    """
+    since = util.deserialize_datetime(since)
+    return web.Response(status=200)
+
+
+async def apps_list_installations_for_authenticated_user(request: web.Request, per_page=None, page=None) -> web.Response:
+    """List app installations accessible to the user access token
+
+    Lists installations of your GitHub App that the authenticated user has explicit permission (&#x60;:read&#x60;, &#x60;:write&#x60;, or &#x60;:admin&#x60;) to access.  You must use a [user-to-server OAuth access token](https://docs.github.com/enterprise-server@3.2/apps/building-github-apps/identifying-and-authorizing-users-for-github-apps/#identifying-users-on-your-site), created for a user who has authorized your GitHub App, to access this endpoint.  The authenticated user has explicit permission to access repositories they own, repositories where they are a collaborator, and repositories that they can access through an organization membership.  You can find the permissions for the installation under the &#x60;permissions&#x60; key.
+
+    :param per_page: The number of results per page (max 100).
+    :type per_page: int
+    :param page: Page number of the results to fetch.
+    :type page: int
+
+    """
+    return web.Response(status=200)
+
+
+async def apps_list_repos_accessible_to_installation(request: web.Request, per_page=None, page=None) -> web.Response:
+    """List repositories accessible to the app installation
+
+    List repositories that an app installation can access.  You must use an [installation access token](https://docs.github.com/enterprise-server@3.2/apps/building-github-apps/authenticating-with-github-apps/#authenticating-as-an-installation) to access this endpoint.
+
+    :param per_page: The number of results per page (max 100).
+    :type per_page: int
+    :param page: Page number of the results to fetch.
+    :type page: int
+
+    """
+    return web.Response(status=200)
+
+
+async def apps_list_webhook_deliveries(request: web.Request, per_page=None, cursor=None) -> web.Response:
+    """List deliveries for an app webhook
+
+    Returns a list of webhook deliveries for the webhook configured for a GitHub App.  You must use a [JWT](https://docs.github.com/enterprise-server@3.2/apps/building-github-apps/authenticating-with-github-apps/#authenticating-as-a-github-app) to access this endpoint.
+
+    :param per_page: The number of results per page (max 100).
+    :type per_page: int
+    :param cursor: Used for pagination: the starting delivery from which the page of deliveries is fetched. Refer to the &#x60;link&#x60; header for the next and previous page cursors.
+    :type cursor: str
+
+    """
+    return web.Response(status=200)
+
+
+async def apps_redeliver_webhook_delivery(request: web.Request, delivery_id) -> web.Response:
+    """Redeliver a delivery for an app webhook
+
+    Redeliver a delivery for the webhook configured for a GitHub App.  You must use a [JWT](https://docs.github.com/enterprise-server@3.2/apps/building-github-apps/authenticating-with-github-apps/#authenticating-as-a-github-app) to access this endpoint.
+
+    :param delivery_id: 
+    :type delivery_id: int
+
+    """
+    return web.Response(status=200)
+
+
+async def apps_remove_repo_from_installation_for_authenticated_user(request: web.Request, installation_id, repository_id) -> web.Response:
+    """Remove a repository from an app installation
+
+    Remove a single repository from an installation. The authenticated user must have admin access to the repository.  You must use a personal access token (which you can create via the [command line](https://docs.github.com/enterprise-server@3.2/github/authenticating-to-github/creating-a-personal-access-token) or [Basic Authentication](https://docs.github.com/enterprise-server@3.2/rest/overview/other-authentication-methods#basic-authentication)) to access this endpoint.
+
+    :param installation_id: The unique identifier of the installation.
+    :type installation_id: int
+    :param repository_id: The unique identifier of the repository.
+    :type repository_id: int
+
+    """
+    return web.Response(status=200)
+
+
+async def apps_reset_authorization(request: web.Request, client_id, access_token) -> web.Response:
+    """Reset an authorization
+
+    **Deprecation Notice:** GitHub Enterprise Server will discontinue OAuth endpoints that contain &#x60;access_token&#x60; in the path parameter. We have introduced new endpoints that allow you to securely manage tokens for OAuth Apps by moving &#x60;access_token&#x60; to the request body. For more information, see the [blog post](https://developer.github.com/changes/2020-02-14-deprecating-oauth-app-endpoint/).  OAuth applications can use this API method to reset a valid OAuth token without end-user involvement. Applications must save the \&quot;token\&quot; property in the response because changes take effect immediately. You must use [Basic Authentication](https://docs.github.com/enterprise-server@3.2/rest/overview/other-authentication-methods#basic-authentication) when accessing this endpoint, using the OAuth application&#39;s &#x60;client_id&#x60; and &#x60;client_secret&#x60; as the username and password. Invalid tokens will return &#x60;404 NOT FOUND&#x60;.
+
+    :param client_id: The client ID of the GitHub app.
+    :type client_id: str
+    :param access_token: 
+    :type access_token: str
+
+    """
+    return web.Response(status=200)
+
+
+async def apps_reset_token(request: web.Request, client_id, body) -> web.Response:
+    """Reset a token
+
+    OAuth applications can use this API method to reset a valid OAuth token without end-user involvement. Applications must save the \&quot;token\&quot; property in the response because changes take effect immediately. You must use [Basic Authentication](https://docs.github.com/enterprise-server@3.2/rest/overview/other-authentication-methods#basic-authentication) when accessing this endpoint, using the OAuth application&#39;s &#x60;client_id&#x60; and &#x60;client_secret&#x60; as the username and password. Invalid tokens will return &#x60;404 NOT FOUND&#x60;.
+
+    :param client_id: The client ID of the GitHub app.
+    :type client_id: str
+    :param body: 
+    :type body: dict | bytes
+
+    """
+    body = AppsCheckTokenRequest.from_dict(body)
+    return web.Response(status=200)
+
+
+async def apps_revoke_authorization_for_application(request: web.Request, client_id, access_token) -> web.Response:
+    """Revoke an authorization for an application
+
+    **Deprecation Notice:** GitHub Enterprise Server will discontinue OAuth endpoints that contain &#x60;access_token&#x60; in the path parameter. We have introduced new endpoints that allow you to securely manage tokens for OAuth Apps by moving &#x60;access_token&#x60; to the request body. For more information, see the [blog post](https://developer.github.com/changes/2020-02-14-deprecating-oauth-app-endpoint/).  OAuth application owners can revoke a single token for an OAuth application. You must use [Basic Authentication](https://docs.github.com/enterprise-server@3.2/rest/overview/other-authentication-methods#basic-authentication) when accessing this endpoint, using the OAuth application&#39;s &#x60;client_id&#x60; and &#x60;client_secret&#x60; as the username and password.
+
+    :param client_id: The client ID of the GitHub app.
+    :type client_id: str
+    :param access_token: 
+    :type access_token: str
+
+    """
+    return web.Response(status=200)
+
+
+async def apps_revoke_grant_for_application(request: web.Request, client_id, access_token) -> web.Response:
+    """Revoke a grant for an application
+
+    **Deprecation Notice:** GitHub Enterprise Server will discontinue OAuth endpoints that contain &#x60;access_token&#x60; in the path parameter. We have introduced new endpoints that allow you to securely manage tokens for OAuth Apps by moving &#x60;access_token&#x60; to the request body. For more information, see the [blog post](https://developer.github.com/changes/2020-02-14-deprecating-oauth-app-endpoint/).  OAuth application owners can revoke a grant for their OAuth application and a specific user. You must use [Basic Authentication](https://docs.github.com/enterprise-server@3.2/rest/overview/other-authentication-methods#basic-authentication) when accessing this endpoint, using the OAuth application&#39;s &#x60;client_id&#x60; and &#x60;client_secret&#x60; as the username and password. You must also provide a valid token as &#x60;:access_token&#x60; and the grant for the token&#39;s owner will be deleted.  Deleting an OAuth application&#39;s grant will also delete all OAuth tokens associated with the application for the user. Once deleted, the application will have no access to the user&#39;s account and will no longer be listed on [the Applications settings page under \&quot;Authorized OAuth Apps\&quot; on GitHub Enterprise Server](https://github.com/settings/applications#authorized).
+
+    :param client_id: The client ID of the GitHub app.
+    :type client_id: str
+    :param access_token: 
+    :type access_token: str
+
+    """
+    return web.Response(status=200)
+
+
+async def apps_revoke_installation_access_token(request: web.Request, ) -> web.Response:
+    """Revoke an installation access token
+
+    Revokes the installation token you&#39;re using to authenticate as an installation and access this endpoint.  Once an installation token is revoked, the token is invalidated and cannot be used. Other endpoints that require the revoked installation token must have a new installation token to work. You can create a new token using the \&quot;[Create an installation access token for an app](https://docs.github.com/enterprise-server@3.2/rest/reference/apps#create-an-installation-access-token-for-an-app)\&quot; endpoint.  You must use an [installation access token](https://docs.github.com/enterprise-server@3.2/apps/building-github-apps/authenticating-with-github-apps/#authenticating-as-an-installation) to access this endpoint.
+
+
+    """
+    return web.Response(status=200)
+
+
+async def apps_scope_token(request: web.Request, client_id, body) -> web.Response:
+    """Create a scoped access token
+
+    Use a non-scoped user-to-server OAuth access token to create a repository scoped and/or permission scoped user-to-server OAuth access token. You can specify which repositories the token can access and which permissions are granted to the token. You must use [Basic Authentication](https://docs.github.com/enterprise-server@3.2/rest/overview/other-authentication-methods#basic-authentication) when accessing this endpoint, using the OAuth application&#39;s &#x60;client_id&#x60; and &#x60;client_secret&#x60; as the username and password. Invalid tokens will return &#x60;404 NOT FOUND&#x60;.
+
+    :param client_id: The client ID of the GitHub app.
+    :type client_id: str
+    :param body: 
+    :type body: dict | bytes
+
+    """
+    body = AppsScopeTokenRequest.from_dict(body)
+    return web.Response(status=200)
+
+
+async def apps_suspend_installation(request: web.Request, installation_id) -> web.Response:
+    """Suspend an app installation
+
+    Suspends a GitHub App on a user, organization, or business account, which blocks the app from accessing the account&#39;s resources. When a GitHub App is suspended, the app&#39;s access to the GitHub Enterprise Server API or webhook events is blocked for that account.  You must use a [JWT](https://docs.github.com/enterprise-server@3.2/apps/building-github-apps/authenticating-with-github-apps/#authenticating-as-a-github-app) to access this endpoint.
+
+    :param installation_id: The unique identifier of the installation.
+    :type installation_id: int
+
+    """
+    return web.Response(status=200)
+
+
+async def apps_unsuspend_installation(request: web.Request, installation_id) -> web.Response:
+    """Unsuspend an app installation
+
+    Removes a GitHub App installation suspension.  You must use a [JWT](https://docs.github.com/enterprise-server@3.2/apps/building-github-apps/authenticating-with-github-apps/#authenticating-as-a-github-app) to access this endpoint.
+
+    :param installation_id: The unique identifier of the installation.
+    :type installation_id: int
+
+    """
+    return web.Response(status=200)
+
+
+async def apps_update_webhook_config_for_app(request: web.Request, body) -> web.Response:
+    """Update a webhook configuration for an app
+
+    Updates the webhook configuration for a GitHub App. For more information about configuring a webhook for your app, see \&quot;[Creating a GitHub App](/developers/apps/creating-a-github-app).\&quot;  You must use a [JWT](https://docs.github.com/enterprise-server@3.2/apps/building-github-apps/authenticating-with-github-apps/#authenticating-as-a-github-app) to access this endpoint.
+
+    :param body: 
+    :type body: dict | bytes
+
+    """
+    body = AppsUpdateWebhookConfigForAppRequest.from_dict(body)
+    return web.Response(status=200)

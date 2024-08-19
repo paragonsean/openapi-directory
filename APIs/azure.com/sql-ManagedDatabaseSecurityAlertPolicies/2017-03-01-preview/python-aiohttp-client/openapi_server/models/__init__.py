@@ -1,6 +1,0 @@
-# coding: utf-8
-
-# import models into model package
-from openapi_server.models.managed_database_security_alert_policy import ManagedDatabaseSecurityAlertPolicy
-from openapi_server.models.managed_database_security_alert_policy_list_result import ManagedDatabaseSecurityAlertPolicyListResult
-from openapi_server.models.security_alert_policy_properties import SecurityAlertPolicyProperties

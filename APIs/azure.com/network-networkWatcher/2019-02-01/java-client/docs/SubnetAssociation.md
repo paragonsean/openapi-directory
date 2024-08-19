@@ -1,0 +1,15 @@
+
+
+# SubnetAssociation
+
+Subnet and it's custom security rules.
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**id** | **String** | Subnet ID. |  [optional] [readonly] |
+|**securityRules** | [**List&lt;NetworkInterfaceAssociationSecurityRulesInner&gt;**](NetworkInterfaceAssociationSecurityRulesInner.md) | Collection of custom security rules. |  [optional] |
+
+
+

@@ -1,9 +1,0 @@
-# DFlightApi.AerodromeDistanceResponse
-
-## Properties
-
-Name | Type | Description | Notes
------------- | ------------- | ------------- | -------------
-**found** | **Object** |  | 
-
-

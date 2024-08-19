@@ -1,0 +1,81 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIAnalyzeOperationResult.h \
+    $${PWD}/OAIAnalyzeResult.h \
+    $${PWD}/OAIDataTable.h \
+    $${PWD}/OAIDataTableCell.h \
+    $${PWD}/OAIDocumentResult.h \
+    $${PWD}/OAIErrorInformation.h \
+    $${PWD}/OAIErrorResponse.h \
+    $${PWD}/OAIFieldValue.h \
+    $${PWD}/OAIFieldValueType.h \
+    $${PWD}/OAIFormFieldsReport.h \
+    $${PWD}/OAIKeyValueElement.h \
+    $${PWD}/OAIKeyValuePair.h \
+    $${PWD}/OAIKeysResult.h \
+    $${PWD}/OAILanguage.h \
+    $${PWD}/OAIModel.h \
+    $${PWD}/OAIModelInfo.h \
+    $${PWD}/OAIModels.h \
+    $${PWD}/OAIModels_summary.h \
+    $${PWD}/OAIOperationStatus.h \
+    $${PWD}/OAIPageResult.h \
+    $${PWD}/OAIReadResult.h \
+    $${PWD}/OAISourcePath.h \
+    $${PWD}/OAITextLine.h \
+    $${PWD}/OAITextWord.h \
+    $${PWD}/OAITrainRequest.h \
+    $${PWD}/OAITrainResult.h \
+    $${PWD}/OAITrainSourceFilter.h \
+    $${PWD}/OAITrainingDocumentInfo.h \
+# APIs
+    $${PWD}/OAIDefaultApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIAnalyzeOperationResult.cpp \
+    $${PWD}/OAIAnalyzeResult.cpp \
+    $${PWD}/OAIDataTable.cpp \
+    $${PWD}/OAIDataTableCell.cpp \
+    $${PWD}/OAIDocumentResult.cpp \
+    $${PWD}/OAIErrorInformation.cpp \
+    $${PWD}/OAIErrorResponse.cpp \
+    $${PWD}/OAIFieldValue.cpp \
+    $${PWD}/OAIFieldValueType.cpp \
+    $${PWD}/OAIFormFieldsReport.cpp \
+    $${PWD}/OAIKeyValueElement.cpp \
+    $${PWD}/OAIKeyValuePair.cpp \
+    $${PWD}/OAIKeysResult.cpp \
+    $${PWD}/OAILanguage.cpp \
+    $${PWD}/OAIModel.cpp \
+    $${PWD}/OAIModelInfo.cpp \
+    $${PWD}/OAIModels.cpp \
+    $${PWD}/OAIModels_summary.cpp \
+    $${PWD}/OAIOperationStatus.cpp \
+    $${PWD}/OAIPageResult.cpp \
+    $${PWD}/OAIReadResult.cpp \
+    $${PWD}/OAISourcePath.cpp \
+    $${PWD}/OAITextLine.cpp \
+    $${PWD}/OAITextWord.cpp \
+    $${PWD}/OAITrainRequest.cpp \
+    $${PWD}/OAITrainResult.cpp \
+    $${PWD}/OAITrainSourceFilter.cpp \
+    $${PWD}/OAITrainingDocumentInfo.cpp \
+# APIs
+    $${PWD}/OAIDefaultApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

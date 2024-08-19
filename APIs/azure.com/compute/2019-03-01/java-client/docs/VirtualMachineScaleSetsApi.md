@@ -1,0 +1,1585 @@
+# VirtualMachineScaleSetsApi
+
+All URIs are relative to *https://management.azure.com*
+
+| Method | HTTP request | Description |
+|------------- | ------------- | -------------|
+| [**virtualMachineScaleSetsConvertToSinglePlacementGroup**](VirtualMachineScaleSetsApi.md#virtualMachineScaleSetsConvertToSinglePlacementGroup) | **POST** /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}/convertToSinglePlacementGroup |  |
+| [**virtualMachineScaleSetsCreateOrUpdate**](VirtualMachineScaleSetsApi.md#virtualMachineScaleSetsCreateOrUpdate) | **PUT** /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName} |  |
+| [**virtualMachineScaleSetsDeallocate**](VirtualMachineScaleSetsApi.md#virtualMachineScaleSetsDeallocate) | **POST** /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}/deallocate |  |
+| [**virtualMachineScaleSetsDelete**](VirtualMachineScaleSetsApi.md#virtualMachineScaleSetsDelete) | **DELETE** /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName} |  |
+| [**virtualMachineScaleSetsDeleteInstances**](VirtualMachineScaleSetsApi.md#virtualMachineScaleSetsDeleteInstances) | **POST** /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}/delete |  |
+| [**virtualMachineScaleSetsForceRecoveryServiceFabricPlatformUpdateDomainWalk**](VirtualMachineScaleSetsApi.md#virtualMachineScaleSetsForceRecoveryServiceFabricPlatformUpdateDomainWalk) | **POST** /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}/forceRecoveryServiceFabricPlatformUpdateDomainWalk |  |
+| [**virtualMachineScaleSetsGet**](VirtualMachineScaleSetsApi.md#virtualMachineScaleSetsGet) | **GET** /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName} |  |
+| [**virtualMachineScaleSetsGetInstanceView**](VirtualMachineScaleSetsApi.md#virtualMachineScaleSetsGetInstanceView) | **GET** /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}/instanceView |  |
+| [**virtualMachineScaleSetsGetOSUpgradeHistory**](VirtualMachineScaleSetsApi.md#virtualMachineScaleSetsGetOSUpgradeHistory) | **GET** /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}/osUpgradeHistory |  |
+| [**virtualMachineScaleSetsList**](VirtualMachineScaleSetsApi.md#virtualMachineScaleSetsList) | **GET** /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets |  |
+| [**virtualMachineScaleSetsListAll**](VirtualMachineScaleSetsApi.md#virtualMachineScaleSetsListAll) | **GET** /subscriptions/{subscriptionId}/providers/Microsoft.Compute/virtualMachineScaleSets |  |
+| [**virtualMachineScaleSetsListSkus**](VirtualMachineScaleSetsApi.md#virtualMachineScaleSetsListSkus) | **GET** /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}/skus |  |
+| [**virtualMachineScaleSetsPerformMaintenance**](VirtualMachineScaleSetsApi.md#virtualMachineScaleSetsPerformMaintenance) | **POST** /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}/performMaintenance |  |
+| [**virtualMachineScaleSetsPowerOff**](VirtualMachineScaleSetsApi.md#virtualMachineScaleSetsPowerOff) | **POST** /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}/poweroff |  |
+| [**virtualMachineScaleSetsRedeploy**](VirtualMachineScaleSetsApi.md#virtualMachineScaleSetsRedeploy) | **POST** /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}/redeploy |  |
+| [**virtualMachineScaleSetsReimage**](VirtualMachineScaleSetsApi.md#virtualMachineScaleSetsReimage) | **POST** /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}/reimage |  |
+| [**virtualMachineScaleSetsReimageAll**](VirtualMachineScaleSetsApi.md#virtualMachineScaleSetsReimageAll) | **POST** /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}/reimageall |  |
+| [**virtualMachineScaleSetsRestart**](VirtualMachineScaleSetsApi.md#virtualMachineScaleSetsRestart) | **POST** /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}/restart |  |
+| [**virtualMachineScaleSetsStart**](VirtualMachineScaleSetsApi.md#virtualMachineScaleSetsStart) | **POST** /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}/start |  |
+| [**virtualMachineScaleSetsUpdate**](VirtualMachineScaleSetsApi.md#virtualMachineScaleSetsUpdate) | **PATCH** /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName} |  |
+| [**virtualMachineScaleSetsUpdateInstances**](VirtualMachineScaleSetsApi.md#virtualMachineScaleSetsUpdateInstances) | **POST** /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}/manualupgrade |  |
+
+
+<a id="virtualMachineScaleSetsConvertToSinglePlacementGroup"></a>
+# **virtualMachineScaleSetsConvertToSinglePlacementGroup**
+> virtualMachineScaleSetsConvertToSinglePlacementGroup(resourceGroupName, vmScaleSetName, subscriptionId, parameters)
+
+
+
+Converts SinglePlacementGroup property to false for a existing virtual machine scale set.
+
+### Example
+```java
+// Import classes:
+import org.openapitools.client.ApiClient;
+import org.openapitools.client.ApiException;
+import org.openapitools.client.Configuration;
+import org.openapitools.client.auth.*;
+import org.openapitools.client.models.*;
+import org.openapitools.client.api.VirtualMachineScaleSetsApi;
+
+public class Example {
+  public static void main(String[] args) {
+    ApiClient defaultClient = Configuration.getDefaultApiClient();
+    defaultClient.setBasePath("https://management.azure.com");
+    
+    // Configure OAuth2 access token for authorization: azure_auth
+    OAuth azure_auth = (OAuth) defaultClient.getAuthentication("azure_auth");
+    azure_auth.setAccessToken("YOUR ACCESS TOKEN");
+
+    VirtualMachineScaleSetsApi apiInstance = new VirtualMachineScaleSetsApi(defaultClient);
+    String resourceGroupName = "resourceGroupName_example"; // String | The name of the resource group.
+    String vmScaleSetName = "vmScaleSetName_example"; // String | The name of the virtual machine scale set to create or update.
+    String subscriptionId = "subscriptionId_example"; // String | Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of the URI for every service call.
+    VMScaleSetConvertToSinglePlacementGroupInput parameters = new VMScaleSetConvertToSinglePlacementGroupInput(); // VMScaleSetConvertToSinglePlacementGroupInput | The input object for ConvertToSinglePlacementGroup API.
+    try {
+      apiInstance.virtualMachineScaleSetsConvertToSinglePlacementGroup(resourceGroupName, vmScaleSetName, subscriptionId, parameters);
+    } catch (ApiException e) {
+      System.err.println("Exception when calling VirtualMachineScaleSetsApi#virtualMachineScaleSetsConvertToSinglePlacementGroup");
+      System.err.println("Status code: " + e.getCode());
+      System.err.println("Reason: " + e.getResponseBody());
+      System.err.println("Response headers: " + e.getResponseHeaders());
+      e.printStackTrace();
+    }
+  }
+}
+```
+
+### Parameters
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **resourceGroupName** | **String**| The name of the resource group. | |
+| **vmScaleSetName** | **String**| The name of the virtual machine scale set to create or update. | |
+| **subscriptionId** | **String**| Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of the URI for every service call. | |
+| **parameters** | [**VMScaleSetConvertToSinglePlacementGroupInput**](VMScaleSetConvertToSinglePlacementGroupInput.md)| The input object for ConvertToSinglePlacementGroup API. | |
+
+### Return type
+
+null (empty response body)
+
+### Authorization
+
+[azure_auth](../README.md#azure_auth)
+
+### HTTP request headers
+
+ - **Content-Type**: application/json
+ - **Accept**: Not defined
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | OK |  -  |
+
+<a id="virtualMachineScaleSetsCreateOrUpdate"></a>
+# **virtualMachineScaleSetsCreateOrUpdate**
+> VirtualMachineScaleSet virtualMachineScaleSetsCreateOrUpdate(resourceGroupName, vmScaleSetName, apiVersion, subscriptionId, parameters)
+
+
+
+Create or update a VM scale set.
+
+### Example
+```java
+// Import classes:
+import org.openapitools.client.ApiClient;
+import org.openapitools.client.ApiException;
+import org.openapitools.client.Configuration;
+import org.openapitools.client.auth.*;
+import org.openapitools.client.models.*;
+import org.openapitools.client.api.VirtualMachineScaleSetsApi;
+
+public class Example {
+  public static void main(String[] args) {
+    ApiClient defaultClient = Configuration.getDefaultApiClient();
+    defaultClient.setBasePath("https://management.azure.com");
+    
+    // Configure OAuth2 access token for authorization: azure_auth
+    OAuth azure_auth = (OAuth) defaultClient.getAuthentication("azure_auth");
+    azure_auth.setAccessToken("YOUR ACCESS TOKEN");
+
+    VirtualMachineScaleSetsApi apiInstance = new VirtualMachineScaleSetsApi(defaultClient);
+    String resourceGroupName = "resourceGroupName_example"; // String | The name of the resource group.
+    String vmScaleSetName = "vmScaleSetName_example"; // String | The name of the VM scale set to create or update.
+    String apiVersion = "apiVersion_example"; // String | Client Api Version.
+    String subscriptionId = "subscriptionId_example"; // String | Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of the URI for every service call.
+    VirtualMachineScaleSet parameters = new VirtualMachineScaleSet(); // VirtualMachineScaleSet | The scale set object.
+    try {
+      VirtualMachineScaleSet result = apiInstance.virtualMachineScaleSetsCreateOrUpdate(resourceGroupName, vmScaleSetName, apiVersion, subscriptionId, parameters);
+      System.out.println(result);
+    } catch (ApiException e) {
+      System.err.println("Exception when calling VirtualMachineScaleSetsApi#virtualMachineScaleSetsCreateOrUpdate");
+      System.err.println("Status code: " + e.getCode());
+      System.err.println("Reason: " + e.getResponseBody());
+      System.err.println("Response headers: " + e.getResponseHeaders());
+      e.printStackTrace();
+    }
+  }
+}
+```
+
+### Parameters
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **resourceGroupName** | **String**| The name of the resource group. | |
+| **vmScaleSetName** | **String**| The name of the VM scale set to create or update. | |
+| **apiVersion** | **String**| Client Api Version. | |
+| **subscriptionId** | **String**| Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of the URI for every service call. | |
+| **parameters** | [**VirtualMachineScaleSet**](VirtualMachineScaleSet.md)| The scale set object. | |
+
+### Return type
+
+[**VirtualMachineScaleSet**](VirtualMachineScaleSet.md)
+
+### Authorization
+
+[azure_auth](../README.md#azure_auth)
+
+### HTTP request headers
+
+ - **Content-Type**: application/json
+ - **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | OK |  -  |
+| **201** | Created |  -  |
+
+<a id="virtualMachineScaleSetsDeallocate"></a>
+# **virtualMachineScaleSetsDeallocate**
+> virtualMachineScaleSetsDeallocate(resourceGroupName, vmScaleSetName, apiVersion, subscriptionId, vmInstanceIDs)
+
+
+
+Deallocates specific virtual machines in a VM scale set. Shuts down the virtual machines and releases the compute resources. You are not billed for the compute resources that this virtual machine scale set deallocates.
+
+### Example
+```java
+// Import classes:
+import org.openapitools.client.ApiClient;
+import org.openapitools.client.ApiException;
+import org.openapitools.client.Configuration;
+import org.openapitools.client.auth.*;
+import org.openapitools.client.models.*;
+import org.openapitools.client.api.VirtualMachineScaleSetsApi;
+
+public class Example {
+  public static void main(String[] args) {
+    ApiClient defaultClient = Configuration.getDefaultApiClient();
+    defaultClient.setBasePath("https://management.azure.com");
+    
+    // Configure OAuth2 access token for authorization: azure_auth
+    OAuth azure_auth = (OAuth) defaultClient.getAuthentication("azure_auth");
+    azure_auth.setAccessToken("YOUR ACCESS TOKEN");
+
+    VirtualMachineScaleSetsApi apiInstance = new VirtualMachineScaleSetsApi(defaultClient);
+    String resourceGroupName = "resourceGroupName_example"; // String | The name of the resource group.
+    String vmScaleSetName = "vmScaleSetName_example"; // String | The name of the VM scale set.
+    String apiVersion = "apiVersion_example"; // String | Client Api Version.
+    String subscriptionId = "subscriptionId_example"; // String | Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of the URI for every service call.
+    VirtualMachineScaleSetVMInstanceIDs vmInstanceIDs = new VirtualMachineScaleSetVMInstanceIDs(); // VirtualMachineScaleSetVMInstanceIDs | A list of virtual machine instance IDs from the VM scale set.
+    try {
+      apiInstance.virtualMachineScaleSetsDeallocate(resourceGroupName, vmScaleSetName, apiVersion, subscriptionId, vmInstanceIDs);
+    } catch (ApiException e) {
+      System.err.println("Exception when calling VirtualMachineScaleSetsApi#virtualMachineScaleSetsDeallocate");
+      System.err.println("Status code: " + e.getCode());
+      System.err.println("Reason: " + e.getResponseBody());
+      System.err.println("Response headers: " + e.getResponseHeaders());
+      e.printStackTrace();
+    }
+  }
+}
+```
+
+### Parameters
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **resourceGroupName** | **String**| The name of the resource group. | |
+| **vmScaleSetName** | **String**| The name of the VM scale set. | |
+| **apiVersion** | **String**| Client Api Version. | |
+| **subscriptionId** | **String**| Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of the URI for every service call. | |
+| **vmInstanceIDs** | [**VirtualMachineScaleSetVMInstanceIDs**](VirtualMachineScaleSetVMInstanceIDs.md)| A list of virtual machine instance IDs from the VM scale set. | [optional] |
+
+### Return type
+
+null (empty response body)
+
+### Authorization
+
+[azure_auth](../README.md#azure_auth)
+
+### HTTP request headers
+
+ - **Content-Type**: application/json
+ - **Accept**: Not defined
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | OK |  -  |
+| **202** | Accepted |  -  |
+
+<a id="virtualMachineScaleSetsDelete"></a>
+# **virtualMachineScaleSetsDelete**
+> virtualMachineScaleSetsDelete(resourceGroupName, vmScaleSetName, apiVersion, subscriptionId)
+
+
+
+Deletes a VM scale set.
+
+### Example
+```java
+// Import classes:
+import org.openapitools.client.ApiClient;
+import org.openapitools.client.ApiException;
+import org.openapitools.client.Configuration;
+import org.openapitools.client.auth.*;
+import org.openapitools.client.models.*;
+import org.openapitools.client.api.VirtualMachineScaleSetsApi;
+
+public class Example {
+  public static void main(String[] args) {
+    ApiClient defaultClient = Configuration.getDefaultApiClient();
+    defaultClient.setBasePath("https://management.azure.com");
+    
+    // Configure OAuth2 access token for authorization: azure_auth
+    OAuth azure_auth = (OAuth) defaultClient.getAuthentication("azure_auth");
+    azure_auth.setAccessToken("YOUR ACCESS TOKEN");
+
+    VirtualMachineScaleSetsApi apiInstance = new VirtualMachineScaleSetsApi(defaultClient);
+    String resourceGroupName = "resourceGroupName_example"; // String | The name of the resource group.
+    String vmScaleSetName = "vmScaleSetName_example"; // String | The name of the VM scale set.
+    String apiVersion = "apiVersion_example"; // String | Client Api Version.
+    String subscriptionId = "subscriptionId_example"; // String | Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of the URI for every service call.
+    try {
+      apiInstance.virtualMachineScaleSetsDelete(resourceGroupName, vmScaleSetName, apiVersion, subscriptionId);
+    } catch (ApiException e) {
+      System.err.println("Exception when calling VirtualMachineScaleSetsApi#virtualMachineScaleSetsDelete");
+      System.err.println("Status code: " + e.getCode());
+      System.err.println("Reason: " + e.getResponseBody());
+      System.err.println("Response headers: " + e.getResponseHeaders());
+      e.printStackTrace();
+    }
+  }
+}
+```
+
+### Parameters
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **resourceGroupName** | **String**| The name of the resource group. | |
+| **vmScaleSetName** | **String**| The name of the VM scale set. | |
+| **apiVersion** | **String**| Client Api Version. | |
+| **subscriptionId** | **String**| Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of the URI for every service call. | |
+
+### Return type
+
+null (empty response body)
+
+### Authorization
+
+[azure_auth](../README.md#azure_auth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: Not defined
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | OK |  -  |
+| **202** | Accepted |  -  |
+| **204** | No Content |  -  |
+
+<a id="virtualMachineScaleSetsDeleteInstances"></a>
+# **virtualMachineScaleSetsDeleteInstances**
+> virtualMachineScaleSetsDeleteInstances(resourceGroupName, vmScaleSetName, apiVersion, subscriptionId, vmInstanceIDs)
+
+
+
+Deletes virtual machines in a VM scale set.
+
+### Example
+```java
+// Import classes:
+import org.openapitools.client.ApiClient;
+import org.openapitools.client.ApiException;
+import org.openapitools.client.Configuration;
+import org.openapitools.client.auth.*;
+import org.openapitools.client.models.*;
+import org.openapitools.client.api.VirtualMachineScaleSetsApi;
+
+public class Example {
+  public static void main(String[] args) {
+    ApiClient defaultClient = Configuration.getDefaultApiClient();
+    defaultClient.setBasePath("https://management.azure.com");
+    
+    // Configure OAuth2 access token for authorization: azure_auth
+    OAuth azure_auth = (OAuth) defaultClient.getAuthentication("azure_auth");
+    azure_auth.setAccessToken("YOUR ACCESS TOKEN");
+
+    VirtualMachineScaleSetsApi apiInstance = new VirtualMachineScaleSetsApi(defaultClient);
+    String resourceGroupName = "resourceGroupName_example"; // String | The name of the resource group.
+    String vmScaleSetName = "vmScaleSetName_example"; // String | The name of the VM scale set.
+    String apiVersion = "apiVersion_example"; // String | Client Api Version.
+    String subscriptionId = "subscriptionId_example"; // String | Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of the URI for every service call.
+    VirtualMachineScaleSetVMInstanceRequiredIDs vmInstanceIDs = new VirtualMachineScaleSetVMInstanceRequiredIDs(); // VirtualMachineScaleSetVMInstanceRequiredIDs | A list of virtual machine instance IDs from the VM scale set.
+    try {
+      apiInstance.virtualMachineScaleSetsDeleteInstances(resourceGroupName, vmScaleSetName, apiVersion, subscriptionId, vmInstanceIDs);
+    } catch (ApiException e) {
+      System.err.println("Exception when calling VirtualMachineScaleSetsApi#virtualMachineScaleSetsDeleteInstances");
+      System.err.println("Status code: " + e.getCode());
+      System.err.println("Reason: " + e.getResponseBody());
+      System.err.println("Response headers: " + e.getResponseHeaders());
+      e.printStackTrace();
+    }
+  }
+}
+```
+
+### Parameters
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **resourceGroupName** | **String**| The name of the resource group. | |
+| **vmScaleSetName** | **String**| The name of the VM scale set. | |
+| **apiVersion** | **String**| Client Api Version. | |
+| **subscriptionId** | **String**| Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of the URI for every service call. | |
+| **vmInstanceIDs** | [**VirtualMachineScaleSetVMInstanceRequiredIDs**](VirtualMachineScaleSetVMInstanceRequiredIDs.md)| A list of virtual machine instance IDs from the VM scale set. | |
+
+### Return type
+
+null (empty response body)
+
+### Authorization
+
+[azure_auth](../README.md#azure_auth)
+
+### HTTP request headers
+
+ - **Content-Type**: application/json
+ - **Accept**: Not defined
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | OK |  -  |
+| **202** | Accepted |  -  |
+
+<a id="virtualMachineScaleSetsForceRecoveryServiceFabricPlatformUpdateDomainWalk"></a>
+# **virtualMachineScaleSetsForceRecoveryServiceFabricPlatformUpdateDomainWalk**
+> RecoveryWalkResponse virtualMachineScaleSetsForceRecoveryServiceFabricPlatformUpdateDomainWalk(resourceGroupName, vmScaleSetName, apiVersion, subscriptionId, platformUpdateDomain)
+
+
+
+Manual platform update domain walk to update virtual machines in a service fabric virtual machine scale set.
+
+### Example
+```java
+// Import classes:
+import org.openapitools.client.ApiClient;
+import org.openapitools.client.ApiException;
+import org.openapitools.client.Configuration;
+import org.openapitools.client.auth.*;
+import org.openapitools.client.models.*;
+import org.openapitools.client.api.VirtualMachineScaleSetsApi;
+
+public class Example {
+  public static void main(String[] args) {
+    ApiClient defaultClient = Configuration.getDefaultApiClient();
+    defaultClient.setBasePath("https://management.azure.com");
+    
+    // Configure OAuth2 access token for authorization: azure_auth
+    OAuth azure_auth = (OAuth) defaultClient.getAuthentication("azure_auth");
+    azure_auth.setAccessToken("YOUR ACCESS TOKEN");
+
+    VirtualMachineScaleSetsApi apiInstance = new VirtualMachineScaleSetsApi(defaultClient);
+    String resourceGroupName = "resourceGroupName_example"; // String | The name of the resource group.
+    String vmScaleSetName = "vmScaleSetName_example"; // String | The name of the VM scale set.
+    String apiVersion = "apiVersion_example"; // String | Client Api Version.
+    String subscriptionId = "subscriptionId_example"; // String | Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of the URI for every service call.
+    Integer platformUpdateDomain = 56; // Integer | The platform update domain for which a manual recovery walk is requested
+    try {
+      RecoveryWalkResponse result = apiInstance.virtualMachineScaleSetsForceRecoveryServiceFabricPlatformUpdateDomainWalk(resourceGroupName, vmScaleSetName, apiVersion, subscriptionId, platformUpdateDomain);
+      System.out.println(result);
+    } catch (ApiException e) {
+      System.err.println("Exception when calling VirtualMachineScaleSetsApi#virtualMachineScaleSetsForceRecoveryServiceFabricPlatformUpdateDomainWalk");
+      System.err.println("Status code: " + e.getCode());
+      System.err.println("Reason: " + e.getResponseBody());
+      System.err.println("Response headers: " + e.getResponseHeaders());
+      e.printStackTrace();
+    }
+  }
+}
+```
+
+### Parameters
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **resourceGroupName** | **String**| The name of the resource group. | |
+| **vmScaleSetName** | **String**| The name of the VM scale set. | |
+| **apiVersion** | **String**| Client Api Version. | |
+| **subscriptionId** | **String**| Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of the URI for every service call. | |
+| **platformUpdateDomain** | **Integer**| The platform update domain for which a manual recovery walk is requested | |
+
+### Return type
+
+[**RecoveryWalkResponse**](RecoveryWalkResponse.md)
+
+### Authorization
+
+[azure_auth](../README.md#azure_auth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | OK |  -  |
+
+<a id="virtualMachineScaleSetsGet"></a>
+# **virtualMachineScaleSetsGet**
+> VirtualMachineScaleSet virtualMachineScaleSetsGet(resourceGroupName, vmScaleSetName, apiVersion, subscriptionId)
+
+
+
+Display information about a virtual machine scale set.
+
+### Example
+```java
+// Import classes:
+import org.openapitools.client.ApiClient;
+import org.openapitools.client.ApiException;
+import org.openapitools.client.Configuration;
+import org.openapitools.client.auth.*;
+import org.openapitools.client.models.*;
+import org.openapitools.client.api.VirtualMachineScaleSetsApi;
+
+public class Example {
+  public static void main(String[] args) {
+    ApiClient defaultClient = Configuration.getDefaultApiClient();
+    defaultClient.setBasePath("https://management.azure.com");
+    
+    // Configure OAuth2 access token for authorization: azure_auth
+    OAuth azure_auth = (OAuth) defaultClient.getAuthentication("azure_auth");
+    azure_auth.setAccessToken("YOUR ACCESS TOKEN");
+
+    VirtualMachineScaleSetsApi apiInstance = new VirtualMachineScaleSetsApi(defaultClient);
+    String resourceGroupName = "resourceGroupName_example"; // String | The name of the resource group.
+    String vmScaleSetName = "vmScaleSetName_example"; // String | The name of the VM scale set.
+    String apiVersion = "apiVersion_example"; // String | Client Api Version.
+    String subscriptionId = "subscriptionId_example"; // String | Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of the URI for every service call.
+    try {
+      VirtualMachineScaleSet result = apiInstance.virtualMachineScaleSetsGet(resourceGroupName, vmScaleSetName, apiVersion, subscriptionId);
+      System.out.println(result);
+    } catch (ApiException e) {
+      System.err.println("Exception when calling VirtualMachineScaleSetsApi#virtualMachineScaleSetsGet");
+      System.err.println("Status code: " + e.getCode());
+      System.err.println("Reason: " + e.getResponseBody());
+      System.err.println("Response headers: " + e.getResponseHeaders());
+      e.printStackTrace();
+    }
+  }
+}
+```
+
+### Parameters
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **resourceGroupName** | **String**| The name of the resource group. | |
+| **vmScaleSetName** | **String**| The name of the VM scale set. | |
+| **apiVersion** | **String**| Client Api Version. | |
+| **subscriptionId** | **String**| Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of the URI for every service call. | |
+
+### Return type
+
+[**VirtualMachineScaleSet**](VirtualMachineScaleSet.md)
+
+### Authorization
+
+[azure_auth](../README.md#azure_auth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | OK |  -  |
+
+<a id="virtualMachineScaleSetsGetInstanceView"></a>
+# **virtualMachineScaleSetsGetInstanceView**
+> VirtualMachineScaleSetInstanceView virtualMachineScaleSetsGetInstanceView(resourceGroupName, vmScaleSetName, apiVersion, subscriptionId)
+
+
+
+Gets the status of a VM scale set instance.
+
+### Example
+```java
+// Import classes:
+import org.openapitools.client.ApiClient;
+import org.openapitools.client.ApiException;
+import org.openapitools.client.Configuration;
+import org.openapitools.client.auth.*;
+import org.openapitools.client.models.*;
+import org.openapitools.client.api.VirtualMachineScaleSetsApi;
+
+public class Example {
+  public static void main(String[] args) {
+    ApiClient defaultClient = Configuration.getDefaultApiClient();
+    defaultClient.setBasePath("https://management.azure.com");
+    
+    // Configure OAuth2 access token for authorization: azure_auth
+    OAuth azure_auth = (OAuth) defaultClient.getAuthentication("azure_auth");
+    azure_auth.setAccessToken("YOUR ACCESS TOKEN");
+
+    VirtualMachineScaleSetsApi apiInstance = new VirtualMachineScaleSetsApi(defaultClient);
+    String resourceGroupName = "resourceGroupName_example"; // String | The name of the resource group.
+    String vmScaleSetName = "vmScaleSetName_example"; // String | The name of the VM scale set.
+    String apiVersion = "apiVersion_example"; // String | Client Api Version.
+    String subscriptionId = "subscriptionId_example"; // String | Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of the URI for every service call.
+    try {
+      VirtualMachineScaleSetInstanceView result = apiInstance.virtualMachineScaleSetsGetInstanceView(resourceGroupName, vmScaleSetName, apiVersion, subscriptionId);
+      System.out.println(result);
+    } catch (ApiException e) {
+      System.err.println("Exception when calling VirtualMachineScaleSetsApi#virtualMachineScaleSetsGetInstanceView");
+      System.err.println("Status code: " + e.getCode());
+      System.err.println("Reason: " + e.getResponseBody());
+      System.err.println("Response headers: " + e.getResponseHeaders());
+      e.printStackTrace();
+    }
+  }
+}
+```
+
+### Parameters
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **resourceGroupName** | **String**| The name of the resource group. | |
+| **vmScaleSetName** | **String**| The name of the VM scale set. | |
+| **apiVersion** | **String**| Client Api Version. | |
+| **subscriptionId** | **String**| Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of the URI for every service call. | |
+
+### Return type
+
+[**VirtualMachineScaleSetInstanceView**](VirtualMachineScaleSetInstanceView.md)
+
+### Authorization
+
+[azure_auth](../README.md#azure_auth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | OK |  -  |
+
+<a id="virtualMachineScaleSetsGetOSUpgradeHistory"></a>
+# **virtualMachineScaleSetsGetOSUpgradeHistory**
+> VirtualMachineScaleSetListOSUpgradeHistory virtualMachineScaleSetsGetOSUpgradeHistory(resourceGroupName, vmScaleSetName, apiVersion, subscriptionId)
+
+
+
+Gets list of OS upgrades on a VM scale set instance.
+
+### Example
+```java
+// Import classes:
+import org.openapitools.client.ApiClient;
+import org.openapitools.client.ApiException;
+import org.openapitools.client.Configuration;
+import org.openapitools.client.auth.*;
+import org.openapitools.client.models.*;
+import org.openapitools.client.api.VirtualMachineScaleSetsApi;
+
+public class Example {
+  public static void main(String[] args) {
+    ApiClient defaultClient = Configuration.getDefaultApiClient();
+    defaultClient.setBasePath("https://management.azure.com");
+    
+    // Configure OAuth2 access token for authorization: azure_auth
+    OAuth azure_auth = (OAuth) defaultClient.getAuthentication("azure_auth");
+    azure_auth.setAccessToken("YOUR ACCESS TOKEN");
+
+    VirtualMachineScaleSetsApi apiInstance = new VirtualMachineScaleSetsApi(defaultClient);
+    String resourceGroupName = "resourceGroupName_example"; // String | The name of the resource group.
+    String vmScaleSetName = "vmScaleSetName_example"; // String | The name of the VM scale set.
+    String apiVersion = "apiVersion_example"; // String | Client Api Version.
+    String subscriptionId = "subscriptionId_example"; // String | Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of the URI for every service call.
+    try {
+      VirtualMachineScaleSetListOSUpgradeHistory result = apiInstance.virtualMachineScaleSetsGetOSUpgradeHistory(resourceGroupName, vmScaleSetName, apiVersion, subscriptionId);
+      System.out.println(result);
+    } catch (ApiException e) {
+      System.err.println("Exception when calling VirtualMachineScaleSetsApi#virtualMachineScaleSetsGetOSUpgradeHistory");
+      System.err.println("Status code: " + e.getCode());
+      System.err.println("Reason: " + e.getResponseBody());
+      System.err.println("Response headers: " + e.getResponseHeaders());
+      e.printStackTrace();
+    }
+  }
+}
+```
+
+### Parameters
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **resourceGroupName** | **String**| The name of the resource group. | |
+| **vmScaleSetName** | **String**| The name of the VM scale set. | |
+| **apiVersion** | **String**| Client Api Version. | |
+| **subscriptionId** | **String**| Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of the URI for every service call. | |
+
+### Return type
+
+[**VirtualMachineScaleSetListOSUpgradeHistory**](VirtualMachineScaleSetListOSUpgradeHistory.md)
+
+### Authorization
+
+[azure_auth](../README.md#azure_auth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | OK |  -  |
+
+<a id="virtualMachineScaleSetsList"></a>
+# **virtualMachineScaleSetsList**
+> VirtualMachineScaleSetListResult virtualMachineScaleSetsList(resourceGroupName, apiVersion, subscriptionId)
+
+
+
+Gets a list of all VM scale sets under a resource group.
+
+### Example
+```java
+// Import classes:
+import org.openapitools.client.ApiClient;
+import org.openapitools.client.ApiException;
+import org.openapitools.client.Configuration;
+import org.openapitools.client.auth.*;
+import org.openapitools.client.models.*;
+import org.openapitools.client.api.VirtualMachineScaleSetsApi;
+
+public class Example {
+  public static void main(String[] args) {
+    ApiClient defaultClient = Configuration.getDefaultApiClient();
+    defaultClient.setBasePath("https://management.azure.com");
+    
+    // Configure OAuth2 access token for authorization: azure_auth
+    OAuth azure_auth = (OAuth) defaultClient.getAuthentication("azure_auth");
+    azure_auth.setAccessToken("YOUR ACCESS TOKEN");
+
+    VirtualMachineScaleSetsApi apiInstance = new VirtualMachineScaleSetsApi(defaultClient);
+    String resourceGroupName = "resourceGroupName_example"; // String | The name of the resource group.
+    String apiVersion = "apiVersion_example"; // String | Client Api Version.
+    String subscriptionId = "subscriptionId_example"; // String | Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of the URI for every service call.
+    try {
+      VirtualMachineScaleSetListResult result = apiInstance.virtualMachineScaleSetsList(resourceGroupName, apiVersion, subscriptionId);
+      System.out.println(result);
+    } catch (ApiException e) {
+      System.err.println("Exception when calling VirtualMachineScaleSetsApi#virtualMachineScaleSetsList");
+      System.err.println("Status code: " + e.getCode());
+      System.err.println("Reason: " + e.getResponseBody());
+      System.err.println("Response headers: " + e.getResponseHeaders());
+      e.printStackTrace();
+    }
+  }
+}
+```
+
+### Parameters
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **resourceGroupName** | **String**| The name of the resource group. | |
+| **apiVersion** | **String**| Client Api Version. | |
+| **subscriptionId** | **String**| Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of the URI for every service call. | |
+
+### Return type
+
+[**VirtualMachineScaleSetListResult**](VirtualMachineScaleSetListResult.md)
+
+### Authorization
+
+[azure_auth](../README.md#azure_auth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | OK |  -  |
+
+<a id="virtualMachineScaleSetsListAll"></a>
+# **virtualMachineScaleSetsListAll**
+> VirtualMachineScaleSetListWithLinkResult virtualMachineScaleSetsListAll(apiVersion, subscriptionId)
+
+
+
+Gets a list of all VM Scale Sets in the subscription, regardless of the associated resource group. Use nextLink property in the response to get the next page of VM Scale Sets. Do this till nextLink is null to fetch all the VM Scale Sets.
+
+### Example
+```java
+// Import classes:
+import org.openapitools.client.ApiClient;
+import org.openapitools.client.ApiException;
+import org.openapitools.client.Configuration;
+import org.openapitools.client.auth.*;
+import org.openapitools.client.models.*;
+import org.openapitools.client.api.VirtualMachineScaleSetsApi;
+
+public class Example {
+  public static void main(String[] args) {
+    ApiClient defaultClient = Configuration.getDefaultApiClient();
+    defaultClient.setBasePath("https://management.azure.com");
+    
+    // Configure OAuth2 access token for authorization: azure_auth
+    OAuth azure_auth = (OAuth) defaultClient.getAuthentication("azure_auth");
+    azure_auth.setAccessToken("YOUR ACCESS TOKEN");
+
+    VirtualMachineScaleSetsApi apiInstance = new VirtualMachineScaleSetsApi(defaultClient);
+    String apiVersion = "apiVersion_example"; // String | Client Api Version.
+    String subscriptionId = "subscriptionId_example"; // String | Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of the URI for every service call.
+    try {
+      VirtualMachineScaleSetListWithLinkResult result = apiInstance.virtualMachineScaleSetsListAll(apiVersion, subscriptionId);
+      System.out.println(result);
+    } catch (ApiException e) {
+      System.err.println("Exception when calling VirtualMachineScaleSetsApi#virtualMachineScaleSetsListAll");
+      System.err.println("Status code: " + e.getCode());
+      System.err.println("Reason: " + e.getResponseBody());
+      System.err.println("Response headers: " + e.getResponseHeaders());
+      e.printStackTrace();
+    }
+  }
+}
+```
+
+### Parameters
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **apiVersion** | **String**| Client Api Version. | |
+| **subscriptionId** | **String**| Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of the URI for every service call. | |
+
+### Return type
+
+[**VirtualMachineScaleSetListWithLinkResult**](VirtualMachineScaleSetListWithLinkResult.md)
+
+### Authorization
+
+[azure_auth](../README.md#azure_auth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | OK |  -  |
+
+<a id="virtualMachineScaleSetsListSkus"></a>
+# **virtualMachineScaleSetsListSkus**
+> VirtualMachineScaleSetListSkusResult virtualMachineScaleSetsListSkus(resourceGroupName, vmScaleSetName, apiVersion, subscriptionId)
+
+
+
+Gets a list of SKUs available for your VM scale set, including the minimum and maximum VM instances allowed for each SKU.
+
+### Example
+```java
+// Import classes:
+import org.openapitools.client.ApiClient;
+import org.openapitools.client.ApiException;
+import org.openapitools.client.Configuration;
+import org.openapitools.client.auth.*;
+import org.openapitools.client.models.*;
+import org.openapitools.client.api.VirtualMachineScaleSetsApi;
+
+public class Example {
+  public static void main(String[] args) {
+    ApiClient defaultClient = Configuration.getDefaultApiClient();
+    defaultClient.setBasePath("https://management.azure.com");
+    
+    // Configure OAuth2 access token for authorization: azure_auth
+    OAuth azure_auth = (OAuth) defaultClient.getAuthentication("azure_auth");
+    azure_auth.setAccessToken("YOUR ACCESS TOKEN");
+
+    VirtualMachineScaleSetsApi apiInstance = new VirtualMachineScaleSetsApi(defaultClient);
+    String resourceGroupName = "resourceGroupName_example"; // String | The name of the resource group.
+    String vmScaleSetName = "vmScaleSetName_example"; // String | The name of the VM scale set.
+    String apiVersion = "apiVersion_example"; // String | Client Api Version.
+    String subscriptionId = "subscriptionId_example"; // String | Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of the URI for every service call.
+    try {
+      VirtualMachineScaleSetListSkusResult result = apiInstance.virtualMachineScaleSetsListSkus(resourceGroupName, vmScaleSetName, apiVersion, subscriptionId);
+      System.out.println(result);
+    } catch (ApiException e) {
+      System.err.println("Exception when calling VirtualMachineScaleSetsApi#virtualMachineScaleSetsListSkus");
+      System.err.println("Status code: " + e.getCode());
+      System.err.println("Reason: " + e.getResponseBody());
+      System.err.println("Response headers: " + e.getResponseHeaders());
+      e.printStackTrace();
+    }
+  }
+}
+```
+
+### Parameters
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **resourceGroupName** | **String**| The name of the resource group. | |
+| **vmScaleSetName** | **String**| The name of the VM scale set. | |
+| **apiVersion** | **String**| Client Api Version. | |
+| **subscriptionId** | **String**| Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of the URI for every service call. | |
+
+### Return type
+
+[**VirtualMachineScaleSetListSkusResult**](VirtualMachineScaleSetListSkusResult.md)
+
+### Authorization
+
+[azure_auth](../README.md#azure_auth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | OK |  -  |
+
+<a id="virtualMachineScaleSetsPerformMaintenance"></a>
+# **virtualMachineScaleSetsPerformMaintenance**
+> virtualMachineScaleSetsPerformMaintenance(resourceGroupName, vmScaleSetName, apiVersion, subscriptionId, vmInstanceIDs)
+
+
+
+Perform maintenance on one or more virtual machines in a VM scale set. Operation on instances which are not eligible for perform maintenance will be failed. Please refer to best practices for more details: https://docs.microsoft.com/en-us/azure/virtual-machine-scale-sets/virtual-machine-scale-sets-maintenance-notifications
+
+### Example
+```java
+// Import classes:
+import org.openapitools.client.ApiClient;
+import org.openapitools.client.ApiException;
+import org.openapitools.client.Configuration;
+import org.openapitools.client.auth.*;
+import org.openapitools.client.models.*;
+import org.openapitools.client.api.VirtualMachineScaleSetsApi;
+
+public class Example {
+  public static void main(String[] args) {
+    ApiClient defaultClient = Configuration.getDefaultApiClient();
+    defaultClient.setBasePath("https://management.azure.com");
+    
+    // Configure OAuth2 access token for authorization: azure_auth
+    OAuth azure_auth = (OAuth) defaultClient.getAuthentication("azure_auth");
+    azure_auth.setAccessToken("YOUR ACCESS TOKEN");
+
+    VirtualMachineScaleSetsApi apiInstance = new VirtualMachineScaleSetsApi(defaultClient);
+    String resourceGroupName = "resourceGroupName_example"; // String | The name of the resource group.
+    String vmScaleSetName = "vmScaleSetName_example"; // String | The name of the VM scale set.
+    String apiVersion = "apiVersion_example"; // String | Client Api Version.
+    String subscriptionId = "subscriptionId_example"; // String | Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of the URI for every service call.
+    VirtualMachineScaleSetVMInstanceIDs vmInstanceIDs = new VirtualMachineScaleSetVMInstanceIDs(); // VirtualMachineScaleSetVMInstanceIDs | A list of virtual machine instance IDs from the VM scale set.
+    try {
+      apiInstance.virtualMachineScaleSetsPerformMaintenance(resourceGroupName, vmScaleSetName, apiVersion, subscriptionId, vmInstanceIDs);
+    } catch (ApiException e) {
+      System.err.println("Exception when calling VirtualMachineScaleSetsApi#virtualMachineScaleSetsPerformMaintenance");
+      System.err.println("Status code: " + e.getCode());
+      System.err.println("Reason: " + e.getResponseBody());
+      System.err.println("Response headers: " + e.getResponseHeaders());
+      e.printStackTrace();
+    }
+  }
+}
+```
+
+### Parameters
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **resourceGroupName** | **String**| The name of the resource group. | |
+| **vmScaleSetName** | **String**| The name of the VM scale set. | |
+| **apiVersion** | **String**| Client Api Version. | |
+| **subscriptionId** | **String**| Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of the URI for every service call. | |
+| **vmInstanceIDs** | [**VirtualMachineScaleSetVMInstanceIDs**](VirtualMachineScaleSetVMInstanceIDs.md)| A list of virtual machine instance IDs from the VM scale set. | [optional] |
+
+### Return type
+
+null (empty response body)
+
+### Authorization
+
+[azure_auth](../README.md#azure_auth)
+
+### HTTP request headers
+
+ - **Content-Type**: application/json
+ - **Accept**: Not defined
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | OK |  -  |
+| **202** | Accepted |  -  |
+
+<a id="virtualMachineScaleSetsPowerOff"></a>
+# **virtualMachineScaleSetsPowerOff**
+> virtualMachineScaleSetsPowerOff(resourceGroupName, vmScaleSetName, apiVersion, subscriptionId, skipShutdown, vmInstanceIDs)
+
+
+
+Power off (stop) one or more virtual machines in a VM scale set. Note that resources are still attached and you are getting charged for the resources. Instead, use deallocate to release resources and avoid charges.
+
+### Example
+```java
+// Import classes:
+import org.openapitools.client.ApiClient;
+import org.openapitools.client.ApiException;
+import org.openapitools.client.Configuration;
+import org.openapitools.client.auth.*;
+import org.openapitools.client.models.*;
+import org.openapitools.client.api.VirtualMachineScaleSetsApi;
+
+public class Example {
+  public static void main(String[] args) {
+    ApiClient defaultClient = Configuration.getDefaultApiClient();
+    defaultClient.setBasePath("https://management.azure.com");
+    
+    // Configure OAuth2 access token for authorization: azure_auth
+    OAuth azure_auth = (OAuth) defaultClient.getAuthentication("azure_auth");
+    azure_auth.setAccessToken("YOUR ACCESS TOKEN");
+
+    VirtualMachineScaleSetsApi apiInstance = new VirtualMachineScaleSetsApi(defaultClient);
+    String resourceGroupName = "resourceGroupName_example"; // String | The name of the resource group.
+    String vmScaleSetName = "vmScaleSetName_example"; // String | The name of the VM scale set.
+    String apiVersion = "apiVersion_example"; // String | Client Api Version.
+    String subscriptionId = "subscriptionId_example"; // String | Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of the URI for every service call.
+    Boolean skipShutdown = false; // Boolean | The parameter to request non-graceful VM shutdown. True value for this flag indicates non-graceful shutdown whereas false indicates otherwise. Default value for this flag is false if not specified
+    VirtualMachineScaleSetVMInstanceIDs vmInstanceIDs = new VirtualMachineScaleSetVMInstanceIDs(); // VirtualMachineScaleSetVMInstanceIDs | A list of virtual machine instance IDs from the VM scale set.
+    try {
+      apiInstance.virtualMachineScaleSetsPowerOff(resourceGroupName, vmScaleSetName, apiVersion, subscriptionId, skipShutdown, vmInstanceIDs);
+    } catch (ApiException e) {
+      System.err.println("Exception when calling VirtualMachineScaleSetsApi#virtualMachineScaleSetsPowerOff");
+      System.err.println("Status code: " + e.getCode());
+      System.err.println("Reason: " + e.getResponseBody());
+      System.err.println("Response headers: " + e.getResponseHeaders());
+      e.printStackTrace();
+    }
+  }
+}
+```
+
+### Parameters
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **resourceGroupName** | **String**| The name of the resource group. | |
+| **vmScaleSetName** | **String**| The name of the VM scale set. | |
+| **apiVersion** | **String**| Client Api Version. | |
+| **subscriptionId** | **String**| Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of the URI for every service call. | |
+| **skipShutdown** | **Boolean**| The parameter to request non-graceful VM shutdown. True value for this flag indicates non-graceful shutdown whereas false indicates otherwise. Default value for this flag is false if not specified | [optional] [default to false] |
+| **vmInstanceIDs** | [**VirtualMachineScaleSetVMInstanceIDs**](VirtualMachineScaleSetVMInstanceIDs.md)| A list of virtual machine instance IDs from the VM scale set. | [optional] |
+
+### Return type
+
+null (empty response body)
+
+### Authorization
+
+[azure_auth](../README.md#azure_auth)
+
+### HTTP request headers
+
+ - **Content-Type**: application/json
+ - **Accept**: Not defined
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | OK |  -  |
+| **202** | Accepted |  -  |
+
+<a id="virtualMachineScaleSetsRedeploy"></a>
+# **virtualMachineScaleSetsRedeploy**
+> virtualMachineScaleSetsRedeploy(resourceGroupName, vmScaleSetName, apiVersion, subscriptionId, vmInstanceIDs)
+
+
+
+Shuts down all the virtual machines in the virtual machine scale set, moves them to a new node, and powers them back on.
+
+### Example
+```java
+// Import classes:
+import org.openapitools.client.ApiClient;
+import org.openapitools.client.ApiException;
+import org.openapitools.client.Configuration;
+import org.openapitools.client.auth.*;
+import org.openapitools.client.models.*;
+import org.openapitools.client.api.VirtualMachineScaleSetsApi;
+
+public class Example {
+  public static void main(String[] args) {
+    ApiClient defaultClient = Configuration.getDefaultApiClient();
+    defaultClient.setBasePath("https://management.azure.com");
+    
+    // Configure OAuth2 access token for authorization: azure_auth
+    OAuth azure_auth = (OAuth) defaultClient.getAuthentication("azure_auth");
+    azure_auth.setAccessToken("YOUR ACCESS TOKEN");
+
+    VirtualMachineScaleSetsApi apiInstance = new VirtualMachineScaleSetsApi(defaultClient);
+    String resourceGroupName = "resourceGroupName_example"; // String | The name of the resource group.
+    String vmScaleSetName = "vmScaleSetName_example"; // String | The name of the VM scale set.
+    String apiVersion = "apiVersion_example"; // String | Client Api Version.
+    String subscriptionId = "subscriptionId_example"; // String | Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of the URI for every service call.
+    VirtualMachineScaleSetVMInstanceIDs vmInstanceIDs = new VirtualMachineScaleSetVMInstanceIDs(); // VirtualMachineScaleSetVMInstanceIDs | A list of virtual machine instance IDs from the VM scale set.
+    try {
+      apiInstance.virtualMachineScaleSetsRedeploy(resourceGroupName, vmScaleSetName, apiVersion, subscriptionId, vmInstanceIDs);
+    } catch (ApiException e) {
+      System.err.println("Exception when calling VirtualMachineScaleSetsApi#virtualMachineScaleSetsRedeploy");
+      System.err.println("Status code: " + e.getCode());
+      System.err.println("Reason: " + e.getResponseBody());
+      System.err.println("Response headers: " + e.getResponseHeaders());
+      e.printStackTrace();
+    }
+  }
+}
+```
+
+### Parameters
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **resourceGroupName** | **String**| The name of the resource group. | |
+| **vmScaleSetName** | **String**| The name of the VM scale set. | |
+| **apiVersion** | **String**| Client Api Version. | |
+| **subscriptionId** | **String**| Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of the URI for every service call. | |
+| **vmInstanceIDs** | [**VirtualMachineScaleSetVMInstanceIDs**](VirtualMachineScaleSetVMInstanceIDs.md)| A list of virtual machine instance IDs from the VM scale set. | [optional] |
+
+### Return type
+
+null (empty response body)
+
+### Authorization
+
+[azure_auth](../README.md#azure_auth)
+
+### HTTP request headers
+
+ - **Content-Type**: application/json
+ - **Accept**: Not defined
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | OK |  -  |
+| **202** | Accepted |  -  |
+
+<a id="virtualMachineScaleSetsReimage"></a>
+# **virtualMachineScaleSetsReimage**
+> virtualMachineScaleSetsReimage(resourceGroupName, vmScaleSetName, apiVersion, subscriptionId, vmScaleSetReimageInput)
+
+
+
+Reimages (upgrade the operating system) one or more virtual machines in a VM scale set which don&#39;t have a ephemeral OS disk, for virtual machines who have a ephemeral OS disk the virtual machine is reset to initial state.
+
+### Example
+```java
+// Import classes:
+import org.openapitools.client.ApiClient;
+import org.openapitools.client.ApiException;
+import org.openapitools.client.Configuration;
+import org.openapitools.client.auth.*;
+import org.openapitools.client.models.*;
+import org.openapitools.client.api.VirtualMachineScaleSetsApi;
+
+public class Example {
+  public static void main(String[] args) {
+    ApiClient defaultClient = Configuration.getDefaultApiClient();
+    defaultClient.setBasePath("https://management.azure.com");
+    
+    // Configure OAuth2 access token for authorization: azure_auth
+    OAuth azure_auth = (OAuth) defaultClient.getAuthentication("azure_auth");
+    azure_auth.setAccessToken("YOUR ACCESS TOKEN");
+
+    VirtualMachineScaleSetsApi apiInstance = new VirtualMachineScaleSetsApi(defaultClient);
+    String resourceGroupName = "resourceGroupName_example"; // String | The name of the resource group.
+    String vmScaleSetName = "vmScaleSetName_example"; // String | The name of the VM scale set.
+    String apiVersion = "apiVersion_example"; // String | Client Api Version.
+    String subscriptionId = "subscriptionId_example"; // String | Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of the URI for every service call.
+    VirtualMachineScaleSetReimageParameters vmScaleSetReimageInput = new VirtualMachineScaleSetReimageParameters(); // VirtualMachineScaleSetReimageParameters | Parameters for Reimaging VM ScaleSet.
+    try {
+      apiInstance.virtualMachineScaleSetsReimage(resourceGroupName, vmScaleSetName, apiVersion, subscriptionId, vmScaleSetReimageInput);
+    } catch (ApiException e) {
+      System.err.println("Exception when calling VirtualMachineScaleSetsApi#virtualMachineScaleSetsReimage");
+      System.err.println("Status code: " + e.getCode());
+      System.err.println("Reason: " + e.getResponseBody());
+      System.err.println("Response headers: " + e.getResponseHeaders());
+      e.printStackTrace();
+    }
+  }
+}
+```
+
+### Parameters
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **resourceGroupName** | **String**| The name of the resource group. | |
+| **vmScaleSetName** | **String**| The name of the VM scale set. | |
+| **apiVersion** | **String**| Client Api Version. | |
+| **subscriptionId** | **String**| Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of the URI for every service call. | |
+| **vmScaleSetReimageInput** | [**VirtualMachineScaleSetReimageParameters**](VirtualMachineScaleSetReimageParameters.md)| Parameters for Reimaging VM ScaleSet. | [optional] |
+
+### Return type
+
+null (empty response body)
+
+### Authorization
+
+[azure_auth](../README.md#azure_auth)
+
+### HTTP request headers
+
+ - **Content-Type**: application/json
+ - **Accept**: Not defined
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | OK |  -  |
+| **202** | Accepted |  -  |
+
+<a id="virtualMachineScaleSetsReimageAll"></a>
+# **virtualMachineScaleSetsReimageAll**
+> virtualMachineScaleSetsReimageAll(resourceGroupName, vmScaleSetName, apiVersion, subscriptionId, vmInstanceIDs)
+
+
+
+Reimages all the disks ( including data disks ) in the virtual machines in a VM scale set. This operation is only supported for managed disks.
+
+### Example
+```java
+// Import classes:
+import org.openapitools.client.ApiClient;
+import org.openapitools.client.ApiException;
+import org.openapitools.client.Configuration;
+import org.openapitools.client.auth.*;
+import org.openapitools.client.models.*;
+import org.openapitools.client.api.VirtualMachineScaleSetsApi;
+
+public class Example {
+  public static void main(String[] args) {
+    ApiClient defaultClient = Configuration.getDefaultApiClient();
+    defaultClient.setBasePath("https://management.azure.com");
+    
+    // Configure OAuth2 access token for authorization: azure_auth
+    OAuth azure_auth = (OAuth) defaultClient.getAuthentication("azure_auth");
+    azure_auth.setAccessToken("YOUR ACCESS TOKEN");
+
+    VirtualMachineScaleSetsApi apiInstance = new VirtualMachineScaleSetsApi(defaultClient);
+    String resourceGroupName = "resourceGroupName_example"; // String | The name of the resource group.
+    String vmScaleSetName = "vmScaleSetName_example"; // String | The name of the VM scale set.
+    String apiVersion = "apiVersion_example"; // String | Client Api Version.
+    String subscriptionId = "subscriptionId_example"; // String | Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of the URI for every service call.
+    VirtualMachineScaleSetVMInstanceIDs vmInstanceIDs = new VirtualMachineScaleSetVMInstanceIDs(); // VirtualMachineScaleSetVMInstanceIDs | A list of virtual machine instance IDs from the VM scale set.
+    try {
+      apiInstance.virtualMachineScaleSetsReimageAll(resourceGroupName, vmScaleSetName, apiVersion, subscriptionId, vmInstanceIDs);
+    } catch (ApiException e) {
+      System.err.println("Exception when calling VirtualMachineScaleSetsApi#virtualMachineScaleSetsReimageAll");
+      System.err.println("Status code: " + e.getCode());
+      System.err.println("Reason: " + e.getResponseBody());
+      System.err.println("Response headers: " + e.getResponseHeaders());
+      e.printStackTrace();
+    }
+  }
+}
+```
+
+### Parameters
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **resourceGroupName** | **String**| The name of the resource group. | |
+| **vmScaleSetName** | **String**| The name of the VM scale set. | |
+| **apiVersion** | **String**| Client Api Version. | |
+| **subscriptionId** | **String**| Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of the URI for every service call. | |
+| **vmInstanceIDs** | [**VirtualMachineScaleSetVMInstanceIDs**](VirtualMachineScaleSetVMInstanceIDs.md)| A list of virtual machine instance IDs from the VM scale set. | [optional] |
+
+### Return type
+
+null (empty response body)
+
+### Authorization
+
+[azure_auth](../README.md#azure_auth)
+
+### HTTP request headers
+
+ - **Content-Type**: application/json
+ - **Accept**: Not defined
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | OK |  -  |
+| **202** | Accepted |  -  |
+
+<a id="virtualMachineScaleSetsRestart"></a>
+# **virtualMachineScaleSetsRestart**
+> virtualMachineScaleSetsRestart(resourceGroupName, vmScaleSetName, apiVersion, subscriptionId, vmInstanceIDs)
+
+
+
+Restarts one or more virtual machines in a VM scale set.
+
+### Example
+```java
+// Import classes:
+import org.openapitools.client.ApiClient;
+import org.openapitools.client.ApiException;
+import org.openapitools.client.Configuration;
+import org.openapitools.client.auth.*;
+import org.openapitools.client.models.*;
+import org.openapitools.client.api.VirtualMachineScaleSetsApi;
+
+public class Example {
+  public static void main(String[] args) {
+    ApiClient defaultClient = Configuration.getDefaultApiClient();
+    defaultClient.setBasePath("https://management.azure.com");
+    
+    // Configure OAuth2 access token for authorization: azure_auth
+    OAuth azure_auth = (OAuth) defaultClient.getAuthentication("azure_auth");
+    azure_auth.setAccessToken("YOUR ACCESS TOKEN");
+
+    VirtualMachineScaleSetsApi apiInstance = new VirtualMachineScaleSetsApi(defaultClient);
+    String resourceGroupName = "resourceGroupName_example"; // String | The name of the resource group.
+    String vmScaleSetName = "vmScaleSetName_example"; // String | The name of the VM scale set.
+    String apiVersion = "apiVersion_example"; // String | Client Api Version.
+    String subscriptionId = "subscriptionId_example"; // String | Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of the URI for every service call.
+    VirtualMachineScaleSetVMInstanceIDs vmInstanceIDs = new VirtualMachineScaleSetVMInstanceIDs(); // VirtualMachineScaleSetVMInstanceIDs | A list of virtual machine instance IDs from the VM scale set.
+    try {
+      apiInstance.virtualMachineScaleSetsRestart(resourceGroupName, vmScaleSetName, apiVersion, subscriptionId, vmInstanceIDs);
+    } catch (ApiException e) {
+      System.err.println("Exception when calling VirtualMachineScaleSetsApi#virtualMachineScaleSetsRestart");
+      System.err.println("Status code: " + e.getCode());
+      System.err.println("Reason: " + e.getResponseBody());
+      System.err.println("Response headers: " + e.getResponseHeaders());
+      e.printStackTrace();
+    }
+  }
+}
+```
+
+### Parameters
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **resourceGroupName** | **String**| The name of the resource group. | |
+| **vmScaleSetName** | **String**| The name of the VM scale set. | |
+| **apiVersion** | **String**| Client Api Version. | |
+| **subscriptionId** | **String**| Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of the URI for every service call. | |
+| **vmInstanceIDs** | [**VirtualMachineScaleSetVMInstanceIDs**](VirtualMachineScaleSetVMInstanceIDs.md)| A list of virtual machine instance IDs from the VM scale set. | [optional] |
+
+### Return type
+
+null (empty response body)
+
+### Authorization
+
+[azure_auth](../README.md#azure_auth)
+
+### HTTP request headers
+
+ - **Content-Type**: application/json
+ - **Accept**: Not defined
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | OK |  -  |
+| **202** | Accepted |  -  |
+
+<a id="virtualMachineScaleSetsStart"></a>
+# **virtualMachineScaleSetsStart**
+> virtualMachineScaleSetsStart(resourceGroupName, vmScaleSetName, apiVersion, subscriptionId, vmInstanceIDs)
+
+
+
+Starts one or more virtual machines in a VM scale set.
+
+### Example
+```java
+// Import classes:
+import org.openapitools.client.ApiClient;
+import org.openapitools.client.ApiException;
+import org.openapitools.client.Configuration;
+import org.openapitools.client.auth.*;
+import org.openapitools.client.models.*;
+import org.openapitools.client.api.VirtualMachineScaleSetsApi;
+
+public class Example {
+  public static void main(String[] args) {
+    ApiClient defaultClient = Configuration.getDefaultApiClient();
+    defaultClient.setBasePath("https://management.azure.com");
+    
+    // Configure OAuth2 access token for authorization: azure_auth
+    OAuth azure_auth = (OAuth) defaultClient.getAuthentication("azure_auth");
+    azure_auth.setAccessToken("YOUR ACCESS TOKEN");
+
+    VirtualMachineScaleSetsApi apiInstance = new VirtualMachineScaleSetsApi(defaultClient);
+    String resourceGroupName = "resourceGroupName_example"; // String | The name of the resource group.
+    String vmScaleSetName = "vmScaleSetName_example"; // String | The name of the VM scale set.
+    String apiVersion = "apiVersion_example"; // String | Client Api Version.
+    String subscriptionId = "subscriptionId_example"; // String | Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of the URI for every service call.
+    VirtualMachineScaleSetVMInstanceIDs vmInstanceIDs = new VirtualMachineScaleSetVMInstanceIDs(); // VirtualMachineScaleSetVMInstanceIDs | A list of virtual machine instance IDs from the VM scale set.
+    try {
+      apiInstance.virtualMachineScaleSetsStart(resourceGroupName, vmScaleSetName, apiVersion, subscriptionId, vmInstanceIDs);
+    } catch (ApiException e) {
+      System.err.println("Exception when calling VirtualMachineScaleSetsApi#virtualMachineScaleSetsStart");
+      System.err.println("Status code: " + e.getCode());
+      System.err.println("Reason: " + e.getResponseBody());
+      System.err.println("Response headers: " + e.getResponseHeaders());
+      e.printStackTrace();
+    }
+  }
+}
+```
+
+### Parameters
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **resourceGroupName** | **String**| The name of the resource group. | |
+| **vmScaleSetName** | **String**| The name of the VM scale set. | |
+| **apiVersion** | **String**| Client Api Version. | |
+| **subscriptionId** | **String**| Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of the URI for every service call. | |
+| **vmInstanceIDs** | [**VirtualMachineScaleSetVMInstanceIDs**](VirtualMachineScaleSetVMInstanceIDs.md)| A list of virtual machine instance IDs from the VM scale set. | [optional] |
+
+### Return type
+
+null (empty response body)
+
+### Authorization
+
+[azure_auth](../README.md#azure_auth)
+
+### HTTP request headers
+
+ - **Content-Type**: application/json
+ - **Accept**: Not defined
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | OK |  -  |
+| **202** | Accepted |  -  |
+
+<a id="virtualMachineScaleSetsUpdate"></a>
+# **virtualMachineScaleSetsUpdate**
+> VirtualMachineScaleSet virtualMachineScaleSetsUpdate(resourceGroupName, vmScaleSetName, apiVersion, subscriptionId, parameters)
+
+
+
+Update a VM scale set.
+
+### Example
+```java
+// Import classes:
+import org.openapitools.client.ApiClient;
+import org.openapitools.client.ApiException;
+import org.openapitools.client.Configuration;
+import org.openapitools.client.auth.*;
+import org.openapitools.client.models.*;
+import org.openapitools.client.api.VirtualMachineScaleSetsApi;
+
+public class Example {
+  public static void main(String[] args) {
+    ApiClient defaultClient = Configuration.getDefaultApiClient();
+    defaultClient.setBasePath("https://management.azure.com");
+    
+    // Configure OAuth2 access token for authorization: azure_auth
+    OAuth azure_auth = (OAuth) defaultClient.getAuthentication("azure_auth");
+    azure_auth.setAccessToken("YOUR ACCESS TOKEN");
+
+    VirtualMachineScaleSetsApi apiInstance = new VirtualMachineScaleSetsApi(defaultClient);
+    String resourceGroupName = "resourceGroupName_example"; // String | The name of the resource group.
+    String vmScaleSetName = "vmScaleSetName_example"; // String | The name of the VM scale set to create or update.
+    String apiVersion = "apiVersion_example"; // String | Client Api Version.
+    String subscriptionId = "subscriptionId_example"; // String | Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of the URI for every service call.
+    VirtualMachineScaleSetUpdate parameters = new VirtualMachineScaleSetUpdate(); // VirtualMachineScaleSetUpdate | The scale set object.
+    try {
+      VirtualMachineScaleSet result = apiInstance.virtualMachineScaleSetsUpdate(resourceGroupName, vmScaleSetName, apiVersion, subscriptionId, parameters);
+      System.out.println(result);
+    } catch (ApiException e) {
+      System.err.println("Exception when calling VirtualMachineScaleSetsApi#virtualMachineScaleSetsUpdate");
+      System.err.println("Status code: " + e.getCode());
+      System.err.println("Reason: " + e.getResponseBody());
+      System.err.println("Response headers: " + e.getResponseHeaders());
+      e.printStackTrace();
+    }
+  }
+}
+```
+
+### Parameters
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **resourceGroupName** | **String**| The name of the resource group. | |
+| **vmScaleSetName** | **String**| The name of the VM scale set to create or update. | |
+| **apiVersion** | **String**| Client Api Version. | |
+| **subscriptionId** | **String**| Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of the URI for every service call. | |
+| **parameters** | [**VirtualMachineScaleSetUpdate**](VirtualMachineScaleSetUpdate.md)| The scale set object. | |
+
+### Return type
+
+[**VirtualMachineScaleSet**](VirtualMachineScaleSet.md)
+
+### Authorization
+
+[azure_auth](../README.md#azure_auth)
+
+### HTTP request headers
+
+ - **Content-Type**: application/json
+ - **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | OK |  -  |
+
+<a id="virtualMachineScaleSetsUpdateInstances"></a>
+# **virtualMachineScaleSetsUpdateInstances**
+> virtualMachineScaleSetsUpdateInstances(resourceGroupName, vmScaleSetName, apiVersion, subscriptionId, vmInstanceIDs)
+
+
+
+Upgrades one or more virtual machines to the latest SKU set in the VM scale set model.
+
+### Example
+```java
+// Import classes:
+import org.openapitools.client.ApiClient;
+import org.openapitools.client.ApiException;
+import org.openapitools.client.Configuration;
+import org.openapitools.client.auth.*;
+import org.openapitools.client.models.*;
+import org.openapitools.client.api.VirtualMachineScaleSetsApi;
+
+public class Example {
+  public static void main(String[] args) {
+    ApiClient defaultClient = Configuration.getDefaultApiClient();
+    defaultClient.setBasePath("https://management.azure.com");
+    
+    // Configure OAuth2 access token for authorization: azure_auth
+    OAuth azure_auth = (OAuth) defaultClient.getAuthentication("azure_auth");
+    azure_auth.setAccessToken("YOUR ACCESS TOKEN");
+
+    VirtualMachineScaleSetsApi apiInstance = new VirtualMachineScaleSetsApi(defaultClient);
+    String resourceGroupName = "resourceGroupName_example"; // String | The name of the resource group.
+    String vmScaleSetName = "vmScaleSetName_example"; // String | The name of the VM scale set.
+    String apiVersion = "apiVersion_example"; // String | Client Api Version.
+    String subscriptionId = "subscriptionId_example"; // String | Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of the URI for every service call.
+    VirtualMachineScaleSetVMInstanceRequiredIDs vmInstanceIDs = new VirtualMachineScaleSetVMInstanceRequiredIDs(); // VirtualMachineScaleSetVMInstanceRequiredIDs | A list of virtual machine instance IDs from the VM scale set.
+    try {
+      apiInstance.virtualMachineScaleSetsUpdateInstances(resourceGroupName, vmScaleSetName, apiVersion, subscriptionId, vmInstanceIDs);
+    } catch (ApiException e) {
+      System.err.println("Exception when calling VirtualMachineScaleSetsApi#virtualMachineScaleSetsUpdateInstances");
+      System.err.println("Status code: " + e.getCode());
+      System.err.println("Reason: " + e.getResponseBody());
+      System.err.println("Response headers: " + e.getResponseHeaders());
+      e.printStackTrace();
+    }
+  }
+}
+```
+
+### Parameters
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **resourceGroupName** | **String**| The name of the resource group. | |
+| **vmScaleSetName** | **String**| The name of the VM scale set. | |
+| **apiVersion** | **String**| Client Api Version. | |
+| **subscriptionId** | **String**| Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of the URI for every service call. | |
+| **vmInstanceIDs** | [**VirtualMachineScaleSetVMInstanceRequiredIDs**](VirtualMachineScaleSetVMInstanceRequiredIDs.md)| A list of virtual machine instance IDs from the VM scale set. | |
+
+### Return type
+
+null (empty response body)
+
+### Authorization
+
+[azure_auth](../README.md#azure_auth)
+
+### HTTP request headers
+
+ - **Content-Type**: application/json
+ - **Accept**: Not defined
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | OK |  -  |
+| **202** | Accepted |  -  |
+

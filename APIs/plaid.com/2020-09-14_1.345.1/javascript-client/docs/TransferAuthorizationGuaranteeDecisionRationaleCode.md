@@ -1,0 +1,16 @@
+# ThePlaidApi.TransferAuthorizationGuaranteeDecisionRationaleCode
+
+## Enum
+
+
+* `RETURN_BANK` (value: `"RETURN_BANK"`)
+
+* `RETURN_CUSTOMER` (value: `"RETURN_CUSTOMER"`)
+
+* `GUARANTEE_LIMIT_REACHED` (value: `"GUARANTEE_LIMIT_REACHED"`)
+
+* `RISK_ESTIMATE_UNAVAILABLE` (value: `"RISK_ESTIMATE_UNAVAILABLE"`)
+
+* `REQUIRED_PARAM_MISSING` (value: `"REQUIRED_PARAM_MISSING"`)
+
+

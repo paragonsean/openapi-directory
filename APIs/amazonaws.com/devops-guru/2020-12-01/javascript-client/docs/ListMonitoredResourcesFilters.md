@@ -1,0 +1,10 @@
+# AmazonDevOpsGuru.ListMonitoredResourcesFilters
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**resourcePermission** | [**ResourcePermission**](ResourcePermission.md) |  | 
+**resourceTypeFilters** | **Array** |  | 
+
+

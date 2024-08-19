@@ -1,0 +1,87 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIAsyncOperationResult.h \
+    $${PWD}/OAICertificateBodyDescription.h \
+    $${PWD}/OAICertificateListDescription.h \
+    $${PWD}/OAICertificateProperties.h \
+    $${PWD}/OAICertificateResponse.h \
+    $${PWD}/OAIErrorDetails.h \
+    $${PWD}/OAIErrorMesssage.h \
+    $${PWD}/OAIIotDpsPropertiesDescription.h \
+    $${PWD}/OAIIotDpsSkuDefinition.h \
+    $${PWD}/OAIIotDpsSkuDefinitionListResult.h \
+    $${PWD}/OAIIotDpsSkuInfo.h \
+    $${PWD}/OAIIotHubDefinitionDescription.h \
+    $${PWD}/OAINameAvailabilityInfo.h \
+    $${PWD}/OAIOperation.h \
+    $${PWD}/OAIOperationInputs.h \
+    $${PWD}/OAIOperationListResult.h \
+    $${PWD}/OAIOperation_display.h \
+    $${PWD}/OAIProvisioningServiceDescription.h \
+    $${PWD}/OAIProvisioningServiceDescriptionListResult.h \
+    $${PWD}/OAIResource.h \
+    $${PWD}/OAISharedAccessSignatureAuthorizationRuleListResult.h \
+    $${PWD}/OAISharedAccessSignatureAuthorizationRule_AccessRightsDescription.h \
+    $${PWD}/OAITagsResource.h \
+    $${PWD}/OAIVerificationCodeRequest.h \
+    $${PWD}/OAIVerificationCodeResponse.h \
+    $${PWD}/OAIVerificationCodeResponse_properties.h \
+# APIs
+    $${PWD}/OAIDELETEApi.h \
+    $${PWD}/OAIGETApi.h \
+    $${PWD}/OAIOperationsApi.h \
+    $${PWD}/OAIPATCHApi.h \
+    $${PWD}/OAIPOSTApi.h \
+    $${PWD}/OAIPUTApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIAsyncOperationResult.cpp \
+    $${PWD}/OAICertificateBodyDescription.cpp \
+    $${PWD}/OAICertificateListDescription.cpp \
+    $${PWD}/OAICertificateProperties.cpp \
+    $${PWD}/OAICertificateResponse.cpp \
+    $${PWD}/OAIErrorDetails.cpp \
+    $${PWD}/OAIErrorMesssage.cpp \
+    $${PWD}/OAIIotDpsPropertiesDescription.cpp \
+    $${PWD}/OAIIotDpsSkuDefinition.cpp \
+    $${PWD}/OAIIotDpsSkuDefinitionListResult.cpp \
+    $${PWD}/OAIIotDpsSkuInfo.cpp \
+    $${PWD}/OAIIotHubDefinitionDescription.cpp \
+    $${PWD}/OAINameAvailabilityInfo.cpp \
+    $${PWD}/OAIOperation.cpp \
+    $${PWD}/OAIOperationInputs.cpp \
+    $${PWD}/OAIOperationListResult.cpp \
+    $${PWD}/OAIOperation_display.cpp \
+    $${PWD}/OAIProvisioningServiceDescription.cpp \
+    $${PWD}/OAIProvisioningServiceDescriptionListResult.cpp \
+    $${PWD}/OAIResource.cpp \
+    $${PWD}/OAISharedAccessSignatureAuthorizationRuleListResult.cpp \
+    $${PWD}/OAISharedAccessSignatureAuthorizationRule_AccessRightsDescription.cpp \
+    $${PWD}/OAITagsResource.cpp \
+    $${PWD}/OAIVerificationCodeRequest.cpp \
+    $${PWD}/OAIVerificationCodeResponse.cpp \
+    $${PWD}/OAIVerificationCodeResponse_properties.cpp \
+# APIs
+    $${PWD}/OAIDELETEApi.cpp \
+    $${PWD}/OAIGETApi.cpp \
+    $${PWD}/OAIOperationsApi.cpp \
+    $${PWD}/OAIPATCHApi.cpp \
+    $${PWD}/OAIPOSTApi.cpp \
+    $${PWD}/OAIPUTApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

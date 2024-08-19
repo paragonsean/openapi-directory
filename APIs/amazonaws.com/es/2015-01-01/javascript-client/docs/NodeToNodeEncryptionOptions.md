@@ -1,0 +1,9 @@
+# AmazonElasticsearchService.NodeToNodeEncryptionOptions
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**enabled** | **Boolean** |  | [optional] 
+
+

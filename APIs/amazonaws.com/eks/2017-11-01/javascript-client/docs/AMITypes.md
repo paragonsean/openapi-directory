@@ -1,0 +1,30 @@
+# AmazonElasticKubernetesService.AMITypes
+
+## Enum
+
+
+* `AL2_x86_64` (value: `"AL2_x86_64"`)
+
+* `AL2_x86_64_GPU` (value: `"AL2_x86_64_GPU"`)
+
+* `AL2_ARM_64` (value: `"AL2_ARM_64"`)
+
+* `CUSTOM` (value: `"CUSTOM"`)
+
+* `BOTTLEROCKET_ARM_64` (value: `"BOTTLEROCKET_ARM_64"`)
+
+* `BOTTLEROCKET_x86_64` (value: `"BOTTLEROCKET_x86_64"`)
+
+* `BOTTLEROCKET_ARM_64_NVIDIA` (value: `"BOTTLEROCKET_ARM_64_NVIDIA"`)
+
+* `BOTTLEROCKET_x86_64_NVIDIA` (value: `"BOTTLEROCKET_x86_64_NVIDIA"`)
+
+* `WINDOWS_CORE_2019_x86_64` (value: `"WINDOWS_CORE_2019_x86_64"`)
+
+* `WINDOWS_FULL_2019_x86_64` (value: `"WINDOWS_FULL_2019_x86_64"`)
+
+* `WINDOWS_CORE_2022_x86_64` (value: `"WINDOWS_CORE_2022_x86_64"`)
+
+* `WINDOWS_FULL_2022_x86_64` (value: `"WINDOWS_FULL_2022_x86_64"`)
+
+

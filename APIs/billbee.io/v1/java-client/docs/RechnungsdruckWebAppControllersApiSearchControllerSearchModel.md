@@ -1,0 +1,27 @@
+
+
+# RechnungsdruckWebAppControllersApiSearchControllerSearchModel
+
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**searchMode** | [**SearchModeEnum**](#SearchModeEnum) |  |  [optional] |
+|**term** | **String** |  |  [optional] |
+|**type** | **List&lt;String&gt;** |  |  [optional] |
+
+
+
+## Enum: SearchModeEnum
+
+| Name | Value |
+|---- | -----|
+| NUMBER_0 | 0 |
+| NUMBER_1 | 1 |
+| NUMBER_2 | 2 |
+| NUMBER_3 | 3 |
+| NUMBER_4 | 4 |
+
+
+

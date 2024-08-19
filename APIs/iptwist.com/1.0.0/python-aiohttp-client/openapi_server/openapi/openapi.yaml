@@ -1,0 +1,117 @@
+openapi: 3.0.0
+info:
+  contact:
+    email: support@iptwist.com
+  description: "The reliable, secure, and simple IP geolocation API."
+  termsOfService: https://iptwist.com/legal/terms
+  title: ipTwist
+  version: 1.0.0
+  x-apisguru-categories:
+  - developer_tools
+  x-origin:
+  - converter:
+      url: https://github.com/mermade/oas-kit
+      version: 7.0.4
+    format: openapi
+    url: https://iptwist.com/schema
+    version: "3.0"
+  x-providerName: iptwist.com
+externalDocs:
+  description: Official Documentation
+  url: https://iptwist.com/documentation
+servers:
+- url: /
+tags:
+- name: Main
+paths:
+  /:
+    post:
+      operationId: root_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Request'
+        description: IP address
+        required: true
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+          description: Successful IP geolocation
+        "401":
+          description: Invalid authentication.
+        "403":
+          description: Monthly quota exceeded.
+      security:
+      - ApiKeyAuth: []
+      summary: Geolocate a given IP address
+      tags:
+      - Main
+      x-openapi-router-controller: openapi_server.controllers.main_controller
+      x-codegen-request-body-name: body
+components:
+  schemas:
+    Request:
+      example:
+        ip: ip
+      properties:
+        ip:
+          format: ipv4
+          title: ip
+          type: string
+      title: Request
+      type: object
+    Response:
+      example:
+        zip: zip
+        country: country
+        country_code: country_code
+        city: city
+        timezone: timezone
+        ip: ip
+        latitude: 0.8008282
+        state: state
+        longitude: 6.0274563
+      properties:
+        city:
+          title: city
+          type: string
+        country:
+          title: country
+          type: string
+        country_code:
+          title: country_code
+          type: string
+        ip:
+          format: ipv4
+          title: ip
+          type: string
+        latitude:
+          format: float
+          title: latitude
+          type: number
+        longitude:
+          format: float
+          title: longitude
+          type: number
+        state:
+          title: state
+          type: string
+        timezone:
+          title: timezone
+          type: string
+        zip:
+          title: zip
+          type: string
+      title: Response
+      type: object
+  securitySchemes:
+    ApiKeyAuth:
+      in: header
+      name: X-IPTWIST-TOKEN
+      type: apiKey
+      x-apikeyInfoFunc: openapi_server.controllers.security_controller.info_from_ApiKeyAuth

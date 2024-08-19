@@ -1,8 +1,0 @@
-# coding: utf-8
-
-# import models into model package
-from openapi_server.models.proxy_resource import ProxyResource
-from openapi_server.models.recoverable_managed_database import RecoverableManagedDatabase
-from openapi_server.models.recoverable_managed_database_list_result import RecoverableManagedDatabaseListResult
-from openapi_server.models.recoverable_managed_database_properties import RecoverableManagedDatabaseProperties
-from openapi_server.models.resource import Resource

@@ -1,8 +1,0 @@
-# coding: utf-8
-
-# import models into model package
-from openapi_server.models.managed_instance import ManagedInstance
-from openapi_server.models.managed_instance_list_result import ManagedInstanceListResult
-from openapi_server.models.managed_instance_properties import ManagedInstanceProperties
-from openapi_server.models.managed_instance_update import ManagedInstanceUpdate
-from openapi_server.models.managed_instance_update_sku import ManagedInstanceUpdateSku

@@ -1,0 +1,1216 @@
+# DefaultApi
+
+All URIs are relative to *http://api.wmata.com/Rail.svc*
+
+| Method | HTTP request | Description |
+|------------- | ------------- | -------------|
+| [**call5476364f031f5909e4fe330c**](DefaultApi.md#call5476364f031f5909e4fe330c) | **GET** /json/jLines | JSON - Lines |
+| [**call5476364f031f5909e4fe330d**](DefaultApi.md#call5476364f031f5909e4fe330d) | **GET** /json/jStationParking | JSON - Parking Information |
+| [**call5476364f031f5909e4fe330e**](DefaultApi.md#call5476364f031f5909e4fe330e) | **GET** /json/jPath | JSON - Path Between Stations |
+| [**call5476364f031f5909e4fe330f**](DefaultApi.md#call5476364f031f5909e4fe330f) | **GET** /json/jStationEntrances | JSON - Station Entrances |
+| [**call5476364f031f5909e4fe3310**](DefaultApi.md#call5476364f031f5909e4fe3310) | **GET** /json/jStationInfo | JSON - Station Information |
+| [**call5476364f031f5909e4fe3311**](DefaultApi.md#call5476364f031f5909e4fe3311) | **GET** /json/jStations | JSON - Station List |
+| [**call5476364f031f5909e4fe3312**](DefaultApi.md#call5476364f031f5909e4fe3312) | **GET** /json/jStationTimes | JSON - Station Timings |
+| [**call5476364f031f5909e4fe3313**](DefaultApi.md#call5476364f031f5909e4fe3313) | **GET** /json/jSrcStationToDstStationInfo | JSON - Station to Station Information |
+| [**call5476364f031f5909e4fe3314**](DefaultApi.md#call5476364f031f5909e4fe3314) | **GET** /Lines | XML - Lines |
+| [**call5476364f031f5909e4fe3315**](DefaultApi.md#call5476364f031f5909e4fe3315) | **GET** /StationParking | XML - Parking Information |
+| [**call5476364f031f5909e4fe3316**](DefaultApi.md#call5476364f031f5909e4fe3316) | **GET** /Path | XML - Path Between Stations |
+| [**call5476364f031f5909e4fe3317**](DefaultApi.md#call5476364f031f5909e4fe3317) | **GET** /StationEntrances | XML - Station Entrances |
+| [**call5476364f031f5909e4fe3318**](DefaultApi.md#call5476364f031f5909e4fe3318) | **GET** /StationInfo | XML - Station Information |
+| [**call5476364f031f5909e4fe3319**](DefaultApi.md#call5476364f031f5909e4fe3319) | **GET** /Stations | XML - Station List |
+| [**call5476364f031f5909e4fe331a**](DefaultApi.md#call5476364f031f5909e4fe331a) | **GET** /StationTimes | XML - Station Timings |
+| [**call5476364f031f5909e4fe331b**](DefaultApi.md#call5476364f031f5909e4fe331b) | **GET** /SrcStationToDstStationInfo | XML - Station to Station Information |
+
+
+<a id="call5476364f031f5909e4fe330c"></a>
+# **call5476364f031f5909e4fe330c**
+> call5476364f031f5909e4fe330c()
+
+JSON - Lines
+
+&lt;h4 class&#x3D;\&quot;text-primary\&quot;&gt;Description&lt;/h4&gt;    &lt;p&gt;Returns information about all rail lines.&lt;/p&gt;    &lt;h4 class&#x3D;\&quot;text-primary\&quot;&gt;Response Elements&lt;/h4&gt;    &lt;table class&#x3D;\&quot;table table-condensed table-hover\&quot;&gt;  &lt;thead&gt;  &lt;tr&gt;  &lt;th class&#x3D;\&quot;col-md-3\&quot;&gt;Element&lt;/th&gt;    &lt;th&gt;Description&lt;/th&gt;  &lt;/tr&gt;  &lt;/thead&gt;    &lt;tbody&gt;  &lt;tr&gt;  &lt;td&gt;Lines&lt;/td&gt;    &lt;td&gt;  Array containing line information (&lt;a href&#x3D;\&quot;#Line\&quot;&gt;Line&lt;/a&gt;).  &lt;/td&gt;  &lt;/tr&gt;    &lt;tr&gt;  &lt;td colspan&#x3D;\&quot;2\&quot;&gt;  &lt;div class&#x3D;\&quot;text-primary\&quot; style&#x3D;\&quot;margin-top: 1em\&quot;&gt;  &lt;a id&#x3D;\&quot;Line\&quot; name&#x3D;\&quot;Line\&quot;&gt;Line Elements&lt;/a&gt;  &lt;/div&gt;  &lt;/td&gt;  &lt;/tr&gt;    &lt;tr&gt;  &lt;td&gt;DisplayName&lt;/td&gt;    &lt;td&gt;Full name of line color.&lt;/td&gt;  &lt;/tr&gt;    &lt;tr&gt;  &lt;td&gt;EndStationCode&lt;/td&gt;    &lt;td&gt;End station code. For example, will be E10 (Greenbelt) for the  Green Line, B11 (Glenmont) for the Red Line, etc. Use this value in  other rail-related APIs to retrieve data about a station.&lt;/td&gt;  &lt;/tr&gt;    &lt;tr&gt;  &lt;td&gt;InternalDestination1&lt;/td&gt;    &lt;td&gt;Intermediate terminal station code. During normal service, some  trains on some lines might end their trip prior to the  StartStationCode or EndStationCode. A good example is on the Red  Line where some trains stop at A11 (Grosvenor) or B08 (Silver  Spring). Empty string if not defined.&lt;/td&gt;  &lt;/tr&gt;    &lt;tr&gt;  &lt;td&gt;InternalDestination2&lt;/td&gt;    &lt;td&gt;Similar to InternalDestination1.&lt;/td&gt;  &lt;/tr&gt;    &lt;tr&gt;  &lt;td&gt;LineCode&lt;/td&gt;    &lt;td&gt;Two-letter abbreviation for the line (e.g.: RD, BL, YL, OR, GR,  or SV).&lt;/td&gt;  &lt;/tr&gt;    &lt;tr&gt;  &lt;td&gt;StartStationCode&lt;/td&gt;    &lt;td&gt;Start station code. For example, will be F11 (Branch Avenue)  for the Green Line, A15 (Shady Grove) for the Red Line, etc. Use  this value in other rail-related APIs to retrieve data about a  station.&lt;/td&gt;  &lt;/tr&gt;  &lt;/tbody&gt;  &lt;/table&gt;
+
+### Example
+```java
+// Import classes:
+import org.openapitools.client.ApiClient;
+import org.openapitools.client.ApiException;
+import org.openapitools.client.Configuration;
+import org.openapitools.client.auth.*;
+import org.openapitools.client.models.*;
+import org.openapitools.client.api.DefaultApi;
+
+public class Example {
+  public static void main(String[] args) {
+    ApiClient defaultClient = Configuration.getDefaultApiClient();
+    defaultClient.setBasePath("http://api.wmata.com/Rail.svc");
+    
+    // Configure API key authorization: apiKeyQuery
+    ApiKeyAuth apiKeyQuery = (ApiKeyAuth) defaultClient.getAuthentication("apiKeyQuery");
+    apiKeyQuery.setApiKey("YOUR API KEY");
+    // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+    //apiKeyQuery.setApiKeyPrefix("Token");
+
+    // Configure API key authorization: apiKeyHeader
+    ApiKeyAuth apiKeyHeader = (ApiKeyAuth) defaultClient.getAuthentication("apiKeyHeader");
+    apiKeyHeader.setApiKey("YOUR API KEY");
+    // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+    //apiKeyHeader.setApiKeyPrefix("Token");
+
+    DefaultApi apiInstance = new DefaultApi(defaultClient);
+    try {
+      apiInstance.call5476364f031f5909e4fe330c();
+    } catch (ApiException e) {
+      System.err.println("Exception when calling DefaultApi#call5476364f031f5909e4fe330c");
+      System.err.println("Status code: " + e.getCode());
+      System.err.println("Reason: " + e.getResponseBody());
+      System.err.println("Response headers: " + e.getResponseHeaders());
+      e.printStackTrace();
+    }
+  }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+null (empty response body)
+
+### Authorization
+
+[apiKeyQuery](../README.md#apiKeyQuery), [apiKeyHeader](../README.md#apiKeyHeader)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | Default response code. |  -  |
+
+<a id="call5476364f031f5909e4fe330d"></a>
+# **call5476364f031f5909e4fe330d**
+> call5476364f031f5909e4fe330d(stationCode)
+
+JSON - Parking Information
+
+&lt;h4 class&#x3D;\&quot;text-primary\&quot;&gt;Description&lt;/h4&gt;  &lt;p&gt;Returns parking information at a station based on a given StationCode. Omit the StationCode to return parking information for all stations.&lt;/p&gt;  &lt;p&gt;If a station has no parking, the StationsParking element will contain no child elements.&lt;/p&gt;  &lt;h4 class&#x3D;\&quot;text-primary\&quot;&gt;Response Elements&lt;/h4&gt;  &lt;table class&#x3D;\&quot;table table-condensed table-hover\&quot;&gt; &lt;thead&gt; &lt;tr&gt; &lt;th class&#x3D;\&quot;col-md-3\&quot;&gt;Element&lt;/th&gt;  &lt;th&gt;Description&lt;/th&gt; &lt;/tr&gt; &lt;/thead&gt;  &lt;tbody&gt; &lt;tr&gt; &lt;td&gt;StationsParking&lt;/td&gt;  &lt;td&gt; Array containing station parking information (&lt;a href&#x3D; \&quot;#StationParking\&quot;&gt;StationParking&lt;/a&gt;). &lt;/td&gt; &lt;/tr&gt;  &lt;tr&gt; &lt;td colspan&#x3D;\&quot;2\&quot;&gt; &lt;div class&#x3D;\&quot;text-primary\&quot; style&#x3D;\&quot;margin-top: 1em\&quot;&gt; &lt;a id&#x3D;\&quot;StationParking\&quot; name&#x3D;\&quot;StationParking\&quot;&gt;StationParking Elements&lt;/a&gt; &lt;/div&gt; &lt;/td&gt; &lt;/tr&gt;  &lt;tr&gt; &lt;td&gt;Code&lt;/td&gt;  &lt;td&gt;Station code. Useful when returning parking information for all stations. Use this value in other rail-related APIs to retrieve data about a station.&lt;/td&gt; &lt;/tr&gt;  &lt;tr&gt; &lt;td&gt;Notes&lt;/td&gt;  &lt;td&gt;When not NULL, provides additional parking resources such as nearby lots.&lt;/td&gt; &lt;/tr&gt;  &lt;tr&gt; &lt;td&gt;AllDayParking&lt;/td&gt;  &lt;td&gt; Structure describing &lt;a href&#x3D;\&quot;#AllDayParking\&quot;&gt;all-day parking&lt;/a&gt; options. &lt;/td&gt; &lt;/tr&gt;  &lt;tr&gt; &lt;td&gt;ShortTermParking&lt;/td&gt;  &lt;td&gt; Structure describing &lt;a href&#x3D;\&quot;#ShortTermParking\&quot;&gt;short-term parking&lt;/a&gt; options. &lt;/td&gt; &lt;/tr&gt;  &lt;tr&gt; &lt;td colspan&#x3D;\&quot;2\&quot;&gt; &lt;div class&#x3D;\&quot;text-primary\&quot; style&#x3D;\&quot;margin-top: 1em\&quot;&gt; &lt;a id&#x3D;\&quot;AllDayParking\&quot; name&#x3D;\&quot;AllDayParking\&quot;&gt;AllDayParking Elements&lt;/a&gt; &lt;/div&gt; &lt;/td&gt; &lt;/tr&gt;  &lt;tr&gt; &lt;td&gt;TotalCount&lt;/td&gt;  &lt;td&gt;Number of all-day parking spots available at a station.&lt;/td&gt; &lt;/tr&gt;  &lt;tr&gt; &lt;td&gt;RiderCost&lt;/td&gt;  &lt;td&gt;All-day cost per day (weekday) for Metro riders. NULL when no all-day spots are available. For most stations, this value is identical to the NonRiderCost.&lt;br&gt; &lt;br&gt; For cases where the NonRiderCost is different, the lower cost per day requires a valid rail trip using a SmarTrip&amp;reg; card originating from a station other than the one where the patron parked. To receive this lower rate, patrons must pay for their parking with the same SmarTrip&amp;reg; card used to enter/exit Metrorail, and must exit the parking lot within two hours of exiting Metrorail.&lt;/td&gt; &lt;/tr&gt;  &lt;tr&gt; &lt;td&gt;NonRiderCost&lt;/td&gt;  &lt;td&gt;All-day cost per day (weekday) for non-Metro riders. NULL when no all-day spots are available.&lt;/td&gt; &lt;/tr&gt;  &lt;tr&gt; &lt;td colspan&#x3D;\&quot;2\&quot;&gt; &lt;div class&#x3D;\&quot;text-primary\&quot; style&#x3D;\&quot;margin-top: 1em\&quot;&gt; &lt;a id&#x3D;\&quot;ShortTermParking\&quot; name&#x3D; \&quot;ShortTermParking\&quot;&gt;ShortTermParking Elements&lt;/a&gt; &lt;/div&gt; &lt;/td&gt; &lt;/tr&gt;  &lt;tr&gt; &lt;td&gt;SaturdayRiderCost&lt;/td&gt;  &lt;td&gt;Similar to RiderCost, except denoting Saturday prices.&lt;/td&gt; &lt;/tr&gt;  &lt;tr&gt; &lt;td&gt;SaturdayNonRiderCost&lt;/td&gt;  &lt;td&gt;Similar to NonRiderCost, except denoting Saturday prices.&lt;/td&gt; &lt;/tr&gt;  &lt;tr&gt; &lt;td&gt;TotalCount&lt;/td&gt;  &lt;td&gt;Number of short-term parking spots available at a station (parking meters).&lt;/td&gt; &lt;/tr&gt;  &lt;tr&gt; &lt;td&gt;Notes&lt;/td&gt;  &lt;td&gt;Misc. information relating to short-term parking. NULL when no short-term spots are available.&lt;/td&gt; &lt;/tr&gt; &lt;/tbody&gt; &lt;/table&gt;
+
+### Example
+```java
+// Import classes:
+import org.openapitools.client.ApiClient;
+import org.openapitools.client.ApiException;
+import org.openapitools.client.Configuration;
+import org.openapitools.client.auth.*;
+import org.openapitools.client.models.*;
+import org.openapitools.client.api.DefaultApi;
+
+public class Example {
+  public static void main(String[] args) {
+    ApiClient defaultClient = Configuration.getDefaultApiClient();
+    defaultClient.setBasePath("http://api.wmata.com/Rail.svc");
+    
+    // Configure API key authorization: apiKeyQuery
+    ApiKeyAuth apiKeyQuery = (ApiKeyAuth) defaultClient.getAuthentication("apiKeyQuery");
+    apiKeyQuery.setApiKey("YOUR API KEY");
+    // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+    //apiKeyQuery.setApiKeyPrefix("Token");
+
+    // Configure API key authorization: apiKeyHeader
+    ApiKeyAuth apiKeyHeader = (ApiKeyAuth) defaultClient.getAuthentication("apiKeyHeader");
+    apiKeyHeader.setApiKey("YOUR API KEY");
+    // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+    //apiKeyHeader.setApiKeyPrefix("Token");
+
+    DefaultApi apiInstance = new DefaultApi(defaultClient);
+    String stationCode = "E08"; // String | Station code.  Use the Station List method to return a list of all station codes.
+    try {
+      apiInstance.call5476364f031f5909e4fe330d(stationCode);
+    } catch (ApiException e) {
+      System.err.println("Exception when calling DefaultApi#call5476364f031f5909e4fe330d");
+      System.err.println("Status code: " + e.getCode());
+      System.err.println("Reason: " + e.getResponseBody());
+      System.err.println("Response headers: " + e.getResponseHeaders());
+      e.printStackTrace();
+    }
+  }
+}
+```
+
+### Parameters
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **stationCode** | **String**| Station code.  Use the Station List method to return a list of all station codes. | [optional] [enum: E08, F06] |
+
+### Return type
+
+null (empty response body)
+
+### Authorization
+
+[apiKeyQuery](../README.md#apiKeyQuery), [apiKeyHeader](../README.md#apiKeyHeader)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | Default response code. |  -  |
+
+<a id="call5476364f031f5909e4fe330e"></a>
+# **call5476364f031f5909e4fe330e**
+> call5476364f031f5909e4fe330e(fromStationCode, toStationCode)
+
+JSON - Path Between Stations
+
+&lt;h4 class&#x3D;\&quot;text-primary\&quot;&gt;Description&lt;/h4&gt;    &lt;p&gt;Returns a set of ordered stations and distances between two stations on the  &lt;em&gt;same line&lt;/em&gt;.&lt;/p&gt;    &lt;p&gt;Note that this method is not suitable on its own as a pathfinding solution  between stations.&lt;/p&gt;    &lt;h4 class&#x3D;\&quot;text-primary\&quot;&gt;Response Elements&lt;/h4&gt;    &lt;table class&#x3D;\&quot;table table-condensed table-hover\&quot;&gt;  &lt;thead&gt;  &lt;tr&gt;  &lt;th class&#x3D;\&quot;col-md-3\&quot;&gt;Element&lt;/th&gt;    &lt;th&gt;Description&lt;/th&gt;  &lt;/tr&gt;  &lt;/thead&gt;    &lt;tbody&gt;  &lt;tr&gt;  &lt;td&gt;Path&lt;/td&gt;    &lt;td&gt;  Array containing path details (&lt;a href&#x3D;  \&quot;#MetroPathItem\&quot;&gt;MetroPathItem&lt;/a&gt;)  &lt;/td&gt;  &lt;/tr&gt;    &lt;tr&gt;  &lt;td colspan&#x3D;\&quot;2\&quot;&gt;  &lt;div class&#x3D;\&quot;text-primary\&quot; style&#x3D;\&quot;margin-top: 1em\&quot;&gt;  &lt;a id&#x3D;\&quot;MetroPathItem\&quot; name&#x3D;\&quot;MetroPathItem\&quot;&gt;MetroPathItem  Elements&lt;/a&gt;  &lt;/div&gt;  &lt;/td&gt;  &lt;/tr&gt;    &lt;tr&gt;  &lt;td&gt;DistanceToPrev&lt;/td&gt;    &lt;td&gt;Distance in feet to the previous station in the list.&lt;/td&gt;  &lt;/tr&gt;    &lt;tr&gt;  &lt;td&gt;LineCode&lt;/td&gt;    &lt;td&gt;Two-letter abbreviation for the line (e.g.: RD, BL, YL, OR, GR,  or SV) this station&#39;s platform is on.&lt;/td&gt;  &lt;/tr&gt;    &lt;tr&gt;  &lt;td&gt;SeqNum&lt;/td&gt;    &lt;td&gt;Ordered sequence number.&lt;/td&gt;  &lt;/tr&gt;    &lt;tr&gt;  &lt;td&gt;StationCode&lt;/td&gt;    &lt;td&gt;Station code for this station. Use this value in other  rail-related APIs to retrieve data about a station.&lt;/td&gt;  &lt;/tr&gt;    &lt;tr&gt;  &lt;td&gt;StationName&lt;/td&gt;    &lt;td&gt;Full name for this station, as shown on the WMATA website.&lt;/td&gt;  &lt;/tr&gt;  &lt;/tbody&gt;  &lt;/table&gt;
+
+### Example
+```java
+// Import classes:
+import org.openapitools.client.ApiClient;
+import org.openapitools.client.ApiException;
+import org.openapitools.client.Configuration;
+import org.openapitools.client.auth.*;
+import org.openapitools.client.models.*;
+import org.openapitools.client.api.DefaultApi;
+
+public class Example {
+  public static void main(String[] args) {
+    ApiClient defaultClient = Configuration.getDefaultApiClient();
+    defaultClient.setBasePath("http://api.wmata.com/Rail.svc");
+    
+    // Configure API key authorization: apiKeyQuery
+    ApiKeyAuth apiKeyQuery = (ApiKeyAuth) defaultClient.getAuthentication("apiKeyQuery");
+    apiKeyQuery.setApiKey("YOUR API KEY");
+    // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+    //apiKeyQuery.setApiKeyPrefix("Token");
+
+    // Configure API key authorization: apiKeyHeader
+    ApiKeyAuth apiKeyHeader = (ApiKeyAuth) defaultClient.getAuthentication("apiKeyHeader");
+    apiKeyHeader.setApiKey("YOUR API KEY");
+    // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+    //apiKeyHeader.setApiKeyPrefix("Token");
+
+    DefaultApi apiInstance = new DefaultApi(defaultClient);
+    String fromStationCode = "N06"; // String | Station code for the origin station.  Use the Station List method to return a list of all station codes.
+    String toStationCode = "G05"; // String | Station code for the destination station.  Use the Station List method to return a list of all station codes.
+    try {
+      apiInstance.call5476364f031f5909e4fe330e(fromStationCode, toStationCode);
+    } catch (ApiException e) {
+      System.err.println("Exception when calling DefaultApi#call5476364f031f5909e4fe330e");
+      System.err.println("Status code: " + e.getCode());
+      System.err.println("Reason: " + e.getResponseBody());
+      System.err.println("Response headers: " + e.getResponseHeaders());
+      e.printStackTrace();
+    }
+  }
+}
+```
+
+### Parameters
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **fromStationCode** | **String**| Station code for the origin station.  Use the Station List method to return a list of all station codes. | [default to N06] [enum: N06] |
+| **toStationCode** | **String**| Station code for the destination station.  Use the Station List method to return a list of all station codes. | [default to G05] [enum: G05] |
+
+### Return type
+
+null (empty response body)
+
+### Authorization
+
+[apiKeyQuery](../README.md#apiKeyQuery), [apiKeyHeader](../README.md#apiKeyHeader)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | Default response code. |  -  |
+
+<a id="call5476364f031f5909e4fe330f"></a>
+# **call5476364f031f5909e4fe330f**
+> call5476364f031f5909e4fe330f(lat, lon, radius)
+
+JSON - Station Entrances
+
+&lt;h4 class&#x3D;\&quot;text-primary\&quot;&gt;Description&lt;/h4&gt;    &lt;p&gt;Returns a list of nearby station entrances based on latitude, longitude, and  radius (meters). Omit search parameters to return all station entrances.&lt;/p&gt;    &lt;h4 class&#x3D;\&quot;text-primary\&quot;&gt;Response Elements&lt;/h4&gt;    &lt;table class&#x3D;\&quot;table table-condensed table-hover\&quot;&gt;  &lt;thead&gt;  &lt;tr&gt;  &lt;th class&#x3D;\&quot;col-md-3\&quot;&gt;Element&lt;/th&gt;    &lt;th&gt;Description&lt;/th&gt;  &lt;/tr&gt;  &lt;/thead&gt;    &lt;tbody&gt;  &lt;tr&gt;  &lt;td&gt;Entrances&lt;/td&gt;    &lt;td&gt;  Array containing detailed information about station entrances  (&lt;a href&#x3D;\&quot;#StationEntrance\&quot;&gt;StationEntrance&lt;/a&gt;).  &lt;/td&gt;  &lt;/tr&gt;    &lt;tr&gt;  &lt;td colspan&#x3D;\&quot;2\&quot;&gt;  &lt;div class&#x3D;\&quot;text-primary\&quot; style&#x3D;\&quot;margin-top: 1em\&quot;&gt;  &lt;a id&#x3D;\&quot;StationEntrance\&quot; name&#x3D;  \&quot;StationEntrance\&quot;&gt;StationEntrance Elements&lt;/a&gt;  &lt;/div&gt;  &lt;/td&gt;  &lt;/tr&gt;    &lt;tr&gt;  &lt;td&gt;Description&lt;/td&gt;    &lt;td&gt;Additional information for the entrance, if available.  Currently available data usually shows the same value as the Name  element.&lt;/td&gt;  &lt;/tr&gt;    &lt;tr&gt;  &lt;td style&#x3D;\&quot;text-decoration: line-through\&quot;&gt;ID&lt;/td&gt;    &lt;td&gt;&lt;span class&#x3D;\&quot;text-danger\&quot;&gt;Deprecated.&lt;/span&gt;&lt;/td&gt;  &lt;/tr&gt;    &lt;tr&gt;  &lt;td&gt;Lat&lt;/td&gt;    &lt;td&gt;Latitude.&lt;/td&gt;  &lt;/tr&gt;    &lt;tr&gt;  &lt;td&gt;Lon&lt;/td&gt;    &lt;td&gt;Longitude.&lt;/td&gt;  &lt;/tr&gt;    &lt;tr&gt;  &lt;td&gt;Name&lt;/td&gt;    &lt;td&gt;Name of the entrance (usually the station name and nearest  intersection).&lt;/td&gt;  &lt;/tr&gt;    &lt;tr&gt;  &lt;td&gt;StationCode1&lt;/td&gt;    &lt;td&gt;The station code associated with this entrance. Use this value  in other rail-related APIs to retrieve data about a station.&lt;/td&gt;  &lt;/tr&gt;    &lt;tr&gt;  &lt;td&gt;StationCode2&lt;/td&gt;    &lt;td&gt;For stations containing multiple platforms (e.g.: Gallery  Place, Fort Totten, L&#39;Enfant Plaza, and Metro Center), the other  station code.&lt;/td&gt;  &lt;/tr&gt;  &lt;/tbody&gt;  &lt;/table&gt;
+
+### Example
+```java
+// Import classes:
+import org.openapitools.client.ApiClient;
+import org.openapitools.client.ApiException;
+import org.openapitools.client.Configuration;
+import org.openapitools.client.auth.*;
+import org.openapitools.client.models.*;
+import org.openapitools.client.api.DefaultApi;
+
+public class Example {
+  public static void main(String[] args) {
+    ApiClient defaultClient = Configuration.getDefaultApiClient();
+    defaultClient.setBasePath("http://api.wmata.com/Rail.svc");
+    
+    // Configure API key authorization: apiKeyQuery
+    ApiKeyAuth apiKeyQuery = (ApiKeyAuth) defaultClient.getAuthentication("apiKeyQuery");
+    apiKeyQuery.setApiKey("YOUR API KEY");
+    // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+    //apiKeyQuery.setApiKeyPrefix("Token");
+
+    // Configure API key authorization: apiKeyHeader
+    ApiKeyAuth apiKeyHeader = (ApiKeyAuth) defaultClient.getAuthentication("apiKeyHeader");
+    apiKeyHeader.setApiKey("YOUR API KEY");
+    // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+    //apiKeyHeader.setApiKeyPrefix("Token");
+
+    DefaultApi apiInstance = new DefaultApi(defaultClient);
+    BigDecimal lat = new BigDecimal("38.8978168"); // BigDecimal | Center point Latitude, required if Longitude and Radius are specified.
+    BigDecimal lon = new BigDecimal("-77.0404246"); // BigDecimal | Center point Longitude, required if Latitude and Radius are specified.
+    BigDecimal radius = new BigDecimal("500"); // BigDecimal | Radius (meters) to include in the search area, required if Latitude and Longitude are specified.
+    try {
+      apiInstance.call5476364f031f5909e4fe330f(lat, lon, radius);
+    } catch (ApiException e) {
+      System.err.println("Exception when calling DefaultApi#call5476364f031f5909e4fe330f");
+      System.err.println("Status code: " + e.getCode());
+      System.err.println("Reason: " + e.getResponseBody());
+      System.err.println("Response headers: " + e.getResponseHeaders());
+      e.printStackTrace();
+    }
+  }
+}
+```
+
+### Parameters
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **lat** | **BigDecimal**| Center point Latitude, required if Longitude and Radius are specified. | [optional] [default to 38.8978168] [enum: 38.8978168] |
+| **lon** | **BigDecimal**| Center point Longitude, required if Latitude and Radius are specified. | [optional] [default to -77.0404246] [enum: -77.0404246] |
+| **radius** | **BigDecimal**| Radius (meters) to include in the search area, required if Latitude and Longitude are specified. | [optional] [default to 500.0] [enum: 500] |
+
+### Return type
+
+null (empty response body)
+
+### Authorization
+
+[apiKeyQuery](../README.md#apiKeyQuery), [apiKeyHeader](../README.md#apiKeyHeader)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | Default response code. |  -  |
+
+<a id="call5476364f031f5909e4fe3310"></a>
+# **call5476364f031f5909e4fe3310**
+> call5476364f031f5909e4fe3310(stationCode)
+
+JSON - Station Information
+
+&lt;h4 class&#x3D;\&quot;text-primary\&quot;&gt;Description&lt;/h4&gt;  &lt;p&gt;Returns station location and address information based on a given StationCode.&lt;/p&gt;  &lt;h4 class&#x3D;\&quot;text-primary\&quot;&gt;Response Elements&lt;/h4&gt;  &lt;table class&#x3D;\&quot;table table-condensed table-hover\&quot;&gt; &lt;thead&gt; &lt;tr&gt; &lt;th class&#x3D;\&quot;col-md-3\&quot;&gt;Element&lt;/th&gt;  &lt;th&gt;Description&lt;/th&gt; &lt;/tr&gt; &lt;/thead&gt;  &lt;tbody&gt; &lt;tr&gt; &lt;td&gt;Address&lt;/td&gt;  &lt;td&gt; Structure describing &lt;a href&#x3D;\&quot;#Address\&quot;&gt;address&lt;/a&gt; information. &lt;/td&gt; &lt;/tr&gt;  &lt;tr&gt; &lt;td&gt;Code&lt;/td&gt;  &lt;td&gt;Station code. Repeated from input.&lt;/td&gt; &lt;/tr&gt;  &lt;tr&gt; &lt;td&gt;Lat&lt;/td&gt;  &lt;td&gt;Latitude.&lt;/td&gt; &lt;/tr&gt;  &lt;tr&gt; &lt;td&gt;LineCode1&lt;/td&gt;  &lt;td&gt;Two-letter abbreviation for one line (e.g.: RD, BL, YL, OR, GR, or SV) served by this station. If the station has an additional platform, the lines served by the other platform are listed in the LineCodeX values for the record associated with the StationCode found in StationTogether1.&lt;/td&gt; &lt;/tr&gt;  &lt;tr&gt; &lt;td&gt;LineCode2&lt;/td&gt;  &lt;td&gt;Additional line served by this station, if applicable.&lt;/td&gt; &lt;/tr&gt;  &lt;tr&gt; &lt;td&gt;LineCode3&lt;/td&gt;  &lt;td&gt;Additional line served by this station, if applicable.&lt;/td&gt; &lt;/tr&gt;  &lt;tr&gt; &lt;td&gt;LineCode4&lt;/td&gt;  &lt;td&gt;Additional line served by this station, if applicable. Currently not in use.&lt;/td&gt; &lt;/tr&gt;  &lt;tr&gt; &lt;td&gt;Lon&lt;/td&gt;  &lt;td&gt;Longitude.&lt;/td&gt; &lt;/tr&gt;  &lt;tr&gt; &lt;td&gt;Name&lt;/td&gt;  &lt;td&gt;Station name.&lt;/td&gt; &lt;/tr&gt;  &lt;tr&gt; &lt;td&gt;StationTogether1&lt;/td&gt;  &lt;td&gt;For stations with multiple platforms (e.g.: Gallery Place, Fort Totten, L&#39;Enfant Plaza, and Metro Center), the additional StationCode will be listed here.&lt;/td&gt; &lt;/tr&gt;  &lt;tr&gt; &lt;td&gt;StationTogether2&lt;/td&gt;  &lt;td&gt;Similar in function to StationTogether2. Currently not in use.&lt;/td&gt; &lt;/tr&gt;  &lt;tr&gt; &lt;td colspan&#x3D;\&quot;2\&quot;&gt; &lt;div class&#x3D;\&quot;text-primary\&quot; style&#x3D;\&quot;margin-top: 1em\&quot;&gt; &lt;a name&#x3D;\&quot;Address\&quot;&gt;Address Elements&lt;/a&gt; &lt;/div&gt; &lt;/td&gt; &lt;/tr&gt;  &lt;tr&gt; &lt;td&gt;City&lt;/td&gt;  &lt;td&gt;City.&lt;/td&gt; &lt;/tr&gt;  &lt;tr&gt; &lt;td&gt;State&lt;/td&gt;  &lt;td&gt;State (abbreviated).&lt;/td&gt; &lt;/tr&gt;  &lt;tr&gt; &lt;td&gt;Street&lt;/td&gt;  &lt;td&gt;Street address (for GPS use).&lt;/td&gt; &lt;/tr&gt;  &lt;tr&gt; &lt;td&gt;Zip&lt;/td&gt;  &lt;td&gt;Zip code.&lt;/td&gt; &lt;/tr&gt; &lt;/tbody&gt; &lt;/table&gt;
+
+### Example
+```java
+// Import classes:
+import org.openapitools.client.ApiClient;
+import org.openapitools.client.ApiException;
+import org.openapitools.client.Configuration;
+import org.openapitools.client.auth.*;
+import org.openapitools.client.models.*;
+import org.openapitools.client.api.DefaultApi;
+
+public class Example {
+  public static void main(String[] args) {
+    ApiClient defaultClient = Configuration.getDefaultApiClient();
+    defaultClient.setBasePath("http://api.wmata.com/Rail.svc");
+    
+    // Configure API key authorization: apiKeyQuery
+    ApiKeyAuth apiKeyQuery = (ApiKeyAuth) defaultClient.getAuthentication("apiKeyQuery");
+    apiKeyQuery.setApiKey("YOUR API KEY");
+    // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+    //apiKeyQuery.setApiKeyPrefix("Token");
+
+    // Configure API key authorization: apiKeyHeader
+    ApiKeyAuth apiKeyHeader = (ApiKeyAuth) defaultClient.getAuthentication("apiKeyHeader");
+    apiKeyHeader.setApiKey("YOUR API KEY");
+    // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+    //apiKeyHeader.setApiKeyPrefix("Token");
+
+    DefaultApi apiInstance = new DefaultApi(defaultClient);
+    String stationCode = "A01"; // String | Station code.  Use the Station List method to return a list of all station codes.
+    try {
+      apiInstance.call5476364f031f5909e4fe3310(stationCode);
+    } catch (ApiException e) {
+      System.err.println("Exception when calling DefaultApi#call5476364f031f5909e4fe3310");
+      System.err.println("Status code: " + e.getCode());
+      System.err.println("Reason: " + e.getResponseBody());
+      System.err.println("Response headers: " + e.getResponseHeaders());
+      e.printStackTrace();
+    }
+  }
+}
+```
+
+### Parameters
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **stationCode** | **String**| Station code.  Use the Station List method to return a list of all station codes. | [default to A01] [enum: A01] |
+
+### Return type
+
+null (empty response body)
+
+### Authorization
+
+[apiKeyQuery](../README.md#apiKeyQuery), [apiKeyHeader](../README.md#apiKeyHeader)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | Default response code. |  -  |
+
+<a id="call5476364f031f5909e4fe3311"></a>
+# **call5476364f031f5909e4fe3311**
+> call5476364f031f5909e4fe3311(lineCode)
+
+JSON - Station List
+
+&lt;h4 class&#x3D;\&quot;text-primary\&quot;&gt;Description&lt;/h4&gt;  &lt;p&gt;Returns a list of station location and address information based on a given LineCode. Omit the LineCode to return all stations. The response is an array of objects identical to those returned in the Station Information method.&lt;/p&gt;  &lt;h4 class&#x3D;\&quot;text-primary\&quot;&gt;Response Elements&lt;/h4&gt;  &lt;table class&#x3D;\&quot;table table-condensed table-hover\&quot;&gt; &lt;thead&gt; &lt;tr&gt; &lt;th class&#x3D;\&quot;col-md-3\&quot;&gt;Element&lt;/th&gt;  &lt;th&gt;Description&lt;/th&gt; &lt;/tr&gt; &lt;/thead&gt;  &lt;tbody&gt; &lt;tr&gt; &lt;td&gt;Stations&lt;/td&gt;  &lt;td&gt; Array containing station information (&lt;a href&#x3D; \&quot;#Station\&quot;&gt;Station&lt;/a&gt;). &lt;/td&gt; &lt;/tr&gt;  &lt;tr&gt; &lt;td colspan&#x3D;\&quot;2\&quot;&gt; &lt;div class&#x3D;\&quot;text-primary\&quot; style&#x3D;\&quot;margin-top: 1em\&quot;&gt; &lt;a id&#x3D;\&quot;Station\&quot; name&#x3D;\&quot;Station\&quot;&gt;Station Elements&lt;/a&gt; &lt;/div&gt; &lt;/td&gt; &lt;/tr&gt;  &lt;tr&gt; &lt;td&gt;Address&lt;/td&gt;  &lt;td&gt; Structure describing &lt;a href&#x3D;\&quot;#Address\&quot;&gt;address&lt;/a&gt; information. &lt;/td&gt; &lt;/tr&gt;  &lt;tr&gt; &lt;td&gt;Code&lt;/td&gt;  &lt;td&gt;Station code. Repeated from input.&lt;/td&gt; &lt;/tr&gt;  &lt;tr&gt; &lt;td&gt;Lat&lt;/td&gt;  &lt;td&gt;Latitude.&lt;/td&gt; &lt;/tr&gt;  &lt;tr&gt; &lt;td&gt;LineCode1&lt;/td&gt;  &lt;td&gt;Two-letter abbreviation for one line (e.g.: RD, BL, YL, OR, GR, or SV) served by this station. If the station has an additional platform, the lines served by the other platform are listed in the LineCodeX values for the record associated with the StationCode found in StationTogether1.&lt;/td&gt; &lt;/tr&gt;  &lt;tr&gt; &lt;td&gt;LineCode2&lt;/td&gt;  &lt;td&gt;Additional line served by this station, if applicable.&lt;/td&gt; &lt;/tr&gt;  &lt;tr&gt; &lt;td&gt;LineCode3&lt;/td&gt;  &lt;td&gt;Additional line served by this station, if applicable.&lt;/td&gt; &lt;/tr&gt;  &lt;tr&gt; &lt;td&gt;LineCode4&lt;/td&gt;  &lt;td&gt;Additional line served by this station, if applicable. Currently not in use.&lt;/td&gt; &lt;/tr&gt;  &lt;tr&gt; &lt;td&gt;Lon&lt;/td&gt;  &lt;td&gt;Longitude.&lt;/td&gt; &lt;/tr&gt;  &lt;tr&gt; &lt;td&gt;Name&lt;/td&gt;  &lt;td&gt;Station name.&lt;/td&gt; &lt;/tr&gt;  &lt;tr&gt; &lt;td&gt;StationTogether1&lt;/td&gt;  &lt;td&gt;For stations with multiple platforms (e.g.: Gallery Place, Fort Totten, L&#39;Enfant Plaza, and Metro Center), the additional StationCode will be listed here.&lt;/td&gt; &lt;/tr&gt;  &lt;tr&gt; &lt;td&gt;StationTogether2&lt;/td&gt;  &lt;td&gt;Similar in function to StationTogether2. Currently not in use.&lt;/td&gt; &lt;/tr&gt;  &lt;tr&gt; &lt;td colspan&#x3D;\&quot;2\&quot;&gt; &lt;div class&#x3D;\&quot;text-primary\&quot; style&#x3D;\&quot;margin-top: 1em\&quot;&gt; &lt;a id&#x3D;\&quot;Address\&quot; name&#x3D;\&quot;Address\&quot;&gt;Address Elements&lt;/a&gt; &lt;/div&gt; &lt;/td&gt; &lt;/tr&gt;  &lt;tr&gt; &lt;td&gt;City&lt;/td&gt;  &lt;td&gt;City.&lt;/td&gt; &lt;/tr&gt;  &lt;tr&gt; &lt;td&gt;State&lt;/td&gt;  &lt;td&gt;State (abbreviated).&lt;/td&gt; &lt;/tr&gt;  &lt;tr&gt; &lt;td&gt;Street&lt;/td&gt;  &lt;td&gt;Street address (for GPS use).&lt;/td&gt; &lt;/tr&gt;  &lt;tr&gt; &lt;td&gt;Zip&lt;/td&gt;  &lt;td&gt;Zip code.&lt;/td&gt; &lt;/tr&gt; &lt;/tbody&gt; &lt;/table&gt;
+
+### Example
+```java
+// Import classes:
+import org.openapitools.client.ApiClient;
+import org.openapitools.client.ApiException;
+import org.openapitools.client.Configuration;
+import org.openapitools.client.auth.*;
+import org.openapitools.client.models.*;
+import org.openapitools.client.api.DefaultApi;
+
+public class Example {
+  public static void main(String[] args) {
+    ApiClient defaultClient = Configuration.getDefaultApiClient();
+    defaultClient.setBasePath("http://api.wmata.com/Rail.svc");
+    
+    // Configure API key authorization: apiKeyQuery
+    ApiKeyAuth apiKeyQuery = (ApiKeyAuth) defaultClient.getAuthentication("apiKeyQuery");
+    apiKeyQuery.setApiKey("YOUR API KEY");
+    // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+    //apiKeyQuery.setApiKeyPrefix("Token");
+
+    // Configure API key authorization: apiKeyHeader
+    ApiKeyAuth apiKeyHeader = (ApiKeyAuth) defaultClient.getAuthentication("apiKeyHeader");
+    apiKeyHeader.setApiKey("YOUR API KEY");
+    // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+    //apiKeyHeader.setApiKeyPrefix("Token");
+
+    DefaultApi apiInstance = new DefaultApi(defaultClient);
+    String lineCode = "RD"; // String | Two-letter line code abbreviation:  <ul> <li>RD - Red</li> <li>YL - Yellow</li> <li>GR - Green</li> <li>BL - Blue</li> <li>OR - Orange</li> <li>SV - Silver</li> </ul>
+    try {
+      apiInstance.call5476364f031f5909e4fe3311(lineCode);
+    } catch (ApiException e) {
+      System.err.println("Exception when calling DefaultApi#call5476364f031f5909e4fe3311");
+      System.err.println("Status code: " + e.getCode());
+      System.err.println("Reason: " + e.getResponseBody());
+      System.err.println("Response headers: " + e.getResponseHeaders());
+      e.printStackTrace();
+    }
+  }
+}
+```
+
+### Parameters
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **lineCode** | **String**| Two-letter line code abbreviation:  &lt;ul&gt; &lt;li&gt;RD - Red&lt;/li&gt; &lt;li&gt;YL - Yellow&lt;/li&gt; &lt;li&gt;GR - Green&lt;/li&gt; &lt;li&gt;BL - Blue&lt;/li&gt; &lt;li&gt;OR - Orange&lt;/li&gt; &lt;li&gt;SV - Silver&lt;/li&gt; &lt;/ul&gt; | [optional] [enum: RD, YL, GR, BL, OR, SV] |
+
+### Return type
+
+null (empty response body)
+
+### Authorization
+
+[apiKeyQuery](../README.md#apiKeyQuery), [apiKeyHeader](../README.md#apiKeyHeader)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | Default response code. |  -  |
+
+<a id="call5476364f031f5909e4fe3312"></a>
+# **call5476364f031f5909e4fe3312**
+> call5476364f031f5909e4fe3312(stationCode)
+
+JSON - Station Timings
+
+&lt;h4 class&#x3D;\&quot;text-primary\&quot;&gt;Description&lt;/h4&gt;    &lt;p&gt;Returns opening and scheduled first/last train times based on a given  StationCode. Omit the StationCode to return timing information for all  stations.&lt;/p&gt;    &lt;p&gt;Note that for stations with multiple platforms (e.g.: Metro Center, L&#39;Enfant  Plaza, etc.), a distinct call is required for each StationCode to retrieve the  full set of train times at such stations.&lt;/p&gt;    &lt;h4 class&#x3D;\&quot;text-primary\&quot;&gt;Response Elements&lt;/h4&gt;    &lt;table class&#x3D;\&quot;table table-condensed table-hover\&quot;&gt;  &lt;thead&gt;  &lt;tr&gt;  &lt;th class&#x3D;\&quot;col-md-3\&quot;&gt;Element&lt;/th&gt;    &lt;th&gt;Description&lt;/th&gt;  &lt;/tr&gt;  &lt;/thead&gt;    &lt;tbody&gt;  &lt;tr&gt;  &lt;td&gt;StationTimes&lt;/td&gt;    &lt;td&gt;  Array containing station timing information (&lt;a href&#x3D;  \&quot;#StationTime\&quot;&gt;StationTime&lt;/a&gt;).  &lt;/td&gt;  &lt;/tr&gt;    &lt;tr&gt;  &lt;td colspan&#x3D;\&quot;2\&quot;&gt;  &lt;div class&#x3D;\&quot;text-primary\&quot; style&#x3D;\&quot;margin-top: 1em\&quot;&gt;  &lt;a id&#x3D;\&quot;StationTime\&quot; name&#x3D;\&quot;StationTime\&quot;&gt;StationTime  Elements&lt;/a&gt;  &lt;/div&gt;  &lt;/td&gt;  &lt;/tr&gt;    &lt;tr&gt;  &lt;td&gt;Code&lt;/td&gt;    &lt;td&gt;Station code for this station. Use this value in other  rail-related APIs to retrieve data about a station.&lt;/td&gt;  &lt;/tr&gt;    &lt;tr&gt;  &lt;td&gt;StationName&lt;/td&gt;    &lt;td&gt;Full name of the station.&lt;/td&gt;  &lt;/tr&gt;    &lt;tr&gt;  &lt;td&gt;*Day Elements&lt;/td&gt;    &lt;td&gt;  Container elements containing timing information based on  &lt;a href&#x3D;\&quot;#dow\&quot;&gt;day of the week.&lt;/a&gt;  &lt;/td&gt;  &lt;/tr&gt;    &lt;tr&gt;  &lt;td colspan&#x3D;\&quot;2\&quot;&gt;  &lt;div class&#x3D;\&quot;text-primary\&quot; style&#x3D;\&quot;margin-top: 1em\&quot;&gt;  &lt;a id&#x3D;\&quot;dow\&quot; name&#x3D;\&quot;dow\&quot;&gt;Monday/Tuesday/Wednesday/etc.  Elements&lt;/a&gt;  &lt;/div&gt;  &lt;/td&gt;  &lt;/tr&gt;    &lt;tr&gt;  &lt;td&gt;OpeningTime&lt;/td&gt;    &lt;td&gt;Station opening time. Format is HH:mm.&lt;/td&gt;  &lt;/tr&gt;    &lt;tr&gt;  &lt;td&gt;FirstTrains&lt;/td&gt;    &lt;td&gt;  Structure containing &lt;a href&#x3D;\&quot;#first\&quot;&gt;first train&lt;/a&gt;  information.  &lt;/td&gt;  &lt;/tr&gt;    &lt;tr&gt;  &lt;td&gt;LastTrains&lt;/td&gt;    &lt;td&gt;  Structure containing &lt;a href&#x3D;\&quot;#last\&quot;&gt;last train&lt;/a&gt;  information.  &lt;/td&gt;  &lt;/tr&gt;    &lt;tr&gt;  &lt;td colspan&#x3D;\&quot;2\&quot;&gt;  &lt;div class&#x3D;\&quot;text-primary\&quot; style&#x3D;\&quot;margin-top: 1em\&quot;&gt;  &lt;a id&#x3D;\&quot;first\&quot; name&#x3D;\&quot;first\&quot;&gt;FirstTrains Elements&lt;/a&gt;  &lt;/div&gt;  &lt;/td&gt;  &lt;/tr&gt;    &lt;tr&gt;  &lt;td&gt;Time&lt;/td&gt;    &lt;td&gt;First train leaves the station at this time. Format is  HH:mm.&lt;/td&gt;  &lt;/tr&gt;    &lt;tr&gt;  &lt;td&gt;DestinationStation&lt;/td&gt;    &lt;td&gt;Station code for the train&#39;s destination. Use this value in  other rail-related APIs to retrieve data about a station.&lt;/td&gt;  &lt;/tr&gt;    &lt;tr&gt;  &lt;td colspan&#x3D;\&quot;2\&quot;&gt;  &lt;div class&#x3D;\&quot;text-primary\&quot; style&#x3D;\&quot;margin-top: 1em\&quot;&gt;  &lt;a id&#x3D;\&quot;last\&quot; name&#x3D;\&quot;last\&quot;&gt;LastTrains Elements&lt;/a&gt;  &lt;/div&gt;  &lt;/td&gt;  &lt;/tr&gt;    &lt;tr&gt;  &lt;td&gt;Time&lt;/td&gt;    &lt;td&gt;Last train leaves the station at this time. Format is HH:mm.  Note that when the time is AM, it signifies the next day. For  example, a value of 02:30 under a Saturday element means the last  train leaves on Sunday at 2:30 AM.&lt;/td&gt;  &lt;/tr&gt;    &lt;tr&gt;  &lt;td&gt;DestinationStation&lt;/td&gt;    &lt;td&gt;Station code for the train&#39;s destination. Use this value in  other rail-related APIs to retrieve data about a station.&lt;/td&gt;  &lt;/tr&gt;  &lt;/tbody&gt;  &lt;/table&gt;
+
+### Example
+```java
+// Import classes:
+import org.openapitools.client.ApiClient;
+import org.openapitools.client.ApiException;
+import org.openapitools.client.Configuration;
+import org.openapitools.client.auth.*;
+import org.openapitools.client.models.*;
+import org.openapitools.client.api.DefaultApi;
+
+public class Example {
+  public static void main(String[] args) {
+    ApiClient defaultClient = Configuration.getDefaultApiClient();
+    defaultClient.setBasePath("http://api.wmata.com/Rail.svc");
+    
+    // Configure API key authorization: apiKeyQuery
+    ApiKeyAuth apiKeyQuery = (ApiKeyAuth) defaultClient.getAuthentication("apiKeyQuery");
+    apiKeyQuery.setApiKey("YOUR API KEY");
+    // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+    //apiKeyQuery.setApiKeyPrefix("Token");
+
+    // Configure API key authorization: apiKeyHeader
+    ApiKeyAuth apiKeyHeader = (ApiKeyAuth) defaultClient.getAuthentication("apiKeyHeader");
+    apiKeyHeader.setApiKey("YOUR API KEY");
+    // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+    //apiKeyHeader.setApiKeyPrefix("Token");
+
+    DefaultApi apiInstance = new DefaultApi(defaultClient);
+    String stationCode = "E10"; // String | Station code.  Use the Station List method to return a list of all station codes.
+    try {
+      apiInstance.call5476364f031f5909e4fe3312(stationCode);
+    } catch (ApiException e) {
+      System.err.println("Exception when calling DefaultApi#call5476364f031f5909e4fe3312");
+      System.err.println("Status code: " + e.getCode());
+      System.err.println("Reason: " + e.getResponseBody());
+      System.err.println("Response headers: " + e.getResponseHeaders());
+      e.printStackTrace();
+    }
+  }
+}
+```
+
+### Parameters
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **stationCode** | **String**| Station code.  Use the Station List method to return a list of all station codes. | [optional] [default to E10] [enum: E10] |
+
+### Return type
+
+null (empty response body)
+
+### Authorization
+
+[apiKeyQuery](../README.md#apiKeyQuery), [apiKeyHeader](../README.md#apiKeyHeader)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | Default response code. |  -  |
+
+<a id="call5476364f031f5909e4fe3313"></a>
+# **call5476364f031f5909e4fe3313**
+> call5476364f031f5909e4fe3313(fromStationCode, toStationCode)
+
+JSON - Station to Station Information
+
+&lt;h4 class&#x3D;\&quot;text-primary\&quot;&gt;Description&lt;/h4&gt;  &lt;p&gt;Returns a distance, fare information, and estimated travel time between any two stations, including those on different lines. Omit both parameters to retrieve data for all stations.&lt;/p&gt;  &lt;h4 class&#x3D;\&quot;text-primary\&quot;&gt;Response Elements&lt;/h4&gt;  &lt;table class&#x3D;\&quot;table table-condensed table-hover\&quot;&gt; &lt;thead&gt; &lt;tr&gt; &lt;th class&#x3D;\&quot;col-md-3\&quot;&gt;Element&lt;/th&gt;  &lt;th&gt;Description&lt;/th&gt; &lt;/tr&gt; &lt;/thead&gt;  &lt;tbody&gt; &lt;tr&gt; &lt;td&gt;StationToStationInfos&lt;/td&gt;  &lt;td&gt; Array containing station to station information (&lt;a href&#x3D; \&quot;#StationToStationInfo\&quot;&gt;StationToStationInfo&lt;/a&gt;). &lt;/td&gt; &lt;/tr&gt;  &lt;tr&gt; &lt;td colspan&#x3D;\&quot;2\&quot;&gt; &lt;div class&#x3D;\&quot;text-primary\&quot; style&#x3D;\&quot;margin-top: 1em\&quot;&gt; &lt;a id&#x3D;\&quot;StationToStationInfo\&quot; name&#x3D; \&quot;StationToStationInfo\&quot;&gt;StationToStationInfo Elements&lt;/a&gt; &lt;/div&gt; &lt;/td&gt; &lt;/tr&gt;  &lt;tr&gt; &lt;td&gt;CompositeMiles&lt;/td&gt;  &lt;td&gt;Average of distance traveled between two stations and straight-line distance (as used for WMATA fare calculations).  For more details, please refer to WMATA&#39;s &lt;a href&#x3D;\&quot;https://www.wmata.com/about/records/public_docs/upload/Tariff-on-Fares-Annotated-2-12-18.pdf#page&#x3D;6\&quot; target&#x3D;\&quot;_blank\&quot; rel&#x3D;\&quot;noopener noreferrer\&quot;&gt;Tariff on Fares&lt;/a&gt;.&lt;/td&gt; &lt;/tr&gt;  &lt;tr&gt; &lt;td&gt;DestinationStation&lt;/td&gt;  &lt;td&gt;Destination station code. Use this value in other rail-related APIs to retrieve data about a station.&lt;/td&gt; &lt;/tr&gt;  &lt;tr&gt; &lt;td&gt;RailFare&lt;/td&gt;  &lt;td&gt; Structure containing &lt;a href&#x3D;\&quot;#RailFare\&quot;&gt;fare&lt;/a&gt; information. &lt;/td&gt; &lt;/tr&gt;  &lt;tr&gt; &lt;td&gt;RailTime&lt;/td&gt;  &lt;td&gt;Estimated travel time (schedule time) in minutes between the source and destination station. This is not correlated to minutes &lt;span class&#x3D;\&quot;text-info\&quot;&gt;(Min)&lt;/span&gt; in Real-Time Rail Predictions.&lt;/td&gt; &lt;/tr&gt;  &lt;tr&gt; &lt;td&gt;SourceStation&lt;/td&gt;  &lt;td&gt;Origin station code. Use this value in other rail-related APIs to retrieve data about a station.&lt;/td&gt; &lt;/tr&gt;  &lt;tr&gt; &lt;td colspan&#x3D;\&quot;2\&quot;&gt; &lt;div class&#x3D;\&quot;text-primary\&quot; style&#x3D;\&quot;margin-top: 1em\&quot;&gt; &lt;a id&#x3D;\&quot;RailFare\&quot; name&#x3D;\&quot;RailFare\&quot;&gt;RailFare Elements&lt;/a&gt; &lt;/div&gt; &lt;/td&gt; &lt;/tr&gt;  &lt;tr&gt; &lt;td&gt;OffPeakTime&lt;/td&gt;  &lt;td&gt;Fare during off-peak times (times other than the ones described below).&lt;/td&gt; &lt;/tr&gt;  &lt;tr&gt; &lt;td&gt;PeakTime&lt;/td&gt;  &lt;td&gt;Fare during peak times (weekdays from opening to 9:30 AM and 3-7 PM, and weekends from midnight to closing).&lt;/td&gt; &lt;/tr&gt;  &lt;tr&gt; &lt;td&gt;SeniorDisabled&lt;/td&gt;  &lt;td&gt; Reduced fare for &lt;a href&#x3D; \&quot;http://www.wmata.com/fares/reduced.cfm\&quot;&gt;senior citizens or people with disabilities&lt;/a&gt;. &lt;/td&gt; &lt;/tr&gt; &lt;/tbody&gt; &lt;/table&gt;
+
+### Example
+```java
+// Import classes:
+import org.openapitools.client.ApiClient;
+import org.openapitools.client.ApiException;
+import org.openapitools.client.Configuration;
+import org.openapitools.client.auth.*;
+import org.openapitools.client.models.*;
+import org.openapitools.client.api.DefaultApi;
+
+public class Example {
+  public static void main(String[] args) {
+    ApiClient defaultClient = Configuration.getDefaultApiClient();
+    defaultClient.setBasePath("http://api.wmata.com/Rail.svc");
+    
+    // Configure API key authorization: apiKeyQuery
+    ApiKeyAuth apiKeyQuery = (ApiKeyAuth) defaultClient.getAuthentication("apiKeyQuery");
+    apiKeyQuery.setApiKey("YOUR API KEY");
+    // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+    //apiKeyQuery.setApiKeyPrefix("Token");
+
+    // Configure API key authorization: apiKeyHeader
+    ApiKeyAuth apiKeyHeader = (ApiKeyAuth) defaultClient.getAuthentication("apiKeyHeader");
+    apiKeyHeader.setApiKey("YOUR API KEY");
+    // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+    //apiKeyHeader.setApiKeyPrefix("Token");
+
+    DefaultApi apiInstance = new DefaultApi(defaultClient);
+    String fromStationCode = "E10"; // String | Station code for the origin station.  Use the Station List method to return a list of all station codes.
+    String toStationCode = "J03"; // String | Station code for the destination station.  Use the Station List method to return a list of all station codes.
+    try {
+      apiInstance.call5476364f031f5909e4fe3313(fromStationCode, toStationCode);
+    } catch (ApiException e) {
+      System.err.println("Exception when calling DefaultApi#call5476364f031f5909e4fe3313");
+      System.err.println("Status code: " + e.getCode());
+      System.err.println("Reason: " + e.getResponseBody());
+      System.err.println("Response headers: " + e.getResponseHeaders());
+      e.printStackTrace();
+    }
+  }
+}
+```
+
+### Parameters
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **fromStationCode** | **String**| Station code for the origin station.  Use the Station List method to return a list of all station codes. | [optional] [default to E10] [enum: E10] |
+| **toStationCode** | **String**| Station code for the destination station.  Use the Station List method to return a list of all station codes. | [optional] [default to J03] [enum: J03] |
+
+### Return type
+
+null (empty response body)
+
+### Authorization
+
+[apiKeyQuery](../README.md#apiKeyQuery), [apiKeyHeader](../README.md#apiKeyHeader)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | Default response code. |  -  |
+
+<a id="call5476364f031f5909e4fe3314"></a>
+# **call5476364f031f5909e4fe3314**
+> call5476364f031f5909e4fe3314()
+
+XML - Lines
+
+&lt;h4 class&#x3D;\&quot;text-primary\&quot;&gt;Description&lt;/h4&gt;    &lt;p&gt;Returns information about all rail lines.&lt;/p&gt;    &lt;h4 class&#x3D;\&quot;text-primary\&quot;&gt;Response Elements&lt;/h4&gt;    &lt;table class&#x3D;\&quot;table table-condensed table-hover\&quot;&gt;  &lt;thead&gt;  &lt;tr&gt;  &lt;th class&#x3D;\&quot;col-md-3\&quot;&gt;Element&lt;/th&gt;    &lt;th&gt;Description&lt;/th&gt;  &lt;/tr&gt;  &lt;/thead&gt;    &lt;tbody&gt;  &lt;tr&gt;  &lt;td&gt;Lines&lt;/td&gt;    &lt;td&gt;  Array containing line information (&lt;a href&#x3D;\&quot;#Line\&quot;&gt;Line&lt;/a&gt;).  &lt;/td&gt;  &lt;/tr&gt;    &lt;tr&gt;  &lt;td colspan&#x3D;\&quot;2\&quot;&gt;  &lt;div class&#x3D;\&quot;text-primary\&quot; style&#x3D;\&quot;margin-top: 1em\&quot;&gt;  &lt;a id&#x3D;\&quot;Line\&quot; name&#x3D;\&quot;Line\&quot;&gt;Line Elements&lt;/a&gt;  &lt;/div&gt;  &lt;/td&gt;  &lt;/tr&gt;    &lt;tr&gt;  &lt;td&gt;DisplayName&lt;/td&gt;    &lt;td&gt;Full name of line color.&lt;/td&gt;  &lt;/tr&gt;    &lt;tr&gt;  &lt;td&gt;EndStationCode&lt;/td&gt;    &lt;td&gt;End station code. For example, will be E10 (Greenbelt) for the  Green Line, B11 (Glenmont) for the Red Line, etc. Use this value in  other rail-related APIs to retrieve data about a station.&lt;/td&gt;  &lt;/tr&gt;    &lt;tr&gt;  &lt;td&gt;InternalDestination1&lt;/td&gt;    &lt;td&gt;Intermediate terminal station code. During normal service, some  trains on some lines might end their trip prior to the  StartStationCode or EndStationCode. A good example is on the Red  Line where some trains stop at A11 (Grosvenor) or B08 (Silver  Spring). Empty string if not defined.&lt;/td&gt;  &lt;/tr&gt;    &lt;tr&gt;  &lt;td&gt;InternalDestination2&lt;/td&gt;    &lt;td&gt;Similar to InternalDestination1.&lt;/td&gt;  &lt;/tr&gt;    &lt;tr&gt;  &lt;td&gt;LineCode&lt;/td&gt;    &lt;td&gt;Two-letter abbreviation for the line (e.g.: RD, BL, YL, OR, GR,  or SV).&lt;/td&gt;  &lt;/tr&gt;    &lt;tr&gt;  &lt;td&gt;StartStationCode&lt;/td&gt;    &lt;td&gt;Start station code. For example, will be F11 (Branch Avenue)  for the Green Line, A15 (Shady Grove) for the Red Line, etc. Use  this value in other rail-related APIs to retrieve data about a  station.&lt;/td&gt;  &lt;/tr&gt;  &lt;/tbody&gt;  &lt;/table&gt;
+
+### Example
+```java
+// Import classes:
+import org.openapitools.client.ApiClient;
+import org.openapitools.client.ApiException;
+import org.openapitools.client.Configuration;
+import org.openapitools.client.auth.*;
+import org.openapitools.client.models.*;
+import org.openapitools.client.api.DefaultApi;
+
+public class Example {
+  public static void main(String[] args) {
+    ApiClient defaultClient = Configuration.getDefaultApiClient();
+    defaultClient.setBasePath("http://api.wmata.com/Rail.svc");
+    
+    // Configure API key authorization: apiKeyQuery
+    ApiKeyAuth apiKeyQuery = (ApiKeyAuth) defaultClient.getAuthentication("apiKeyQuery");
+    apiKeyQuery.setApiKey("YOUR API KEY");
+    // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+    //apiKeyQuery.setApiKeyPrefix("Token");
+
+    // Configure API key authorization: apiKeyHeader
+    ApiKeyAuth apiKeyHeader = (ApiKeyAuth) defaultClient.getAuthentication("apiKeyHeader");
+    apiKeyHeader.setApiKey("YOUR API KEY");
+    // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+    //apiKeyHeader.setApiKeyPrefix("Token");
+
+    DefaultApi apiInstance = new DefaultApi(defaultClient);
+    try {
+      apiInstance.call5476364f031f5909e4fe3314();
+    } catch (ApiException e) {
+      System.err.println("Exception when calling DefaultApi#call5476364f031f5909e4fe3314");
+      System.err.println("Status code: " + e.getCode());
+      System.err.println("Reason: " + e.getResponseBody());
+      System.err.println("Response headers: " + e.getResponseHeaders());
+      e.printStackTrace();
+    }
+  }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+null (empty response body)
+
+### Authorization
+
+[apiKeyQuery](../README.md#apiKeyQuery), [apiKeyHeader](../README.md#apiKeyHeader)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/xml
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | Default response code. |  -  |
+
+<a id="call5476364f031f5909e4fe3315"></a>
+# **call5476364f031f5909e4fe3315**
+> call5476364f031f5909e4fe3315(stationCode)
+
+XML - Parking Information
+
+&lt;h4 class&#x3D;\&quot;text-primary\&quot;&gt;Description&lt;/h4&gt;  &lt;p&gt;Returns parking information at a station based on a given StationCode. Omit the StationCode to return parking information for all stations.&lt;/p&gt;  &lt;p&gt;If a station has no parking, the StationsParking element will contain no child elements.&lt;/p&gt;  &lt;h4 class&#x3D;\&quot;text-primary\&quot;&gt;Response Elements&lt;/h4&gt;  &lt;table class&#x3D;\&quot;table table-condensed table-hover\&quot;&gt; &lt;thead&gt; &lt;tr&gt; &lt;th class&#x3D;\&quot;col-md-3\&quot;&gt;Element&lt;/th&gt;  &lt;th&gt;Description&lt;/th&gt; &lt;/tr&gt; &lt;/thead&gt;  &lt;tbody&gt; &lt;tr&gt; &lt;td&gt;StationsParking&lt;/td&gt;  &lt;td&gt; Array containing station parking information (&lt;a href&#x3D; \&quot;#StationParking\&quot;&gt;StationParking&lt;/a&gt;). &lt;/td&gt; &lt;/tr&gt;  &lt;tr&gt; &lt;td colspan&#x3D;\&quot;2\&quot;&gt; &lt;div class&#x3D;\&quot;text-primary\&quot; style&#x3D;\&quot;margin-top: 1em\&quot;&gt; &lt;a id&#x3D;\&quot;StationParking\&quot; name&#x3D;\&quot;StationParking\&quot;&gt;StationParking Elements&lt;/a&gt; &lt;/div&gt; &lt;/td&gt; &lt;/tr&gt;  &lt;tr&gt; &lt;td&gt;Code&lt;/td&gt;  &lt;td&gt;Station code. Useful when returning parking information for all stations. Use this value in other rail-related APIs to retrieve data about a station.&lt;/td&gt; &lt;/tr&gt;  &lt;tr&gt; &lt;td&gt;Notes&lt;/td&gt;  &lt;td&gt;When not NULL, provides additional parking resources such as nearby lots.&lt;/td&gt; &lt;/tr&gt;  &lt;tr&gt; &lt;td&gt;AllDayParking&lt;/td&gt;  &lt;td&gt; Structure describing &lt;a href&#x3D;\&quot;#AllDayParking\&quot;&gt;all-day parking&lt;/a&gt; options. &lt;/td&gt; &lt;/tr&gt;  &lt;tr&gt; &lt;td&gt;ShortTermParking&lt;/td&gt;  &lt;td&gt; Structure describing &lt;a href&#x3D;\&quot;#ShortTermParking\&quot;&gt;short-term parking&lt;/a&gt; options. &lt;/td&gt; &lt;/tr&gt;  &lt;tr&gt; &lt;td colspan&#x3D;\&quot;2\&quot;&gt; &lt;div class&#x3D;\&quot;text-primary\&quot; style&#x3D;\&quot;margin-top: 1em\&quot;&gt; &lt;a id&#x3D;\&quot;AllDayParking\&quot; name&#x3D;\&quot;AllDayParking\&quot;&gt;AllDayParking Elements&lt;/a&gt; &lt;/div&gt; &lt;/td&gt; &lt;/tr&gt;  &lt;tr&gt; &lt;td&gt;TotalCount&lt;/td&gt;  &lt;td&gt;Number of all-day parking spots available at a station.&lt;/td&gt; &lt;/tr&gt;  &lt;tr&gt; &lt;td&gt;RiderCost&lt;/td&gt;  &lt;td&gt;All-day cost per day (weekday) for Metro riders. NULL when no all-day spots are available. For most stations, this value is identical to the NonRiderCost.&lt;br&gt; &lt;br&gt; For cases where the NonRiderCost is different, the lower cost per day requires a valid rail trip using a SmarTrip&amp;reg; card originating from a station other than the one where the patron parked. To receive this lower rate, patrons must pay for their parking with the same SmarTrip&amp;reg; card used to enter/exit Metrorail, and must exit the parking lot within two hours of exiting Metrorail.&lt;/td&gt; &lt;/tr&gt;  &lt;tr&gt; &lt;td&gt;NonRiderCost&lt;/td&gt;  &lt;td&gt;All-day cost per day (weekday) for non-Metro riders. NULL when no all-day spots are available.&lt;/td&gt; &lt;/tr&gt;  &lt;tr&gt; &lt;td colspan&#x3D;\&quot;2\&quot;&gt; &lt;div class&#x3D;\&quot;text-primary\&quot; style&#x3D;\&quot;margin-top: 1em\&quot;&gt; &lt;a id&#x3D;\&quot;ShortTermParking\&quot; name&#x3D; \&quot;ShortTermParking\&quot;&gt;ShortTermParking Elements&lt;/a&gt; &lt;/div&gt; &lt;/td&gt; &lt;/tr&gt;  &lt;tr&gt; &lt;td&gt;SaturdayRiderCost&lt;/td&gt;  &lt;td&gt;Similar to RiderCost, except denoting Saturday prices.&lt;/td&gt; &lt;/tr&gt;  &lt;tr&gt; &lt;td&gt;SaturdayNonRiderCost&lt;/td&gt;  &lt;td&gt;Similar to NonRiderCost, except denoting Saturday prices.&lt;/td&gt; &lt;/tr&gt;  &lt;tr&gt; &lt;td&gt;TotalCount&lt;/td&gt;  &lt;td&gt;Number of short-term parking spots available at a station (parking meters).&lt;/td&gt; &lt;/tr&gt;  &lt;tr&gt; &lt;td&gt;Notes&lt;/td&gt;  &lt;td&gt;Misc. information relating to short-term parking. NULL when no short-term spots are available.&lt;/td&gt; &lt;/tr&gt; &lt;/tbody&gt; &lt;/table&gt;
+
+### Example
+```java
+// Import classes:
+import org.openapitools.client.ApiClient;
+import org.openapitools.client.ApiException;
+import org.openapitools.client.Configuration;
+import org.openapitools.client.auth.*;
+import org.openapitools.client.models.*;
+import org.openapitools.client.api.DefaultApi;
+
+public class Example {
+  public static void main(String[] args) {
+    ApiClient defaultClient = Configuration.getDefaultApiClient();
+    defaultClient.setBasePath("http://api.wmata.com/Rail.svc");
+    
+    // Configure API key authorization: apiKeyQuery
+    ApiKeyAuth apiKeyQuery = (ApiKeyAuth) defaultClient.getAuthentication("apiKeyQuery");
+    apiKeyQuery.setApiKey("YOUR API KEY");
+    // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+    //apiKeyQuery.setApiKeyPrefix("Token");
+
+    // Configure API key authorization: apiKeyHeader
+    ApiKeyAuth apiKeyHeader = (ApiKeyAuth) defaultClient.getAuthentication("apiKeyHeader");
+    apiKeyHeader.setApiKey("YOUR API KEY");
+    // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+    //apiKeyHeader.setApiKeyPrefix("Token");
+
+    DefaultApi apiInstance = new DefaultApi(defaultClient);
+    String stationCode = "E08"; // String | Station code.  Use the Station List method to return a list of all station codes.
+    try {
+      apiInstance.call5476364f031f5909e4fe3315(stationCode);
+    } catch (ApiException e) {
+      System.err.println("Exception when calling DefaultApi#call5476364f031f5909e4fe3315");
+      System.err.println("Status code: " + e.getCode());
+      System.err.println("Reason: " + e.getResponseBody());
+      System.err.println("Response headers: " + e.getResponseHeaders());
+      e.printStackTrace();
+    }
+  }
+}
+```
+
+### Parameters
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **stationCode** | **String**| Station code.  Use the Station List method to return a list of all station codes. | [optional] [enum: E08, F06] |
+
+### Return type
+
+null (empty response body)
+
+### Authorization
+
+[apiKeyQuery](../README.md#apiKeyQuery), [apiKeyHeader](../README.md#apiKeyHeader)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/xml
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | Default response code. |  -  |
+
+<a id="call5476364f031f5909e4fe3316"></a>
+# **call5476364f031f5909e4fe3316**
+> call5476364f031f5909e4fe3316(fromStationCode, toStationCode)
+
+XML - Path Between Stations
+
+&lt;h4 class&#x3D;\&quot;text-primary\&quot;&gt;Description&lt;/h4&gt;    &lt;p&gt;Returns a set of ordered stations and distances between two stations on the  &lt;em&gt;same line&lt;/em&gt;.&lt;/p&gt;    &lt;p&gt;Note that this method is not suitable on its own as a pathfinding solution  between stations.&lt;/p&gt;    &lt;h4 class&#x3D;\&quot;text-primary\&quot;&gt;Response Elements&lt;/h4&gt;    &lt;table class&#x3D;\&quot;table table-condensed table-hover\&quot;&gt;  &lt;thead&gt;  &lt;tr&gt;  &lt;th class&#x3D;\&quot;col-md-3\&quot;&gt;Element&lt;/th&gt;    &lt;th&gt;Description&lt;/th&gt;  &lt;/tr&gt;  &lt;/thead&gt;    &lt;tbody&gt;  &lt;tr&gt;  &lt;td&gt;Path&lt;/td&gt;    &lt;td&gt;  Array containing path details (&lt;a href&#x3D;  \&quot;#MetroPathItem\&quot;&gt;MetroPathItem&lt;/a&gt;)  &lt;/td&gt;  &lt;/tr&gt;    &lt;tr&gt;  &lt;td colspan&#x3D;\&quot;2\&quot;&gt;  &lt;div class&#x3D;\&quot;text-primary\&quot; style&#x3D;\&quot;margin-top: 1em\&quot;&gt;  &lt;a id&#x3D;\&quot;MetroPathItem\&quot; name&#x3D;\&quot;MetroPathItem\&quot;&gt;MetroPathItem  Elements&lt;/a&gt;  &lt;/div&gt;  &lt;/td&gt;  &lt;/tr&gt;    &lt;tr&gt;  &lt;td&gt;DistanceToPrev&lt;/td&gt;    &lt;td&gt;Distance in feet to the previous station in the list.&lt;/td&gt;  &lt;/tr&gt;    &lt;tr&gt;  &lt;td&gt;LineCode&lt;/td&gt;    &lt;td&gt;Two-letter abbreviation for the line (e.g.: RD, BL, YL, OR, GR,  or SV) this station&#39;s platform is on.&lt;/td&gt;  &lt;/tr&gt;    &lt;tr&gt;  &lt;td&gt;SeqNum&lt;/td&gt;    &lt;td&gt;Ordered sequence number.&lt;/td&gt;  &lt;/tr&gt;    &lt;tr&gt;  &lt;td&gt;StationCode&lt;/td&gt;    &lt;td&gt;Station code for this station. Use this value in other  rail-related APIs to retrieve data about a station.&lt;/td&gt;  &lt;/tr&gt;    &lt;tr&gt;  &lt;td&gt;StationName&lt;/td&gt;    &lt;td&gt;Full name for this station, as shown on the WMATA website.&lt;/td&gt;  &lt;/tr&gt;  &lt;/tbody&gt;  &lt;/table&gt;
+
+### Example
+```java
+// Import classes:
+import org.openapitools.client.ApiClient;
+import org.openapitools.client.ApiException;
+import org.openapitools.client.Configuration;
+import org.openapitools.client.auth.*;
+import org.openapitools.client.models.*;
+import org.openapitools.client.api.DefaultApi;
+
+public class Example {
+  public static void main(String[] args) {
+    ApiClient defaultClient = Configuration.getDefaultApiClient();
+    defaultClient.setBasePath("http://api.wmata.com/Rail.svc");
+    
+    // Configure API key authorization: apiKeyQuery
+    ApiKeyAuth apiKeyQuery = (ApiKeyAuth) defaultClient.getAuthentication("apiKeyQuery");
+    apiKeyQuery.setApiKey("YOUR API KEY");
+    // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+    //apiKeyQuery.setApiKeyPrefix("Token");
+
+    // Configure API key authorization: apiKeyHeader
+    ApiKeyAuth apiKeyHeader = (ApiKeyAuth) defaultClient.getAuthentication("apiKeyHeader");
+    apiKeyHeader.setApiKey("YOUR API KEY");
+    // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+    //apiKeyHeader.setApiKeyPrefix("Token");
+
+    DefaultApi apiInstance = new DefaultApi(defaultClient);
+    String fromStationCode = "N06"; // String | Station code for the origin station.  Use the Station List method to return a list of all station codes.
+    String toStationCode = "G05"; // String | Station code for the origin station.  Use the Station List method to return a list of all station codes.
+    try {
+      apiInstance.call5476364f031f5909e4fe3316(fromStationCode, toStationCode);
+    } catch (ApiException e) {
+      System.err.println("Exception when calling DefaultApi#call5476364f031f5909e4fe3316");
+      System.err.println("Status code: " + e.getCode());
+      System.err.println("Reason: " + e.getResponseBody());
+      System.err.println("Response headers: " + e.getResponseHeaders());
+      e.printStackTrace();
+    }
+  }
+}
+```
+
+### Parameters
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **fromStationCode** | **String**| Station code for the origin station.  Use the Station List method to return a list of all station codes. | [default to N06] [enum: N06] |
+| **toStationCode** | **String**| Station code for the origin station.  Use the Station List method to return a list of all station codes. | [default to G05] [enum: G05] |
+
+### Return type
+
+null (empty response body)
+
+### Authorization
+
+[apiKeyQuery](../README.md#apiKeyQuery), [apiKeyHeader](../README.md#apiKeyHeader)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/xml
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | Default response code. |  -  |
+
+<a id="call5476364f031f5909e4fe3317"></a>
+# **call5476364f031f5909e4fe3317**
+> call5476364f031f5909e4fe3317(lat, lon, radius)
+
+XML - Station Entrances
+
+&lt;h4 class&#x3D;\&quot;text-primary\&quot;&gt;Description&lt;/h4&gt;    &lt;p&gt;Returns a list of nearby station entrances based on latitude, longitude, and  radius (meters). Omit search parameters to return all station entrances.&lt;/p&gt;    &lt;h4 class&#x3D;\&quot;text-primary\&quot;&gt;Response Elements&lt;/h4&gt;    &lt;table class&#x3D;\&quot;table table-condensed table-hover\&quot;&gt;  &lt;thead&gt;  &lt;tr&gt;  &lt;th class&#x3D;\&quot;col-md-3\&quot;&gt;Element&lt;/th&gt;    &lt;th&gt;Description&lt;/th&gt;  &lt;/tr&gt;  &lt;/thead&gt;    &lt;tbody&gt;  &lt;tr&gt;  &lt;td&gt;Entrances&lt;/td&gt;    &lt;td&gt;  Array containing detailed information about station entrances  (&lt;a href&#x3D;\&quot;#StationEntrance\&quot;&gt;StationEntrance&lt;/a&gt;).  &lt;/td&gt;  &lt;/tr&gt;    &lt;tr&gt;  &lt;td colspan&#x3D;\&quot;2\&quot;&gt;  &lt;div class&#x3D;\&quot;text-primary\&quot; style&#x3D;\&quot;margin-top: 1em\&quot;&gt;  &lt;a id&#x3D;\&quot;StationEntrance\&quot; name&#x3D;  \&quot;StationEntrance\&quot;&gt;StationEntrance Elements&lt;/a&gt;  &lt;/div&gt;  &lt;/td&gt;  &lt;/tr&gt;    &lt;tr&gt;  &lt;td&gt;Description&lt;/td&gt;    &lt;td&gt;Additional information for the entrance, if available.  Currently available data usually shows the same value as the Name  element.&lt;/td&gt;  &lt;/tr&gt;    &lt;tr&gt;  &lt;td style&#x3D;\&quot;text-decoration: line-through\&quot;&gt;ID&lt;/td&gt;    &lt;td&gt;&lt;span class&#x3D;\&quot;text-danger\&quot;&gt;Deprecated.&lt;/span&gt;&lt;/td&gt;  &lt;/tr&gt;    &lt;tr&gt;  &lt;td&gt;Lat&lt;/td&gt;    &lt;td&gt;Latitude.&lt;/td&gt;  &lt;/tr&gt;    &lt;tr&gt;  &lt;td&gt;Lon&lt;/td&gt;    &lt;td&gt;Longitude.&lt;/td&gt;  &lt;/tr&gt;    &lt;tr&gt;  &lt;td&gt;Name&lt;/td&gt;    &lt;td&gt;Name of the entrance (usually the station name and nearest  intersection).&lt;/td&gt;  &lt;/tr&gt;    &lt;tr&gt;  &lt;td&gt;StationCode1&lt;/td&gt;    &lt;td&gt;The station code associated with this entrance. Use this value  in other rail-related APIs to retrieve data about a station.&lt;/td&gt;  &lt;/tr&gt;    &lt;tr&gt;  &lt;td&gt;StationCode2&lt;/td&gt;    &lt;td&gt;For stations containing multiple platforms (e.g.: Gallery  Place, Fort Totten, L&#39;Enfant Plaza, and Metro Center), the other  station code.&lt;/td&gt;  &lt;/tr&gt;  &lt;/tbody&gt;  &lt;/table&gt;
+
+### Example
+```java
+// Import classes:
+import org.openapitools.client.ApiClient;
+import org.openapitools.client.ApiException;
+import org.openapitools.client.Configuration;
+import org.openapitools.client.auth.*;
+import org.openapitools.client.models.*;
+import org.openapitools.client.api.DefaultApi;
+
+public class Example {
+  public static void main(String[] args) {
+    ApiClient defaultClient = Configuration.getDefaultApiClient();
+    defaultClient.setBasePath("http://api.wmata.com/Rail.svc");
+    
+    // Configure API key authorization: apiKeyQuery
+    ApiKeyAuth apiKeyQuery = (ApiKeyAuth) defaultClient.getAuthentication("apiKeyQuery");
+    apiKeyQuery.setApiKey("YOUR API KEY");
+    // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+    //apiKeyQuery.setApiKeyPrefix("Token");
+
+    // Configure API key authorization: apiKeyHeader
+    ApiKeyAuth apiKeyHeader = (ApiKeyAuth) defaultClient.getAuthentication("apiKeyHeader");
+    apiKeyHeader.setApiKey("YOUR API KEY");
+    // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+    //apiKeyHeader.setApiKeyPrefix("Token");
+
+    DefaultApi apiInstance = new DefaultApi(defaultClient);
+    BigDecimal lat = new BigDecimal("38.8978168"); // BigDecimal | Center point Latitude, required if Longitude and Radius are specified.
+    BigDecimal lon = new BigDecimal("-77.0404246"); // BigDecimal | Center point Longitude, required if Latitude and Radius are specified.
+    BigDecimal radius = new BigDecimal("500"); // BigDecimal | Radius (meters) to include in the search area, required if Latitude and Longitude are specified.
+    try {
+      apiInstance.call5476364f031f5909e4fe3317(lat, lon, radius);
+    } catch (ApiException e) {
+      System.err.println("Exception when calling DefaultApi#call5476364f031f5909e4fe3317");
+      System.err.println("Status code: " + e.getCode());
+      System.err.println("Reason: " + e.getResponseBody());
+      System.err.println("Response headers: " + e.getResponseHeaders());
+      e.printStackTrace();
+    }
+  }
+}
+```
+
+### Parameters
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **lat** | **BigDecimal**| Center point Latitude, required if Longitude and Radius are specified. | [optional] [default to 38.8978168] [enum: 38.8978168] |
+| **lon** | **BigDecimal**| Center point Longitude, required if Latitude and Radius are specified. | [optional] [default to -77.0404246] [enum: -77.0404246] |
+| **radius** | **BigDecimal**| Radius (meters) to include in the search area, required if Latitude and Longitude are specified. | [optional] [default to 500.0] [enum: 500] |
+
+### Return type
+
+null (empty response body)
+
+### Authorization
+
+[apiKeyQuery](../README.md#apiKeyQuery), [apiKeyHeader](../README.md#apiKeyHeader)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/xml
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | Default response code. |  -  |
+
+<a id="call5476364f031f5909e4fe3318"></a>
+# **call5476364f031f5909e4fe3318**
+> call5476364f031f5909e4fe3318(stationCode)
+
+XML - Station Information
+
+&lt;h4 class&#x3D;\&quot;text-primary\&quot;&gt;Description&lt;/h4&gt;  &lt;p&gt;Returns station location and address information based on a given StationCode.&lt;/p&gt;  &lt;h4 class&#x3D;\&quot;text-primary\&quot;&gt;Response Elements&lt;/h4&gt;  &lt;table class&#x3D;\&quot;table table-condensed table-hover\&quot;&gt; &lt;thead&gt; &lt;tr&gt; &lt;th class&#x3D;\&quot;col-md-3\&quot;&gt;Element&lt;/th&gt;  &lt;th&gt;Description&lt;/th&gt; &lt;/tr&gt; &lt;/thead&gt;  &lt;tbody&gt; &lt;tr&gt; &lt;td&gt;Address&lt;/td&gt;  &lt;td&gt; Structure describing &lt;a href&#x3D;\&quot;#Address\&quot;&gt;address&lt;/a&gt; information. &lt;/td&gt; &lt;/tr&gt;  &lt;tr&gt; &lt;td&gt;Code&lt;/td&gt;  &lt;td&gt;Station code. Repeated from input.&lt;/td&gt; &lt;/tr&gt;  &lt;tr&gt; &lt;td&gt;Lat&lt;/td&gt;  &lt;td&gt;Latitude.&lt;/td&gt; &lt;/tr&gt;  &lt;tr&gt; &lt;td&gt;LineCode1&lt;/td&gt;  &lt;td&gt;Two-letter abbreviation for one line (e.g.: RD, BL, YL, OR, GR, or SV) served by this station. If the station has an additional platform, the lines served by the other platform are listed in the LineCodeX values for the record associated with the StationCode found in StationTogether1.&lt;/td&gt; &lt;/tr&gt;  &lt;tr&gt; &lt;td&gt;LineCode2&lt;/td&gt;  &lt;td&gt;Additional line served by this station, if applicable.&lt;/td&gt; &lt;/tr&gt;  &lt;tr&gt; &lt;td&gt;LineCode3&lt;/td&gt;  &lt;td&gt;Additional line served by this station, if applicable.&lt;/td&gt; &lt;/tr&gt;  &lt;tr&gt; &lt;td&gt;LineCode4&lt;/td&gt;  &lt;td&gt;Additional line served by this station, if applicable. Currently not in use.&lt;/td&gt; &lt;/tr&gt;  &lt;td&gt;Lon&lt;/td&gt;  &lt;td&gt;Longitude.&lt;/td&gt; &lt;/tr&gt;  &lt;tr&gt; &lt;td&gt;Name&lt;/td&gt;  &lt;td&gt;Station name.&lt;/td&gt; &lt;/tr&gt;  &lt;tr&gt; &lt;td&gt;StationTogether1&lt;/td&gt;  &lt;td&gt;For stations with multiple platforms (e.g.: Gallery Place, Fort Totten, L&#39;Enfant Plaza, and Metro Center), the additional StationCode will be listed here.&lt;/td&gt; &lt;/tr&gt;  &lt;tr&gt; &lt;td&gt;StationTogether2&lt;/td&gt;  &lt;td&gt;Similar in function to StationTogether2. Currently not in use.&lt;/td&gt; &lt;/tr&gt;  &lt;tr&gt; &lt;td colspan&#x3D;\&quot;2\&quot;&gt; &lt;div class&#x3D;\&quot;text-primary\&quot; style&#x3D;\&quot;margin-top: 1em\&quot;&gt; &lt;a name&#x3D;\&quot;Address\&quot;&gt;Address Elements&lt;/a&gt; &lt;/div&gt; &lt;/td&gt; &lt;/tr&gt;  &lt;tr&gt; &lt;td&gt;City&lt;/td&gt;  &lt;td&gt;City.&lt;/td&gt; &lt;/tr&gt;  &lt;tr&gt; &lt;td&gt;State&lt;/td&gt;  &lt;td&gt;State (abbreviated).&lt;/td&gt; &lt;/tr&gt;  &lt;tr&gt; &lt;td&gt;Street&lt;/td&gt;  &lt;td&gt;Street address (for GPS use).&lt;/td&gt; &lt;/tr&gt;  &lt;tr&gt; &lt;td&gt;Zip&lt;/td&gt;  &lt;td&gt;Zip code.&lt;/td&gt; &lt;/tr&gt; &lt;/tbody&gt; &lt;/table&gt;
+
+### Example
+```java
+// Import classes:
+import org.openapitools.client.ApiClient;
+import org.openapitools.client.ApiException;
+import org.openapitools.client.Configuration;
+import org.openapitools.client.auth.*;
+import org.openapitools.client.models.*;
+import org.openapitools.client.api.DefaultApi;
+
+public class Example {
+  public static void main(String[] args) {
+    ApiClient defaultClient = Configuration.getDefaultApiClient();
+    defaultClient.setBasePath("http://api.wmata.com/Rail.svc");
+    
+    // Configure API key authorization: apiKeyQuery
+    ApiKeyAuth apiKeyQuery = (ApiKeyAuth) defaultClient.getAuthentication("apiKeyQuery");
+    apiKeyQuery.setApiKey("YOUR API KEY");
+    // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+    //apiKeyQuery.setApiKeyPrefix("Token");
+
+    // Configure API key authorization: apiKeyHeader
+    ApiKeyAuth apiKeyHeader = (ApiKeyAuth) defaultClient.getAuthentication("apiKeyHeader");
+    apiKeyHeader.setApiKey("YOUR API KEY");
+    // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+    //apiKeyHeader.setApiKeyPrefix("Token");
+
+    DefaultApi apiInstance = new DefaultApi(defaultClient);
+    String stationCode = "A01"; // String | Station code.  Use the Station List method to return a list of all station codes.
+    try {
+      apiInstance.call5476364f031f5909e4fe3318(stationCode);
+    } catch (ApiException e) {
+      System.err.println("Exception when calling DefaultApi#call5476364f031f5909e4fe3318");
+      System.err.println("Status code: " + e.getCode());
+      System.err.println("Reason: " + e.getResponseBody());
+      System.err.println("Response headers: " + e.getResponseHeaders());
+      e.printStackTrace();
+    }
+  }
+}
+```
+
+### Parameters
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **stationCode** | **String**| Station code.  Use the Station List method to return a list of all station codes. | [default to A01] [enum: A01] |
+
+### Return type
+
+null (empty response body)
+
+### Authorization
+
+[apiKeyQuery](../README.md#apiKeyQuery), [apiKeyHeader](../README.md#apiKeyHeader)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/xml
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | Default response code. |  -  |
+
+<a id="call5476364f031f5909e4fe3319"></a>
+# **call5476364f031f5909e4fe3319**
+> call5476364f031f5909e4fe3319(lineCode)
+
+XML - Station List
+
+&lt;h4 class&#x3D;\&quot;text-primary\&quot;&gt;Description&lt;/h4&gt;  &lt;p&gt;Returns a list of station location and address information based on a given LineCode. Omit the LineCode to return all stations. The response is an array of objects identical to those returned in the Station Information method.&lt;/p&gt;  &lt;h4 class&#x3D;\&quot;text-primary\&quot;&gt;Response Elements&lt;/h4&gt;  &lt;table class&#x3D;\&quot;table table-condensed table-hover\&quot;&gt; &lt;thead&gt; &lt;tr&gt; &lt;th class&#x3D;\&quot;col-md-3\&quot;&gt;Element&lt;/th&gt;  &lt;th&gt;Description&lt;/th&gt; &lt;/tr&gt; &lt;/thead&gt;  &lt;tbody&gt; &lt;tr&gt; &lt;td&gt;Stations&lt;/td&gt;  &lt;td&gt; Array containing station information (&lt;a href&#x3D; \&quot;#Station\&quot;&gt;Station&lt;/a&gt;). &lt;/td&gt; &lt;/tr&gt;  &lt;tr&gt; &lt;td colspan&#x3D;\&quot;2\&quot;&gt; &lt;div class&#x3D;\&quot;text-primary\&quot; style&#x3D;\&quot;margin-top: 1em\&quot;&gt; &lt;a id&#x3D;\&quot;Station\&quot; name&#x3D;\&quot;Station\&quot;&gt;Station Elements&lt;/a&gt; &lt;/div&gt; &lt;/td&gt; &lt;/tr&gt;  &lt;tr&gt; &lt;td&gt;Address&lt;/td&gt;  &lt;td&gt; Structure describing &lt;a href&#x3D;\&quot;#Address\&quot;&gt;address&lt;/a&gt; information. &lt;/td&gt; &lt;/tr&gt;  &lt;tr&gt; &lt;td&gt;Code&lt;/td&gt;  &lt;td&gt;Station code. Repeated from input.&lt;/td&gt; &lt;/tr&gt;  &lt;tr&gt; &lt;td&gt;Lat&lt;/td&gt;  &lt;td&gt;Latitude.&lt;/td&gt; &lt;/tr&gt;  &lt;tr&gt; &lt;td&gt;LineCode1&lt;/td&gt;  &lt;td&gt;Two-letter abbreviation for one line (e.g.: RD, BL, YL, OR, GR, or SV) served by this station. If the station has an additional platform, the lines served by the other platform are listed in the LineCodeX values for the record associated with the StationCode found in StationTogether1.&lt;/td&gt; &lt;/tr&gt;  &lt;tr&gt; &lt;td&gt;LineCode2&lt;/td&gt;  &lt;td&gt;Additional line served by this station, if applicable.&lt;/td&gt; &lt;/tr&gt;  &lt;tr&gt; &lt;td&gt;LineCode3&lt;/td&gt;  &lt;td&gt;Additional line served by this station, if applicable.&lt;/td&gt; &lt;/tr&gt;  &lt;tr&gt; &lt;td&gt;LineCode4&lt;/td&gt;  &lt;td&gt;Additional line served by this station, if applicable. Currently not in use.&lt;/td&gt; &lt;/tr&gt;  &lt;tr&gt; &lt;td&gt;Lon&lt;/td&gt;  &lt;td&gt;Longitude.&lt;/td&gt; &lt;/tr&gt;  &lt;tr&gt; &lt;td&gt;Name&lt;/td&gt;  &lt;td&gt;Station name.&lt;/td&gt; &lt;/tr&gt;  &lt;tr&gt; &lt;td&gt;StationTogether1&lt;/td&gt;  &lt;td&gt;For stations with multiple platforms (e.g.: Gallery Place, Fort Totten, L&#39;Enfant Plaza, and Metro Center), the additional StationCode will be listed here.&lt;/td&gt; &lt;/tr&gt;  &lt;tr&gt; &lt;td&gt;StationTogether2&lt;/td&gt;  &lt;td&gt;Similar in function to StationTogether2. Currently not in use.&lt;/td&gt; &lt;/tr&gt;  &lt;tr&gt; &lt;td colspan&#x3D;\&quot;2\&quot;&gt; &lt;div class&#x3D;\&quot;text-primary\&quot; style&#x3D;\&quot;margin-top: 1em\&quot;&gt; &lt;a id&#x3D;\&quot;Address\&quot; name&#x3D;\&quot;Address\&quot;&gt;Address Elements&lt;/a&gt; &lt;/div&gt; &lt;/td&gt; &lt;/tr&gt;  &lt;tr&gt; &lt;td&gt;City&lt;/td&gt;  &lt;td&gt;City.&lt;/td&gt; &lt;/tr&gt;  &lt;tr&gt; &lt;td&gt;State&lt;/td&gt;  &lt;td&gt;State (abbreviated).&lt;/td&gt; &lt;/tr&gt;  &lt;tr&gt; &lt;td&gt;Street&lt;/td&gt;  &lt;td&gt;Street address (for GPS use).&lt;/td&gt; &lt;/tr&gt;  &lt;tr&gt; &lt;td&gt;Zip&lt;/td&gt;  &lt;td&gt;Zip code.&lt;/td&gt; &lt;/tr&gt; &lt;/tbody&gt; &lt;/table&gt;
+
+### Example
+```java
+// Import classes:
+import org.openapitools.client.ApiClient;
+import org.openapitools.client.ApiException;
+import org.openapitools.client.Configuration;
+import org.openapitools.client.auth.*;
+import org.openapitools.client.models.*;
+import org.openapitools.client.api.DefaultApi;
+
+public class Example {
+  public static void main(String[] args) {
+    ApiClient defaultClient = Configuration.getDefaultApiClient();
+    defaultClient.setBasePath("http://api.wmata.com/Rail.svc");
+    
+    // Configure API key authorization: apiKeyQuery
+    ApiKeyAuth apiKeyQuery = (ApiKeyAuth) defaultClient.getAuthentication("apiKeyQuery");
+    apiKeyQuery.setApiKey("YOUR API KEY");
+    // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+    //apiKeyQuery.setApiKeyPrefix("Token");
+
+    // Configure API key authorization: apiKeyHeader
+    ApiKeyAuth apiKeyHeader = (ApiKeyAuth) defaultClient.getAuthentication("apiKeyHeader");
+    apiKeyHeader.setApiKey("YOUR API KEY");
+    // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+    //apiKeyHeader.setApiKeyPrefix("Token");
+
+    DefaultApi apiInstance = new DefaultApi(defaultClient);
+    String lineCode = "RD"; // String | Two-letter line code abbreviation:  <ul> <li>RD - Red</li> <li>YL - Yellow</li> <li>GR - Green</li> <li>BL - Blue</li> <li>OR - Orange</li> <li>SV - Silver</li> </ul>
+    try {
+      apiInstance.call5476364f031f5909e4fe3319(lineCode);
+    } catch (ApiException e) {
+      System.err.println("Exception when calling DefaultApi#call5476364f031f5909e4fe3319");
+      System.err.println("Status code: " + e.getCode());
+      System.err.println("Reason: " + e.getResponseBody());
+      System.err.println("Response headers: " + e.getResponseHeaders());
+      e.printStackTrace();
+    }
+  }
+}
+```
+
+### Parameters
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **lineCode** | **String**| Two-letter line code abbreviation:  &lt;ul&gt; &lt;li&gt;RD - Red&lt;/li&gt; &lt;li&gt;YL - Yellow&lt;/li&gt; &lt;li&gt;GR - Green&lt;/li&gt; &lt;li&gt;BL - Blue&lt;/li&gt; &lt;li&gt;OR - Orange&lt;/li&gt; &lt;li&gt;SV - Silver&lt;/li&gt; &lt;/ul&gt; | [optional] [enum: RD, YL, GR, BL, OR, SV] |
+
+### Return type
+
+null (empty response body)
+
+### Authorization
+
+[apiKeyQuery](../README.md#apiKeyQuery), [apiKeyHeader](../README.md#apiKeyHeader)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/xml
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | Default response code. |  -  |
+
+<a id="call5476364f031f5909e4fe331a"></a>
+# **call5476364f031f5909e4fe331a**
+> call5476364f031f5909e4fe331a(stationCode)
+
+XML - Station Timings
+
+&lt;h4 class&#x3D;\&quot;text-primary\&quot;&gt;Description&lt;/h4&gt;    &lt;p&gt;Returns opening and scheduled first/last train times based on a given  StationCode. Omit the StationCode to return timing information for all  stations.&lt;/p&gt;    &lt;p&gt;Note that for stations with multiple platforms (e.g.: Metro Center, L&#39;Enfant  Plaza, etc.), a distinct call is required for each StationCode to retrieve the  full set of train times at such stations.&lt;/p&gt;    &lt;h4 class&#x3D;\&quot;text-primary\&quot;&gt;Response Elements&lt;/h4&gt;    &lt;table class&#x3D;\&quot;table table-condensed table-hover\&quot;&gt;  &lt;thead&gt;  &lt;tr&gt;  &lt;th class&#x3D;\&quot;col-md-3\&quot;&gt;Element&lt;/th&gt;    &lt;th&gt;Description&lt;/th&gt;  &lt;/tr&gt;  &lt;/thead&gt;    &lt;tbody&gt;  &lt;tr&gt;  &lt;td&gt;StationTimes&lt;/td&gt;    &lt;td&gt;  Array containing station timing information (&lt;a href&#x3D;  \&quot;#StationTime\&quot;&gt;StationTime&lt;/a&gt;).  &lt;/td&gt;  &lt;/tr&gt;    &lt;tr&gt;  &lt;td colspan&#x3D;\&quot;2\&quot;&gt;  &lt;div class&#x3D;\&quot;text-primary\&quot; style&#x3D;\&quot;margin-top: 1em\&quot;&gt;  &lt;a id&#x3D;\&quot;StationTime\&quot; name&#x3D;\&quot;StationTime\&quot;&gt;StationTime  Elements&lt;/a&gt;  &lt;/div&gt;  &lt;/td&gt;  &lt;/tr&gt;    &lt;tr&gt;  &lt;td&gt;Code&lt;/td&gt;    &lt;td&gt;Station code for this station. Use this value in other  rail-related APIs to retrieve data about a station.&lt;/td&gt;  &lt;/tr&gt;    &lt;tr&gt;  &lt;td&gt;StationName&lt;/td&gt;    &lt;td&gt;Full name of the station.&lt;/td&gt;  &lt;/tr&gt;    &lt;tr&gt;  &lt;td&gt;*Day Elements&lt;/td&gt;    &lt;td&gt;  Container elements containing timing information based on  &lt;a href&#x3D;\&quot;#dow\&quot;&gt;day of the week.&lt;/a&gt;  &lt;/td&gt;  &lt;/tr&gt;    &lt;tr&gt;  &lt;td colspan&#x3D;\&quot;2\&quot;&gt;  &lt;div class&#x3D;\&quot;text-primary\&quot; style&#x3D;\&quot;margin-top: 1em\&quot;&gt;  &lt;a id&#x3D;\&quot;dow\&quot; name&#x3D;\&quot;dow\&quot;&gt;Monday/Tuesday/Wednesday/etc.  Elements&lt;/a&gt;  &lt;/div&gt;  &lt;/td&gt;  &lt;/tr&gt;    &lt;tr&gt;  &lt;td&gt;OpeningTime&lt;/td&gt;    &lt;td&gt;Station opening time. Format is HH:mm.&lt;/td&gt;  &lt;/tr&gt;    &lt;tr&gt;  &lt;td&gt;FirstTrains&lt;/td&gt;    &lt;td&gt;  Structure containing &lt;a href&#x3D;\&quot;#first\&quot;&gt;first train&lt;/a&gt;  information.  &lt;/td&gt;  &lt;/tr&gt;    &lt;tr&gt;  &lt;td&gt;LastTrains&lt;/td&gt;    &lt;td&gt;  Structure containing &lt;a href&#x3D;\&quot;#last\&quot;&gt;last train&lt;/a&gt;  information.  &lt;/td&gt;  &lt;/tr&gt;    &lt;tr&gt;  &lt;td colspan&#x3D;\&quot;2\&quot;&gt;  &lt;div class&#x3D;\&quot;text-primary\&quot; style&#x3D;\&quot;margin-top: 1em\&quot;&gt;  &lt;a id&#x3D;\&quot;first\&quot; name&#x3D;\&quot;first\&quot;&gt;FirstTrains Elements&lt;/a&gt;  &lt;/div&gt;  &lt;/td&gt;  &lt;/tr&gt;    &lt;tr&gt;  &lt;td&gt;Time&lt;/td&gt;    &lt;td&gt;First train leaves the station at this time. Format is  HH:mm.&lt;/td&gt;  &lt;/tr&gt;    &lt;tr&gt;  &lt;td&gt;DestinationStation&lt;/td&gt;    &lt;td&gt;Station code for the train&#39;s destination. Use this value in  other rail-related APIs to retrieve data about a station.&lt;/td&gt;  &lt;/tr&gt;    &lt;tr&gt;  &lt;td colspan&#x3D;\&quot;2\&quot;&gt;  &lt;div class&#x3D;\&quot;text-primary\&quot; style&#x3D;\&quot;margin-top: 1em\&quot;&gt;  &lt;a id&#x3D;\&quot;last\&quot; name&#x3D;\&quot;last\&quot;&gt;LastTrains Elements&lt;/a&gt;  &lt;/div&gt;  &lt;/td&gt;  &lt;/tr&gt;    &lt;tr&gt;  &lt;td&gt;Time&lt;/td&gt;    &lt;td&gt;Last train leaves the station at this time. Format is HH:mm.  Note that when the time is AM, it signifies the next day. For  example, a value of 02:30 under a Saturday element means the last  train leaves on Sunday at 2:30 AM.&lt;/td&gt;  &lt;/tr&gt;    &lt;tr&gt;  &lt;td&gt;DestinationStation&lt;/td&gt;    &lt;td&gt;Station code for the train&#39;s destination. Use this value in  other rail-related APIs to retrieve data about a station.&lt;/td&gt;  &lt;/tr&gt;  &lt;/tbody&gt;  &lt;/table&gt;
+
+### Example
+```java
+// Import classes:
+import org.openapitools.client.ApiClient;
+import org.openapitools.client.ApiException;
+import org.openapitools.client.Configuration;
+import org.openapitools.client.auth.*;
+import org.openapitools.client.models.*;
+import org.openapitools.client.api.DefaultApi;
+
+public class Example {
+  public static void main(String[] args) {
+    ApiClient defaultClient = Configuration.getDefaultApiClient();
+    defaultClient.setBasePath("http://api.wmata.com/Rail.svc");
+    
+    // Configure API key authorization: apiKeyQuery
+    ApiKeyAuth apiKeyQuery = (ApiKeyAuth) defaultClient.getAuthentication("apiKeyQuery");
+    apiKeyQuery.setApiKey("YOUR API KEY");
+    // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+    //apiKeyQuery.setApiKeyPrefix("Token");
+
+    // Configure API key authorization: apiKeyHeader
+    ApiKeyAuth apiKeyHeader = (ApiKeyAuth) defaultClient.getAuthentication("apiKeyHeader");
+    apiKeyHeader.setApiKey("YOUR API KEY");
+    // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+    //apiKeyHeader.setApiKeyPrefix("Token");
+
+    DefaultApi apiInstance = new DefaultApi(defaultClient);
+    String stationCode = "E10"; // String | Station code.  Use the Station List method to return a list of all station codes.
+    try {
+      apiInstance.call5476364f031f5909e4fe331a(stationCode);
+    } catch (ApiException e) {
+      System.err.println("Exception when calling DefaultApi#call5476364f031f5909e4fe331a");
+      System.err.println("Status code: " + e.getCode());
+      System.err.println("Reason: " + e.getResponseBody());
+      System.err.println("Response headers: " + e.getResponseHeaders());
+      e.printStackTrace();
+    }
+  }
+}
+```
+
+### Parameters
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **stationCode** | **String**| Station code.  Use the Station List method to return a list of all station codes. | [optional] [default to E10] [enum: E10] |
+
+### Return type
+
+null (empty response body)
+
+### Authorization
+
+[apiKeyQuery](../README.md#apiKeyQuery), [apiKeyHeader](../README.md#apiKeyHeader)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/xml
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | Default response code. |  -  |
+
+<a id="call5476364f031f5909e4fe331b"></a>
+# **call5476364f031f5909e4fe331b**
+> call5476364f031f5909e4fe331b(fromStationCode, toStationCode)
+
+XML - Station to Station Information
+
+&lt;h4 class&#x3D;\&quot;text-primary\&quot;&gt;Description&lt;/h4&gt;  &lt;p&gt;Returns a distance, fare information, and estimated travel time between any two stations, including those on different lines. Omit both parameters to retrieve data for all stations.&lt;/p&gt;  &lt;h4 class&#x3D;\&quot;text-primary\&quot;&gt;Response Elements&lt;/h4&gt;  &lt;table class&#x3D;\&quot;table table-condensed table-hover\&quot;&gt; &lt;thead&gt; &lt;tr&gt; &lt;th class&#x3D;\&quot;col-md-3\&quot;&gt;Element&lt;/th&gt;  &lt;th&gt;Description&lt;/th&gt; &lt;/tr&gt; &lt;/thead&gt;  &lt;tbody&gt; &lt;tr&gt; &lt;td&gt;StationToStationInfos&lt;/td&gt;  &lt;td&gt; Array containing station to station information (&lt;a href&#x3D; \&quot;#StationToStationInfo\&quot;&gt;StationToStationInfo&lt;/a&gt;). &lt;/td&gt; &lt;/tr&gt;  &lt;tr&gt; &lt;td colspan&#x3D;\&quot;2\&quot;&gt; &lt;div class&#x3D;\&quot;text-primary\&quot; style&#x3D;\&quot;margin-top: 1em\&quot;&gt; &lt;a id&#x3D;\&quot;StationToStationInfo\&quot; name&#x3D; \&quot;StationToStationInfo\&quot;&gt;StationToStationInfo Elements&lt;/a&gt; &lt;/div&gt; &lt;/td&gt; &lt;/tr&gt;  &lt;tr&gt; &lt;td&gt;CompositeMiles&lt;/td&gt;  &lt;td&gt;Average of distance traveled between two stations and straight-line distance (as used for WMATA fare calculations).  For more details, please refer to WMATA&#39;s &lt;a href&#x3D;\&quot;https://www.wmata.com/about/records/public_docs/upload/Tariff-on-Fares-Annotated-2-12-18.pdf#page&#x3D;6\&quot; target&#x3D;\&quot;_blank\&quot; rel&#x3D;\&quot;noopener noreferrer\&quot;&gt;Tariff on Fares&lt;/a&gt;.&lt;/td&gt; &lt;/tr&gt;  &lt;tr&gt; &lt;td&gt;DestinationStation&lt;/td&gt;  &lt;td&gt;Destination station code. Use this value in other rail-related APIs to retrieve data about a station.&lt;/td&gt; &lt;/tr&gt;  &lt;tr&gt; &lt;td&gt;RailFare&lt;/td&gt;  &lt;td&gt; Structure containing &lt;a href&#x3D;\&quot;#RailFare\&quot;&gt;fare&lt;/a&gt; information. &lt;/td&gt; &lt;/tr&gt;  &lt;tr&gt; &lt;td&gt;RailTime&lt;/td&gt;  &lt;td&gt;Estimated travel time (schedule time) in minutes between the source and destination station. This is not correlated to minutes &lt;span class&#x3D;\&quot;text-info\&quot;&gt;(Min)&lt;/span&gt; in Real-Time Rail Predictions.&lt;/td&gt; &lt;/tr&gt;  &lt;tr&gt; &lt;td&gt;SourceStation&lt;/td&gt;  &lt;td&gt;Origin station code. Use this value in other rail-related APIs to retrieve data about a station.&lt;/td&gt; &lt;/tr&gt;  &lt;tr&gt; &lt;td colspan&#x3D;\&quot;2\&quot;&gt; &lt;div class&#x3D;\&quot;text-primary\&quot; style&#x3D;\&quot;margin-top: 1em\&quot;&gt; &lt;a id&#x3D;\&quot;RailFare\&quot; name&#x3D;\&quot;RailFare\&quot;&gt;RailFare Elements&lt;/a&gt; &lt;/div&gt; &lt;/td&gt; &lt;/tr&gt;  &lt;tr&gt; &lt;td&gt;OffPeakTime&lt;/td&gt;  &lt;td&gt;Fare during off-peak times (times other than the ones described below).&lt;/td&gt; &lt;/tr&gt;  &lt;tr&gt; &lt;td&gt;PeakTime&lt;/td&gt;  &lt;td&gt;Fare during peak times (weekdays from opening to 9:30 AM and 3-7 PM, and weekends from midnight to closing).&lt;/td&gt; &lt;/tr&gt;  &lt;tr&gt; &lt;td&gt;SeniorDisabled&lt;/td&gt;  &lt;td&gt; Reduced fare for &lt;a href&#x3D; \&quot;http://www.wmata.com/fares/reduced.cfm\&quot;&gt;senior citizens or people with disabilities&lt;/a&gt;. &lt;/td&gt; &lt;/tr&gt; &lt;/tbody&gt; &lt;/table&gt;
+
+### Example
+```java
+// Import classes:
+import org.openapitools.client.ApiClient;
+import org.openapitools.client.ApiException;
+import org.openapitools.client.Configuration;
+import org.openapitools.client.auth.*;
+import org.openapitools.client.models.*;
+import org.openapitools.client.api.DefaultApi;
+
+public class Example {
+  public static void main(String[] args) {
+    ApiClient defaultClient = Configuration.getDefaultApiClient();
+    defaultClient.setBasePath("http://api.wmata.com/Rail.svc");
+    
+    // Configure API key authorization: apiKeyQuery
+    ApiKeyAuth apiKeyQuery = (ApiKeyAuth) defaultClient.getAuthentication("apiKeyQuery");
+    apiKeyQuery.setApiKey("YOUR API KEY");
+    // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+    //apiKeyQuery.setApiKeyPrefix("Token");
+
+    // Configure API key authorization: apiKeyHeader
+    ApiKeyAuth apiKeyHeader = (ApiKeyAuth) defaultClient.getAuthentication("apiKeyHeader");
+    apiKeyHeader.setApiKey("YOUR API KEY");
+    // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+    //apiKeyHeader.setApiKeyPrefix("Token");
+
+    DefaultApi apiInstance = new DefaultApi(defaultClient);
+    String fromStationCode = "E10"; // String | Station code for the origin station.  Use the Station List method to return a list of all station codes.
+    String toStationCode = "J03"; // String | Station code for the destination station.  Use the Station List method to return a list of all station codes.
+    try {
+      apiInstance.call5476364f031f5909e4fe331b(fromStationCode, toStationCode);
+    } catch (ApiException e) {
+      System.err.println("Exception when calling DefaultApi#call5476364f031f5909e4fe331b");
+      System.err.println("Status code: " + e.getCode());
+      System.err.println("Reason: " + e.getResponseBody());
+      System.err.println("Response headers: " + e.getResponseHeaders());
+      e.printStackTrace();
+    }
+  }
+}
+```
+
+### Parameters
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **fromStationCode** | **String**| Station code for the origin station.  Use the Station List method to return a list of all station codes. | [optional] [default to E10] [enum: E10] |
+| **toStationCode** | **String**| Station code for the destination station.  Use the Station List method to return a list of all station codes. | [optional] [default to J03] [enum: J03] |
+
+### Return type
+
+null (empty response body)
+
+### Authorization
+
+[apiKeyQuery](../README.md#apiKeyQuery), [apiKeyHeader](../README.md#apiKeyHeader)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/xml
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | Default response code. |  -  |
+

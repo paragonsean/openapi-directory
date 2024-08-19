@@ -1,0 +1,13 @@
+
+
+# M2tsAudioDuration
+
+## Enum
+
+
+* `DEFAULT_CODEC_DURATION` (value: `"DEFAULT_CODEC_DURATION"`)
+
+* `MATCH_VIDEO_DURATION` (value: `"MATCH_VIDEO_DURATION"`)
+
+
+

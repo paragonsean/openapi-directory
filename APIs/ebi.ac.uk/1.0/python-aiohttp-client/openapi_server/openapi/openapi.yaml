@@ -1,0 +1,4874 @@
+openapi: 3.0.1
+info:
+  contact:
+    email: crossbar_dev@ebi.ac.uk
+    name: API support
+  description: "# About CROssBAR & data\n**CROssBAR**: Comprehensive Resource of Biomedical\
+    \ Relations with Deep Learning Applications and Knowledge Graph Representations\n\
+    CROssBAR is a comprehensive system that integrates large-scale biomedical data\
+    \ from various resources e.g UniProt, ChEMBL, Drugbank, EFO, HPO, InterPro & PubChem\
+    \ and stores them in a new NoSQL database, enrich these data with deep learning\
+    \ based prediction of relations between numerous biomedical entities, rigorously\
+    \ analyse the enriched data to obtain biologically meaningful modules and display\
+    \ them to the user via easy to interpret, interactive and heterogeneous knowledge\
+    \ graphs.\nCROssBAR platform exposes a set of 12 endpoints to query data stored\
+    \ in the CROssBAR database. These endpoints help the user to find data of interest\
+    \ using different parameters provided by the API endpoint.\nFor example,\nhttps://www.ebi.ac.uk/tools/crossbar/proteins?accession=A0A023GRW5\
+    \ -> will provide protein information about accession 'A0A023GRW5' including its\
+    \ interactions, functions, cross-references, variations and more.\nhttps://www.ebi.ac.uk/tools/crossbar/activities?moleculeChemblId=CHEMBL465983\
+    \ -> will provide ChEMBL bio-interactions related information including targets\
+    \ and bio-activity measurements associated with molecule chembl id 'CHEMBL465983'\n\
+    \n**Knowledge graphs**\nAnother use case of CROssBAR's API endpoints is in building\
+    \ knowledge graphs. These endpoints can be *weaved* together (output from one\
+    \ API endpoint fed as input to another API endpoint) programmatically to link\
+    \ nodes like protein, disease, drugs etc. as nodes of the graph. The endpoints\
+    \ are designed to be independent from each other which allows users the flexibility\
+    \ to drive biological networks from any facet e.g drug-centric, disease-centric,\
+    \ gene-centric etc. Our service for knowledge graph construction is available\
+    \ at https://crossbar.kansil.org.\nAn example for the part of the background queries\
+    \ on the CROssBAR API during the construction of a knowledge graph, \n(with the\
+    \ aim of keeping the example simple, we have only included the processes related\
+    \ to pathways, genes/proteins and drugs/compounds)\nIn this example, we would\
+    \ like to find bio-active compounds (with a pChEMBL value threshold of at least\
+    \ 6.0) & drugs targeting all proteins belonging to \"WNT ligand biogenesis and\
+    \ trafficking\" pathway (based on Reactome pathway annotations).\nThis can be\
+    \ achieved by using endpoints listed on this swagger documentation as illustrated\
+    \ in following steps-\nFind bio-active compounds (with a pChEMBL value threshold\
+    \ of at least 6.0) & drugs targeting all proteins belonging to \"WNT ligand biogenesis\
+    \ and trafficking\" pathway (based on Reactome annotations)\nThis can be achieved\
+    \ by using endpoints listed on [this swagger documentation](https://www.ebi.ac.uk/tools/crossbar/swagger-ui.html)\
+    \ as illustrated in following steps-\n1. Get all proteins from “/proteins” API\
+    \ endpoint which have a reactome pathway name equal to \"WNT ligand biogenesis\
+    \ and trafficking\".\n2. From the collection of uniprot protein accessions collected\
+    \ from step 1 above, we query “/targets” API endpoint to obtain the ‘target_chembl_id’\
+    s of these proteins.\n3. From the collection of target_chembl_ids collected from\
+    \ step 2 above, we query “/activities” API endpoint with pChEMBL value >=6, to\
+    \ obtain the ’molecule_chembl_id’s of the molecules that we need. \n4. From the\
+    \ collection of uniprot protein accessions collected from step 1 above, we find\
+    \ out Drug names and ids from the “/drugs” API endpoint that targets our proteins.\n\
+    5. From the collection of ’molecule_chembl_id’s obtained in step3, we query “\
+    /molecules” endpoint to get the compounds that are interacting with the genes/proteins\
+    \ belonging to the “WNT ligand biogenesis and trafficking” pathway."
+  title: CROssBAR Data API
+  version: "1.0"
+  x-apisguru-categories:
+  - open_data
+  x-origin:
+  - format: swagger
+    url: https://www.ebi.ac.uk/Tools/crossbar/v2/api-docs
+    version: "2.0"
+  x-providerName: ebi.ac.uk
+servers:
+- url: //www.ebi.ac.uk/Tools/crossbar
+tags:
+- description: Chembl Activities Resource
+  name: Activities
+- description: Chembl Assays Resource
+  name: Assays
+- description: Drug Resource
+  name: Drugs
+- description: EFO Resource
+  name: EFO disease terms
+- description: HPO Resource
+  name: HPO
+- description: Intact Resource
+  name: Intact
+- description: Chembl Molecules Resource
+  name: Molecules
+- description: Protein Resource
+  name: Proteins
+- description: Pubchem Bioassay Sids Resource
+  name: PubChem Bioassay Sids
+- description: Pubchem Bioassay Resource
+  name: PubChem Biossays
+- description: Pubchem Compound Resource
+  name: PubChem Compounds
+- description: Pubchem Substance Resource
+  name: PubChem Substances
+- description: Chembl Targets Resource
+  name: Targets
+paths:
+  /activities:
+    get:
+      deprecated: false
+      operationId: get_activities_using_get
+      parameters:
+      - description: assayChemblId
+        explode: true
+        in: query
+        name: assayChemblId
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: limit
+        in: query
+        name: limit
+        schema:
+          default: 10
+          format: int32
+          type: integer
+      - description: moleculeChemblId
+        explode: true
+        in: query
+        name: moleculeChemblId
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: page
+        in: query
+        name: page
+        schema:
+          default: 0
+          format: int32
+          type: integer
+      - description: pchemblValue
+        in: query
+        name: pchemblValue
+        schema:
+          format: double
+          type: number
+      - description: targetChemblId
+        explode: true
+        in: query
+        name: targetChemblId
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Activities'
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Get ChEMBL activities
+      tags:
+      - Activities
+      x-openapi-router-controller: openapi_server.controllers.activities_controller
+  /assays:
+    get:
+      deprecated: false
+      operationId: get_assays_using_get
+      parameters:
+      - description: assayChemblId
+        explode: true
+        in: query
+        name: assayChemblId
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: assayOrg
+        explode: true
+        in: query
+        name: assayOrg
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: assayType
+        explode: true
+        in: query
+        name: assayType
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: limit
+        in: query
+        name: limit
+        schema:
+          default: 10
+          format: int32
+          type: integer
+      - description: page
+        in: query
+        name: page
+        schema:
+          default: 0
+          format: int32
+          type: integer
+      - description: targetChemblId
+        explode: true
+        in: query
+        name: targetChemblId
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Assays'
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Get ChEMBL assays
+      tags:
+      - Assays
+      x-openapi-router-controller: openapi_server.controllers.assays_controller
+  /drugs:
+    get:
+      deprecated: false
+      operationId: get_drugs_using_get
+      parameters:
+      - description: accession
+        explode: true
+        in: query
+        name: accession
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: chemblId
+        explode: true
+        in: query
+        name: chemblId
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: identifier
+        explode: true
+        in: query
+        name: identifier
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: limit
+        in: query
+        name: limit
+        schema:
+          default: 10
+          format: int32
+          type: integer
+      - description: name
+        explode: true
+        in: query
+        name: name
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: page
+        in: query
+        name: page
+        schema:
+          default: 0
+          format: int32
+          type: integer
+      - description: pubchemCid
+        explode: true
+        in: query
+        name: pubchemCid
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Drugs'
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: drugs collected from Drugbank
+      tags:
+      - Drugs
+      x-openapi-router-controller: openapi_server.controllers.drugs_controller
+  /efo:
+    get:
+      deprecated: false
+      operationId: get_efo_using_get
+      parameters:
+      - description: doid
+        explode: true
+        in: query
+        name: doid
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: label
+        explode: true
+        in: query
+        name: label
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: limit
+        in: query
+        name: limit
+        schema:
+          default: 10
+          format: int32
+          type: integer
+      - description: mesh
+        explode: true
+        in: query
+        name: mesh
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: oboId
+        explode: true
+        in: query
+        name: oboId
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: omimId
+        explode: true
+        in: query
+        name: omimId
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: page
+        in: query
+        name: page
+        schema:
+          default: 0
+          format: int32
+          type: integer
+      - description: synonym
+        explode: true
+        in: query
+        name: synonym
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EFOEntities'
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Get EFO diseases data
+      tags:
+      - EFO disease terms
+      x-openapi-router-controller: openapi_server.controllers.efo_disease_terms_controller
+  /hpo:
+    get:
+      deprecated: false
+      operationId: get_hpo_using_get
+      parameters:
+      - description: genesymbol
+        explode: true
+        in: query
+        name: genesymbol
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: hpotermname
+        explode: true
+        in: query
+        name: hpotermname
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: limit
+        in: query
+        name: limit
+        schema:
+          default: 10
+          format: int32
+          type: integer
+      - description: page
+        in: query
+        name: page
+        schema:
+          default: 0
+          format: int32
+          type: integer
+      - description: synonym
+        explode: true
+        in: query
+        name: synonym
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HpoEntities'
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Get HPO phenotypes data
+      tags:
+      - HPO
+      x-openapi-router-controller: openapi_server.controllers.hpo_controller
+  /intact:
+    get:
+      deprecated: false
+      operationId: get_intact_using_get
+      parameters:
+      - description: accession
+        explode: true
+        in: query
+        name: accession
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: confidence
+        in: query
+        name: confidence
+        schema:
+          format: double
+          type: number
+      - description: gene
+        explode: true
+        in: query
+        name: gene
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: limit
+        in: query
+        name: limit
+        schema:
+          default: 10
+          format: int32
+          type: integer
+      - description: page
+        in: query
+        name: page
+        schema:
+          default: 0
+          format: int32
+          type: integer
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IntactInteractions'
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Molecular Interactions collected from IntAct
+      tags:
+      - Intact
+      x-openapi-router-controller: openapi_server.controllers.intact_controller
+  /molecules:
+    get:
+      deprecated: false
+      operationId: get_molecules_using_get
+      parameters:
+      - description: canonicalSmiles
+        explode: true
+        in: query
+        name: canonicalSmiles
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: inchiKey
+        explode: true
+        in: query
+        name: inchiKey
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: limit
+        in: query
+        name: limit
+        schema:
+          default: 10
+          format: int32
+          type: integer
+      - description: moleculeChemblId
+        explode: true
+        in: query
+        name: moleculeChemblId
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: page
+        in: query
+        name: page
+        schema:
+          default: 0
+          format: int32
+          type: integer
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Molecules'
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Get ChEMBL molecules
+      tags:
+      - Molecules
+      x-openapi-router-controller: openapi_server.controllers.molecules_controller
+  /proteins:
+    get:
+      deprecated: false
+      operationId: get_proteins_using_get
+      parameters:
+      - description: accession
+        explode: true
+        in: query
+        name: accession
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: ec
+        explode: true
+        in: query
+        name: ec
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: fullName
+        explode: true
+        in: query
+        name: fullName
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: gene
+        explode: true
+        in: query
+        name: gene
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: go
+        explode: true
+        in: query
+        name: go
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: interpro
+        explode: true
+        in: query
+        name: interpro
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: limit
+        in: query
+        name: limit
+        schema:
+          default: 10
+          format: int32
+          type: integer
+      - description: omim
+        explode: true
+        in: query
+        name: omim
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: orphanet
+        explode: true
+        in: query
+        name: orphanet
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: page
+        in: query
+        name: page
+        schema:
+          default: 0
+          format: int32
+          type: integer
+      - description: pfam
+        explode: true
+        in: query
+        name: pfam
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: reactome
+        explode: true
+        in: query
+        name: reactome
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: taxId
+        explode: true
+        in: query
+        name: taxId
+        schema:
+          items:
+            format: int32
+            type: integer
+          type: array
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Proteins'
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: "Proteins collected from Uniprot for selective tax ids  HUMAN(9606),\
+        \ MOUSE(10090), RAT(10116), BOVINE(9913), ESCHERICHIA_COLI(83333), SUS_SCROFA(9823),\
+        \ MYCOBACTERIUM_TUBERCULOSIS(83332), ORYCTOLAGUS_CUNICULUS(9986), SACCHAROMYCES_CEREVISIAE(559292),\
+        \ CVHSA(694009) & SARS2(2697049)"
+      tags:
+      - Proteins
+      x-openapi-router-controller: openapi_server.controllers.proteins_controller
+  /pubchem/bioassays:
+    get:
+      deprecated: false
+      operationId: get_bioassays_using_get
+      parameters:
+      - description: accession
+        explode: true
+        in: query
+        name: accession
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: assayPubchemId
+        explode: true
+        in: query
+        name: assayPubchemId
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: limit
+        in: query
+        name: limit
+        schema:
+          default: 1
+          format: int32
+          type: integer
+      - description: ncbiProteinId
+        explode: true
+        in: query
+        name: ncbiProteinId
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: page
+        in: query
+        name: page
+        schema:
+          default: 0
+          format: int32
+          type: integer
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Bioassays'
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Get pubchem bioassays
+      tags:
+      - PubChem Biossays
+      x-openapi-router-controller: openapi_server.controllers.pub_chem_biossays_controller
+  /pubchem/bioassays/sids:
+    get:
+      deprecated: false
+      operationId: get_bioassays_using_get1
+      parameters:
+      - description: limit
+        in: query
+        name: limit
+        schema:
+          default: 10
+          format: int32
+          type: integer
+      - description: outcome
+        in: query
+        name: outcome
+        schema:
+          type: string
+      - description: page
+        in: query
+        name: page
+        schema:
+          default: 0
+          format: int32
+          type: integer
+      - description: sids
+        explode: true
+        in: query
+        name: sids
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Bioassays'
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Get pubchem bioassays associated to particular substance ids (sid)
+        & outcome
+      tags:
+      - PubChem Bioassay Sids
+      x-openapi-router-controller: openapi_server.controllers.pub_chem_bioassay_sids_controller
+  /pubchem/compounds:
+    get:
+      deprecated: false
+      operationId: get_compounds_using_get
+      parameters:
+      - description: canonicalSmiles
+        explode: true
+        in: query
+        name: canonicalSmiles
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: cid
+        explode: true
+        in: query
+        name: cid
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: inchiKey
+        explode: true
+        in: query
+        name: inchiKey
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: limit
+        in: query
+        name: limit
+        schema:
+          default: 10
+          format: int32
+          type: integer
+      - description: page
+        in: query
+        name: page
+        schema:
+          default: 0
+          format: int32
+          type: integer
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PubchemCompounds'
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Get pubchem compounds
+      tags:
+      - PubChem Compounds
+      x-openapi-router-controller: openapi_server.controllers.pub_chem_compounds_controller
+  /pubchem/substances:
+    get:
+      deprecated: false
+      operationId: get_substances_using_get
+      parameters:
+      - description: cid
+        explode: true
+        in: query
+        name: cid
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: limit
+        in: query
+        name: limit
+        schema:
+          default: 10
+          format: int32
+          type: integer
+      - description: page
+        in: query
+        name: page
+        schema:
+          default: 0
+          format: int32
+          type: integer
+      - description: sid
+        explode: true
+        in: query
+        name: sid
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PubchemSubstances'
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Get pubchem substances
+      tags:
+      - PubChem Substances
+      x-openapi-router-controller: openapi_server.controllers.pub_chem_substances_controller
+  /targets:
+    get:
+      deprecated: false
+      operationId: get_targets_using_get
+      parameters:
+      - description: accession
+        explode: true
+        in: query
+        name: accession
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: limit
+        in: query
+        name: limit
+        schema:
+          default: 10
+          format: int32
+          type: integer
+      - description: page
+        in: query
+        name: page
+        schema:
+          default: 0
+          format: int32
+          type: integer
+      - description: targetIds
+        explode: true
+        in: query
+        name: targetIds
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Targets'
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Get ChEMBL targets
+      tags:
+      - Targets
+      x-openapi-router-controller: openapi_server.controllers.targets_controller
+components:
+  schemas:
+    Activities:
+      example:
+        pageMeta:
+          currentElements: 1
+          limit: 5
+          totalPages: 7
+          currentPage: 5
+          totalElements: 2
+        activities:
+        - pchembl_value: 0.8008281904610115
+          standard_units: standard_units
+          assay_chembl_id: assay_chembl_id
+          standard_relation: standard_relation
+          target_chembl_id: target_chembl_id
+          standard_flag: true
+          molecule_chembl_id: molecule_chembl_id
+          data_validity_comment: data_validity_comment
+          standard_value: 6.027456183070403
+        - pchembl_value: 0.8008281904610115
+          standard_units: standard_units
+          assay_chembl_id: assay_chembl_id
+          standard_relation: standard_relation
+          target_chembl_id: target_chembl_id
+          standard_flag: true
+          molecule_chembl_id: molecule_chembl_id
+          data_validity_comment: data_validity_comment
+          standard_value: 6.027456183070403
+      properties:
+        activities:
+          items:
+            $ref: '#/components/schemas/Activity'
+          title: activities
+          type: array
+        pageMeta:
+          $ref: '#/components/schemas/PageMeta'
+      title: Activities
+      type: object
+    Activity:
+      example:
+        pchembl_value: 0.8008281904610115
+        standard_units: standard_units
+        assay_chembl_id: assay_chembl_id
+        standard_relation: standard_relation
+        target_chembl_id: target_chembl_id
+        standard_flag: true
+        molecule_chembl_id: molecule_chembl_id
+        data_validity_comment: data_validity_comment
+        standard_value: 6.027456183070403
+      properties:
+        assay_chembl_id:
+          title: assay_chembl_id
+          type: string
+        data_validity_comment:
+          title: data_validity_comment
+          type: string
+        molecule_chembl_id:
+          title: molecule_chembl_id
+          type: string
+        pchembl_value:
+          format: double
+          title: pchembl_value
+          type: number
+        standard_flag:
+          title: standard_flag
+          type: boolean
+        standard_relation:
+          title: standard_relation
+          type: string
+        standard_units:
+          title: standard_units
+          type: string
+        standard_value:
+          format: double
+          title: standard_value
+          type: number
+        target_chembl_id:
+          title: target_chembl_id
+          type: string
+      title: Activity
+      type: object
+    Assay:
+      example:
+        assay_type: assay_type
+        assay_organism: assay_organism
+        assay_chembl_id: assay_chembl_id
+        confidence_score: 0.8008281904610115
+        target_chembl_id: target_chembl_id
+        assay_id: assay_id
+      properties:
+        assay_chembl_id:
+          title: assay_chembl_id
+          type: string
+        assay_id:
+          title: assay_id
+          type: string
+        assay_organism:
+          title: assay_organism
+          type: string
+        assay_type:
+          title: assay_type
+          type: string
+        confidence_score:
+          format: double
+          title: confidence_score
+          type: number
+        target_chembl_id:
+          title: target_chembl_id
+          type: string
+      title: Assay
+      type: object
+    AssayData:
+      example:
+        standard_units: standard_units
+        standard_type: standard_type
+        standard_value: 2.3021358869347655
+      properties:
+        standard_type:
+          title: standard_type
+          type: string
+        standard_units:
+          title: standard_units
+          type: string
+        standard_value:
+          format: double
+          title: standard_value
+          type: number
+      title: AssayData
+      type: object
+    AssayOrganism:
+      example:
+        db_object_id: 6
+        tax_name: tax_name
+      properties:
+        db_object_id:
+          title: db_object_id
+          type: integer
+        tax_name:
+          title: tax_name
+          type: string
+      title: AssayOrganism
+      type: object
+    Assays:
+      example:
+        pageMeta:
+          currentElements: 1
+          limit: 5
+          totalPages: 7
+          currentPage: 5
+          totalElements: 2
+        assays:
+        - assay_type: assay_type
+          assay_organism: assay_organism
+          assay_chembl_id: assay_chembl_id
+          confidence_score: 0.8008281904610115
+          target_chembl_id: target_chembl_id
+          assay_id: assay_id
+        - assay_type: assay_type
+          assay_organism: assay_organism
+          assay_chembl_id: assay_chembl_id
+          confidence_score: 0.8008281904610115
+          target_chembl_id: target_chembl_id
+          assay_id: assay_id
+      properties:
+        assays:
+          items:
+            $ref: '#/components/schemas/Assay'
+          title: assays
+          type: array
+        pageMeta:
+          $ref: '#/components/schemas/PageMeta'
+      title: Assays
+      type: object
+    BioAssay:
+      example:
+        assay_type: assay_type
+        activity: 0
+        protein_name: protein_name
+        assay_pubchem_id: 1
+        target_info:
+        - target_chembl_id: target_chembl_id
+          uniprot_accession: uniprot_accession
+          ncbi_protein_id: 5
+        - target_chembl_id: target_chembl_id
+          uniprot_accession: uniprot_accession
+          ncbi_protein_id: 5
+        assay_organisms:
+        - db_object_id: 6
+          tax_name: tax_name
+        - db_object_id: 6
+          tax_name: tax_name
+        target_type_info:
+        - molecule_type: molecule_type
+          value: 5
+        - molecule_type: molecule_type
+          value: 5
+        chembl_xref: chembl_xref
+        source: source
+      properties:
+        activity:
+          format: int32
+          title: activity
+          type: integer
+        assay_organisms:
+          items:
+            $ref: '#/components/schemas/AssayOrganism'
+          title: assay_organisms
+          type: array
+        assay_pubchem_id:
+          title: assay_pubchem_id
+          type: integer
+        assay_type:
+          title: assay_type
+          type: string
+        chembl_xref:
+          title: chembl_xref
+          type: string
+        protein_name:
+          title: protein_name
+          type: string
+        source:
+          title: source
+          type: string
+        target_info:
+          items:
+            $ref: '#/components/schemas/TargetInfo'
+          title: target_info
+          type: array
+        target_type_info:
+          items:
+            $ref: '#/components/schemas/TargetType'
+          title: target_type_info
+          type: array
+      title: BioAssay
+      type: object
+    BioAssayMetaData:
+      example:
+        bioAssay:
+          assay_type: assay_type
+          activity: 0
+          protein_name: protein_name
+          assay_pubchem_id: 1
+          target_info:
+          - target_chembl_id: target_chembl_id
+            uniprot_accession: uniprot_accession
+            ncbi_protein_id: 5
+          - target_chembl_id: target_chembl_id
+            uniprot_accession: uniprot_accession
+            ncbi_protein_id: 5
+          assay_organisms:
+          - db_object_id: 6
+            tax_name: tax_name
+          - db_object_id: 6
+            tax_name: tax_name
+          target_type_info:
+          - molecule_type: molecule_type
+            value: 5
+          - molecule_type: molecule_type
+            value: 5
+          chembl_xref: chembl_xref
+          source: source
+        sidRelatedData:
+        - assay_pubchem_id: 7
+          standard_relation: standard_relation
+          assay_data:
+          - standard_units: standard_units
+            standard_type: standard_type
+            standard_value: 2.3021358869347655
+          - standard_units: standard_units
+            standard_type: standard_type
+            standard_value: 2.3021358869347655
+          outcome: outcome
+          sid: 9
+        - assay_pubchem_id: 7
+          standard_relation: standard_relation
+          assay_data:
+          - standard_units: standard_units
+            standard_type: standard_type
+            standard_value: 2.3021358869347655
+          - standard_units: standard_units
+            standard_type: standard_type
+            standard_value: 2.3021358869347655
+          outcome: outcome
+          sid: 9
+      properties:
+        bioAssay:
+          $ref: '#/components/schemas/BioAssay'
+        sidRelatedData:
+          items:
+            $ref: '#/components/schemas/SidRelatedData'
+          title: sidRelatedData
+          type: array
+      title: BioAssayMetaData
+      type: object
+    Bioassays:
+      example:
+        bioassays:
+        - bioAssay:
+            assay_type: assay_type
+            activity: 0
+            protein_name: protein_name
+            assay_pubchem_id: 1
+            target_info:
+            - target_chembl_id: target_chembl_id
+              uniprot_accession: uniprot_accession
+              ncbi_protein_id: 5
+            - target_chembl_id: target_chembl_id
+              uniprot_accession: uniprot_accession
+              ncbi_protein_id: 5
+            assay_organisms:
+            - db_object_id: 6
+              tax_name: tax_name
+            - db_object_id: 6
+              tax_name: tax_name
+            target_type_info:
+            - molecule_type: molecule_type
+              value: 5
+            - molecule_type: molecule_type
+              value: 5
+            chembl_xref: chembl_xref
+            source: source
+          sidRelatedData:
+          - assay_pubchem_id: 7
+            standard_relation: standard_relation
+            assay_data:
+            - standard_units: standard_units
+              standard_type: standard_type
+              standard_value: 2.3021358869347655
+            - standard_units: standard_units
+              standard_type: standard_type
+              standard_value: 2.3021358869347655
+            outcome: outcome
+            sid: 9
+          - assay_pubchem_id: 7
+            standard_relation: standard_relation
+            assay_data:
+            - standard_units: standard_units
+              standard_type: standard_type
+              standard_value: 2.3021358869347655
+            - standard_units: standard_units
+              standard_type: standard_type
+              standard_value: 2.3021358869347655
+            outcome: outcome
+            sid: 9
+        - bioAssay:
+            assay_type: assay_type
+            activity: 0
+            protein_name: protein_name
+            assay_pubchem_id: 1
+            target_info:
+            - target_chembl_id: target_chembl_id
+              uniprot_accession: uniprot_accession
+              ncbi_protein_id: 5
+            - target_chembl_id: target_chembl_id
+              uniprot_accession: uniprot_accession
+              ncbi_protein_id: 5
+            assay_organisms:
+            - db_object_id: 6
+              tax_name: tax_name
+            - db_object_id: 6
+              tax_name: tax_name
+            target_type_info:
+            - molecule_type: molecule_type
+              value: 5
+            - molecule_type: molecule_type
+              value: 5
+            chembl_xref: chembl_xref
+            source: source
+          sidRelatedData:
+          - assay_pubchem_id: 7
+            standard_relation: standard_relation
+            assay_data:
+            - standard_units: standard_units
+              standard_type: standard_type
+              standard_value: 2.3021358869347655
+            - standard_units: standard_units
+              standard_type: standard_type
+              standard_value: 2.3021358869347655
+            outcome: outcome
+            sid: 9
+          - assay_pubchem_id: 7
+            standard_relation: standard_relation
+            assay_data:
+            - standard_units: standard_units
+              standard_type: standard_type
+              standard_value: 2.3021358869347655
+            - standard_units: standard_units
+              standard_type: standard_type
+              standard_value: 2.3021358869347655
+            outcome: outcome
+            sid: 9
+        pageMeta:
+          currentElements: 1
+          limit: 5
+          totalPages: 7
+          currentPage: 5
+          totalElements: 2
+      properties:
+        bioassays:
+          items:
+            $ref: '#/components/schemas/BioAssayMetaData'
+          title: bioassays
+          type: array
+        pageMeta:
+          $ref: '#/components/schemas/PageMeta'
+      title: Bioassays
+      type: object
+    CrossReferences:
+      example:
+        ensembl:
+        - proteinSequenceId: proteinSequenceId
+          geneId: geneId
+          id: id
+          isoform: isoform
+        - proteinSequenceId: proteinSequenceId
+          geneId: geneId
+          id: id
+          isoform: isoform
+        reactome:
+        - id: id
+          pathwayName: pathwayName
+        - id: id
+          pathwayName: pathwayName
+        pdBe:
+        - method: method
+          chains: chains
+          id: id
+          resolution: resolution
+        - method: method
+          chains: chains
+          id: id
+          resolution: resolution
+        omim:
+        - _id: _id
+          type: type
+        - _id: _id
+          type: type
+        pfam:
+        - entryName: entryName
+          id: id
+        - entryName: entryName
+          id: id
+        go:
+        - term: term
+          id: id
+          evidences:
+          - source_id: source_id
+            source_name: source_name
+          - source_id: source_id
+            source_name: source_name
+        - term: term
+          id: id
+          evidences:
+          - source_id: source_id
+            source_name: source_name
+          - source_id: source_id
+            source_name: source_name
+        kegg:
+        - id: id
+        - id: id
+        orphanet:
+        - disease: disease
+          id: id
+        - disease: disease
+          id: id
+        openTargets:
+        - id: id
+        - id: id
+        interpro:
+        - entry_name: entry_name
+          hit_position:
+            from: 1
+            to: 5
+          fragments:
+          - from: 0
+            to: 6
+            type: type
+          - from: 0
+            to: 6
+            type: type
+          entry_type: entry_type
+          entry_id: entry_id
+        - entry_name: entry_name
+          hit_position:
+            from: 1
+            to: 5
+          fragments:
+          - from: 0
+            to: 6
+            type: type
+          - from: 0
+            to: 6
+            type: type
+          entry_type: entry_type
+          entry_id: entry_id
+      properties:
+        ensembl:
+          items:
+            $ref: '#/components/schemas/Ensembl'
+          title: ensembl
+          type: array
+        go:
+          items:
+            $ref: '#/components/schemas/Go'
+          title: go
+          type: array
+        interpro:
+          items:
+            $ref: '#/components/schemas/Interpro'
+          title: interpro
+          type: array
+        kegg:
+          items:
+            $ref: '#/components/schemas/Kegg'
+          title: kegg
+          type: array
+        omim:
+          items:
+            $ref: '#/components/schemas/Omim'
+          title: omim
+          type: array
+        openTargets:
+          items:
+            $ref: '#/components/schemas/OpenTargets'
+          title: openTargets
+          type: array
+        orphanet:
+          items:
+            $ref: '#/components/schemas/Orphanet'
+          title: orphanet
+          type: array
+        pdBe:
+          items:
+            $ref: '#/components/schemas/PDBe'
+          title: pdBe
+          type: array
+        pfam:
+          items:
+            $ref: '#/components/schemas/Pfam'
+          title: pfam
+          type: array
+        reactome:
+          items:
+            $ref: '#/components/schemas/Reactome'
+          title: reactome
+          type: array
+      title: CrossReferences
+      type: object
+    CrossbarDrug:
+      example:
+        full_mwt: 6.027456183070403
+        identifier: identifier
+        molecule_type: molecule_type
+        standard_inchi: standard_inchi
+        alogp: 0.8008281904610115
+        canonical_smiles: canonical_smiles
+        pubchem_sid: pubchem_sid
+        targets:
+        - organism: organism
+          accessions:
+          - accessions
+          - accessions
+          name: name
+          action:
+          - action
+          - action
+          id: id
+        - organism: organism
+          accessions:
+          - accessions
+          - accessions
+          name: name
+          action:
+          - action
+          - action
+          id: id
+        polar_surface_area: 1.4658129805029452
+        inchi_key: inchi_key
+        kegg_cid: kegg_cid
+        pb_structures:
+        - pb_structures
+        - pb_structures
+        name: name
+        pathway:
+        - name: name
+          category: category
+        - name: name
+          category: category
+        pubchem_cid: pubchem_cid
+        uniprot_accession: uniprot_accession
+        chembl_id: chembl_id
+      properties:
+        alogp:
+          format: double
+          title: alogp
+          type: number
+        canonical_smiles:
+          title: canonical_smiles
+          type: string
+        chembl_id:
+          title: chembl_id
+          type: string
+        full_mwt:
+          format: double
+          title: full_mwt
+          type: number
+        identifier:
+          title: identifier
+          type: string
+        inchi_key:
+          title: inchi_key
+          type: string
+        kegg_cid:
+          title: kegg_cid
+          type: string
+        molecule_type:
+          title: molecule_type
+          type: string
+        name:
+          title: name
+          type: string
+        pathway:
+          items:
+            $ref: '#/components/schemas/Pathway'
+          title: pathway
+          type: array
+        pb_structures:
+          items:
+            type: string
+          title: pb_structures
+          type: array
+        polar_surface_area:
+          format: double
+          title: polar_surface_area
+          type: number
+        pubchem_cid:
+          title: pubchem_cid
+          type: string
+        pubchem_sid:
+          title: pubchem_sid
+          type: string
+        standard_inchi:
+          title: standard_inchi
+          type: string
+        targets:
+          items:
+            $ref: '#/components/schemas/Target'
+          title: targets
+          type: array
+        uniprot_accession:
+          title: uniprot_accession
+          type: string
+      title: CrossbarDrug
+      type: object
+    CrossbarFeature:
+      example:
+        description: description
+        ftId: ftId
+        end:
+          unparsed: unparsed
+          ceil: 5
+          floor: 2
+          uncertain: true
+        category: category
+        type: type
+        begin:
+          unparsed: unparsed
+          ceil: 5
+          floor: 2
+          uncertain: true
+      properties:
+        begin:
+          $ref: '#/components/schemas/FeaturePosition'
+        category:
+          title: category
+          type: string
+        description:
+          title: description
+          type: string
+        end:
+          $ref: '#/components/schemas/FeaturePosition'
+        ftId:
+          title: ftId
+          type: string
+        type:
+          title: type
+          type: string
+      title: CrossbarFeature
+      type: object
+    CrossbarMolecule:
+      example:
+        prodrug: 2.3021358869347655
+        full_mwt: 1.4658129805029452
+        standard_inchi: standard_inchi
+        alogp: 0.8008281904610115
+        chirality: 6.027456183070403
+        molecular_type: molecular_type
+        heavy_atoms_count: 5
+        xrefs:
+        - id: id
+          source: source
+        - id: id
+          source: source
+        canonical_smiles: canonical_smiles
+        molecular_species: molecular_species
+        pref_name: pref_name
+        parent_chembl_id: parent_chembl_id
+        inchi_key: inchi_key
+        max_phase: 5
+        molecule_chembl_id: molecule_chembl_id
+      properties:
+        alogp:
+          format: double
+          title: alogp
+          type: number
+        canonical_smiles:
+          title: canonical_smiles
+          type: string
+        chirality:
+          format: double
+          title: chirality
+          type: number
+        full_mwt:
+          format: double
+          title: full_mwt
+          type: number
+        heavy_atoms_count:
+          format: int32
+          title: heavy_atoms_count
+          type: integer
+        inchi_key:
+          title: inchi_key
+          type: string
+        max_phase:
+          format: int32
+          title: max_phase
+          type: integer
+        molecular_species:
+          title: molecular_species
+          type: string
+        molecular_type:
+          title: molecular_type
+          type: string
+        molecule_chembl_id:
+          title: molecule_chembl_id
+          type: string
+        parent_chembl_id:
+          title: parent_chembl_id
+          type: string
+        pref_name:
+          title: pref_name
+          type: string
+        prodrug:
+          format: double
+          title: prodrug
+          type: number
+        standard_inchi:
+          title: standard_inchi
+          type: string
+        xrefs:
+          items:
+            $ref: '#/components/schemas/Xref'
+          title: xrefs
+          type: array
+      title: CrossbarMolecule
+      type: object
+    CrossbarPCCompound:
+      example:
+        covalent_unit_count: 9
+        full_mwt: 3.616076749251911
+        standard_inchi: standard_inchi
+        alogp: 0.8008281904610115
+        bond_chiral_def_count: 5
+        atom_chiral_count: 6
+        heavy_atoms_count: 2
+        canonical_smiles: canonical_smiles
+        bond_chiral_undef_count: 2
+        isotope_atom_count: 4
+        finger_print: finger_print
+        polar_surface_area: 7.386281948385884
+        atom_chiral_def_count: 1
+        inchi_key: inchi_key
+        tautomers_count: 1
+        bond_chiral_count: 5
+        cid: 7
+      properties:
+        alogp:
+          format: double
+          title: alogp
+          type: number
+        atom_chiral_count:
+          format: int64
+          title: atom_chiral_count
+          type: integer
+        atom_chiral_def_count:
+          format: int64
+          title: atom_chiral_def_count
+          type: integer
+        bond_chiral_count:
+          format: int64
+          title: bond_chiral_count
+          type: integer
+        bond_chiral_def_count:
+          format: int64
+          title: bond_chiral_def_count
+          type: integer
+        bond_chiral_undef_count:
+          format: int64
+          title: bond_chiral_undef_count
+          type: integer
+        canonical_smiles:
+          title: canonical_smiles
+          type: string
+        cid:
+          title: cid
+          type: integer
+        covalent_unit_count:
+          format: int64
+          title: covalent_unit_count
+          type: integer
+        finger_print:
+          format: byte
+          pattern: "^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$"
+          title: finger_print
+          type: string
+        full_mwt:
+          format: double
+          title: full_mwt
+          type: number
+        heavy_atoms_count:
+          format: int64
+          title: heavy_atoms_count
+          type: integer
+        inchi_key:
+          title: inchi_key
+          type: string
+        isotope_atom_count:
+          format: int64
+          title: isotope_atom_count
+          type: integer
+        polar_surface_area:
+          format: double
+          title: polar_surface_area
+          type: number
+        standard_inchi:
+          title: standard_inchi
+          type: string
+        tautomers_count:
+          format: int64
+          title: tautomers_count
+          type: integer
+      title: CrossbarPCCompound
+      type: object
+    CrossbarProteinVariation:
+      example:
+        sourceType: sourceType
+        alternativeSequence: alternativeSequence
+        xrefs:
+        - name: name
+          id: id
+        - name: name
+          id: id
+        association:
+        - name: name
+          xrefs:
+          - name: name
+            id: id
+          - name: name
+            id: id
+          description: description
+          evidences:
+          - source:
+              name: name
+              id: id
+          - source:
+              name: name
+              id: id
+        - name: name
+          xrefs:
+          - name: name
+            id: id
+          - name: name
+            id: id
+          description: description
+          evidences:
+          - source:
+              name: name
+              id: id
+          - source:
+              name: name
+              id: id
+        clinicalSignificances: clinicalSignificances
+        description: description
+        ftId: ftId
+        end:
+          unparsed: unparsed
+          ceil: 5
+          floor: 2
+          uncertain: true
+        wildType: wildType
+        evidences:
+        - source:
+            name: name
+            id: id
+        - source:
+            name: name
+            id: id
+        begin:
+          unparsed: unparsed
+          ceil: 5
+          floor: 2
+          uncertain: true
+        somaticStatus: 2
+      properties:
+        alternativeSequence:
+          title: alternativeSequence
+          type: string
+        association:
+          items:
+            $ref: '#/components/schemas/VariationAssociation'
+          title: association
+          type: array
+        begin:
+          $ref: '#/components/schemas/FeaturePosition'
+        clinicalSignificances:
+          title: clinicalSignificances
+          type: string
+        description:
+          title: description
+          type: string
+        end:
+          $ref: '#/components/schemas/FeaturePosition'
+        evidences:
+          items:
+            $ref: '#/components/schemas/VariationEvidence'
+          title: evidences
+          type: array
+        ftId:
+          title: ftId
+          type: string
+        somaticStatus:
+          format: int64
+          title: somaticStatus
+          type: integer
+        sourceType:
+          title: sourceType
+          type: string
+        wildType:
+          title: wildType
+          type: string
+        xrefs:
+          items:
+            $ref: '#/components/schemas/VariationXref'
+          title: xrefs
+          type: array
+      title: CrossbarProteinVariation
+      type: object
+    CrossbarTarget:
+      example:
+        target_chembl_id: target_chembl_id
+        accession: accession
+      properties:
+        accession:
+          title: accession
+          type: string
+        target_chembl_id:
+          title: target_chembl_id
+          type: string
+      title: CrossbarTarget
+      type: object
+    Drugs:
+      example:
+        pageMeta:
+          currentElements: 1
+          limit: 5
+          totalPages: 7
+          currentPage: 5
+          totalElements: 2
+        drugs:
+        - full_mwt: 6.027456183070403
+          identifier: identifier
+          molecule_type: molecule_type
+          standard_inchi: standard_inchi
+          alogp: 0.8008281904610115
+          canonical_smiles: canonical_smiles
+          pubchem_sid: pubchem_sid
+          targets:
+          - organism: organism
+            accessions:
+            - accessions
+            - accessions
+            name: name
+            action:
+            - action
+            - action
+            id: id
+          - organism: organism
+            accessions:
+            - accessions
+            - accessions
+            name: name
+            action:
+            - action
+            - action
+            id: id
+          polar_surface_area: 1.4658129805029452
+          inchi_key: inchi_key
+          kegg_cid: kegg_cid
+          pb_structures:
+          - pb_structures
+          - pb_structures
+          name: name
+          pathway:
+          - name: name
+            category: category
+          - name: name
+            category: category
+          pubchem_cid: pubchem_cid
+          uniprot_accession: uniprot_accession
+          chembl_id: chembl_id
+        - full_mwt: 6.027456183070403
+          identifier: identifier
+          molecule_type: molecule_type
+          standard_inchi: standard_inchi
+          alogp: 0.8008281904610115
+          canonical_smiles: canonical_smiles
+          pubchem_sid: pubchem_sid
+          targets:
+          - organism: organism
+            accessions:
+            - accessions
+            - accessions
+            name: name
+            action:
+            - action
+            - action
+            id: id
+          - organism: organism
+            accessions:
+            - accessions
+            - accessions
+            name: name
+            action:
+            - action
+            - action
+            id: id
+          polar_surface_area: 1.4658129805029452
+          inchi_key: inchi_key
+          kegg_cid: kegg_cid
+          pb_structures:
+          - pb_structures
+          - pb_structures
+          name: name
+          pathway:
+          - name: name
+            category: category
+          - name: name
+            category: category
+          pubchem_cid: pubchem_cid
+          uniprot_accession: uniprot_accession
+          chembl_id: chembl_id
+      properties:
+        drugs:
+          items:
+            $ref: '#/components/schemas/CrossbarDrug'
+          title: drugs
+          type: array
+        pageMeta:
+          $ref: '#/components/schemas/PageMeta'
+      title: Drugs
+      type: object
+    EFO:
+      example:
+        ncit:
+        - ncit
+        - ncit
+        omim:
+        - omim
+        - omim
+        synonyms:
+        - synonyms
+        - synonyms
+        short_form: short_form
+        description:
+        - description
+        - description
+        doid:
+        - doid
+        - doid
+        umls:
+        - umls
+        - umls
+        label: label
+        obo_id: obo_id
+        snowmed:
+        - snowmed
+        - snowmed
+        icd9:
+        - icd9
+        - icd9
+        mesh:
+        - mesh
+        - mesh
+      properties:
+        description:
+          items:
+            type: string
+          title: description
+          type: array
+        doid:
+          items:
+            type: string
+          title: doid
+          type: array
+        icd9:
+          items:
+            type: string
+          title: icd9
+          type: array
+        label:
+          title: label
+          type: string
+        mesh:
+          items:
+            type: string
+          title: mesh
+          type: array
+        ncit:
+          items:
+            type: string
+          title: ncit
+          type: array
+        obo_id:
+          title: obo_id
+          type: string
+        omim:
+          items:
+            type: string
+          title: omim
+          type: array
+        short_form:
+          title: short_form
+          type: string
+        snowmed:
+          items:
+            type: string
+          title: snowmed
+          type: array
+        synonyms:
+          items:
+            type: string
+          title: synonyms
+          type: array
+        umls:
+          items:
+            type: string
+          title: umls
+          type: array
+      title: EFO
+      type: object
+    EFOEntities:
+      example:
+        pageMeta:
+          currentElements: 1
+          limit: 5
+          totalPages: 7
+          currentPage: 5
+          totalElements: 2
+        diseases:
+        - ncit:
+          - ncit
+          - ncit
+          omim:
+          - omim
+          - omim
+          synonyms:
+          - synonyms
+          - synonyms
+          short_form: short_form
+          description:
+          - description
+          - description
+          doid:
+          - doid
+          - doid
+          umls:
+          - umls
+          - umls
+          label: label
+          obo_id: obo_id
+          snowmed:
+          - snowmed
+          - snowmed
+          icd9:
+          - icd9
+          - icd9
+          mesh:
+          - mesh
+          - mesh
+        - ncit:
+          - ncit
+          - ncit
+          omim:
+          - omim
+          - omim
+          synonyms:
+          - synonyms
+          - synonyms
+          short_form: short_form
+          description:
+          - description
+          - description
+          doid:
+          - doid
+          - doid
+          umls:
+          - umls
+          - umls
+          label: label
+          obo_id: obo_id
+          snowmed:
+          - snowmed
+          - snowmed
+          icd9:
+          - icd9
+          - icd9
+          mesh:
+          - mesh
+          - mesh
+      properties:
+        diseases:
+          items:
+            $ref: '#/components/schemas/EFO'
+          title: diseases
+          type: array
+        pageMeta:
+          $ref: '#/components/schemas/PageMeta'
+      title: EFOEntities
+      type: object
+    Ensembl:
+      example:
+        proteinSequenceId: proteinSequenceId
+        geneId: geneId
+        id: id
+        isoform: isoform
+      properties:
+        geneId:
+          title: geneId
+          type: string
+        id:
+          title: id
+          type: string
+        isoform:
+          title: isoform
+          type: string
+        proteinSequenceId:
+          title: proteinSequenceId
+          type: string
+      title: Ensembl
+      type: object
+    FeaturePosition:
+      example:
+        unparsed: unparsed
+        ceil: 5
+        floor: 2
+        uncertain: true
+      properties:
+        ceil:
+          format: int32
+          title: ceil
+          type: integer
+        floor:
+          format: int32
+          title: floor
+          type: integer
+        uncertain:
+          title: uncertain
+          type: boolean
+        unparsed:
+          title: unparsed
+          type: string
+      title: FeaturePosition
+      type: object
+    Features:
+      example:
+        chain:
+        - description: description
+          ftId: ftId
+          end:
+            unparsed: unparsed
+            ceil: 5
+            floor: 2
+            uncertain: true
+          category: category
+          type: type
+          begin:
+            unparsed: unparsed
+            ceil: 5
+            floor: 2
+            uncertain: true
+        - description: description
+          ftId: ftId
+          end:
+            unparsed: unparsed
+            ceil: 5
+            floor: 2
+            uncertain: true
+          category: category
+          type: type
+          begin:
+            unparsed: unparsed
+            ceil: 5
+            floor: 2
+            uncertain: true
+        binding_site:
+        - description: description
+          ftId: ftId
+          end:
+            unparsed: unparsed
+            ceil: 5
+            floor: 2
+            uncertain: true
+          category: category
+          type: type
+          begin:
+            unparsed: unparsed
+            ceil: 5
+            floor: 2
+            uncertain: true
+        - description: description
+          ftId: ftId
+          end:
+            unparsed: unparsed
+            ceil: 5
+            floor: 2
+            uncertain: true
+          category: category
+          type: type
+          begin:
+            unparsed: unparsed
+            ceil: 5
+            floor: 2
+            uncertain: true
+        active_site:
+        - description: description
+          ftId: ftId
+          end:
+            unparsed: unparsed
+            ceil: 5
+            floor: 2
+            uncertain: true
+          category: category
+          type: type
+          begin:
+            unparsed: unparsed
+            ceil: 5
+            floor: 2
+            uncertain: true
+        - description: description
+          ftId: ftId
+          end:
+            unparsed: unparsed
+            ceil: 5
+            floor: 2
+            uncertain: true
+          category: category
+          type: type
+          begin:
+            unparsed: unparsed
+            ceil: 5
+            floor: 2
+            uncertain: true
+        mutagen:
+        - description: description
+          ftId: ftId
+          end:
+            unparsed: unparsed
+            ceil: 5
+            floor: 2
+            uncertain: true
+          category: category
+          type: type
+          begin:
+            unparsed: unparsed
+            ceil: 5
+            floor: 2
+            uncertain: true
+        - description: description
+          ftId: ftId
+          end:
+            unparsed: unparsed
+            ceil: 5
+            floor: 2
+            uncertain: true
+          category: category
+          type: type
+          begin:
+            unparsed: unparsed
+            ceil: 5
+            floor: 2
+            uncertain: true
+        domain:
+        - description: description
+          ftId: ftId
+          end:
+            unparsed: unparsed
+            ceil: 5
+            floor: 2
+            uncertain: true
+          category: category
+          type: type
+          begin:
+            unparsed: unparsed
+            ceil: 5
+            floor: 2
+            uncertain: true
+        - description: description
+          ftId: ftId
+          end:
+            unparsed: unparsed
+            ceil: 5
+            floor: 2
+            uncertain: true
+          category: category
+          type: type
+          begin:
+            unparsed: unparsed
+            ceil: 5
+            floor: 2
+            uncertain: true
+        variant:
+        - description: description
+          ftId: ftId
+          end:
+            unparsed: unparsed
+            ceil: 5
+            floor: 2
+            uncertain: true
+          category: category
+          type: type
+          begin:
+            unparsed: unparsed
+            ceil: 5
+            floor: 2
+            uncertain: true
+        - description: description
+          ftId: ftId
+          end:
+            unparsed: unparsed
+            ceil: 5
+            floor: 2
+            uncertain: true
+          category: category
+          type: type
+          begin:
+            unparsed: unparsed
+            ceil: 5
+            floor: 2
+            uncertain: true
+        top_dom:
+        - description: description
+          ftId: ftId
+          end:
+            unparsed: unparsed
+            ceil: 5
+            floor: 2
+            uncertain: true
+          category: category
+          type: type
+          begin:
+            unparsed: unparsed
+            ceil: 5
+            floor: 2
+            uncertain: true
+        - description: description
+          ftId: ftId
+          end:
+            unparsed: unparsed
+            ceil: 5
+            floor: 2
+            uncertain: true
+          category: category
+          type: type
+          begin:
+            unparsed: unparsed
+            ceil: 5
+            floor: 2
+            uncertain: true
+        region:
+        - description: description
+          ftId: ftId
+          end:
+            unparsed: unparsed
+            ceil: 5
+            floor: 2
+            uncertain: true
+          category: category
+          type: type
+          begin:
+            unparsed: unparsed
+            ceil: 5
+            floor: 2
+            uncertain: true
+        - description: description
+          ftId: ftId
+          end:
+            unparsed: unparsed
+            ceil: 5
+            floor: 2
+            uncertain: true
+          category: category
+          type: type
+          begin:
+            unparsed: unparsed
+            ceil: 5
+            floor: 2
+            uncertain: true
+      properties:
+        active_site:
+          items:
+            $ref: '#/components/schemas/CrossbarFeature'
+          title: active_site
+          type: array
+        binding_site:
+          items:
+            $ref: '#/components/schemas/CrossbarFeature'
+          title: binding_site
+          type: array
+        chain:
+          items:
+            $ref: '#/components/schemas/CrossbarFeature'
+          title: chain
+          type: array
+        domain:
+          items:
+            $ref: '#/components/schemas/CrossbarFeature'
+          title: domain
+          type: array
+        mutagen:
+          items:
+            $ref: '#/components/schemas/CrossbarFeature'
+          title: mutagen
+          type: array
+        region:
+          items:
+            $ref: '#/components/schemas/CrossbarFeature'
+          title: region
+          type: array
+        top_dom:
+          items:
+            $ref: '#/components/schemas/CrossbarFeature'
+          title: top_dom
+          type: array
+        variant:
+          items:
+            $ref: '#/components/schemas/CrossbarFeature'
+          title: variant
+          type: array
+      title: Features
+      type: object
+    Fragment:
+      example:
+        from: 0
+        to: 6
+        type: type
+      properties:
+        from:
+          format: int32
+          title: from
+          type: integer
+        to:
+          format: int32
+          title: to
+          type: integer
+        type:
+          title: type
+          type: string
+      title: Fragment
+      type: object
+    Gene:
+      example:
+        symbol: symbol
+        id: id
+      properties:
+        id:
+          title: id
+          type: string
+        symbol:
+          title: symbol
+          type: string
+      title: Gene
+      type: object
+    Go:
+      example:
+        term: term
+        id: id
+        evidences:
+        - source_id: source_id
+          source_name: source_name
+        - source_id: source_id
+          source_name: source_name
+      properties:
+        evidences:
+          items:
+            $ref: '#/components/schemas/GoEvidence'
+          title: evidences
+          type: array
+        id:
+          title: id
+          type: string
+        term:
+          title: term
+          type: string
+      title: Go
+      type: object
+    GoEvidence:
+      example:
+        source_id: source_id
+        source_name: source_name
+      properties:
+        source_id:
+          title: source_id
+          type: string
+        source_name:
+          title: source_name
+          type: string
+      title: GoEvidence
+      type: object
+    HPOEntity:
+      example:
+        db_references:
+        - db_references
+        - db_references
+        term_name: term_name
+        gene:
+        - symbol: symbol
+          id: id
+        - symbol: symbol
+          id: id
+        hpo_id: hpo_id
+        synonyms:
+        - synonyms
+        - synonyms
+      properties:
+        db_references:
+          items:
+            type: string
+          title: db_references
+          type: array
+        gene:
+          items:
+            $ref: '#/components/schemas/Gene'
+          title: gene
+          type: array
+        hpo_id:
+          title: hpo_id
+          type: string
+        synonyms:
+          items:
+            type: string
+          title: synonyms
+          type: array
+        term_name:
+          title: term_name
+          type: string
+      title: HPOEntity
+      type: object
+    HitPosition:
+      example:
+        from: 1
+        to: 5
+      properties:
+        from:
+          format: int32
+          title: from
+          type: integer
+        to:
+          format: int32
+          title: to
+          type: integer
+      title: HitPosition
+      type: object
+    HpoEntities:
+      example:
+        pageMeta:
+          currentElements: 1
+          limit: 5
+          totalPages: 7
+          currentPage: 5
+          totalElements: 2
+        hpo:
+        - db_references:
+          - db_references
+          - db_references
+          term_name: term_name
+          gene:
+          - symbol: symbol
+            id: id
+          - symbol: symbol
+            id: id
+          hpo_id: hpo_id
+          synonyms:
+          - synonyms
+          - synonyms
+        - db_references:
+          - db_references
+          - db_references
+          term_name: term_name
+          gene:
+          - symbol: symbol
+            id: id
+          - symbol: symbol
+            id: id
+          hpo_id: hpo_id
+          synonyms:
+          - synonyms
+          - synonyms
+      properties:
+        hpo:
+          items:
+            $ref: '#/components/schemas/HPOEntity'
+          title: hpo
+          type: array
+        pageMeta:
+          $ref: '#/components/schemas/PageMeta'
+      title: HpoEntities
+      type: object
+    Intact:
+      example:
+        method: method
+        source_db: source_db
+        confidence: 0.8008281904610115
+        interactor_a:
+          gene: gene
+          accession: accession
+        interaction_ac:
+        - interaction_ac
+        - interaction_ac
+        interactor_b:
+          gene: gene
+          accession: accession
+      properties:
+        confidence:
+          format: double
+          title: confidence
+          type: number
+        interaction_ac:
+          items:
+            type: string
+          title: interaction_ac
+          type: array
+        interactor_a:
+          $ref: '#/components/schemas/Interactor'
+        interactor_b:
+          $ref: '#/components/schemas/Interactor'
+        method:
+          title: method
+          type: string
+        source_db:
+          title: source_db
+          type: string
+      title: Intact
+      type: object
+    IntactInteractions:
+      example:
+        pageMeta:
+          currentElements: 1
+          limit: 5
+          totalPages: 7
+          currentPage: 5
+          totalElements: 2
+        interactions:
+        - method: method
+          source_db: source_db
+          confidence: 0.8008281904610115
+          interactor_a:
+            gene: gene
+            accession: accession
+          interaction_ac:
+          - interaction_ac
+          - interaction_ac
+          interactor_b:
+            gene: gene
+            accession: accession
+        - method: method
+          source_db: source_db
+          confidence: 0.8008281904610115
+          interactor_a:
+            gene: gene
+            accession: accession
+          interaction_ac:
+          - interaction_ac
+          - interaction_ac
+          interactor_b:
+            gene: gene
+            accession: accession
+      properties:
+        interactions:
+          items:
+            $ref: '#/components/schemas/Intact'
+          title: interactions
+          type: array
+        pageMeta:
+          $ref: '#/components/schemas/PageMeta'
+      title: IntactInteractions
+      type: object
+    Interactor:
+      example:
+        gene: gene
+        accession: accession
+      properties:
+        accession:
+          title: accession
+          type: string
+        gene:
+          title: gene
+          type: string
+      title: Interactor
+      type: object
+    Interpro:
+      example:
+        entry_name: entry_name
+        hit_position:
+          from: 1
+          to: 5
+        fragments:
+        - from: 0
+          to: 6
+          type: type
+        - from: 0
+          to: 6
+          type: type
+        entry_type: entry_type
+        entry_id: entry_id
+      properties:
+        entry_id:
+          title: entry_id
+          type: string
+        entry_name:
+          title: entry_name
+          type: string
+        entry_type:
+          title: entry_type
+          type: string
+        fragments:
+          items:
+            $ref: '#/components/schemas/Fragment'
+          title: fragments
+          type: array
+        hit_position:
+          $ref: '#/components/schemas/HitPosition'
+      title: Interpro
+      type: object
+    Kegg:
+      example:
+        id: id
+      properties:
+        id:
+          title: id
+          type: string
+      title: Kegg
+      type: object
+    Molecules:
+      example:
+        pageMeta:
+          currentElements: 1
+          limit: 5
+          totalPages: 7
+          currentPage: 5
+          totalElements: 2
+        molecules:
+        - prodrug: 2.3021358869347655
+          full_mwt: 1.4658129805029452
+          standard_inchi: standard_inchi
+          alogp: 0.8008281904610115
+          chirality: 6.027456183070403
+          molecular_type: molecular_type
+          heavy_atoms_count: 5
+          xrefs:
+          - id: id
+            source: source
+          - id: id
+            source: source
+          canonical_smiles: canonical_smiles
+          molecular_species: molecular_species
+          pref_name: pref_name
+          parent_chembl_id: parent_chembl_id
+          inchi_key: inchi_key
+          max_phase: 5
+          molecule_chembl_id: molecule_chembl_id
+        - prodrug: 2.3021358869347655
+          full_mwt: 1.4658129805029452
+          standard_inchi: standard_inchi
+          alogp: 0.8008281904610115
+          chirality: 6.027456183070403
+          molecular_type: molecular_type
+          heavy_atoms_count: 5
+          xrefs:
+          - id: id
+            source: source
+          - id: id
+            source: source
+          canonical_smiles: canonical_smiles
+          molecular_species: molecular_species
+          pref_name: pref_name
+          parent_chembl_id: parent_chembl_id
+          inchi_key: inchi_key
+          max_phase: 5
+          molecule_chembl_id: molecule_chembl_id
+      properties:
+        molecules:
+          items:
+            $ref: '#/components/schemas/CrossbarMolecule'
+          title: molecules
+          type: array
+        pageMeta:
+          $ref: '#/components/schemas/PageMeta'
+      title: Molecules
+      type: object
+    Omim:
+      example:
+        _id: _id
+        type: type
+      properties:
+        _id:
+          title: _id
+          type: string
+        type:
+          title: type
+          type: string
+      title: Omim
+      type: object
+    OpenTargets:
+      example:
+        id: id
+      properties:
+        id:
+          title: id
+          type: string
+      title: OpenTargets
+      type: object
+    Orphanet:
+      example:
+        disease: disease
+        id: id
+      properties:
+        disease:
+          title: disease
+          type: string
+        id:
+          title: id
+          type: string
+      title: Orphanet
+      type: object
+    PDBe:
+      example:
+        method: method
+        chains: chains
+        id: id
+        resolution: resolution
+      properties:
+        chains:
+          title: chains
+          type: string
+        id:
+          title: id
+          type: string
+        method:
+          title: method
+          type: string
+        resolution:
+          title: resolution
+          type: string
+      title: PDBe
+      type: object
+    PageMeta:
+      example:
+        currentElements: 1
+        limit: 5
+        totalPages: 7
+        currentPage: 5
+        totalElements: 2
+      properties:
+        currentElements:
+          format: int64
+          title: currentElements
+          type: integer
+        currentPage:
+          format: int32
+          title: currentPage
+          type: integer
+        limit:
+          format: int32
+          title: limit
+          type: integer
+        totalElements:
+          format: int64
+          title: totalElements
+          type: integer
+        totalPages:
+          format: int32
+          title: totalPages
+          type: integer
+      title: PageMeta
+      type: object
+    Pathway:
+      example:
+        name: name
+        category: category
+      properties:
+        category:
+          title: category
+          type: string
+        name:
+          title: name
+          type: string
+      title: Pathway
+      type: object
+    Pfam:
+      example:
+        entryName: entryName
+        id: id
+      properties:
+        entryName:
+          title: entryName
+          type: string
+        id:
+          title: id
+          type: string
+      title: Pfam
+      type: object
+    Protein:
+      example:
+        features:
+          chain:
+          - description: description
+            ftId: ftId
+            end:
+              unparsed: unparsed
+              ceil: 5
+              floor: 2
+              uncertain: true
+            category: category
+            type: type
+            begin:
+              unparsed: unparsed
+              ceil: 5
+              floor: 2
+              uncertain: true
+          - description: description
+            ftId: ftId
+            end:
+              unparsed: unparsed
+              ceil: 5
+              floor: 2
+              uncertain: true
+            category: category
+            type: type
+            begin:
+              unparsed: unparsed
+              ceil: 5
+              floor: 2
+              uncertain: true
+          binding_site:
+          - description: description
+            ftId: ftId
+            end:
+              unparsed: unparsed
+              ceil: 5
+              floor: 2
+              uncertain: true
+            category: category
+            type: type
+            begin:
+              unparsed: unparsed
+              ceil: 5
+              floor: 2
+              uncertain: true
+          - description: description
+            ftId: ftId
+            end:
+              unparsed: unparsed
+              ceil: 5
+              floor: 2
+              uncertain: true
+            category: category
+            type: type
+            begin:
+              unparsed: unparsed
+              ceil: 5
+              floor: 2
+              uncertain: true
+          active_site:
+          - description: description
+            ftId: ftId
+            end:
+              unparsed: unparsed
+              ceil: 5
+              floor: 2
+              uncertain: true
+            category: category
+            type: type
+            begin:
+              unparsed: unparsed
+              ceil: 5
+              floor: 2
+              uncertain: true
+          - description: description
+            ftId: ftId
+            end:
+              unparsed: unparsed
+              ceil: 5
+              floor: 2
+              uncertain: true
+            category: category
+            type: type
+            begin:
+              unparsed: unparsed
+              ceil: 5
+              floor: 2
+              uncertain: true
+          mutagen:
+          - description: description
+            ftId: ftId
+            end:
+              unparsed: unparsed
+              ceil: 5
+              floor: 2
+              uncertain: true
+            category: category
+            type: type
+            begin:
+              unparsed: unparsed
+              ceil: 5
+              floor: 2
+              uncertain: true
+          - description: description
+            ftId: ftId
+            end:
+              unparsed: unparsed
+              ceil: 5
+              floor: 2
+              uncertain: true
+            category: category
+            type: type
+            begin:
+              unparsed: unparsed
+              ceil: 5
+              floor: 2
+              uncertain: true
+          domain:
+          - description: description
+            ftId: ftId
+            end:
+              unparsed: unparsed
+              ceil: 5
+              floor: 2
+              uncertain: true
+            category: category
+            type: type
+            begin:
+              unparsed: unparsed
+              ceil: 5
+              floor: 2
+              uncertain: true
+          - description: description
+            ftId: ftId
+            end:
+              unparsed: unparsed
+              ceil: 5
+              floor: 2
+              uncertain: true
+            category: category
+            type: type
+            begin:
+              unparsed: unparsed
+              ceil: 5
+              floor: 2
+              uncertain: true
+          variant:
+          - description: description
+            ftId: ftId
+            end:
+              unparsed: unparsed
+              ceil: 5
+              floor: 2
+              uncertain: true
+            category: category
+            type: type
+            begin:
+              unparsed: unparsed
+              ceil: 5
+              floor: 2
+              uncertain: true
+          - description: description
+            ftId: ftId
+            end:
+              unparsed: unparsed
+              ceil: 5
+              floor: 2
+              uncertain: true
+            category: category
+            type: type
+            begin:
+              unparsed: unparsed
+              ceil: 5
+              floor: 2
+              uncertain: true
+          top_dom:
+          - description: description
+            ftId: ftId
+            end:
+              unparsed: unparsed
+              ceil: 5
+              floor: 2
+              uncertain: true
+            category: category
+            type: type
+            begin:
+              unparsed: unparsed
+              ceil: 5
+              floor: 2
+              uncertain: true
+          - description: description
+            ftId: ftId
+            end:
+              unparsed: unparsed
+              ceil: 5
+              floor: 2
+              uncertain: true
+            category: category
+            type: type
+            begin:
+              unparsed: unparsed
+              ceil: 5
+              floor: 2
+              uncertain: true
+          region:
+          - description: description
+            ftId: ftId
+            end:
+              unparsed: unparsed
+              ceil: 5
+              floor: 2
+              uncertain: true
+            category: category
+            type: type
+            begin:
+              unparsed: unparsed
+              ceil: 5
+              floor: 2
+              uncertain: true
+          - description: description
+            ftId: ftId
+            end:
+              unparsed: unparsed
+              ceil: 5
+              floor: 2
+              uncertain: true
+            category: category
+            type: type
+            begin:
+              unparsed: unparsed
+              ceil: 5
+              floor: 2
+              uncertain: true
+        full_name: full_name
+        genes:
+        - genes
+        - genes
+        variations:
+        - sourceType: sourceType
+          alternativeSequence: alternativeSequence
+          xrefs:
+          - name: name
+            id: id
+          - name: name
+            id: id
+          association:
+          - name: name
+            xrefs:
+            - name: name
+              id: id
+            - name: name
+              id: id
+            description: description
+            evidences:
+            - source:
+                name: name
+                id: id
+            - source:
+                name: name
+                id: id
+          - name: name
+            xrefs:
+            - name: name
+              id: id
+            - name: name
+              id: id
+            description: description
+            evidences:
+            - source:
+                name: name
+                id: id
+            - source:
+                name: name
+                id: id
+          clinicalSignificances: clinicalSignificances
+          description: description
+          ftId: ftId
+          end:
+            unparsed: unparsed
+            ceil: 5
+            floor: 2
+            uncertain: true
+          wildType: wildType
+          evidences:
+          - source:
+              name: name
+              id: id
+          - source:
+              name: name
+              id: id
+          begin:
+            unparsed: unparsed
+            ceil: 5
+            floor: 2
+            uncertain: true
+          somaticStatus: 2
+        - sourceType: sourceType
+          alternativeSequence: alternativeSequence
+          xrefs:
+          - name: name
+            id: id
+          - name: name
+            id: id
+          association:
+          - name: name
+            xrefs:
+            - name: name
+              id: id
+            - name: name
+              id: id
+            description: description
+            evidences:
+            - source:
+                name: name
+                id: id
+            - source:
+                name: name
+                id: id
+          - name: name
+            xrefs:
+            - name: name
+              id: id
+            - name: name
+              id: id
+            description: description
+            evidences:
+            - source:
+                name: name
+                id: id
+            - source:
+                name: name
+                id: id
+          clinicalSignificances: clinicalSignificances
+          description: description
+          ftId: ftId
+          end:
+            unparsed: unparsed
+            ceil: 5
+            floor: 2
+            uncertain: true
+          wildType: wildType
+          evidences:
+          - source:
+              name: name
+              id: id
+          - source:
+              name: name
+              id: id
+          begin:
+            unparsed: unparsed
+            ceil: 5
+            floor: 2
+            uncertain: true
+          somaticStatus: 2
+        chromosome: chromosome
+        mass: 9.301444243932576
+        length: 7.061401241503109
+        accession: accession
+        crossreferences:
+          ensembl:
+          - proteinSequenceId: proteinSequenceId
+            geneId: geneId
+            id: id
+            isoform: isoform
+          - proteinSequenceId: proteinSequenceId
+            geneId: geneId
+            id: id
+            isoform: isoform
+          reactome:
+          - id: id
+            pathwayName: pathwayName
+          - id: id
+            pathwayName: pathwayName
+          pdBe:
+          - method: method
+            chains: chains
+            id: id
+            resolution: resolution
+          - method: method
+            chains: chains
+            id: id
+            resolution: resolution
+          omim:
+          - _id: _id
+            type: type
+          - _id: _id
+            type: type
+          pfam:
+          - entryName: entryName
+            id: id
+          - entryName: entryName
+            id: id
+          go:
+          - term: term
+            id: id
+            evidences:
+            - source_id: source_id
+              source_name: source_name
+            - source_id: source_id
+              source_name: source_name
+          - term: term
+            id: id
+            evidences:
+            - source_id: source_id
+              source_name: source_name
+            - source_id: source_id
+              source_name: source_name
+          kegg:
+          - id: id
+          - id: id
+          orphanet:
+          - disease: disease
+            id: id
+          - disease: disease
+            id: id
+          openTargets:
+          - id: id
+          - id: id
+          interpro:
+          - entry_name: entry_name
+            hit_position:
+              from: 1
+              to: 5
+            fragments:
+            - from: 0
+              to: 6
+              type: type
+            - from: 0
+              to: 6
+              type: type
+            entry_type: entry_type
+            entry_id: entry_id
+          - entry_name: entry_name
+            hit_position:
+              from: 1
+              to: 5
+            fragments:
+            - from: 0
+              to: 6
+              type: type
+            - from: 0
+              to: 6
+              type: type
+            entry_type: entry_type
+            entry_id: entry_id
+        ec_numbers:
+        - ec_numbers
+        - ec_numbers
+        tax_id: 3
+        interactions:
+        - interactors:
+          - interactors
+          - interactors
+          interaction_type: interaction_type
+          id: id
+        - interactors:
+          - interactors
+          - interactors
+          interaction_type: interaction_type
+          id: id
+      properties:
+        accession:
+          title: accession
+          type: string
+        chromosome:
+          title: chromosome
+          type: string
+        crossreferences:
+          $ref: '#/components/schemas/CrossReferences'
+        ec_numbers:
+          items:
+            type: string
+          title: ec_numbers
+          type: array
+        features:
+          $ref: '#/components/schemas/Features'
+        full_name:
+          title: full_name
+          type: string
+        genes:
+          items:
+            type: string
+          title: genes
+          type: array
+        interactions:
+          items:
+            $ref: '#/components/schemas/ProteinInteraction'
+          title: interactions
+          type: array
+        length:
+          format: double
+          title: length
+          type: number
+        mass:
+          format: double
+          title: mass
+          type: number
+        tax_id:
+          format: int32
+          title: tax_id
+          type: integer
+        variations:
+          items:
+            $ref: '#/components/schemas/CrossbarProteinVariation'
+          title: variations
+          type: array
+      title: Protein
+      type: object
+    ProteinInteraction:
+      example:
+        interactors:
+        - interactors
+        - interactors
+        interaction_type: interaction_type
+        id: id
+      properties:
+        id:
+          title: id
+          type: string
+        interaction_type:
+          title: interaction_type
+          type: string
+        interactors:
+          items:
+            type: string
+          title: interactors
+          type: array
+      title: ProteinInteraction
+      type: object
+    Proteins:
+      example:
+        pageMeta:
+          currentElements: 1
+          limit: 5
+          totalPages: 7
+          currentPage: 5
+          totalElements: 2
+        proteins:
+        - features:
+            chain:
+            - description: description
+              ftId: ftId
+              end:
+                unparsed: unparsed
+                ceil: 5
+                floor: 2
+                uncertain: true
+              category: category
+              type: type
+              begin:
+                unparsed: unparsed
+                ceil: 5
+                floor: 2
+                uncertain: true
+            - description: description
+              ftId: ftId
+              end:
+                unparsed: unparsed
+                ceil: 5
+                floor: 2
+                uncertain: true
+              category: category
+              type: type
+              begin:
+                unparsed: unparsed
+                ceil: 5
+                floor: 2
+                uncertain: true
+            binding_site:
+            - description: description
+              ftId: ftId
+              end:
+                unparsed: unparsed
+                ceil: 5
+                floor: 2
+                uncertain: true
+              category: category
+              type: type
+              begin:
+                unparsed: unparsed
+                ceil: 5
+                floor: 2
+                uncertain: true
+            - description: description
+              ftId: ftId
+              end:
+                unparsed: unparsed
+                ceil: 5
+                floor: 2
+                uncertain: true
+              category: category
+              type: type
+              begin:
+                unparsed: unparsed
+                ceil: 5
+                floor: 2
+                uncertain: true
+            active_site:
+            - description: description
+              ftId: ftId
+              end:
+                unparsed: unparsed
+                ceil: 5
+                floor: 2
+                uncertain: true
+              category: category
+              type: type
+              begin:
+                unparsed: unparsed
+                ceil: 5
+                floor: 2
+                uncertain: true
+            - description: description
+              ftId: ftId
+              end:
+                unparsed: unparsed
+                ceil: 5
+                floor: 2
+                uncertain: true
+              category: category
+              type: type
+              begin:
+                unparsed: unparsed
+                ceil: 5
+                floor: 2
+                uncertain: true
+            mutagen:
+            - description: description
+              ftId: ftId
+              end:
+                unparsed: unparsed
+                ceil: 5
+                floor: 2
+                uncertain: true
+              category: category
+              type: type
+              begin:
+                unparsed: unparsed
+                ceil: 5
+                floor: 2
+                uncertain: true
+            - description: description
+              ftId: ftId
+              end:
+                unparsed: unparsed
+                ceil: 5
+                floor: 2
+                uncertain: true
+              category: category
+              type: type
+              begin:
+                unparsed: unparsed
+                ceil: 5
+                floor: 2
+                uncertain: true
+            domain:
+            - description: description
+              ftId: ftId
+              end:
+                unparsed: unparsed
+                ceil: 5
+                floor: 2
+                uncertain: true
+              category: category
+              type: type
+              begin:
+                unparsed: unparsed
+                ceil: 5
+                floor: 2
+                uncertain: true
+            - description: description
+              ftId: ftId
+              end:
+                unparsed: unparsed
+                ceil: 5
+                floor: 2
+                uncertain: true
+              category: category
+              type: type
+              begin:
+                unparsed: unparsed
+                ceil: 5
+                floor: 2
+                uncertain: true
+            variant:
+            - description: description
+              ftId: ftId
+              end:
+                unparsed: unparsed
+                ceil: 5
+                floor: 2
+                uncertain: true
+              category: category
+              type: type
+              begin:
+                unparsed: unparsed
+                ceil: 5
+                floor: 2
+                uncertain: true
+            - description: description
+              ftId: ftId
+              end:
+                unparsed: unparsed
+                ceil: 5
+                floor: 2
+                uncertain: true
+              category: category
+              type: type
+              begin:
+                unparsed: unparsed
+                ceil: 5
+                floor: 2
+                uncertain: true
+            top_dom:
+            - description: description
+              ftId: ftId
+              end:
+                unparsed: unparsed
+                ceil: 5
+                floor: 2
+                uncertain: true
+              category: category
+              type: type
+              begin:
+                unparsed: unparsed
+                ceil: 5
+                floor: 2
+                uncertain: true
+            - description: description
+              ftId: ftId
+              end:
+                unparsed: unparsed
+                ceil: 5
+                floor: 2
+                uncertain: true
+              category: category
+              type: type
+              begin:
+                unparsed: unparsed
+                ceil: 5
+                floor: 2
+                uncertain: true
+            region:
+            - description: description
+              ftId: ftId
+              end:
+                unparsed: unparsed
+                ceil: 5
+                floor: 2
+                uncertain: true
+              category: category
+              type: type
+              begin:
+                unparsed: unparsed
+                ceil: 5
+                floor: 2
+                uncertain: true
+            - description: description
+              ftId: ftId
+              end:
+                unparsed: unparsed
+                ceil: 5
+                floor: 2
+                uncertain: true
+              category: category
+              type: type
+              begin:
+                unparsed: unparsed
+                ceil: 5
+                floor: 2
+                uncertain: true
+          full_name: full_name
+          genes:
+          - genes
+          - genes
+          variations:
+          - sourceType: sourceType
+            alternativeSequence: alternativeSequence
+            xrefs:
+            - name: name
+              id: id
+            - name: name
+              id: id
+            association:
+            - name: name
+              xrefs:
+              - name: name
+                id: id
+              - name: name
+                id: id
+              description: description
+              evidences:
+              - source:
+                  name: name
+                  id: id
+              - source:
+                  name: name
+                  id: id
+            - name: name
+              xrefs:
+              - name: name
+                id: id
+              - name: name
+                id: id
+              description: description
+              evidences:
+              - source:
+                  name: name
+                  id: id
+              - source:
+                  name: name
+                  id: id
+            clinicalSignificances: clinicalSignificances
+            description: description
+            ftId: ftId
+            end:
+              unparsed: unparsed
+              ceil: 5
+              floor: 2
+              uncertain: true
+            wildType: wildType
+            evidences:
+            - source:
+                name: name
+                id: id
+            - source:
+                name: name
+                id: id
+            begin:
+              unparsed: unparsed
+              ceil: 5
+              floor: 2
+              uncertain: true
+            somaticStatus: 2
+          - sourceType: sourceType
+            alternativeSequence: alternativeSequence
+            xrefs:
+            - name: name
+              id: id
+            - name: name
+              id: id
+            association:
+            - name: name
+              xrefs:
+              - name: name
+                id: id
+              - name: name
+                id: id
+              description: description
+              evidences:
+              - source:
+                  name: name
+                  id: id
+              - source:
+                  name: name
+                  id: id
+            - name: name
+              xrefs:
+              - name: name
+                id: id
+              - name: name
+                id: id
+              description: description
+              evidences:
+              - source:
+                  name: name
+                  id: id
+              - source:
+                  name: name
+                  id: id
+            clinicalSignificances: clinicalSignificances
+            description: description
+            ftId: ftId
+            end:
+              unparsed: unparsed
+              ceil: 5
+              floor: 2
+              uncertain: true
+            wildType: wildType
+            evidences:
+            - source:
+                name: name
+                id: id
+            - source:
+                name: name
+                id: id
+            begin:
+              unparsed: unparsed
+              ceil: 5
+              floor: 2
+              uncertain: true
+            somaticStatus: 2
+          chromosome: chromosome
+          mass: 9.301444243932576
+          length: 7.061401241503109
+          accession: accession
+          crossreferences:
+            ensembl:
+            - proteinSequenceId: proteinSequenceId
+              geneId: geneId
+              id: id
+              isoform: isoform
+            - proteinSequenceId: proteinSequenceId
+              geneId: geneId
+              id: id
+              isoform: isoform
+            reactome:
+            - id: id
+              pathwayName: pathwayName
+            - id: id
+              pathwayName: pathwayName
+            pdBe:
+            - method: method
+              chains: chains
+              id: id
+              resolution: resolution
+            - method: method
+              chains: chains
+              id: id
+              resolution: resolution
+            omim:
+            - _id: _id
+              type: type
+            - _id: _id
+              type: type
+            pfam:
+            - entryName: entryName
+              id: id
+            - entryName: entryName
+              id: id
+            go:
+            - term: term
+              id: id
+              evidences:
+              - source_id: source_id
+                source_name: source_name
+              - source_id: source_id
+                source_name: source_name
+            - term: term
+              id: id
+              evidences:
+              - source_id: source_id
+                source_name: source_name
+              - source_id: source_id
+                source_name: source_name
+            kegg:
+            - id: id
+            - id: id
+            orphanet:
+            - disease: disease
+              id: id
+            - disease: disease
+              id: id
+            openTargets:
+            - id: id
+            - id: id
+            interpro:
+            - entry_name: entry_name
+              hit_position:
+                from: 1
+                to: 5
+              fragments:
+              - from: 0
+                to: 6
+                type: type
+              - from: 0
+                to: 6
+                type: type
+              entry_type: entry_type
+              entry_id: entry_id
+            - entry_name: entry_name
+              hit_position:
+                from: 1
+                to: 5
+              fragments:
+              - from: 0
+                to: 6
+                type: type
+              - from: 0
+                to: 6
+                type: type
+              entry_type: entry_type
+              entry_id: entry_id
+          ec_numbers:
+          - ec_numbers
+          - ec_numbers
+          tax_id: 3
+          interactions:
+          - interactors:
+            - interactors
+            - interactors
+            interaction_type: interaction_type
+            id: id
+          - interactors:
+            - interactors
+            - interactors
+            interaction_type: interaction_type
+            id: id
+        - features:
+            chain:
+            - description: description
+              ftId: ftId
+              end:
+                unparsed: unparsed
+                ceil: 5
+                floor: 2
+                uncertain: true
+              category: category
+              type: type
+              begin:
+                unparsed: unparsed
+                ceil: 5
+                floor: 2
+                uncertain: true
+            - description: description
+              ftId: ftId
+              end:
+                unparsed: unparsed
+                ceil: 5
+                floor: 2
+                uncertain: true
+              category: category
+              type: type
+              begin:
+                unparsed: unparsed
+                ceil: 5
+                floor: 2
+                uncertain: true
+            binding_site:
+            - description: description
+              ftId: ftId
+              end:
+                unparsed: unparsed
+                ceil: 5
+                floor: 2
+                uncertain: true
+              category: category
+              type: type
+              begin:
+                unparsed: unparsed
+                ceil: 5
+                floor: 2
+                uncertain: true
+            - description: description
+              ftId: ftId
+              end:
+                unparsed: unparsed
+                ceil: 5
+                floor: 2
+                uncertain: true
+              category: category
+              type: type
+              begin:
+                unparsed: unparsed
+                ceil: 5
+                floor: 2
+                uncertain: true
+            active_site:
+            - description: description
+              ftId: ftId
+              end:
+                unparsed: unparsed
+                ceil: 5
+                floor: 2
+                uncertain: true
+              category: category
+              type: type
+              begin:
+                unparsed: unparsed
+                ceil: 5
+                floor: 2
+                uncertain: true
+            - description: description
+              ftId: ftId
+              end:
+                unparsed: unparsed
+                ceil: 5
+                floor: 2
+                uncertain: true
+              category: category
+              type: type
+              begin:
+                unparsed: unparsed
+                ceil: 5
+                floor: 2
+                uncertain: true
+            mutagen:
+            - description: description
+              ftId: ftId
+              end:
+                unparsed: unparsed
+                ceil: 5
+                floor: 2
+                uncertain: true
+              category: category
+              type: type
+              begin:
+                unparsed: unparsed
+                ceil: 5
+                floor: 2
+                uncertain: true
+            - description: description
+              ftId: ftId
+              end:
+                unparsed: unparsed
+                ceil: 5
+                floor: 2
+                uncertain: true
+              category: category
+              type: type
+              begin:
+                unparsed: unparsed
+                ceil: 5
+                floor: 2
+                uncertain: true
+            domain:
+            - description: description
+              ftId: ftId
+              end:
+                unparsed: unparsed
+                ceil: 5
+                floor: 2
+                uncertain: true
+              category: category
+              type: type
+              begin:
+                unparsed: unparsed
+                ceil: 5
+                floor: 2
+                uncertain: true
+            - description: description
+              ftId: ftId
+              end:
+                unparsed: unparsed
+                ceil: 5
+                floor: 2
+                uncertain: true
+              category: category
+              type: type
+              begin:
+                unparsed: unparsed
+                ceil: 5
+                floor: 2
+                uncertain: true
+            variant:
+            - description: description
+              ftId: ftId
+              end:
+                unparsed: unparsed
+                ceil: 5
+                floor: 2
+                uncertain: true
+              category: category
+              type: type
+              begin:
+                unparsed: unparsed
+                ceil: 5
+                floor: 2
+                uncertain: true
+            - description: description
+              ftId: ftId
+              end:
+                unparsed: unparsed
+                ceil: 5
+                floor: 2
+                uncertain: true
+              category: category
+              type: type
+              begin:
+                unparsed: unparsed
+                ceil: 5
+                floor: 2
+                uncertain: true
+            top_dom:
+            - description: description
+              ftId: ftId
+              end:
+                unparsed: unparsed
+                ceil: 5
+                floor: 2
+                uncertain: true
+              category: category
+              type: type
+              begin:
+                unparsed: unparsed
+                ceil: 5
+                floor: 2
+                uncertain: true
+            - description: description
+              ftId: ftId
+              end:
+                unparsed: unparsed
+                ceil: 5
+                floor: 2
+                uncertain: true
+              category: category
+              type: type
+              begin:
+                unparsed: unparsed
+                ceil: 5
+                floor: 2
+                uncertain: true
+            region:
+            - description: description
+              ftId: ftId
+              end:
+                unparsed: unparsed
+                ceil: 5
+                floor: 2
+                uncertain: true
+              category: category
+              type: type
+              begin:
+                unparsed: unparsed
+                ceil: 5
+                floor: 2
+                uncertain: true
+            - description: description
+              ftId: ftId
+              end:
+                unparsed: unparsed
+                ceil: 5
+                floor: 2
+                uncertain: true
+              category: category
+              type: type
+              begin:
+                unparsed: unparsed
+                ceil: 5
+                floor: 2
+                uncertain: true
+          full_name: full_name
+          genes:
+          - genes
+          - genes
+          variations:
+          - sourceType: sourceType
+            alternativeSequence: alternativeSequence
+            xrefs:
+            - name: name
+              id: id
+            - name: name
+              id: id
+            association:
+            - name: name
+              xrefs:
+              - name: name
+                id: id
+              - name: name
+                id: id
+              description: description
+              evidences:
+              - source:
+                  name: name
+                  id: id
+              - source:
+                  name: name
+                  id: id
+            - name: name
+              xrefs:
+              - name: name
+                id: id
+              - name: name
+                id: id
+              description: description
+              evidences:
+              - source:
+                  name: name
+                  id: id
+              - source:
+                  name: name
+                  id: id
+            clinicalSignificances: clinicalSignificances
+            description: description
+            ftId: ftId
+            end:
+              unparsed: unparsed
+              ceil: 5
+              floor: 2
+              uncertain: true
+            wildType: wildType
+            evidences:
+            - source:
+                name: name
+                id: id
+            - source:
+                name: name
+                id: id
+            begin:
+              unparsed: unparsed
+              ceil: 5
+              floor: 2
+              uncertain: true
+            somaticStatus: 2
+          - sourceType: sourceType
+            alternativeSequence: alternativeSequence
+            xrefs:
+            - name: name
+              id: id
+            - name: name
+              id: id
+            association:
+            - name: name
+              xrefs:
+              - name: name
+                id: id
+              - name: name
+                id: id
+              description: description
+              evidences:
+              - source:
+                  name: name
+                  id: id
+              - source:
+                  name: name
+                  id: id
+            - name: name
+              xrefs:
+              - name: name
+                id: id
+              - name: name
+                id: id
+              description: description
+              evidences:
+              - source:
+                  name: name
+                  id: id
+              - source:
+                  name: name
+                  id: id
+            clinicalSignificances: clinicalSignificances
+            description: description
+            ftId: ftId
+            end:
+              unparsed: unparsed
+              ceil: 5
+              floor: 2
+              uncertain: true
+            wildType: wildType
+            evidences:
+            - source:
+                name: name
+                id: id
+            - source:
+                name: name
+                id: id
+            begin:
+              unparsed: unparsed
+              ceil: 5
+              floor: 2
+              uncertain: true
+            somaticStatus: 2
+          chromosome: chromosome
+          mass: 9.301444243932576
+          length: 7.061401241503109
+          accession: accession
+          crossreferences:
+            ensembl:
+            - proteinSequenceId: proteinSequenceId
+              geneId: geneId
+              id: id
+              isoform: isoform
+            - proteinSequenceId: proteinSequenceId
+              geneId: geneId
+              id: id
+              isoform: isoform
+            reactome:
+            - id: id
+              pathwayName: pathwayName
+            - id: id
+              pathwayName: pathwayName
+            pdBe:
+            - method: method
+              chains: chains
+              id: id
+              resolution: resolution
+            - method: method
+              chains: chains
+              id: id
+              resolution: resolution
+            omim:
+            - _id: _id
+              type: type
+            - _id: _id
+              type: type
+            pfam:
+            - entryName: entryName
+              id: id
+            - entryName: entryName
+              id: id
+            go:
+            - term: term
+              id: id
+              evidences:
+              - source_id: source_id
+                source_name: source_name
+              - source_id: source_id
+                source_name: source_name
+            - term: term
+              id: id
+              evidences:
+              - source_id: source_id
+                source_name: source_name
+              - source_id: source_id
+                source_name: source_name
+            kegg:
+            - id: id
+            - id: id
+            orphanet:
+            - disease: disease
+              id: id
+            - disease: disease
+              id: id
+            openTargets:
+            - id: id
+            - id: id
+            interpro:
+            - entry_name: entry_name
+              hit_position:
+                from: 1
+                to: 5
+              fragments:
+              - from: 0
+                to: 6
+                type: type
+              - from: 0
+                to: 6
+                type: type
+              entry_type: entry_type
+              entry_id: entry_id
+            - entry_name: entry_name
+              hit_position:
+                from: 1
+                to: 5
+              fragments:
+              - from: 0
+                to: 6
+                type: type
+              - from: 0
+                to: 6
+                type: type
+              entry_type: entry_type
+              entry_id: entry_id
+          ec_numbers:
+          - ec_numbers
+          - ec_numbers
+          tax_id: 3
+          interactions:
+          - interactors:
+            - interactors
+            - interactors
+            interaction_type: interaction_type
+            id: id
+          - interactors:
+            - interactors
+            - interactors
+            interaction_type: interaction_type
+            id: id
+      properties:
+        pageMeta:
+          $ref: '#/components/schemas/PageMeta'
+        proteins:
+          items:
+            $ref: '#/components/schemas/Protein'
+          title: proteins
+          type: array
+      title: Proteins
+      type: object
+    PubchemCompounds:
+      example:
+        pageMeta:
+          currentElements: 1
+          limit: 5
+          totalPages: 7
+          currentPage: 5
+          totalElements: 2
+        compounds:
+        - covalent_unit_count: 9
+          full_mwt: 3.616076749251911
+          standard_inchi: standard_inchi
+          alogp: 0.8008281904610115
+          bond_chiral_def_count: 5
+          atom_chiral_count: 6
+          heavy_atoms_count: 2
+          canonical_smiles: canonical_smiles
+          bond_chiral_undef_count: 2
+          isotope_atom_count: 4
+          finger_print: finger_print
+          polar_surface_area: 7.386281948385884
+          atom_chiral_def_count: 1
+          inchi_key: inchi_key
+          tautomers_count: 1
+          bond_chiral_count: 5
+          cid: 7
+        - covalent_unit_count: 9
+          full_mwt: 3.616076749251911
+          standard_inchi: standard_inchi
+          alogp: 0.8008281904610115
+          bond_chiral_def_count: 5
+          atom_chiral_count: 6
+          heavy_atoms_count: 2
+          canonical_smiles: canonical_smiles
+          bond_chiral_undef_count: 2
+          isotope_atom_count: 4
+          finger_print: finger_print
+          polar_surface_area: 7.386281948385884
+          atom_chiral_def_count: 1
+          inchi_key: inchi_key
+          tautomers_count: 1
+          bond_chiral_count: 5
+          cid: 7
+      properties:
+        compounds:
+          items:
+            $ref: '#/components/schemas/CrossbarPCCompound'
+          title: compounds
+          type: array
+        pageMeta:
+          $ref: '#/components/schemas/PageMeta'
+      title: PubchemCompounds
+      type: object
+    PubchemSubstances:
+      example:
+        pageMeta:
+          currentElements: 1
+          limit: 5
+          totalPages: 7
+          currentPage: 5
+          totalElements: 2
+        substances:
+        - chembl_cmpd_xref: chembl_cmpd_xref
+          cids:
+          - 0
+          - 0
+          sid: 6
+        - chembl_cmpd_xref: chembl_cmpd_xref
+          cids:
+          - 0
+          - 0
+          sid: 6
+      properties:
+        pageMeta:
+          $ref: '#/components/schemas/PageMeta'
+        substances:
+          items:
+            $ref: '#/components/schemas/Substance'
+          title: substances
+          type: array
+      title: PubchemSubstances
+      type: object
+    Reactome:
+      example:
+        id: id
+        pathwayName: pathwayName
+      properties:
+        id:
+          title: id
+          type: string
+        pathwayName:
+          title: pathwayName
+          type: string
+      title: Reactome
+      type: object
+    SidRelatedData:
+      example:
+        assay_pubchem_id: 7
+        standard_relation: standard_relation
+        assay_data:
+        - standard_units: standard_units
+          standard_type: standard_type
+          standard_value: 2.3021358869347655
+        - standard_units: standard_units
+          standard_type: standard_type
+          standard_value: 2.3021358869347655
+        outcome: outcome
+        sid: 9
+      properties:
+        assay_data:
+          items:
+            $ref: '#/components/schemas/AssayData'
+          title: assay_data
+          type: array
+        assay_pubchem_id:
+          title: assay_pubchem_id
+          type: integer
+        outcome:
+          title: outcome
+          type: string
+        sid:
+          title: sid
+          type: integer
+        standard_relation:
+          title: standard_relation
+          type: string
+      title: SidRelatedData
+      type: object
+    Substance:
+      example:
+        chembl_cmpd_xref: chembl_cmpd_xref
+        cids:
+        - 0
+        - 0
+        sid: 6
+      properties:
+        chembl_cmpd_xref:
+          title: chembl_cmpd_xref
+          type: string
+        cids:
+          items:
+            type: integer
+          title: cids
+          type: array
+        sid:
+          title: sid
+          type: integer
+      title: Substance
+      type: object
+    Target:
+      example:
+        organism: organism
+        accessions:
+        - accessions
+        - accessions
+        name: name
+        action:
+        - action
+        - action
+        id: id
+      properties:
+        accessions:
+          items:
+            type: string
+          title: accessions
+          type: array
+        action:
+          items:
+            type: string
+          title: action
+          type: array
+        id:
+          title: id
+          type: string
+        name:
+          title: name
+          type: string
+        organism:
+          title: organism
+          type: string
+      title: Target
+      type: object
+    TargetInfo:
+      example:
+        target_chembl_id: target_chembl_id
+        uniprot_accession: uniprot_accession
+        ncbi_protein_id: 5
+      properties:
+        ncbi_protein_id:
+          title: ncbi_protein_id
+          type: integer
+        target_chembl_id:
+          title: target_chembl_id
+          type: string
+        uniprot_accession:
+          title: uniprot_accession
+          type: string
+      title: TargetInfo
+      type: object
+    TargetType:
+      example:
+        molecule_type: molecule_type
+        value: 5
+      properties:
+        molecule_type:
+          title: molecule_type
+          type: string
+        value:
+          format: int32
+          title: value
+          type: integer
+      title: TargetType
+      type: object
+    Targets:
+      example:
+        pageMeta:
+          currentElements: 1
+          limit: 5
+          totalPages: 7
+          currentPage: 5
+          totalElements: 2
+        targets:
+        - target_chembl_id: target_chembl_id
+          accession: accession
+        - target_chembl_id: target_chembl_id
+          accession: accession
+      properties:
+        pageMeta:
+          $ref: '#/components/schemas/PageMeta'
+        targets:
+          items:
+            $ref: '#/components/schemas/CrossbarTarget'
+          title: targets
+          type: array
+      title: Targets
+      type: object
+    VariationAssociation:
+      example:
+        name: name
+        xrefs:
+        - name: name
+          id: id
+        - name: name
+          id: id
+        description: description
+        evidences:
+        - source:
+            name: name
+            id: id
+        - source:
+            name: name
+            id: id
+      properties:
+        description:
+          title: description
+          type: string
+        evidences:
+          items:
+            $ref: '#/components/schemas/VariationEvidence'
+          title: evidences
+          type: array
+        name:
+          title: name
+          type: string
+        xrefs:
+          items:
+            $ref: '#/components/schemas/VariationXref'
+          title: xrefs
+          type: array
+      title: VariationAssociation
+      type: object
+    VariationEvidence:
+      example:
+        source:
+          name: name
+          id: id
+      properties:
+        source:
+          $ref: '#/components/schemas/VariationEvidenceSource'
+      title: VariationEvidence
+      type: object
+    VariationEvidenceSource:
+      example:
+        name: name
+        id: id
+      properties:
+        id:
+          title: id
+          type: string
+        name:
+          title: name
+          type: string
+      title: VariationEvidenceSource
+      type: object
+    VariationXref:
+      example:
+        name: name
+        id: id
+      properties:
+        id:
+          title: id
+          type: string
+        name:
+          title: name
+          type: string
+      title: VariationXref
+      type: object
+    Xref:
+      example:
+        id: id
+        source: source
+      properties:
+        id:
+          title: id
+          type: string
+        source:
+          title: source
+          type: string
+      title: Xref
+      type: object
+x-original-swagger-version: "2.0"

@@ -1,0 +1,14 @@
+
+
+# DeliveryRuleHttpVersionCondition
+
+Defines the HttpVersion condition for the delivery rule.
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**parameters** | [**HttpVersionMatchConditionParameters**](HttpVersionMatchConditionParameters.md) |  |  |
+
+
+

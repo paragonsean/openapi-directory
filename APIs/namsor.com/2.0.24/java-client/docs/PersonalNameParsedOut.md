@@ -1,0 +1,69 @@
+
+
+# PersonalNameParsedOut
+
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**firstLastName** | [**FirstLastNameOut**](FirstLastNameOut.md) |  |  [optional] |
+|**id** | **String** |  |  [optional] |
+|**name** | **String** | The input name |  [optional] |
+|**nameParserType** | [**NameParserTypeEnum**](#NameParserTypeEnum) | Name parsing is addressed as a classification problem, for example FN1LN1 means a first then last name order. |  [optional] |
+|**nameParserTypeAlt** | [**NameParserTypeAltEnum**](#NameParserTypeAltEnum) | Second best alternative parsing. Name parsing is addressed as a classification problem, for example FN1LN1 means a first then last name order. |  [optional] |
+|**score** | **Double** | Higher score is better, but score is not normalized. Use calibratedProbability if available.  |  [optional] |
+|**script** | **String** |  |  [optional] |
+
+
+
+## Enum: NameParserTypeEnum
+
+| Name | Value |
+|---- | -----|
+| FN1_LN1 | &quot;FN1LN1&quot; |
+| LN1_FN1 | &quot;LN1FN1&quot; |
+| FN1_LN2 | &quot;FN1LN2&quot; |
+| LN2_FN1 | &quot;LN2FN1&quot; |
+| FN1_LNX | &quot;FN1LNx&quot; |
+| LNX_FN1 | &quot;LNxFN1&quot; |
+| FN2_LN1 | &quot;FN2LN1&quot; |
+| LN1_FN2 | &quot;LN1FN2&quot; |
+| FN2_LN2 | &quot;FN2LN2&quot; |
+| LN2_FN2 | &quot;LN2FN2&quot; |
+| FN2_LNX | &quot;FN2LNx&quot; |
+| LNX_FN2 | &quot;LNxFN2&quot; |
+| FNX_LN1 | &quot;FNxLN1&quot; |
+| LN1_FNX | &quot;LN1FNx&quot; |
+| FNX_LN2 | &quot;FNxLN2&quot; |
+| LN2_FNX | &quot;LN2FNx&quot; |
+| FNX_LNX | &quot;FNxLNx&quot; |
+| LNX_FNX | &quot;LNxFNx&quot; |
+
+
+
+## Enum: NameParserTypeAltEnum
+
+| Name | Value |
+|---- | -----|
+| FN1_LN1 | &quot;FN1LN1&quot; |
+| LN1_FN1 | &quot;LN1FN1&quot; |
+| FN1_LN2 | &quot;FN1LN2&quot; |
+| LN2_FN1 | &quot;LN2FN1&quot; |
+| FN1_LNX | &quot;FN1LNx&quot; |
+| LNX_FN1 | &quot;LNxFN1&quot; |
+| FN2_LN1 | &quot;FN2LN1&quot; |
+| LN1_FN2 | &quot;LN1FN2&quot; |
+| FN2_LN2 | &quot;FN2LN2&quot; |
+| LN2_FN2 | &quot;LN2FN2&quot; |
+| FN2_LNX | &quot;FN2LNx&quot; |
+| LNX_FN2 | &quot;LNxFN2&quot; |
+| FNX_LN1 | &quot;FNxLN1&quot; |
+| LN1_FNX | &quot;LN1FNx&quot; |
+| FNX_LN2 | &quot;FNxLN2&quot; |
+| LN2_FNX | &quot;LN2FNx&quot; |
+| FNX_LNX | &quot;FNxLNx&quot; |
+| LNX_FNX | &quot;LNxFNx&quot; |
+
+
+

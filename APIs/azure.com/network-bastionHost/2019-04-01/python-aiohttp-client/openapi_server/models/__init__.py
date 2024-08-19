@@ -1,9 +1,0 @@
-# coding: utf-8
-
-# import models into model package
-from openapi_server.models.bastion_host import BastionHost
-from openapi_server.models.bastion_host_ip_configuration import BastionHostIPConfiguration
-from openapi_server.models.bastion_host_ip_configuration_properties_format import BastionHostIPConfigurationPropertiesFormat
-from openapi_server.models.bastion_host_ip_configuration_properties_format_public_ip_address import BastionHostIPConfigurationPropertiesFormatPublicIPAddress
-from openapi_server.models.bastion_host_list_result import BastionHostListResult
-from openapi_server.models.bastion_host_properties_format import BastionHostPropertiesFormat

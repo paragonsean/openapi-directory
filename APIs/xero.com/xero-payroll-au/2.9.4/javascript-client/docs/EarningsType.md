@@ -1,0 +1,26 @@
+# XeroPayrollAuApi.EarningsType
+
+## Enum
+
+
+* `FIXED` (value: `"FIXED"`)
+
+* `ORDINARYTIMEEARNINGS` (value: `"ORDINARYTIMEEARNINGS"`)
+
+* `OVERTIMEEARNINGS` (value: `"OVERTIMEEARNINGS"`)
+
+* `ALLOWANCE` (value: `"ALLOWANCE"`)
+
+* `LUMPSUMD` (value: `"LUMPSUMD"`)
+
+* `EMPLOYMENTTERMINATIONPAYMENT` (value: `"EMPLOYMENTTERMINATIONPAYMENT"`)
+
+* `LUMPSUMA` (value: `"LUMPSUMA"`)
+
+* `LUMPSUMB` (value: `"LUMPSUMB"`)
+
+* `BONUSESANDCOMMISSIONS` (value: `"BONUSESANDCOMMISSIONS"`)
+
+* `LUMPSUME` (value: `"LUMPSUME"`)
+
+

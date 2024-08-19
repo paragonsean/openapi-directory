@@ -1,0 +1,34 @@
+
+
+# IndividualAddress
+
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**city** | **String** | The city. |  [optional] |
+|**country** | **String** | The country. |  [optional] |
+|**fromDate** | **OffsetDateTime** | The date and time the resource became active in the format defined by [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601). |  [optional] [readonly] |
+|**id** | [**AddressId**](AddressId.md) | The resource&#39;s unique identifier. |  [optional] [readonly] |
+|**line1** | **String** | The address line 1. |  [optional] |
+|**line2** | **String** | The address line 2. |  [optional] |
+|**line3** | **String** | The address line 3. |  [optional] |
+|**name** | **String** | The address name. |  [optional] |
+|**postalCode** | **String** | The postal code. |  [optional] |
+|**suburb** | **String** | The suburb. |  [optional] |
+|**toDate** | **OffsetDateTime** | The date and time the resource became inactive in the format defined by [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601). |  [optional] [readonly] |
+|**addressType** | [**AddressTypeEnum**](#AddressTypeEnum) | The address type. |  [optional] |
+
+
+
+## Enum: AddressTypeEnum
+
+| Name | Value |
+|---- | -----|
+| MAILING | &quot;Mailing&quot; |
+| PRINCIPAL_PLACE_OF_BUSINESS | &quot;Principal Place of Business&quot; |
+| PRINCIPAL_PLACE_OF_RESIDENCE | &quot;Principal Place of Residence&quot; |
+
+
+

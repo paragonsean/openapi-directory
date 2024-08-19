@@ -1,0 +1,18 @@
+
+
+# TflApiPresentationEntitiesStopPointsResponse
+
+A paged response containing StopPoints
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**centrePoint** | **List&lt;Double&gt;** | The centre latitude/longitude of this list of StopPoints |  [optional] |
+|**page** | **Integer** | The index of this page |  [optional] |
+|**pageSize** | **Integer** | The maximum size of the page in this response i.e. the maximum number of StopPoints |  [optional] |
+|**stopPoints** | [**List&lt;TflApiPresentationEntitiesStopPoint&gt;**](TflApiPresentationEntitiesStopPoint.md) | Collection of stop points |  [optional] |
+|**total** | **Integer** | The total number of StopPoints available across all pages |  [optional] |
+
+
+

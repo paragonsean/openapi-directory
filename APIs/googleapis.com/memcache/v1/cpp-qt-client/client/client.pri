@@ -1,0 +1,105 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIApplyParametersRequest.h \
+    $${PWD}/OAIDailyCycle.h \
+    $${PWD}/OAIDate.h \
+    $${PWD}/OAIDenyMaintenancePeriod.h \
+    $${PWD}/OAIGoogleCloudMemcacheV1LocationMetadata.h \
+    $${PWD}/OAIGoogleCloudMemcacheV1MaintenancePolicy.h \
+    $${PWD}/OAIGoogleCloudMemcacheV1OperationMetadata.h \
+    $${PWD}/OAIGoogleCloudMemcacheV1UpgradeInstanceRequest.h \
+    $${PWD}/OAIGoogleCloudSaasacceleratorManagementProvidersV1Instance.h \
+    $${PWD}/OAIGoogleCloudSaasacceleratorManagementProvidersV1MaintenanceSchedule.h \
+    $${PWD}/OAIGoogleCloudSaasacceleratorManagementProvidersV1MaintenanceSettings.h \
+    $${PWD}/OAIGoogleCloudSaasacceleratorManagementProvidersV1NodeSloMetadata.h \
+    $${PWD}/OAIGoogleCloudSaasacceleratorManagementProvidersV1NotificationParameter.h \
+    $${PWD}/OAIGoogleCloudSaasacceleratorManagementProvidersV1PerSliSloEligibility.h \
+    $${PWD}/OAIGoogleCloudSaasacceleratorManagementProvidersV1ProvisionedResource.h \
+    $${PWD}/OAIGoogleCloudSaasacceleratorManagementProvidersV1SloEligibility.h \
+    $${PWD}/OAIGoogleCloudSaasacceleratorManagementProvidersV1SloMetadata.h \
+    $${PWD}/OAIInstance.h \
+    $${PWD}/OAIInstanceMessage.h \
+    $${PWD}/OAIListInstancesResponse.h \
+    $${PWD}/OAIListLocationsResponse.h \
+    $${PWD}/OAIListOperationsResponse.h \
+    $${PWD}/OAILocation.h \
+    $${PWD}/OAILocationMetadata.h \
+    $${PWD}/OAIMaintenancePolicy.h \
+    $${PWD}/OAIMaintenanceSchedule.h \
+    $${PWD}/OAIMaintenanceWindow.h \
+    $${PWD}/OAIMemcacheParameters.h \
+    $${PWD}/OAINode.h \
+    $${PWD}/OAINodeConfig.h \
+    $${PWD}/OAIOperation.h \
+    $${PWD}/OAIOperationMetadata.h \
+    $${PWD}/OAIRescheduleMaintenanceRequest.h \
+    $${PWD}/OAISchedule.h \
+    $${PWD}/OAIStatus.h \
+    $${PWD}/OAITimeOfDay.h \
+    $${PWD}/OAIUpdateParametersRequest.h \
+    $${PWD}/OAIUpdatePolicy.h \
+    $${PWD}/OAIWeeklyCycle.h \
+    $${PWD}/OAIWeeklyMaintenanceWindow.h \
+# APIs
+    $${PWD}/OAIProjectsApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIApplyParametersRequest.cpp \
+    $${PWD}/OAIDailyCycle.cpp \
+    $${PWD}/OAIDate.cpp \
+    $${PWD}/OAIDenyMaintenancePeriod.cpp \
+    $${PWD}/OAIGoogleCloudMemcacheV1LocationMetadata.cpp \
+    $${PWD}/OAIGoogleCloudMemcacheV1MaintenancePolicy.cpp \
+    $${PWD}/OAIGoogleCloudMemcacheV1OperationMetadata.cpp \
+    $${PWD}/OAIGoogleCloudMemcacheV1UpgradeInstanceRequest.cpp \
+    $${PWD}/OAIGoogleCloudSaasacceleratorManagementProvidersV1Instance.cpp \
+    $${PWD}/OAIGoogleCloudSaasacceleratorManagementProvidersV1MaintenanceSchedule.cpp \
+    $${PWD}/OAIGoogleCloudSaasacceleratorManagementProvidersV1MaintenanceSettings.cpp \
+    $${PWD}/OAIGoogleCloudSaasacceleratorManagementProvidersV1NodeSloMetadata.cpp \
+    $${PWD}/OAIGoogleCloudSaasacceleratorManagementProvidersV1NotificationParameter.cpp \
+    $${PWD}/OAIGoogleCloudSaasacceleratorManagementProvidersV1PerSliSloEligibility.cpp \
+    $${PWD}/OAIGoogleCloudSaasacceleratorManagementProvidersV1ProvisionedResource.cpp \
+    $${PWD}/OAIGoogleCloudSaasacceleratorManagementProvidersV1SloEligibility.cpp \
+    $${PWD}/OAIGoogleCloudSaasacceleratorManagementProvidersV1SloMetadata.cpp \
+    $${PWD}/OAIInstance.cpp \
+    $${PWD}/OAIInstanceMessage.cpp \
+    $${PWD}/OAIListInstancesResponse.cpp \
+    $${PWD}/OAIListLocationsResponse.cpp \
+    $${PWD}/OAIListOperationsResponse.cpp \
+    $${PWD}/OAILocation.cpp \
+    $${PWD}/OAILocationMetadata.cpp \
+    $${PWD}/OAIMaintenancePolicy.cpp \
+    $${PWD}/OAIMaintenanceSchedule.cpp \
+    $${PWD}/OAIMaintenanceWindow.cpp \
+    $${PWD}/OAIMemcacheParameters.cpp \
+    $${PWD}/OAINode.cpp \
+    $${PWD}/OAINodeConfig.cpp \
+    $${PWD}/OAIOperation.cpp \
+    $${PWD}/OAIOperationMetadata.cpp \
+    $${PWD}/OAIRescheduleMaintenanceRequest.cpp \
+    $${PWD}/OAISchedule.cpp \
+    $${PWD}/OAIStatus.cpp \
+    $${PWD}/OAITimeOfDay.cpp \
+    $${PWD}/OAIUpdateParametersRequest.cpp \
+    $${PWD}/OAIUpdatePolicy.cpp \
+    $${PWD}/OAIWeeklyCycle.cpp \
+    $${PWD}/OAIWeeklyMaintenanceWindow.cpp \
+# APIs
+    $${PWD}/OAIProjectsApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

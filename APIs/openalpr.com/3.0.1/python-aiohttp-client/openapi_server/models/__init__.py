@@ -1,0 +1,16 @@
+# coding: utf-8
+
+# import models into model package
+from openapi_server.models.coordinate import Coordinate
+from openapi_server.models.get_config200_response import GetConfig200Response
+from openapi_server.models.get_config200_response_countries_inner import GetConfig200ResponseCountriesInner
+from openapi_server.models.get_config200_response_vehicle_labels import GetConfig200ResponseVehicleLabels
+from openapi_server.models.plate_candidate import PlateCandidate
+from openapi_server.models.plate_details import PlateDetails
+from openapi_server.models.recognize_file200_response import RecognizeFile200Response
+from openapi_server.models.recognize_file200_response_processing_time import RecognizeFile200ResponseProcessingTime
+from openapi_server.models.recognize_file400_response import RecognizeFile400Response
+from openapi_server.models.region_of_interest import RegionOfInterest
+from openapi_server.models.vehicle_candidate import VehicleCandidate
+from openapi_server.models.vehicle_details import VehicleDetails
+from openapi_server.models.vehicles import Vehicles

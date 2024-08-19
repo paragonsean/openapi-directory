@@ -1,0 +1,10 @@
+# AmazonEc2ContainerService.ManagedTerminationProtection
+
+## Enum
+
+
+* `ENABLED` (value: `"ENABLED"`)
+
+* `DISABLED` (value: `"DISABLED"`)
+
+

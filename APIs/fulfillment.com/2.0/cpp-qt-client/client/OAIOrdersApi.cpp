@@ -1,0 +1,1307 @@
+/**
+ * Fulfillment.com APIv2
+ * Welcome to our current iteration of our REST API. While we encourage you to upgrade to v2.0 we will continue support for our [SOAP API](https://github.com/fulfillment/soap-integration).  # Versioning  The Fulfillment.com (FDC) REST API is version controlled and backwards compatible. We have many future APIs scheduled for publication within our v2.0 spec so please be prepared for us to add data nodes in our responses, however, we will not remove knowledge from previously published APIs.  #### A Current Response  ```javascript {   id: 123 } ```  #### A Potential Future Response  ```javascript {   id: 123,   reason: \"More Knowledge\" } ```  # Getting Started  We use OAuth v2.0 to authenticate clients, you can choose [implicit](https://oauth.net/2/grant-types/implicit/) or [password](https://oauth.net/2/grant-types/password/) grant type. To obtain an OAuth `client_id` and `client_secret` contact your account executive.  **Tip**: Generate an additional login and use those credentials for your integration so that changes are accredited to that \"user\".  You are now ready to make requests to our other APIs by filling your `Authorization` header with `Bearer {access_token}`.  ## Perpetuating Access  Perpetuating access to FDC without storing your password locally can be achieved using the `refresh_token` returned by [POST /oauth/access_token](#operation/generateToken).  A simple concept to achieve this is outlined below.  1. Your application/script will ask you for your `username` and `password`, your `client_id` and `client_secret` will be accessible via a DB or ENV. 2. [Request an access_token](#operation/generateToken)   + Your function should be capable of formatting your request for both a `grant_type` of \\\"password\\\" (step 1) and \\\"refresh_token\\\" (step 4). 3. Store the `access_token` and `refresh_token` so future requests can skip step 1 4. When the `access_token` expires request anew using your `refresh_token`, replace both tokens in local storage.  + If this fails you will have to revert to step 1.  Alternatively if you choose for your application/script to have access to your `username` and `password` you can skip step 4.  In all scenarios we recommend storing all credentials outside your codebase.  ## Date Time Definitions  We will report all date-time stamps using the [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) standard. When using listing API's where fromDate and toDate are available note that both dates are inclusive while requiring the fromDate to be before or at the toDate.  ### The Fulfillment Process  Many steps are required to fulfill your order we report back to you three fundamental milestones inside the orders model.  * `recordedOn` When we received your order. This will never change.  * `dispatchDate` When the current iteration of your order was scheduled for fulfillment. This may change however it is an indicator that the physical process of fulfillment has begun and a tracking number has been **assigned** to your order. The tracking number **MAY CHANGE**. You will not be able to cancel an order once it has been dispatched. If you need to recall an order that has been dispatched please contact your account executive.  * `departDate` When we recorded your order passing our final inspection and placed with the carrier. At this point it is **safe to inform the consignee** of the tracking number as it will not change.  ## Evaluating Error Responses  We currently return two different error models, with and without context. All errors will include a `message` node while errors with `context` will include additional information designed to save you time when encountering highly probable errors. For example, when you send us a request to create a duplicate order, we will reject your request and the context will include the FDC order `id` so that you may record it for your records.  ### Without Context  New order with missing required fields.  | Header | Response | | ------ | -------- | | Status | `400 Bad Request` |  ```javascript {       \"message\": \"Invalid request body\" } ```  ### With Context  New order with duplicate `merchantOrderId`.  | Header | Response | | ------ | -------- | | Status | `409 Conflict` |  ```javascript {   \"message\": \"Duplicate Order\",   \"context\": {     \"id\": 123   } } ```  ## Status Codes  Codes are a concatenation of State, Stage, and Detail.  `^([0-9]{2})([0-9]{2})([0-9]{2})$`  | Code | State              | Stage    | Detail         | | ---- | ------------------ | -------- | -------------- | | 010101 | Processing Order | Recieved | Customer Order | | 010102 | Processing Order | Recieved | Recieved | | 010201 | Processing Order | Approved | | | 010301 | Processing Order | Hold | Merchant Stock | | 010302 | Processing Order | Hold | Merchant Funds | | 010303 | Processing Order | Hold | For Merchant | | 010304 | Processing Order | Hold | Oversized Shipment | | 010305 | Processing Order | Hold | Invalid Parent Order | | 010306 | Processing Order | Hold | Invalid Address | | 010307 | Processing Order | Hold | By Admin | | 010401 | Processing Order | Address Problem | Incomplete Address | | 010402 | Processing Order | Address Problem | Invalid Locality | | 010403 | Processing Order | Address Problem | Invalid Region | | 010404 | Processing Order | Address Problem | Address Not Found | | 010405 | Processing Order | Address Problem | Many Addresses Found | | 010406 | Processing Order | Address Problem | Invalid Postal Code | | 010407 | Processing Order | Address Problem | Country Not Mapped | | 010408 | Processing Order | Address Problem | Invalid Recipient Name | | 010409 | Processing Order | Address Problem | Bad UK Address | | 010410 | Processing Order | Address Problem | Invalid Address Line 1 or 2 | | 010501 | Processing Order | Sku Problem | Invalid SKU | | 010501 | Processing Order | Sku Problem | Child Order has Invalid SKUs | | 010601 | Processing Order | Facility Problem | Facility Not Mapped | | 010701 | Processing Order | Ship Method Problem | Unmapped Ship Method | | 010702 | Processing Order | Ship Method Problem | Unmapped Ship Cost | | 010703 | Processing Order | Ship Method Problem | Missing Ship Method | | 010704 | Processing Order | Ship Method Problem | Invalid Ship Method | | 010705 | Processing Order | Ship Method Problem | Order Weight Outside of Ship Method Weight | | 010801 | Processing Order | Inventory Problem | Insufficient Inventory In Facility | | 010802 | Processing Order | Inventory Problem | Issue Encountered During Inventory Adjustment | | 010901 | Processing Order | Released To WMS | Released | | 020101 | Fulfillment In Progress | Postage Problem | Address Issue | | 020102 | Fulfillment In Progress | Postage Problem | Postage OK, OMS Issue Occurred | | 020103 | Fulfillment In Progress | Postage Problem | Postage Void Failed | | 020201 | Fulfillment In Progress | Postage Acquired | | | 020301 | Fulfillment In Progress | Postage Voided | Postage Void Failed Gracefully | | 020301 | Fulfillment In Progress | Hold | Departure Hold Requested | | 020401 | Fulfillment In Progress | 4PL Processing | | | 020501 | Fulfillment In Progress | 4PL Problem | Order is Proccessable, Postage Issue Occurred | | 020601 | Fulfillment In Progress | Label Printed | | | 020701 | Fulfillment In Progress | Shipment Cubed | | | 020801 | Fulfillment In Progress | Picking Inventory | | | 020901 | Fulfillment In Progress | Label Print Verified | | | 021001 | Fulfillment In Progress | Passed Final Inspection | | | 030101 | Shipped | Fulfilled By 4PL | | | 030102 | Shipped | Fulfilled By 4PL | Successfully Fulfilled, OMS Encountered Issue During Processing | | 030201 | Shipped | Fulfilled By FDC | | | 040101 | Returned | Returned | | | 050101 | Cancelled | Cancelled | | | 060101 | Test | Test | Test | 
+ *
+ * The version of the OpenAPI document: 2.0
+ * Contact: dev@fulfillment.com
+ *
+ * NOTE: This class is auto generated by OpenAPI Generator (https://openapi-generator.tech).
+ * https://openapi-generator.tech
+ * Do not edit the class manually.
+ */
+
+#include "OAIOrdersApi.h"
+#include "OAIServerConfiguration.h"
+#include <QJsonArray>
+#include <QJsonDocument>
+
+namespace OpenAPI {
+
+OAIOrdersApi::OAIOrdersApi(const int timeOut)
+    : _timeOut(timeOut),
+      _manager(nullptr),
+      _isResponseCompressionEnabled(false),
+      _isRequestCompressionEnabled(false) {
+    initializeServerConfigs();
+}
+
+OAIOrdersApi::~OAIOrdersApi() {
+}
+
+void OAIOrdersApi::initializeServerConfigs() {
+    //Default server
+    QList<OAIServerConfiguration> defaultConf = QList<OAIServerConfiguration>();
+    //varying endpoint server
+    defaultConf.append(OAIServerConfiguration(
+    QUrl("https://api.fulfillment.com/v2"),
+    "Production",
+    QMap<QString, OAIServerVariable>()));
+    _serverConfigs.insert("deleteOrdersId", defaultConf);
+    _serverIndices.insert("deleteOrdersId", 0);
+    _serverConfigs.insert("getOrder", defaultConf);
+    _serverIndices.insert("getOrder", 0);
+    _serverConfigs.insert("getOrders", defaultConf);
+    _serverIndices.insert("getOrders", 0);
+    _serverConfigs.insert("postOrders", defaultConf);
+    _serverIndices.insert("postOrders", 0);
+}
+
+/**
+* returns 0 on success and -1, -2 or -3 on failure.
+* -1 when the variable does not exist and -2 if the value is not defined in the enum and -3 if the operation or server index is not found
+*/
+int OAIOrdersApi::setDefaultServerValue(int serverIndex, const QString &operation, const QString &variable, const QString &value) {
+    auto it = _serverConfigs.find(operation);
+    if (it != _serverConfigs.end() && serverIndex < it.value().size()) {
+      return _serverConfigs[operation][serverIndex].setDefaultValue(variable,value);
+    }
+    return -3;
+}
+void OAIOrdersApi::setServerIndex(const QString &operation, int serverIndex) {
+    if (_serverIndices.contains(operation) && serverIndex < _serverConfigs.find(operation).value().size()) {
+        _serverIndices[operation] = serverIndex;
+    }
+}
+
+void OAIOrdersApi::setApiKey(const QString &apiKeyName, const QString &apiKey) {
+    _apiKeys.insert(apiKeyName, apiKey);
+}
+
+void OAIOrdersApi::setBearerToken(const QString &token) {
+    _bearerToken = token;
+}
+
+void OAIOrdersApi::setUsername(const QString &username) {
+    _username = username;
+}
+
+void OAIOrdersApi::setPassword(const QString &password) {
+    _password = password;
+}
+
+
+void OAIOrdersApi::setTimeOut(const int timeOut) {
+    _timeOut = timeOut;
+}
+
+void OAIOrdersApi::setWorkingDirectory(const QString &path) {
+    _workingDirectory = path;
+}
+
+void OAIOrdersApi::setNetworkAccessManager(QNetworkAccessManager* manager) {
+    _manager = manager;
+}
+
+/**
+    * Appends a new ServerConfiguration to the config map for a specific operation.
+    * @param operation The id to the target operation.
+    * @param url A string that contains the URL of the server
+    * @param description A String that describes the server
+    * @param variables A map between a variable name and its value. The value is used for substitution in the server's URL template.
+    * returns the index of the new server config on success and -1 if the operation is not found
+    */
+int OAIOrdersApi::addServerConfiguration(const QString &operation, const QUrl &url, const QString &description, const QMap<QString, OAIServerVariable> &variables) {
+    if (_serverConfigs.contains(operation)) {
+        _serverConfigs[operation].append(OAIServerConfiguration(
+                    url,
+                    description,
+                    variables));
+        return _serverConfigs[operation].size()-1;
+    } else {
+        return -1;
+    }
+}
+
+/**
+    * Appends a new ServerConfiguration to the config map for a all operations and sets the index to that server.
+    * @param url A string that contains the URL of the server
+    * @param description A String that describes the server
+    * @param variables A map between a variable name and its value. The value is used for substitution in the server's URL template.
+    */
+void OAIOrdersApi::setNewServerForAllOperations(const QUrl &url, const QString &description, const QMap<QString, OAIServerVariable> &variables) {
+    for (auto keyIt = _serverIndices.keyBegin(); keyIt != _serverIndices.keyEnd(); keyIt++) {
+        setServerIndex(*keyIt, addServerConfiguration(*keyIt, url, description, variables));
+    }
+}
+
+/**
+    * Appends a new ServerConfiguration to the config map for an operations and sets the index to that server.
+    * @param URL A string that contains the URL of the server
+    * @param description A String that describes the server
+    * @param variables A map between a variable name and its value. The value is used for substitution in the server's URL template.
+    */
+void OAIOrdersApi::setNewServer(const QString &operation, const QUrl &url, const QString &description, const QMap<QString, OAIServerVariable> &variables) {
+    setServerIndex(operation, addServerConfiguration(operation, url, description, variables));
+}
+
+void OAIOrdersApi::addHeaders(const QString &key, const QString &value) {
+    _defaultHeaders.insert(key, value);
+}
+
+void OAIOrdersApi::enableRequestCompression() {
+    _isRequestCompressionEnabled = true;
+}
+
+void OAIOrdersApi::enableResponseCompression() {
+    _isResponseCompressionEnabled = true;
+}
+
+void OAIOrdersApi::abortRequests() {
+    Q_EMIT abortRequestsSignal();
+}
+
+QString OAIOrdersApi::getParamStylePrefix(const QString &style) {
+    if (style == "matrix") {
+        return ";";
+    } else if (style == "label") {
+        return ".";
+    } else if (style == "form") {
+        return "&";
+    } else if (style == "simple") {
+        return "";
+    } else if (style == "spaceDelimited") {
+        return "&";
+    } else if (style == "pipeDelimited") {
+        return "&";
+    } else {
+        return "none";
+    }
+}
+
+QString OAIOrdersApi::getParamStyleSuffix(const QString &style) {
+    if (style == "matrix") {
+        return "=";
+    } else if (style == "label") {
+        return "";
+    } else if (style == "form") {
+        return "=";
+    } else if (style == "simple") {
+        return "";
+    } else if (style == "spaceDelimited") {
+        return "=";
+    } else if (style == "pipeDelimited") {
+        return "=";
+    } else {
+        return "none";
+    }
+}
+
+QString OAIOrdersApi::getParamStyleDelimiter(const QString &style, const QString &name, bool isExplode) {
+
+    if (style == "matrix") {
+        return (isExplode) ? ";" + name + "=" : ",";
+
+    } else if (style == "label") {
+        return (isExplode) ? "." : ",";
+
+    } else if (style == "form") {
+        return (isExplode) ? "&" + name + "=" : ",";
+
+    } else if (style == "simple") {
+        return ",";
+    } else if (style == "spaceDelimited") {
+        return (isExplode) ? "&" + name + "=" : " ";
+
+    } else if (style == "pipeDelimited") {
+        return (isExplode) ? "&" + name + "=" : "|";
+
+    } else if (style == "deepObject") {
+        return (isExplode) ? "&" : "none";
+
+    } else {
+        return "none";
+    }
+}
+
+void OAIOrdersApi::deleteOrdersId(const qint32 &id) {
+    QString fullPath = QString(_serverConfigs["deleteOrdersId"][_serverIndices.value("deleteOrdersId")].URL()+"/orders/{id}");
+    
+    
+    {
+        QString idPathParam("{");
+        idPathParam.append("id").append("}");
+        QString pathPrefix, pathSuffix, pathDelimiter;
+        QString pathStyle = "simple";
+        if (pathStyle == "")
+            pathStyle = "simple";
+        pathPrefix = getParamStylePrefix(pathStyle);
+        pathSuffix = getParamStyleSuffix(pathStyle);
+        pathDelimiter = getParamStyleDelimiter(pathStyle, "id", false);
+        QString paramString = (pathStyle == "matrix") ? pathPrefix+"id"+pathSuffix : pathPrefix;
+        fullPath.replace(idPathParam, paramString+QUrl::toPercentEncoding(::OpenAPI::toStringValue(id)));
+    }
+    OAIHttpRequestWorker *worker = new OAIHttpRequestWorker(this, _manager);
+    worker->setTimeOut(_timeOut);
+    worker->setWorkingDirectory(_workingDirectory);
+    OAIHttpRequestInput input(fullPath, "DELETE");
+
+
+    for (auto keyValueIt = _defaultHeaders.keyValueBegin(); keyValueIt != _defaultHeaders.keyValueEnd(); keyValueIt++) {
+        input.headers.insert(keyValueIt->first, keyValueIt->second);
+    }
+
+
+    connect(worker, &OAIHttpRequestWorker::on_execution_finished, this, &OAIOrdersApi::deleteOrdersIdCallback);
+    connect(this, &OAIOrdersApi::abortRequestsSignal, worker, &QObject::deleteLater);
+    connect(worker, &QObject::destroyed, this, [this]() {
+        if (findChildren<OAIHttpRequestWorker*>().count() == 0) {
+            Q_EMIT allPendingRequestsCompleted();
+        }
+    });
+
+
+    _OauthMethod = 4;
+    _passwordFlow.link();
+    _authFlow.unlink();
+    _implicitFlow.unlink();
+    _credentialFlow.unlink();
+    QStringList scope;
+    scope.append("oms");
+    auto token = _passwordFlow.getToken(scope.join(" "));
+    if(token.isValid())
+        input.headers.insert("Authorization", "Bearer " + token.getToken());
+
+    _latestWorker = new OAIHttpRequestWorker(this, _manager);
+    _latestWorker->setTimeOut(_timeOut);
+    _latestWorker->setWorkingDirectory(_workingDirectory);
+
+    connect(_latestWorker, &OAIHttpRequestWorker::on_execution_finished, this, &OAIOrdersApi::deleteOrdersIdCallback);
+    connect(this, &OAIOrdersApi::abortRequestsSignal, _latestWorker, &QObject::deleteLater);
+    connect(_latestWorker, &QObject::destroyed, [this](){
+        if(findChildren<OAIHttpRequestWorker*>().count() == 0){
+            Q_EMIT allPendingRequestsCompleted();
+        }
+    });
+
+    _latestInput = input;
+    _latestScope = scope;
+    
+    _OauthMethod = 1;
+    _implicitFlow.link();
+    _passwordFlow.unlink();
+    _authFlow.unlink();
+    _credentialFlow.unlink();
+    QStringList scope;
+    scope.append("oms");
+    auto token = _implicitFlow.getToken(scope.join(" "));
+    if(token.isValid())
+        input.headers.insert("Authorization", "Bearer " + token.getToken());
+
+    _latestWorker = new OAIHttpRequestWorker(this, _manager);
+    _latestWorker->setTimeOut(_timeOut);
+    _latestWorker->setWorkingDirectory(_workingDirectory);
+
+    connect(_latestWorker, &OAIHttpRequestWorker::on_execution_finished, this, &OAIOrdersApi::deleteOrdersIdCallback);
+    connect(this, &OAIOrdersApi::abortRequestsSignal, _latestWorker, &QObject::deleteLater);
+    connect(_latestWorker, &QObject::destroyed, [this](){
+        if(findChildren<OAIHttpRequestWorker*>().count() == 0){
+            Q_EMIT allPendingRequestsCompleted();
+        }
+    });
+
+    _latestInput = input;
+    _latestScope = scope;
+
+
+
+    worker->execute(&input);
+}
+
+void OAIOrdersApi::deleteOrdersIdCallback(OAIHttpRequestWorker *worker) {
+    QString error_str = worker->error_str;
+    QNetworkReply::NetworkError error_type = worker->error_type;
+
+    if (worker->error_type != QNetworkReply::NoError) {
+        error_str = QString("%1, %2").arg(worker->error_str, QString(worker->response));
+    }
+    OAIObject output(QString(worker->response));
+    worker->deleteLater();
+
+    if (worker->error_type == QNetworkReply::NoError) {
+        Q_EMIT deleteOrdersIdSignal(output);
+        Q_EMIT deleteOrdersIdSignalFull(worker, output);
+
+
+    } else if(worker->error_type == QNetworkReply::AuthenticationRequiredError){
+        connect(&_passwordFlow, SIGNAL(tokenReceived()), this, SLOT(tokenAvailable()));
+        QStringList scope;
+        scope.append("oms");
+        QString scopeStr = scope.join(" ");
+        QString tokenUrl("https://api.fulfillment.com/v2/oauth/access_token");
+        //TODO get clientID and Secret and state in the config? https://swagger.io/docs/specification/authentication/oauth2/ states that you should do as you like
+        _passwordFlow.setVariables(tokenUrl , scopeStr ,"clientId", "clientSecret", "username", "password");
+        Q_EMIT _passwordFlow.authenticationNeeded();
+        
+    } else if(worker->error_type == QNetworkReply::AuthenticationRequiredError){
+        connect(&_implicitFlow, SIGNAL(tokenReceived()), this, SLOT(tokenAvailable()));
+        QStringList scope;
+        scope.append("oms");
+        QString scopeStr = scope.join(" ");
+        QString authorizationUrl("https://api.fulfillment.com/v2/oauth/authorize");
+        //TODO get clientID and Secret and state in the config? https://swagger.io/docs/specification/authentication/oauth2/ states that you should do as you like
+        _implicitFlow.setVariables(authorizationUrl, scopeStr, "state" , "http://127.0.0.1:9999", "clientId");
+        Q_EMIT _implicitFlow.authenticationNeeded();
+
+
+    } else {
+
+#if defined(_MSC_VER)
+// For MSVC
+#pragma warning(push)
+#pragma warning(disable : 4996)
+#elif defined(__clang__)
+// For Clang
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+#elif defined(__GNUC__)
+// For GCC
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
+
+        Q_EMIT deleteOrdersIdSignalE(output, error_type, error_str);
+        Q_EMIT deleteOrdersIdSignalEFull(worker, error_type, error_str);
+
+#if defined(_MSC_VER)
+#pragma warning(pop)
+#elif defined(__clang__)
+#pragma clang diagnostic pop
+#elif defined(__GNUC__)
+#pragma GCC diagnostic pop
+#endif
+
+        Q_EMIT deleteOrdersIdSignalError(output, error_type, error_str);
+        Q_EMIT deleteOrdersIdSignalErrorFull(worker, error_type, error_str);
+    }
+}
+
+void OAIOrdersApi::getOrder(const QString &id, const ::OpenAPI::OptionalParam<qint32> &merchant_id, const ::OpenAPI::OptionalParam<QList<QString>> &hydrate) {
+    QString fullPath = QString(_serverConfigs["getOrder"][_serverIndices.value("getOrder")].URL()+"/orders/{id}");
+    
+    
+    {
+        QString idPathParam("{");
+        idPathParam.append("id").append("}");
+        QString pathPrefix, pathSuffix, pathDelimiter;
+        QString pathStyle = "simple";
+        if (pathStyle == "")
+            pathStyle = "simple";
+        pathPrefix = getParamStylePrefix(pathStyle);
+        pathSuffix = getParamStyleSuffix(pathStyle);
+        pathDelimiter = getParamStyleDelimiter(pathStyle, "id", false);
+        QString paramString = (pathStyle == "matrix") ? pathPrefix+"id"+pathSuffix : pathPrefix;
+        fullPath.replace(idPathParam, paramString+QUrl::toPercentEncoding(::OpenAPI::toStringValue(id)));
+    }
+    QString queryPrefix, querySuffix, queryDelimiter, queryStyle;
+    if (merchant_id.hasValue())
+    {
+        queryStyle = "form";
+        if (queryStyle == "")
+            queryStyle = "form";
+        queryPrefix = getParamStylePrefix(queryStyle);
+        querySuffix = getParamStyleSuffix(queryStyle);
+        queryDelimiter = getParamStyleDelimiter(queryStyle, "merchantId", true);
+        if (fullPath.indexOf("?") > 0)
+            fullPath.append(queryPrefix);
+        else
+            fullPath.append("?");
+
+        fullPath.append(QUrl::toPercentEncoding("merchantId")).append(querySuffix).append(QUrl::toPercentEncoding(merchant_id.stringValue()));
+    }
+    if (hydrate.hasValue())
+    {
+        queryStyle = "form";
+        if (queryStyle == "")
+            queryStyle = "form";
+        queryPrefix = getParamStylePrefix(queryStyle);
+        querySuffix = getParamStyleSuffix(queryStyle);
+        queryDelimiter = getParamStyleDelimiter(queryStyle, "hydrate", false);
+        if (hydrate.value().size() > 0) {
+            if (QString("csv").indexOf("multi") == 0) {
+                for (QString t : hydrate.value()) {
+                    if (fullPath.indexOf("?") > 0)
+                        fullPath.append(queryPrefix);
+                    else
+                        fullPath.append("?");
+                    fullPath.append("hydrate=").append(::OpenAPI::toStringValue(t));
+                }
+            } else if (QString("csv").indexOf("ssv") == 0) {
+                if (fullPath.indexOf("?") > 0)
+                    fullPath.append("&");
+                else
+                    fullPath.append("?").append(queryPrefix).append("hydrate").append(querySuffix);
+                qint32 count = 0;
+                for (QString t : hydrate.value()) {
+                    if (count > 0) {
+                        fullPath.append((false)? queryDelimiter : QUrl::toPercentEncoding(queryDelimiter));
+                    }
+                    fullPath.append(::OpenAPI::toStringValue(t));
+                    count++;
+                }
+            } else if (QString("csv").indexOf("tsv") == 0) {
+                if (fullPath.indexOf("?") > 0)
+                    fullPath.append("&");
+                else
+                    fullPath.append("?").append(queryPrefix).append("hydrate").append(querySuffix);
+                qint32 count = 0;
+                for (QString t : hydrate.value()) {
+                    if (count > 0) {
+                        fullPath.append("\t");
+                    }
+                    fullPath.append(::OpenAPI::toStringValue(t));
+                    count++;
+                }
+            } else if (QString("csv").indexOf("csv") == 0) {
+                if (fullPath.indexOf("?") > 0)
+                    fullPath.append("&");
+                else
+                    fullPath.append("?").append(queryPrefix).append("hydrate").append(querySuffix);
+                qint32 count = 0;
+                for (QString t : hydrate.value()) {
+                    if (count > 0) {
+                        fullPath.append(queryDelimiter);
+                    }
+                    fullPath.append(::OpenAPI::toStringValue(t));
+                    count++;
+                }
+            } else if (QString("csv").indexOf("pipes") == 0) {
+                if (fullPath.indexOf("?") > 0)
+                    fullPath.append("&");
+                else
+                    fullPath.append("?").append(queryPrefix).append("hydrate").append(querySuffix);
+                qint32 count = 0;
+                for (QString t : hydrate.value()) {
+                    if (count > 0) {
+                        fullPath.append(queryDelimiter);
+                    }
+                    fullPath.append(::OpenAPI::toStringValue(t));
+                    count++;
+                }
+            } else if (QString("csv").indexOf("deepObject") == 0) {
+                if (fullPath.indexOf("?") > 0)
+                    fullPath.append("&");
+                else
+                    fullPath.append("?").append(queryPrefix).append("hydrate").append(querySuffix);
+                qint32 count = 0;
+                for (QString t : hydrate.value()) {
+                    if (count > 0) {
+                        fullPath.append(queryDelimiter);
+                    }
+                    fullPath.append(::OpenAPI::toStringValue(t));
+                    count++;
+                }
+            }
+        }
+    }
+    OAIHttpRequestWorker *worker = new OAIHttpRequestWorker(this, _manager);
+    worker->setTimeOut(_timeOut);
+    worker->setWorkingDirectory(_workingDirectory);
+    OAIHttpRequestInput input(fullPath, "GET");
+
+
+    for (auto keyValueIt = _defaultHeaders.keyValueBegin(); keyValueIt != _defaultHeaders.keyValueEnd(); keyValueIt++) {
+        input.headers.insert(keyValueIt->first, keyValueIt->second);
+    }
+
+
+    connect(worker, &OAIHttpRequestWorker::on_execution_finished, this, &OAIOrdersApi::getOrderCallback);
+    connect(this, &OAIOrdersApi::abortRequestsSignal, worker, &QObject::deleteLater);
+    connect(worker, &QObject::destroyed, this, [this]() {
+        if (findChildren<OAIHttpRequestWorker*>().count() == 0) {
+            Q_EMIT allPendingRequestsCompleted();
+        }
+    });
+
+
+    _OauthMethod = 4;
+    _passwordFlow.link();
+    _authFlow.unlink();
+    _implicitFlow.unlink();
+    _credentialFlow.unlink();
+    QStringList scope;
+    scope.append("oms");
+    auto token = _passwordFlow.getToken(scope.join(" "));
+    if(token.isValid())
+        input.headers.insert("Authorization", "Bearer " + token.getToken());
+
+    _latestWorker = new OAIHttpRequestWorker(this, _manager);
+    _latestWorker->setTimeOut(_timeOut);
+    _latestWorker->setWorkingDirectory(_workingDirectory);
+
+    connect(_latestWorker, &OAIHttpRequestWorker::on_execution_finished, this, &OAIOrdersApi::getOrderCallback);
+    connect(this, &OAIOrdersApi::abortRequestsSignal, _latestWorker, &QObject::deleteLater);
+    connect(_latestWorker, &QObject::destroyed, [this](){
+        if(findChildren<OAIHttpRequestWorker*>().count() == 0){
+            Q_EMIT allPendingRequestsCompleted();
+        }
+    });
+
+    _latestInput = input;
+    _latestScope = scope;
+    
+    _OauthMethod = 1;
+    _implicitFlow.link();
+    _passwordFlow.unlink();
+    _authFlow.unlink();
+    _credentialFlow.unlink();
+    QStringList scope;
+    scope.append("oms");
+    auto token = _implicitFlow.getToken(scope.join(" "));
+    if(token.isValid())
+        input.headers.insert("Authorization", "Bearer " + token.getToken());
+
+    _latestWorker = new OAIHttpRequestWorker(this, _manager);
+    _latestWorker->setTimeOut(_timeOut);
+    _latestWorker->setWorkingDirectory(_workingDirectory);
+
+    connect(_latestWorker, &OAIHttpRequestWorker::on_execution_finished, this, &OAIOrdersApi::getOrderCallback);
+    connect(this, &OAIOrdersApi::abortRequestsSignal, _latestWorker, &QObject::deleteLater);
+    connect(_latestWorker, &QObject::destroyed, [this](){
+        if(findChildren<OAIHttpRequestWorker*>().count() == 0){
+            Q_EMIT allPendingRequestsCompleted();
+        }
+    });
+
+    _latestInput = input;
+    _latestScope = scope;
+
+
+
+    worker->execute(&input);
+}
+
+void OAIOrdersApi::getOrderCallback(OAIHttpRequestWorker *worker) {
+    QString error_str = worker->error_str;
+    QNetworkReply::NetworkError error_type = worker->error_type;
+
+    if (worker->error_type != QNetworkReply::NoError) {
+        error_str = QString("%1, %2").arg(worker->error_str, QString(worker->response));
+    }
+    OAIObject output(QString(worker->response));
+    worker->deleteLater();
+
+    if (worker->error_type == QNetworkReply::NoError) {
+        Q_EMIT getOrderSignal(output);
+        Q_EMIT getOrderSignalFull(worker, output);
+
+
+    } else if(worker->error_type == QNetworkReply::AuthenticationRequiredError){
+        connect(&_passwordFlow, SIGNAL(tokenReceived()), this, SLOT(tokenAvailable()));
+        QStringList scope;
+        scope.append("oms");
+        QString scopeStr = scope.join(" ");
+        QString tokenUrl("https://api.fulfillment.com/v2/oauth/access_token");
+        //TODO get clientID and Secret and state in the config? https://swagger.io/docs/specification/authentication/oauth2/ states that you should do as you like
+        _passwordFlow.setVariables(tokenUrl , scopeStr ,"clientId", "clientSecret", "username", "password");
+        Q_EMIT _passwordFlow.authenticationNeeded();
+        
+    } else if(worker->error_type == QNetworkReply::AuthenticationRequiredError){
+        connect(&_implicitFlow, SIGNAL(tokenReceived()), this, SLOT(tokenAvailable()));
+        QStringList scope;
+        scope.append("oms");
+        QString scopeStr = scope.join(" ");
+        QString authorizationUrl("https://api.fulfillment.com/v2/oauth/authorize");
+        //TODO get clientID and Secret and state in the config? https://swagger.io/docs/specification/authentication/oauth2/ states that you should do as you like
+        _implicitFlow.setVariables(authorizationUrl, scopeStr, "state" , "http://127.0.0.1:9999", "clientId");
+        Q_EMIT _implicitFlow.authenticationNeeded();
+
+
+    } else {
+
+#if defined(_MSC_VER)
+// For MSVC
+#pragma warning(push)
+#pragma warning(disable : 4996)
+#elif defined(__clang__)
+// For Clang
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+#elif defined(__GNUC__)
+// For GCC
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
+
+        Q_EMIT getOrderSignalE(output, error_type, error_str);
+        Q_EMIT getOrderSignalEFull(worker, error_type, error_str);
+
+#if defined(_MSC_VER)
+#pragma warning(pop)
+#elif defined(__clang__)
+#pragma clang diagnostic pop
+#elif defined(__GNUC__)
+#pragma GCC diagnostic pop
+#endif
+
+        Q_EMIT getOrderSignalError(output, error_type, error_str);
+        Q_EMIT getOrderSignalErrorFull(worker, error_type, error_str);
+    }
+}
+
+void OAIOrdersApi::getOrders(const QString &from_date, const QString &to_date, const ::OpenAPI::OptionalParam<QList<qint32>> &merchant_ids, const ::OpenAPI::OptionalParam<QList<qint32>> &warehouse_ids, const ::OpenAPI::OptionalParam<qint32> &page, const ::OpenAPI::OptionalParam<qint32> &limit, const ::OpenAPI::OptionalParam<QList<QString>> &hydrate) {
+    QString fullPath = QString(_serverConfigs["getOrders"][_serverIndices.value("getOrders")].URL()+"/orders");
+    
+    QString queryPrefix, querySuffix, queryDelimiter, queryStyle;
+    
+    {
+        queryStyle = "form";
+        if (queryStyle == "")
+            queryStyle = "form";
+        queryPrefix = getParamStylePrefix(queryStyle);
+        querySuffix = getParamStyleSuffix(queryStyle);
+        queryDelimiter = getParamStyleDelimiter(queryStyle, "fromDate", true);
+        if (fullPath.indexOf("?") > 0)
+            fullPath.append(queryPrefix);
+        else
+            fullPath.append("?");
+
+        fullPath.append(QUrl::toPercentEncoding("fromDate")).append(querySuffix).append(QUrl::toPercentEncoding(from_date));
+    }
+    
+    {
+        queryStyle = "form";
+        if (queryStyle == "")
+            queryStyle = "form";
+        queryPrefix = getParamStylePrefix(queryStyle);
+        querySuffix = getParamStyleSuffix(queryStyle);
+        queryDelimiter = getParamStyleDelimiter(queryStyle, "toDate", true);
+        if (fullPath.indexOf("?") > 0)
+            fullPath.append(queryPrefix);
+        else
+            fullPath.append("?");
+
+        fullPath.append(QUrl::toPercentEncoding("toDate")).append(querySuffix).append(QUrl::toPercentEncoding(to_date));
+    }
+    if (merchant_ids.hasValue())
+    {
+        queryStyle = "form";
+        if (queryStyle == "")
+            queryStyle = "form";
+        queryPrefix = getParamStylePrefix(queryStyle);
+        querySuffix = getParamStyleSuffix(queryStyle);
+        queryDelimiter = getParamStyleDelimiter(queryStyle, "merchantIds", false);
+        if (merchant_ids.value().size() > 0) {
+            if (QString("csv").indexOf("multi") == 0) {
+                for (qint32 t : merchant_ids.value()) {
+                    if (fullPath.indexOf("?") > 0)
+                        fullPath.append(queryPrefix);
+                    else
+                        fullPath.append("?");
+                    fullPath.append("merchantIds=").append(::OpenAPI::toStringValue(t));
+                }
+            } else if (QString("csv").indexOf("ssv") == 0) {
+                if (fullPath.indexOf("?") > 0)
+                    fullPath.append("&");
+                else
+                    fullPath.append("?").append(queryPrefix).append("merchantIds").append(querySuffix);
+                qint32 count = 0;
+                for (qint32 t : merchant_ids.value()) {
+                    if (count > 0) {
+                        fullPath.append((false)? queryDelimiter : QUrl::toPercentEncoding(queryDelimiter));
+                    }
+                    fullPath.append(::OpenAPI::toStringValue(t));
+                    count++;
+                }
+            } else if (QString("csv").indexOf("tsv") == 0) {
+                if (fullPath.indexOf("?") > 0)
+                    fullPath.append("&");
+                else
+                    fullPath.append("?").append(queryPrefix).append("merchantIds").append(querySuffix);
+                qint32 count = 0;
+                for (qint32 t : merchant_ids.value()) {
+                    if (count > 0) {
+                        fullPath.append("\t");
+                    }
+                    fullPath.append(::OpenAPI::toStringValue(t));
+                    count++;
+                }
+            } else if (QString("csv").indexOf("csv") == 0) {
+                if (fullPath.indexOf("?") > 0)
+                    fullPath.append("&");
+                else
+                    fullPath.append("?").append(queryPrefix).append("merchantIds").append(querySuffix);
+                qint32 count = 0;
+                for (qint32 t : merchant_ids.value()) {
+                    if (count > 0) {
+                        fullPath.append(queryDelimiter);
+                    }
+                    fullPath.append(::OpenAPI::toStringValue(t));
+                    count++;
+                }
+            } else if (QString("csv").indexOf("pipes") == 0) {
+                if (fullPath.indexOf("?") > 0)
+                    fullPath.append("&");
+                else
+                    fullPath.append("?").append(queryPrefix).append("merchantIds").append(querySuffix);
+                qint32 count = 0;
+                for (qint32 t : merchant_ids.value()) {
+                    if (count > 0) {
+                        fullPath.append(queryDelimiter);
+                    }
+                    fullPath.append(::OpenAPI::toStringValue(t));
+                    count++;
+                }
+            } else if (QString("csv").indexOf("deepObject") == 0) {
+                if (fullPath.indexOf("?") > 0)
+                    fullPath.append("&");
+                else
+                    fullPath.append("?").append(queryPrefix).append("merchantIds").append(querySuffix);
+                qint32 count = 0;
+                for (qint32 t : merchant_ids.value()) {
+                    if (count > 0) {
+                        fullPath.append(queryDelimiter);
+                    }
+                    fullPath.append(::OpenAPI::toStringValue(t));
+                    count++;
+                }
+            }
+        }
+    }
+    if (warehouse_ids.hasValue())
+    {
+        queryStyle = "form";
+        if (queryStyle == "")
+            queryStyle = "form";
+        queryPrefix = getParamStylePrefix(queryStyle);
+        querySuffix = getParamStyleSuffix(queryStyle);
+        queryDelimiter = getParamStyleDelimiter(queryStyle, "warehouseIds", false);
+        if (warehouse_ids.value().size() > 0) {
+            if (QString("csv").indexOf("multi") == 0) {
+                for (qint32 t : warehouse_ids.value()) {
+                    if (fullPath.indexOf("?") > 0)
+                        fullPath.append(queryPrefix);
+                    else
+                        fullPath.append("?");
+                    fullPath.append("warehouseIds=").append(::OpenAPI::toStringValue(t));
+                }
+            } else if (QString("csv").indexOf("ssv") == 0) {
+                if (fullPath.indexOf("?") > 0)
+                    fullPath.append("&");
+                else
+                    fullPath.append("?").append(queryPrefix).append("warehouseIds").append(querySuffix);
+                qint32 count = 0;
+                for (qint32 t : warehouse_ids.value()) {
+                    if (count > 0) {
+                        fullPath.append((false)? queryDelimiter : QUrl::toPercentEncoding(queryDelimiter));
+                    }
+                    fullPath.append(::OpenAPI::toStringValue(t));
+                    count++;
+                }
+            } else if (QString("csv").indexOf("tsv") == 0) {
+                if (fullPath.indexOf("?") > 0)
+                    fullPath.append("&");
+                else
+                    fullPath.append("?").append(queryPrefix).append("warehouseIds").append(querySuffix);
+                qint32 count = 0;
+                for (qint32 t : warehouse_ids.value()) {
+                    if (count > 0) {
+                        fullPath.append("\t");
+                    }
+                    fullPath.append(::OpenAPI::toStringValue(t));
+                    count++;
+                }
+            } else if (QString("csv").indexOf("csv") == 0) {
+                if (fullPath.indexOf("?") > 0)
+                    fullPath.append("&");
+                else
+                    fullPath.append("?").append(queryPrefix).append("warehouseIds").append(querySuffix);
+                qint32 count = 0;
+                for (qint32 t : warehouse_ids.value()) {
+                    if (count > 0) {
+                        fullPath.append(queryDelimiter);
+                    }
+                    fullPath.append(::OpenAPI::toStringValue(t));
+                    count++;
+                }
+            } else if (QString("csv").indexOf("pipes") == 0) {
+                if (fullPath.indexOf("?") > 0)
+                    fullPath.append("&");
+                else
+                    fullPath.append("?").append(queryPrefix).append("warehouseIds").append(querySuffix);
+                qint32 count = 0;
+                for (qint32 t : warehouse_ids.value()) {
+                    if (count > 0) {
+                        fullPath.append(queryDelimiter);
+                    }
+                    fullPath.append(::OpenAPI::toStringValue(t));
+                    count++;
+                }
+            } else if (QString("csv").indexOf("deepObject") == 0) {
+                if (fullPath.indexOf("?") > 0)
+                    fullPath.append("&");
+                else
+                    fullPath.append("?").append(queryPrefix).append("warehouseIds").append(querySuffix);
+                qint32 count = 0;
+                for (qint32 t : warehouse_ids.value()) {
+                    if (count > 0) {
+                        fullPath.append(queryDelimiter);
+                    }
+                    fullPath.append(::OpenAPI::toStringValue(t));
+                    count++;
+                }
+            }
+        }
+    }
+    if (page.hasValue())
+    {
+        queryStyle = "form";
+        if (queryStyle == "")
+            queryStyle = "form";
+        queryPrefix = getParamStylePrefix(queryStyle);
+        querySuffix = getParamStyleSuffix(queryStyle);
+        queryDelimiter = getParamStyleDelimiter(queryStyle, "page", true);
+        if (fullPath.indexOf("?") > 0)
+            fullPath.append(queryPrefix);
+        else
+            fullPath.append("?");
+
+        fullPath.append(QUrl::toPercentEncoding("page")).append(querySuffix).append(QUrl::toPercentEncoding(page.stringValue()));
+    }
+    if (limit.hasValue())
+    {
+        queryStyle = "form";
+        if (queryStyle == "")
+            queryStyle = "form";
+        queryPrefix = getParamStylePrefix(queryStyle);
+        querySuffix = getParamStyleSuffix(queryStyle);
+        queryDelimiter = getParamStyleDelimiter(queryStyle, "limit", true);
+        if (fullPath.indexOf("?") > 0)
+            fullPath.append(queryPrefix);
+        else
+            fullPath.append("?");
+
+        fullPath.append(QUrl::toPercentEncoding("limit")).append(querySuffix).append(QUrl::toPercentEncoding(limit.stringValue()));
+    }
+    if (hydrate.hasValue())
+    {
+        queryStyle = "form";
+        if (queryStyle == "")
+            queryStyle = "form";
+        queryPrefix = getParamStylePrefix(queryStyle);
+        querySuffix = getParamStyleSuffix(queryStyle);
+        queryDelimiter = getParamStyleDelimiter(queryStyle, "hydrate", false);
+        if (hydrate.value().size() > 0) {
+            if (QString("csv").indexOf("multi") == 0) {
+                for (QString t : hydrate.value()) {
+                    if (fullPath.indexOf("?") > 0)
+                        fullPath.append(queryPrefix);
+                    else
+                        fullPath.append("?");
+                    fullPath.append("hydrate=").append(::OpenAPI::toStringValue(t));
+                }
+            } else if (QString("csv").indexOf("ssv") == 0) {
+                if (fullPath.indexOf("?") > 0)
+                    fullPath.append("&");
+                else
+                    fullPath.append("?").append(queryPrefix).append("hydrate").append(querySuffix);
+                qint32 count = 0;
+                for (QString t : hydrate.value()) {
+                    if (count > 0) {
+                        fullPath.append((false)? queryDelimiter : QUrl::toPercentEncoding(queryDelimiter));
+                    }
+                    fullPath.append(::OpenAPI::toStringValue(t));
+                    count++;
+                }
+            } else if (QString("csv").indexOf("tsv") == 0) {
+                if (fullPath.indexOf("?") > 0)
+                    fullPath.append("&");
+                else
+                    fullPath.append("?").append(queryPrefix).append("hydrate").append(querySuffix);
+                qint32 count = 0;
+                for (QString t : hydrate.value()) {
+                    if (count > 0) {
+                        fullPath.append("\t");
+                    }
+                    fullPath.append(::OpenAPI::toStringValue(t));
+                    count++;
+                }
+            } else if (QString("csv").indexOf("csv") == 0) {
+                if (fullPath.indexOf("?") > 0)
+                    fullPath.append("&");
+                else
+                    fullPath.append("?").append(queryPrefix).append("hydrate").append(querySuffix);
+                qint32 count = 0;
+                for (QString t : hydrate.value()) {
+                    if (count > 0) {
+                        fullPath.append(queryDelimiter);
+                    }
+                    fullPath.append(::OpenAPI::toStringValue(t));
+                    count++;
+                }
+            } else if (QString("csv").indexOf("pipes") == 0) {
+                if (fullPath.indexOf("?") > 0)
+                    fullPath.append("&");
+                else
+                    fullPath.append("?").append(queryPrefix).append("hydrate").append(querySuffix);
+                qint32 count = 0;
+                for (QString t : hydrate.value()) {
+                    if (count > 0) {
+                        fullPath.append(queryDelimiter);
+                    }
+                    fullPath.append(::OpenAPI::toStringValue(t));
+                    count++;
+                }
+            } else if (QString("csv").indexOf("deepObject") == 0) {
+                if (fullPath.indexOf("?") > 0)
+                    fullPath.append("&");
+                else
+                    fullPath.append("?").append(queryPrefix).append("hydrate").append(querySuffix);
+                qint32 count = 0;
+                for (QString t : hydrate.value()) {
+                    if (count > 0) {
+                        fullPath.append(queryDelimiter);
+                    }
+                    fullPath.append(::OpenAPI::toStringValue(t));
+                    count++;
+                }
+            }
+        }
+    }
+    OAIHttpRequestWorker *worker = new OAIHttpRequestWorker(this, _manager);
+    worker->setTimeOut(_timeOut);
+    worker->setWorkingDirectory(_workingDirectory);
+    OAIHttpRequestInput input(fullPath, "GET");
+
+
+    for (auto keyValueIt = _defaultHeaders.keyValueBegin(); keyValueIt != _defaultHeaders.keyValueEnd(); keyValueIt++) {
+        input.headers.insert(keyValueIt->first, keyValueIt->second);
+    }
+
+
+    connect(worker, &OAIHttpRequestWorker::on_execution_finished, this, &OAIOrdersApi::getOrdersCallback);
+    connect(this, &OAIOrdersApi::abortRequestsSignal, worker, &QObject::deleteLater);
+    connect(worker, &QObject::destroyed, this, [this]() {
+        if (findChildren<OAIHttpRequestWorker*>().count() == 0) {
+            Q_EMIT allPendingRequestsCompleted();
+        }
+    });
+
+
+    _OauthMethod = 4;
+    _passwordFlow.link();
+    _authFlow.unlink();
+    _implicitFlow.unlink();
+    _credentialFlow.unlink();
+    QStringList scope;
+    scope.append("oms");
+    auto token = _passwordFlow.getToken(scope.join(" "));
+    if(token.isValid())
+        input.headers.insert("Authorization", "Bearer " + token.getToken());
+
+    _latestWorker = new OAIHttpRequestWorker(this, _manager);
+    _latestWorker->setTimeOut(_timeOut);
+    _latestWorker->setWorkingDirectory(_workingDirectory);
+
+    connect(_latestWorker, &OAIHttpRequestWorker::on_execution_finished, this, &OAIOrdersApi::getOrdersCallback);
+    connect(this, &OAIOrdersApi::abortRequestsSignal, _latestWorker, &QObject::deleteLater);
+    connect(_latestWorker, &QObject::destroyed, [this](){
+        if(findChildren<OAIHttpRequestWorker*>().count() == 0){
+            Q_EMIT allPendingRequestsCompleted();
+        }
+    });
+
+    _latestInput = input;
+    _latestScope = scope;
+    
+    _OauthMethod = 1;
+    _implicitFlow.link();
+    _passwordFlow.unlink();
+    _authFlow.unlink();
+    _credentialFlow.unlink();
+    QStringList scope;
+    scope.append("oms");
+    auto token = _implicitFlow.getToken(scope.join(" "));
+    if(token.isValid())
+        input.headers.insert("Authorization", "Bearer " + token.getToken());
+
+    _latestWorker = new OAIHttpRequestWorker(this, _manager);
+    _latestWorker->setTimeOut(_timeOut);
+    _latestWorker->setWorkingDirectory(_workingDirectory);
+
+    connect(_latestWorker, &OAIHttpRequestWorker::on_execution_finished, this, &OAIOrdersApi::getOrdersCallback);
+    connect(this, &OAIOrdersApi::abortRequestsSignal, _latestWorker, &QObject::deleteLater);
+    connect(_latestWorker, &QObject::destroyed, [this](){
+        if(findChildren<OAIHttpRequestWorker*>().count() == 0){
+            Q_EMIT allPendingRequestsCompleted();
+        }
+    });
+
+    _latestInput = input;
+    _latestScope = scope;
+
+
+
+    worker->execute(&input);
+}
+
+void OAIOrdersApi::getOrdersCallback(OAIHttpRequestWorker *worker) {
+    QString error_str = worker->error_str;
+    QNetworkReply::NetworkError error_type = worker->error_type;
+
+    if (worker->error_type != QNetworkReply::NoError) {
+        error_str = QString("%1, %2").arg(worker->error_str, QString(worker->response));
+    }
+    OAIOrderResponseOneOf_v2 output(QString(worker->response));
+    worker->deleteLater();
+
+    if (worker->error_type == QNetworkReply::NoError) {
+        Q_EMIT getOrdersSignal(output);
+        Q_EMIT getOrdersSignalFull(worker, output);
+
+
+    } else if(worker->error_type == QNetworkReply::AuthenticationRequiredError){
+        connect(&_passwordFlow, SIGNAL(tokenReceived()), this, SLOT(tokenAvailable()));
+        QStringList scope;
+        scope.append("oms");
+        QString scopeStr = scope.join(" ");
+        QString tokenUrl("https://api.fulfillment.com/v2/oauth/access_token");
+        //TODO get clientID and Secret and state in the config? https://swagger.io/docs/specification/authentication/oauth2/ states that you should do as you like
+        _passwordFlow.setVariables(tokenUrl , scopeStr ,"clientId", "clientSecret", "username", "password");
+        Q_EMIT _passwordFlow.authenticationNeeded();
+        
+    } else if(worker->error_type == QNetworkReply::AuthenticationRequiredError){
+        connect(&_implicitFlow, SIGNAL(tokenReceived()), this, SLOT(tokenAvailable()));
+        QStringList scope;
+        scope.append("oms");
+        QString scopeStr = scope.join(" ");
+        QString authorizationUrl("https://api.fulfillment.com/v2/oauth/authorize");
+        //TODO get clientID and Secret and state in the config? https://swagger.io/docs/specification/authentication/oauth2/ states that you should do as you like
+        _implicitFlow.setVariables(authorizationUrl, scopeStr, "state" , "http://127.0.0.1:9999", "clientId");
+        Q_EMIT _implicitFlow.authenticationNeeded();
+
+
+    } else {
+
+#if defined(_MSC_VER)
+// For MSVC
+#pragma warning(push)
+#pragma warning(disable : 4996)
+#elif defined(__clang__)
+// For Clang
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+#elif defined(__GNUC__)
+// For GCC
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
+
+        Q_EMIT getOrdersSignalE(output, error_type, error_str);
+        Q_EMIT getOrdersSignalEFull(worker, error_type, error_str);
+
+#if defined(_MSC_VER)
+#pragma warning(pop)
+#elif defined(__clang__)
+#pragma clang diagnostic pop
+#elif defined(__GNUC__)
+#pragma GCC diagnostic pop
+#endif
+
+        Q_EMIT getOrdersSignalError(output, error_type, error_str);
+        Q_EMIT getOrdersSignalErrorFull(worker, error_type, error_str);
+    }
+}
+
+void OAIOrdersApi::postOrders(const OAIOrderRequest_v2 &body) {
+    QString fullPath = QString(_serverConfigs["postOrders"][_serverIndices.value("postOrders")].URL()+"/orders");
+    
+    OAIHttpRequestWorker *worker = new OAIHttpRequestWorker(this, _manager);
+    worker->setTimeOut(_timeOut);
+    worker->setWorkingDirectory(_workingDirectory);
+    OAIHttpRequestInput input(fullPath, "POST");
+
+    {
+
+        
+        QByteArray output = body.asJson().toUtf8();
+        input.request_body.append(output);
+    }
+    for (auto keyValueIt = _defaultHeaders.keyValueBegin(); keyValueIt != _defaultHeaders.keyValueEnd(); keyValueIt++) {
+        input.headers.insert(keyValueIt->first, keyValueIt->second);
+    }
+
+
+    connect(worker, &OAIHttpRequestWorker::on_execution_finished, this, &OAIOrdersApi::postOrdersCallback);
+    connect(this, &OAIOrdersApi::abortRequestsSignal, worker, &QObject::deleteLater);
+    connect(worker, &QObject::destroyed, this, [this]() {
+        if (findChildren<OAIHttpRequestWorker*>().count() == 0) {
+            Q_EMIT allPendingRequestsCompleted();
+        }
+    });
+
+
+    _OauthMethod = 4;
+    _passwordFlow.link();
+    _authFlow.unlink();
+    _implicitFlow.unlink();
+    _credentialFlow.unlink();
+    QStringList scope;
+    scope.append("oms");
+    auto token = _passwordFlow.getToken(scope.join(" "));
+    if(token.isValid())
+        input.headers.insert("Authorization", "Bearer " + token.getToken());
+
+    _latestWorker = new OAIHttpRequestWorker(this, _manager);
+    _latestWorker->setTimeOut(_timeOut);
+    _latestWorker->setWorkingDirectory(_workingDirectory);
+
+    connect(_latestWorker, &OAIHttpRequestWorker::on_execution_finished, this, &OAIOrdersApi::postOrdersCallback);
+    connect(this, &OAIOrdersApi::abortRequestsSignal, _latestWorker, &QObject::deleteLater);
+    connect(_latestWorker, &QObject::destroyed, [this](){
+        if(findChildren<OAIHttpRequestWorker*>().count() == 0){
+            Q_EMIT allPendingRequestsCompleted();
+        }
+    });
+
+    _latestInput = input;
+    _latestScope = scope;
+    
+    _OauthMethod = 1;
+    _implicitFlow.link();
+    _passwordFlow.unlink();
+    _authFlow.unlink();
+    _credentialFlow.unlink();
+    QStringList scope;
+    scope.append("oms");
+    auto token = _implicitFlow.getToken(scope.join(" "));
+    if(token.isValid())
+        input.headers.insert("Authorization", "Bearer " + token.getToken());
+
+    _latestWorker = new OAIHttpRequestWorker(this, _manager);
+    _latestWorker->setTimeOut(_timeOut);
+    _latestWorker->setWorkingDirectory(_workingDirectory);
+
+    connect(_latestWorker, &OAIHttpRequestWorker::on_execution_finished, this, &OAIOrdersApi::postOrdersCallback);
+    connect(this, &OAIOrdersApi::abortRequestsSignal, _latestWorker, &QObject::deleteLater);
+    connect(_latestWorker, &QObject::destroyed, [this](){
+        if(findChildren<OAIHttpRequestWorker*>().count() == 0){
+            Q_EMIT allPendingRequestsCompleted();
+        }
+    });
+
+    _latestInput = input;
+    _latestScope = scope;
+
+
+
+    worker->execute(&input);
+}
+
+void OAIOrdersApi::postOrdersCallback(OAIHttpRequestWorker *worker) {
+    QString error_str = worker->error_str;
+    QNetworkReply::NetworkError error_type = worker->error_type;
+
+    if (worker->error_type != QNetworkReply::NoError) {
+        error_str = QString("%1, %2").arg(worker->error_str, QString(worker->response));
+    }
+    OAIOrderResponse_v2 output(QString(worker->response));
+    worker->deleteLater();
+
+    if (worker->error_type == QNetworkReply::NoError) {
+        Q_EMIT postOrdersSignal(output);
+        Q_EMIT postOrdersSignalFull(worker, output);
+
+
+    } else if(worker->error_type == QNetworkReply::AuthenticationRequiredError){
+        connect(&_passwordFlow, SIGNAL(tokenReceived()), this, SLOT(tokenAvailable()));
+        QStringList scope;
+        scope.append("oms");
+        QString scopeStr = scope.join(" ");
+        QString tokenUrl("https://api.fulfillment.com/v2/oauth/access_token");
+        //TODO get clientID and Secret and state in the config? https://swagger.io/docs/specification/authentication/oauth2/ states that you should do as you like
+        _passwordFlow.setVariables(tokenUrl , scopeStr ,"clientId", "clientSecret", "username", "password");
+        Q_EMIT _passwordFlow.authenticationNeeded();
+        
+    } else if(worker->error_type == QNetworkReply::AuthenticationRequiredError){
+        connect(&_implicitFlow, SIGNAL(tokenReceived()), this, SLOT(tokenAvailable()));
+        QStringList scope;
+        scope.append("oms");
+        QString scopeStr = scope.join(" ");
+        QString authorizationUrl("https://api.fulfillment.com/v2/oauth/authorize");
+        //TODO get clientID and Secret and state in the config? https://swagger.io/docs/specification/authentication/oauth2/ states that you should do as you like
+        _implicitFlow.setVariables(authorizationUrl, scopeStr, "state" , "http://127.0.0.1:9999", "clientId");
+        Q_EMIT _implicitFlow.authenticationNeeded();
+
+
+    } else {
+
+#if defined(_MSC_VER)
+// For MSVC
+#pragma warning(push)
+#pragma warning(disable : 4996)
+#elif defined(__clang__)
+// For Clang
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+#elif defined(__GNUC__)
+// For GCC
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
+
+        Q_EMIT postOrdersSignalE(output, error_type, error_str);
+        Q_EMIT postOrdersSignalEFull(worker, error_type, error_str);
+
+#if defined(_MSC_VER)
+#pragma warning(pop)
+#elif defined(__clang__)
+#pragma clang diagnostic pop
+#elif defined(__GNUC__)
+#pragma GCC diagnostic pop
+#endif
+
+        Q_EMIT postOrdersSignalError(output, error_type, error_str);
+        Q_EMIT postOrdersSignalErrorFull(worker, error_type, error_str);
+    }
+}
+
+void OAIOrdersApi::tokenAvailable(){
+
+    oauthToken token;
+    switch (_OauthMethod) {
+    case 1: //implicit flow
+        token = _implicitFlow.getToken(_latestScope.join(" "));
+        if(token.isValid()){
+            _latestInput.headers.insert("Authorization", "Bearer " + token.getToken());
+            _latestWorker->execute(&_latestInput);
+        }else{
+            _implicitFlow.removeToken(_latestScope.join(" "));
+            qDebug() << "Could not retrieve a valid token";
+        }
+        break;
+    case 2: //authorization flow
+        token = _authFlow.getToken(_latestScope.join(" "));
+        if(token.isValid()){
+            _latestInput.headers.insert("Authorization", "Bearer " + token.getToken());
+            _latestWorker->execute(&_latestInput);
+        }else{
+            _authFlow.removeToken(_latestScope.join(" "));
+            qDebug() << "Could not retrieve a valid token";
+        }
+        break;
+    case 3: //client credentials flow
+        token = _credentialFlow.getToken(_latestScope.join(" "));
+        if(token.isValid()){
+            _latestInput.headers.insert("Authorization", "Bearer " + token.getToken());
+            _latestWorker->execute(&_latestInput);
+        }else{
+            _credentialFlow.removeToken(_latestScope.join(" "));
+            qDebug() << "Could not retrieve a valid token";
+        }
+        break;
+    case 4: //resource owner password flow
+        token = _passwordFlow.getToken(_latestScope.join(" "));
+        if(token.isValid()){
+            _latestInput.headers.insert("Authorization", "Bearer " + token.getToken());
+            _latestWorker->execute(&_latestInput);
+        }else{
+            _credentialFlow.removeToken(_latestScope.join(" "));
+            qDebug() << "Could not retrieve a valid token";
+        }
+        break;
+    default:
+        qDebug() << "No Oauth method set!";
+        break;
+    }
+}
+} // namespace OpenAPI

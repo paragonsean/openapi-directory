@@ -1,0 +1,12 @@
+# AmazonDataLifecycleManager.PolicyTypeValues
+
+## Enum
+
+
+* `EBS_SNAPSHOT_MANAGEMENT` (value: `"EBS_SNAPSHOT_MANAGEMENT"`)
+
+* `IMAGE_MANAGEMENT` (value: `"IMAGE_MANAGEMENT"`)
+
+* `EVENT_BASED_POLICY` (value: `"EVENT_BASED_POLICY"`)
+
+

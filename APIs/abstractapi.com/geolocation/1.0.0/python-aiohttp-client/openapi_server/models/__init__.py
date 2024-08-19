@@ -1,9 +1,0 @@
-# coding: utf-8
-
-# import models into model package
-from openapi_server.models.inline_response200 import InlineResponse200
-from openapi_server.models.inline_response200_connection import InlineResponse200Connection
-from openapi_server.models.inline_response200_currency import InlineResponse200Currency
-from openapi_server.models.inline_response200_flag import InlineResponse200Flag
-from openapi_server.models.inline_response200_security import InlineResponse200Security
-from openapi_server.models.inline_response200_timezone import InlineResponse200Timezone

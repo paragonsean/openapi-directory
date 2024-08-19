@@ -1,0 +1,10 @@
+# TaggunReceiptOcrScanningApi.MerchantName
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**confidenceLevel** | **Number** |  | [optional] 
+**data** | **String** |  | [optional] 
+
+

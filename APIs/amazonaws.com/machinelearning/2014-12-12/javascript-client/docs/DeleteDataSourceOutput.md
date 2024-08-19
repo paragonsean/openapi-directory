@@ -1,0 +1,9 @@
+# AmazonMachineLearning.DeleteDataSourceOutput
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**dataSourceId** | **String** |  | [optional] 
+
+

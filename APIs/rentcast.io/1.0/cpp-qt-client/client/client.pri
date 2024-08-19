@@ -1,0 +1,113 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIMarket_statistics_200_response.h \
+    $${PWD}/OAIMarket_statistics_200_response_rentalData.h \
+    $${PWD}/OAIMarket_statistics_200_response_rentalData_dataByBedrooms_inner.h \
+    $${PWD}/OAIMarket_statistics_200_response_rentalData_history.h \
+    $${PWD}/OAIMarket_statistics_200_response_rentalData_history_2023_05.h \
+    $${PWD}/OAIMarket_statistics_200_response_rentalData_history_2023_05_dataByBedrooms_inner.h \
+    $${PWD}/OAIMarket_statistics_200_response_rentalData_history_2023_06.h \
+    $${PWD}/OAIMarket_statistics_200_response_rentalData_history_2023_06_dataByBedrooms_inner.h \
+    $${PWD}/OAIMarket_statistics_200_response_rentalData_history_2023_07.h \
+    $${PWD}/OAIMarket_statistics_200_response_rentalData_history_2023_07_dataByBedrooms_inner.h \
+    $${PWD}/OAIMarket_statistics_200_response_rentalData_history_2023_08.h \
+    $${PWD}/OAIMarket_statistics_200_response_rentalData_history_2023_08_dataByBedrooms_inner.h \
+    $${PWD}/OAIMarket_statistics_200_response_rentalData_history_2023_09.h \
+    $${PWD}/OAIMarket_statistics_200_response_rentalData_history_2023_10.h \
+    $${PWD}/OAIProperty_records_200_response_inner.h \
+    $${PWD}/OAIProperty_records_200_response_inner_features.h \
+    $${PWD}/OAIProperty_records_200_response_inner_owner.h \
+    $${PWD}/OAIProperty_records_200_response_inner_owner_mailingAddress.h \
+    $${PWD}/OAIProperty_records_200_response_inner_propertyTaxes.h \
+    $${PWD}/OAIProperty_records_200_response_inner_propertyTaxes_2019.h \
+    $${PWD}/OAIProperty_records_200_response_inner_propertyTaxes_2020.h \
+    $${PWD}/OAIProperty_records_200_response_inner_propertyTaxes_2021.h \
+    $${PWD}/OAIProperty_records_200_response_inner_propertyTaxes_2022.h \
+    $${PWD}/OAIProperty_records_200_response_inner_taxAssessments.h \
+    $${PWD}/OAIProperty_records_200_response_inner_taxAssessments_2019.h \
+    $${PWD}/OAIProperty_records_200_response_inner_taxAssessments_2020.h \
+    $${PWD}/OAIProperty_records_200_response_inner_taxAssessments_2021.h \
+    $${PWD}/OAIProperty_records_200_response_inner_taxAssessments_2022.h \
+    $${PWD}/OAIProperty_records_random_200_response_inner.h \
+    $${PWD}/OAIProperty_records_random_200_response_inner_features.h \
+    $${PWD}/OAIProperty_records_random_200_response_inner_owner.h \
+    $${PWD}/OAIProperty_records_random_200_response_inner_owner_mailingAddress.h \
+    $${PWD}/OAIProperty_records_random_200_response_inner_propertyTaxes.h \
+    $${PWD}/OAIProperty_records_random_200_response_inner_propertyTaxes_2022.h \
+    $${PWD}/OAIProperty_records_random_200_response_inner_taxAssessments.h \
+    $${PWD}/OAIProperty_records_random_200_response_inner_taxAssessments_2022.h \
+    $${PWD}/OAIRent_estimate_long_term_200_response.h \
+    $${PWD}/OAIRent_estimate_long_term_200_response_comparables_inner.h \
+    $${PWD}/OAIRental_listing_long_term_by_id_200_response.h \
+    $${PWD}/OAIRental_listings_long_term_200_response_inner.h \
+    $${PWD}/OAISale_listing_by_id_200_response.h \
+    $${PWD}/OAISale_listings_200_response_inner.h \
+    $${PWD}/OAIValue_estimate_200_response.h \
+    $${PWD}/OAIValue_estimate_200_response_comparables_inner.h \
+# APIs
+    $${PWD}/OAIDefaultApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIMarket_statistics_200_response.cpp \
+    $${PWD}/OAIMarket_statistics_200_response_rentalData.cpp \
+    $${PWD}/OAIMarket_statistics_200_response_rentalData_dataByBedrooms_inner.cpp \
+    $${PWD}/OAIMarket_statistics_200_response_rentalData_history.cpp \
+    $${PWD}/OAIMarket_statistics_200_response_rentalData_history_2023_05.cpp \
+    $${PWD}/OAIMarket_statistics_200_response_rentalData_history_2023_05_dataByBedrooms_inner.cpp \
+    $${PWD}/OAIMarket_statistics_200_response_rentalData_history_2023_06.cpp \
+    $${PWD}/OAIMarket_statistics_200_response_rentalData_history_2023_06_dataByBedrooms_inner.cpp \
+    $${PWD}/OAIMarket_statistics_200_response_rentalData_history_2023_07.cpp \
+    $${PWD}/OAIMarket_statistics_200_response_rentalData_history_2023_07_dataByBedrooms_inner.cpp \
+    $${PWD}/OAIMarket_statistics_200_response_rentalData_history_2023_08.cpp \
+    $${PWD}/OAIMarket_statistics_200_response_rentalData_history_2023_08_dataByBedrooms_inner.cpp \
+    $${PWD}/OAIMarket_statistics_200_response_rentalData_history_2023_09.cpp \
+    $${PWD}/OAIMarket_statistics_200_response_rentalData_history_2023_10.cpp \
+    $${PWD}/OAIProperty_records_200_response_inner.cpp \
+    $${PWD}/OAIProperty_records_200_response_inner_features.cpp \
+    $${PWD}/OAIProperty_records_200_response_inner_owner.cpp \
+    $${PWD}/OAIProperty_records_200_response_inner_owner_mailingAddress.cpp \
+    $${PWD}/OAIProperty_records_200_response_inner_propertyTaxes.cpp \
+    $${PWD}/OAIProperty_records_200_response_inner_propertyTaxes_2019.cpp \
+    $${PWD}/OAIProperty_records_200_response_inner_propertyTaxes_2020.cpp \
+    $${PWD}/OAIProperty_records_200_response_inner_propertyTaxes_2021.cpp \
+    $${PWD}/OAIProperty_records_200_response_inner_propertyTaxes_2022.cpp \
+    $${PWD}/OAIProperty_records_200_response_inner_taxAssessments.cpp \
+    $${PWD}/OAIProperty_records_200_response_inner_taxAssessments_2019.cpp \
+    $${PWD}/OAIProperty_records_200_response_inner_taxAssessments_2020.cpp \
+    $${PWD}/OAIProperty_records_200_response_inner_taxAssessments_2021.cpp \
+    $${PWD}/OAIProperty_records_200_response_inner_taxAssessments_2022.cpp \
+    $${PWD}/OAIProperty_records_random_200_response_inner.cpp \
+    $${PWD}/OAIProperty_records_random_200_response_inner_features.cpp \
+    $${PWD}/OAIProperty_records_random_200_response_inner_owner.cpp \
+    $${PWD}/OAIProperty_records_random_200_response_inner_owner_mailingAddress.cpp \
+    $${PWD}/OAIProperty_records_random_200_response_inner_propertyTaxes.cpp \
+    $${PWD}/OAIProperty_records_random_200_response_inner_propertyTaxes_2022.cpp \
+    $${PWD}/OAIProperty_records_random_200_response_inner_taxAssessments.cpp \
+    $${PWD}/OAIProperty_records_random_200_response_inner_taxAssessments_2022.cpp \
+    $${PWD}/OAIRent_estimate_long_term_200_response.cpp \
+    $${PWD}/OAIRent_estimate_long_term_200_response_comparables_inner.cpp \
+    $${PWD}/OAIRental_listing_long_term_by_id_200_response.cpp \
+    $${PWD}/OAIRental_listings_long_term_200_response_inner.cpp \
+    $${PWD}/OAISale_listing_by_id_200_response.cpp \
+    $${PWD}/OAISale_listings_200_response_inner.cpp \
+    $${PWD}/OAIValue_estimate_200_response.cpp \
+    $${PWD}/OAIValue_estimate_200_response_comparables_inner.cpp \
+# APIs
+    $${PWD}/OAIDefaultApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

@@ -1,8 +1,0 @@
-# coding: utf-8
-
-# import models into model package
-from openapi_server.models.certificate_collection import CertificateCollection
-from openapi_server.models.certificate_contract import CertificateContract
-from openapi_server.models.certificate_create_or_update_parameters import CertificateCreateOrUpdateParameters
-from openapi_server.models.certificates_list_by_service_default_response import CertificatesListByServiceDefaultResponse
-from openapi_server.models.certificates_list_by_service_default_response_details_inner import CertificatesListByServiceDefaultResponseDetailsInner

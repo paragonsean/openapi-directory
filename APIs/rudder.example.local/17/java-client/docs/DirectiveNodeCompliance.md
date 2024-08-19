@@ -1,0 +1,17 @@
+
+
+# DirectiveNodeCompliance
+
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**compliance** | **Float** | Directive compliance level |  |
+|**complianceDetails** | [**DirectiveNodeComplianceComplianceDetails**](DirectiveNodeComplianceComplianceDetails.md) |  |  |
+|**id** | **UUID** | id of the node |  |
+|**name** | **String** | Name of the node |  |
+|**rules** | [**RuleComplianceComponent**](RuleComplianceComponent.md) |  |  |
+
+
+

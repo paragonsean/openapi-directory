@@ -1,0 +1,8 @@
+# coding: utf-8
+
+# import models into model package
+from openapi_server.models.auto_provisioning_setting import AutoProvisioningSetting
+from openapi_server.models.auto_provisioning_setting_list import AutoProvisioningSettingList
+from openapi_server.models.auto_provisioning_setting_properties import AutoProvisioningSettingProperties
+from openapi_server.models.auto_provisioning_settings_list_default_response import AutoProvisioningSettingsListDefaultResponse
+from openapi_server.models.auto_provisioning_settings_list_default_response_error import AutoProvisioningSettingsListDefaultResponseError

@@ -1,0 +1,91 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIAddress.h \
+    $${PWD}/OAIAmount.h \
+    $${PWD}/OAIBankAccount.h \
+    $${PWD}/OAICard.h \
+    $${PWD}/OAIFraudCheckResult.h \
+    $${PWD}/OAIFraudCheckResultWrapper.h \
+    $${PWD}/OAIFraudResult.h \
+    $${PWD}/OAIFundSource.h \
+    $${PWD}/OAIModifyRequest.h \
+    $${PWD}/OAIModifyResponse.h \
+    $${PWD}/OAIName.h \
+    $${PWD}/OAIPayoutRequest.h \
+    $${PWD}/OAIPayoutResponse.h \
+    $${PWD}/OAIPayoutResponse_additionalData.h \
+    $${PWD}/OAIRecurring.h \
+    $${PWD}/OAIResponseAdditionalData3DSecure.h \
+    $${PWD}/OAIResponseAdditionalDataBillingAddress.h \
+    $${PWD}/OAIResponseAdditionalDataCard.h \
+    $${PWD}/OAIResponseAdditionalDataCommon.h \
+    $${PWD}/OAIResponseAdditionalDataDomesticError.h \
+    $${PWD}/OAIResponseAdditionalDataInstallments.h \
+    $${PWD}/OAIResponseAdditionalDataNetworkTokens.h \
+    $${PWD}/OAIResponseAdditionalDataOpi.h \
+    $${PWD}/OAIResponseAdditionalDataSepa.h \
+    $${PWD}/OAIServiceError.h \
+    $${PWD}/OAIStoreDetailAndSubmitRequest.h \
+    $${PWD}/OAIStoreDetailAndSubmitResponse.h \
+    $${PWD}/OAIStoreDetailRequest.h \
+    $${PWD}/OAIStoreDetailResponse.h \
+    $${PWD}/OAISubmitRequest.h \
+    $${PWD}/OAISubmitResponse.h \
+# APIs
+    $${PWD}/OAIInitializationApi.h \
+    $${PWD}/OAIInstantPayoutsApi.h \
+    $${PWD}/OAIReviewingApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIAddress.cpp \
+    $${PWD}/OAIAmount.cpp \
+    $${PWD}/OAIBankAccount.cpp \
+    $${PWD}/OAICard.cpp \
+    $${PWD}/OAIFraudCheckResult.cpp \
+    $${PWD}/OAIFraudCheckResultWrapper.cpp \
+    $${PWD}/OAIFraudResult.cpp \
+    $${PWD}/OAIFundSource.cpp \
+    $${PWD}/OAIModifyRequest.cpp \
+    $${PWD}/OAIModifyResponse.cpp \
+    $${PWD}/OAIName.cpp \
+    $${PWD}/OAIPayoutRequest.cpp \
+    $${PWD}/OAIPayoutResponse.cpp \
+    $${PWD}/OAIPayoutResponse_additionalData.cpp \
+    $${PWD}/OAIRecurring.cpp \
+    $${PWD}/OAIResponseAdditionalData3DSecure.cpp \
+    $${PWD}/OAIResponseAdditionalDataBillingAddress.cpp \
+    $${PWD}/OAIResponseAdditionalDataCard.cpp \
+    $${PWD}/OAIResponseAdditionalDataCommon.cpp \
+    $${PWD}/OAIResponseAdditionalDataDomesticError.cpp \
+    $${PWD}/OAIResponseAdditionalDataInstallments.cpp \
+    $${PWD}/OAIResponseAdditionalDataNetworkTokens.cpp \
+    $${PWD}/OAIResponseAdditionalDataOpi.cpp \
+    $${PWD}/OAIResponseAdditionalDataSepa.cpp \
+    $${PWD}/OAIServiceError.cpp \
+    $${PWD}/OAIStoreDetailAndSubmitRequest.cpp \
+    $${PWD}/OAIStoreDetailAndSubmitResponse.cpp \
+    $${PWD}/OAIStoreDetailRequest.cpp \
+    $${PWD}/OAIStoreDetailResponse.cpp \
+    $${PWD}/OAISubmitRequest.cpp \
+    $${PWD}/OAISubmitResponse.cpp \
+# APIs
+    $${PWD}/OAIInitializationApi.cpp \
+    $${PWD}/OAIInstantPayoutsApi.cpp \
+    $${PWD}/OAIReviewingApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

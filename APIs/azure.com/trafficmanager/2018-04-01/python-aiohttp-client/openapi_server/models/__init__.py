@@ -1,0 +1,31 @@
+# coding: utf-8
+
+# import models into model package
+from openapi_server.models.check_traffic_manager_relative_dns_name_availability_parameters import CheckTrafficManagerRelativeDnsNameAvailabilityParameters
+from openapi_server.models.cloud_error import CloudError
+from openapi_server.models.cloud_error_body import CloudErrorBody
+from openapi_server.models.delete_operation_result import DeleteOperationResult
+from openapi_server.models.dns_config import DnsConfig
+from openapi_server.models.endpoint import Endpoint
+from openapi_server.models.endpoint_properties import EndpointProperties
+from openapi_server.models.endpoint_properties_custom_headers_inner import EndpointPropertiesCustomHeadersInner
+from openapi_server.models.endpoint_properties_subnets_inner import EndpointPropertiesSubnetsInner
+from openapi_server.models.geographic_hierarchy_properties import GeographicHierarchyProperties
+from openapi_server.models.heat_map_endpoint import HeatMapEndpoint
+from openapi_server.models.heat_map_model import HeatMapModel
+from openapi_server.models.heat_map_properties import HeatMapProperties
+from openapi_server.models.monitor_config import MonitorConfig
+from openapi_server.models.monitor_config_expected_status_code_ranges_inner import MonitorConfigExpectedStatusCodeRangesInner
+from openapi_server.models.profile import Profile
+from openapi_server.models.profile_list_result import ProfileListResult
+from openapi_server.models.profile_properties import ProfileProperties
+from openapi_server.models.proxy_resource import ProxyResource
+from openapi_server.models.query_experience import QueryExperience
+from openapi_server.models.region import Region
+from openapi_server.models.resource import Resource
+from openapi_server.models.tracked_resource import TrackedResource
+from openapi_server.models.traffic_flow import TrafficFlow
+from openapi_server.models.traffic_manager_geographic_hierarchy import TrafficManagerGeographicHierarchy
+from openapi_server.models.traffic_manager_name_availability import TrafficManagerNameAvailability
+from openapi_server.models.user_metrics_model import UserMetricsModel
+from openapi_server.models.user_metrics_properties import UserMetricsProperties

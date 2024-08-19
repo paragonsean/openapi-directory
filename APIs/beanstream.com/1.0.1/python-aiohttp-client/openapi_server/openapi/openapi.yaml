@@ -1,0 +1,2507 @@
+openapi: 3.0.1
+info:
+  description: https://www.beanstream.com/api/v1
+  title: Beanstream Payments
+  version: 1.0.1
+  x-apisguru-categories:
+  - payment
+  - financial
+  - ecommerce
+  x-logo:
+    url: https://twitter.com/bambora_na/profile_image?size=original
+  x-origin:
+  - format: swagger
+    url: http://support.beanstream.com/restapi/swagger.json
+    version: "2.0"
+  x-providerName: beanstream.com
+  x-tags:
+  - payments
+  - bank-neutral
+  - omni-channel reporting
+servers:
+- url: https://www.beanstream.com/api/v1
+paths:
+  /payments:
+    post:
+      description: "Make a payment using credit card, cash, cheque, profile, or token.\
+        \ Each payment type has its own json definition passed in the body. For all\
+        \ payments you have the standard Billing, Shipping, Comments, etc. fields\
+        \ that are optional. Only the amount is required along with the payment data\
+        \ for card, cash, cheque, profile, and token. You must change the payment_method\
+        \ for each payment type. Credit Card - \"card\", Payment Profile - \"payment_profile\"\
+        , Legato Token - \"token\", Cash - \"cash\", Cheque - \"cheque\", Interac\
+        \ - \"interac\""
+      operationId: payments_post
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/PaymentRequest'
+        required: false
+        x-body-name: payment_request
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentResponse'
+          description: Payment response containing the payment details as well as
+            if the payment was approved or declined.
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BeanstreamException'
+          description: Bad Request
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BeanstreamException'
+          description: Authentication Failure
+        "402":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BeanstreamException'
+          description: Business Rule Violation or Decline
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BeanstreamException'
+          description: Authorization Failure
+        "405":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BeanstreamException'
+          description: Invalid Request Method
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BeanstreamException'
+          description: Internal Server Error
+      summary: Make Payment
+      tags:
+      - Payments
+      x-codegen-request-body-name: payment_request
+      x-openapi-router-controller: openapi_server.controllers.payments_controller
+  /payments/{transId}:
+    get:
+      description: Get a previous payment (transaction).
+      operationId: payments_trans_id_get
+      parameters:
+      - description: The transaction id.
+        in: path
+        name: transId
+        required: true
+        schema:
+          format: integer
+          type: number
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Transaction'
+          description: A transaction object.
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BeanstreamException'
+          description: Bad Request
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BeanstreamException'
+          description: Authentication Failure
+        "402":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BeanstreamException'
+          description: Business Rule Violation or Decline
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BeanstreamException'
+          description: Authorization Failure
+        "405":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BeanstreamException'
+          description: Invalid Request Method
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BeanstreamException'
+          description: Internal Server Error
+      summary: Get payment
+      tags:
+      - Payments
+      x-openapi-router-controller: openapi_server.controllers.payments_controller
+  /payments/{transId}/completions:
+    post:
+      description: Complete a pre-authorized payment. The amount of the transaction
+        to complete must be less than or equal to the original pre-auth amount. Complete
+        must be set to true.
+      operationId: payments_trans_id_completions_post
+      parameters:
+      - description: The transaction id.
+        in: path
+        name: transId
+        required: true
+        schema:
+          format: double
+          type: number
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/PaymentRequest'
+        required: false
+        x-body-name: payment_request
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentResponse'
+          description: Payment response containing the payment details as well as
+            if the transaction was approved or declined.
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BeanstreamException'
+          description: Bad Request
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BeanstreamException'
+          description: Authentication Failure
+        "402":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BeanstreamException'
+          description: Business Rule Violation or Decline
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BeanstreamException'
+          description: Authorization Failure
+        "405":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BeanstreamException'
+          description: Invalid Request Method
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BeanstreamException'
+          description: Internal Server Error
+      summary: Complete pre-auth
+      tags:
+      - Payments
+      x-codegen-request-body-name: payment_request
+      x-openapi-router-controller: openapi_server.controllers.payments_controller
+  /payments/{transId}/returns:
+    post:
+      description: Return payment.
+      operationId: payments_trans_id_returns_post
+      parameters:
+      - description: The transaction id.
+        in: path
+        name: transId
+        required: true
+        schema:
+          format: double
+          type: number
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/Return'
+        required: true
+        x-body-name: return
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentResponse'
+          description: Payment response containing the payment details as well as
+            if the transaction was approved or declined.
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BeanstreamException'
+          description: Bad Request
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BeanstreamException'
+          description: Authentication Failure
+        "402":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BeanstreamException'
+          description: Business Rule Violation or Decline
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BeanstreamException'
+          description: Authorization Failure
+        "405":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BeanstreamException'
+          description: Invalid Request Method
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BeanstreamException'
+          description: Internal Server Error
+      summary: Return payment
+      tags:
+      - Payments
+      x-codegen-request-body-name: return
+      x-openapi-router-controller: openapi_server.controllers.payments_controller
+  /payments/{transId}/void:
+    post:
+      description: "Void a transaction. You can void payments, returns, pre-auths,\
+        \ and completions. It will cancel that transaction."
+      operationId: payments_trans_id_void_post
+      parameters:
+      - description: The transaction id to void.
+        in: path
+        name: transId
+        required: true
+        schema:
+          format: double
+          type: number
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/Void'
+        required: true
+        x-body-name: void
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentResponse'
+          description: Payment response containing the payment details as well as
+            if the transaction was approved or declined.
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BeanstreamException'
+          description: Bad Request
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BeanstreamException'
+          description: Authentication Failure
+        "402":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BeanstreamException'
+          description: Business Rule Violation or Decline
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BeanstreamException'
+          description: Authorization Failure
+        "405":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BeanstreamException'
+          description: Invalid Request Method
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BeanstreamException'
+          description: Internal Server Error
+      summary: Void Transaction
+      tags:
+      - Payments
+      x-codegen-request-body-name: void
+      x-openapi-router-controller: openapi_server.controllers.payments_controller
+  /profiles:
+    post:
+      description: Create a new Payment Profile using either a card or a Legato token.
+        You must supply one of them.
+      operationId: profiles_post
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/CreateProfileBody'
+        required: true
+        x-body-name: createProfileBody
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProfileResponse'
+          description: The Profile.
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BeanstreamException'
+          description: Bad Request
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BeanstreamException'
+          description: Authentication Failure
+        "402":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BeanstreamException'
+          description: Business Rule Violation or Decline
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BeanstreamException'
+          description: Authorization Failure
+        "405":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BeanstreamException'
+          description: Invalid Request Method
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BeanstreamException'
+          description: Internal Server Error
+      summary: Create Profile
+      tags:
+      - Profiles
+      x-codegen-request-body-name: createProfileBody
+      x-openapi-router-controller: openapi_server.controllers.profiles_controller
+  /profiles/{profileId}:
+    delete:
+      description: "Delete a Payment Profile using the profile ID, also known as the\
+        \ Customer Code."
+      operationId: profiles_profile_id_delete
+      parameters:
+      - description: The profile id. (aka CustomerCode)
+        in: path
+        name: profileId
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProfileResponse'
+          description: The Profile.
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BeanstreamException'
+          description: Bad Request
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BeanstreamException'
+          description: Authentication Failure
+        "402":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BeanstreamException'
+          description: Business Rule Violation or Decline
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BeanstreamException'
+          description: Authorization Failure
+        "405":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BeanstreamException'
+          description: Invalid Request Method
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BeanstreamException'
+          description: Internal Server Error
+      summary: Delete profile
+      tags:
+      - Profiles
+      x-openapi-router-controller: openapi_server.controllers.profiles_controller
+    get:
+      description: "Get a Payment Profile using the profile ID, also known as the\
+        \ Customer Code."
+      operationId: profiles_profile_id_get
+      parameters:
+      - description: The profile id. (aka CustomerCode)
+        in: path
+        name: profileId
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentProfile'
+          description: The Profile.
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BeanstreamException'
+          description: Bad Request
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BeanstreamException'
+          description: Authentication Failure
+        "402":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BeanstreamException'
+          description: Business Rule Violation or Decline
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BeanstreamException'
+          description: Authorization Failure
+        "405":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BeanstreamException'
+          description: Invalid Request Method
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BeanstreamException'
+          description: Internal Server Error
+      summary: Get profile
+      tags:
+      - Profiles
+      x-openapi-router-controller: openapi_server.controllers.profiles_controller
+    put:
+      description: Create a new Payment Profile using either a card or a Legato token.
+        You must supply one of them.
+      operationId: profiles_profile_id_put
+      parameters:
+      - description: The profile id. (aka CustomerCode)
+        in: path
+        name: profileId
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/UpdateProfileBody'
+        required: true
+        x-body-name: updateProfileBody
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProfileResponse'
+          description: The Profile.
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BeanstreamException'
+          description: Bad Request
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BeanstreamException'
+          description: Authentication Failure
+        "402":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BeanstreamException'
+          description: Business Rule Violation or Decline
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BeanstreamException'
+          description: Authorization Failure
+        "405":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BeanstreamException'
+          description: Invalid Request Method
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BeanstreamException'
+          description: Internal Server Error
+      summary: Update Profile
+      tags:
+      - Profiles
+      x-codegen-request-body-name: updateProfileBody
+      x-openapi-router-controller: openapi_server.controllers.profiles_controller
+  /profiles/{profileId}/cards:
+    get:
+      description: Get all of the cards on the profile.
+      operationId: profiles_profile_id_cards_get
+      parameters:
+      - description: The profile id. (aka CustomerCode)
+        in: path
+        name: profileId
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProfileGetCards'
+          description: The Profile.
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BeanstreamException'
+          description: Bad Request
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BeanstreamException'
+          description: Authentication Failure
+        "402":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BeanstreamException'
+          description: Business Rule Violation or Decline
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BeanstreamException'
+          description: Authorization Failure
+        "405":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BeanstreamException'
+          description: Invalid Request Method
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BeanstreamException'
+          description: Internal Server Error
+      summary: Get cards
+      tags:
+      - Profiles
+      x-openapi-router-controller: openapi_server.controllers.profiles_controller
+    post:
+      description: Add a card to the profile. Note that there is a default limit of
+        1 card per profile. You can change this in your Profiles settings in the back
+        office.
+      operationId: profiles_profile_id_cards_post
+      parameters:
+      - description: The profile id. (aka CustomerCode)
+        in: path
+        name: profileId
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/ProfileCard'
+        description: The card that will be added to the profile.
+        required: true
+        x-body-name: card
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProfileResponse'
+          description: The Profile.
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BeanstreamException'
+          description: Bad Request
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BeanstreamException'
+          description: Authentication Failure
+        "402":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BeanstreamException'
+          description: Business Rule Violation or Decline
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BeanstreamException'
+          description: Authorization Failure
+        "405":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BeanstreamException'
+          description: Invalid Request Method
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BeanstreamException'
+          description: Internal Server Error
+      summary: Add card
+      tags:
+      - Profiles
+      x-codegen-request-body-name: card
+      x-openapi-router-controller: openapi_server.controllers.profiles_controller
+  /profiles/{profileId}/cards/{cardId}:
+    delete:
+      description: Delete a card on the profile.
+      operationId: profiles_profile_id_cards_card_id_delete
+      parameters:
+      - description: The profile id. (aka CustomerCode)
+        in: path
+        name: profileId
+        required: true
+        schema:
+          type: string
+      - description: The card id.
+        in: path
+        name: cardId
+        required: true
+        schema:
+          format: integer
+          type: number
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProfileResponse'
+          description: The Profile.
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BeanstreamException'
+          description: Bad Request
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BeanstreamException'
+          description: Authentication Failure
+        "402":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BeanstreamException'
+          description: Business Rule Violation or Decline
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BeanstreamException'
+          description: Authorization Failure
+        "405":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BeanstreamException'
+          description: Invalid Request Method
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BeanstreamException'
+          description: Internal Server Error
+      summary: Delete card
+      tags:
+      - Profiles
+      x-openapi-router-controller: openapi_server.controllers.profiles_controller
+    put:
+      description: Update the details of a card on the profile.
+      operationId: profiles_profile_id_cards_card_id_put
+      parameters:
+      - description: The profile id. (aka CustomerCode)
+        in: path
+        name: profileId
+        required: true
+        schema:
+          type: string
+      - description: The card id.
+        in: path
+        name: cardId
+        required: true
+        schema:
+          format: integer
+          type: number
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/ProfileCard'
+        description: The card that will be updated on the profile.
+        required: true
+        x-body-name: card
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProfileResponse'
+          description: The Profile.
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BeanstreamException'
+          description: Bad Request
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BeanstreamException'
+          description: Authentication Failure
+        "402":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BeanstreamException'
+          description: Business Rule Violation or Decline
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BeanstreamException'
+          description: Authorization Failure
+        "405":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BeanstreamException'
+          description: Invalid Request Method
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BeanstreamException'
+          description: Internal Server Error
+      summary: Update card
+      tags:
+      - Profiles
+      x-codegen-request-body-name: card
+      x-openapi-router-controller: openapi_server.controllers.profiles_controller
+  /reports:
+    post:
+      description: Query for transactions using a date range and optional search criteria.
+        This method allows you to page your search results if you are expecting a
+        lot of results to be returned. The page start value begins at 1. If no records
+        are found the API will return a 404 error message. For details on the parameters
+        and allowed values for Criteria please visit the documentation http://developer.beanstream.com/documentation/analyze-payments/search-specific-criteria/
+      operationId: reports_post
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/SearchQuery'
+        required: false
+        x-body-name: search_query
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchResult'
+          description: A transaction object.
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BeanstreamException'
+          description: Bad Request
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BeanstreamException'
+          description: Authentication Failure
+        "402":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BeanstreamException'
+          description: Business Rule Violation or Decline
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BeanstreamException'
+          description: Authorization Failure
+        "405":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BeanstreamException'
+          description: Invalid Request Method
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BeanstreamException'
+          description: Internal Server Error
+      summary: Search Query
+      tags:
+      - Reporting
+      x-codegen-request-body-name: search_query
+      x-openapi-router-controller: openapi_server.controllers.reporting_controller
+  /scripts/tokenization/tokens:
+    post:
+      description: "NOTE that the full URL for this API call is https://www.beanstream.com/scripts/tokenization/tokens.\
+        \ Turn a credit card into a token using this service. This helps lessen your\
+        \ PCI scope by not passing the credit card information to your server. Instead\
+        \ you turn the card number into a token in the client app, then send the token\
+        \ to the server. When you send the token to Beanstream to make a payment,\
+        \ Beanstream then looks up the card number from that token and makes the payment.\
+        \ Tokens can also be used to create payment profiles."
+      operationId: scripts_tokenization_tokens_post
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/TokenRequest'
+        required: false
+        x-body-name: token_request
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenResponse'
+          description: Token response object. One will always be returned even if
+            the data or card was invalid. The validity of the card is not checked
+            with this API call.
+      summary: Tokenize credit card
+      tags:
+      - Tokenization
+      x-codegen-request-body-name: token_request
+      x-openapi-router-controller: openapi_server.controllers.tokenization_controller
+components:
+  schemas:
+    Address:
+      example:
+        country: country
+        email_address: email_address
+        address_line2: address_line2
+        province: province
+        address_line1: address_line1
+        city: city
+        name: name
+        phone_number: phone_number
+        postal_code: postal_code
+      properties:
+        address_line1:
+          description: alphanumeric (64)
+          title: address_line1
+          type: string
+        address_line2:
+          description: alphanumeric (64)
+          title: address_line2
+          type: string
+        city:
+          description: alphanumeric (32)
+          title: city
+          type: string
+        country:
+          description: characters (2)
+          title: country
+          type: string
+        email_address:
+          description: alphanumeric (32)
+          title: email_address
+          type: string
+        name:
+          description: alphanumeric (64)
+          title: name
+          type: string
+        phone_number:
+          description: alphanumeric (32)
+          title: phone_number
+          type: string
+        postal_code:
+          description: alphanumeric (16)
+          title: postal_code
+          type: string
+        province:
+          description: characters (2)
+          title: province
+          type: string
+      title: Address
+      type: object
+    Adjustment:
+      example:
+        amount: 0.8008281904610115
+        approval: 6.027456183070403
+        created: created
+        id: 1.4658129805029452
+        message: message
+        type: type
+        url: url
+      properties:
+        amount:
+          format: double
+          title: amount
+          type: number
+        approval:
+          format: integer
+          title: approval
+          type: number
+        created:
+          description: The date it was created '2015-04-22T10:03:19.323-07:00'
+          title: created
+          type: string
+        id:
+          format: integer
+          title: id
+          type: number
+        message:
+          title: message
+          type: string
+        type:
+          title: type
+          type: string
+        url:
+          title: url
+          type: string
+      title: Adjustment
+      type: object
+    BeanstreamException:
+      example:
+        reference: reference
+        code: 2
+        details:
+        - field: field
+          message: message
+        - field: field
+          message: message
+        category: 5
+        message: message
+      properties:
+        category:
+          format: int32
+          title: category
+          type: integer
+        code:
+          format: int32
+          title: code
+          type: integer
+        details:
+          items:
+            $ref: '#/components/schemas/Detail'
+          title: details
+          type: array
+        message:
+          title: message
+          type: string
+        reference:
+          title: reference
+          type: string
+      title: BeanstreamException
+      type: object
+    Card:
+      example:
+        cvd: "123"
+        expiry_month: "02"
+        number: "5100000010001004"
+        name: name
+        complete: true
+        expiry_year: "18"
+      properties:
+        complete:
+          default: true
+          description: "set to false for Pre-Authorize, and true to complete a payment"
+          title: complete
+          type: boolean
+        cvd:
+          default: "123"
+          description: Security code on the back of the credit card. This can be set
+            to mandatory in the back office. digits(3 or 4)
+          title: cvd
+          type: string
+        expiry_month:
+          default: "02"
+          description: eg. 02 for February. digits(2)
+          title: expiry_month
+          type: string
+        expiry_year:
+          default: "18"
+          description: eg. 15 for 2015. digits(2)
+          title: expiry_year
+          type: string
+        name:
+          description: Card holder name. alphanumeric(64)
+          title: name
+          type: string
+        number:
+          default: "5100000010001004"
+          description: Credit card number (PAN). digits(20)
+          title: number
+          type: string
+      required:
+      - expiry_month
+      - expiry_year
+      - name
+      - number
+      title: Card
+      type: object
+    CardGetTransactionResponse:
+      example:
+        expiry_month: expiry_month
+        last_four: last_four
+        address_match: 5
+        card_type: card_type
+        avs_result: avs_result
+        cvd_match: 2
+        expiry_year: expiry_year
+      properties:
+        address_match:
+          description: digits (1)
+          title: address_match
+          type: integer
+        avs_result:
+          description: characters (1)
+          title: avs_result
+          type: string
+        card_type:
+          description: characters (2)
+          title: card_type
+          type: string
+        cvd_match:
+          description: digits (2)
+          title: cvd_match
+          type: integer
+        expiry_month:
+          description: characters (2)
+          title: expiry_month
+          type: string
+        expiry_year:
+          description: characters (2)
+          title: expiry_year
+          type: string
+        last_four:
+          description: digits (4)
+          title: last_four
+          type: string
+      title: CardGetTransactionResponse
+      type: object
+    CardPurchaseResponse:
+      example:
+        last_four: last_four
+        postal_result: 5
+        address_match: 6
+        card_type: card_type
+        cvd_match: 1
+      properties:
+        address_match:
+          description: digits (1)
+          title: address_match
+          type: integer
+        card_type:
+          description: characters (2)
+          title: card_type
+          type: string
+        cvd_match:
+          description: digits (2)
+          title: cvd_match
+          type: integer
+        last_four:
+          description: digits (4)
+          title: last_four
+          type: string
+        postal_result:
+          description: digits (1)
+          title: postal_result
+          type: integer
+      title: CardPurchaseResponse
+      type: object
+    CreateProfileBody:
+      example:
+        custom:
+          ref4: ref4
+          ref3: ref3
+          ref5: ref5
+          ref2: ref2
+          ref1: ref1
+        comment: comment
+        language: language
+        card:
+          cvd: "123"
+          expiry_month: "02"
+          number: number
+          name: "5100000010001004"
+          expiry_year: "18"
+        billing:
+          country: country
+          email_address: email_address
+          address_line2: address_line2
+          province: province
+          address_line1: address_line1
+          city: city
+          name: name
+          phone_number: phone_number
+          postal_code: postal_code
+        token:
+          code: code
+          name: name
+      properties:
+        billing:
+          $ref: '#/components/schemas/Address'
+        card:
+          $ref: '#/components/schemas/ProfileFromCard'
+        comment:
+          description: alphanumeric(256)
+          title: comment
+          type: string
+        custom:
+          $ref: '#/components/schemas/Custom'
+        language:
+          description: characters(2)
+          title: language
+          type: string
+        token:
+          $ref: '#/components/schemas/ProfileFromToken'
+      title: CreateProfileBody
+      type: object
+    Criteria:
+      example:
+        field: 0.8008281904610115
+        value: value
+        operator: operator
+      properties:
+        field:
+          description: Refer to the table on this page for the searchable fields http://developer.beanstream.com/documentation/analyze-payments/search-specific-criteria/
+          format: integer
+          title: field
+          type: number
+        operator:
+          description: "URL encoded comparators such as less than, greater than, equals...\
+            \ Refer to the table on this page for the full list of comparators http://developer.beanstream.com/documentation/analyze-payments/search-specific-criteria/"
+          title: operator
+          type: string
+        value:
+          description: The value you want to match against.
+          title: value
+          type: string
+      title: Criteria
+      type: object
+    Custom:
+      example:
+        ref4: ref4
+        ref3: ref3
+        ref5: ref5
+        ref2: ref2
+        ref1: ref1
+      properties:
+        ref1:
+          description: alphanumeric (256)
+          title: ref1
+          type: string
+        ref2:
+          description: alphanumeric (256)
+          title: ref2
+          type: string
+        ref3:
+          description: alphanumeric (256)
+          title: ref3
+          type: string
+        ref4:
+          description: alphanumeric (256)
+          title: ref4
+          type: string
+        ref5:
+          description: alphanumeric (256)
+          title: ref5
+          type: string
+      title: Custom
+      type: object
+    Detail:
+      example:
+        field: field
+        message: message
+      properties:
+        field:
+          title: field
+          type: string
+        message:
+          title: message
+          type: string
+      title: Detail
+      type: object
+    GetProfileDefaultCard:
+      example:
+        expiry_month: expiry_month
+        number: number
+        name: name
+        card_type: card_type
+        expiry_year: expiry_year
+      properties:
+        card_type:
+          description: "MC, VI etc. characters(2)"
+          title: card_type
+          type: string
+        expiry_month:
+          description: digits(2)
+          title: expiry_month
+          type: string
+        expiry_year:
+          description: digits(2)
+          title: expiry_year
+          type: string
+        name:
+          description: cardholder name alphanumeric(64)
+          title: name
+          type: string
+        number:
+          description: masked credit card number alphanumeric(20)
+          title: number
+          type: string
+      title: GetProfileDefaultCard
+      type: object
+    Link:
+      example:
+        ref: ref
+        method: method
+        href: href
+      properties:
+        href:
+          description: "alphanumeric (256). Url to perform the void, return, completion\
+            \ etc."
+          title: href
+          type: string
+        method:
+          description: "characters (16). Http method. post, put, get etc."
+          title: method
+          type: string
+        ref:
+          description: characters (16). Eg. "void" or "return"
+          title: ref
+          type: string
+      title: Link
+      type: object
+    PaymentProfile:
+      example:
+        code: 0
+        account_ref: account_ref
+        custom:
+          ref4: ref4
+          ref3: ref3
+          ref5: ref5
+          ref2: ref2
+          ref1: ref1
+        language: language
+        velocity_group: velocity_group
+        message: message
+        modified_date: modified_date
+        billing:
+          country: country
+          email_address: email_address
+          address_line2: address_line2
+          province: province
+          address_line1: address_line1
+          city: city
+          name: name
+          phone_number: phone_number
+          postal_code: postal_code
+        last_transaction: last_transaction
+        profile_group: profile_group
+        customer_code: customer_code
+        card:
+          expiry_month: expiry_month
+          number: number
+          name: name
+          card_type: card_type
+          expiry_year: expiry_year
+        status: status
+      properties:
+        account_ref:
+          title: account_ref
+          type: string
+        billing:
+          $ref: '#/components/schemas/Address'
+        card:
+          $ref: '#/components/schemas/GetProfileDefaultCard'
+        code:
+          description: digits(2)
+          format: int32
+          title: code
+          type: integer
+        custom:
+          $ref: '#/components/schemas/Custom'
+        customer_code:
+          description: alphanumeric(32)
+          title: customer_code
+          type: string
+        language:
+          description: characters(2)
+          title: language
+          type: string
+        last_transaction:
+          description: date and time alphanumeric(24)
+          title: last_transaction
+          type: string
+        message:
+          description: alphanumeric(64)
+          title: message
+          type: string
+        modified_date:
+          description: date and time it was last modified alphanumeric(24)
+          title: modified_date
+          type: string
+        profile_group:
+          title: profile_group
+          type: string
+        status:
+          description: characters(1)
+          title: status
+          type: string
+        velocity_group:
+          title: velocity_group
+          type: string
+      title: PaymentProfile
+      type: object
+    PaymentRequest:
+      example:
+        amount: 0.8008281904610115
+        comments: comments
+        custom:
+          ref4: ref4
+          ref3: ref3
+          ref5: ref5
+          ref2: ref2
+          ref1: ref1
+        order_number: order_number
+        customer_ip: customer_ip
+        language: language
+        billing:
+          country: country
+          email_address: email_address
+          address_line2: address_line2
+          province: province
+          address_line1: address_line1
+          city: city
+          name: name
+          phone_number: phone_number
+          postal_code: postal_code
+        term_url: term_url
+        token:
+          code: code
+          name: name
+          complete: true
+        payment_profile:
+          complete: true
+          customer_code: customer_code
+          card_id: 6
+        shipping:
+          country: country
+          email_address: email_address
+          address_line2: address_line2
+          province: province
+          address_line1: address_line1
+          city: city
+          name: name
+          phone_number: phone_number
+          postal_code: postal_code
+        card:
+          cvd: "123"
+          expiry_month: "02"
+          number: "5100000010001004"
+          name: name
+          complete: true
+          expiry_year: "18"
+        payment_method: payment_method
+      properties:
+        amount:
+          description: "A decimal value in dollars, or relevant currency. digits(9)"
+          format: double
+          title: amount
+          type: number
+        billing:
+          $ref: '#/components/schemas/Address'
+        card:
+          $ref: '#/components/schemas/Card'
+        comments:
+          description: alphanumeric (256)
+          title: comments
+          type: string
+        custom:
+          $ref: '#/components/schemas/Custom'
+        customer_ip:
+          description: alphanumeric (30)
+          title: customer_ip
+          type: string
+        language:
+          description: characters (3)
+          title: language
+          type: string
+        order_number:
+          description: A unique order number. alphanumeric(30)
+          title: order_number
+          type: string
+        payment_method:
+          description: "One of (card, token, payment_profile, cash, cheque). characters(20)"
+          title: payment_method
+          type: string
+        payment_profile:
+          $ref: '#/components/schemas/ProfilePurchase'
+        shipping:
+          $ref: '#/components/schemas/Address'
+        term_url:
+          description: alphanumeric (256)
+          title: term_url
+          type: string
+        token:
+          $ref: '#/components/schemas/TokenPurchase'
+      required:
+      - amount
+      - payment_method
+      title: PaymentRequest
+      type: object
+    PaymentResponse:
+      example:
+        approved: 0
+        created: created
+        order_number: order_number
+        links:
+        - ref: ref
+          method: method
+          href: href
+        - ref: ref
+          method: method
+          href: href
+        message_id: message_id
+        id: id
+        message: message
+        type: type
+        card:
+          last_four: last_four
+          postal_result: 5
+          address_match: 6
+          card_type: card_type
+          cvd_match: 1
+        payment_method: payment_method
+        auth_code: auth_code
+      properties:
+        approved:
+          description: "Approved = 1, declined = 0"
+          title: approved
+          type: integer
+        auth_code:
+          description: alphanumeric (32)
+          title: auth_code
+          type: string
+        card:
+          $ref: '#/components/schemas/CardPurchaseResponse'
+        created:
+          description: alphanumeric (32)
+          title: created
+          type: string
+        id:
+          description: digits (9)
+          title: id
+          type: string
+        links:
+          items:
+            $ref: '#/components/schemas/Link'
+          title: links
+          type: array
+        message:
+          description: alphanumeric (256)
+          title: message
+          type: string
+        message_id:
+          description: digits (3)
+          title: message_id
+          type: string
+        order_number:
+          description: alphanumeric (32)
+          title: order_number
+          type: string
+        payment_method:
+          description: characters (16)
+          title: payment_method
+          type: string
+        type:
+          description: characters (16)
+          title: type
+          type: string
+      title: PaymentResponse
+      type: object
+    ProfileCard:
+      example:
+        expiry_month: expiry_month
+        number: number
+        name: name
+        expiry_year: expiry_year
+      properties:
+        expiry_month:
+          description: digits(2)
+          title: expiry_month
+          type: string
+        expiry_year:
+          description: digits(2)
+          title: expiry_year
+          type: string
+        name:
+          description: cardholder name. alphanumeric(64)
+          title: name
+          type: string
+        number:
+          description: Credit card number. digits(20)
+          title: number
+          type: string
+      title: ProfileCard
+      type: object
+    ProfileCards:
+      example:
+        expiry_month: expiry_month
+        number: number
+        function: function
+        card_type: card_type
+        card_id: card_id
+        expiry_year: expiry_year
+      properties:
+        card_id:
+          description: 1-indexed card ID. Total number of cards allowed is configured
+            in your merchant account.
+          title: card_id
+          type: string
+        card_type:
+          description: "MC, VI etc. characters(2)"
+          title: card_type
+          type: string
+        expiry_month:
+          description: digits(2)
+          title: expiry_month
+          type: string
+        expiry_year:
+          description: digits(2)
+          title: expiry_year
+          type: string
+        function:
+          description: Will say DEF for the default card
+          title: function
+          type: string
+        number:
+          description: digits(20)
+          title: number
+          type: string
+      title: ProfileCards
+      type: object
+    ProfileFromCard:
+      example:
+        cvd: "123"
+        expiry_month: "02"
+        number: number
+        name: "5100000010001004"
+        expiry_year: "18"
+      properties:
+        cvd:
+          default: "123"
+          description: Security code on the back of the credit card. This can be set
+            to mandatory in the back office. digits(3)
+          title: cvd
+          type: string
+        expiry_month:
+          default: "02"
+          description: eg. 02 for February. digits(2)
+          title: expiry_month
+          type: string
+        expiry_year:
+          default: "18"
+          description: digits(2)
+          title: expiry_year
+          type: string
+        name:
+          default: "5100000010001004"
+          description: Card holder name. alphanumeric(64)
+          title: name
+          type: string
+        number:
+          description: Credit card number (PAN)  digits(20)
+          title: number
+          type: string
+      required:
+      - expiry_month
+      - expiry_year
+      - name
+      - number
+      title: ProfileFromCard
+      type: object
+    ProfileFromToken:
+      example:
+        code: code
+        name: name
+      properties:
+        code:
+          description: The token received from the client-side tokenization service.
+            alphanumeric(64)
+          title: code
+          type: string
+        name:
+          description: alphanumeric(64)
+          title: name
+          type: string
+      required:
+      - code
+      - name
+      title: ProfileFromToken
+      type: object
+    ProfileGetCards:
+      example:
+        code: 0.8008281904610115
+        message: message
+        customer_code: customer_code
+        card:
+        - expiry_month: expiry_month
+          number: number
+          function: function
+          card_type: card_type
+          card_id: card_id
+          expiry_year: expiry_year
+        - expiry_month: expiry_month
+          number: number
+          function: function
+          card_type: card_type
+          card_id: card_id
+          expiry_year: expiry_year
+      properties:
+        card:
+          items:
+            $ref: '#/components/schemas/ProfileCards'
+          title: card
+          type: array
+        code:
+          description: digits(2)
+          format: integer
+          title: code
+          type: number
+        customer_code:
+          description: characters(32)
+          title: customer_code
+          type: string
+        message:
+          description: alphanumeric(64)
+          title: message
+          type: string
+      title: ProfileGetCards
+      type: object
+    ProfilePurchase:
+      example:
+        complete: true
+        customer_code: customer_code
+        card_id: 6
+      properties:
+        card_id:
+          description: Which credit card to use. Starts at 1 for the first card. You
+            must configure how many cards can be stored by visiting the profile options
+            in the back office. digits(1)
+          title: card_id
+          type: integer
+        complete:
+          description: Set to FALSE for pre-auth. digit(1) or boolean
+          title: complete
+          type: boolean
+        customer_code:
+          description: The payment profile ID. alphanumeric(32)
+          title: customer_code
+          type: string
+      required:
+      - card_id
+      - customer_code
+      title: ProfilePurchase
+      type: object
+    ProfileResponse:
+      example:
+        code: 0.8008281904610115
+        message: message
+        customer_code: customer_code
+      properties:
+        code:
+          format: integer
+          title: code
+          type: number
+        customer_code:
+          description: the ID of the payment profile. You need to keep track of this
+            value.
+          title: customer_code
+          type: string
+        message:
+          title: message
+          type: string
+      title: ProfileResponse
+      type: object
+    ProfileToken:
+      example:
+        code: code
+        name: name
+      properties:
+        code:
+          description: single use token associated with this account. alphanumeric(36)
+          title: code
+          type: string
+        name:
+          description: Name of cardholder. alphanumeric(64)
+          title: name
+          type: string
+      title: ProfileToken
+      type: object
+    Return:
+      properties:
+        amount:
+          description: The amount of the transaction to return. Must be less than
+            or equal to the original purchase amount.
+          format: double
+          title: amount
+          type: number
+        order_number:
+          description: alphanumeric (30)
+          title: order_number
+          type: string
+      required:
+      - amount
+      title: Return
+      type: object
+    SearchQuery:
+      example:
+        end_date: end_date
+        criteria:
+        - field: 0.8008281904610115
+          value: value
+          operator: operator
+        - field: 0.8008281904610115
+          value: value
+          operator: operator
+        start_row: 1.4658129805029452
+        name: name
+        end_row: 6.027456183070403
+        start_date: start_date
+      properties:
+        criteria:
+          description: Optional search criteria. All criteria are ANDed together.
+          items:
+            $ref: '#/components/schemas/Criteria'
+          title: criteria
+          type: array
+        end_date:
+          description: The end date (inclusive) '2015-04-22T10:03:19' in the timezone
+            of your merchant account.
+          title: end_date
+          type: string
+        end_row:
+          description: Used to page the results. 1-based. This should always be 1
+            larger than start_row.
+          format: integer
+          title: end_row
+          type: number
+        name:
+          description: Only accepts 2 values. Can be either 'Search' for all fields
+            or 'TransHistoryMinimal' for a subset of the fields returned in the results.
+          title: name
+          type: string
+        start_date:
+          description: The start date (inclusive) '2015-04-22T10:03:19' in the timezone
+            of your merchant account.
+          title: start_date
+          type: string
+        start_row:
+          description: Used to page the results. 1-based
+          format: integer
+          title: start_row
+          type: number
+      required:
+      - end_date
+      - end_row
+      - name
+      - start_date
+      - start_row
+      title: SearchQuery
+      type: object
+    SearchRecord:
+      example:
+        trn_card_expiry: trn_card_expiry
+        trn_cvd_result: 2.3021358869347655
+        b_city: b_city
+        s_city: s_city
+        trn_approval_code: trn_approval_code
+        product_id: product_id
+        s_email: s_email
+        customer_code: customer_code
+        s_postal: s_postal
+        b_address1: b_address1
+        b_address2: b_address2
+        trn_reference: 9.301444243932576
+        product_name: product_name
+        s_country: s_country
+        message_text: message_text
+        ref4: ref4
+        s_address2: s_address2
+        ref3: ref3
+        trn_card_owner: trn_card_owner
+        ref5: ref5
+        s_address1: s_address1
+        trn_voided: 4.145608029883936
+        trn_avs_result: trn_avs_result
+        trn_date_time: trn_date_time
+        s_phone: s_phone
+        ref2: ref2
+        b_phone: b_phone
+        b_province: b_province
+        ref1: ref1
+        trn_payment_method: trn_payment_method
+        trn_batch_no: 5.962133916683182
+        b_postal: b_postal
+        trn_type: trn_type
+        trn_order_number: trn_order_number
+        trn_card_type: trn_card_type
+        b_country: b_country
+        b_name: b_name
+        trn_id: 7.061401241503109
+        message_id: 0.8008281904610115
+        trn_amount: 1.4658129805029452
+        trn_masked_card: trn_masked_card
+        trn_completions: 5.637376656633329
+        trn_response: 3.616076749251911
+        trn_returns: 2.027123023002322
+        trn_ip: trn_ip
+        s_province: s_province
+        row_id: 6.027456183070403
+        s_name: s_name
+        b_email: b_email
+      properties:
+        b_address1:
+          title: b_address1
+          type: string
+        b_address2:
+          title: b_address2
+          type: string
+        b_city:
+          title: b_city
+          type: string
+        b_country:
+          title: b_country
+          type: string
+        b_email:
+          title: b_email
+          type: string
+        b_name:
+          title: b_name
+          type: string
+        b_phone:
+          title: b_phone
+          type: string
+        b_postal:
+          title: b_postal
+          type: string
+        b_province:
+          title: b_province
+          type: string
+        customer_code:
+          description: "The PaymentProfile ID used in this transaction, if appropriate."
+          title: customer_code
+          type: string
+        message_id:
+          format: integer
+          title: message_id
+          type: number
+        message_text:
+          title: message_text
+          type: string
+        product_id:
+          title: product_id
+          type: string
+        product_name:
+          title: product_name
+          type: string
+        ref1:
+          title: ref1
+          type: string
+        ref2:
+          title: ref2
+          type: string
+        ref3:
+          title: ref3
+          type: string
+        ref4:
+          title: ref4
+          type: string
+        ref5:
+          title: ref5
+          type: string
+        row_id:
+          format: integer
+          title: row_id
+          type: number
+        s_address1:
+          title: s_address1
+          type: string
+        s_address2:
+          title: s_address2
+          type: string
+        s_city:
+          title: s_city
+          type: string
+        s_country:
+          title: s_country
+          type: string
+        s_email:
+          title: s_email
+          type: string
+        s_name:
+          title: s_name
+          type: string
+        s_phone:
+          title: s_phone
+          type: string
+        s_postal:
+          title: s_postal
+          type: string
+        s_province:
+          title: s_province
+          type: string
+        trn_amount:
+          format: float32
+          title: trn_amount
+          type: number
+        trn_approval_code:
+          title: trn_approval_code
+          type: string
+        trn_avs_result:
+          description: Address Verification Service
+          title: trn_avs_result
+          type: string
+        trn_batch_no:
+          format: integer
+          title: trn_batch_no
+          type: number
+        trn_card_expiry:
+          title: trn_card_expiry
+          type: string
+        trn_card_owner:
+          title: trn_card_owner
+          type: string
+        trn_card_type:
+          description: MC VI etc
+          title: trn_card_type
+          type: string
+        trn_completions:
+          format: float32
+          title: trn_completions
+          type: number
+        trn_cvd_result:
+          format: integer
+          title: trn_cvd_result
+          type: number
+        trn_date_time:
+          description: 2015-04-22T10:03:19.323-07:00
+          title: trn_date_time
+          type: string
+        trn_id:
+          format: integer
+          title: trn_id
+          type: number
+        trn_ip:
+          title: trn_ip
+          type: string
+        trn_masked_card:
+          description: The credit card with the middle digits redacted with X's
+          title: trn_masked_card
+          type: string
+        trn_order_number:
+          title: trn_order_number
+          type: string
+        trn_payment_method:
+          title: trn_payment_method
+          type: string
+        trn_reference:
+          format: integer
+          title: trn_reference
+          type: number
+        trn_response:
+          format: integer
+          title: trn_response
+          type: number
+        trn_returns:
+          format: float32
+          title: trn_returns
+          type: number
+        trn_type:
+          title: trn_type
+          type: string
+        trn_voided:
+          format: integer
+          title: trn_voided
+          type: number
+      title: SearchRecord
+      type: object
+    SearchResult:
+      example:
+        records:
+        - trn_card_expiry: trn_card_expiry
+          trn_cvd_result: 2.3021358869347655
+          b_city: b_city
+          s_city: s_city
+          trn_approval_code: trn_approval_code
+          product_id: product_id
+          s_email: s_email
+          customer_code: customer_code
+          s_postal: s_postal
+          b_address1: b_address1
+          b_address2: b_address2
+          trn_reference: 9.301444243932576
+          product_name: product_name
+          s_country: s_country
+          message_text: message_text
+          ref4: ref4
+          s_address2: s_address2
+          ref3: ref3
+          trn_card_owner: trn_card_owner
+          ref5: ref5
+          s_address1: s_address1
+          trn_voided: 4.145608029883936
+          trn_avs_result: trn_avs_result
+          trn_date_time: trn_date_time
+          s_phone: s_phone
+          ref2: ref2
+          b_phone: b_phone
+          b_province: b_province
+          ref1: ref1
+          trn_payment_method: trn_payment_method
+          trn_batch_no: 5.962133916683182
+          b_postal: b_postal
+          trn_type: trn_type
+          trn_order_number: trn_order_number
+          trn_card_type: trn_card_type
+          b_country: b_country
+          b_name: b_name
+          trn_id: 7.061401241503109
+          message_id: 0.8008281904610115
+          trn_amount: 1.4658129805029452
+          trn_masked_card: trn_masked_card
+          trn_completions: 5.637376656633329
+          trn_response: 3.616076749251911
+          trn_returns: 2.027123023002322
+          trn_ip: trn_ip
+          s_province: s_province
+          row_id: 6.027456183070403
+          s_name: s_name
+          b_email: b_email
+        - trn_card_expiry: trn_card_expiry
+          trn_cvd_result: 2.3021358869347655
+          b_city: b_city
+          s_city: s_city
+          trn_approval_code: trn_approval_code
+          product_id: product_id
+          s_email: s_email
+          customer_code: customer_code
+          s_postal: s_postal
+          b_address1: b_address1
+          b_address2: b_address2
+          trn_reference: 9.301444243932576
+          product_name: product_name
+          s_country: s_country
+          message_text: message_text
+          ref4: ref4
+          s_address2: s_address2
+          ref3: ref3
+          trn_card_owner: trn_card_owner
+          ref5: ref5
+          s_address1: s_address1
+          trn_voided: 4.145608029883936
+          trn_avs_result: trn_avs_result
+          trn_date_time: trn_date_time
+          s_phone: s_phone
+          ref2: ref2
+          b_phone: b_phone
+          b_province: b_province
+          ref1: ref1
+          trn_payment_method: trn_payment_method
+          trn_batch_no: 5.962133916683182
+          b_postal: b_postal
+          trn_type: trn_type
+          trn_order_number: trn_order_number
+          trn_card_type: trn_card_type
+          b_country: b_country
+          b_name: b_name
+          trn_id: 7.061401241503109
+          message_id: 0.8008281904610115
+          trn_amount: 1.4658129805029452
+          trn_masked_card: trn_masked_card
+          trn_completions: 5.637376656633329
+          trn_response: 3.616076749251911
+          trn_returns: 2.027123023002322
+          trn_ip: trn_ip
+          s_province: s_province
+          row_id: 6.027456183070403
+          s_name: s_name
+          b_email: b_email
+      properties:
+        records:
+          items:
+            $ref: '#/components/schemas/SearchRecord'
+          title: records
+          type: array
+      title: SearchResult
+      type: object
+    TokenPurchase:
+      example:
+        code: code
+        name: name
+        complete: true
+      properties:
+        code:
+          description: the payment token you retrieved from the Legato service. alphanumeric(36)
+          title: code
+          type: string
+        complete:
+          description: Set to FALSE for pre-auth
+          title: complete
+          type: boolean
+        name:
+          description: Card holder name. alphanumeric(64)
+          title: name
+          type: string
+      required:
+      - code
+      - name
+      title: TokenPurchase
+      type: object
+    TokenRequest:
+      example:
+        cvd: cvd
+        expiry_month: expiry_month
+        number: number
+        expiry_year: expiry_year
+      properties:
+        cvd:
+          description: a 3 to 4 digit representation of CVD/CDD. This is the number
+            usually found on the back of the credit card.
+          title: cvd
+          type: string
+        expiry_month:
+          description: a 2 digit representation of the expiry month. For example March
+            is 03.
+          title: expiry_month
+          type: string
+        expiry_year:
+          description: a 2 digit representation of the expiry year. For example 2016
+            is 16.
+          title: expiry_year
+          type: string
+        number:
+          description: The credit card number
+          title: number
+          type: string
+      required:
+      - cvd
+      - expiry_month
+      - expiry_year
+      - number
+      title: TokenRequest
+      type: object
+    TokenResponse:
+      example:
+        code: code
+        message: message
+        version: 0
+        token: token
+      properties:
+        code:
+          description: Response code for the message. It can be ignored.
+          title: code
+          type: string
+        message:
+          description: "Response message with any hints as to what might have gone\
+            \ wrong, if something went wrong."
+          title: message
+          type: string
+        token:
+          description: "The token representing the credit card number that you will\
+            \ send to Beanstream for purchases. You will always receive a token, even\
+            \ if the request data is wrong or the card is invalid."
+          title: token
+          type: string
+        version:
+          description: Message version number. Can be ignored.
+          title: version
+          type: integer
+      required:
+      - token
+      title: TokenResponse
+      type: object
+    Transaction:
+      example:
+        amount: 5.962133916683182
+        comments: comments
+        total_completions: 3.616076749251911
+        batch_number: batch_number
+        created: created
+        custom:
+          ref4: ref4
+          ref3: ref3
+          ref5: ref5
+          ref2: ref2
+          ref1: ref1
+        order_number: order_number
+        message_id: 9.301444243932576
+        message: message
+        type: type
+        auth_code: auth_code
+        billing:
+          country: country
+          email_address: email_address
+          address_line2: address_line2
+          province: province
+          address_line1: address_line1
+          city: city
+          name: name
+          phone_number: phone_number
+          postal_code: postal_code
+        approved: true
+        shipping:
+          country: country
+          email_address: email_address
+          address_line2: address_line2
+          province: province
+          address_line1: address_line1
+          city: city
+          name: name
+          phone_number: phone_number
+          postal_code: postal_code
+        links:
+        - ref: ref
+          method: method
+          href: href
+        - ref: ref
+          method: method
+          href: href
+        id: 7.061401241503109
+        adjusted_by:
+        - amount: 0.8008281904610115
+          approval: 6.027456183070403
+          created: created
+          id: 1.4658129805029452
+          message: message
+          type: type
+          url: url
+        - amount: 0.8008281904610115
+          approval: 6.027456183070403
+          created: created
+          id: 1.4658129805029452
+          message: message
+          type: type
+          url: url
+        total_refunds: 2.027123023002322
+        card:
+          expiry_month: expiry_month
+          last_four: last_four
+          address_match: 5
+          card_type: card_type
+          avs_result: avs_result
+          cvd_match: 2
+          expiry_year: expiry_year
+        payment_method: payment_method
+      properties:
+        adjusted_by:
+          items:
+            $ref: '#/components/schemas/Adjustment'
+          title: adjusted_by
+          type: array
+        amount:
+          format: double
+          title: amount
+          type: number
+        approved:
+          title: approved
+          type: boolean
+        auth_code:
+          title: auth_code
+          type: string
+        batch_number:
+          title: batch_number
+          type: string
+        billing:
+          $ref: '#/components/schemas/Address'
+        card:
+          $ref: '#/components/schemas/CardGetTransactionResponse'
+        comments:
+          title: comments
+          type: string
+        created:
+          description: The date it was created '2015-04-22T10:03:19.323-07:00'
+          title: created
+          type: string
+        custom:
+          $ref: '#/components/schemas/Custom'
+        id:
+          format: integer
+          title: id
+          type: number
+        links:
+          items:
+            $ref: '#/components/schemas/Link'
+          title: links
+          type: array
+        message:
+          title: message
+          type: string
+        message_id:
+          format: integer
+          title: message_id
+          type: number
+        order_number:
+          title: order_number
+          type: string
+        payment_method:
+          title: payment_method
+          type: string
+        shipping:
+          $ref: '#/components/schemas/Address'
+        total_completions:
+          format: double
+          title: total_completions
+          type: number
+        total_refunds:
+          format: double
+          title: total_refunds
+          type: number
+        type:
+          title: type
+          type: string
+      title: Transaction
+      type: object
+    UpdateProfileBody:
+      example:
+        custom:
+          ref4: ref4
+          ref3: ref3
+          ref5: ref5
+          ref2: ref2
+          ref1: ref1
+        comment: comment
+        language: language
+        card:
+          code: code
+          name: name
+        billing:
+          country: country
+          email_address: email_address
+          address_line2: address_line2
+          province: province
+          address_line1: address_line1
+          city: city
+          name: name
+          phone_number: phone_number
+          postal_code: postal_code
+      properties:
+        billing:
+          $ref: '#/components/schemas/Address'
+        card:
+          $ref: '#/components/schemas/ProfileToken'
+        comment:
+          description: alphanumeric(256)
+          title: comment
+          type: string
+        custom:
+          $ref: '#/components/schemas/Custom'
+        language:
+          description: characters(2)
+          title: language
+          type: string
+      title: UpdateProfileBody
+      type: object
+    Void:
+      example:
+        amount: 0.8008281904610115
+      properties:
+        amount:
+          description: The amount of the transaction to void. Must be equal to the
+            original purchase amount. You can void purchases as well as pre-auths
+            and returns. The amount you are voiding has to match the amount of that
+            transaction.
+          format: double
+          title: amount
+          type: number
+      required:
+      - amount
+      title: Void
+      type: object
+x-original-swagger-version: "2.0"

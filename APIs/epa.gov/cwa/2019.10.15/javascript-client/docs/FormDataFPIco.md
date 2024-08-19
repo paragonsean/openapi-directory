@@ -1,0 +1,10 @@
+# USEpaEnforcementAndComplianceHistoryOnlineEchoCleanWaterActCwaRestServices.FormDataFPIco
+
+## Enum
+
+
+* `Y` (value: `"Y"`)
+
+* `N` (value: `"N"`)
+
+

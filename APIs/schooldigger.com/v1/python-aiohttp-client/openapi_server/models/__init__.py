@@ -1,0 +1,23 @@
+# coding: utf-8
+
+# import models into model package
+from openapi_server.models.api_boundary import APIBoundary
+from openapi_server.models.api_county import APICounty
+from openapi_server.models.api_district import APIDistrict
+from openapi_server.models.api_district1_summary import APIDistrict1Summary
+from openapi_server.models.api_district_list import APIDistrictList
+from openapi_server.models.api_district_list_rank import APIDistrictListRank
+from openapi_server.models.api_district_sum import APIDistrictSum
+from openapi_server.models.apilea_rank_history import APILEARankHistory
+from openapi_server.models.apilea_yearly_detail import APILEAYearlyDetail
+from openapi_server.models.api_lat_long import APILatLong
+from openapi_server.models.api_location import APILocation
+from openapi_server.models.api_polyline import APIPolyline
+from openapi_server.models.api_rank_history import APIRankHistory
+from openapi_server.models.api_school10_full import APISchool10Full
+from openapi_server.models.api_school1_summary import APISchool1Summary
+from openapi_server.models.api_school_list import APISchoolList
+from openapi_server.models.api_school_list_rank import APISchoolListRank
+from openapi_server.models.api_test_score import APITestScore
+from openapi_server.models.api_test_score_wrapper import APITestScoreWrapper
+from openapi_server.models.api_yearly_demographics import APIYearlyDemographics

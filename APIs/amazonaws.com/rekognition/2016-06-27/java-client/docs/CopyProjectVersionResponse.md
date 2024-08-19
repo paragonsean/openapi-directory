@@ -1,0 +1,13 @@
+
+
+# CopyProjectVersionResponse
+
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**projectVersionArn** | [**String**](String.md) |  |  [optional] |
+
+
+

@@ -1,0 +1,16 @@
+
+
+# BatchGetTokenBalanceInputItem
+
+The container for the input for getting a token balance.
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**tokenIdentifier** | [**TokenIdentifier**](TokenIdentifier.md) |  |  |
+|**ownerIdentifier** | [**OwnerIdentifier**](OwnerIdentifier.md) |  |  |
+|**atBlockchainInstant** | [**BlockchainInstant**](BlockchainInstant.md) |  |  [optional] |
+
+
+

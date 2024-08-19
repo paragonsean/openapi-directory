@@ -1,0 +1,9 @@
+# YouTubeDataApiV3.AbuseType
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**id** | **String** |  | [optional] 
+
+

@@ -1,0 +1,91 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIAdditionalLocation.h \
+    $${PWD}/OAIApiManagementServiceApplyNetworkConfigurationParameters.h \
+    $${PWD}/OAIApiManagementServiceBackupRestoreParameters.h \
+    $${PWD}/OAIApiManagementServiceBaseProperties.h \
+    $${PWD}/OAIApiManagementServiceCheckNameAvailabilityParameters.h \
+    $${PWD}/OAIApiManagementServiceGetSsoTokenResult.h \
+    $${PWD}/OAIApiManagementServiceIdentity.h \
+    $${PWD}/OAIApiManagementServiceIdentity_userAssignedIdentities_value.h \
+    $${PWD}/OAIApiManagementServiceListResult.h \
+    $${PWD}/OAIApiManagementServiceNameAvailabilityResult.h \
+    $${PWD}/OAIApiManagementServiceProperties.h \
+    $${PWD}/OAIApiManagementServiceResource.h \
+    $${PWD}/OAIApiManagementServiceSkuProperties.h \
+    $${PWD}/OAIApiManagementServiceUpdateParameters.h \
+    $${PWD}/OAIApiManagementServiceUpdateProperties.h \
+    $${PWD}/OAIApiManagementService_CheckNameAvailability_default_response.h \
+    $${PWD}/OAIApiManagementService_CheckNameAvailability_default_response_error.h \
+    $${PWD}/OAIApiManagementService_CheckNameAvailability_default_response_error_details_inner.h \
+    $${PWD}/OAIApiVersionConstraint.h \
+    $${PWD}/OAIApimResource.h \
+    $${PWD}/OAICertificateConfiguration.h \
+    $${PWD}/OAICertificateInformation.h \
+    $${PWD}/OAIHostnameConfiguration.h \
+    $${PWD}/OAIOperation.h \
+    $${PWD}/OAIOperationListResult.h \
+    $${PWD}/OAIOperation_display.h \
+    $${PWD}/OAIResourceSku.h \
+    $${PWD}/OAIResourceSkuCapacity.h \
+    $${PWD}/OAIResourceSkuResult.h \
+    $${PWD}/OAIResourceSkuResults.h \
+    $${PWD}/OAIVirtualNetworkConfiguration.h \
+# APIs
+    $${PWD}/OAIApiManagementOperationsApi.h \
+    $${PWD}/OAIApiManagementServiceApi.h \
+    $${PWD}/OAIApiManagementServiceSkusApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIAdditionalLocation.cpp \
+    $${PWD}/OAIApiManagementServiceApplyNetworkConfigurationParameters.cpp \
+    $${PWD}/OAIApiManagementServiceBackupRestoreParameters.cpp \
+    $${PWD}/OAIApiManagementServiceBaseProperties.cpp \
+    $${PWD}/OAIApiManagementServiceCheckNameAvailabilityParameters.cpp \
+    $${PWD}/OAIApiManagementServiceGetSsoTokenResult.cpp \
+    $${PWD}/OAIApiManagementServiceIdentity.cpp \
+    $${PWD}/OAIApiManagementServiceIdentity_userAssignedIdentities_value.cpp \
+    $${PWD}/OAIApiManagementServiceListResult.cpp \
+    $${PWD}/OAIApiManagementServiceNameAvailabilityResult.cpp \
+    $${PWD}/OAIApiManagementServiceProperties.cpp \
+    $${PWD}/OAIApiManagementServiceResource.cpp \
+    $${PWD}/OAIApiManagementServiceSkuProperties.cpp \
+    $${PWD}/OAIApiManagementServiceUpdateParameters.cpp \
+    $${PWD}/OAIApiManagementServiceUpdateProperties.cpp \
+    $${PWD}/OAIApiManagementService_CheckNameAvailability_default_response.cpp \
+    $${PWD}/OAIApiManagementService_CheckNameAvailability_default_response_error.cpp \
+    $${PWD}/OAIApiManagementService_CheckNameAvailability_default_response_error_details_inner.cpp \
+    $${PWD}/OAIApiVersionConstraint.cpp \
+    $${PWD}/OAIApimResource.cpp \
+    $${PWD}/OAICertificateConfiguration.cpp \
+    $${PWD}/OAICertificateInformation.cpp \
+    $${PWD}/OAIHostnameConfiguration.cpp \
+    $${PWD}/OAIOperation.cpp \
+    $${PWD}/OAIOperationListResult.cpp \
+    $${PWD}/OAIOperation_display.cpp \
+    $${PWD}/OAIResourceSku.cpp \
+    $${PWD}/OAIResourceSkuCapacity.cpp \
+    $${PWD}/OAIResourceSkuResult.cpp \
+    $${PWD}/OAIResourceSkuResults.cpp \
+    $${PWD}/OAIVirtualNetworkConfiguration.cpp \
+# APIs
+    $${PWD}/OAIApiManagementOperationsApi.cpp \
+    $${PWD}/OAIApiManagementServiceApi.cpp \
+    $${PWD}/OAIApiManagementServiceSkusApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

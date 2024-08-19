@@ -1,0 +1,12 @@
+# GoogleAnalyticsAdminApi.GoogleAnalyticsAdminV1betaAccessFilterExpression
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**accessFilter** | [**GoogleAnalyticsAdminV1betaAccessFilter**](GoogleAnalyticsAdminV1betaAccessFilter.md) |  | [optional] 
+**andGroup** | [**GoogleAnalyticsAdminV1betaAccessFilterExpressionList**](GoogleAnalyticsAdminV1betaAccessFilterExpressionList.md) |  | [optional] 
+**notExpression** | [**GoogleAnalyticsAdminV1betaAccessFilterExpression**](GoogleAnalyticsAdminV1betaAccessFilterExpression.md) |  | [optional] 
+**orGroup** | [**GoogleAnalyticsAdminV1betaAccessFilterExpressionList**](GoogleAnalyticsAdminV1betaAccessFilterExpressionList.md) |  | [optional] 
+
+

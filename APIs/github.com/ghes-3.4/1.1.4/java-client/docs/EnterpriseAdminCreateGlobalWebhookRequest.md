@@ -1,0 +1,16 @@
+
+
+# EnterpriseAdminCreateGlobalWebhookRequest
+
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**active** | **Boolean** | Determines if notifications are sent when the webhook is triggered. Set to &#x60;true&#x60; to send notifications. |  [optional] |
+|**config** | [**EnterpriseAdminCreateGlobalWebhookRequestConfig**](EnterpriseAdminCreateGlobalWebhookRequestConfig.md) |  |  |
+|**events** | **List&lt;String&gt;** | The [events](https://docs.github.com/enterprise-server@3.4/webhooks/event-payloads) that trigger this webhook. A global webhook can be triggered by &#x60;user&#x60; and &#x60;organization&#x60; events. Default: &#x60;user&#x60; and &#x60;organization&#x60;. |  [optional] |
+|**name** | **String** | Must be passed as \&quot;web\&quot;. |  |
+
+
+

@@ -1,0 +1,9 @@
+# AwsElementalMediaConvert.RemixSettingsChannelMapping
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**outputChannels** | **Array** |  | [optional] 
+
+

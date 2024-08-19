@@ -1,0 +1,10 @@
+# RudderApi.MethodsCondition
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**parameter** | **String** | Id of the parameter used to generate condition | [optional] 
+**prefix** | **String** | Prefix used to generate condition | [optional] 
+
+

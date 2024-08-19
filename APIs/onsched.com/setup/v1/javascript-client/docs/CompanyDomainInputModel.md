@@ -1,9 +1,0 @@
-# OnSchedSetupApi.CompanyDomainInputModel
-
-## Properties
-
-Name | Type | Description | Notes
------------- | ------------- | ------------- | -------------
-**domain** | **String** |  | [optional] 
-
-

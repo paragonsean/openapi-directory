@@ -1,9 +1,0 @@
-# coding: utf-8
-
-# import models into model package
-from openapi_server.models.region_health import RegionHealth
-from openapi_server.models.region_health_list import RegionHealthList
-from openapi_server.models.region_health_model import RegionHealthModel
-from openapi_server.models.region_health_model_alert_summary import RegionHealthModelAlertSummary
-from openapi_server.models.region_health_model_usage_metrics_inner import RegionHealthModelUsageMetricsInner
-from openapi_server.models.region_health_model_usage_metrics_inner_metrics_value_inner import RegionHealthModelUsageMetricsInnerMetricsValueInner

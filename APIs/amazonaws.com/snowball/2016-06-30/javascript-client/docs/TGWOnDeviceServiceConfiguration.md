@@ -1,0 +1,10 @@
+# AmazonImportExportSnowball.TGWOnDeviceServiceConfiguration
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**storageLimit** | **Number** |  | [optional] 
+**storageUnit** | [**StorageUnit**](StorageUnit.md) |  | [optional] 
+
+

@@ -1,0 +1,10 @@
+# AmazonSageMakerService.EdgePresetDeploymentStatus
+
+## Enum
+
+
+* `COMPLETED` (value: `"COMPLETED"`)
+
+* `FAILED` (value: `"FAILED"`)
+
+

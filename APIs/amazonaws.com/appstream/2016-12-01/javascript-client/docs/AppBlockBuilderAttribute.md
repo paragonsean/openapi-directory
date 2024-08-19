@@ -1,0 +1,12 @@
+# AmazonAppStream.AppBlockBuilderAttribute
+
+## Enum
+
+
+* `IAM_ROLE_ARN` (value: `"IAM_ROLE_ARN"`)
+
+* `ACCESS_ENDPOINTS` (value: `"ACCESS_ENDPOINTS"`)
+
+* `VPC_CONFIGURATION_SECURITY_GROUP_IDS` (value: `"VPC_CONFIGURATION_SECURITY_GROUP_IDS"`)
+
+

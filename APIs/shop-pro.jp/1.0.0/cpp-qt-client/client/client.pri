@@ -1,0 +1,95 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIApplicationCharge.h \
+    $${PWD}/OAICartScriptTag.h \
+    $${PWD}/OAICreateInlineScriptTag_201_response.h \
+    $${PWD}/OAICreateInlineScriptTag_request.h \
+    $${PWD}/OAICreateInlineScriptTag_request_inline_script_tag.h \
+    $${PWD}/OAICreateScriptTag_200_response.h \
+    $${PWD}/OAICreateScriptTag_request.h \
+    $${PWD}/OAICreateScriptTag_request_script_tag.h \
+    $${PWD}/OAICreateShopScriptTag_200_response.h \
+    $${PWD}/OAICreateShopScriptTag_request.h \
+    $${PWD}/OAICreateShopScriptTag_request_script_tag.h \
+    $${PWD}/OAICreateUsageCharge_201_response.h \
+    $${PWD}/OAICreateUsageCharge_201_response_usage_charge.h \
+    $${PWD}/OAICreateUsageCharge_request.h \
+    $${PWD}/OAICreateUsageCharge_request_usage_charge.h \
+    $${PWD}/OAIDeleteInstallation_200_response.h \
+    $${PWD}/OAIDeleteInstallation_200_response_usage_charge.h \
+    $${PWD}/OAIGetInlineScriptTags_200_response.h \
+    $${PWD}/OAIGetInlineScriptTags_200_response_inline_script_tags_inner.h \
+    $${PWD}/OAIGetScriptTags_200_response.h \
+    $${PWD}/OAIGetScriptTags_200_response_script_tags_inner.h \
+    $${PWD}/OAIGetShopScriptTags_200_response.h \
+    $${PWD}/OAIGetShopScriptTags_200_response_script_tags_inner.h \
+    $${PWD}/OAIInlineScriptTag.h \
+    $${PWD}/OAIPostApplicationCharge_201_response.h \
+    $${PWD}/OAIPostApplicationCharge_201_response_application_charge.h \
+    $${PWD}/OAIPostApplicationCharge_request.h \
+    $${PWD}/OAIPostApplicationCharge_request_application_charge.h \
+    $${PWD}/OAIScriptTag.h \
+    $${PWD}/OAIShopScriptTag.h \
+    $${PWD}/OAIUsageCharge.h \
+# APIs
+    $${PWD}/OAIApplicationChargeApi.h \
+    $${PWD}/OAIInlineScriptApi.h \
+    $${PWD}/OAIScriptApi.h \
+    $${PWD}/OAIScriptDeprecatedApi.h \
+    $${PWD}/OAIUninstallationApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIApplicationCharge.cpp \
+    $${PWD}/OAICartScriptTag.cpp \
+    $${PWD}/OAICreateInlineScriptTag_201_response.cpp \
+    $${PWD}/OAICreateInlineScriptTag_request.cpp \
+    $${PWD}/OAICreateInlineScriptTag_request_inline_script_tag.cpp \
+    $${PWD}/OAICreateScriptTag_200_response.cpp \
+    $${PWD}/OAICreateScriptTag_request.cpp \
+    $${PWD}/OAICreateScriptTag_request_script_tag.cpp \
+    $${PWD}/OAICreateShopScriptTag_200_response.cpp \
+    $${PWD}/OAICreateShopScriptTag_request.cpp \
+    $${PWD}/OAICreateShopScriptTag_request_script_tag.cpp \
+    $${PWD}/OAICreateUsageCharge_201_response.cpp \
+    $${PWD}/OAICreateUsageCharge_201_response_usage_charge.cpp \
+    $${PWD}/OAICreateUsageCharge_request.cpp \
+    $${PWD}/OAICreateUsageCharge_request_usage_charge.cpp \
+    $${PWD}/OAIDeleteInstallation_200_response.cpp \
+    $${PWD}/OAIDeleteInstallation_200_response_usage_charge.cpp \
+    $${PWD}/OAIGetInlineScriptTags_200_response.cpp \
+    $${PWD}/OAIGetInlineScriptTags_200_response_inline_script_tags_inner.cpp \
+    $${PWD}/OAIGetScriptTags_200_response.cpp \
+    $${PWD}/OAIGetScriptTags_200_response_script_tags_inner.cpp \
+    $${PWD}/OAIGetShopScriptTags_200_response.cpp \
+    $${PWD}/OAIGetShopScriptTags_200_response_script_tags_inner.cpp \
+    $${PWD}/OAIInlineScriptTag.cpp \
+    $${PWD}/OAIPostApplicationCharge_201_response.cpp \
+    $${PWD}/OAIPostApplicationCharge_201_response_application_charge.cpp \
+    $${PWD}/OAIPostApplicationCharge_request.cpp \
+    $${PWD}/OAIPostApplicationCharge_request_application_charge.cpp \
+    $${PWD}/OAIScriptTag.cpp \
+    $${PWD}/OAIShopScriptTag.cpp \
+    $${PWD}/OAIUsageCharge.cpp \
+# APIs
+    $${PWD}/OAIApplicationChargeApi.cpp \
+    $${PWD}/OAIInlineScriptApi.cpp \
+    $${PWD}/OAIScriptApi.cpp \
+    $${PWD}/OAIScriptDeprecatedApi.cpp \
+    $${PWD}/OAIUninstallationApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

@@ -1,0 +1,17 @@
+
+
+# RegulatoryComplianceControl
+
+Regulatory compliance control details and state
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**properties** | [**RegulatoryComplianceControlProperties**](RegulatoryComplianceControlProperties.md) |  |  [optional] |
+|**id** | **String** | Resource Id |  [optional] [readonly] |
+|**name** | **String** | Resource name |  [optional] [readonly] |
+|**type** | **String** | Resource type |  [optional] [readonly] |
+
+
+

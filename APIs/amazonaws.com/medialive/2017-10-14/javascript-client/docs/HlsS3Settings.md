@@ -1,0 +1,9 @@
+# AwsElementalMediaLive.HlsS3Settings
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**cannedAcl** | [**S3CannedAcl**](S3CannedAcl.md) |  | [optional] 
+
+

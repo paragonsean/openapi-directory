@@ -1,0 +1,11 @@
+# VertexAiApi.GoogleCloudAiplatformV1beta1NasJobSpec
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**multiTrialAlgorithmSpec** | [**GoogleCloudAiplatformV1beta1NasJobSpecMultiTrialAlgorithmSpec**](GoogleCloudAiplatformV1beta1NasJobSpecMultiTrialAlgorithmSpec.md) |  | [optional] 
+**resumeNasJobId** | **String** | The ID of the existing NasJob in the same Project and Location which will be used to resume search. search_space_spec and nas_algorithm_spec are obtained from previous NasJob hence should not provide them again for this NasJob. | [optional] 
+**searchSpaceSpec** | **String** | It defines the search space for Neural Architecture Search (NAS). | [optional] 
+
+

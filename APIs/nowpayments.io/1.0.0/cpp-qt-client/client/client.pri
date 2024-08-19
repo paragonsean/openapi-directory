@@ -1,0 +1,91 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIDeleteRecurringPayment_200_response.h \
+    $${PWD}/OAIGetAllTransfers_200_response.h \
+    $${PWD}/OAIGetAllTransfers_200_response_result_inner.h \
+    $${PWD}/OAIGetEstimatedPrice_200_response.h \
+    $${PWD}/OAIGetListOfPayments_200_response.h \
+    $${PWD}/OAIGetListOfPayments_200_response_data_inner.h \
+    $${PWD}/OAIGetManyPlans_200_response.h \
+    $${PWD}/OAIGetManyPlans_200_response_result_inner.h \
+    $${PWD}/OAIGetManyRecurringPayments_200_response.h \
+    $${PWD}/OAIGetManyRecurringPayments_200_response_result_inner.h \
+    $${PWD}/OAIGetManyRecurringPayments_200_response_result_inner_subscriber.h \
+    $${PWD}/OAIGetOnePlan_200_response.h \
+    $${PWD}/OAIGetOnePlan_200_response_result.h \
+    $${PWD}/OAIGetOnePlan_404_response.h \
+    $${PWD}/OAIGetOneRecurringPayment_200_response.h \
+    $${PWD}/OAIGetOneRecurringPayment_200_response_result.h \
+    $${PWD}/OAIGetOneRecurringPayment_200_response_result_subscriber.h \
+    $${PWD}/OAIGetOneRecurringPayment_404_response.h \
+    $${PWD}/OAIGetPaymentStatus_200_response.h \
+    $${PWD}/OAIGetSubPartnerBalance_200_response.h \
+    $${PWD}/OAIGetSubPartnerBalance_200_response_result.h \
+    $${PWD}/OAIGetSubPartnerBalance_200_response_result_balances.h \
+    $${PWD}/OAIGetSubPartnerBalance_200_response_result_balances_usddtrc20.h \
+    $${PWD}/OAIGetSubPartnerBalance_200_response_result_balances_usdtbsc.h \
+    $${PWD}/OAIGetTheMinimumPaymentAmount_200_response.h \
+    $${PWD}/OAIGetTransfer_200_response.h \
+    $${PWD}/OAIGetTransfer_200_response_result.h \
+    $${PWD}/OAIGetUpdatePaymentEstimate_200_response.h \
+    $${PWD}/OAIUpdatePlan_request.h \
+    $${PWD}/OAIVerifyPayout_request.h \
+# APIs
+    $${PWD}/OAIBillingSubPartnerAPIApi.h \
+    $${PWD}/OAIPaymentsAPIApi.h \
+    $${PWD}/OAIPayoutsAPIApi.h \
+    $${PWD}/OAIRecurringPaymentsAPIEmailSubscriptionsFeatureApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIDeleteRecurringPayment_200_response.cpp \
+    $${PWD}/OAIGetAllTransfers_200_response.cpp \
+    $${PWD}/OAIGetAllTransfers_200_response_result_inner.cpp \
+    $${PWD}/OAIGetEstimatedPrice_200_response.cpp \
+    $${PWD}/OAIGetListOfPayments_200_response.cpp \
+    $${PWD}/OAIGetListOfPayments_200_response_data_inner.cpp \
+    $${PWD}/OAIGetManyPlans_200_response.cpp \
+    $${PWD}/OAIGetManyPlans_200_response_result_inner.cpp \
+    $${PWD}/OAIGetManyRecurringPayments_200_response.cpp \
+    $${PWD}/OAIGetManyRecurringPayments_200_response_result_inner.cpp \
+    $${PWD}/OAIGetManyRecurringPayments_200_response_result_inner_subscriber.cpp \
+    $${PWD}/OAIGetOnePlan_200_response.cpp \
+    $${PWD}/OAIGetOnePlan_200_response_result.cpp \
+    $${PWD}/OAIGetOnePlan_404_response.cpp \
+    $${PWD}/OAIGetOneRecurringPayment_200_response.cpp \
+    $${PWD}/OAIGetOneRecurringPayment_200_response_result.cpp \
+    $${PWD}/OAIGetOneRecurringPayment_200_response_result_subscriber.cpp \
+    $${PWD}/OAIGetOneRecurringPayment_404_response.cpp \
+    $${PWD}/OAIGetPaymentStatus_200_response.cpp \
+    $${PWD}/OAIGetSubPartnerBalance_200_response.cpp \
+    $${PWD}/OAIGetSubPartnerBalance_200_response_result.cpp \
+    $${PWD}/OAIGetSubPartnerBalance_200_response_result_balances.cpp \
+    $${PWD}/OAIGetSubPartnerBalance_200_response_result_balances_usddtrc20.cpp \
+    $${PWD}/OAIGetSubPartnerBalance_200_response_result_balances_usdtbsc.cpp \
+    $${PWD}/OAIGetTheMinimumPaymentAmount_200_response.cpp \
+    $${PWD}/OAIGetTransfer_200_response.cpp \
+    $${PWD}/OAIGetTransfer_200_response_result.cpp \
+    $${PWD}/OAIGetUpdatePaymentEstimate_200_response.cpp \
+    $${PWD}/OAIUpdatePlan_request.cpp \
+    $${PWD}/OAIVerifyPayout_request.cpp \
+# APIs
+    $${PWD}/OAIBillingSubPartnerAPIApi.cpp \
+    $${PWD}/OAIPaymentsAPIApi.cpp \
+    $${PWD}/OAIPayoutsAPIApi.cpp \
+    $${PWD}/OAIRecurringPaymentsAPIEmailSubscriptionsFeatureApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

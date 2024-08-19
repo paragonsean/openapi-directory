@@ -1,0 +1,16 @@
+# ThePlaidApi.CreditBankIncomeWarningCode
+
+## Enum
+
+
+* `IDENTITY_UNAVAILABLE` (value: `"IDENTITY_UNAVAILABLE"`)
+
+* `TRANSACTIONS_UNAVAILABLE` (value: `"TRANSACTIONS_UNAVAILABLE"`)
+
+* `ITEM_UNAPPROVED` (value: `"ITEM_UNAPPROVED"`)
+
+* `REPORT_DELETED` (value: `"REPORT_DELETED"`)
+
+* `DATA_UNAVAILABLE` (value: `"DATA_UNAVAILABLE"`)
+
+

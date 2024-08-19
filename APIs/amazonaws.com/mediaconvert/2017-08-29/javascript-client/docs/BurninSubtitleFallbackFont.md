@@ -1,0 +1,16 @@
+# AwsElementalMediaConvert.BurninSubtitleFallbackFont
+
+## Enum
+
+
+* `BEST_MATCH` (value: `"BEST_MATCH"`)
+
+* `MONOSPACED_SANSSERIF` (value: `"MONOSPACED_SANSSERIF"`)
+
+* `MONOSPACED_SERIF` (value: `"MONOSPACED_SERIF"`)
+
+* `PROPORTIONAL_SANSSERIF` (value: `"PROPORTIONAL_SANSSERIF"`)
+
+* `PROPORTIONAL_SERIF` (value: `"PROPORTIONAL_SERIF"`)
+
+

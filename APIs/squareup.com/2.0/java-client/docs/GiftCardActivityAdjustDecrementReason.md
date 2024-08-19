@@ -1,0 +1,15 @@
+
+
+# GiftCardActivityAdjustDecrementReason
+
+## Enum
+
+
+* `SUSPICIOUS_ACTIVITY` (value: `"SUSPICIOUS_ACTIVITY"`)
+
+* `BALANCE_ACCIDENTALLY_INCREASED` (value: `"BALANCE_ACCIDENTALLY_INCREASED"`)
+
+* `SUPPORT_ISSUE` (value: `"SUPPORT_ISSUE"`)
+
+
+

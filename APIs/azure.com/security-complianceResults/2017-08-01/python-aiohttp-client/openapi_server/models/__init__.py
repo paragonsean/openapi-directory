@@ -1,8 +1,0 @@
-# coding: utf-8
-
-# import models into model package
-from openapi_server.models.compliance_result import ComplianceResult
-from openapi_server.models.compliance_result_list import ComplianceResultList
-from openapi_server.models.compliance_result_properties import ComplianceResultProperties
-from openapi_server.models.compliance_results_get_default_response import ComplianceResultsGetDefaultResponse
-from openapi_server.models.compliance_results_get_default_response_error import ComplianceResultsGetDefaultResponseError

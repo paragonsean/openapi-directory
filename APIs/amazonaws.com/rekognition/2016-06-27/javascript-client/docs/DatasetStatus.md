@@ -1,0 +1,20 @@
+# AmazonRekognition.DatasetStatus
+
+## Enum
+
+
+* `CREATE_IN_PROGRESS` (value: `"CREATE_IN_PROGRESS"`)
+
+* `CREATE_COMPLETE` (value: `"CREATE_COMPLETE"`)
+
+* `CREATE_FAILED` (value: `"CREATE_FAILED"`)
+
+* `UPDATE_IN_PROGRESS` (value: `"UPDATE_IN_PROGRESS"`)
+
+* `UPDATE_COMPLETE` (value: `"UPDATE_COMPLETE"`)
+
+* `UPDATE_FAILED` (value: `"UPDATE_FAILED"`)
+
+* `DELETE_IN_PROGRESS` (value: `"DELETE_IN_PROGRESS"`)
+
+

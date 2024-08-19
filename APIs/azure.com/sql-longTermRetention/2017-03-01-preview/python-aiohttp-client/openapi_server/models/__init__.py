@@ -1,8 +1,0 @@
-# coding: utf-8
-
-# import models into model package
-from openapi_server.models.backup_long_term_retention_policy import BackupLongTermRetentionPolicy
-from openapi_server.models.long_term_retention_backup import LongTermRetentionBackup
-from openapi_server.models.long_term_retention_backup_list_result import LongTermRetentionBackupListResult
-from openapi_server.models.long_term_retention_backup_properties import LongTermRetentionBackupProperties
-from openapi_server.models.long_term_retention_policy_properties import LongTermRetentionPolicyProperties

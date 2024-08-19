@@ -1,0 +1,14 @@
+
+
+# ListPartnerEventSourceAccountsResponse
+
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**partnerEventSourceAccounts** | [**List**](List.md) |  |  [optional] |
+|**nextToken** | [**String**](String.md) |  |  [optional] |
+
+
+

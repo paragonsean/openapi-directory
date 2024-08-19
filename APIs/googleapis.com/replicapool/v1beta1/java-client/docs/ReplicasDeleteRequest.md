@@ -1,0 +1,13 @@
+
+
+# ReplicasDeleteRequest
+
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**abandonInstance** | **Boolean** | Whether the instance resource represented by this replica should be deleted or abandoned. If abandoned, the replica will be deleted but the virtual machine instance will remain. By default, this is set to false and the instance will be deleted along with the replica. |  [optional] |
+
+
+

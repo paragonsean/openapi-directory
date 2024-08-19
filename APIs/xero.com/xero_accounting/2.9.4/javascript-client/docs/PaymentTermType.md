@@ -1,0 +1,14 @@
+# XeroAccountingApi.PaymentTermType
+
+## Enum
+
+
+* `DAYSAFTERBILLDATE` (value: `"DAYSAFTERBILLDATE"`)
+
+* `DAYSAFTERBILLMONTH` (value: `"DAYSAFTERBILLMONTH"`)
+
+* `OFCURRENTMONTH` (value: `"OFCURRENTMONTH"`)
+
+* `OFFOLLOWINGMONTH` (value: `"OFFOLLOWINGMONTH"`)
+
+

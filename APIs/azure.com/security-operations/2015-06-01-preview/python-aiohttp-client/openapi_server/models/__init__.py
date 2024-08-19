@@ -1,8 +1,0 @@
-# coding: utf-8
-
-# import models into model package
-from openapi_server.models.operation import Operation
-from openapi_server.models.operation_display import OperationDisplay
-from openapi_server.models.operation_list import OperationList
-from openapi_server.models.operations_list_default_response import OperationsListDefaultResponse
-from openapi_server.models.operations_list_default_response_error import OperationsListDefaultResponseError

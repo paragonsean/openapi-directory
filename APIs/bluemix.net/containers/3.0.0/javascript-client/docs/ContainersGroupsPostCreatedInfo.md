@@ -1,0 +1,10 @@
+# IbmContainersApi.ContainersGroupsPostCreatedInfo
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**id** | **String** | Unique identifier representing a specific container group. | [optional] 
+**warnings** | **[String]** | Warning information (Initial warning is empty). | [optional] 
+
+

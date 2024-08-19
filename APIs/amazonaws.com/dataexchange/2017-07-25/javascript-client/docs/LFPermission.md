@@ -1,0 +1,10 @@
+# AwsDataExchange.LFPermission
+
+## Enum
+
+
+* `DESCRIBE` (value: `"DESCRIBE"`)
+
+* `SELECT` (value: `"SELECT"`)
+
+

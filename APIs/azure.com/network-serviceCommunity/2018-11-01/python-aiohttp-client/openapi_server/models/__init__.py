@@ -1,7 +1,0 @@
-# coding: utf-8
-
-# import models into model package
-from openapi_server.models.bgp_community import BGPCommunity
-from openapi_server.models.bgp_service_community import BgpServiceCommunity
-from openapi_server.models.bgp_service_community_list_result import BgpServiceCommunityListResult
-from openapi_server.models.bgp_service_community_properties_format import BgpServiceCommunityPropertiesFormat

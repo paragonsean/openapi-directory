@@ -1,0 +1,13 @@
+# AmazonCodeGuruSecurity.FilePath
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**codeSnippet** | **Array** |  | [optional] 
+**endLine** | **Number** |  | [optional] 
+**name** | **String** |  | [optional] 
+**path** | **String** |  | [optional] 
+**startLine** | **Number** |  | [optional] 
+
+

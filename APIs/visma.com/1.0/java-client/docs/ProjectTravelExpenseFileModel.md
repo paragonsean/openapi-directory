@@ -1,0 +1,26 @@
+
+
+# ProjectTravelExpenseFileModel
+
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**category** | **FileCategory** |  |  [optional] |
+|**contentType** | **String** |  |  [optional] [readonly] |
+|**createdBy** | [**UserWithFirstNameLastNameAndPhotoFileModel**](UserWithFirstNameLastNameAndPhotoFileModel.md) |  |  [optional] |
+|**createdDateTime** | **OffsetDateTime** |  |  [optional] [readonly] |
+|**description** | **String** |  |  [optional] |
+|**fileGuid** | **String** |  |  [optional] [readonly] |
+|**guid** | **String** |  |  [optional] [readonly] |
+|**isInternal** | **Boolean** |  |  [optional] |
+|**lastUpdatedBy** | [**UserWithFirstNameLastNameAndPhotoFileModel**](UserWithFirstNameLastNameAndPhotoFileModel.md) |  |  [optional] |
+|**lastUpdatedDateTime** | **OffsetDateTime** |  |  [optional] [readonly] |
+|**name** | **String** |  |  |
+|**size** | **Double** |  |  [optional] [readonly] |
+|**source** | **TravelReimbursementAttachmentSource** |  |  [optional] |
+|**travelExpenseGuid** | **String** |  |  [optional] [readonly] |
+
+
+

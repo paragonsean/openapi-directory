@@ -1,0 +1,16 @@
+# AmazonInspector.InspectorEvent
+
+## Enum
+
+
+* `ASSESSMENT_RUN_STARTED` (value: `"ASSESSMENT_RUN_STARTED"`)
+
+* `ASSESSMENT_RUN_COMPLETED` (value: `"ASSESSMENT_RUN_COMPLETED"`)
+
+* `ASSESSMENT_RUN_STATE_CHANGED` (value: `"ASSESSMENT_RUN_STATE_CHANGED"`)
+
+* `FINDING_REPORTED` (value: `"FINDING_REPORTED"`)
+
+* `OTHER` (value: `"OTHER"`)
+
+

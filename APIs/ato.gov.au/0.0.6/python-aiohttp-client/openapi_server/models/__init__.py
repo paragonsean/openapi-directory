@@ -1,0 +1,37 @@
+# coding: utf-8
+
+# import models into model package
+from openapi_server.models.address import Address
+from openapi_server.models.address_id import AddressId
+from openapi_server.models.address_type import AddressType
+from openapi_server.models.business_name import BusinessName
+from openapi_server.models.business_name_lifecycle_state import BusinessNameLifecycleState
+from openapi_server.models.electronic_address import ElectronicAddress
+from openapi_server.models.electronic_address_type import ElectronicAddressType
+from openapi_server.models.error_details import ErrorDetails
+from openapi_server.models.failed_precondition import FailedPrecondition
+from openapi_server.models.gender import Gender
+from openapi_server.models.individual import Individual
+from openapi_server.models.individual_address import IndividualAddress
+from openapi_server.models.individual_name import IndividualName
+from openapi_server.models.invalid_argument import InvalidArgument
+from openapi_server.models.legal_entity_type import LegalEntityType
+from openapi_server.models.license import License
+from openapi_server.models.license_lifecycle_state import LicenseLifecycleState
+from openapi_server.models.license_type import LicenseType
+from openapi_server.models.name_direction import NameDirection
+from openapi_server.models.name_prefix import NamePrefix
+from openapi_server.models.name_type import NameType
+from openapi_server.models.not_found import NotFound
+from openapi_server.models.organisation import Organisation
+from openapi_server.models.organisation_address import OrganisationAddress
+from openapi_server.models.organisation_name import OrganisationName
+from openapi_server.models.party_id import PartyId
+from openapi_server.models.party_role import PartyRole
+from openapi_server.models.permission_denied import PermissionDenied
+from openapi_server.models.registered_identifier import RegisteredIdentifier
+from openapi_server.models.registered_identifier_type import RegisteredIdentifierType
+from openapi_server.models.role import Role
+from openapi_server.models.role_id import RoleId
+from openapi_server.models.type import Type
+from openapi_server.models.unauthenticated import Unauthenticated

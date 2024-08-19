@@ -1,0 +1,25 @@
+
+
+# ModelDashboardModelCard
+
+The model card for a model displayed in the Amazon SageMaker Model Dashboard.
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**modelCardArn** | [**String**](String.md) |  |  [optional] |
+|**modelCardName** | [**String**](String.md) |  |  [optional] |
+|**modelCardVersion** | [**Integer**](Integer.md) |  |  [optional] |
+|**modelCardStatus** | [**ModelCardStatus**](ModelCardStatus.md) |  |  [optional] |
+|**securityConfig** | [**ModelDashboardModelCardSecurityConfig**](ModelDashboardModelCardSecurityConfig.md) |  |  [optional] |
+|**creationTime** | [**OffsetDateTime**](OffsetDateTime.md) |  |  [optional] |
+|**createdBy** | [**UserContext**](UserContext.md) |  |  [optional] |
+|**lastModifiedTime** | [**OffsetDateTime**](OffsetDateTime.md) |  |  [optional] |
+|**lastModifiedBy** | [**UserContext**](UserContext.md) |  |  [optional] |
+|**tags** | [**List**](List.md) |  |  [optional] |
+|**modelId** | [**String**](String.md) |  |  [optional] |
+|**riskRating** | [**String**](String.md) |  |  [optional] |
+
+
+

@@ -1,0 +1,14 @@
+
+
+# RetentionPolicy
+
+The retention policy for data stored on an Amazon Elastic File System (EFS) volume.
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**homeEfsFileSystem** | [**RetentionType**](RetentionType.md) |  |  [optional] |
+
+
+

@@ -1,0 +1,13 @@
+
+
+# DescribeModelPackageInput
+
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**modelPackageName** | [**String**](String.md) |  |  |
+
+
+

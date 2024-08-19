@@ -1,9 +1,0 @@
-# InventoryManagement.MultiNodeInventoryUpdateRequestDTO
-
-## Properties
-
-Name | Type | Description | Notes
------------- | ------------- | ------------- | -------------
-**inventories** | [**UpdateMultiNodeInventoryRequestInventories**](UpdateMultiNodeInventoryRequestInventories.md) |  | 
-
-

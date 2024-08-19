@@ -1,0 +1,1253 @@
+openapi: 3.0.1
+info:
+  contact: {}
+  description: "The OpenALPR CarCheck API allows you to send images to the cloud for\
+    \ processing. \nThe image will be analyzed for license plates and vehicle make/models.\
+    \  The results \nare returned in JSON format\n"
+  title: OpenALPR CarCheck API
+  version: 3.0.1
+  x-apisguru-categories:
+  - cloud
+  x-logo:
+    url: https://twitter.com/openalpr/profile_image?size=original
+  x-origin:
+  - format: swagger
+    url: http://doc.openalpr.com/api/specs/cloudapi.yaml
+    version: "2.0"
+  x-providerName: openalpr.com
+servers:
+- url: https://api.openalpr.com/v3
+paths:
+  /config:
+    get:
+      description: |
+        Get a list of available results for plate and vehicle recognition
+      operationId: get_config
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/getConfig_200_response'
+          description: ok
+      x-openapi-router-controller: openapi_server.controllers.default_controller
+  /recognize:
+    post:
+      description: |
+        Send an image for OpenALPR to analyze and provide metadata back
+        The image is sent as a file using a form data POST
+      operationId: recognize_file
+      parameters:
+      - description: "The secret key used to authenticate your account.  You can view\
+          \ your \nsecret key by visiting \nhttps://cloud.openalpr.com/\n"
+        in: query
+        name: secret_key
+        required: true
+        schema:
+          type: string
+      - description: |
+          If set to 1, the vehicle will also be recognized in the image
+          This requires an additional credit per request
+        in: query
+        name: recognize_vehicle
+        schema:
+          default: 0
+          enum:
+          - 0
+          - 1
+          type: integer
+      - description: "Defines the training data used by OpenALPR.  \"us\" analyzes\
+          \ \nNorth-American style plates.  \"eu\" analyzes European-style plates.\n\
+          \nThis field is required if using the \"plate\" task\n"
+        in: query
+        name: country
+        required: true
+        schema:
+          type: string
+      - description: "If set to 1, the image you uploaded will be encoded in base64\
+          \ and \nsent back along with the response\n"
+        in: query
+        name: return_image
+        schema:
+          default: 0
+          enum:
+          - 0
+          - 1
+          type: integer
+      - description: "The number of results you would like to be returned for plate\
+          \ \ncandidates and vehicle classifications\n"
+        in: query
+        name: topn
+        schema:
+          default: 10
+          maximum: 1000
+          minimum: 1
+          type: integer
+      - description: "When providing a plate or vehicle that is already cropped, \
+          \ \nthis performs a recognition against the full crop and does not \nattempt\
+          \ to localize the plate/vehicle\n"
+        in: query
+        name: is_cropped
+        schema:
+          default: 0
+          enum:
+          - 0
+          - 1
+          type: integer
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/recognizeFile_request'
+        required: true
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/recognizeFile_200_response'
+          description: OK
+          headers:
+            X-Ratelimit-Reset:
+              description: Epoch time when the next period begins
+              schema:
+                type: integer
+            X-Ratelimit-Remaining:
+              description: Number of remaining requests allowed during this period
+              schema:
+                type: integer
+            X-RateLimit-Limit:
+              description: Maximum number of requests allowed from your IP in a period
+              schema:
+                type: integer
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/recognizeFile_400_response'
+          description: Parameter is invalid
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/recognizeFile_400_response'
+          description: User not authorized or invalid secret_key
+        "402":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/recognizeFile_400_response'
+          description: Monthly usage limit exceeded
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/recognizeFile_400_response'
+          description: Temporary rate-limit exceeded
+      x-openapi-router-controller: openapi_server.controllers.default_controller
+      x-codegen-request-body-name: body
+  /recognize_bytes:
+    post:
+      description: |
+        Send an image for OpenALPR to analyze and provide metadata back
+        The image is sent as base64 encoded bytes.
+      operationId: recognize_bytes
+      parameters:
+      - description: "The secret key used to authenticate your account.  You can view\
+          \ your \nsecret key by visiting \nhttps://cloud.openalpr.com/\n"
+        in: query
+        name: secret_key
+        required: true
+        schema:
+          type: string
+      - description: |
+          If set to 1, the vehicle will also be recognized in the image
+          This requires an additional credit per request
+        in: query
+        name: recognize_vehicle
+        schema:
+          default: 0
+          enum:
+          - 0
+          - 1
+          type: integer
+      - description: "Defines the training data used by OpenALPR.  \"us\" analyzes\
+          \ \nNorth-American style plates.  \"eu\" analyzes European-style plates.\n\
+          \nThis field is required if using the \"plate\" task\n"
+        in: query
+        name: country
+        required: true
+        schema:
+          type: string
+      - description: "If set to 1, the image you uploaded will be encoded in base64\
+          \ and \nsent back along with the response\n"
+        in: query
+        name: return_image
+        schema:
+          default: 0
+          enum:
+          - 0
+          - 1
+          type: integer
+      - description: "The number of results you would like to be returned for plate\
+          \ \ncandidates and vehicle classifications\n"
+        in: query
+        name: topn
+        schema:
+          default: 10
+          maximum: 1000
+          minimum: 1
+          type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: string
+        description: |
+          The image file that you wish to analyze encoded in base64
+        required: true
+        x-body-name: image_bytes
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/recognizeFile_200_response'
+          description: OK
+          headers:
+            X-Ratelimit-Reset:
+              description: Epoch time when the next period begins
+              schema:
+                type: integer
+            X-Ratelimit-Remaining:
+              description: Number of remaining requests allowed during this period
+              schema:
+                type: integer
+            X-RateLimit-Limit:
+              description: Maximum number of requests allowed from your IP in a period
+              schema:
+                type: integer
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/recognizeFile_400_response'
+          description: Parameter is invalid
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/recognizeFile_400_response'
+          description: User not authorized or invalid secret_key
+        "402":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/recognizeFile_400_response'
+          description: Monthly usage limit exceeded
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/recognizeFile_400_response'
+          description: Temporary rate-limit exceeded
+      x-codegen-request-body-name: image_bytes
+      x-openapi-router-controller: openapi_server.controllers.default_controller
+  /recognize_url:
+    post:
+      description: "Send an image for OpenALPR to analyze and provide metadata back\n\
+        The image is sent as a URL.  The OpenALPR service will download the image\
+        \ \nand process it\n"
+      operationId: recognize_url
+      parameters:
+      - description: |
+          A URL to an image that you wish to analyze
+        in: query
+        name: image_url
+        required: true
+        schema:
+          type: string
+      - description: "The secret key used to authenticate your account.  You can view\
+          \ your \nsecret key by visiting \nhttps://cloud.openalpr.com/\n"
+        in: query
+        name: secret_key
+        required: true
+        schema:
+          type: string
+      - description: |
+          If set to 1, the vehicle will also be recognized in the image
+          This requires an additional credit per request
+        in: query
+        name: recognize_vehicle
+        schema:
+          default: 0
+          enum:
+          - 0
+          - 1
+          type: integer
+      - description: "Defines the training data used by OpenALPR.  \"us\" analyzes\
+          \ \nNorth-American style plates.  \"eu\" analyzes European-style plates.\n\
+          \nThis field is required if using the \"plate\" task\n"
+        in: query
+        name: country
+        required: true
+        schema:
+          type: string
+      - description: "If set to 1, the image you uploaded will be encoded in base64\
+          \ and \nsent back along with the response\n"
+        in: query
+        name: return_image
+        schema:
+          default: 0
+          enum:
+          - 0
+          - 1
+          type: integer
+      - description: "The number of results you would like to be returned for plate\
+          \ \ncandidates and vehicle classifications\n"
+        in: query
+        name: topn
+        schema:
+          default: 10
+          maximum: 1000
+          minimum: 1
+          type: integer
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/recognizeFile_200_response'
+          description: OK
+          headers:
+            X-Ratelimit-Reset:
+              description: Epoch time when the next period begins
+              schema:
+                type: integer
+            X-Ratelimit-Remaining:
+              description: Number of remaining requests allowed during this period
+              schema:
+                type: integer
+            X-RateLimit-Limit:
+              description: Maximum number of requests allowed from your IP in a period
+              schema:
+                type: integer
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/recognizeFile_400_response'
+          description: Parameter is invalid
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/recognizeFile_400_response'
+          description: User not authorized or invalid secret_key
+        "402":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/recognizeFile_400_response'
+          description: Monthly usage limit exceeded
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/recognizeFile_400_response'
+          description: Temporary rate-limit exceeded
+      x-openapi-router-controller: openapi_server.controllers.default_controller
+components:
+  parameters:
+    country:
+      description: "Defines the training data used by OpenALPR.  \"us\" analyzes \n\
+        North-American style plates.  \"eu\" analyzes European-style plates.\n\nThis\
+        \ field is required if using the \"plate\" task\n"
+      in: query
+      name: country
+      required: true
+      schema:
+        type: string
+    is_cropped:
+      description: "When providing a plate or vehicle that is already cropped,  \n\
+        this performs a recognition against the full crop and does not \nattempt to\
+        \ localize the plate/vehicle\n"
+      in: query
+      name: is_cropped
+      schema:
+        default: 0
+        enum:
+        - 0
+        - 1
+        type: integer
+    recognize_vehicle:
+      description: |
+        If set to 1, the vehicle will also be recognized in the image
+        This requires an additional credit per request
+      in: query
+      name: recognize_vehicle
+      schema:
+        default: 0
+        enum:
+        - 0
+        - 1
+        type: integer
+    return_image:
+      description: "If set to 1, the image you uploaded will be encoded in base64\
+        \ and \nsent back along with the response\n"
+      in: query
+      name: return_image
+      schema:
+        default: 0
+        enum:
+        - 0
+        - 1
+        type: integer
+    secret_key:
+      description: "The secret key used to authenticate your account.  You can view\
+        \ your \nsecret key by visiting \nhttps://cloud.openalpr.com/\n"
+      in: query
+      name: secret_key
+      required: true
+      schema:
+        type: string
+    topn:
+      description: "The number of results you would like to be returned for plate\
+        \ \ncandidates and vehicle classifications\n"
+      in: query
+      name: topn
+      schema:
+        default: 10
+        maximum: 1000
+        minimum: 1
+        type: integer
+  responses:
+    api_200:
+      content:
+        application/json:
+          schema:
+            properties:
+              credit_cost:
+                description: The number of API credits that were used to process this
+                  image
+                type: integer
+              credits_monthly_total:
+                description: The maximum number of API credits available this month
+                  according to your plan
+                type: integer
+              credits_monthly_used:
+                description: The number of API credits used this month
+                type: integer
+              data_type:
+                description: Specifies the type of data in this response
+                enum:
+                - alpr_results
+                - alpr_group
+                - heartbeat
+                type: string
+              epoch_time:
+                description: Epoch time that the image was processed in milliseconds
+                type: number
+              img_height:
+                description: Height of the input image in pixels
+                type: integer
+              img_width:
+                description: Width of the uploaded image in pixels
+                type: integer
+              processing_time:
+                properties:
+                  plates:
+                    description: Time spent performing license plate recognition (in
+                      milliseconds)
+                    type: number
+                  total:
+                    description: Time spent processing all tasks (in milliseconds)
+                    type: number
+                  vehicles:
+                    description: Time spent performing vehicle recognition (in milliseconds)
+                    type: number
+                type: object
+              regions_of_interest:
+                description: Describes the areas analyzed in the input image
+                items:
+                  $ref: '#/components/schemas/region_of_interest'
+                type: array
+              results:
+                items:
+                  $ref: '#/components/schemas/plate_details'
+                type: array
+              vehicles:
+                description: Describes all vehicles found in the input image
+                items:
+                  $ref: '#/components/schemas/vehicles'
+                type: array
+              version:
+                description: API format version
+                type: integer
+            type: object
+      description: OK
+      headers:
+        X-Ratelimit-Reset:
+          description: Epoch time when the next period begins
+          schema:
+            type: integer
+        X-Ratelimit-Remaining:
+          description: Number of remaining requests allowed during this period
+          schema:
+            type: integer
+        X-RateLimit-Limit:
+          description: Maximum number of requests allowed from your IP in a period
+          schema:
+            type: integer
+    api_400:
+      content:
+        application/json:
+          schema:
+            properties:
+              error:
+                description: Text error message describing the invalid input
+                type: string
+            type: object
+      description: Parameter is invalid
+    api_401:
+      content:
+        application/json:
+          schema:
+            properties:
+              error:
+                description: Text error message describing the invalid input
+                type: string
+            type: object
+      description: User not authorized or invalid secret_key
+    api_402:
+      content:
+        application/json:
+          schema:
+            properties:
+              error:
+                description: Text error message describing the invalid input
+                type: string
+            type: object
+      description: Monthly usage limit exceeded
+    api_403:
+      content:
+        application/json:
+          schema:
+            properties:
+              error:
+                description: Text error message describing the invalid input
+                type: string
+            type: object
+      description: Temporary rate-limit exceeded
+  schemas:
+    coordinate:
+      example:
+        x: 7
+        "y": 1
+      properties:
+        x:
+          title: x
+          type: integer
+        "y":
+          title: "y"
+          type: integer
+      title: coordinate
+      type: object
+    plate_candidate:
+      example:
+        confidence: 1.0246457001441578
+        plate: plate
+        matches_template: 1
+      properties:
+        confidence:
+          description: Confidence percentage that the plate number is correct
+          title: confidence
+          type: number
+        matches_template:
+          description: Indicates whether the plate matched a regional text pattern
+          title: matches_template
+          type: integer
+        plate:
+          description: Plate number
+          title: plate
+          type: string
+      title: plate_candidate
+      type: object
+    plate_details:
+      example:
+        candidates:
+        - confidence: 1.0246457001441578
+          plate: plate
+          matches_template: 1
+        - confidence: 1.0246457001441578
+          plate: plate
+          matches_template: 1
+        processing_time_ms: 5.025004791520295
+        region_confidence: 9.965781217890562
+        requested_topn: 9
+        confidence: 6.84685269835264
+        coordinates:
+        - x: 7
+          "y": 1
+        - x: 7
+          "y": 1
+        plate: plate
+        matches_template: 4
+        region: region
+        vehicle_region:
+          width: 4
+          x: 7
+          "y": 1
+          height: 2
+        vehicle:
+          orientation:
+          - confidence: 6.683562403749608
+            name: name
+          - confidence: 6.683562403749608
+            name: name
+          color:
+          - confidence: 6.683562403749608
+            name: name
+          - confidence: 6.683562403749608
+            name: name
+          year:
+          - confidence: 6.683562403749608
+            name: name
+          - confidence: 6.683562403749608
+            name: name
+          body_type:
+          - confidence: 6.683562403749608
+            name: name
+          - confidence: 6.683562403749608
+            name: name
+          make:
+          - confidence: 6.683562403749608
+            name: name
+          - confidence: 6.683562403749608
+            name: name
+          make_model:
+          - confidence: 6.683562403749608
+            name: name
+          - confidence: 6.683562403749608
+            name: name
+      properties:
+        candidates:
+          description: All the top N candidates that could be the correct plate number
+          items:
+            $ref: '#/components/schemas/plate_candidate'
+          title: candidates
+          type: array
+        confidence:
+          description: Confidence percentage that the plate number is correct
+          title: confidence
+          type: number
+        coordinates:
+          description: |
+            The X/Y coordinates of the license plate in the image
+            Four coordinates are provided that form a polygon starting
+            from the top-left and moving clockwise ending in the bottom left
+          items:
+            $ref: '#/components/schemas/coordinate'
+          title: coordinates
+          type: array
+        matches_template:
+          description: Indicates whether the plate matched a regional text pattern
+          title: matches_template
+          type: integer
+        plate:
+          description: Best plate number for this plate
+          title: plate
+          type: string
+        processing_time_ms:
+          description: Number of milliseconds to process the license plate
+          title: processing_time_ms
+          type: number
+        region:
+          description: "Specified or detected region (e.g., tx for Texas)"
+          title: region
+          type: string
+        region_confidence:
+          description: Confidence percentage that the plate region is correct
+          title: region_confidence
+          type: number
+        requested_topn:
+          description: The max number of results requested
+          title: requested_topn
+          type: integer
+        vehicle:
+          $ref: '#/components/schemas/vehicle_details'
+        vehicle_region:
+          $ref: '#/components/schemas/region_of_interest'
+      title: plate_details
+      type: object
+    region_of_interest:
+      example:
+        width: 4
+        x: 7
+        "y": 1
+        height: 2
+      properties:
+        height:
+          title: height
+          type: integer
+        width:
+          title: width
+          type: integer
+        x:
+          title: x
+          type: integer
+        "y":
+          title: "y"
+          type: integer
+      title: region_of_interest
+      type: object
+    vehicle_candidate:
+      example:
+        confidence: 6.683562403749608
+        name: name
+      properties:
+        confidence:
+          description: confidence of value (percent)
+          title: confidence
+          type: number
+        name:
+          description: name of value
+          title: name
+          type: string
+      title: vehicle_candidate
+      type: object
+    vehicle_details:
+      example:
+        orientation:
+        - confidence: 6.683562403749608
+          name: name
+        - confidence: 6.683562403749608
+          name: name
+        color:
+        - confidence: 6.683562403749608
+          name: name
+        - confidence: 6.683562403749608
+          name: name
+        year:
+        - confidence: 6.683562403749608
+          name: name
+        - confidence: 6.683562403749608
+          name: name
+        body_type:
+        - confidence: 6.683562403749608
+          name: name
+        - confidence: 6.683562403749608
+          name: name
+        make:
+        - confidence: 6.683562403749608
+          name: name
+        - confidence: 6.683562403749608
+          name: name
+        make_model:
+        - confidence: 6.683562403749608
+          name: name
+        - confidence: 6.683562403749608
+          name: name
+      properties:
+        body_type:
+          items:
+            $ref: '#/components/schemas/vehicle_candidate'
+          title: body_type
+          type: array
+        color:
+          items:
+            $ref: '#/components/schemas/vehicle_candidate'
+          title: color
+          type: array
+        make:
+          items:
+            $ref: '#/components/schemas/vehicle_candidate'
+          title: make
+          type: array
+        make_model:
+          items:
+            $ref: '#/components/schemas/vehicle_candidate'
+          title: make_model
+          type: array
+        orientation:
+          items:
+            $ref: '#/components/schemas/vehicle_candidate'
+          title: orientation
+          type: array
+        year:
+          items:
+            $ref: '#/components/schemas/vehicle_candidate'
+          title: year
+          type: array
+      title: vehicle_details
+      type: object
+    vehicles:
+      example:
+        width: 9
+        x: 6
+        "y": 3
+        details:
+          orientation:
+          - confidence: 6.683562403749608
+            name: name
+          - confidence: 6.683562403749608
+            name: name
+          color:
+          - confidence: 6.683562403749608
+            name: name
+          - confidence: 6.683562403749608
+            name: name
+          year:
+          - confidence: 6.683562403749608
+            name: name
+          - confidence: 6.683562403749608
+            name: name
+          body_type:
+          - confidence: 6.683562403749608
+            name: name
+          - confidence: 6.683562403749608
+            name: name
+          make:
+          - confidence: 6.683562403749608
+            name: name
+          - confidence: 6.683562403749608
+            name: name
+          make_model:
+          - confidence: 6.683562403749608
+            name: name
+          - confidence: 6.683562403749608
+            name: name
+        height: 8
+      properties:
+        details:
+          $ref: '#/components/schemas/vehicle_details'
+        height:
+          title: height
+          type: integer
+        width:
+          title: width
+          type: integer
+        x:
+          title: x
+          type: integer
+        "y":
+          title: "y"
+          type: integer
+      title: vehicles
+      type: object
+    getConfig_200_response_countries_inner:
+      example:
+        code: us
+        name: North America
+      properties:
+        code:
+          example: us
+          title: code
+          type: string
+        name:
+          example: North America
+          title: name
+          type: string
+      title: getConfig_200_response_countries_inner
+      type: object
+    getConfig_200_response_vehicle_labels:
+      example:
+        orientation:
+        - "45"
+        - "45"
+        color:
+        - blue
+        - blue
+        year:
+        - 2000-2004
+        - 2000-2004
+        makemodel:
+        - volvo_v40
+        - volvo_v40
+        bodytype:
+        - sedan-compact
+        - sedan-compact
+        make:
+        - volvo
+        - volvo
+      properties:
+        bodytype:
+          items:
+            example: sedan-compact
+            type: string
+          title: bodytype
+          type: array
+        color:
+          items:
+            example: blue
+            type: string
+          title: color
+          type: array
+        make:
+          items:
+            example: volvo
+            type: string
+          title: make
+          type: array
+        makemodel:
+          items:
+            example: volvo_v40
+            type: string
+          title: makemodel
+          type: array
+        orientation:
+          items:
+            example: "45"
+            type: string
+          title: orientation
+          type: array
+        year:
+          items:
+            example: 2000-2004
+            type: string
+          title: year
+          type: array
+      title: getConfig_200_response_vehicle_labels
+      type: object
+    getConfig_200_response:
+      example:
+        vehicle_labels:
+          orientation:
+          - "45"
+          - "45"
+          color:
+          - blue
+          - blue
+          year:
+          - 2000-2004
+          - 2000-2004
+          makemodel:
+          - volvo_v40
+          - volvo_v40
+          bodytype:
+          - sedan-compact
+          - sedan-compact
+          make:
+          - volvo
+          - volvo
+        countries:
+        - code: us
+          name: North America
+        - code: us
+          name: North America
+      properties:
+        countries:
+          items:
+            $ref: '#/components/schemas/getConfig_200_response_countries_inner'
+          title: countries
+          type: array
+        vehicle_labels:
+          $ref: '#/components/schemas/getConfig_200_response_vehicle_labels'
+      title: getConfig_200_response
+      type: object
+    recognizeFile_request:
+      properties:
+        image:
+          description: |
+            The image file that you wish to analyze
+          format: binary
+          type: string
+      required:
+      - image
+      type: object
+    recognizeFile_200_response_processing_time:
+      example:
+        total: 9.301444243932576
+        plates: 7.061401241503109
+        vehicles: 3.616076749251911
+      properties:
+        plates:
+          description: Time spent performing license plate recognition (in milliseconds)
+          title: plates
+          type: number
+        total:
+          description: Time spent processing all tasks (in milliseconds)
+          title: total
+          type: number
+        vehicles:
+          description: Time spent performing vehicle recognition (in milliseconds)
+          title: vehicles
+          type: number
+      title: recognizeFile_200_response_processing_time
+      type: object
+    recognizeFile_200_response:
+      example:
+        credits_monthly_used: 1
+        processing_time:
+          total: 9.301444243932576
+          plates: 7.061401241503109
+          vehicles: 3.616076749251911
+        regions_of_interest:
+        - width: 4
+          x: 7
+          "y": 1
+          height: 2
+        - width: 4
+          x: 7
+          "y": 1
+          height: 2
+        credits_monthly_total: 6
+        img_width: 2
+        credit_cost: 0
+        img_height: 5
+        data_type: alpr_results
+        vehicles:
+        - width: 9
+          x: 6
+          "y": 3
+          details:
+            orientation:
+            - confidence: 6.683562403749608
+              name: name
+            - confidence: 6.683562403749608
+              name: name
+            color:
+            - confidence: 6.683562403749608
+              name: name
+            - confidence: 6.683562403749608
+              name: name
+            year:
+            - confidence: 6.683562403749608
+              name: name
+            - confidence: 6.683562403749608
+              name: name
+            body_type:
+            - confidence: 6.683562403749608
+              name: name
+            - confidence: 6.683562403749608
+              name: name
+            make:
+            - confidence: 6.683562403749608
+              name: name
+            - confidence: 6.683562403749608
+              name: name
+            make_model:
+            - confidence: 6.683562403749608
+              name: name
+            - confidence: 6.683562403749608
+              name: name
+          height: 8
+        - width: 9
+          x: 6
+          "y": 3
+          details:
+            orientation:
+            - confidence: 6.683562403749608
+              name: name
+            - confidence: 6.683562403749608
+              name: name
+            color:
+            - confidence: 6.683562403749608
+              name: name
+            - confidence: 6.683562403749608
+              name: name
+            year:
+            - confidence: 6.683562403749608
+              name: name
+            - confidence: 6.683562403749608
+              name: name
+            body_type:
+            - confidence: 6.683562403749608
+              name: name
+            - confidence: 6.683562403749608
+              name: name
+            make:
+            - confidence: 6.683562403749608
+              name: name
+            - confidence: 6.683562403749608
+              name: name
+            make_model:
+            - confidence: 6.683562403749608
+              name: name
+            - confidence: 6.683562403749608
+              name: name
+          height: 8
+        epoch_time: 5.962133916683182
+        results:
+        - candidates:
+          - confidence: 1.0246457001441578
+            plate: plate
+            matches_template: 1
+          - confidence: 1.0246457001441578
+            plate: plate
+            matches_template: 1
+          processing_time_ms: 5.025004791520295
+          region_confidence: 9.965781217890562
+          requested_topn: 9
+          confidence: 6.84685269835264
+          coordinates:
+          - x: 7
+            "y": 1
+          - x: 7
+            "y": 1
+          plate: plate
+          matches_template: 4
+          region: region
+          vehicle_region:
+            width: 4
+            x: 7
+            "y": 1
+            height: 2
+          vehicle:
+            orientation:
+            - confidence: 6.683562403749608
+              name: name
+            - confidence: 6.683562403749608
+              name: name
+            color:
+            - confidence: 6.683562403749608
+              name: name
+            - confidence: 6.683562403749608
+              name: name
+            year:
+            - confidence: 6.683562403749608
+              name: name
+            - confidence: 6.683562403749608
+              name: name
+            body_type:
+            - confidence: 6.683562403749608
+              name: name
+            - confidence: 6.683562403749608
+              name: name
+            make:
+            - confidence: 6.683562403749608
+              name: name
+            - confidence: 6.683562403749608
+              name: name
+            make_model:
+            - confidence: 6.683562403749608
+              name: name
+            - confidence: 6.683562403749608
+              name: name
+        - candidates:
+          - confidence: 1.0246457001441578
+            plate: plate
+            matches_template: 1
+          - confidence: 1.0246457001441578
+            plate: plate
+            matches_template: 1
+          processing_time_ms: 5.025004791520295
+          region_confidence: 9.965781217890562
+          requested_topn: 9
+          confidence: 6.84685269835264
+          coordinates:
+          - x: 7
+            "y": 1
+          - x: 7
+            "y": 1
+          plate: plate
+          matches_template: 4
+          region: region
+          vehicle_region:
+            width: 4
+            x: 7
+            "y": 1
+            height: 2
+          vehicle:
+            orientation:
+            - confidence: 6.683562403749608
+              name: name
+            - confidence: 6.683562403749608
+              name: name
+            color:
+            - confidence: 6.683562403749608
+              name: name
+            - confidence: 6.683562403749608
+              name: name
+            year:
+            - confidence: 6.683562403749608
+              name: name
+            - confidence: 6.683562403749608
+              name: name
+            body_type:
+            - confidence: 6.683562403749608
+              name: name
+            - confidence: 6.683562403749608
+              name: name
+            make:
+            - confidence: 6.683562403749608
+              name: name
+            - confidence: 6.683562403749608
+              name: name
+            make_model:
+            - confidence: 6.683562403749608
+              name: name
+            - confidence: 6.683562403749608
+              name: name
+        version: 6
+      properties:
+        credit_cost:
+          description: The number of API credits that were used to process this image
+          title: credit_cost
+          type: integer
+        credits_monthly_total:
+          description: The maximum number of API credits available this month according
+            to your plan
+          title: credits_monthly_total
+          type: integer
+        credits_monthly_used:
+          description: The number of API credits used this month
+          title: credits_monthly_used
+          type: integer
+        data_type:
+          description: Specifies the type of data in this response
+          enum:
+          - alpr_results
+          - alpr_group
+          - heartbeat
+          title: data_type
+          type: string
+        epoch_time:
+          description: Epoch time that the image was processed in milliseconds
+          title: epoch_time
+          type: number
+        img_height:
+          description: Height of the input image in pixels
+          title: img_height
+          type: integer
+        img_width:
+          description: Width of the uploaded image in pixels
+          title: img_width
+          type: integer
+        processing_time:
+          $ref: '#/components/schemas/recognizeFile_200_response_processing_time'
+        regions_of_interest:
+          description: Describes the areas analyzed in the input image
+          items:
+            $ref: '#/components/schemas/region_of_interest'
+          title: regions_of_interest
+          type: array
+        results:
+          items:
+            $ref: '#/components/schemas/plate_details'
+          title: results
+          type: array
+        vehicles:
+          description: Describes all vehicles found in the input image
+          items:
+            $ref: '#/components/schemas/vehicles'
+          title: vehicles
+          type: array
+        version:
+          description: API format version
+          title: version
+          type: integer
+      title: recognizeFile_200_response
+      type: object
+    recognizeFile_400_response:
+      example:
+        error: error
+      properties:
+        error:
+          description: Text error message describing the invalid input
+          title: error
+          type: string
+      title: recognizeFile_400_response
+      type: object
+x-original-swagger-version: "2.0"

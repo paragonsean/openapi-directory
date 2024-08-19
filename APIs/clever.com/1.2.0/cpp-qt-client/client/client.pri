@@ -1,0 +1,113 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIBadRequest.h \
+    $${PWD}/OAICredentials.h \
+    $${PWD}/OAIDistrict.h \
+    $${PWD}/OAIDistrictAdmin.h \
+    $${PWD}/OAIDistrictAdminResponse.h \
+    $${PWD}/OAIDistrictAdminsResponse.h \
+    $${PWD}/OAIDistrictResponse.h \
+    $${PWD}/OAIDistrictStatus.h \
+    $${PWD}/OAIDistrictStatusResponse.h \
+    $${PWD}/OAIDistrictStatusResponses.h \
+    $${PWD}/OAIDistrictsResponse.h \
+    $${PWD}/OAIGradeLevelsResponse.h \
+    $${PWD}/OAIInternalError.h \
+    $${PWD}/OAILocation.h \
+    $${PWD}/OAIName.h \
+    $${PWD}/OAINotFound.h \
+    $${PWD}/OAIPrincipal.h \
+    $${PWD}/OAISchool.h \
+    $${PWD}/OAISchoolAdmin.h \
+    $${PWD}/OAISchoolAdminResponse.h \
+    $${PWD}/OAISchoolAdminsResponse.h \
+    $${PWD}/OAISchoolResponse.h \
+    $${PWD}/OAISchoolsResponse.h \
+    $${PWD}/OAISection.h \
+    $${PWD}/OAISectionResponse.h \
+    $${PWD}/OAISectionsResponse.h \
+    $${PWD}/OAIStudent.h \
+    $${PWD}/OAIStudentContact.h \
+    $${PWD}/OAIStudentContactResponse.h \
+    $${PWD}/OAIStudentContactsForStudentResponse.h \
+    $${PWD}/OAIStudentContactsResponse.h \
+    $${PWD}/OAIStudentResponse.h \
+    $${PWD}/OAIStudentsResponse.h \
+    $${PWD}/OAITeacher.h \
+    $${PWD}/OAITeacherResponse.h \
+    $${PWD}/OAITeachersResponse.h \
+    $${PWD}/OAITerm.h \
+# APIs
+    $${PWD}/OAIContactsApi.h \
+    $${PWD}/OAIDistrictAdminsApi.h \
+    $${PWD}/OAIDistrictsApi.h \
+    $${PWD}/OAISchoolAdminsApi.h \
+    $${PWD}/OAISchoolsApi.h \
+    $${PWD}/OAISectionsApi.h \
+    $${PWD}/OAIStudentsApi.h \
+    $${PWD}/OAITeachersApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIBadRequest.cpp \
+    $${PWD}/OAICredentials.cpp \
+    $${PWD}/OAIDistrict.cpp \
+    $${PWD}/OAIDistrictAdmin.cpp \
+    $${PWD}/OAIDistrictAdminResponse.cpp \
+    $${PWD}/OAIDistrictAdminsResponse.cpp \
+    $${PWD}/OAIDistrictResponse.cpp \
+    $${PWD}/OAIDistrictStatus.cpp \
+    $${PWD}/OAIDistrictStatusResponse.cpp \
+    $${PWD}/OAIDistrictStatusResponses.cpp \
+    $${PWD}/OAIDistrictsResponse.cpp \
+    $${PWD}/OAIGradeLevelsResponse.cpp \
+    $${PWD}/OAIInternalError.cpp \
+    $${PWD}/OAILocation.cpp \
+    $${PWD}/OAIName.cpp \
+    $${PWD}/OAINotFound.cpp \
+    $${PWD}/OAIPrincipal.cpp \
+    $${PWD}/OAISchool.cpp \
+    $${PWD}/OAISchoolAdmin.cpp \
+    $${PWD}/OAISchoolAdminResponse.cpp \
+    $${PWD}/OAISchoolAdminsResponse.cpp \
+    $${PWD}/OAISchoolResponse.cpp \
+    $${PWD}/OAISchoolsResponse.cpp \
+    $${PWD}/OAISection.cpp \
+    $${PWD}/OAISectionResponse.cpp \
+    $${PWD}/OAISectionsResponse.cpp \
+    $${PWD}/OAIStudent.cpp \
+    $${PWD}/OAIStudentContact.cpp \
+    $${PWD}/OAIStudentContactResponse.cpp \
+    $${PWD}/OAIStudentContactsForStudentResponse.cpp \
+    $${PWD}/OAIStudentContactsResponse.cpp \
+    $${PWD}/OAIStudentResponse.cpp \
+    $${PWD}/OAIStudentsResponse.cpp \
+    $${PWD}/OAITeacher.cpp \
+    $${PWD}/OAITeacherResponse.cpp \
+    $${PWD}/OAITeachersResponse.cpp \
+    $${PWD}/OAITerm.cpp \
+# APIs
+    $${PWD}/OAIContactsApi.cpp \
+    $${PWD}/OAIDistrictAdminsApi.cpp \
+    $${PWD}/OAIDistrictsApi.cpp \
+    $${PWD}/OAISchoolAdminsApi.cpp \
+    $${PWD}/OAISchoolsApi.cpp \
+    $${PWD}/OAISectionsApi.cpp \
+    $${PWD}/OAIStudentsApi.cpp \
+    $${PWD}/OAITeachersApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

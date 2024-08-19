@@ -1,0 +1,12 @@
+# AwsElementalMediaConvert.CmfcAudioTrackType
+
+## Enum
+
+
+* `AUTO_SELECT_DEFAULT` (value: `"ALTERNATE_AUDIO_AUTO_SELECT_DEFAULT"`)
+
+* `AUTO_SELECT` (value: `"ALTERNATE_AUDIO_AUTO_SELECT"`)
+
+* `NOT_AUTO_SELECT` (value: `"ALTERNATE_AUDIO_NOT_AUTO_SELECT"`)
+
+

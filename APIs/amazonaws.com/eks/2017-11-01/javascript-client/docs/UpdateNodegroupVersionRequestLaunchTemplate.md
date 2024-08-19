@@ -1,0 +1,11 @@
+# AmazonElasticKubernetesService.UpdateNodegroupVersionRequestLaunchTemplate
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**name** | **String** |  | [optional] 
+**version** | **String** |  | [optional] 
+**id** | **String** |  | [optional] 
+
+

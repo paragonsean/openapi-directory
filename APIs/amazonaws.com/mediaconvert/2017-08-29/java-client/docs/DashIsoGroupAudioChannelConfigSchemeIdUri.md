@@ -1,0 +1,13 @@
+
+
+# DashIsoGroupAudioChannelConfigSchemeIdUri
+
+## Enum
+
+
+* `MPEG_CHANNEL_CONFIGURATION` (value: `"MPEG_CHANNEL_CONFIGURATION"`)
+
+* `DOLBY_CHANNEL_CONFIGURATION` (value: `"DOLBY_CHANNEL_CONFIGURATION"`)
+
+
+

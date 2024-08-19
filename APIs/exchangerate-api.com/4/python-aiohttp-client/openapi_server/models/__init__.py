@@ -1,5 +1,0 @@
-# coding: utf-8
-
-# import models into model package
-from openapi_server.models.latest_base_currency_get200_response import LatestBaseCurrencyGet200Response
-from openapi_server.models.latest_base_currency_get404_response import LatestBaseCurrencyGet404Response

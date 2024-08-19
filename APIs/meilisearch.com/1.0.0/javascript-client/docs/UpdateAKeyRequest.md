@@ -1,9 +1,0 @@
-# MeilisearchV11.UpdateAKeyRequest
-
-## Properties
-
-Name | Type | Description | Notes
------------- | ------------- | ------------- | -------------
-**description** | **String** |  | [optional] 
-
-

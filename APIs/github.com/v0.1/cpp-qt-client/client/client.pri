@@ -1,0 +1,87 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIBulkCallResponse.h \
+    $${PWD}/OAICallNotificationParameters.h \
+    $${PWD}/OAICallResponse.h \
+    $${PWD}/OAICancelScheduledHangupResponse.h \
+    $${PWD}/OAICancelScheduledPlayResponse.h \
+    $${PWD}/OAIConferenceDeafResponse.h \
+    $${PWD}/OAIConferenceHangupResponse.h \
+    $${PWD}/OAIConferenceKickResponse.h \
+    $${PWD}/OAIConferenceListMembersResponse.h \
+    $${PWD}/OAIConferenceListResponse.h \
+    $${PWD}/OAIConferenceMuteResponse.h \
+    $${PWD}/OAIConferencePlayResponse.h \
+    $${PWD}/OAIConferenceRecordStartResponse.h \
+    $${PWD}/OAIConferenceRecordStopResponse.h \
+    $${PWD}/OAIConferenceSpeakResponse.h \
+    $${PWD}/OAIConferenceUndeafResponse.h \
+    $${PWD}/OAIConferenceUnmuteResponse.h \
+    $${PWD}/OAIGroupCallResponse.h \
+    $${PWD}/OAIHangupAllCallsResponse.h \
+    $${PWD}/OAIHangupCallResponse.h \
+    $${PWD}/OAIPlayResponse.h \
+    $${PWD}/OAIPlayStopResponse.h \
+    $${PWD}/OAIRecordStartResponse.h \
+    $${PWD}/OAIRecordStopResponse.h \
+    $${PWD}/OAIScheduleHangupResponse.h \
+    $${PWD}/OAISchedulePlayResponse.h \
+    $${PWD}/OAISendDigitsResponse.h \
+    $${PWD}/OAISoundTouchResponse.h \
+    $${PWD}/OAISoundTouchStopResponse.h \
+    $${PWD}/OAITransferCallResponse.h \
+# APIs
+    $${PWD}/OAICallApi.h \
+    $${PWD}/OAIConferenceApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIBulkCallResponse.cpp \
+    $${PWD}/OAICallNotificationParameters.cpp \
+    $${PWD}/OAICallResponse.cpp \
+    $${PWD}/OAICancelScheduledHangupResponse.cpp \
+    $${PWD}/OAICancelScheduledPlayResponse.cpp \
+    $${PWD}/OAIConferenceDeafResponse.cpp \
+    $${PWD}/OAIConferenceHangupResponse.cpp \
+    $${PWD}/OAIConferenceKickResponse.cpp \
+    $${PWD}/OAIConferenceListMembersResponse.cpp \
+    $${PWD}/OAIConferenceListResponse.cpp \
+    $${PWD}/OAIConferenceMuteResponse.cpp \
+    $${PWD}/OAIConferencePlayResponse.cpp \
+    $${PWD}/OAIConferenceRecordStartResponse.cpp \
+    $${PWD}/OAIConferenceRecordStopResponse.cpp \
+    $${PWD}/OAIConferenceSpeakResponse.cpp \
+    $${PWD}/OAIConferenceUndeafResponse.cpp \
+    $${PWD}/OAIConferenceUnmuteResponse.cpp \
+    $${PWD}/OAIGroupCallResponse.cpp \
+    $${PWD}/OAIHangupAllCallsResponse.cpp \
+    $${PWD}/OAIHangupCallResponse.cpp \
+    $${PWD}/OAIPlayResponse.cpp \
+    $${PWD}/OAIPlayStopResponse.cpp \
+    $${PWD}/OAIRecordStartResponse.cpp \
+    $${PWD}/OAIRecordStopResponse.cpp \
+    $${PWD}/OAIScheduleHangupResponse.cpp \
+    $${PWD}/OAISchedulePlayResponse.cpp \
+    $${PWD}/OAISendDigitsResponse.cpp \
+    $${PWD}/OAISoundTouchResponse.cpp \
+    $${PWD}/OAISoundTouchStopResponse.cpp \
+    $${PWD}/OAITransferCallResponse.cpp \
+# APIs
+    $${PWD}/OAICallApi.cpp \
+    $${PWD}/OAIConferenceApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

@@ -1,0 +1,91 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIFormData_f_descending.h \
+    $${PWD}/OAIFormData_f_p_act.h \
+    $${PWD}/OAIFormData_f_p_fea.h \
+    $${PWD}/OAIFormData_f_p_feaa.h \
+    $${PWD}/OAIFormData_f_p_feay.h \
+    $${PWD}/OAIFormData_f_p_health.h \
+    $${PWD}/OAIFormData_f_p_ico.h \
+    $${PWD}/OAIFormData_f_p_iea.h \
+    $${PWD}/OAIFormData_f_p_ieaa.h \
+    $${PWD}/OAIFormData_f_p_ieay.h \
+    $${PWD}/OAIFormData_f_p_mr.h \
+    $${PWD}/OAIFormData_f_p_other.h \
+    $${PWD}/OAIFormData_f_p_owop.h \
+    $${PWD}/OAIFormData_f_p_pn.h \
+    $${PWD}/OAIFormData_f_p_pswvio.h \
+    $${PWD}/OAIFormData_f_p_qis.h \
+    $${PWD}/OAIFormData_f_p_qiv.h \
+    $${PWD}/OAIFormData_f_p_reg.h \
+    $${PWD}/OAIFormData_f_p_sv.h \
+    $${PWD}/OAIFormData_f_p_swtyp.h \
+    $${PWD}/OAIFormData_f_p_systyp.h \
+    $${PWD}/OAIFormData_f_p_ysl.h \
+    $${PWD}/OAIFormData_f_p_ysla.h \
+    $${PWD}/OAIFormData_f_p_ysly.h \
+    $${PWD}/OAIMeta1.h \
+    $${PWD}/OAIMeta3.h \
+    $${PWD}/OAISdw02.h \
+    $${PWD}/OAISdw03.h \
+    $${PWD}/OAISdw04.h \
+    $${PWD}/OAI_sdw_rest_services_get_qid_get_200_response.h \
+    $${PWD}/OAI_sdw_rest_services_get_systems_get_200_response.h \
+    $${PWD}/OAI_sdw_rest_services_metadata_get_200_response.h \
+# APIs
+    $${PWD}/OAIMetadataApi.h \
+    $${PWD}/OAISafeDrinkingWaterApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIFormData_f_descending.cpp \
+    $${PWD}/OAIFormData_f_p_act.cpp \
+    $${PWD}/OAIFormData_f_p_fea.cpp \
+    $${PWD}/OAIFormData_f_p_feaa.cpp \
+    $${PWD}/OAIFormData_f_p_feay.cpp \
+    $${PWD}/OAIFormData_f_p_health.cpp \
+    $${PWD}/OAIFormData_f_p_ico.cpp \
+    $${PWD}/OAIFormData_f_p_iea.cpp \
+    $${PWD}/OAIFormData_f_p_ieaa.cpp \
+    $${PWD}/OAIFormData_f_p_ieay.cpp \
+    $${PWD}/OAIFormData_f_p_mr.cpp \
+    $${PWD}/OAIFormData_f_p_other.cpp \
+    $${PWD}/OAIFormData_f_p_owop.cpp \
+    $${PWD}/OAIFormData_f_p_pn.cpp \
+    $${PWD}/OAIFormData_f_p_pswvio.cpp \
+    $${PWD}/OAIFormData_f_p_qis.cpp \
+    $${PWD}/OAIFormData_f_p_qiv.cpp \
+    $${PWD}/OAIFormData_f_p_reg.cpp \
+    $${PWD}/OAIFormData_f_p_sv.cpp \
+    $${PWD}/OAIFormData_f_p_swtyp.cpp \
+    $${PWD}/OAIFormData_f_p_systyp.cpp \
+    $${PWD}/OAIFormData_f_p_ysl.cpp \
+    $${PWD}/OAIFormData_f_p_ysla.cpp \
+    $${PWD}/OAIFormData_f_p_ysly.cpp \
+    $${PWD}/OAIMeta1.cpp \
+    $${PWD}/OAIMeta3.cpp \
+    $${PWD}/OAISdw02.cpp \
+    $${PWD}/OAISdw03.cpp \
+    $${PWD}/OAISdw04.cpp \
+    $${PWD}/OAI_sdw_rest_services_get_qid_get_200_response.cpp \
+    $${PWD}/OAI_sdw_rest_services_get_systems_get_200_response.cpp \
+    $${PWD}/OAI_sdw_rest_services_metadata_get_200_response.cpp \
+# APIs
+    $${PWD}/OAIMetadataApi.cpp \
+    $${PWD}/OAISafeDrinkingWaterApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

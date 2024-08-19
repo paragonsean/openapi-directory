@@ -1,0 +1,10 @@
+# AmazonInteractiveVideoService.TranscodePreset
+
+## Enum
+
+
+* `HIGHER_BANDWIDTH_DELIVERY` (value: `"HIGHER_BANDWIDTH_DELIVERY"`)
+
+* `CONSTRAINED_BANDWIDTH_DELIVERY` (value: `"CONSTRAINED_BANDWIDTH_DELIVERY"`)
+
+

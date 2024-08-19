@@ -1,6 +1,0 @@
-# coding: utf-8
-
-# import models into model package
-from openapi_server.models.service_tag_information import ServiceTagInformation
-from openapi_server.models.service_tag_information_properties_format import ServiceTagInformationPropertiesFormat
-from openapi_server.models.service_tags_list_result import ServiceTagsListResult

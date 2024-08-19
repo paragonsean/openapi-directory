@@ -1,8 +1,0 @@
-# coding: utf-8
-
-# import models into model package
-from openapi_server.models.tld_legal_agreement import TldLegalAgreement
-from openapi_server.models.tld_legal_agreement_collection import TldLegalAgreementCollection
-from openapi_server.models.top_level_domain import TopLevelDomain
-from openapi_server.models.top_level_domain_agreement_option import TopLevelDomainAgreementOption
-from openapi_server.models.top_level_domain_collection import TopLevelDomainCollection

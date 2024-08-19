@@ -1,0 +1,78 @@
+from typing import List, Dict
+from aiohttp import web
+
+from openapi_server.models.aq_current_group import AQCurrentGroup
+from openapi_server.models.error import Error
+from openapi_server import util
+
+
+async def history_airqualitycity_idcity_id_get(request: web.Request, city_id, key, param_callback=None) -> web.Response:
+    """Returns 72 hours of historical air quality conditions - Given a City ID.
+
+    Returns historical air quality conditions.
+
+    :param city_id: City ID.
+    :type city_id: float
+    :param key: Your registered API key.
+    :type key: str
+    :param param_callback: Wraps return in jsonp callback. Example - callback&#x3D;func
+    :type param_callback: str
+
+    """
+    return web.Response(status=200)
+
+
+async def history_airqualitycitycitycountrycountry_get(request: web.Request, city, country, key, state=None, param_callback=None) -> web.Response:
+    """Returns 72 hours of historical quality conditions - Given City and/or State, Country.
+
+    Returns historical air quality conditions.
+
+    :param city: City search.. Example - &amp;city&#x3D;Raleigh,NC or &amp;city&#x3D;Berlin,DE or city&#x3D;Paris&amp;country&#x3D;FR
+    :type city: str
+    :param country: Country Code (2 letter).
+    :type country: str
+    :param key: Your registered API key.
+    :type key: str
+    :param state: Full name of state.
+    :type state: str
+    :param param_callback: Wraps return in jsonp callback. Example: callback&#x3D;func
+    :type param_callback: str
+
+    """
+    return web.Response(status=200)
+
+
+async def history_airqualitylatlatlonlon_get(request: web.Request, lat, lon, key, param_callback=None) -> web.Response:
+    """Returns 72 hours of historical air quality conditions - Given a lat/lon.
+
+    Returns historical air quality conditions.
+
+    :param lat: Latitude component of location.
+    :type lat: float
+    :param lon: Longitude component of location.
+    :type lon: float
+    :param key: Your registered API key.
+    :type key: str
+    :param param_callback: Wraps return in jsonp callback. Example - callback&#x3D;func
+    :type param_callback: str
+
+    """
+    return web.Response(status=200)
+
+
+async def history_airqualitypostal_codepostal_code_get(request: web.Request, postal_code, key, country=None, param_callback=None) -> web.Response:
+    """Returns 72 hours of historical air quality conditions - Given a Postal Code.
+
+    Returns historical air quality conditions.
+
+    :param postal_code: Postal Code. Example: 28546
+    :type postal_code: int
+    :param key: Your registered API key.
+    :type key: str
+    :param country: Country Code (2 letter).
+    :type country: str
+    :param param_callback: Wraps return in jsonp callback. Example - callback&#x3D;func
+    :type param_callback: str
+
+    """
+    return web.Response(status=200)

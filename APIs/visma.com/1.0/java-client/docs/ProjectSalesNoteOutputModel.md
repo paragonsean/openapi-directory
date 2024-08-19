@@ -1,0 +1,21 @@
+
+
+# ProjectSalesNoteOutputModel
+
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**createdBy** | [**ModelBase**](ModelBase.md) |  |  [optional] |
+|**createdDateTime** | **OffsetDateTime** |  |  [optional] [readonly] |
+|**guid** | **String** |  |  [optional] [readonly] |
+|**isDeleted** | **Boolean** |  |  [optional] |
+|**lastUpdatedBy** | [**ModelBase**](ModelBase.md) |  |  [optional] |
+|**lastUpdatedDateTime** | **OffsetDateTime** |  |  [optional] [readonly] |
+|**note** | **String** |  |  [optional] |
+|**project** | [**ModelBase**](ModelBase.md) |  |  [optional] |
+|**user** | [**ModelBase**](ModelBase.md) |  |  [optional] |
+
+
+

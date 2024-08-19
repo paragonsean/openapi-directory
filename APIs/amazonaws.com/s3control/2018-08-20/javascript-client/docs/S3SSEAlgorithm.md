@@ -1,0 +1,10 @@
+# AwsS3Control.S3SSEAlgorithm
+
+## Enum
+
+
+* `AES256` (value: `"AES256"`)
+
+* `KMS` (value: `"KMS"`)
+
+

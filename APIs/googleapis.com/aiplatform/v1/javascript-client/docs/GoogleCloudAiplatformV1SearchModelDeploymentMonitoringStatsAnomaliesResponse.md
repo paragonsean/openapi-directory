@@ -1,0 +1,10 @@
+# VertexAiApi.GoogleCloudAiplatformV1SearchModelDeploymentMonitoringStatsAnomaliesResponse
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**monitoringStats** | [**[GoogleCloudAiplatformV1ModelMonitoringStatsAnomalies]**](GoogleCloudAiplatformV1ModelMonitoringStatsAnomalies.md) | Stats retrieved for requested objectives. There are at most 1000 ModelMonitoringStatsAnomalies.FeatureHistoricStatsAnomalies.prediction_stats in the response. | [optional] 
+**nextPageToken** | **String** | The page token that can be used by the next JobService.SearchModelDeploymentMonitoringStatsAnomalies call. | [optional] 
+
+

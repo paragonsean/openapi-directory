@@ -1,0 +1,103 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIAssessedDisk.h \
+    $${PWD}/OAIAssessedMachine.h \
+    $${PWD}/OAIAssessedMachineProperties.h \
+    $${PWD}/OAIAssessedMachineResultList.h \
+    $${PWD}/OAIAssessedNetworkAdapter.h \
+    $${PWD}/OAIAssessment.h \
+    $${PWD}/OAIAssessmentOptions.h \
+    $${PWD}/OAIAssessmentOptionsProperties.h \
+    $${PWD}/OAIAssessmentOptionsResultList.h \
+    $${PWD}/OAIAssessmentProperties.h \
+    $${PWD}/OAIAssessmentResultList.h \
+    $${PWD}/OAICloudError.h \
+    $${PWD}/OAICloudErrorBody.h \
+    $${PWD}/OAICollectorAgentProperties.h \
+    $${PWD}/OAICollectorBodyAgentSpnProperties.h \
+    $${PWD}/OAICollectorProperties.h \
+    $${PWD}/OAIDisk.h \
+    $${PWD}/OAIDownloadUrl.h \
+    $${PWD}/OAIGroup.h \
+    $${PWD}/OAIGroupBodyProperties.h \
+    $${PWD}/OAIGroupProperties.h \
+    $${PWD}/OAIGroupResultList.h \
+    $${PWD}/OAIHyperVCollector.h \
+    $${PWD}/OAIHyperVCollectorList.h \
+    $${PWD}/OAIMachine.h \
+    $${PWD}/OAIMachineProperties.h \
+    $${PWD}/OAIMachineResultList.h \
+    $${PWD}/OAINetworkAdapter.h \
+    $${PWD}/OAIOperation.h \
+    $${PWD}/OAIOperationDisplay.h \
+    $${PWD}/OAIOperationResultList.h \
+    $${PWD}/OAIProject.h \
+    $${PWD}/OAIProjectProperties.h \
+    $${PWD}/OAIProjectResultList.h \
+    $${PWD}/OAIUpdateGroupBody.h \
+    $${PWD}/OAIVMwareCollector.h \
+    $${PWD}/OAIVMwareCollectorList.h \
+    $${PWD}/OAIVmFamily.h \
+    $${PWD}/OAIVmUptime.h \
+# APIs
+    $${PWD}/OAIDefaultApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIAssessedDisk.cpp \
+    $${PWD}/OAIAssessedMachine.cpp \
+    $${PWD}/OAIAssessedMachineProperties.cpp \
+    $${PWD}/OAIAssessedMachineResultList.cpp \
+    $${PWD}/OAIAssessedNetworkAdapter.cpp \
+    $${PWD}/OAIAssessment.cpp \
+    $${PWD}/OAIAssessmentOptions.cpp \
+    $${PWD}/OAIAssessmentOptionsProperties.cpp \
+    $${PWD}/OAIAssessmentOptionsResultList.cpp \
+    $${PWD}/OAIAssessmentProperties.cpp \
+    $${PWD}/OAIAssessmentResultList.cpp \
+    $${PWD}/OAICloudError.cpp \
+    $${PWD}/OAICloudErrorBody.cpp \
+    $${PWD}/OAICollectorAgentProperties.cpp \
+    $${PWD}/OAICollectorBodyAgentSpnProperties.cpp \
+    $${PWD}/OAICollectorProperties.cpp \
+    $${PWD}/OAIDisk.cpp \
+    $${PWD}/OAIDownloadUrl.cpp \
+    $${PWD}/OAIGroup.cpp \
+    $${PWD}/OAIGroupBodyProperties.cpp \
+    $${PWD}/OAIGroupProperties.cpp \
+    $${PWD}/OAIGroupResultList.cpp \
+    $${PWD}/OAIHyperVCollector.cpp \
+    $${PWD}/OAIHyperVCollectorList.cpp \
+    $${PWD}/OAIMachine.cpp \
+    $${PWD}/OAIMachineProperties.cpp \
+    $${PWD}/OAIMachineResultList.cpp \
+    $${PWD}/OAINetworkAdapter.cpp \
+    $${PWD}/OAIOperation.cpp \
+    $${PWD}/OAIOperationDisplay.cpp \
+    $${PWD}/OAIOperationResultList.cpp \
+    $${PWD}/OAIProject.cpp \
+    $${PWD}/OAIProjectProperties.cpp \
+    $${PWD}/OAIProjectResultList.cpp \
+    $${PWD}/OAIUpdateGroupBody.cpp \
+    $${PWD}/OAIVMwareCollector.cpp \
+    $${PWD}/OAIVMwareCollectorList.cpp \
+    $${PWD}/OAIVmFamily.cpp \
+    $${PWD}/OAIVmUptime.cpp \
+# APIs
+    $${PWD}/OAIDefaultApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

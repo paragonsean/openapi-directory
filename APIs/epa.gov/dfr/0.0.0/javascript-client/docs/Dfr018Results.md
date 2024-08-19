@@ -1,0 +1,52 @@
+# USEpaEnforcementAndComplianceHistoryOnlineEchoDetailedFacilityReportDfr.Dfr018Results
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**airCompliance** | [**Dfr019**](Dfr019.md) |  | [optional] 
+**airQuality** | [**Dfr024**](Dfr024.md) |  | [optional] 
+**cAEDDocuments** | [**[Dfr018CAEDDocuments]**](Dfr018CAEDDocuments.md) |  | [optional] 
+**cWA3YrCompliance** | [**Dfr025**](Dfr025.md) |  | [optional] 
+**cWA3YrD80D90Counts** | [**Dfr027**](Dfr027.md) |  | [optional] 
+**cWACSCompliance** | [**Dfr031**](Dfr031.md) |  | [optional] 
+**cWAEffluentALRExceedences** | [**Dfr035**](Dfr035.md) |  | [optional] 
+**cWAEffluentALRExceedencesEXP** | [**Dfr035EXP**](Dfr035EXP.md) |  | [optional] 
+**cWAEffluentCompliance** | [**Dfr038**](Dfr038.md) |  | [optional] 
+**cWAEffluentComplianceEXP** | [**Dfr038EXP**](Dfr038EXP.md) |  | [optional] 
+**cWAPSCompliance** | [**Dfr042**](Dfr042.md) |  | [optional] 
+**cWARNCCompliance** | [**Dfr046**](Dfr046.md) |  | [optional] 
+**cWASECompliance** | [**Dfr049**](Dfr049.md) |  | [optional] 
+**caseFormalActions** | [**Dfr052**](Dfr052.md) |  | [optional] 
+**complianceHistory** | [**Dfr057**](Dfr057.md) |  | [optional] 
+**complianceSummary** | [**Dfr059**](Dfr059.md) |  | [optional] 
+**demographics** | [**Dfr061**](Dfr061.md) |  | [optional] 
+**eJScreenIndexes** | [**Dfr018EJScreenIndexes**](Dfr018EJScreenIndexes.md) |  | [optional] 
+**enforcementComplianceSummaries** | [**Dfr062**](Dfr062.md) |  | [optional] 
+**formalActions** | [**Dfr064**](Dfr064.md) |  | [optional] 
+**iCISFormalActions** | [**Dfr066**](Dfr066.md) |  | [optional] 
+**inspectionEnforcementSummary** | [**Dfr068**](Dfr068.md) |  | [optional] 
+**leadAndCopperRule5Yr** | [**Dfr070**](Dfr070.md) |  | [optional] 
+**mapOutput** | [**Dfr073**](Dfr073.md) |  | [optional] 
+**message** | **String** | Field to record messages (typically performance-related) about packet processing | 
+**multipleFRSFacilities** | [**Dfr018MultipleFRSFacilities**](Dfr018MultipleFRSFacilities.md) |  | [optional] 
+**NAICS** | [**Dfr018NAICS**](Dfr018NAICS.md) |  | [optional] 
+**notices** | [**Dfr076**](Dfr076.md) |  | [optional] 
+**permits** | [**[Dfr018Permits]**](Dfr018Permits.md) |  | [optional] 
+**rCRACompliance** | [**Dfr078**](Dfr078.md) |  | [optional] 
+**reports** | [**Dfr018Reports**](Dfr018Reports.md) |  | [optional] 
+**sDWISCompliance** | [**Dfr081**](Dfr081.md) |  | [optional] 
+**SIC** | [**Dfr084**](Dfr084.md) |  | [optional] 
+**sanitarySurveys** | [**Dfr086**](Dfr086.md) |  | [optional] 
+**siteVisits** | [**Dfr090**](Dfr090.md) |  | [optional] 
+**spatialMetadata** | [**Dfr094**](Dfr094.md) |  | [optional] 
+**systemExtractDates** | [**Dfr095**](Dfr095.md) |  | [optional] 
+**tRIHistory** | [**Dfr098**](Dfr098.md) |  | [optional] 
+**tRIReleases** | [**Dfr102**](Dfr102.md) |  | [optional] 
+**tribes** | [**[Dfr105]**](Dfr105.md) |  | [optional] 
+**violationsEnforcementActions** | [**Dfr106**](Dfr106.md) |  | [optional] 
+**waterQuality** | [**Dfr111**](Dfr111.md) |  | [optional] 
+**waterQualityDetails** | [**Dfr111Details**](Dfr111Details.md) |  | [optional] 
+**webFireDocuments** | [**[Dfr018WebFireDocuments]**](Dfr018WebFireDocuments.md) |  | [optional] 
+
+

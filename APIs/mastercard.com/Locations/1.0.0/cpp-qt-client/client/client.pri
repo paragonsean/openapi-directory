@@ -1,0 +1,93 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIAcceptance.h \
+    $${PWD}/OAIAddress.h \
+    $${PWD}/OAIAtm.h \
+    $${PWD}/OAIAtms.h \
+    $${PWD}/OAIAtmsResponse.h \
+    $${PWD}/OAICashback.h \
+    $${PWD}/OAICategories.h \
+    $${PWD}/OAICategoriesResponse.h \
+    $${PWD}/OAICountries.h \
+    $${PWD}/OAICountriesResponse.h \
+    $${PWD}/OAICountry.h \
+    $${PWD}/OAICountrySubdivision.h \
+    $${PWD}/OAICountrySubdivisionResponse.h \
+    $${PWD}/OAICountrySubdivisions.h \
+    $${PWD}/OAIError.h \
+    $${PWD}/OAIErrorResponse.h \
+    $${PWD}/OAIErrors.h \
+    $${PWD}/OAIFeatures.h \
+    $${PWD}/OAILocation.h \
+    $${PWD}/OAILocationType.h \
+    $${PWD}/OAIMerchant.h \
+    $${PWD}/OAIMerchants.h \
+    $${PWD}/OAIMerchantsResponse.h \
+    $${PWD}/OAIPayPass.h \
+    $${PWD}/OAIPoint.h \
+    $${PWD}/OAIProducts.h \
+    $${PWD}/OAIRePower.h \
+    $${PWD}/OAITopup.h \
+# APIs
+    $${PWD}/OAIATMCountriesApi.h \
+    $${PWD}/OAIATMCountrySubdivisionsApi.h \
+    $${PWD}/OAIATMLocationsApi.h \
+    $${PWD}/OAIMerchantCategoriesApi.h \
+    $${PWD}/OAIMerchantCountriesApi.h \
+    $${PWD}/OAIMerchantCountrySubdivisionsApi.h \
+    $${PWD}/OAIMerchantLocationsApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIAcceptance.cpp \
+    $${PWD}/OAIAddress.cpp \
+    $${PWD}/OAIAtm.cpp \
+    $${PWD}/OAIAtms.cpp \
+    $${PWD}/OAIAtmsResponse.cpp \
+    $${PWD}/OAICashback.cpp \
+    $${PWD}/OAICategories.cpp \
+    $${PWD}/OAICategoriesResponse.cpp \
+    $${PWD}/OAICountries.cpp \
+    $${PWD}/OAICountriesResponse.cpp \
+    $${PWD}/OAICountry.cpp \
+    $${PWD}/OAICountrySubdivision.cpp \
+    $${PWD}/OAICountrySubdivisionResponse.cpp \
+    $${PWD}/OAICountrySubdivisions.cpp \
+    $${PWD}/OAIError.cpp \
+    $${PWD}/OAIErrorResponse.cpp \
+    $${PWD}/OAIErrors.cpp \
+    $${PWD}/OAIFeatures.cpp \
+    $${PWD}/OAILocation.cpp \
+    $${PWD}/OAILocationType.cpp \
+    $${PWD}/OAIMerchant.cpp \
+    $${PWD}/OAIMerchants.cpp \
+    $${PWD}/OAIMerchantsResponse.cpp \
+    $${PWD}/OAIPayPass.cpp \
+    $${PWD}/OAIPoint.cpp \
+    $${PWD}/OAIProducts.cpp \
+    $${PWD}/OAIRePower.cpp \
+    $${PWD}/OAITopup.cpp \
+# APIs
+    $${PWD}/OAIATMCountriesApi.cpp \
+    $${PWD}/OAIATMCountrySubdivisionsApi.cpp \
+    $${PWD}/OAIATMLocationsApi.cpp \
+    $${PWD}/OAIMerchantCategoriesApi.cpp \
+    $${PWD}/OAIMerchantCountriesApi.cpp \
+    $${PWD}/OAIMerchantCountrySubdivisionsApi.cpp \
+    $${PWD}/OAIMerchantLocationsApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

@@ -1,0 +1,109 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIAuthenticationMethod.h \
+    $${PWD}/OAICreateSuiteDefinitionRequest.h \
+    $${PWD}/OAICreateSuiteDefinitionRequest_suiteDefinitionConfiguration.h \
+    $${PWD}/OAICreateSuiteDefinitionResponse.h \
+    $${PWD}/OAICreateSuiteDefinition_request.h \
+    $${PWD}/OAICreateSuiteDefinition_request_suiteDefinitionConfiguration.h \
+    $${PWD}/OAIDeviceUnderTest.h \
+    $${PWD}/OAIGetEndpointResponse.h \
+    $${PWD}/OAIGetSuiteDefinitionResponse.h \
+    $${PWD}/OAIGetSuiteDefinitionResponse_suiteDefinitionConfiguration.h \
+    $${PWD}/OAIGetSuiteRunReportResponse.h \
+    $${PWD}/OAIGetSuiteRunResponse.h \
+    $${PWD}/OAIGetSuiteRunResponse_suiteRunConfiguration.h \
+    $${PWD}/OAIGetSuiteRunResponse_testResult.h \
+    $${PWD}/OAIGroupResult.h \
+    $${PWD}/OAIListSuiteDefinitionsResponse.h \
+    $${PWD}/OAIListSuiteRunsResponse.h \
+    $${PWD}/OAIListTagsForResourceResponse.h \
+    $${PWD}/OAIProtocol.h \
+    $${PWD}/OAIStartSuiteRunRequest.h \
+    $${PWD}/OAIStartSuiteRunRequest_suiteRunConfiguration.h \
+    $${PWD}/OAIStartSuiteRunResponse.h \
+    $${PWD}/OAIStartSuiteRun_request.h \
+    $${PWD}/OAIStartSuiteRun_request_suiteRunConfiguration.h \
+    $${PWD}/OAIStartSuiteRun_request_suiteRunConfiguration_primaryDevice.h \
+    $${PWD}/OAIStatus.h \
+    $${PWD}/OAISuiteDefinitionConfiguration.h \
+    $${PWD}/OAISuiteDefinitionInformation.h \
+    $${PWD}/OAISuiteRunConfiguration.h \
+    $${PWD}/OAISuiteRunInformation.h \
+    $${PWD}/OAISuiteRunStatus.h \
+    $${PWD}/OAITagResourceRequest.h \
+    $${PWD}/OAITagResource_request.h \
+    $${PWD}/OAITestCaseRun.h \
+    $${PWD}/OAITestCaseScenario.h \
+    $${PWD}/OAITestCaseScenarioStatus.h \
+    $${PWD}/OAITestCaseScenarioType.h \
+    $${PWD}/OAITestResult.h \
+    $${PWD}/OAIUpdateSuiteDefinitionRequest.h \
+    $${PWD}/OAIUpdateSuiteDefinitionRequest_suiteDefinitionConfiguration.h \
+    $${PWD}/OAIUpdateSuiteDefinitionResponse.h \
+    $${PWD}/OAIUpdateSuiteDefinition_request.h \
+# APIs
+    $${PWD}/OAIDefaultApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIAuthenticationMethod.cpp \
+    $${PWD}/OAICreateSuiteDefinitionRequest.cpp \
+    $${PWD}/OAICreateSuiteDefinitionRequest_suiteDefinitionConfiguration.cpp \
+    $${PWD}/OAICreateSuiteDefinitionResponse.cpp \
+    $${PWD}/OAICreateSuiteDefinition_request.cpp \
+    $${PWD}/OAICreateSuiteDefinition_request_suiteDefinitionConfiguration.cpp \
+    $${PWD}/OAIDeviceUnderTest.cpp \
+    $${PWD}/OAIGetEndpointResponse.cpp \
+    $${PWD}/OAIGetSuiteDefinitionResponse.cpp \
+    $${PWD}/OAIGetSuiteDefinitionResponse_suiteDefinitionConfiguration.cpp \
+    $${PWD}/OAIGetSuiteRunReportResponse.cpp \
+    $${PWD}/OAIGetSuiteRunResponse.cpp \
+    $${PWD}/OAIGetSuiteRunResponse_suiteRunConfiguration.cpp \
+    $${PWD}/OAIGetSuiteRunResponse_testResult.cpp \
+    $${PWD}/OAIGroupResult.cpp \
+    $${PWD}/OAIListSuiteDefinitionsResponse.cpp \
+    $${PWD}/OAIListSuiteRunsResponse.cpp \
+    $${PWD}/OAIListTagsForResourceResponse.cpp \
+    $${PWD}/OAIProtocol.cpp \
+    $${PWD}/OAIStartSuiteRunRequest.cpp \
+    $${PWD}/OAIStartSuiteRunRequest_suiteRunConfiguration.cpp \
+    $${PWD}/OAIStartSuiteRunResponse.cpp \
+    $${PWD}/OAIStartSuiteRun_request.cpp \
+    $${PWD}/OAIStartSuiteRun_request_suiteRunConfiguration.cpp \
+    $${PWD}/OAIStartSuiteRun_request_suiteRunConfiguration_primaryDevice.cpp \
+    $${PWD}/OAIStatus.cpp \
+    $${PWD}/OAISuiteDefinitionConfiguration.cpp \
+    $${PWD}/OAISuiteDefinitionInformation.cpp \
+    $${PWD}/OAISuiteRunConfiguration.cpp \
+    $${PWD}/OAISuiteRunInformation.cpp \
+    $${PWD}/OAISuiteRunStatus.cpp \
+    $${PWD}/OAITagResourceRequest.cpp \
+    $${PWD}/OAITagResource_request.cpp \
+    $${PWD}/OAITestCaseRun.cpp \
+    $${PWD}/OAITestCaseScenario.cpp \
+    $${PWD}/OAITestCaseScenarioStatus.cpp \
+    $${PWD}/OAITestCaseScenarioType.cpp \
+    $${PWD}/OAITestResult.cpp \
+    $${PWD}/OAIUpdateSuiteDefinitionRequest.cpp \
+    $${PWD}/OAIUpdateSuiteDefinitionRequest_suiteDefinitionConfiguration.cpp \
+    $${PWD}/OAIUpdateSuiteDefinitionResponse.cpp \
+    $${PWD}/OAIUpdateSuiteDefinition_request.cpp \
+# APIs
+    $${PWD}/OAIDefaultApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

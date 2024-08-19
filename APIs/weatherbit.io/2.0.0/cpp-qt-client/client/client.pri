@@ -1,0 +1,105 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIAQCurrent.h \
+    $${PWD}/OAIAQCurrentGroup.h \
+    $${PWD}/OAIAQHour.h \
+    $${PWD}/OAIAQHourly.h \
+    $${PWD}/OAICurrentObs.h \
+    $${PWD}/OAICurrentObsGroup.h \
+    $${PWD}/OAICurrentObs_weather.h \
+    $${PWD}/OAIEnergyObs.h \
+    $${PWD}/OAIEnergyObsGroup.h \
+    $${PWD}/OAIEnergyObsGroupForecast.h \
+    $${PWD}/OAIEnergyObsSeries.h \
+    $${PWD}/OAIError.h \
+    $${PWD}/OAIForecast.h \
+    $${PWD}/OAIForecastDay.h \
+    $${PWD}/OAIForecastHour.h \
+    $${PWD}/OAIForecastHour_weather.h \
+    $${PWD}/OAIForecastHourly.h \
+    $${PWD}/OAIForecast_weather.h \
+    $${PWD}/OAIGeoIPObj.h \
+    $${PWD}/OAIHistory.h \
+    $${PWD}/OAIHistoryDay.h \
+    $${PWD}/OAIHistoryDayObj.h \
+    $${PWD}/OAIHistoryObj.h \
+    $${PWD}/OAIHistoryObj_weather.h \
+    $${PWD}/OAIHistorySubhourly.h \
+    $${PWD}/OAIHistorySubhourlyObj.h \
+    $${PWD}/OAIWeatherAlert.h \
+    $${PWD}/OAIWeatherAlertGroup.h \
+# APIs
+    $${PWD}/OAIAirQualityForecastApi.h \
+    $${PWD}/OAIAlertsApi.h \
+    $${PWD}/OAIBulkDownloadsApi.h \
+    $${PWD}/OAIClass16DayDailyForecastApi.h \
+    $${PWD}/OAIClass240HourHourlyForecastApi.h \
+    $${PWD}/OAICurrentAirQualityApi.h \
+    $${PWD}/OAICurrentWeatherDataApi.h \
+    $${PWD}/OAIDailyHistoricalWeatherDataApi.h \
+    $${PWD}/OAIForecastDegreeDayAPIApi.h \
+    $${PWD}/OAIHistoricalAirQualityApi.h \
+    $${PWD}/OAIHistoricalDegreeDayAPIApi.h \
+    $${PWD}/OAIHourlyHistoricalWeatherDataApi.h \
+    $${PWD}/OAISubHourlyHistoricalWeatherDataApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIAQCurrent.cpp \
+    $${PWD}/OAIAQCurrentGroup.cpp \
+    $${PWD}/OAIAQHour.cpp \
+    $${PWD}/OAIAQHourly.cpp \
+    $${PWD}/OAICurrentObs.cpp \
+    $${PWD}/OAICurrentObsGroup.cpp \
+    $${PWD}/OAICurrentObs_weather.cpp \
+    $${PWD}/OAIEnergyObs.cpp \
+    $${PWD}/OAIEnergyObsGroup.cpp \
+    $${PWD}/OAIEnergyObsGroupForecast.cpp \
+    $${PWD}/OAIEnergyObsSeries.cpp \
+    $${PWD}/OAIError.cpp \
+    $${PWD}/OAIForecast.cpp \
+    $${PWD}/OAIForecastDay.cpp \
+    $${PWD}/OAIForecastHour.cpp \
+    $${PWD}/OAIForecastHour_weather.cpp \
+    $${PWD}/OAIForecastHourly.cpp \
+    $${PWD}/OAIForecast_weather.cpp \
+    $${PWD}/OAIGeoIPObj.cpp \
+    $${PWD}/OAIHistory.cpp \
+    $${PWD}/OAIHistoryDay.cpp \
+    $${PWD}/OAIHistoryDayObj.cpp \
+    $${PWD}/OAIHistoryObj.cpp \
+    $${PWD}/OAIHistoryObj_weather.cpp \
+    $${PWD}/OAIHistorySubhourly.cpp \
+    $${PWD}/OAIHistorySubhourlyObj.cpp \
+    $${PWD}/OAIWeatherAlert.cpp \
+    $${PWD}/OAIWeatherAlertGroup.cpp \
+# APIs
+    $${PWD}/OAIAirQualityForecastApi.cpp \
+    $${PWD}/OAIAlertsApi.cpp \
+    $${PWD}/OAIBulkDownloadsApi.cpp \
+    $${PWD}/OAIClass16DayDailyForecastApi.cpp \
+    $${PWD}/OAIClass240HourHourlyForecastApi.cpp \
+    $${PWD}/OAICurrentAirQualityApi.cpp \
+    $${PWD}/OAICurrentWeatherDataApi.cpp \
+    $${PWD}/OAIDailyHistoricalWeatherDataApi.cpp \
+    $${PWD}/OAIForecastDegreeDayAPIApi.cpp \
+    $${PWD}/OAIHistoricalAirQualityApi.cpp \
+    $${PWD}/OAIHistoricalDegreeDayAPIApi.cpp \
+    $${PWD}/OAIHourlyHistoricalWeatherDataApi.cpp \
+    $${PWD}/OAISubHourlyHistoricalWeatherDataApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

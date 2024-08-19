@@ -1,0 +1,79 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIAuthentication.h \
+    $${PWD}/OAICrawledUrl.h \
+    $${PWD}/OAICustomAccount.h \
+    $${PWD}/OAIFinding.h \
+    $${PWD}/OAIFindingTypeStats.h \
+    $${PWD}/OAIForm.h \
+    $${PWD}/OAIGoogleAccount.h \
+    $${PWD}/OAIHeader.h \
+    $${PWD}/OAIIapCredential.h \
+    $${PWD}/OAIIapTestServiceAccountInfo.h \
+    $${PWD}/OAIListCrawledUrlsResponse.h \
+    $${PWD}/OAIListFindingTypeStatsResponse.h \
+    $${PWD}/OAIListFindingsResponse.h \
+    $${PWD}/OAIListScanConfigsResponse.h \
+    $${PWD}/OAIListScanRunsResponse.h \
+    $${PWD}/OAIOutdatedLibrary.h \
+    $${PWD}/OAIScanConfig.h \
+    $${PWD}/OAIScanConfigError.h \
+    $${PWD}/OAIScanRun.h \
+    $${PWD}/OAIScanRunErrorTrace.h \
+    $${PWD}/OAIScanRunWarningTrace.h \
+    $${PWD}/OAISchedule.h \
+    $${PWD}/OAIViolatingResource.h \
+    $${PWD}/OAIVulnerableHeaders.h \
+    $${PWD}/OAIVulnerableParameters.h \
+    $${PWD}/OAIXss.h \
+    $${PWD}/OAIXxe.h \
+# APIs
+    $${PWD}/OAIProjectsApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIAuthentication.cpp \
+    $${PWD}/OAICrawledUrl.cpp \
+    $${PWD}/OAICustomAccount.cpp \
+    $${PWD}/OAIFinding.cpp \
+    $${PWD}/OAIFindingTypeStats.cpp \
+    $${PWD}/OAIForm.cpp \
+    $${PWD}/OAIGoogleAccount.cpp \
+    $${PWD}/OAIHeader.cpp \
+    $${PWD}/OAIIapCredential.cpp \
+    $${PWD}/OAIIapTestServiceAccountInfo.cpp \
+    $${PWD}/OAIListCrawledUrlsResponse.cpp \
+    $${PWD}/OAIListFindingTypeStatsResponse.cpp \
+    $${PWD}/OAIListFindingsResponse.cpp \
+    $${PWD}/OAIListScanConfigsResponse.cpp \
+    $${PWD}/OAIListScanRunsResponse.cpp \
+    $${PWD}/OAIOutdatedLibrary.cpp \
+    $${PWD}/OAIScanConfig.cpp \
+    $${PWD}/OAIScanConfigError.cpp \
+    $${PWD}/OAIScanRun.cpp \
+    $${PWD}/OAIScanRunErrorTrace.cpp \
+    $${PWD}/OAIScanRunWarningTrace.cpp \
+    $${PWD}/OAISchedule.cpp \
+    $${PWD}/OAIViolatingResource.cpp \
+    $${PWD}/OAIVulnerableHeaders.cpp \
+    $${PWD}/OAIVulnerableParameters.cpp \
+    $${PWD}/OAIXss.cpp \
+    $${PWD}/OAIXxe.cpp \
+# APIs
+    $${PWD}/OAIProjectsApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

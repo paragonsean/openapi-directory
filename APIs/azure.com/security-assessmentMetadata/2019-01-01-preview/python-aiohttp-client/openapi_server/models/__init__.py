@@ -1,8 +1,0 @@
-# coding: utf-8
-
-# import models into model package
-from openapi_server.models.assessments_metadata_list_default_response import AssessmentsMetadataListDefaultResponse
-from openapi_server.models.assessments_metadata_list_default_response_error import AssessmentsMetadataListDefaultResponseError
-from openapi_server.models.security_assessment_metadata import SecurityAssessmentMetadata
-from openapi_server.models.security_assessment_metadata_list import SecurityAssessmentMetadataList
-from openapi_server.models.security_assessment_metadata_properties import SecurityAssessmentMetadataProperties

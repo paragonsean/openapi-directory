@@ -1,0 +1,23 @@
+# coding: utf-8
+
+# import models into model package
+from openapi_server.models.feedback import Feedback
+from openapi_server.models.get_all_posts200_response import GetAllPosts200Response
+from openapi_server.models.get_all_posts_changes200_response import GetAllPostsChanges200Response
+from openapi_server.models.get_all_posts_changes200_response_changes_inner import GetAllPostsChanges200ResponseChangesInner
+from openapi_server.models.get_post_and_related_data200_response import GetPostAndRelatedData200Response
+from openapi_server.models.get_posts200_response import GetPosts200Response
+from openapi_server.models.get_posts_by_ids200_response import GetPostsByIds200Response
+from openapi_server.models.group import Group
+from openapi_server.models.group_country import GroupCountry
+from openapi_server.models.group_membership import GroupMembership
+from openapi_server.models.group_membership_questionnaire import GroupMembershipQuestionnaire
+from openapi_server.models.group_region import GroupRegion
+from openapi_server.models.photo import Photo
+from openapi_server.models.photo_images_inner import PhotoImagesInner
+from openapi_server.models.post import Post
+from openapi_server.models.post_search_result import PostSearchResult
+from openapi_server.models.search_groups200_response import SearchGroups200Response
+from openapi_server.models.search_posts200_response import SearchPosts200Response
+from openapi_server.models.user import User
+from openapi_server.models.user_feedback import UserFeedback

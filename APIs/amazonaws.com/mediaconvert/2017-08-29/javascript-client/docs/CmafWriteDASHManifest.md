@@ -1,0 +1,10 @@
+# AwsElementalMediaConvert.CmafWriteDASHManifest
+
+## Enum
+
+
+* `DISABLED` (value: `"DISABLED"`)
+
+* `ENABLED` (value: `"ENABLED"`)
+
+

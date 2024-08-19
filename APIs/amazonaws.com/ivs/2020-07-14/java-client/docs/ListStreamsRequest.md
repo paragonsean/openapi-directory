@@ -1,0 +1,15 @@
+
+
+# ListStreamsRequest
+
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**filterBy** | [**ListStreamsRequestFilterBy**](ListStreamsRequestFilterBy.md) |  |  [optional] |
+|**maxResults** | **Integer** | Maximum number of streams to return. Default: 100. |  [optional] |
+|**nextToken** | **String** | The first stream to retrieve. This is used for pagination; see the &lt;code&gt;nextToken&lt;/code&gt; response field. |  [optional] |
+
+
+

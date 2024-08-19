@@ -1,0 +1,10 @@
+# AmazonAppStream.StackErrorCode
+
+## Enum
+
+
+* `STORAGE_CONNECTOR_ERROR` (value: `"STORAGE_CONNECTOR_ERROR"`)
+
+* `INTERNAL_SERVICE_ERROR` (value: `"INTERNAL_SERVICE_ERROR"`)
+
+

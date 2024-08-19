@@ -1,0 +1,9 @@
+# Ecwid.Swagger405
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**description** | **String** |  | [optional] 
+
+

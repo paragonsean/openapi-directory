@@ -1,0 +1,18 @@
+
+
+# ScopedResource
+
+A private link scoped resource
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**properties** | [**ScopedResourceProperties**](ScopedResourceProperties.md) |  |  [optional] |
+|**id** | **String** | Resource ID. |  [optional] [readonly] |
+|**name** | **String** | Resource name. |  [optional] [readonly] |
+|**tags** | **Map&lt;String, String&gt;** | Resource tags |  [optional] |
+|**type** | **String** | Resource type. |  [optional] [readonly] |
+
+
+

@@ -1,0 +1,17 @@
+# SnykApi.ProjectSettings
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**autoDepUpgradeEnabled** | **Boolean** | If set to &#x60;true&#x60;, Snyk will raise dependency upgrade PRs automatically. | [optional] 
+**autoDepUpgradeIgnoredDependencies** | **[Object]** | An array of comma-separated strings with names of dependencies you wish Snyk to ignore to upgrade. | [optional] 
+**autoDepUpgradeLimit** | **Number** | The limit on auto dependency upgrade PRs. | [optional] 
+**autoDepUpgradeMinAge** | **Number** | The age (in days) that an automatic dependency check is valid for | [optional] 
+**autoRemediationPrs** | [**AutoRemediationPrs**](AutoRemediationPrs.md) |  | [optional] 
+**pullRequestAssignment** | [**PullRequestAssignment**](PullRequestAssignment.md) |  | [optional] 
+**pullRequestFailOnAnyVulns** | **Boolean** | If set to &#x60;true&#x60;, fail Snyk Test if the repo has any vulnerabilities. Otherwise, fail only when the PR is adding a vulnerable dependency. | [optional] 
+**pullRequestFailOnlyForHighSeverity** | **Boolean** | If set to &#x60;true&#x60;, fail Snyk Test only for high and critical severity vulnerabilities | [optional] 
+**pullRequestTestEnabled** | **Boolean** | If set to &#x60;true&#x60;, Snyk Test checks PRs for vulnerabilities.:cq | [optional] 
+
+

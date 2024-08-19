@@ -1,8 +1,0 @@
-# coding: utf-8
-
-# import models into model package
-from openapi_server.models.security_contact import SecurityContact
-from openapi_server.models.security_contact_list import SecurityContactList
-from openapi_server.models.security_contact_properties import SecurityContactProperties
-from openapi_server.models.security_contacts_list_default_response import SecurityContactsListDefaultResponse
-from openapi_server.models.security_contacts_list_default_response_error import SecurityContactsListDefaultResponseError

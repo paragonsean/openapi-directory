@@ -1,0 +1,35 @@
+# coding: utf-8
+
+# import models into model package
+from openapi_server.models.form_data_f_descending import FormDataFDescending
+from openapi_server.models.form_data_fp_act import FormDataFPAct
+from openapi_server.models.form_data_fp_fea import FormDataFPFea
+from openapi_server.models.form_data_fp_feaa import FormDataFPFeaa
+from openapi_server.models.form_data_fp_feay import FormDataFPFeay
+from openapi_server.models.form_data_fp_health import FormDataFPHealth
+from openapi_server.models.form_data_fp_ico import FormDataFPIco
+from openapi_server.models.form_data_fp_iea import FormDataFPIea
+from openapi_server.models.form_data_fp_ieaa import FormDataFPIeaa
+from openapi_server.models.form_data_fp_ieay import FormDataFPIeay
+from openapi_server.models.form_data_fpmr import FormDataFPMr
+from openapi_server.models.form_data_fp_other import FormDataFPOther
+from openapi_server.models.form_data_fp_owop import FormDataFPOwop
+from openapi_server.models.form_data_fppn import FormDataFPPn
+from openapi_server.models.form_data_fp_pswvio import FormDataFPPswvio
+from openapi_server.models.form_data_fp_qis import FormDataFPQis
+from openapi_server.models.form_data_fp_qiv import FormDataFPQiv
+from openapi_server.models.form_data_fp_reg import FormDataFPReg
+from openapi_server.models.form_data_fpsv import FormDataFPSv
+from openapi_server.models.form_data_fp_swtyp import FormDataFPSwtyp
+from openapi_server.models.form_data_fp_systyp import FormDataFPSystyp
+from openapi_server.models.form_data_fp_ysl import FormDataFPYsl
+from openapi_server.models.form_data_fp_ysla import FormDataFPYsla
+from openapi_server.models.form_data_fp_ysly import FormDataFPYsly
+from openapi_server.models.meta1 import Meta1
+from openapi_server.models.meta3 import Meta3
+from openapi_server.models.sdw02 import Sdw02
+from openapi_server.models.sdw03 import Sdw03
+from openapi_server.models.sdw04 import Sdw04
+from openapi_server.models.sdw_rest_services_get_qid_get200_response import SdwRestServicesGetQidGet200Response
+from openapi_server.models.sdw_rest_services_get_systems_get200_response import SdwRestServicesGetSystemsGet200Response
+from openapi_server.models.sdw_rest_services_metadata_get200_response import SdwRestServicesMetadataGet200Response
