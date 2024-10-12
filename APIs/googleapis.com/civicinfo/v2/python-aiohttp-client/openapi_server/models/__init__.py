@@ -1,0 +1,24 @@
+# coding: utf-8
+
+# import models into model package
+from openapi_server.models.administration_region import AdministrationRegion
+from openapi_server.models.administrative_body import AdministrativeBody
+from openapi_server.models.candidate import Candidate
+from openapi_server.models.channel import Channel
+from openapi_server.models.contest import Contest
+from openapi_server.models.division_search_response import DivisionSearchResponse
+from openapi_server.models.division_search_result import DivisionSearchResult
+from openapi_server.models.election import Election
+from openapi_server.models.election_official import ElectionOfficial
+from openapi_server.models.elections_query_response import ElectionsQueryResponse
+from openapi_server.models.electoral_district import ElectoralDistrict
+from openapi_server.models.geographic_division import GeographicDivision
+from openapi_server.models.office import Office
+from openapi_server.models.official import Official
+from openapi_server.models.polling_location import PollingLocation
+from openapi_server.models.precinct import Precinct
+from openapi_server.models.representative_info_data import RepresentativeInfoData
+from openapi_server.models.representative_info_response import RepresentativeInfoResponse
+from openapi_server.models.simple_address_type import SimpleAddressType
+from openapi_server.models.source import Source
+from openapi_server.models.voter_info_response import VoterInfoResponse

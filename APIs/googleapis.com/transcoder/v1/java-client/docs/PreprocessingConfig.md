@@ -1,0 +1,20 @@
+
+
+# PreprocessingConfig
+
+Preprocessing configurations.
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**audio** | [**Audio**](Audio.md) |  |  [optional] |
+|**color** | [**Color**](Color.md) |  |  [optional] |
+|**crop** | [**Crop**](Crop.md) |  |  [optional] |
+|**deblock** | [**Deblock**](Deblock.md) |  |  [optional] |
+|**deinterlace** | [**Deinterlace**](Deinterlace.md) |  |  [optional] |
+|**denoise** | [**Denoise**](Denoise.md) |  |  [optional] |
+|**pad** | [**Pad**](Pad.md) |  |  [optional] |
+
+
+

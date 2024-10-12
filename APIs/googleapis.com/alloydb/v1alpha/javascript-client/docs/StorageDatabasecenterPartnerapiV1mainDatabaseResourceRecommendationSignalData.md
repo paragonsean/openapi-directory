@@ -1,0 +1,164 @@
+# AlloyDbApi.StorageDatabasecenterPartnerapiV1mainDatabaseResourceRecommendationSignalData
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**additionalMetadata** | **{String: Object}** | Optional. Any other additional metadata specific to recommendation | [optional] 
+**lastRefreshTime** | **String** | Required. last time recommendationw as refreshed | [optional] 
+**recommendationState** | **String** | Required. Recommendation state | [optional] 
+**recommender** | **String** | Required. Name of recommendation. Examples: organizations/1234/locations/us-central1/recommenders/google.cloudsql.instance.PerformanceRecommender/recommendations/9876 | [optional] 
+**recommenderId** | **String** | Required. ID of recommender. Examples: \&quot;google.cloudsql.instance.PerformanceRecommender\&quot; | [optional] 
+**recommenderSubtype** | **String** | Required. Contains an identifier for a subtype of recommendations produced for the same recommender. Subtype is a function of content and impact, meaning a new subtype might be added when significant changes to &#x60;content&#x60; or &#x60;primary_impact.category&#x60; are introduced. See the Recommenders section to see a list of subtypes for a given Recommender. Examples: For recommender &#x3D; \&quot;google.cloudsql.instance.PerformanceRecommender\&quot;, recommender_subtype can be \&quot;MYSQL_HIGH_NUMBER_OF_OPEN_TABLES_BEST_PRACTICE\&quot;/\&quot;POSTGRES_HIGH_TRANSACTION_ID_UTILIZATION_BEST_PRACTICE\&quot; | [optional] 
+**resourceName** | **String** | Required. Database resource name associated with the signal. Resource name to follow CAIS resource_name format as noted here go/condor-common-datamodel | [optional] 
+**signalType** | **String** | Required. Type of signal, for example, &#x60;SIGNAL_TYPE_IDLE&#x60;, &#x60;SIGNAL_TYPE_HIGH_NUMBER_OF_TABLES&#x60;, etc. | [optional] 
+
+
+
+## Enum: RecommendationStateEnum
+
+
+* `UNSPECIFIED` (value: `"UNSPECIFIED"`)
+
+* `ACTIVE` (value: `"ACTIVE"`)
+
+* `CLAIMED` (value: `"CLAIMED"`)
+
+* `SUCCEEDED` (value: `"SUCCEEDED"`)
+
+* `FAILED` (value: `"FAILED"`)
+
+* `DISMISSED` (value: `"DISMISSED"`)
+
+
+
+
+
+## Enum: SignalTypeEnum
+
+
+* `UNSPECIFIED` (value: `"SIGNAL_TYPE_UNSPECIFIED"`)
+
+* `NOT_PROTECTED_BY_AUTOMATIC_FAILOVER` (value: `"SIGNAL_TYPE_NOT_PROTECTED_BY_AUTOMATIC_FAILOVER"`)
+
+* `GROUP_NOT_REPLICATING_ACROSS_REGIONS` (value: `"SIGNAL_TYPE_GROUP_NOT_REPLICATING_ACROSS_REGIONS"`)
+
+* `NOT_AVAILABLE_IN_MULTIPLE_ZONES` (value: `"SIGNAL_TYPE_NOT_AVAILABLE_IN_MULTIPLE_ZONES"`)
+
+* `NOT_AVAILABLE_IN_MULTIPLE_REGIONS` (value: `"SIGNAL_TYPE_NOT_AVAILABLE_IN_MULTIPLE_REGIONS"`)
+
+* `NO_PROMOTABLE_REPLICA` (value: `"SIGNAL_TYPE_NO_PROMOTABLE_REPLICA"`)
+
+* `NO_AUTOMATED_BACKUP_POLICY` (value: `"SIGNAL_TYPE_NO_AUTOMATED_BACKUP_POLICY"`)
+
+* `SHORT_BACKUP_RETENTION` (value: `"SIGNAL_TYPE_SHORT_BACKUP_RETENTION"`)
+
+* `LAST_BACKUP_FAILED` (value: `"SIGNAL_TYPE_LAST_BACKUP_FAILED"`)
+
+* `LAST_BACKUP_OLD` (value: `"SIGNAL_TYPE_LAST_BACKUP_OLD"`)
+
+* `VIOLATES_CIS_GCP_FOUNDATION_2_0` (value: `"SIGNAL_TYPE_VIOLATES_CIS_GCP_FOUNDATION_2_0"`)
+
+* `VIOLATES_CIS_GCP_FOUNDATION_1_3` (value: `"SIGNAL_TYPE_VIOLATES_CIS_GCP_FOUNDATION_1_3"`)
+
+* `VIOLATES_CIS_GCP_FOUNDATION_1_2` (value: `"SIGNAL_TYPE_VIOLATES_CIS_GCP_FOUNDATION_1_2"`)
+
+* `VIOLATES_CIS_GCP_FOUNDATION_1_1` (value: `"SIGNAL_TYPE_VIOLATES_CIS_GCP_FOUNDATION_1_1"`)
+
+* `VIOLATES_CIS_GCP_FOUNDATION_1_0` (value: `"SIGNAL_TYPE_VIOLATES_CIS_GCP_FOUNDATION_1_0"`)
+
+* `VIOLATES_NIST_800_53` (value: `"SIGNAL_TYPE_VIOLATES_NIST_800_53"`)
+
+* `VIOLATES_ISO_27001` (value: `"SIGNAL_TYPE_VIOLATES_ISO_27001"`)
+
+* `VIOLATES_PCI_DSS_V3_2_1` (value: `"SIGNAL_TYPE_VIOLATES_PCI_DSS_V3_2_1"`)
+
+* `LOGS_NOT_OPTIMIZED_FOR_TROUBLESHOOTING` (value: `"SIGNAL_TYPE_LOGS_NOT_OPTIMIZED_FOR_TROUBLESHOOTING"`)
+
+* `QUERY_DURATIONS_NOT_LOGGED` (value: `"SIGNAL_TYPE_QUERY_DURATIONS_NOT_LOGGED"`)
+
+* `VERBOSE_ERROR_LOGGING` (value: `"SIGNAL_TYPE_VERBOSE_ERROR_LOGGING"`)
+
+* `QUERY_LOCK_WAITS_NOT_LOGGED` (value: `"SIGNAL_TYPE_QUERY_LOCK_WAITS_NOT_LOGGED"`)
+
+* `LOGGING_MOST_ERRORS` (value: `"SIGNAL_TYPE_LOGGING_MOST_ERRORS"`)
+
+* `LOGGING_ONLY_CRITICAL_ERRORS` (value: `"SIGNAL_TYPE_LOGGING_ONLY_CRITICAL_ERRORS"`)
+
+* `MINIMAL_ERROR_LOGGING` (value: `"SIGNAL_TYPE_MINIMAL_ERROR_LOGGING"`)
+
+* `QUERY_STATISTICS_LOGGED` (value: `"SIGNAL_TYPE_QUERY_STATISTICS_LOGGED"`)
+
+* `EXCESSIVE_LOGGING_OF_CLIENT_HOSTNAME` (value: `"SIGNAL_TYPE_EXCESSIVE_LOGGING_OF_CLIENT_HOSTNAME"`)
+
+* `EXCESSIVE_LOGGING_OF_PARSER_STATISTICS` (value: `"SIGNAL_TYPE_EXCESSIVE_LOGGING_OF_PARSER_STATISTICS"`)
+
+* `EXCESSIVE_LOGGING_OF_PLANNER_STATISTICS` (value: `"SIGNAL_TYPE_EXCESSIVE_LOGGING_OF_PLANNER_STATISTICS"`)
+
+* `NOT_LOGGING_ONLY_DDL_STATEMENTS` (value: `"SIGNAL_TYPE_NOT_LOGGING_ONLY_DDL_STATEMENTS"`)
+
+* `LOGGING_QUERY_STATISTICS` (value: `"SIGNAL_TYPE_LOGGING_QUERY_STATISTICS"`)
+
+* `NOT_LOGGING_TEMPORARY_FILES` (value: `"SIGNAL_TYPE_NOT_LOGGING_TEMPORARY_FILES"`)
+
+* `CONNECTION_MAX_NOT_CONFIGURED` (value: `"SIGNAL_TYPE_CONNECTION_MAX_NOT_CONFIGURED"`)
+
+* `USER_OPTIONS_CONFIGURED` (value: `"SIGNAL_TYPE_USER_OPTIONS_CONFIGURED"`)
+
+* `EXPOSED_TO_PUBLIC_ACCESS` (value: `"SIGNAL_TYPE_EXPOSED_TO_PUBLIC_ACCESS"`)
+
+* `UNENCRYPTED_CONNECTIONS` (value: `"SIGNAL_TYPE_UNENCRYPTED_CONNECTIONS"`)
+
+* `NO_ROOT_PASSWORD` (value: `"SIGNAL_TYPE_NO_ROOT_PASSWORD"`)
+
+* `WEAK_ROOT_PASSWORD` (value: `"SIGNAL_TYPE_WEAK_ROOT_PASSWORD"`)
+
+* `ENCRYPTION_KEY_NOT_CUSTOMER_MANAGED` (value: `"SIGNAL_TYPE_ENCRYPTION_KEY_NOT_CUSTOMER_MANAGED"`)
+
+* `SERVER_AUTHENTICATION_NOT_REQUIRED` (value: `"SIGNAL_TYPE_SERVER_AUTHENTICATION_NOT_REQUIRED"`)
+
+* `EXPOSED_BY_OWNERSHIP_CHAINING` (value: `"SIGNAL_TYPE_EXPOSED_BY_OWNERSHIP_CHAINING"`)
+
+* `EXPOSED_TO_EXTERNAL_SCRIPTS` (value: `"SIGNAL_TYPE_EXPOSED_TO_EXTERNAL_SCRIPTS"`)
+
+* `EXPOSED_TO_LOCAL_DATA_LOADS` (value: `"SIGNAL_TYPE_EXPOSED_TO_LOCAL_DATA_LOADS"`)
+
+* `CONNECTION_ATTEMPTS_NOT_LOGGED` (value: `"SIGNAL_TYPE_CONNECTION_ATTEMPTS_NOT_LOGGED"`)
+
+* `DISCONNECTIONS_NOT_LOGGED` (value: `"SIGNAL_TYPE_DISCONNECTIONS_NOT_LOGGED"`)
+
+* `LOGGING_EXCESSIVE_STATEMENT_INFO` (value: `"SIGNAL_TYPE_LOGGING_EXCESSIVE_STATEMENT_INFO"`)
+
+* `EXPOSED_TO_REMOTE_ACCESS` (value: `"SIGNAL_TYPE_EXPOSED_TO_REMOTE_ACCESS"`)
+
+* `DATABASE_NAMES_EXPOSED` (value: `"SIGNAL_TYPE_DATABASE_NAMES_EXPOSED"`)
+
+* `SENSITIVE_TRACE_INFO_NOT_MASKED` (value: `"SIGNAL_TYPE_SENSITIVE_TRACE_INFO_NOT_MASKED"`)
+
+* `PUBLIC_IP_ENABLED` (value: `"SIGNAL_TYPE_PUBLIC_IP_ENABLED"`)
+
+* `IDLE` (value: `"SIGNAL_TYPE_IDLE"`)
+
+* `OVERPROVISIONED` (value: `"SIGNAL_TYPE_OVERPROVISIONED"`)
+
+* `HIGH_NUMBER_OF_OPEN_TABLES` (value: `"SIGNAL_TYPE_HIGH_NUMBER_OF_OPEN_TABLES"`)
+
+* `HIGH_NUMBER_OF_TABLES` (value: `"SIGNAL_TYPE_HIGH_NUMBER_OF_TABLES"`)
+
+* `HIGH_TRANSACTION_ID_UTILIZATION` (value: `"SIGNAL_TYPE_HIGH_TRANSACTION_ID_UTILIZATION"`)
+
+* `UNDERPROVISIONED` (value: `"SIGNAL_TYPE_UNDERPROVISIONED"`)
+
+* `OUT_OF_DISK` (value: `"SIGNAL_TYPE_OUT_OF_DISK"`)
+
+* `SERVER_CERTIFICATE_NEAR_EXPIRY` (value: `"SIGNAL_TYPE_SERVER_CERTIFICATE_NEAR_EXPIRY"`)
+
+* `DATABASE_AUDITING_DISABLED` (value: `"SIGNAL_TYPE_DATABASE_AUDITING_DISABLED"`)
+
+* `RESTRICT_AUTHORIZED_NETWORKS` (value: `"SIGNAL_TYPE_RESTRICT_AUTHORIZED_NETWORKS"`)
+
+* `VIOLATE_POLICY_RESTRICT_PUBLIC_IP` (value: `"SIGNAL_TYPE_VIOLATE_POLICY_RESTRICT_PUBLIC_IP"`)
+
+
+
+
