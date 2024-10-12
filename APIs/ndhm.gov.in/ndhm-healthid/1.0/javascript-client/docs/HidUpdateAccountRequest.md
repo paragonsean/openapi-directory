@@ -1,0 +1,27 @@
+# HealthIdService.HidUpdateAccountRequest
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**address** | **String** |  | [optional] 
+**dayOfBirth** | **String** |  | [optional] 
+**districtCode** | **String** |  | [optional] 
+**email** | **String** |  | [optional] 
+**firstName** | **String** |  | [optional] 
+**healthId** | **String** |  | [optional] 
+**healthIdNumber** | **String** |  | [optional] 
+**lastName** | **String** |  | [optional] 
+**middleName** | **String** |  | [optional] 
+**monthOfBirth** | **String** |  | [optional] 
+**password** | **String** |  | [optional] 
+**pincode** | **Number** |  | [optional] 
+**profilePhoto** | **String** |  | [optional] 
+**stateCode** | **String** |  | [optional] 
+**subdistrictCode** | **String** |  | [optional] 
+**townCode** | **String** |  | [optional] 
+**villageCode** | **String** |  | [optional] 
+**wardCode** | **String** |  | [optional] 
+**yearOfBirth** | **String** |  | [optional] 
+
+

@@ -1,0 +1,99 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAILink.h \
+    $${PWD}/OAIRestErrorDTO.h \
+    $${PWD}/OAIWebServiceAccount.h \
+    $${PWD}/OAIWebServiceAccountStatistics.h \
+    $${PWD}/OAIWebServiceAnalyseMessageRequestMessageAndRecipientNumber.h \
+    $${PWD}/OAIWebServiceAnalyseMessageRequestMessageOnly.h \
+    $${PWD}/OAIWebServiceAnalyseMessageResponse.h \
+    $${PWD}/OAIWebServiceCampaignStatistics.h \
+    $${PWD}/OAIWebServiceContact.h \
+    $${PWD}/OAIWebServiceContactLink.h \
+    $${PWD}/OAIWebServiceContacts.h \
+    $${PWD}/OAIWebServiceGroup.h \
+    $${PWD}/OAIWebServiceGroups.h \
+    $${PWD}/OAIWebServiceMessage.h \
+    $${PWD}/OAIWebServiceMessageLink.h \
+    $${PWD}/OAIWebServiceMessages.h \
+    $${PWD}/OAIWebServiceSendSmsRequest.h \
+    $${PWD}/OAIWebServiceSendSmsRequests.h \
+    $${PWD}/OAIWebServiceSendSmsResponse.h \
+    $${PWD}/OAIWebServiceSendSmsResponses.h \
+    $${PWD}/OAIWebServiceSendVoiceMessageResponse.h \
+    $${PWD}/OAIWebServiceStatistics.h \
+    $${PWD}/OAIWebServiceTemplate.h \
+    $${PWD}/OAIWebServiceTemplates.h \
+    $${PWD}/OAIWebServiceTransferCreditsRequest.h \
+    $${PWD}/OAIWebServiceUser.h \
+    $${PWD}/OAIWebServiceUserStatistics.h \
+    $${PWD}/OAIWebServiceUsers.h \
+    $${PWD}/OAIWebServiceVoiceMessage.h \
+    $${PWD}/OAIWebServiceVoiceMessageSendSingleTextRequest.h \
+    $${PWD}/OAIWebServiceVoiceMessages.h \
+# APIs
+    $${PWD}/OAIAccountApi.h \
+    $${PWD}/OAIContactsApi.h \
+    $${PWD}/OAIGroupsApi.h \
+    $${PWD}/OAIMessagesApi.h \
+    $${PWD}/OAISmsApi.h \
+    $${PWD}/OAITemplatesApi.h \
+    $${PWD}/OAIVoiceApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAILink.cpp \
+    $${PWD}/OAIRestErrorDTO.cpp \
+    $${PWD}/OAIWebServiceAccount.cpp \
+    $${PWD}/OAIWebServiceAccountStatistics.cpp \
+    $${PWD}/OAIWebServiceAnalyseMessageRequestMessageAndRecipientNumber.cpp \
+    $${PWD}/OAIWebServiceAnalyseMessageRequestMessageOnly.cpp \
+    $${PWD}/OAIWebServiceAnalyseMessageResponse.cpp \
+    $${PWD}/OAIWebServiceCampaignStatistics.cpp \
+    $${PWD}/OAIWebServiceContact.cpp \
+    $${PWD}/OAIWebServiceContactLink.cpp \
+    $${PWD}/OAIWebServiceContacts.cpp \
+    $${PWD}/OAIWebServiceGroup.cpp \
+    $${PWD}/OAIWebServiceGroups.cpp \
+    $${PWD}/OAIWebServiceMessage.cpp \
+    $${PWD}/OAIWebServiceMessageLink.cpp \
+    $${PWD}/OAIWebServiceMessages.cpp \
+    $${PWD}/OAIWebServiceSendSmsRequest.cpp \
+    $${PWD}/OAIWebServiceSendSmsRequests.cpp \
+    $${PWD}/OAIWebServiceSendSmsResponse.cpp \
+    $${PWD}/OAIWebServiceSendSmsResponses.cpp \
+    $${PWD}/OAIWebServiceSendVoiceMessageResponse.cpp \
+    $${PWD}/OAIWebServiceStatistics.cpp \
+    $${PWD}/OAIWebServiceTemplate.cpp \
+    $${PWD}/OAIWebServiceTemplates.cpp \
+    $${PWD}/OAIWebServiceTransferCreditsRequest.cpp \
+    $${PWD}/OAIWebServiceUser.cpp \
+    $${PWD}/OAIWebServiceUserStatistics.cpp \
+    $${PWD}/OAIWebServiceUsers.cpp \
+    $${PWD}/OAIWebServiceVoiceMessage.cpp \
+    $${PWD}/OAIWebServiceVoiceMessageSendSingleTextRequest.cpp \
+    $${PWD}/OAIWebServiceVoiceMessages.cpp \
+# APIs
+    $${PWD}/OAIAccountApi.cpp \
+    $${PWD}/OAIContactsApi.cpp \
+    $${PWD}/OAIGroupsApi.cpp \
+    $${PWD}/OAIMessagesApi.cpp \
+    $${PWD}/OAISmsApi.cpp \
+    $${PWD}/OAITemplatesApi.cpp \
+    $${PWD}/OAIVoiceApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

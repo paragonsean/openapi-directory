@@ -1,0 +1,25 @@
+
+
+# DataNotificationEntriesInner
+
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**careContextReference** | **String** | care context reference number. |  |
+|**checksum** | **String** | Md5 checksum of the content before encryption |  |
+|**content** | **String** | Encrypted content |  |
+|**media** | [**MediaEnum**](#MediaEnum) | mimetype of the content. |  |
+|**link** | **String** | Encrypted content |  |
+
+
+
+## Enum: MediaEnum
+
+| Name | Value |
+|---- | -----|
+| APPLICATION_FHIR_JSON | &quot;application/fhir+json&quot; |
+
+
+

@@ -1,0 +1,227 @@
+openapi: 3.0.1
+info:
+  contact:
+    email: trips@furkot.com
+  description: |
+    Furkot provides Rest API to access user trip data.
+    Using Furkot API an application can list user trips and display stops for a specific trip.
+    Furkot API uses OAuth2 protocol to authorize applications to access data on behalf of users.
+  title: Furkot Trips
+  version: 1.0.0
+  x-apisguru-categories:
+  - location
+  x-logo:
+    url: https://cdn.furkot.com/img/furkot-banner-black-4x1.svg
+  x-origin:
+  - format: swagger
+    url: https://help.furkot.com/widgets/furkot-api.yaml
+    version: "2.0"
+  x-providerName: furkot.com
+externalDocs:
+  description: Furkot API description
+  url: https://help.furkot.com/widgets/furkot-api.html
+servers:
+- url: https://trips.furkot.com/pub/api
+security:
+- furkot_auth_access_code:
+  - read:trips
+- furkot_auth_implicit:
+  - read:trips
+paths:
+  /trip:
+    get:
+      description: list user's trips
+      operationId: trip_get
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/Trip'
+                type: array
+          description: Successful response
+      x-openapi-router-controller: openapi_server.controllers.default_controller
+  /trip/{trip_id}/stop:
+    get:
+      description: "list stops for a trip identified by {trip_id}"
+      operationId: trip_trip_id_stop_get
+      parameters:
+      - description: id of the trip
+        in: path
+        name: trip_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/Step'
+                type: array
+          description: Successful response
+      x-openapi-router-controller: openapi_server.controllers.default_controller
+components:
+  schemas:
+    Step:
+      example:
+        passthru: true
+        address: address
+        route:
+          duration: 5
+          mode: car
+          distance: 5
+          polyline: polyline
+        arrival: 2000-01-23T04:56:07.000+00:00
+        nights: 1
+        coordinates:
+          lon: 6.0274563
+          lat: 0.8008282
+        name: name
+        departure: 2000-01-23T04:56:07.000+00:00
+        url: url
+      properties:
+        address:
+          description: address of the stop
+          title: address
+          type: string
+        arrival:
+          description: arrival at the stop in its local timezone as YYYY-MM-DDThh:mm
+          format: date-time
+          title: arrival
+          type: string
+        coordinates:
+          $ref: '#/components/schemas/Step_coordinates'
+        departure:
+          description: departure from the stop in its local timezone as YYYY-MM-DDThh:mm
+          format: date-time
+          title: departure
+          type: string
+        name:
+          description: name of the stop
+          title: name
+          type: string
+        nights:
+          description: number of nights
+          format: int64
+          title: nights
+          type: integer
+        passthru:
+          description: true for pass-through points anchoring route
+          title: passthru
+          type: boolean
+        route:
+          $ref: '#/components/schemas/Step_route'
+        url:
+          description: url of the page with more information about the stop
+          title: url
+          type: string
+      title: Step
+      type: object
+    Trip:
+      example:
+        name: name
+        description: description
+        end: 2000-01-23T04:56:07.000+00:00
+        id: id
+        begin: 2000-01-23T04:56:07.000+00:00
+      properties:
+        begin:
+          description: begin of the trip in its local timezone as YYYY-MM-DDThh:mm
+          format: date-time
+          title: begin
+          type: string
+        description:
+          description: description of the trip (truncated to 200 characters)
+          title: description
+          type: string
+        end:
+          description: end of the trip in its local timezone as YYYY-MM-DDThh:mm
+          format: date-time
+          title: end
+          type: string
+        id:
+          description: Unique ID of the trip
+          title: id
+          type: string
+        name:
+          description: name of the trip
+          title: name
+          type: string
+      title: Trip
+      type: object
+    Step_coordinates:
+      description: geographical coordinates of the stop
+      example:
+        lon: 6.0274563
+        lat: 0.8008282
+      properties:
+        lat:
+          description: latitude
+          format: float
+          title: lat
+          type: number
+        lon:
+          description: longitude
+          format: float
+          title: lon
+          type: number
+      title: Step_coordinates
+      type: object
+    Step_route:
+      description: route leading to the stop
+      example:
+        duration: 5
+        mode: car
+        distance: 5
+        polyline: polyline
+      properties:
+        distance:
+          description: route distance in meters
+          format: int64
+          title: distance
+          type: integer
+        duration:
+          description: route duration in seconds
+          format: int64
+          title: duration
+          type: integer
+        mode:
+          description: travel mode
+          enum:
+          - car
+          - motorcycle
+          - bicycle
+          - walk
+          - other
+          title: mode
+          type: string
+        polyline:
+          description: route path compatible with Google polyline encoding algorithm
+          title: polyline
+          type: string
+      title: Step_route
+      type: object
+  securitySchemes:
+    furkot_auth_access_code:
+      flows:
+        authorizationCode:
+          authorizationUrl: https://trips.furkot.com/oauth/authorize
+          scopes:
+            read:trips: list trips and stops info
+          tokenUrl: https://trips.furkot.com/pub/api/access_token
+      type: oauth2
+      x-tokenInfoFunc: openapi_server.controllers.security_controller.info_from_furkot_auth_access_code
+      x-scopeValidateFunc: openapi_server.controllers.security_controller.validate_scope_furkot_auth_access_code
+    furkot_auth_implicit:
+      flows:
+        implicit:
+          authorizationUrl: https://trips.furkot.com/oauth/authorize
+          scopes:
+            read:trips: list users trips info
+      type: oauth2
+      x-tokenInfoFunc: openapi_server.controllers.security_controller.info_from_furkot_auth_implicit
+      x-scopeValidateFunc: openapi_server.controllers.security_controller.validate_scope_furkot_auth_implicit
+x-original-swagger-version: "2.0"

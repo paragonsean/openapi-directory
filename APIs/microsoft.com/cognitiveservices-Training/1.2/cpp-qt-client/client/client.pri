@@ -1,0 +1,107 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIAccount.h \
+    $${PWD}/OAIAccountQuota.h \
+    $${PWD}/OAIApiKeys.h \
+    $${PWD}/OAIDomain.h \
+    $${PWD}/OAIExport.h \
+    $${PWD}/OAIImage.h \
+    $${PWD}/OAIImageCreateResult.h \
+    $${PWD}/OAIImageCreateSummary.h \
+    $${PWD}/OAIImageFileCreateBatch.h \
+    $${PWD}/OAIImageFileCreateEntry.h \
+    $${PWD}/OAIImageIdCreateBatch.h \
+    $${PWD}/OAIImageIdCreateEntry.h \
+    $${PWD}/OAIImagePredictionResult.h \
+    $${PWD}/OAIImageTag.h \
+    $${PWD}/OAIImageTagCreateBatch.h \
+    $${PWD}/OAIImageTagCreateEntry.h \
+    $${PWD}/OAIImageTagCreateSummary.h \
+    $${PWD}/OAIImageTagPrediction.h \
+    $${PWD}/OAIImageUrl.h \
+    $${PWD}/OAIImageUrlCreateBatch.h \
+    $${PWD}/OAIImageUrlCreateEntry.h \
+    $${PWD}/OAIIteration.h \
+    $${PWD}/OAIIterationPerformance.h \
+    $${PWD}/OAIKeyPair.h \
+    $${PWD}/OAIPerProjectQuota.h \
+    $${PWD}/OAIPrediction.h \
+    $${PWD}/OAIPredictionQuery.h \
+    $${PWD}/OAIPredictionQueryTag.h \
+    $${PWD}/OAIPredictionQueryToken.h \
+    $${PWD}/OAIPredictionTag.h \
+    $${PWD}/OAIProject.h \
+    $${PWD}/OAIProjectSettings.h \
+    $${PWD}/OAIQuota.h \
+    $${PWD}/OAITag.h \
+    $${PWD}/OAITagList.h \
+    $${PWD}/OAITagPerformance.h \
+# APIs
+    $${PWD}/OAIAccountApiApi.h \
+    $${PWD}/OAIDomainsApiApi.h \
+    $${PWD}/OAIImageApiApi.h \
+    $${PWD}/OAIPredictionsApiApi.h \
+    $${PWD}/OAIProjectApiApi.h \
+    $${PWD}/OAITagsApiApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIAccount.cpp \
+    $${PWD}/OAIAccountQuota.cpp \
+    $${PWD}/OAIApiKeys.cpp \
+    $${PWD}/OAIDomain.cpp \
+    $${PWD}/OAIExport.cpp \
+    $${PWD}/OAIImage.cpp \
+    $${PWD}/OAIImageCreateResult.cpp \
+    $${PWD}/OAIImageCreateSummary.cpp \
+    $${PWD}/OAIImageFileCreateBatch.cpp \
+    $${PWD}/OAIImageFileCreateEntry.cpp \
+    $${PWD}/OAIImageIdCreateBatch.cpp \
+    $${PWD}/OAIImageIdCreateEntry.cpp \
+    $${PWD}/OAIImagePredictionResult.cpp \
+    $${PWD}/OAIImageTag.cpp \
+    $${PWD}/OAIImageTagCreateBatch.cpp \
+    $${PWD}/OAIImageTagCreateEntry.cpp \
+    $${PWD}/OAIImageTagCreateSummary.cpp \
+    $${PWD}/OAIImageTagPrediction.cpp \
+    $${PWD}/OAIImageUrl.cpp \
+    $${PWD}/OAIImageUrlCreateBatch.cpp \
+    $${PWD}/OAIImageUrlCreateEntry.cpp \
+    $${PWD}/OAIIteration.cpp \
+    $${PWD}/OAIIterationPerformance.cpp \
+    $${PWD}/OAIKeyPair.cpp \
+    $${PWD}/OAIPerProjectQuota.cpp \
+    $${PWD}/OAIPrediction.cpp \
+    $${PWD}/OAIPredictionQuery.cpp \
+    $${PWD}/OAIPredictionQueryTag.cpp \
+    $${PWD}/OAIPredictionQueryToken.cpp \
+    $${PWD}/OAIPredictionTag.cpp \
+    $${PWD}/OAIProject.cpp \
+    $${PWD}/OAIProjectSettings.cpp \
+    $${PWD}/OAIQuota.cpp \
+    $${PWD}/OAITag.cpp \
+    $${PWD}/OAITagList.cpp \
+    $${PWD}/OAITagPerformance.cpp \
+# APIs
+    $${PWD}/OAIAccountApiApi.cpp \
+    $${PWD}/OAIDomainsApiApi.cpp \
+    $${PWD}/OAIImageApiApi.cpp \
+    $${PWD}/OAIPredictionsApiApi.cpp \
+    $${PWD}/OAIProjectApiApi.cpp \
+    $${PWD}/OAITagsApiApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

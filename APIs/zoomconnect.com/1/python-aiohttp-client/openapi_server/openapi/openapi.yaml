@@ -1,0 +1,3637 @@
+openapi: 3.0.1
+info:
+  description: The world's greatest SMS API
+  title: www.zoomconnect.com
+  version: "1"
+  x-apisguru-categories:
+  - messaging
+  - marketing
+  x-logo:
+    url: https://zoomconnect.com/assets/logo.png
+  x-origin:
+  - converter:
+      url: https://github.com/lucybot/api-spec-converter
+      version: 2.7.31
+    format: swagger
+    url: https://www.zoomconnect.com/zoom/api-docs
+    version: "1.2"
+  x-providerName: zoomconnect.com
+  x-tags:
+  - SMS
+  - bulk SMS
+servers:
+- url: https://www.zoomconnect.com/app
+tags:
+- description: Core information related to your account
+  name: account
+- description: Manage contacts
+  name: contacts
+- description: Manage groups
+  name: groups
+- description: Manage your messages
+  name: messages
+- description: Send and schedule messages
+  name: sms
+- description: Manage your templates
+  name: templates
+- description: "(BETA) Send, schedule and manage voice messages"
+  name: voice
+paths:
+  /api/rest/v1/account/balance:
+    get:
+      deprecated: false
+      description: Returns your account's credit balance
+      operationId: get_balance
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebServiceAccount'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/WebServiceAccount'
+          description: Success
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: balance
+      tags:
+      - account
+      x-openapi-router-controller: openapi_server.controllers.account_controller
+  /api/rest/v1/account/statistics:
+    get:
+      deprecated: false
+      description: "Returns data from the statistics report. Note that by default\
+        \ the statistics shown are based on the number of messages, use the calculateCreditValue\
+        \ should you wish to calculate the statistics based on credit value."
+      operationId: get_statistics
+      parameters:
+      - description: "date format: dd-MM-yyyy"
+        in: query
+        name: from
+        schema:
+          format: date-time
+          type: string
+      - description: "date format: dd-MM-yyyy"
+        in: query
+        name: to
+        schema:
+          format: date-time
+          type: string
+      - description: "optional email address of user to return statistics for a single\
+          \ user, default is to return statistics for all users if administrator,\
+          \ or statistics for your own account if not an administrator"
+        in: query
+        name: userEmailAddress
+        schema:
+          type: string
+      - description: optional campaign name
+        in: query
+        name: campaign
+        schema:
+          type: string
+      - description: "optionally include refunded and optout counts, default is false"
+        in: query
+        name: includeRefundedAndOptout
+        schema:
+          type: boolean
+      - description: "optionally calculate using credit value rather than message\
+          \ count, default is false"
+        in: query
+        name: calculateCreditValue
+        schema:
+          type: boolean
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebServiceAccountStatistics'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/WebServiceAccountStatistics'
+          description: Success
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: statistics
+      tags:
+      - account
+      x-openapi-router-controller: openapi_server.controllers.account_controller
+  /api/rest/v1/account/transfer:
+    post:
+      deprecated: false
+      description: 'Transfers credits between two users in the same team. The <i>account
+        email address</i> fields as well as the <i>number of credits to transfer</i>
+        are required. '
+      operationId: transfer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebServiceTransferCreditsRequest'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/WebServiceTransferCreditsRequest'
+        description: request
+        required: false
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebServiceUser'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/WebServiceUser'
+          description: Description was not specified
+        "201":
+          content: {}
+          description: Created
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: transfer
+      tags:
+      - account
+      x-codegen-request-body-name: body
+      x-openapi-router-controller: openapi_server.controllers.account_controller
+  /api/rest/v1/account/user:
+    get:
+      deprecated: false
+      description: Find a user for a particular email address
+      operationId: search
+      parameters:
+      - description: search by email address
+        in: query
+        name: searchEmail
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebServiceUsers'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/WebServiceUsers'
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: search
+      tags:
+      - account
+      x-openapi-router-controller: openapi_server.controllers.account_controller
+    put:
+      deprecated: false
+      description: "Creates a new sub-account in your team. The following fields are\
+        \ required <i>firstname, lastname, email address, contact number</i> and <i>password.</i>"
+      operationId: api_rest_v1_account_user_put
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebServiceUser'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/WebServiceUser'
+        description: request
+        required: false
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebServiceUser'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/WebServiceUser'
+          description: Description was not specified
+        "201":
+          content: {}
+          description: Created
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: create
+      tags:
+      - account
+      x-codegen-request-body-name: body
+      x-openapi-router-controller: openapi_server.controllers.account_controller
+  /api/rest/v1/account/user/{userId}:
+    get:
+      deprecated: false
+      description: Gets a user from a given user id
+      operationId: get_user
+      parameters:
+      - description: userId
+        in: path
+        name: userId
+        required: true
+        schema:
+          format: int64
+          type: integer
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebServiceUser'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/WebServiceUser'
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: getUser
+      tags:
+      - account
+      x-openapi-router-controller: openapi_server.controllers.account_controller
+    post:
+      deprecated: false
+      description: "Updates a sub-account in your team. The following fields can be\
+        \ updated <i>firstname, lastname, contact number</i> and <i>password.</i>"
+      operationId: api_rest_v1_account_user_user_id_post
+      parameters:
+      - description: userId
+        in: path
+        name: userId
+        required: true
+        schema:
+          format: int64
+          type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebServiceUser'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/WebServiceUser'
+        description: request
+        required: false
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebServiceUser'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/WebServiceUser'
+          description: Description was not specified
+        "201":
+          content: {}
+          description: Created
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: update
+      tags:
+      - account
+      x-codegen-request-body-name: body
+      x-openapi-router-controller: openapi_server.controllers.account_controller
+  /api/rest/v1/contacts/all:
+    get:
+      deprecated: false
+      description: Returns all contacts
+      operationId: api_rest_v1_contacts_all_get
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebServiceContacts'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/WebServiceContacts'
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: all
+      tags:
+      - contacts
+      x-openapi-router-controller: openapi_server.controllers.contacts_controller
+  /api/rest/v1/contacts/create:
+    post:
+      deprecated: false
+      description: Creates a  contact
+      operationId: api_rest_v1_contacts_create_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebServiceContact'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/WebServiceContact'
+        description: webServiceContact
+        required: false
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebServiceContact'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/WebServiceContact'
+          description: No response was specified
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebServiceContact'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/WebServiceContact'
+          description: Created
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: create
+      tags:
+      - contacts
+      x-codegen-request-body-name: body
+      x-openapi-router-controller: openapi_server.controllers.contacts_controller
+  /api/rest/v1/contacts/{contactId}:
+    delete:
+      deprecated: false
+      description: Deletes a  contact
+      operationId: api_rest_v1_contacts_contact_id_delete
+      parameters:
+      - description: contactId
+        in: path
+        name: contactId
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content: {}
+          description: Description was not specified
+        "204":
+          content: {}
+          description: No Content
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+      summary: delete
+      tags:
+      - contacts
+      x-openapi-router-controller: openapi_server.controllers.contacts_controller
+    get:
+      deprecated: false
+      description: Returns details for a single contact
+      operationId: api_rest_v1_contacts_contact_id_get
+      parameters:
+      - description: contactId
+        in: path
+        name: contactId
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebServiceContact'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/WebServiceContact'
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: get
+      tags:
+      - contacts
+      x-openapi-router-controller: openapi_server.controllers.contacts_controller
+    post:
+      deprecated: false
+      description: Updates a  contact
+      operationId: api_rest_v1_contacts_contact_id_post
+      parameters:
+      - description: contactId
+        in: path
+        name: contactId
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebServiceContact'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/WebServiceContact'
+        description: webServiceContact
+        required: false
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebServiceContact'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/WebServiceContact'
+          description: Description was not specified
+        "201":
+          content: {}
+          description: Created
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: update
+      tags:
+      - contacts
+      x-codegen-request-body-name: body
+      x-openapi-router-controller: openapi_server.controllers.contacts_controller
+  /api/rest/v1/contacts/{contactId}/addFromGroup/{groupId}:
+    get:
+      deprecated: false
+      description: Remove a contact from a group
+      operationId: api_rest_v1_contacts_contact_id_add_from_group_group_id_get
+      parameters:
+      - description: contactId
+        in: path
+        name: contactId
+        required: true
+        schema:
+          type: string
+      - description: groupId
+        in: path
+        name: groupId
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content: {}
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: removeFromGroup
+      tags:
+      - contacts
+      x-openapi-router-controller: openapi_server.controllers.contacts_controller
+    post:
+      deprecated: false
+      description: Remove a contact from a group
+      operationId: api_rest_v1_contacts_contact_id_add_from_group_group_id_post
+      parameters:
+      - description: contactId
+        in: path
+        name: contactId
+        required: true
+        schema:
+          type: string
+      - description: groupId
+        in: path
+        name: groupId
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content: {}
+          description: Description was not specified
+        "201":
+          content: {}
+          description: Created
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: removeFromGroup
+      tags:
+      - contacts
+      x-openapi-router-controller: openapi_server.controllers.contacts_controller
+  /api/rest/v1/contacts/{contactId}/addToGroup/{groupId}:
+    get:
+      deprecated: false
+      description: Add a contact to a group
+      operationId: api_rest_v1_contacts_contact_id_add_to_group_group_id_get
+      parameters:
+      - description: contactId
+        in: path
+        name: contactId
+        required: true
+        schema:
+          type: string
+      - description: groupId
+        in: path
+        name: groupId
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content: {}
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: addToGroup
+      tags:
+      - contacts
+      x-openapi-router-controller: openapi_server.controllers.contacts_controller
+    post:
+      deprecated: false
+      description: Add a contact to a group
+      operationId: api_rest_v1_contacts_contact_id_add_to_group_group_id_post
+      parameters:
+      - description: contactId
+        in: path
+        name: contactId
+        required: true
+        schema:
+          type: string
+      - description: groupId
+        in: path
+        name: groupId
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content: {}
+          description: Description was not specified
+        "201":
+          content: {}
+          description: Created
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: addToGroup
+      tags:
+      - contacts
+      x-openapi-router-controller: openapi_server.controllers.contacts_controller
+  /api/rest/v1/groups/all:
+    get:
+      deprecated: false
+      description: Returns all groups
+      operationId: api_rest_v1_groups_all_get
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebServiceGroups'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/WebServiceGroups'
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: all
+      tags:
+      - groups
+      x-openapi-router-controller: openapi_server.controllers.groups_controller
+  /api/rest/v1/groups/create:
+    post:
+      deprecated: false
+      description: Create a  group
+      operationId: api_rest_v1_groups_create_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebServiceGroup'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/WebServiceGroup'
+        description: webServiceGroup
+        required: false
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebServiceGroup'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/WebServiceGroup'
+          description: No response was specified
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebServiceGroup'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/WebServiceGroup'
+          description: Created
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: create
+      tags:
+      - groups
+      x-codegen-request-body-name: body
+      x-openapi-router-controller: openapi_server.controllers.groups_controller
+  /api/rest/v1/groups/{groupId}:
+    delete:
+      deprecated: false
+      description: Deletes a  group
+      operationId: api_rest_v1_groups_group_id_delete
+      parameters:
+      - description: groupId
+        in: path
+        name: groupId
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content: {}
+          description: Description was not specified
+        "204":
+          content: {}
+          description: No Content
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+      summary: delete
+      tags:
+      - groups
+      x-openapi-router-controller: openapi_server.controllers.groups_controller
+    get:
+      deprecated: false
+      description: Returns details for a single group
+      operationId: api_rest_v1_groups_group_id_get
+      parameters:
+      - description: groupId
+        in: path
+        name: groupId
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebServiceGroup'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/WebServiceGroup'
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: get
+      tags:
+      - groups
+      x-openapi-router-controller: openapi_server.controllers.groups_controller
+    post:
+      deprecated: false
+      description: Update a  group
+      operationId: api_rest_v1_groups_group_id_post
+      parameters:
+      - description: groupId
+        in: path
+        name: groupId
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebServiceGroup'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/WebServiceGroup'
+        description: webServiceGroup
+        required: false
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebServiceGroup'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/WebServiceGroup'
+          description: Description was not specified
+        "201":
+          content: {}
+          description: Created
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: update
+      tags:
+      - groups
+      x-codegen-request-body-name: body
+      x-openapi-router-controller: openapi_server.controllers.groups_controller
+  /api/rest/v1/groups/{groupId}/addContact/{contactId}:
+    get:
+      deprecated: false
+      description: Add a contact to a group
+      operationId: api_rest_v1_groups_group_id_add_contact_contact_id_get
+      parameters:
+      - description: groupId
+        in: path
+        name: groupId
+        required: true
+        schema:
+          type: string
+      - description: contactId
+        in: path
+        name: contactId
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content: {}
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: addContact
+      tags:
+      - groups
+      x-openapi-router-controller: openapi_server.controllers.groups_controller
+    post:
+      deprecated: false
+      description: Add a contact to a group
+      operationId: api_rest_v1_groups_group_id_add_contact_contact_id_post
+      parameters:
+      - description: groupId
+        in: path
+        name: groupId
+        required: true
+        schema:
+          type: string
+      - description: contactId
+        in: path
+        name: contactId
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content: {}
+          description: Description was not specified
+        "201":
+          content: {}
+          description: Created
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: addContact
+      tags:
+      - groups
+      x-openapi-router-controller: openapi_server.controllers.groups_controller
+  /api/rest/v1/groups/{groupId}/removeContact/{contactId}:
+    get:
+      deprecated: false
+      description: Remove a contact from a group
+      operationId: api_rest_v1_groups_group_id_remove_contact_contact_id_get
+      parameters:
+      - description: groupId
+        in: path
+        name: groupId
+        required: true
+        schema:
+          type: string
+      - description: contactId
+        in: path
+        name: contactId
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content: {}
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: removeContact
+      tags:
+      - groups
+      x-openapi-router-controller: openapi_server.controllers.groups_controller
+    post:
+      deprecated: false
+      description: Remove a contact from a group
+      operationId: api_rest_v1_groups_group_id_remove_contact_contact_id_post
+      parameters:
+      - description: groupId
+        in: path
+        name: groupId
+        required: true
+        schema:
+          type: string
+      - description: contactId
+        in: path
+        name: contactId
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content: {}
+          description: Description was not specified
+        "201":
+          content: {}
+          description: Created
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: removeContact
+      tags:
+      - groups
+      x-openapi-router-controller: openapi_server.controllers.groups_controller
+  /api/rest/v1/messages/all:
+    get:
+      deprecated: false
+      description: Returns all messages
+      operationId: api_rest_v1_messages_all_get
+      parameters:
+      - description: number of elements to return at a time
+        in: query
+        name: pageSize
+        schema:
+          default: 100
+          format: int32
+          type: integer
+      - description: page number
+        in: query
+        name: page
+        schema:
+          default: 1
+          format: int32
+          type: integer
+      - description: filter by message type
+        in: query
+        name: type
+        schema:
+          enum:
+          - OUTBOUND
+          - INBOUND
+          type: string
+      - description: filter by message status
+        in: query
+        name: status
+        schema:
+          enum:
+          - SCHEDULED
+          - UNKNOWN
+          - SENT
+          - FAILED
+          - FAILED_REFUNDED
+          - FAILED_OPTOUT
+          - DELIVERED
+          type: string
+      - description: "date format: yyyyMMdd"
+        in: query
+        name: fromDateTimeSent
+        schema:
+          format: date-time
+          type: string
+      - description: "date format: yyyyMMdd"
+        in: query
+        name: toDateTimeSent
+        schema:
+          format: date-time
+          type: string
+      - description: "date format: yyyyMMdd"
+        in: query
+        name: fromDateTimeReceived
+        schema:
+          format: date-time
+          type: string
+      - description: "date format: yyyyMMdd"
+        in: query
+        name: toDateTimeReceived
+        schema:
+          format: date-time
+          type: string
+      - description: phone number the message was sent from
+        in: query
+        name: fromNumber
+        schema:
+          type: string
+      - description: phone number the message was sent to
+        in: query
+        name: toNumber
+        schema:
+          type: string
+      - description: search matching message text
+        in: query
+        name: message
+        schema:
+          type: string
+      - description: search by campaign
+        in: query
+        name: campaign
+        schema:
+          type: string
+      - description: search by data field
+        in: query
+        name: dataField
+        schema:
+          type: string
+      - description: return only deleted / not deleted messages
+        in: query
+        name: deleted
+        schema:
+          type: boolean
+      - description: return only read / unread messages (inbox messages only)
+        in: query
+        name: read
+        schema:
+          type: boolean
+      - description: return only inbox messages which are a reply to the message with
+          the given message id
+        in: query
+        name: repliesToMessageId
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebServiceMessages'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/WebServiceMessages'
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: all
+      tags:
+      - messages
+      x-openapi-router-controller: openapi_server.controllers.messages_controller
+  /api/rest/v1/messages/analyse/full:
+    post:
+      deprecated: false
+      description: Returns full analysis of message
+      operationId: analyse_full
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebServiceAnalyseMessageRequestMessageAndRecipientNumber'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/WebServiceAnalyseMessageRequestMessageAndRecipientNumber'
+        description: request
+        required: false
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebServiceAnalyseMessageResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/WebServiceAnalyseMessageResponse'
+          description: Description was not specified
+        "201":
+          content: {}
+          description: Created
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: analyse-full
+      tags:
+      - messages
+      x-codegen-request-body-name: body
+      x-openapi-router-controller: openapi_server.controllers.messages_controller
+  /api/rest/v1/messages/analyse/message-credit-cost:
+    post:
+      deprecated: false
+      description: Returns the number of credit which would be required to send the
+        request message to the requested recipient number
+      operationId: analyse_message_credit_cost
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebServiceAnalyseMessageRequestMessageAndRecipientNumber'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/WebServiceAnalyseMessageRequestMessageAndRecipientNumber'
+        description: request
+        required: false
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                format: double
+                type: number
+            application/xml:
+              schema:
+                format: double
+                type: number
+          description: Description was not specified
+        "201":
+          content: {}
+          description: Created
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: analyse-message-credit-cost
+      tags:
+      - messages
+      x-codegen-request-body-name: body
+      x-openapi-router-controller: openapi_server.controllers.messages_controller
+  /api/rest/v1/messages/analyse/message-encoding:
+    post:
+      deprecated: false
+      description: Returns the message encoding that would be required to send the
+        requested message
+      operationId: analyse_message_encoding
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebServiceAnalyseMessageRequestMessageOnly'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/WebServiceAnalyseMessageRequestMessageOnly'
+        description: request
+        required: false
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: string
+            application/xml:
+              schema:
+                type: string
+          description: Description was not specified
+        "201":
+          content: {}
+          description: Created
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: analyse-message-encoding
+      tags:
+      - messages
+      x-codegen-request-body-name: body
+      x-openapi-router-controller: openapi_server.controllers.messages_controller
+  /api/rest/v1/messages/analyse/message-length:
+    post:
+      deprecated: false
+      description: Returns the number of characters the requested message consists
+        of
+      operationId: analyse_message_length
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebServiceAnalyseMessageRequestMessageOnly'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/WebServiceAnalyseMessageRequestMessageOnly'
+        description: request
+        required: false
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                format: int32
+                type: integer
+            application/xml:
+              schema:
+                format: int32
+                type: integer
+          description: Description was not specified
+        "201":
+          content: {}
+          description: Created
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: analyse-message-length
+      tags:
+      - messages
+      x-codegen-request-body-name: body
+      x-openapi-router-controller: openapi_server.controllers.messages_controller
+  /api/rest/v1/messages/analyse/message-length-within-max-allowed:
+    post:
+      deprecated: false
+      description: Returns details for a single message
+      operationId: analyse
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebServiceAnalyseMessageRequestMessageOnly'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/WebServiceAnalyseMessageRequestMessageOnly'
+        description: request
+        required: false
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: boolean
+            application/xml:
+              schema:
+                type: boolean
+          description: Description was not specified
+        "201":
+          content: {}
+          description: Created
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: analyse-
+      tags:
+      - messages
+      x-codegen-request-body-name: body
+      x-openapi-router-controller: openapi_server.controllers.messages_controller
+  /api/rest/v1/messages/analyse/number-of-messages:
+    post:
+      deprecated: false
+      description: Returns the number of SMS parts which would be sent when sending
+        the requested message
+      operationId: analyse_number_of_messages
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebServiceAnalyseMessageRequestMessageOnly'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/WebServiceAnalyseMessageRequestMessageOnly'
+        description: request
+        required: false
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                format: int32
+                type: integer
+            application/xml:
+              schema:
+                format: int32
+                type: integer
+          description: Description was not specified
+        "201":
+          content: {}
+          description: Created
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: analyse-number-of-messages
+      tags:
+      - messages
+      x-codegen-request-body-name: body
+      x-openapi-router-controller: openapi_server.controllers.messages_controller
+  /api/rest/v1/messages/{messageId}:
+    delete:
+      deprecated: false
+      description: Deletes a  message
+      operationId: api_rest_v1_messages_message_id_delete
+      parameters:
+      - description: messageId
+        in: path
+        name: messageId
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content: {}
+          description: Description was not specified
+        "204":
+          content: {}
+          description: No Content
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+      summary: delete
+      tags:
+      - messages
+      x-openapi-router-controller: openapi_server.controllers.messages_controller
+    get:
+      deprecated: false
+      description: Returns details for a single message
+      operationId: api_rest_v1_messages_message_id_get
+      parameters:
+      - description: messageId
+        in: path
+        name: messageId
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebServiceMessage'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/WebServiceMessage'
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: get
+      tags:
+      - messages
+      x-openapi-router-controller: openapi_server.controllers.messages_controller
+  /api/rest/v1/messages/{messageId}/markRead:
+    post:
+      deprecated: false
+      description: Marks a  message as read
+      operationId: api_rest_v1_messages_message_id_mark_read_post
+      parameters:
+      - description: messageId
+        in: path
+        name: messageId
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebServiceMessage'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/WebServiceMessage'
+          description: Description was not specified
+        "201":
+          content: {}
+          description: Created
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: markRead
+      tags:
+      - messages
+      x-openapi-router-controller: openapi_server.controllers.messages_controller
+    put:
+      deprecated: false
+      description: Marks a  message as read
+      operationId: api_rest_v1_messages_message_id_mark_read_put
+      parameters:
+      - description: messageId
+        in: path
+        name: messageId
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebServiceMessage'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/WebServiceMessage'
+          description: Description was not specified
+        "201":
+          content: {}
+          description: Created
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: markRead
+      tags:
+      - messages
+      x-openapi-router-controller: openapi_server.controllers.messages_controller
+  /api/rest/v1/messages/{messageId}/markUnread:
+    post:
+      deprecated: false
+      description: Marks a  message as unread
+      operationId: api_rest_v1_messages_message_id_mark_unread_post
+      parameters:
+      - description: messageId
+        in: path
+        name: messageId
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebServiceMessage'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/WebServiceMessage'
+          description: Description was not specified
+        "201":
+          content: {}
+          description: Created
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: markUnread
+      tags:
+      - messages
+      x-openapi-router-controller: openapi_server.controllers.messages_controller
+    put:
+      deprecated: false
+      description: Marks a  message as unread
+      operationId: api_rest_v1_messages_message_id_mark_unread_put
+      parameters:
+      - description: messageId
+        in: path
+        name: messageId
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebServiceMessage'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/WebServiceMessage'
+          description: Description was not specified
+        "201":
+          content: {}
+          description: Created
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: markUnread
+      tags:
+      - messages
+      x-openapi-router-controller: openapi_server.controllers.messages_controller
+  /api/rest/v1/sms/send:
+    get:
+      deprecated: false
+      description: Returns an example of the data to POST to send a single message.
+      operationId: api_rest_v1_sms_send_get
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebServiceSendSmsRequest'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/WebServiceSendSmsRequest'
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: send
+      tags:
+      - sms
+      x-openapi-router-controller: openapi_server.controllers.sms_controller
+    post:
+      deprecated: false
+      description: Sends a single message. The <i>recipientNumber</i> and <i>message</i>
+        fields are required. All other fields are optional.
+      operationId: api_rest_v1_sms_send_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebServiceSendSmsRequest'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/WebServiceSendSmsRequest'
+        description: request
+        required: false
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebServiceSendSmsResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/WebServiceSendSmsResponse'
+          description: Description was not specified
+        "201":
+          content: {}
+          description: Created
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestErrorDTO'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/RestErrorDTO'
+          description: Validation error</br></br>Code and message:<ul><li>2 - Invalid
+            mobile number</li><li>3 - Message cannot be empty</li></ul>
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: send
+      tags:
+      - sms
+      x-codegen-request-body-name: body
+      x-openapi-router-controller: openapi_server.controllers.sms_controller
+  /api/rest/v1/sms/send-bulk:
+    get:
+      deprecated: false
+      description: Returns an example of the data to POST to send multiple messages
+        in one transaction.
+      operationId: api_rest_v1_sms_send_bulk_get
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebServiceSendSmsRequests'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/WebServiceSendSmsRequests'
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: send-bulk
+      tags:
+      - sms
+      x-openapi-router-controller: openapi_server.controllers.sms_controller
+    post:
+      deprecated: false
+      description: Send multiple messages in one transaction.
+      operationId: api_rest_v1_sms_send_bulk_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebServiceSendSmsRequests'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/WebServiceSendSmsRequests'
+        description: requests
+        required: false
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebServiceSendSmsResponses'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/WebServiceSendSmsResponses'
+          description: Description was not specified
+        "201":
+          content: {}
+          description: Created
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: send-bulk
+      tags:
+      - sms
+      x-codegen-request-body-name: body
+      x-openapi-router-controller: openapi_server.controllers.sms_controller
+  /api/rest/v1/sms/send-url-parameters:
+    get:
+      deprecated: false
+      description: Send a single message using URL parameters.The <i>recipientNumber</i>
+        and <i>message</i> parameters are required. All other parameters are optional.
+      operationId: api_rest_v1_sms_send_url_parameters_get
+      parameters:
+      - description: the phone number of the recipient to send to
+        in: query
+        name: recipientNumber
+        required: true
+        schema:
+          type: string
+      - description: the message to send
+        in: query
+        name: message
+        required: true
+        schema:
+          type: string
+      - description: "date format: yyyyMMddHHmm"
+        in: query
+        name: dateToSend
+        schema:
+          format: date-time
+          type: string
+      - description: optional campaign name
+        in: query
+        name: campaign
+        schema:
+          type: string
+      - description: optional extra data
+        in: query
+        name: dataField
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: string
+            application/xml:
+              schema:
+                type: string
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: send-url-parameters
+      tags:
+      - sms
+      x-openapi-router-controller: openapi_server.controllers.sms_controller
+    post:
+      deprecated: false
+      description: Send a single message using URL parameters.The <i>recipientNumber</i>
+        and <i>message</i> parameters are required. All other parameters are optional.
+      operationId: api_rest_v1_sms_send_url_parameters_post
+      parameters:
+      - description: the phone number of the recipient to send to
+        in: query
+        name: recipientNumber
+        required: true
+        schema:
+          type: string
+      - description: the message to send
+        in: query
+        name: message
+        required: true
+        schema:
+          type: string
+      - description: "date format: yyyyMMddHHmm"
+        in: query
+        name: dateToSend
+        schema:
+          format: date-time
+          type: string
+      - description: optional campaign name
+        in: query
+        name: campaign
+        schema:
+          type: string
+      - description: optional extra data
+        in: query
+        name: dataField
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: string
+            application/xml:
+              schema:
+                type: string
+          description: Description was not specified
+        "201":
+          content: {}
+          description: Created
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: send-url-parameters
+      tags:
+      - sms
+      x-openapi-router-controller: openapi_server.controllers.sms_controller
+  /api/rest/v1/sms/send-url/{token}:
+    get:
+      deprecated: false
+      description: 'Send a single message using your unique URL without having to
+        authenticate using your email address or REST API token. The token required
+        is the URL Sending token available on the developer setting page. The <i>recipientNumber</i>
+        and <i>message</i> parameters are required. All other parameters are optional.
+        Not that the token required here is '
+      operationId: api_rest_v1_sms_send_url_token_get
+      parameters:
+      - description: token
+        in: path
+        name: token
+        required: true
+        schema:
+          type: string
+      - description: the phone number of the recipient to send to
+        in: query
+        name: recipientNumber
+        required: true
+        schema:
+          type: string
+      - description: the message to send
+        in: query
+        name: message
+        required: true
+        schema:
+          type: string
+      - description: "date format: yyyyMMddHHmm"
+        in: query
+        name: dateToSend
+        schema:
+          format: date-time
+          type: string
+      - description: optional campaign name
+        in: query
+        name: campaign
+        schema:
+          type: string
+      - description: optional extra data
+        in: query
+        name: dataField
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: string
+            application/xml:
+              schema:
+                type: string
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: send-url
+      tags:
+      - sms
+      x-openapi-router-controller: openapi_server.controllers.sms_controller
+    post:
+      deprecated: false
+      description: 'Send a single message using your unique URL without having to
+        authenticate using your email address or REST API token. The token required
+        is the URL Sending token available on the developer setting page. The <i>recipientNumber</i>
+        and <i>message</i> parameters are required. All other parameters are optional.
+        Not that the token required here is '
+      operationId: api_rest_v1_sms_send_url_token_post
+      parameters:
+      - description: token
+        in: path
+        name: token
+        required: true
+        schema:
+          type: string
+      - description: the phone number of the recipient to send to
+        in: query
+        name: recipientNumber
+        required: true
+        schema:
+          type: string
+      - description: the message to send
+        in: query
+        name: message
+        required: true
+        schema:
+          type: string
+      - description: "date format: yyyyMMddHHmm"
+        in: query
+        name: dateToSend
+        schema:
+          format: date-time
+          type: string
+      - description: optional campaign name
+        in: query
+        name: campaign
+        schema:
+          type: string
+      - description: optional extra data
+        in: query
+        name: dataField
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: string
+            application/xml:
+              schema:
+                type: string
+          description: Description was not specified
+        "201":
+          content: {}
+          description: Created
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: send-url
+      tags:
+      - sms
+      x-openapi-router-controller: openapi_server.controllers.sms_controller
+  /api/rest/v1/templates/all:
+    get:
+      deprecated: false
+      description: Returns all templates
+      operationId: api_rest_v1_templates_all_get
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebServiceTemplates'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/WebServiceTemplates'
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: all
+      tags:
+      - templates
+      x-openapi-router-controller: openapi_server.controllers.templates_controller
+  /api/rest/v1/templates/{templateId}:
+    delete:
+      deprecated: false
+      description: Deletes a  template
+      operationId: api_rest_v1_templates_template_id_delete
+      parameters:
+      - description: templateId
+        in: path
+        name: templateId
+        required: true
+        schema:
+          format: int64
+          type: integer
+      responses:
+        "200":
+          content: {}
+          description: Description was not specified
+        "204":
+          content: {}
+          description: No Content
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+      summary: delete
+      tags:
+      - templates
+      x-openapi-router-controller: openapi_server.controllers.templates_controller
+    get:
+      deprecated: false
+      description: Returns details for a single template
+      operationId: api_rest_v1_templates_template_id_get
+      parameters:
+      - description: templateId
+        in: path
+        name: templateId
+        required: true
+        schema:
+          format: int64
+          type: integer
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebServiceTemplate'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/WebServiceTemplate'
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: get
+      tags:
+      - templates
+      x-openapi-router-controller: openapi_server.controllers.templates_controller
+  /api/rest/v1/voice/all:
+    get:
+      deprecated: false
+      description: Returns all voice messages
+      operationId: api_rest_v1_voice_all_get
+      parameters:
+      - description: number of elements to return at a time
+        in: query
+        name: pageSize
+        schema:
+          default: 100
+          format: int32
+          type: integer
+      - description: page number
+        in: query
+        name: page
+        schema:
+          default: 1
+          format: int32
+          type: integer
+      - description: filter by message status
+        in: query
+        name: status
+        schema:
+          enum:
+          - SCHEDULED
+          - UNKNOWN
+          - SENT
+          - FAILED
+          - FAILED_REFUNDED
+          - FAILED_OPTOUT
+          - DELIVERED
+          type: string
+      - description: "date format: yyyyMMdd"
+        in: query
+        name: fromDateTimeSent
+        schema:
+          format: date-time
+          type: string
+      - description: "date format: yyyyMMdd"
+        in: query
+        name: toDateTimeSent
+        schema:
+          format: date-time
+          type: string
+      - description: phone number the message was sent to
+        in: query
+        name: toNumber
+        schema:
+          type: string
+      - description: search matching message text
+        in: query
+        name: message
+        schema:
+          type: string
+      - description: search by campaign
+        in: query
+        name: campaign
+        schema:
+          type: string
+      - description: search by data field
+        in: query
+        name: dataField
+        schema:
+          type: string
+      - description: return only deleted / not deleted messages
+        in: query
+        name: deleted
+        schema:
+          type: boolean
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebServiceVoiceMessages'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/WebServiceVoiceMessages'
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: all
+      tags:
+      - voice
+      x-openapi-router-controller: openapi_server.controllers.voice_controller
+  /api/rest/v1/voice/single-audio:
+    post:
+      deprecated: false
+      description: "Send a single audio voice message to one recipient. Note, Content-Type\
+        \ header must be set to multipart/form-data for this request."
+      operationId: single_audio
+      parameters:
+      - description: the phone number of the recipient to send to
+        in: query
+        name: recipientNumber
+        required: true
+        schema:
+          type: string
+      - description: optional campaign name
+        in: query
+        name: campaign
+        schema:
+          type: string
+      - description: optional extra data
+        in: query
+        name: dataField
+        schema:
+          type: string
+      - description: optional number of times to retry unanswered call
+        in: query
+        name: retryCount
+        schema:
+          format: int32
+          type: integer
+      - description: optional minimum interval in minutes between retry attempts
+        in: query
+        name: retryMinimumInterval
+        schema:
+          format: int32
+          type: integer
+      - description: optional maximum interval in minutes between retry attempts
+        in: query
+        name: retryMaximumInterval
+        schema:
+          format: int32
+          type: integer
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/single_audio_request'
+        required: true
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebServiceSendVoiceMessageResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/WebServiceSendVoiceMessageResponse'
+          description: Description was not specified
+        "201":
+          content: {}
+          description: Created
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: single-audio
+      tags:
+      - voice
+      x-openapi-router-controller: openapi_server.controllers.voice_controller
+      x-codegen-request-body-name: body
+  /api/rest/v1/voice/single-text:
+    post:
+      deprecated: false
+      description: Send a single text voice message to one recipient
+      operationId: single_text
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebServiceVoiceMessageSendSingleTextRequest'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/WebServiceVoiceMessageSendSingleTextRequest'
+        description: request
+        required: false
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebServiceSendVoiceMessageResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/WebServiceSendVoiceMessageResponse'
+          description: Description was not specified
+        "201":
+          content: {}
+          description: Created
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: single-text
+      tags:
+      - voice
+      x-codegen-request-body-name: body
+      x-openapi-router-controller: openapi_server.controllers.voice_controller
+  /api/rest/v1/voice/{messageId}:
+    delete:
+      deprecated: false
+      description: Deletes a  message
+      operationId: api_rest_v1_voice_message_id_delete
+      parameters:
+      - description: messageId
+        in: path
+        name: messageId
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content: {}
+          description: Description was not specified
+        "204":
+          content: {}
+          description: No Content
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+      summary: delete
+      tags:
+      - voice
+      x-openapi-router-controller: openapi_server.controllers.voice_controller
+    get:
+      deprecated: false
+      description: Returns details for a single message
+      operationId: api_rest_v1_voice_message_id_get
+      parameters:
+      - description: messageId
+        in: path
+        name: messageId
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebServiceVoiceMessage'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/WebServiceVoiceMessage'
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: get
+      tags:
+      - voice
+      x-openapi-router-controller: openapi_server.controllers.voice_controller
+components:
+  schemas:
+    Link:
+      example:
+        templated: true
+        rel: rel
+        href: href
+      properties:
+        href:
+          title: href
+          type: string
+        rel:
+          title: rel
+          type: string
+        templated:
+          title: templated
+          type: boolean
+      title: Link
+      type: object
+    RestErrorDTO:
+      description: RestErrorDTO
+      example:
+        code: 0
+        developerMessage: developerMessage
+        moreInfoUrl: moreInfoUrl
+        message: message
+        status: status
+      properties:
+        code:
+          format: int32
+          title: code
+          type: integer
+        developerMessage:
+          title: developerMessage
+          type: string
+        message:
+          title: message
+          type: string
+        moreInfoUrl:
+          title: moreInfoUrl
+          type: string
+        status:
+          title: status
+          type: string
+      title: RestErrorDTO
+      type: object
+    Void:
+      type: object
+    WebServiceAccount:
+      description: WebServiceAccount
+      example:
+        links:
+        - templated: true
+          rel: rel
+          href: href
+        - templated: true
+          rel: rel
+          href: href
+        creditBalance: 0.8008281904610115
+      properties:
+        creditBalance:
+          format: double
+          title: creditBalance
+          type: number
+        links:
+          items:
+            $ref: '#/components/schemas/Link'
+          title: links
+          type: array
+      title: WebServiceAccount
+      type: object
+    WebServiceAccountStatistics:
+      description: WebServiceAccountStatistics
+      example:
+        grandTotal:
+          total: 2.3021358869347655
+          delivered: 0.8008281904610115
+          failed: 6.027456183070403
+          failedOptout: 1.4658129805029452
+          failedRefunded: 5.962133916683182
+          sent: 5.637376656633329
+        showingCreditValue: true
+        from: 2000-01-23T04:56:07.000+00:00
+        to: 2000-01-23T04:56:07.000+00:00
+        users:
+        - total:
+            total: 2.3021358869347655
+            delivered: 0.8008281904610115
+            failed: 6.027456183070403
+            failedOptout: 1.4658129805029452
+            failedRefunded: 5.962133916683182
+            sent: 5.637376656633329
+          campaigns:
+          - campaign: campaign
+            statistics:
+              total: 2.3021358869347655
+              delivered: 0.8008281904610115
+              failed: 6.027456183070403
+              failedOptout: 1.4658129805029452
+              failedRefunded: 5.962133916683182
+              sent: 5.637376656633329
+          - campaign: campaign
+            statistics:
+              total: 2.3021358869347655
+              delivered: 0.8008281904610115
+              failed: 6.027456183070403
+              failedOptout: 1.4658129805029452
+              failedRefunded: 5.962133916683182
+              sent: 5.637376656633329
+          user:
+            firstName: firstName
+            lastName: lastName
+            emailAddress: emailAddress
+            password: password
+            contactNumber: contactNumber
+            company: company
+            userId: 9
+            creditBalance: 7.061401241503109
+        - total:
+            total: 2.3021358869347655
+            delivered: 0.8008281904610115
+            failed: 6.027456183070403
+            failedOptout: 1.4658129805029452
+            failedRefunded: 5.962133916683182
+            sent: 5.637376656633329
+          campaigns:
+          - campaign: campaign
+            statistics:
+              total: 2.3021358869347655
+              delivered: 0.8008281904610115
+              failed: 6.027456183070403
+              failedOptout: 1.4658129805029452
+              failedRefunded: 5.962133916683182
+              sent: 5.637376656633329
+          - campaign: campaign
+            statistics:
+              total: 2.3021358869347655
+              delivered: 0.8008281904610115
+              failed: 6.027456183070403
+              failedOptout: 1.4658129805029452
+              failedRefunded: 5.962133916683182
+              sent: 5.637376656633329
+          user:
+            firstName: firstName
+            lastName: lastName
+            emailAddress: emailAddress
+            password: password
+            contactNumber: contactNumber
+            company: company
+            userId: 9
+            creditBalance: 7.061401241503109
+      properties:
+        from:
+          format: date-time
+          title: from
+          type: string
+        grandTotal:
+          $ref: '#/components/schemas/WebServiceStatistics'
+        showingCreditValue:
+          title: showingCreditValue
+          type: boolean
+        to:
+          format: date-time
+          title: to
+          type: string
+        users:
+          items:
+            $ref: '#/components/schemas/WebServiceUserStatistics'
+          title: users
+          type: array
+      title: WebServiceAccountStatistics
+      type: object
+    WebServiceAnalyseMessageRequestMessageAndRecipientNumber:
+      description: WebServiceAnalyseMessageRequest
+      example:
+        message: message
+        recipientNumber: recipientNumber
+      properties:
+        message:
+          title: message
+          type: string
+        recipientNumber:
+          title: recipientNumber
+          type: string
+      title: WebServiceAnalyseMessageRequestMessageAndRecipientNumber
+      type: object
+    WebServiceAnalyseMessageRequestMessageOnly:
+      description: WebServiceAnalyseMessageRequest
+      example:
+        message: message
+        recipientNumber: recipientNumber
+      properties:
+        message:
+          title: message
+          type: string
+        recipientNumber:
+          title: recipientNumber
+          type: string
+      title: WebServiceAnalyseMessageRequestMessageOnly
+      type: object
+    WebServiceAnalyseMessageResponse:
+      description: WebServiceAnalyseMessageResponse
+      example:
+        characterAnalysis:
+        - - "{}"
+          - "{}"
+        - - "{}"
+          - "{}"
+        messageLength: 6
+        messageEncoding: messageEncoding
+        numberOfMessages: 1
+        messageLengthWithinMaximumAllowed: true
+        messageCreditCost: 0.8008281904610115
+      properties:
+        characterAnalysis:
+          items:
+            items:
+              type: object
+            type: array
+          title: characterAnalysis
+          type: array
+        messageCreditCost:
+          format: double
+          title: messageCreditCost
+          type: number
+        messageEncoding:
+          title: messageEncoding
+          type: string
+        messageLength:
+          format: int32
+          title: messageLength
+          type: integer
+        messageLengthWithinMaximumAllowed:
+          title: messageLengthWithinMaximumAllowed
+          type: boolean
+        numberOfMessages:
+          format: int32
+          title: numberOfMessages
+          type: integer
+      title: WebServiceAnalyseMessageResponse
+      type: object
+    WebServiceCampaignStatistics:
+      description: WebServiceCampaignStatistics
+      example:
+        campaign: campaign
+        statistics:
+          total: 2.3021358869347655
+          delivered: 0.8008281904610115
+          failed: 6.027456183070403
+          failedOptout: 1.4658129805029452
+          failedRefunded: 5.962133916683182
+          sent: 5.637376656633329
+      properties:
+        campaign:
+          title: campaign
+          type: string
+        statistics:
+          $ref: '#/components/schemas/WebServiceStatistics'
+      title: WebServiceCampaignStatistics
+      type: object
+    WebServiceContact:
+      description: WebServiceContact
+      example:
+        firstName: firstName
+        lastName: lastName
+        contactId: contactId
+        contactNumber: contactNumber
+        links:
+        - templated: true
+          rel: rel
+          href: href
+        - templated: true
+          rel: rel
+          href: href
+        title: title
+      properties:
+        contactId:
+          title: contactId
+          type: string
+        contactNumber:
+          title: contactNumber
+          type: string
+        firstName:
+          title: firstName
+          type: string
+        lastName:
+          title: lastName
+          type: string
+        links:
+          items:
+            $ref: '#/components/schemas/Link'
+          title: links
+          type: array
+        title:
+          title: title
+          type: string
+      title: WebServiceContact
+      type: object
+    WebServiceContactLink:
+      description: WebServiceContactLink
+      example:
+        contactId: contactId
+        links:
+        - templated: true
+          rel: rel
+          href: href
+        - templated: true
+          rel: rel
+          href: href
+      properties:
+        contactId:
+          title: contactId
+          type: string
+        links:
+          items:
+            $ref: '#/components/schemas/Link'
+          title: links
+          type: array
+      title: WebServiceContactLink
+      type: object
+    WebServiceContacts:
+      description: WebServiceContacts
+      example:
+        webServiceContacts:
+        - firstName: firstName
+          lastName: lastName
+          contactId: contactId
+          contactNumber: contactNumber
+          links:
+          - templated: true
+            rel: rel
+            href: href
+          - templated: true
+            rel: rel
+            href: href
+          title: title
+        - firstName: firstName
+          lastName: lastName
+          contactId: contactId
+          contactNumber: contactNumber
+          links:
+          - templated: true
+            rel: rel
+            href: href
+          - templated: true
+            rel: rel
+            href: href
+          title: title
+        links:
+        - templated: true
+          rel: rel
+          href: href
+        - templated: true
+          rel: rel
+          href: href
+      properties:
+        links:
+          items:
+            $ref: '#/components/schemas/Link'
+          title: links
+          type: array
+        webServiceContacts:
+          items:
+            $ref: '#/components/schemas/WebServiceContact'
+          title: webServiceContacts
+          type: array
+      title: WebServiceContacts
+      type: object
+    WebServiceGroup:
+      description: WebServiceGroup
+      example:
+        groupId: groupId
+        name: name
+        links:
+        - templated: true
+          rel: rel
+          href: href
+        - templated: true
+          rel: rel
+          href: href
+      properties:
+        groupId:
+          title: groupId
+          type: string
+        links:
+          items:
+            $ref: '#/components/schemas/Link'
+          title: links
+          type: array
+        name:
+          title: name
+          type: string
+      title: WebServiceGroup
+      type: object
+    WebServiceGroups:
+      description: WebServiceGroups
+      example:
+        webServiceGroups:
+        - groupId: groupId
+          name: name
+          links:
+          - templated: true
+            rel: rel
+            href: href
+          - templated: true
+            rel: rel
+            href: href
+        - groupId: groupId
+          name: name
+          links:
+          - templated: true
+            rel: rel
+            href: href
+          - templated: true
+            rel: rel
+            href: href
+        links:
+        - templated: true
+          rel: rel
+          href: href
+        - templated: true
+          rel: rel
+          href: href
+      properties:
+        links:
+          items:
+            $ref: '#/components/schemas/Link'
+          title: links
+          type: array
+        webServiceGroups:
+          items:
+            $ref: '#/components/schemas/WebServiceGroup'
+          title: webServiceGroups
+          type: array
+      title: WebServiceGroups
+      type: object
+    WebServiceMessage:
+      description: WebServiceMessage
+      example:
+        read: true
+        repliedToMessage:
+          messageId: messageId
+          links:
+          - templated: true
+            rel: rel
+            href: href
+          - templated: true
+            rel: rel
+            href: href
+        userDataField: userDataField
+        dateTimeSent: 2000-01-23T04:56:07.000+00:00
+        messageId: messageId
+        message: message
+        dateTimeReceived: 2000-01-23T04:56:07.000+00:00
+        dateTimeScheduled: 2000-01-23T04:56:07.000+00:00
+        fromNumber: fromNumber
+        messageStatus: messageStatus
+        creditCost: 2.3021358869347655
+        deleted: true
+        messageType: messageType
+        contact:
+          contactId: contactId
+          links:
+          - templated: true
+            rel: rel
+            href: href
+          - templated: true
+            rel: rel
+            href: href
+        campaign: campaign
+        links:
+        - templated: true
+          rel: rel
+          href: href
+        - templated: true
+          rel: rel
+          href: href
+        numberOfMessages: 7
+        toNumber: toNumber
+      properties:
+        campaign:
+          title: campaign
+          type: string
+        contact:
+          $ref: '#/components/schemas/WebServiceContactLink'
+        creditCost:
+          format: double
+          title: creditCost
+          type: number
+        dateTimeReceived:
+          format: date-time
+          title: dateTimeReceived
+          type: string
+        dateTimeScheduled:
+          format: date-time
+          title: dateTimeScheduled
+          type: string
+        dateTimeSent:
+          format: date-time
+          title: dateTimeSent
+          type: string
+        deleted:
+          title: deleted
+          type: boolean
+        fromNumber:
+          title: fromNumber
+          type: string
+        links:
+          items:
+            $ref: '#/components/schemas/Link'
+          title: links
+          type: array
+        message:
+          title: message
+          type: string
+        messageId:
+          title: messageId
+          type: string
+        messageStatus:
+          title: messageStatus
+          type: string
+        messageType:
+          title: messageType
+          type: string
+        numberOfMessages:
+          format: int32
+          title: numberOfMessages
+          type: integer
+        read:
+          title: read
+          type: boolean
+        repliedToMessage:
+          $ref: '#/components/schemas/WebServiceMessageLink'
+        toNumber:
+          title: toNumber
+          type: string
+        userDataField:
+          title: userDataField
+          type: string
+      title: WebServiceMessage
+      type: object
+    WebServiceMessageLink:
+      description: WebServiceMessageLink
+      example:
+        messageId: messageId
+        links:
+        - templated: true
+          rel: rel
+          href: href
+        - templated: true
+          rel: rel
+          href: href
+      properties:
+        links:
+          items:
+            $ref: '#/components/schemas/Link'
+          title: links
+          type: array
+        messageId:
+          title: messageId
+          type: string
+      title: WebServiceMessageLink
+      type: object
+    WebServiceMessages:
+      description: WebServiceMessages
+      example:
+        webServiceMessages:
+        - read: true
+          repliedToMessage:
+            messageId: messageId
+            links:
+            - templated: true
+              rel: rel
+              href: href
+            - templated: true
+              rel: rel
+              href: href
+          userDataField: userDataField
+          dateTimeSent: 2000-01-23T04:56:07.000+00:00
+          messageId: messageId
+          message: message
+          dateTimeReceived: 2000-01-23T04:56:07.000+00:00
+          dateTimeScheduled: 2000-01-23T04:56:07.000+00:00
+          fromNumber: fromNumber
+          messageStatus: messageStatus
+          creditCost: 2.3021358869347655
+          deleted: true
+          messageType: messageType
+          contact:
+            contactId: contactId
+            links:
+            - templated: true
+              rel: rel
+              href: href
+            - templated: true
+              rel: rel
+              href: href
+          campaign: campaign
+          links:
+          - templated: true
+            rel: rel
+            href: href
+          - templated: true
+            rel: rel
+            href: href
+          numberOfMessages: 7
+          toNumber: toNumber
+        - read: true
+          repliedToMessage:
+            messageId: messageId
+            links:
+            - templated: true
+              rel: rel
+              href: href
+            - templated: true
+              rel: rel
+              href: href
+          userDataField: userDataField
+          dateTimeSent: 2000-01-23T04:56:07.000+00:00
+          messageId: messageId
+          message: message
+          dateTimeReceived: 2000-01-23T04:56:07.000+00:00
+          dateTimeScheduled: 2000-01-23T04:56:07.000+00:00
+          fromNumber: fromNumber
+          messageStatus: messageStatus
+          creditCost: 2.3021358869347655
+          deleted: true
+          messageType: messageType
+          contact:
+            contactId: contactId
+            links:
+            - templated: true
+              rel: rel
+              href: href
+            - templated: true
+              rel: rel
+              href: href
+          campaign: campaign
+          links:
+          - templated: true
+            rel: rel
+            href: href
+          - templated: true
+            rel: rel
+            href: href
+          numberOfMessages: 7
+          toNumber: toNumber
+        elements: 0
+        totalPages: 5
+        pageSize: 1
+        links:
+        - templated: true
+          rel: rel
+          href: href
+        - templated: true
+          rel: rel
+          href: href
+        page: 6
+        totalElements: 5
+      properties:
+        elements:
+          format: int32
+          title: elements
+          type: integer
+        links:
+          items:
+            $ref: '#/components/schemas/Link'
+          title: links
+          type: array
+        page:
+          format: int32
+          title: page
+          type: integer
+        pageSize:
+          format: int32
+          title: pageSize
+          type: integer
+        totalElements:
+          format: int64
+          title: totalElements
+          type: integer
+        totalPages:
+          format: int32
+          title: totalPages
+          type: integer
+        webServiceMessages:
+          items:
+            $ref: '#/components/schemas/WebServiceMessage'
+          title: webServiceMessages
+          type: array
+      title: WebServiceMessages
+      type: object
+    WebServiceSendSmsRequest:
+      description: WebServiceSendSmsRequest
+      example:
+        dataField: dataField
+        dateToSend: 2000-01-23T04:56:07.000+00:00
+        campaign: campaign
+        message: message
+        recipientNumber: recipientNumber
+      properties:
+        campaign:
+          title: campaign
+          type: string
+        dataField:
+          title: dataField
+          type: string
+        dateToSend:
+          format: date-time
+          title: dateToSend
+          type: string
+        message:
+          title: message
+          type: string
+        recipientNumber:
+          title: recipientNumber
+          type: string
+      title: WebServiceSendSmsRequest
+      type: object
+    WebServiceSendSmsRequests:
+      description: WebServiceSendSmsRequests
+      example:
+        sendSmsRequests:
+        - dataField: dataField
+          dateToSend: 2000-01-23T04:56:07.000+00:00
+          campaign: campaign
+          message: message
+          recipientNumber: recipientNumber
+        - dataField: dataField
+          dateToSend: 2000-01-23T04:56:07.000+00:00
+          campaign: campaign
+          message: message
+          recipientNumber: recipientNumber
+        defaultDateToSend: 2000-01-23T04:56:07.000+00:00
+        messagesPerMinute: 0
+      properties:
+        defaultDateToSend:
+          format: date-time
+          title: defaultDateToSend
+          type: string
+        messagesPerMinute:
+          format: int32
+          title: messagesPerMinute
+          type: integer
+        sendSmsRequests:
+          items:
+            $ref: '#/components/schemas/WebServiceSendSmsRequest'
+          title: sendSmsRequests
+          type: array
+      title: WebServiceSendSmsRequests
+      type: object
+    WebServiceSendSmsResponse:
+      description: WebServiceSendSmsResponse
+      example:
+        messageId: messageId
+        error: error
+      properties:
+        error:
+          title: error
+          type: string
+        messageId:
+          title: messageId
+          type: string
+      title: WebServiceSendSmsResponse
+      type: object
+    WebServiceSendSmsResponses:
+      description: WebServiceSendSmsResponses
+      example:
+        sendSmsResponses:
+        - messageId: messageId
+          error: error
+        - messageId: messageId
+          error: error
+      properties:
+        sendSmsResponses:
+          items:
+            $ref: '#/components/schemas/WebServiceSendSmsResponse'
+          title: sendSmsResponses
+          type: array
+      title: WebServiceSendSmsResponses
+      type: object
+    WebServiceSendVoiceMessageResponse:
+      description: WebServiceSendVoiceMessageResponse
+      example:
+        error: error
+        voiceMessageId: voiceMessageId
+      properties:
+        error:
+          title: error
+          type: string
+        voiceMessageId:
+          title: voiceMessageId
+          type: string
+      title: WebServiceSendVoiceMessageResponse
+      type: object
+    WebServiceStatistics:
+      description: WebServiceStatistics
+      example:
+        total: 2.3021358869347655
+        delivered: 0.8008281904610115
+        failed: 6.027456183070403
+        failedOptout: 1.4658129805029452
+        failedRefunded: 5.962133916683182
+        sent: 5.637376656633329
+      properties:
+        delivered:
+          format: double
+          title: delivered
+          type: number
+        failed:
+          format: double
+          title: failed
+          type: number
+        failedOptout:
+          format: double
+          title: failedOptout
+          type: number
+        failedRefunded:
+          format: double
+          title: failedRefunded
+          type: number
+        sent:
+          format: double
+          title: sent
+          type: number
+        total:
+          format: double
+          title: total
+          type: number
+      title: WebServiceStatistics
+      type: object
+    WebServiceTemplate:
+      description: WebServiceTemplate
+      example:
+        data: data
+        name: name
+        links:
+        - templated: true
+          rel: rel
+          href: href
+        - templated: true
+          rel: rel
+          href: href
+        templateId: 0
+      properties:
+        data:
+          title: data
+          type: string
+        links:
+          items:
+            $ref: '#/components/schemas/Link'
+          title: links
+          type: array
+        name:
+          title: name
+          type: string
+        templateId:
+          format: int64
+          title: templateId
+          type: integer
+      title: WebServiceTemplate
+      type: object
+    WebServiceTemplates:
+      description: WebServiceTemplates
+      example:
+        links:
+        - templated: true
+          rel: rel
+          href: href
+        - templated: true
+          rel: rel
+          href: href
+        webServiceTemplates:
+        - data: data
+          name: name
+          links:
+          - templated: true
+            rel: rel
+            href: href
+          - templated: true
+            rel: rel
+            href: href
+          templateId: 0
+        - data: data
+          name: name
+          links:
+          - templated: true
+            rel: rel
+            href: href
+          - templated: true
+            rel: rel
+            href: href
+          templateId: 0
+      properties:
+        links:
+          items:
+            $ref: '#/components/schemas/Link'
+          title: links
+          type: array
+        webServiceTemplates:
+          items:
+            $ref: '#/components/schemas/WebServiceTemplate'
+          title: webServiceTemplates
+          type: array
+      title: WebServiceTemplates
+      type: object
+    WebServiceTransferCreditsRequest:
+      description: WebServiceTransferCreditsRequest
+      example:
+        numberOfCreditsToTransfer: 0
+        transferFromEmailAddress: transferFromEmailAddress
+        transferToEmailAddress: transferToEmailAddress
+      properties:
+        numberOfCreditsToTransfer:
+          format: int32
+          title: numberOfCreditsToTransfer
+          type: integer
+        transferFromEmailAddress:
+          title: transferFromEmailAddress
+          type: string
+        transferToEmailAddress:
+          title: transferToEmailAddress
+          type: string
+      title: WebServiceTransferCreditsRequest
+      type: object
+    WebServiceUser:
+      description: WebServiceUser
+      example:
+        firstName: firstName
+        lastName: lastName
+        emailAddress: emailAddress
+        password: password
+        contactNumber: contactNumber
+        company: company
+        userId: 9
+        creditBalance: 7.061401241503109
+      properties:
+        company:
+          title: company
+          type: string
+        contactNumber:
+          title: contactNumber
+          type: string
+        creditBalance:
+          format: double
+          title: creditBalance
+          type: number
+        emailAddress:
+          title: emailAddress
+          type: string
+        firstName:
+          title: firstName
+          type: string
+        lastName:
+          title: lastName
+          type: string
+        password:
+          title: password
+          type: string
+        userId:
+          format: int64
+          title: userId
+          type: integer
+      title: WebServiceUser
+      type: object
+    WebServiceUserStatistics:
+      description: WebServiceUserStatistics
+      example:
+        total:
+          total: 2.3021358869347655
+          delivered: 0.8008281904610115
+          failed: 6.027456183070403
+          failedOptout: 1.4658129805029452
+          failedRefunded: 5.962133916683182
+          sent: 5.637376656633329
+        campaigns:
+        - campaign: campaign
+          statistics:
+            total: 2.3021358869347655
+            delivered: 0.8008281904610115
+            failed: 6.027456183070403
+            failedOptout: 1.4658129805029452
+            failedRefunded: 5.962133916683182
+            sent: 5.637376656633329
+        - campaign: campaign
+          statistics:
+            total: 2.3021358869347655
+            delivered: 0.8008281904610115
+            failed: 6.027456183070403
+            failedOptout: 1.4658129805029452
+            failedRefunded: 5.962133916683182
+            sent: 5.637376656633329
+        user:
+          firstName: firstName
+          lastName: lastName
+          emailAddress: emailAddress
+          password: password
+          contactNumber: contactNumber
+          company: company
+          userId: 9
+          creditBalance: 7.061401241503109
+      properties:
+        campaigns:
+          items:
+            $ref: '#/components/schemas/WebServiceCampaignStatistics'
+          title: campaigns
+          type: array
+        total:
+          $ref: '#/components/schemas/WebServiceStatistics'
+        user:
+          $ref: '#/components/schemas/WebServiceUser'
+      title: WebServiceUserStatistics
+      type: object
+    WebServiceUsers:
+      description: WebServiceUsers
+      example:
+        webServiceUserList:
+        - firstName: firstName
+          lastName: lastName
+          emailAddress: emailAddress
+          password: password
+          contactNumber: contactNumber
+          company: company
+          userId: 9
+          creditBalance: 7.061401241503109
+        - firstName: firstName
+          lastName: lastName
+          emailAddress: emailAddress
+          password: password
+          contactNumber: contactNumber
+          company: company
+          userId: 9
+          creditBalance: 7.061401241503109
+      properties:
+        webServiceUserList:
+          items:
+            $ref: '#/components/schemas/WebServiceUser'
+          title: webServiceUserList
+          type: array
+      title: WebServiceUsers
+      type: object
+    WebServiceVoiceMessage:
+      description: WebServiceVoiceMessage
+      example:
+        messageStatus: messageStatus
+        deleted: true
+        audioFileUrl: audioFileUrl
+        userDataField: userDataField
+        dateTimeSent: 2000-01-23T04:56:07.000+00:00
+        campaign: campaign
+        language: language
+        links:
+        - templated: true
+          rel: rel
+          href: href
+        - templated: true
+          rel: rel
+          href: href
+        message: message
+        toNumber: toNumber
+        voiceMessageId: voiceMessageId
+      properties:
+        audioFileUrl:
+          title: audioFileUrl
+          type: string
+        campaign:
+          title: campaign
+          type: string
+        dateTimeSent:
+          format: date-time
+          title: dateTimeSent
+          type: string
+        deleted:
+          title: deleted
+          type: boolean
+        language:
+          title: language
+          type: string
+        links:
+          items:
+            $ref: '#/components/schemas/Link'
+          title: links
+          type: array
+        message:
+          title: message
+          type: string
+        messageStatus:
+          title: messageStatus
+          type: string
+        toNumber:
+          title: toNumber
+          type: string
+        userDataField:
+          title: userDataField
+          type: string
+        voiceMessageId:
+          title: voiceMessageId
+          type: string
+      title: WebServiceVoiceMessage
+      type: object
+    WebServiceVoiceMessageSendSingleTextRequest:
+      description: WebServiceVoiceMessageSendSingleTextRequest
+      example:
+        dataField: dataField
+        retryMinimumInterval: 1
+        retryMaximumInterval: 6
+        retryCount: 0
+        campaign: campaign
+        language: language
+        message: message
+        recipientNumber: recipientNumber
+      properties:
+        campaign:
+          title: campaign
+          type: string
+        dataField:
+          title: dataField
+          type: string
+        language:
+          title: language
+          type: string
+        message:
+          title: message
+          type: string
+        recipientNumber:
+          title: recipientNumber
+          type: string
+        retryCount:
+          format: int32
+          title: retryCount
+          type: integer
+        retryMaximumInterval:
+          format: int32
+          title: retryMaximumInterval
+          type: integer
+        retryMinimumInterval:
+          format: int32
+          title: retryMinimumInterval
+          type: integer
+      title: WebServiceVoiceMessageSendSingleTextRequest
+      type: object
+    WebServiceVoiceMessages:
+      description: WebServiceVoiceMessages
+      example:
+        elements: 0
+        totalPages: 5
+        messages:
+        - messageStatus: messageStatus
+          deleted: true
+          audioFileUrl: audioFileUrl
+          userDataField: userDataField
+          dateTimeSent: 2000-01-23T04:56:07.000+00:00
+          campaign: campaign
+          language: language
+          links:
+          - templated: true
+            rel: rel
+            href: href
+          - templated: true
+            rel: rel
+            href: href
+          message: message
+          toNumber: toNumber
+          voiceMessageId: voiceMessageId
+        - messageStatus: messageStatus
+          deleted: true
+          audioFileUrl: audioFileUrl
+          userDataField: userDataField
+          dateTimeSent: 2000-01-23T04:56:07.000+00:00
+          campaign: campaign
+          language: language
+          links:
+          - templated: true
+            rel: rel
+            href: href
+          - templated: true
+            rel: rel
+            href: href
+          message: message
+          toNumber: toNumber
+          voiceMessageId: voiceMessageId
+        pageSize: 1
+        links:
+        - templated: true
+          rel: rel
+          href: href
+        - templated: true
+          rel: rel
+          href: href
+        page: 6
+        totalElements: 5
+      properties:
+        elements:
+          format: int32
+          title: elements
+          type: integer
+        links:
+          items:
+            $ref: '#/components/schemas/Link'
+          title: links
+          type: array
+        messages:
+          items:
+            $ref: '#/components/schemas/WebServiceVoiceMessage'
+          title: messages
+          type: array
+        page:
+          format: int32
+          title: page
+          type: integer
+        pageSize:
+          format: int32
+          title: pageSize
+          type: integer
+        totalElements:
+          format: int64
+          title: totalElements
+          type: integer
+        totalPages:
+          format: int32
+          title: totalPages
+          type: integer
+      title: WebServiceVoiceMessages
+      type: object
+    single_audio_request:
+      properties:
+        file:
+          description: "audio file to play, supports MP3 or WAV format"
+          format: binary
+          type: string
+      required:
+      - file
+      type: object
+  securitySchemes:
+    email:
+      in: header
+      name: email
+      type: apiKey
+      x-apikeyInfoFunc: openapi_server.controllers.security_controller.info_from_email
+    token:
+      in: header
+      name: token
+      type: apiKey
+      x-apikeyInfoFunc: openapi_server.controllers.security_controller.info_from_token
+x-original-swagger-version: "2.0"

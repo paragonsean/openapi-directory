@@ -1,0 +1,109 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIAction.h \
+    $${PWD}/OAIAggregateOffer.h \
+    $${PWD}/OAIAggregateRating.h \
+    $${PWD}/OAICreativeWork.h \
+    $${PWD}/OAICropArea.h \
+    $${PWD}/OAIError.h \
+    $${PWD}/OAIErrorResponse.h \
+    $${PWD}/OAIFilters.h \
+    $${PWD}/OAIIdentifiable.h \
+    $${PWD}/OAIImageAction.h \
+    $${PWD}/OAIImageEntityAction.h \
+    $${PWD}/OAIImageInfo.h \
+    $${PWD}/OAIImageKnowledge.h \
+    $${PWD}/OAIImageModuleAction.h \
+    $${PWD}/OAIImageObject.h \
+    $${PWD}/OAIImageRecipesAction.h \
+    $${PWD}/OAIImageRelatedSearchesAction.h \
+    $${PWD}/OAIImageShoppingSourcesAction.h \
+    $${PWD}/OAIImageTag.h \
+    $${PWD}/OAIImageTagRegion.h \
+    $${PWD}/OAIImagesImageMetadata.h \
+    $${PWD}/OAIImagesModule.h \
+    $${PWD}/OAIImages_VisualSearch_request.h \
+    $${PWD}/OAIIntangible.h \
+    $${PWD}/OAIKnowledgeRequest.h \
+    $${PWD}/OAIMediaObject.h \
+    $${PWD}/OAINormalizedQuadrilateral.h \
+    $${PWD}/OAIOffer.h \
+    $${PWD}/OAIOrganization.h \
+    $${PWD}/OAIPerson.h \
+    $${PWD}/OAIPoint2D.h \
+    $${PWD}/OAIPropertiesItem.h \
+    $${PWD}/OAIQuery.h \
+    $${PWD}/OAIRating.h \
+    $${PWD}/OAIRecipe.h \
+    $${PWD}/OAIRecipesModule.h \
+    $${PWD}/OAIRelatedSearchesModule.h \
+    $${PWD}/OAIResponse.h \
+    $${PWD}/OAIResponseBase.h \
+    $${PWD}/OAIStructuredValue.h \
+    $${PWD}/OAIThing.h \
+    $${PWD}/OAIVisualSearchRequest.h \
+# APIs
+    $${PWD}/OAIImageVisualSearchApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIAction.cpp \
+    $${PWD}/OAIAggregateOffer.cpp \
+    $${PWD}/OAIAggregateRating.cpp \
+    $${PWD}/OAICreativeWork.cpp \
+    $${PWD}/OAICropArea.cpp \
+    $${PWD}/OAIError.cpp \
+    $${PWD}/OAIErrorResponse.cpp \
+    $${PWD}/OAIFilters.cpp \
+    $${PWD}/OAIIdentifiable.cpp \
+    $${PWD}/OAIImageAction.cpp \
+    $${PWD}/OAIImageEntityAction.cpp \
+    $${PWD}/OAIImageInfo.cpp \
+    $${PWD}/OAIImageKnowledge.cpp \
+    $${PWD}/OAIImageModuleAction.cpp \
+    $${PWD}/OAIImageObject.cpp \
+    $${PWD}/OAIImageRecipesAction.cpp \
+    $${PWD}/OAIImageRelatedSearchesAction.cpp \
+    $${PWD}/OAIImageShoppingSourcesAction.cpp \
+    $${PWD}/OAIImageTag.cpp \
+    $${PWD}/OAIImageTagRegion.cpp \
+    $${PWD}/OAIImagesImageMetadata.cpp \
+    $${PWD}/OAIImagesModule.cpp \
+    $${PWD}/OAIImages_VisualSearch_request.cpp \
+    $${PWD}/OAIIntangible.cpp \
+    $${PWD}/OAIKnowledgeRequest.cpp \
+    $${PWD}/OAIMediaObject.cpp \
+    $${PWD}/OAINormalizedQuadrilateral.cpp \
+    $${PWD}/OAIOffer.cpp \
+    $${PWD}/OAIOrganization.cpp \
+    $${PWD}/OAIPerson.cpp \
+    $${PWD}/OAIPoint2D.cpp \
+    $${PWD}/OAIPropertiesItem.cpp \
+    $${PWD}/OAIQuery.cpp \
+    $${PWD}/OAIRating.cpp \
+    $${PWD}/OAIRecipe.cpp \
+    $${PWD}/OAIRecipesModule.cpp \
+    $${PWD}/OAIRelatedSearchesModule.cpp \
+    $${PWD}/OAIResponse.cpp \
+    $${PWD}/OAIResponseBase.cpp \
+    $${PWD}/OAIStructuredValue.cpp \
+    $${PWD}/OAIThing.cpp \
+    $${PWD}/OAIVisualSearchRequest.cpp \
+# APIs
+    $${PWD}/OAIImageVisualSearchApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

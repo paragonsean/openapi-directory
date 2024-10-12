@@ -1,0 +1,9 @@
+# HealthRepositoryProviderSpecificationsForHiu.OpenIdConfiguration
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**jwksUri** | **String** |  | [optional] 
+
+

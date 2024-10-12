@@ -1,0 +1,198 @@
+openapi: 3.0.0
+info:
+  contact:
+    email: hello@paypi.dev
+    name: PayPI
+    url: https://paypi.dev
+    x-logo: https://paypi-default-images.s3.eu-west-1.amazonaws.com/EV-Img.png
+    x-twitter: paypi_uk
+  description: "OTP email verification API by PayPI. <br/><br/>\nEmailVerify provides\
+    \ a simple way to verify email addresses. We send emails ourselves taking the\
+    \ burden of setting up email systems and tracking codes. <br/><br/>\nTo learn\
+    \ more about this API, check out [EmailVerify documentation](https://emailverify.paypi.dev/)\
+    \ <br/><br/>\n\n## Authentication\nAll requests to the EmailVerify API must be\
+    \ authenticated with an API Key. To get an API key, subscribe to the EmailVerify\
+    \ [here](https://app.paypi.dev/subscribe/c2VydmljZTo1OGQxZDNmMy05OWQ5LTQ3ZjYtOWJkNi02OWNkMTY1OGFmOWU=).\
+    \  \\\nSet your `Authorization` header to `Bearer YOUR-API-KEY`. \n```\ncurl\n\
+    -H \"Content-Type: application/json\" \\\n-H \"Authorization: Bearer YOUR-API-KEY\"\
+    \ \\\n...\n```\n"
+  title: EmailVerify
+  version: 1.0.0
+  x-apisguru-categories:
+  - email
+  x-logo:
+    url: https://paypi-default-images.s3.eu-west-1.amazonaws.com/EV-Img.png
+  x-origin:
+  - format: openapi
+    url: https://paypi-default-images.s3.eu-west-1.amazonaws.com/openapi.yaml
+    version: "3.0"
+  x-providerName: paypi.dev
+servers:
+- url: https://ev.apis.paypi.dev
+security:
+- bearerAuth: []
+paths:
+  /checkCode:
+    post:
+      description: "Checks the user's emailed code is valid. \nIf this returns success=true,\
+        \ you can safely assume the user you are interacting with is the owner of\
+        \ that email address.\n"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/_checkCode_post_request'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              examples:
+                Invalid Code:
+                  value:
+                    message: Given code is not valid
+                    success: false
+                Success:
+                  value:
+                    message: email successfully verified
+                    success: true
+              schema:
+                $ref: '#/components/schemas/_checkCode_post_200_response'
+          description: |
+            If success is true, the user has given the correct code. If not the code is incorrect. \
+            Check the message for more information
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/_checkCode_post_401_response'
+          description: |
+            #### Invalid API key
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/_checkCode_post_403_response'
+          description: "#### Tries for this email exceeded. \nTo prevent abuse and\
+            \ brute forcing, we limit the number of checkCode requests for each email\
+            \ address to 20. \\\nThis means if more than 20 requests are made you\
+            \ will have to send another code to your user, this will reset the limit.\n"
+      summary: Check verification code
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+  /sendCode:
+    post:
+      description: "This request send's a code to the given email address, which should\
+        \ be returned to check it is correct."
+      requestBody:
+        content:
+          application/json:
+            example:
+              email: test@test.com
+            schema:
+              $ref: '#/components/schemas/_sendCode_post_request'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/_sendCode_post_200_response'
+          description: Success - Email sent
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/_sendCode_post_400_response'
+          description: Invalid or incorrectly formatted email given
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/_checkCode_post_401_response'
+          description: Invalid API key
+      summary: Send verification code
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+components:
+  schemas:
+    _checkCode_post_401_response:
+      example:
+        success: false
+        message: Authorization header value invalid
+      properties:
+        message:
+          default: Authorization header value invalid
+          type: string
+        success:
+          default: false
+          type: boolean
+      type: object
+    _checkCode_post_200_response:
+      example:
+        success: true
+        message: message
+      properties:
+        message:
+          type: string
+        success:
+          type: boolean
+      type: object
+    _sendCode_post_request:
+      properties:
+        email:
+          type: string
+      type: object
+    _sendCode_post_200_response:
+      example:
+        success: true
+        message: false
+      properties:
+        message:
+          default: false
+          type: boolean
+        success:
+          default: true
+          type: boolean
+      type: object
+    _checkCode_post_request:
+      properties:
+        code:
+          default: "123456"
+          type: string
+        email:
+          default: test@test.com
+          type: string
+      type: object
+    _checkCode_post_403_response:
+      example:
+        success: false
+        message: "Number of tries exceeded, please request a new code"
+      properties:
+        message:
+          default: "Number of tries exceeded, please request a new code"
+          type: string
+        success:
+          default: false
+          type: boolean
+      type: object
+    _sendCode_post_400_response:
+      example:
+        success: false
+        message: false
+      properties:
+        message:
+          default: false
+          type: boolean
+        success:
+          default: false
+          type: boolean
+      type: object
+  securitySchemes:
+    bearerAuth:
+      bearerFormat: Token
+      scheme: bearer
+      type: http
+

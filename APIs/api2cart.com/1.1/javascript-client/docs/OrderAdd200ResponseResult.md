@@ -1,0 +1,9 @@
+# SwaggerApi2Cart.OrderAdd200ResponseResult
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**orderId** | **String** |  | [optional] 
+
+

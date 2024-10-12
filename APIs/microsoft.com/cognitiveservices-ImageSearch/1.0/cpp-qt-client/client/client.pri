@@ -1,0 +1,117 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIAggregateOffer.h \
+    $${PWD}/OAIAggregateRating.h \
+    $${PWD}/OAIAnswer.h \
+    $${PWD}/OAICollectionPage.h \
+    $${PWD}/OAICreativeWork.h \
+    $${PWD}/OAIError.h \
+    $${PWD}/OAIErrorResponse.h \
+    $${PWD}/OAIIdentifiable.h \
+    $${PWD}/OAIImageGallery.h \
+    $${PWD}/OAIImageInsights.h \
+    $${PWD}/OAIImageInsightsImageCaption.h \
+    $${PWD}/OAIImageObject.h \
+    $${PWD}/OAIImageTagsModule.h \
+    $${PWD}/OAIImages.h \
+    $${PWD}/OAIImagesImageMetadata.h \
+    $${PWD}/OAIImagesModule.h \
+    $${PWD}/OAIInsightsTag.h \
+    $${PWD}/OAIIntangible.h \
+    $${PWD}/OAIMediaObject.h \
+    $${PWD}/OAINormalizedRectangle.h \
+    $${PWD}/OAIOffer.h \
+    $${PWD}/OAIOrganization.h \
+    $${PWD}/OAIPerson.h \
+    $${PWD}/OAIPivotSuggestions.h \
+    $${PWD}/OAIPropertiesItem.h \
+    $${PWD}/OAIQuery.h \
+    $${PWD}/OAIRating.h \
+    $${PWD}/OAIRecipe.h \
+    $${PWD}/OAIRecipesModule.h \
+    $${PWD}/OAIRecognizedEntitiesModule.h \
+    $${PWD}/OAIRecognizedEntity.h \
+    $${PWD}/OAIRecognizedEntityGroup.h \
+    $${PWD}/OAIRecognizedEntityRegion.h \
+    $${PWD}/OAIRelatedCollectionsModule.h \
+    $${PWD}/OAIRelatedSearchesModule.h \
+    $${PWD}/OAIResponse.h \
+    $${PWD}/OAIResponseBase.h \
+    $${PWD}/OAISearchResultsAnswer.h \
+    $${PWD}/OAIStructuredValue.h \
+    $${PWD}/OAIThing.h \
+    $${PWD}/OAITrendingImages.h \
+    $${PWD}/OAITrendingImagesCategory.h \
+    $${PWD}/OAITrendingImagesTile.h \
+    $${PWD}/OAIWebPage.h \
+# APIs
+    $${PWD}/OAIImageDetailSearchApi.h \
+    $${PWD}/OAIImageSearchApi.h \
+    $${PWD}/OAIImageTrendingSearchApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIAggregateOffer.cpp \
+    $${PWD}/OAIAggregateRating.cpp \
+    $${PWD}/OAIAnswer.cpp \
+    $${PWD}/OAICollectionPage.cpp \
+    $${PWD}/OAICreativeWork.cpp \
+    $${PWD}/OAIError.cpp \
+    $${PWD}/OAIErrorResponse.cpp \
+    $${PWD}/OAIIdentifiable.cpp \
+    $${PWD}/OAIImageGallery.cpp \
+    $${PWD}/OAIImageInsights.cpp \
+    $${PWD}/OAIImageInsightsImageCaption.cpp \
+    $${PWD}/OAIImageObject.cpp \
+    $${PWD}/OAIImageTagsModule.cpp \
+    $${PWD}/OAIImages.cpp \
+    $${PWD}/OAIImagesImageMetadata.cpp \
+    $${PWD}/OAIImagesModule.cpp \
+    $${PWD}/OAIInsightsTag.cpp \
+    $${PWD}/OAIIntangible.cpp \
+    $${PWD}/OAIMediaObject.cpp \
+    $${PWD}/OAINormalizedRectangle.cpp \
+    $${PWD}/OAIOffer.cpp \
+    $${PWD}/OAIOrganization.cpp \
+    $${PWD}/OAIPerson.cpp \
+    $${PWD}/OAIPivotSuggestions.cpp \
+    $${PWD}/OAIPropertiesItem.cpp \
+    $${PWD}/OAIQuery.cpp \
+    $${PWD}/OAIRating.cpp \
+    $${PWD}/OAIRecipe.cpp \
+    $${PWD}/OAIRecipesModule.cpp \
+    $${PWD}/OAIRecognizedEntitiesModule.cpp \
+    $${PWD}/OAIRecognizedEntity.cpp \
+    $${PWD}/OAIRecognizedEntityGroup.cpp \
+    $${PWD}/OAIRecognizedEntityRegion.cpp \
+    $${PWD}/OAIRelatedCollectionsModule.cpp \
+    $${PWD}/OAIRelatedSearchesModule.cpp \
+    $${PWD}/OAIResponse.cpp \
+    $${PWD}/OAIResponseBase.cpp \
+    $${PWD}/OAISearchResultsAnswer.cpp \
+    $${PWD}/OAIStructuredValue.cpp \
+    $${PWD}/OAIThing.cpp \
+    $${PWD}/OAITrendingImages.cpp \
+    $${PWD}/OAITrendingImagesCategory.cpp \
+    $${PWD}/OAITrendingImagesTile.cpp \
+    $${PWD}/OAIWebPage.cpp \
+# APIs
+    $${PWD}/OAIImageDetailSearchApi.cpp \
+    $${PWD}/OAIImageSearchApi.cpp \
+    $${PWD}/OAIImageTrendingSearchApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

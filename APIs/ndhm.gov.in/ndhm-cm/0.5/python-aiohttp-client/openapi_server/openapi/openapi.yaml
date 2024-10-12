@@ -1,0 +1,3494 @@
+openapi: 3.0.0
+info:
+  contact:
+    name: National Health Authority
+    url: https://ndhm.gov.in/
+  description: "Entity which provides health information aggregation services to customers\
+    \ of health care services.\nIt enables customers to fetch their health information\
+    \ from one or more Health Information Providers\n(e.g., Hospitals, Diagnostic\
+    \ Labs, Medical Device Companies), based on their explicit Consent and to share\
+    \ such\naggregated information with Health Information Users i.e. entities in\
+    \ need of such data (e.g., Insurers,\nDoctors, Medical Researchers).\n\n# Specifications\n\
+    1. This document maintains only the Health Information Gateway relevant APIs.\
+    \ \n"
+  title: Health Data Consent Manager
+  version: "0.5"
+  x-apisguru-categories:
+  - open_data
+  x-origin:
+  - format: openapi
+    url: https://apisetu.gov.in/api_specification_v8/ndhm-cm.yaml
+    version: "3.0"
+  x-providerName: ndhm.gov.in
+  x-serviceName: ndhm-cm
+servers:
+- description: Sandbox
+  url: https://dev.ndhm.gov.in/cm
+tags:
+- name: user auth
+- name: identification
+- name: profile
+- name: discovery
+- name: link
+- name: consent
+- name: data flow
+- name: subscriptions
+paths:
+  /v0.5/care-contexts/on-discover:
+    post:
+      description: "Result of patient care-context discovery request at HIP end. If\
+        \ a matching patient found with zero or more care contexts associated, it\
+        \ is specified as result attribute. If the prior discovery request, resulted\
+        \ in errors then it is specified in the error attribute. Reasons of errors\
+        \ can be \n  1. **more than one definitive match for the given request** \n\
+        \  2. **no verified identifer was specified**\n"
+      operationId: v05_care_contexts_on_discover_post
+      parameters:
+      - description: Access token which was issued after successful login with gateway
+          auth server.
+        explode: false
+        in: header
+        name: Authorization
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatientDiscoveryResult'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/PatientDiscoveryResult'
+        required: true
+        x-body-name: body
+      responses:
+        "202":
+          description: Request accepted
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: |
+            **Causes:**
+              * Format mismatch of any of attributes.
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: |
+            **Causes:**
+              * Unauthorized request
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: |
+            **Causes:**
+              * Downstream system(s) is down.
+              * Unhandled exceptions.
+      summary: Response to patient's account discovery request
+      tags:
+      - discovery
+      x-openapi-router-controller: openapi_server.controllers.discovery_controller
+      x-codegen-request-body-name: body
+  /v0.5/consent-requests/init:
+    post:
+      description: Creates a consent request to get data about a patient by HIU user.
+        CM should call Gateway - ***/v0.5/consent-requests/on-init*** API with the
+        consent-request-id
+      operationId: v05_consent_requests_init_post
+      parameters:
+      - description: Access token which was issued after successful login with gateway
+          auth server.
+        explode: false
+        in: header
+        name: Authorization
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ConsentRequest'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/ConsentRequest'
+        required: true
+        x-body-name: body
+      responses:
+        "202":
+          description: Request Accepted
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: "**Causes:**\n  * Invalid data sent \n  * Required attributes\
+            \ not mentioned\n"
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: |
+            **Causes:**
+              * Expired/Invalid token.
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: |
+            **Causes:**
+              * Downstream system(s) is down.
+              * Unhandled exceptions.
+      summary: Create consent request
+      tags:
+      - consent
+      x-openapi-router-controller: openapi_server.controllers.consent_controller
+      x-codegen-request-body-name: body
+  /v0.5/consent-requests/status:
+    post:
+      description: Get status of consent request done previously. CM responds by calling
+        Gateway API - ***/v0.5/consent-requests/on-status***
+      operationId: v05_consent_requests_status_post
+      parameters:
+      - description: Access token which was issued after successful login with gateway
+          auth server.
+        explode: false
+        in: header
+        name: Authorization
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ConsentRequestStatusRequest'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/ConsentRequestStatusRequest'
+        required: true
+        x-body-name: body
+      responses:
+        "202":
+          description: Request Accepted
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: |
+            **Causes:**
+              * Invalid data sent
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: |
+            **Causes:**
+              * Expired/Invalid token.
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: |
+            **Causes:**
+              * Downstream system(s) is down.
+              * Unhandled exceptions.
+      summary: Get consent request status
+      tags:
+      - consent
+      x-openapi-router-controller: openapi_server.controllers.consent_controller
+      x-codegen-request-body-name: body
+  /v0.5/consents/fetch:
+    post:
+      description: This API is called when a HIU makes a request to get a consent
+        artefact. For response please refer to the Gateway ***/v0.5/consents/on-fetch***
+      operationId: v05_consents_fetch_post
+      parameters:
+      - description: Access token which was issued after successful login with gateway
+          auth server.
+        explode: false
+        in: header
+        name: Authorization
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ConsentFetchRequest'
+        required: true
+        x-body-name: body
+      responses:
+        "202":
+          description: Request Accepted
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: |
+            **Causes:**
+              * Invalid data sent
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: |
+            **Causes:**
+              * Expired/Invalid token.
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: |
+            **Causes:**
+              * Downstream system(s) is down.
+              * Unhandled exceptions.
+      summary: Get consent artefact
+      tags:
+      - consent
+      x-openapi-router-controller: openapi_server.controllers.consent_controller
+      x-codegen-request-body-name: body
+  /v0.5/consents/hip/on-notify:
+    post:
+      description: "This API is called by HIP as acknowledgement to notification of\
+        \ consents, in cases of consent revocation and expiration, notified by CM\
+        \ earlier via Gateway API - ***/v0.5/consents/hip/notify***. \n"
+      operationId: v05_consents_hip_on_notify_post
+      parameters:
+      - description: Access token which was issued after successful login with gateway
+          auth server.
+        explode: false
+        in: header
+        name: Authorization
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/HIPConsentNotificationResponse'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/HIPConsentNotificationResponse'
+        required: true
+        x-body-name: body
+      responses:
+        "202":
+          description: Request Accepted
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: |
+            **Causes:**
+              * Invalid/Expired/Empty token.
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: |
+            **Causes:**
+              * Downstream services are down
+      summary: Consent notification
+      tags:
+      - consent
+      x-openapi-router-controller: openapi_server.controllers.consent_controller
+      x-codegen-request-body-name: body
+  /v0.5/consents/hiu/on-notify:
+    post:
+      description: |
+        This API is called by HIU as acknowledgement to consent notifications, specifically for cases when consent is REVOKED or EXPIRED, notified by CM earlier via Gateway API - ***/v0.5/consents/hiu/notify***.
+      operationId: v05_consents_hiu_on_notify_post
+      parameters:
+      - description: Access token which was issued after successful login with gateway
+          auth server.
+        explode: false
+        in: header
+        name: Authorization
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/HIUConsentNotificationResponse'
+        required: true
+        x-body-name: body
+      responses:
+        "202":
+          description: Request Accepted.
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: |
+            **Causes:**
+              * Invalid/Expired/Empty token.
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: |
+            **Causes:**
+              * Downstream services are down
+      summary: Consent notification
+      tags:
+      - consent
+      x-openapi-router-controller: openapi_server.controllers.consent_controller
+      x-codegen-request-body-name: body
+  /v0.5/health-information/notify:
+    post:
+      description: "API called by HIU and HIP during data-transfer. \n1. HIP on transfer\
+        \ of data would send **sessionStatus** - one of [TRANSFERRED, FAILED]\n2.\
+        \ HIP would also send **hiStatus** for each *careContextReference* - on of\
+        \ [DELIVERED, ERRORED]\n3. HIU on receipt of data would send **sessionStatus**\
+        \ - one of [TRANSFERRED, FAILED]. For example, FAILED when if data was not\
+        \ sent or if invalid data was sent\n4. HIU would also send **hiStatus** for\
+        \ each *careContextReference* - one of [OK, ERRORED] \n"
+      operationId: v05_health_information_notify_post
+      parameters:
+      - description: Access token which was issued after successful login with gateway
+          auth server.
+        explode: false
+        in: header
+        name: Authorization
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/HealthInformationNotification'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/HealthInformationNotification'
+        required: true
+        x-body-name: body
+      responses:
+        "204":
+          description: Notification is Accepted
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: |
+            **Causes:**
+              * Invalid Request
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: |
+            **Causes:**
+              * Expired/Invalid token.
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: |
+            **Causes:**
+              * Downstream system(s) is down.
+              * Unhandled exceptions.
+      summary: Notifications corresponding to events during data flow
+      tags:
+      - data flow
+      x-openapi-router-controller: openapi_server.controllers.data_flow_controller
+      x-codegen-request-body-name: body
+  /v0.5/health-information/on-request:
+    post:
+      description: "This API is called by HIP to acknowledge Health information request\
+        \ receipt. When HIU requests health information, CM generates a transactionId\
+        \ and makes a health information request to the HIP(s). HIPs acknowledgement\
+        \ to the health-information request is coveyed by this API. Either the **hiRequest**\
+        \ or **error** must be specified. **hiRequest** element returns the same transactionId\
+        \ as before with a status indicating that the request is acknowledged.  \n"
+      operationId: v05_health_information_on_request_post
+      parameters:
+      - description: Access token which was issued after successful login with gateway
+          auth server.
+        explode: false
+        in: header
+        name: Authorization
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/HIPHealthInformationRequestAcknowledgement'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/HIPHealthInformationRequestAcknowledgement'
+        required: true
+        x-body-name: body
+      responses:
+        "202":
+          description: Request accepted.
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: |
+            **Causes:**
+              * Bad request
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: |
+            **Causes:**
+              * Token is invalid or Link has expired
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: |
+            **Causes:**
+              * Downstream system(s) is down.
+              * Unhandled exceptions.
+      summary: Health information data request acknowledgement from HIP
+      tags:
+      - data flow
+      x-openapi-router-controller: openapi_server.controllers.data_flow_controller
+      x-codegen-request-body-name: body
+  /v0.5/health-information/request:
+    post:
+      description: "HIU request for Health information against a consent id. CM would\
+        \ generate a transactionId against each consent and pass it as trnasaction\
+        \ context / correlation id to the HIP and also return the same to HIU via\
+        \ Gateway API - ***/v0.5/health-information/cm/on-request***. \n"
+      operationId: v05_health_information_request_post
+      parameters:
+      - description: Access token which was issued after successful login with gateway
+          auth server.
+        explode: false
+        in: header
+        name: Authorization
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/HIRequest'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/HIRequest'
+        required: true
+        x-body-name: body
+      responses:
+        "202":
+          description: Request Accepted
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: |
+            **Causes:**
+              * Bad request
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: |
+            **Causes:**
+              * Token is invalid or Link has expired
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: |
+            **Causes:**
+              * Downstream system(s) is down.
+              * Unhandled exceptions.
+      summary: Health information data request from HIU
+      tags:
+      - data flow
+      x-openapi-router-controller: openapi_server.controllers.data_flow_controller
+      x-codegen-request-body-name: body
+  /v0.5/heartbeat:
+    get:
+      operationId: v05_heartbeat_get
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HeartbeatResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/HeartbeatResponse'
+          description: OK
+      summary: Get consent request status
+      tags:
+      - monitoring
+      x-openapi-router-controller: openapi_server.controllers.monitoring_controller
+  /v0.5/links/link/add-contexts:
+    post:
+      description: "API to submit care-context to CM for HIP initiated linking. The\
+        \ API must accompany the \"accessToken\" fetched in the users/auth process.\
+        \  \n  1. subsequent usage for accessToken may be invalid if it was meant\
+        \ for one-time usage or if it expired\n"
+      operationId: v05_links_link_add_contexts_post
+      parameters:
+      - description: Access token which was issued after successful login with gateway
+          auth server.
+        explode: false
+        in: header
+        name: Authorization
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatientCareContextLinkRequest'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/PatientCareContextLinkRequest'
+        required: true
+        x-body-name: body
+      responses:
+        "202":
+          description: accepted
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: |
+            **Causes:**
+              * required information not provided
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: |
+            **Causes:**
+              * Unauthorized request
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: |
+            **Causes:**
+              * Downstream system(s) is down.
+              * Unhandled exceptions.
+      summary: API for HIP initiated care-context linking for patient
+      tags:
+      - link
+      x-openapi-router-controller: openapi_server.controllers.link_controller
+      x-codegen-request-body-name: body
+  /v0.5/links/link/on-confirm:
+    post:
+      description: |
+        Returns a list of linked care contexts with patient reference number.
+          1. **Validated and linked account reference number**
+          2. **Validated that the token sent from Consent Manager is same as the one generated by HIP**
+          3. **Verified that same Consent Manager which made the link request is sending the token**
+          4. **Results of unmasked linked care contexts with patient reference number**
+      operationId: v05_links_link_on_confirm_post
+      parameters:
+      - description: Access token which was issued after successful login with gateway
+          auth server.
+        explode: false
+        in: header
+        name: Authorization
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatientLinkResult'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/PatientLinkResult'
+        required: true
+        x-body-name: body
+      responses:
+        "202":
+          description: accepted
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: |
+            **Causes:**
+              * resp not specified
+              * atleast patient or error should be specified
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: |
+            **Causes:**
+              * Unauthorized request
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: |
+            **Causes:**
+              * Downstream system(s) is down.
+              * Unhandled exceptions.
+      summary: "Token authenticated by HIP, indicating completion of linkage of care-contexts"
+      tags:
+      - link
+      x-openapi-router-controller: openapi_server.controllers.link_controller
+      x-codegen-request-body-name: body
+  /v0.5/links/link/on-init:
+    post:
+      description: "Result of patient care-context link request from HIP end. This\
+        \ happens in context of previous discovery of patient found at HIP end, therefore\
+        \ the link requests ought to be in reference to the patient reference and\
+        \ care-context references previously returned by the HIP. The correlation\
+        \ of discovery and link request is maintained through the transactionId. HIP\
+        \ should have\n  1. **Validated transactionId in the request to check whether\
+        \ there was a discovery done previously, and the link request corresponds\
+        \ to returned patient care care context references**\n  2. **Before returning\
+        \ the response, HIP should have sent an authentication request to the patient(eg:\
+        \ OTP verification)**\n  3. **HIP should communicate the mode of authentication\
+        \ of a successful request**\n  4. **HIP subsequently should expect the token\
+        \ passed via /link/confirm against the link.referenceNumber passed in this\
+        \ call**\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n  \nThe error section in\
+        \ the body, represents the potential errors that may have occurred. Possible\
+        \ reasons:\n  1. **Patient reference number is invalid**\n  2. **Care context\
+        \ reference numbers are invalid**\n"
+      operationId: v05_links_link_on_init_post
+      parameters:
+      - description: Access token which was issued after successful login with gateway
+          auth server.
+        explode: false
+        in: header
+        name: Authorization
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatientLinkReferenceResult'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/PatientLinkReferenceResult'
+        required: true
+        x-body-name: body
+      responses:
+        "202":
+          description: Request accepted
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: |
+            **Causes:**
+              * Format mismatch of any of attributes.
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: |
+            **Causes:**
+              * Unauthorized request
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: |
+            **Causes:**
+              * Downstream system(s) is down.
+              * Unhandled exceptions.
+      summary: Response to patient's care context link request
+      tags:
+      - link
+      x-openapi-router-controller: openapi_server.controllers.link_controller
+      x-codegen-request-body-name: body
+  /v0.5/patients/find:
+    post:
+      description: "This API is meant for identify to patient given her consent-manager-user-id.\
+        \ CM subsequently makes the /on-find Gateway API call with results. \n"
+      operationId: v05_patients_find_post
+      parameters:
+      - description: Access token which was issued after successful login with gateway
+          auth server.
+        explode: false
+        in: header
+        name: Authorization
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatientIdentificationRequest'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/PatientIdentificationRequest'
+        required: true
+        x-body-name: body
+      responses:
+        "202":
+          description: Request Accepted
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: |
+            Invalid request, required attributes not provided
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: |
+            **Causes:**
+              * Unauthorized request
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: |
+            **Causes:**
+              * Downstream system(s) is down.
+              * Unhandled exceptions.
+      summary: Identify a patient by her consent-manager user-id
+      tags:
+      - identification
+      x-openapi-router-controller: openapi_server.controllers.identification_controller
+      x-codegen-request-body-name: body
+  /v0.5/patients/profile/on-share:
+    post:
+      description: |
+        Result of patient share profile request at HIP end.
+      operationId: v05_patients_profile_on_share_post
+      parameters:
+      - description: Access token which was issued after successful login with gateway
+          auth server.
+        explode: false
+        in: header
+        name: Authorization
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ShareProfileResult'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/ShareProfileResult'
+        required: true
+        x-body-name: body
+      responses:
+        "202":
+          description: Request accepted
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: |
+            **Causes:**
+              * Format mismatch of any of attributes.
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: |
+            **Causes:**
+              * Unauthorized request
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: |
+            **Causes:**
+              * Downstream system(s) is down.
+              * Unhandled exceptions.
+      summary: Response to patient's share profile request
+      tags:
+      - profile
+      x-openapi-router-controller: openapi_server.controllers.profile_controller
+      x-codegen-request-body-name: body
+  /v0.5/subscription-requests/cm/init:
+    post:
+      description: creates a request for subscription. The subscription categories
+        can be for care-contexts linkages or availability of data against existing
+        care-contexts. Note that the requester must have HIU role
+      operationId: v05_subscription_requests_cm_init_post
+      parameters:
+      - description: Access token which was issued after successful login with gateway
+          auth server.
+        explode: false
+        in: header
+        name: Authorization
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SubscriptionRequest'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/SubscriptionRequest'
+        required: true
+        x-body-name: body
+      responses:
+        "202":
+          description: Request Accepted
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: "**Causes:**\n  * Invalid data sent \n  * Required attributes\
+            \ not mentioned\n"
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: |
+            **Causes:**
+              * Expired/Invalid token.
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: |
+            **Causes:**
+              * Downstream system(s) is down.
+              * Unhandled exceptions.
+      summary: Request for subscription
+      tags:
+      - subscriptions
+      x-openapi-router-controller: openapi_server.controllers.subscriptions_controller
+      x-codegen-request-body-name: body
+  /v0.5/subscription-requests/hiu/on-notify:
+    post:
+      description: "This API is called by HIU as acknowledgement to subscription request\
+        \ relevant notifications. \n"
+      operationId: v05_subscription_requests_hiu_on_notify_post
+      parameters:
+      - description: Access token which was issued after successful login with gateway
+          auth server.
+        explode: false
+        in: header
+        name: Authorization
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/HIUSubscriptionRequestNotificationAcknowledgement'
+        required: true
+        x-body-name: body
+      responses:
+        "202":
+          description: Request Accepted.
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: |
+            **Causes:**
+              * Invalid/Expired/Empty token.
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: |
+            **Causes:**
+              * Downstream services are down
+      summary: Callback API for /subscription-requests/hiu/notify to acknowledge receipt
+        of notification.
+      tags:
+      - subscriptions
+      x-openapi-router-controller: openapi_server.controllers.subscriptions_controller
+      x-codegen-request-body-name: body
+  /v0.5/subscriptions/hiu/on-notify:
+    post:
+      description: |
+        This API is called by HIU as acknowledgement to consent notifications, specifically for cases when consent is REVOKED or EXPIRED.
+      operationId: v05_subscriptions_hiu_on_notify_post
+      parameters:
+      - description: Access token which was issued after successful login with gateway
+          auth server.
+        explode: false
+        in: header
+        name: Authorization
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/HIUSubscriptionNotificationAcknowledgment'
+        required: true
+        x-body-name: body
+      responses:
+        "202":
+          description: Request Accepted.
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: |
+            **Causes:**
+              * Invalid/Expired/Empty token.
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: |
+            **Causes:**
+              * Downstream services are down
+      summary: Callback API for /subscriptions/hiu/notify to acknowledge receipt of
+        notification.
+      tags:
+      - subscriptions
+      - hiu facing
+      x-openapi-router-controller: openapi_server.controllers.subscriptions_controller
+      x-codegen-request-body-name: body
+  /v0.5/users/auth/confirm:
+    post:
+      description: "This API is called by HIP/HIUs to confirm authentication of users.\
+        \ The transactionId returned by the previous callback API /users/auth/on-init\
+        \ must be sent. If Authentication is successful the callback API will send\
+        \ an \"access token\" for subsequent purpose specific API calls. Note only\
+        \ **credential.authCode** or **credential.demographic** should be sent\n \
+        \ 1. demographic details are only required for  demographic auth as of now.\
+        \ \n  2. demographic details are required only in MEDIATED cases and if the\
+        \ **auth.mode** so demands. e.g. if **auth.mode** is DEMOGRAPHICS. Usually\
+        \ for demographic authentication, the name, gender and DOB must be exactly\
+        \ as specified in User Account.\n  3. demographic.identifier is optional,\
+        \ however maybe required if authentication so mandates. \n  4. credential.authCode\
+        \ is required for other MEDIATED authentication like MOBILE_OTP, AADHAAR_OTP.\
+        \ \n"
+      operationId: v05_users_auth_confirm_post
+      parameters:
+      - description: Access token which was issued after successful login with gateway
+          auth server.
+        explode: false
+        in: header
+        name: Authorization
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatientAuthConfirmRequest'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/PatientAuthConfirmRequest'
+        required: true
+        x-body-name: body
+      responses:
+        "202":
+          description: Request accepted
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: |
+            **Causes:**
+              * transaction id is not provided or invalid
+              * token or other auth confirmation details not provided or invalid
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: |
+            **Causes:**
+              * Unauthorized request
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: |
+            **Causes:**
+              * Downstream system(s) is down.
+              * Unhandled exceptions.
+      summary: "Confirmation request sending token, otp or other authentication details\
+        \ from HIP/HIU for confirmation"
+      tags:
+      - user auth
+      x-openapi-router-controller: openapi_server.controllers.user_auth_controller
+      x-codegen-request-body-name: body
+  /v0.5/users/auth/fetch-modes:
+    post:
+      description: |
+        This API is meant for identify supported authentication modes for a patient given a specific purpose
+      operationId: v05_users_auth_fetch_modes_post
+      parameters:
+      - description: Access token which was issued after successful login with gateway
+          auth server.
+        explode: false
+        in: header
+        name: Authorization
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatientAuthModeQueryRequest'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/PatientAuthModeQueryRequest'
+        required: true
+        x-body-name: body
+      responses:
+        "202":
+          description: Request Accepted
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: |
+            Invalid request, required attributes not provided
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: |
+            **Causes:**
+              * Unauthorized request
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: |
+            **Causes:**
+              * Downstream system(s) is down.
+              * Unhandled exceptions.
+      summary: Get a patient's authentication modes relevant to specified purpose
+      tags:
+      - user auth
+      - hip facing
+      x-openapi-router-controller: openapi_server.controllers.user_auth_controller
+      x-codegen-request-body-name: body
+  /v0.5/users/auth/init:
+    post:
+      description: |
+        This API is called by HIPs to initiate authentication of users. A transactionId is retuned by the corresponding callback API for confirmation of user auth.
+      operationId: v05_users_auth_init_post
+      parameters:
+      - description: Access token which was issued after successful login with gateway
+          auth server.
+        explode: false
+        in: header
+        name: Authorization
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatientAuthInitRequest'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/PatientAuthInitRequest'
+        required: true
+        x-body-name: body
+      responses:
+        "202":
+          description: Request accepted
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: |
+            **Causes:**
+              * patient id is not provided
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: |
+            **Causes:**
+              * Unauthorized request
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: |
+            **Causes:**
+              * Downstream system(s) is down.
+              * Unhandled exceptions.
+      summary: Initialize authentication from HIP
+      tags:
+      - user auth
+      x-openapi-router-controller: openapi_server.controllers.user_auth_controller
+      x-codegen-request-body-name: body
+  /v0.5/users/auth/on-notify:
+    post:
+      description: "This API is called by HIU/HIPs to confirm acknowledgement for\
+        \ receipt of auth notification is case of DIRECT authentication. \n"
+      operationId: v05_users_auth_on_notify_post
+      parameters:
+      - description: Access token which was issued after successful login with gateway
+          auth server.
+        explode: false
+        in: header
+        name: Authorization
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatientAuthNotificationAcknowledgement'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/PatientAuthNotificationAcknowledgement'
+        required: true
+        x-body-name: body
+      responses:
+        "202":
+          description: Request accepted
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: "**Causes:**\n  * required details not provided\n  * neither\
+            \ auth nor error specified \n"
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: |
+            **Causes:**
+              * Unauthorized request
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: |
+            **Causes:**
+              * Downstream system(s) is down.
+              * Unhandled exceptions.
+      summary: callback API from HIU/HIPs as acknowledgement of auth notification
+        (in case of DIRECT auth)
+      tags:
+      - user auth
+      - hip facing
+      - hiu facing
+      x-openapi-router-controller: openapi_server.controllers.user_auth_controller
+      x-codegen-request-body-name: body
+components:
+  parameters:
+    ConsentId:
+      description: Consent request's identifier
+      explode: false
+      in: path
+      name: consentId
+      required: true
+      schema:
+        format: uuid
+        type: string
+      style: simple
+    ConsentRequestId:
+      description: Consent request's identifier
+      explode: false
+      in: path
+      name: consentRequestId
+      required: true
+      schema:
+        format: uuid
+        type: string
+      style: simple
+    LinkRefNumber:
+      description: Reference number for the link request made earlier.
+      explode: false
+      in: path
+      name: linkRefNumber
+      required: true
+      schema:
+        $ref: '#/components/schemas/UuidSchema'
+      style: simple
+    authorization:
+      description: Access token which was issued after successful login with gateway
+        auth server.
+      explode: false
+      in: header
+      name: Authorization
+      required: true
+      schema:
+        type: string
+      style: simple
+  schemas:
+    AuthConfirmIdentifier:
+      example:
+        type: MOBILE
+        value: "+919800083232"
+      properties:
+        type:
+          $ref: '#/components/schemas/AuthConfirmIdentifierType'
+        value:
+          example: "+919800083232"
+          title: value
+          type: string
+      required:
+      - type
+      - value
+      title: AuthConfirmIdentifier
+      type: object
+      xml:
+        name: AuthConfirmIdentifier
+    AuthConfirmIdentifierType:
+      enum:
+      - MOBILE
+      title: AuthConfirmIdentifierType
+      type: string
+    AuthenticationMode:
+      description: |
+        Subjected to CM specific capability
+         1. MOBILE_OTP - for SMS OTP
+         2. DIRECT - for authentication directly with the patient. e.g. Mobile App, SMS
+         3. AADHAAR_OTP - for auth using OTP sent to Aadhaar number
+         4. DEMOGRAPHICS - for auth using demographic verification.
+      enum:
+      - MOBILE_OTP
+      - DIRECT
+      - DEMOGRAPHICS
+      - AADHAAR_OTP
+      title: AuthenticationMode
+      type: string
+    CareContextDefinition:
+      example:
+        careContextReference: Episode1
+        patientReference: batman@tmh
+      properties:
+        careContextReference:
+          example: Episode1
+          title: careContextReference
+          type: string
+        patientReference:
+          example: batman@tmh
+          title: patientReference
+          type: string
+      required:
+      - careContextReference
+      - patientReference
+      title: CareContextDefinition
+      type: object
+    CareContextRepresentation:
+      example:
+        referenceNumber: referenceNumber
+        display: display
+      properties:
+        display:
+          title: display
+          type: string
+        referenceNumber:
+          title: referenceNumber
+          type: string
+      required:
+      - display
+      - referenceNumber
+      title: CareContextRepresentation
+      type: object
+      xml:
+        name: Tag
+    ConsentAcknowledgement:
+      example:
+        consentId: <consent-artefact-id>
+        status: OK
+      properties:
+        consentId:
+          example: <consent-artefact-id>
+          title: consentId
+          type: string
+        status:
+          enum:
+          - OK
+          - UNKNOWN
+          title: status
+          type: string
+      required:
+      - consentId
+      - status
+      title: ConsentAcknowledgement
+      type: object
+    ConsentFetchRequest:
+      example:
+        consentId: consentId
+        requestId: 5f7a535d-a3fd-416b-b069-c97d021fbacd
+        timestamp: 2000-01-23T04:56:07.000+00:00
+      properties:
+        consentId:
+          title: consentId
+          type: string
+        requestId:
+          description: "a nonce, unique for each HTTP request"
+          example: 5f7a535d-a3fd-416b-b069-c97d021fbacd
+          format: uuid
+          title: requestId
+          type: string
+        timestamp:
+          description: "Date time format in UTC, includes miliseconds YYYY-MM-DDThh:mm:ss.vZ"
+          format: date-time
+          title: timestamp
+          type: string
+      required:
+      - consentId
+      - requestId
+      - timestamp
+      title: ConsentFetchRequest
+      type: object
+    ConsentManagerPatientID:
+      example:
+        id: hinapatel79@ndhm
+      properties:
+        id:
+          example: hinapatel79@ndhm
+          format: <user-id>@<ndhm>
+          title: id
+          type: string
+          xml:
+            attribute: true
+      required:
+      - id
+      title: ConsentManagerPatientID
+      type: object
+    ConsentRequest:
+      example:
+        requestId: 499a5a4a-7dda-4f20-9b67-e24589627061
+        consent:
+          requester:
+            identifier:
+              system: https://www.mciindia.org
+              type: REGNO
+              value: MH1001
+            name: Dr. Manju
+          hiTypes:
+          - OPConsultation
+          - OPConsultation
+          hiu:
+            id: id
+          purpose:
+            code: code
+            text: text
+            refUri: https://openapi-generator.tech
+          patient:
+            id: hinapatel79@ndhm
+          permission:
+            dateRange:
+              from: 2000-01-23T04:56:07.000+00:00
+              to: 2000-01-23T04:56:07.000+00:00
+            accessMode: VIEW
+            dataEraseAt: 2000-01-23T04:56:07.000+00:00
+            frequency:
+              repeats: 0
+              unit: HOUR
+              value: 6
+          careContexts:
+          - careContextReference: Episode1
+            patientReference: batman@tmh
+          - careContextReference: Episode1
+            patientReference: batman@tmh
+          hip:
+            id: id
+        timestamp: 2000-01-23T04:56:07.000+00:00
+      properties:
+        consent:
+          $ref: '#/components/schemas/ConsentRequest_consent'
+        requestId:
+          description: "a nonce, unique for each HTTP request."
+          example: 499a5a4a-7dda-4f20-9b67-e24589627061
+          format: uuid
+          title: requestId
+          type: string
+        timestamp:
+          description: "Date time format in UTC, includes miliseconds YYYY-MM-DDThh:mm:ss.vZ"
+          format: date-time
+          title: timestamp
+          type: string
+      required:
+      - consent
+      - requestId
+      - timestamp
+      title: ConsentRequest
+      type: object
+    ConsentRequestStatusRequest:
+      example:
+        consentRequestId: consentRequestId
+        requestId: 5f7a535d-a3fd-416b-b069-c97d021fbacd
+        timestamp: 2000-01-23T04:56:07.000+00:00
+      properties:
+        consentRequestId:
+          title: consentRequestId
+          type: string
+        requestId:
+          description: "a nonce, unique for each HTTP request"
+          example: 5f7a535d-a3fd-416b-b069-c97d021fbacd
+          format: uuid
+          title: requestId
+          type: string
+        timestamp:
+          description: "Date time format in UTC, includes miliseconds YYYY-MM-DDThh:mm:ss.vZ"
+          format: date-time
+          title: timestamp
+          type: string
+      required:
+      - consentRequestId
+      - requestId
+      - timestamp
+      title: ConsentRequestStatusRequest
+      type: object
+    DateRange:
+      example:
+        from: 2000-01-23T04:56:07.000+00:00
+        to: 2000-01-23T04:56:07.000+00:00
+      properties:
+        from:
+          format: date-time
+          title: from
+          type: string
+        to:
+          format: date-time
+          title: to
+          type: string
+      required:
+      - from
+      - to
+      title: DateRange
+      type: object
+    Error:
+      example:
+        code: 0
+        message: message
+      properties:
+        code:
+          enum:
+          - 1000
+          - 10001
+          title: code
+          type: integer
+        message:
+          title: message
+          type: string
+      required:
+      - code
+      - message
+      title: Error
+      type: object
+      xml:
+        name: Error
+    ErrorResponse:
+      example:
+        error:
+          code: 0
+          message: message
+      properties:
+        error:
+          $ref: '#/components/schemas/Error'
+      title: ErrorResponse
+      type: object
+      xml:
+        name: ErrorResponse
+    HIPConsentNotificationResponse:
+      example:
+        acknowledgement:
+          consentId: <consent-artefact-id>
+          status: OK
+        resp:
+          requestId: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        requestId: 5f7a535d-a3fd-416b-b069-c97d021fbacd
+        error:
+          code: 0
+          message: message
+        timestamp: 2000-01-23T04:56:07.000+00:00
+      properties:
+        acknowledgement:
+          $ref: '#/components/schemas/ConsentAcknowledgement'
+        error:
+          $ref: '#/components/schemas/Error'
+        requestId:
+          description: "a nonce, unique for each HTTP request"
+          example: 5f7a535d-a3fd-416b-b069-c97d021fbacd
+          format: uuid
+          title: requestId
+          type: string
+        resp:
+          $ref: '#/components/schemas/RequestReference'
+        timestamp:
+          description: "Date time format in UTC, includes miliseconds YYYY-MM-DDThh:mm:ss.vZ"
+          format: date-time
+          title: timestamp
+          type: string
+      required:
+      - requestId
+      - resp
+      - timestamp
+      title: HIPConsentNotificationResponse
+      type: object
+    HIPHealthInformationRequestAcknowledgement:
+      example:
+        resp:
+          requestId: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        requestId: 5f7a535d-a3fd-416b-b069-c97d021fbacd
+        error:
+          code: 0
+          message: message
+        hiRequest:
+          sessionStatus: ACKNOWLEDGED
+          transactionId: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        timestamp: 2000-01-23T04:56:07.000+00:00
+      properties:
+        error:
+          $ref: '#/components/schemas/Error'
+        hiRequest:
+          $ref: '#/components/schemas/HIPHealthInformationRequestAcknowledgement_hiRequest'
+        requestId:
+          description: "a nonce, unique for each HTTP request"
+          example: 5f7a535d-a3fd-416b-b069-c97d021fbacd
+          format: uuid
+          title: requestId
+          type: string
+        resp:
+          $ref: '#/components/schemas/RequestReference'
+        timestamp:
+          description: "Date time format in UTC, includes miliseconds YYYY-MM-DDThh:mm:ss.vZ"
+          format: date-time
+          title: timestamp
+          type: string
+      required:
+      - requestId
+      - resp
+      - timestamp
+      title: HIPHealthInformationRequestAcknowledgement
+      type: object
+    HIRequest:
+      example:
+        requestId: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        hiRequest:
+          keyMaterial:
+            curve: Curve25519
+            cryptoAlg: ECDH
+            dhPublicKey:
+              keyValue: keyValue
+              expiry: 2000-01-23T04:56:07.000+00:00
+              parameters: Curve25519/32byte random key
+            nonce: 3fa85f64-5717-4562-b3fc-2c963f66afa6
+          dateRange:
+            from: 2000-01-23T04:56:07.000+00:00
+            to: 2000-01-23T04:56:07.000+00:00
+          dataPushUrl: dataPushUrl
+          consent:
+            id: id
+        timestamp: 2000-01-23T04:56:07.000+00:00
+      properties:
+        hiRequest:
+          $ref: '#/components/schemas/HIRequest_hiRequest'
+        requestId:
+          format: uuid
+          title: UuidSchema
+          type: string
+        timestamp:
+          description: "Date time format in UTC, includes miliseconds YYYY-MM-DDThh:mm:ss.vZ"
+          format: date-time
+          title: timestamp
+          type: string
+      required:
+      - hiRequest
+      - requestId
+      - timestamp
+      title: HIRequest
+      type: object
+    HITypeEnum:
+      enum:
+      - OPConsultation
+      - Prescription
+      - DischargeSummary
+      - DiagnosticReport
+      title: HITypeEnum
+      type: string
+      xml:
+        name: HIType
+    HIUConsentNotificationResponse:
+      example:
+        acknowledgement:
+        - consentId: <consent-artefact-id>
+          status: OK
+        - consentId: <consent-artefact-id>
+          status: OK
+        resp:
+          requestId: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        requestId: 5f7a535d-a3fd-416b-b069-c97d021fbacd
+        error:
+          code: 0
+          message: message
+        timestamp: 2000-01-23T04:56:07.000+00:00
+      properties:
+        acknowledgement:
+          items:
+            $ref: '#/components/schemas/ConsentAcknowledgement'
+          title: acknowledgement
+          type: array
+        error:
+          $ref: '#/components/schemas/Error'
+        requestId:
+          description: "a nonce, unique for each HTTP request"
+          example: 5f7a535d-a3fd-416b-b069-c97d021fbacd
+          format: uuid
+          title: requestId
+          type: string
+        resp:
+          $ref: '#/components/schemas/RequestReference'
+        timestamp:
+          description: "Date time format in UTC, includes miliseconds YYYY-MM-DDThh:mm:ss.vZ"
+          format: date-time
+          title: timestamp
+          type: string
+      required:
+      - requestId
+      - resp
+      - timestamp
+      title: HIUConsentNotificationResponse
+      type: object
+    HIUSubscriptionNotificationAcknowledgment:
+      example:
+        acknowledgement:
+          eventId: subscription event Id
+          status: OK
+        resp:
+          requestId: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        requestId: 5f7a535d-a3fd-416b-b069-c97d021fbacd
+        error:
+          code: 0
+          message: message
+        timestamp: 2000-01-23T04:56:07.000+00:00
+      properties:
+        acknowledgement:
+          $ref: '#/components/schemas/HIUSubscriptionNotificationAcknowledgment_acknowledgement'
+        error:
+          $ref: '#/components/schemas/Error'
+        requestId:
+          description: "a nonce, unique for each HTTP request"
+          example: 5f7a535d-a3fd-416b-b069-c97d021fbacd
+          format: uuid
+          title: requestId
+          type: string
+        resp:
+          $ref: '#/components/schemas/RequestReference'
+        timestamp:
+          description: "Date time format in UTC, includes miliseconds YYYY-MM-DDThh:mm:ss.vZ"
+          format: date-time
+          title: timestamp
+          type: string
+      required:
+      - requestId
+      - resp
+      - timestamp
+      title: HIUSubscriptionNotificationAcknowledgment
+      type: object
+    HIUSubscriptionRequestNotificationAcknowledgement:
+      example:
+        acknowledgement:
+          subscriptionRequestId: subscription Id
+          status: OK
+        resp:
+          requestId: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        requestId: 5f7a535d-a3fd-416b-b069-c97d021fbacd
+        error:
+          code: 0
+          message: message
+        timestamp: 2000-01-23T04:56:07.000+00:00
+      properties:
+        acknowledgement:
+          $ref: '#/components/schemas/HIUSubscriptionRequestNotificationAcknowledgement_acknowledgement'
+        error:
+          $ref: '#/components/schemas/Error'
+        requestId:
+          description: "a nonce, unique for each HTTP request"
+          example: 5f7a535d-a3fd-416b-b069-c97d021fbacd
+          format: uuid
+          title: requestId
+          type: string
+        resp:
+          $ref: '#/components/schemas/RequestReference'
+        timestamp:
+          description: "Date time format in UTC, includes miliseconds YYYY-MM-DDThh:mm:ss.vZ"
+          format: date-time
+          title: timestamp
+          type: string
+      required:
+      - requestId
+      - resp
+      - timestamp
+      title: HIUSubscriptionRequestNotificationAcknowledgement
+      type: object
+    HealthInformationNotification:
+      example:
+        notification:
+          doneAt: 2000-01-23T04:56:07.000+00:00
+          consentId: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          notifier:
+            id: "100005"
+            type: HIU
+          statusNotification:
+            hipId: max
+            statusResponses:
+            - careContextReference: careContextReference
+              hiStatus: OK
+              description: description
+            - careContextReference: careContextReference
+              hiStatus: OK
+              description: description
+            sessionStatus: TRANSFERRED
+          transactionId: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        requestId: 499a5a4a-7dda-4f20-9b67-e24589627061
+        timestamp: 2000-01-23T04:56:07.000+00:00
+      properties:
+        notification:
+          $ref: '#/components/schemas/HealthInformationNotification_notification'
+        requestId:
+          description: "a nonce, unique for each HTTP request."
+          example: 499a5a4a-7dda-4f20-9b67-e24589627061
+          format: uuid
+          title: requestId
+          type: string
+        timestamp:
+          description: "Date time format in UTC, includes miliseconds YYYY-MM-DDThh:mm:ss.vZ"
+          format: date-time
+          title: timestamp
+          type: string
+      required:
+      - notification
+      - requestId
+      - timestamp
+      title: HealthInformationNotification
+      type: object
+    HeartbeatResponse:
+      example:
+        error:
+          code: 0
+          message: message
+        status: UP
+        timestamp: 2000-01-23T04:56:07.000+00:00
+      properties:
+        error:
+          $ref: '#/components/schemas/Error'
+        status:
+          enum:
+          - UP
+          - DOWN
+          title: status
+          type: string
+        timestamp:
+          description: "Date time format in UTC, includes miliseconds YYYY-MM-DDThh:mm:ss.vZ"
+          format: date-time
+          title: timestamp
+          type: string
+      title: HeartbeatResponse
+      type: object
+      xml:
+        name: HeartbeatResponse
+    Identifier:
+      properties:
+        type:
+          $ref: '#/components/schemas/IdentifierType'
+        value:
+          example: "+919800083232"
+          type: string
+      required:
+      - type
+      - value
+      type: object
+      xml:
+        name: Identifier
+    IdentifierType:
+      enum:
+      - MOBILE
+      - MR
+      title: IdentifierType
+      type: string
+    KeyObject:
+      example:
+        keyValue: keyValue
+        expiry: 2000-01-23T04:56:07.000+00:00
+        parameters: Curve25519/32byte random key
+      properties:
+        expiry:
+          format: date-time
+          title: expiry
+          type: string
+        keyValue:
+          format: string
+          title: keyValue
+          type: string
+        parameters:
+          example: Curve25519/32byte random key
+          format: string
+          title: parameters
+          type: string
+      required:
+      - expiry
+      - keyValue
+      - parameters
+      title: KeyObject
+      type: object
+    Meta:
+      example:
+        communicationMedium: MOBILE
+        communicationHint: communicationHint
+        communicationExpiry: 2019-12-30T12:01:55Z
+      properties:
+        communicationExpiry:
+          example: 2019-12-30T12:01:55Z
+          title: communicationExpiry
+          type: string
+        communicationHint:
+          title: communicationHint
+          type: string
+        communicationMedium:
+          enum:
+          - MOBILE
+          - EMAIL
+          title: communicationMedium
+          type: string
+      required:
+      - communicationMedium
+      title: Meta
+      type: object
+      xml:
+        name: Meta
+    OrganizationRepresentation:
+      example:
+        id: id
+      properties:
+        id:
+          title: id
+          type: string
+          xml:
+            attribute: true
+      required:
+      - id
+      title: OrganizationRepresentation
+      type: object
+      xml:
+        name: OrganizationResponse
+    PatientAuthConfirmRequest:
+      example:
+        credential:
+          authCode: authCode
+          demographic:
+            identifier:
+              type: MOBILE
+              value: "+919800083232"
+            gender: M
+            name: janki das
+            dateOfBirth: 1972-02-29
+        requestId: 5f7a535d-a3fd-416b-b069-c97d021fbacd
+        transactionId: transactionId
+        timestamp: 2000-01-23T04:56:07.000+00:00
+      properties:
+        credential:
+          $ref: '#/components/schemas/PatientAuthConfirmRequest_credential'
+        requestId:
+          description: "a nonce, unique for each HTTP request"
+          example: 5f7a535d-a3fd-416b-b069-c97d021fbacd
+          format: uuid
+          title: requestId
+          type: string
+        timestamp:
+          description: "Date time format in UTC, includes miliseconds YYYY-MM-DDThh:mm:ss.vZ"
+          format: date-time
+          title: timestamp
+          type: string
+        transactionId:
+          title: transactionId
+          type: string
+      required:
+      - credential
+      - requestId
+      - timestamp
+      - transactionId
+      title: PatientAuthConfirmRequest
+      type: object
+    PatientAuthInitRequest:
+      example:
+        requestId: 5f7a535d-a3fd-416b-b069-c97d021fbacd
+        query:
+          authMode: MOBILE_OTP
+          requester:
+            id: "100005"
+            type: HIP
+          purpose: LINK
+          id: hinapatel@ndhm
+        timestamp: 2000-01-23T04:56:07.000+00:00
+      properties:
+        query:
+          $ref: '#/components/schemas/PatientAuthInitRequest_query'
+        requestId:
+          description: "a nonce, unique for each HTTP request"
+          example: 5f7a535d-a3fd-416b-b069-c97d021fbacd
+          format: uuid
+          title: requestId
+          type: string
+        timestamp:
+          description: "Date time format in UTC, includes miliseconds YYYY-MM-DDThh:mm:ss.vZ"
+          format: date-time
+          title: timestamp
+          type: string
+      required:
+      - query
+      - requestId
+      - timestamp
+      title: PatientAuthInitRequest
+      type: object
+    PatientAuthModeQueryRequest:
+      example:
+        requestId: 5f7a535d-a3fd-416b-b069-c97d021fbacd
+        query:
+          requester:
+            id: "100005"
+            type: HIP
+          purpose: LINK
+          id: hinapatel79@ndhm
+        timestamp: 2000-01-23T04:56:07.000+00:00
+      properties:
+        query:
+          $ref: '#/components/schemas/PatientAuthModeQueryRequest_query'
+        requestId:
+          description: "a nonce, unique for each HTTP request"
+          example: 5f7a535d-a3fd-416b-b069-c97d021fbacd
+          format: uuid
+          title: requestId
+          type: string
+        timestamp:
+          description: "Date time format in UTC, includes miliseconds YYYY-MM-DDThh:mm:ss.vZ"
+          format: date-time
+          title: timestamp
+          type: string
+      required:
+      - query
+      - requestId
+      - timestamp
+      title: PatientAuthModeQueryRequest
+      type: object
+    PatientAuthNotificationAcknowledgement:
+      example:
+        acknowledgement:
+          status: OK
+        resp:
+          requestId: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        requestId: 5f7a535d-a3fd-416b-b069-c97d021fbacd
+        error:
+          code: 0
+          message: message
+        timestamp: 2000-01-23T04:56:07.000+00:00
+      properties:
+        acknowledgement:
+          $ref: '#/components/schemas/PatientAuthNotificationAcknowledgement_acknowledgement'
+        error:
+          $ref: '#/components/schemas/Error'
+        requestId:
+          description: "a nonce, unique for each HTTP request"
+          example: 5f7a535d-a3fd-416b-b069-c97d021fbacd
+          format: uuid
+          title: requestId
+          type: string
+        resp:
+          $ref: '#/components/schemas/RequestReference'
+        timestamp:
+          description: "Date time format in UTC, includes miliseconds YYYY-MM-DDThh:mm:ss.vZ"
+          format: date-time
+          title: timestamp
+          type: string
+      required:
+      - requestId
+      - resp
+      - timestamp
+      title: PatientAuthNotificationAcknowledgement
+      type: object
+    PatientAuthPurpose:
+      description: what is the purpose of user auth
+      enum:
+      - LINK
+      - KYC
+      - KYC_AND_LINK
+      title: PatientAuthPurpose
+      type: string
+    PatientAuthRequester:
+      description: identification of requester
+      example:
+        id: "100005"
+        type: HIP
+      properties:
+        id:
+          example: "100005"
+          title: id
+          type: string
+        type:
+          enum:
+          - HIP
+          - HIU
+          title: type
+          type: string
+      required:
+      - id
+      - type
+      title: PatientAuthRequester
+      type: object
+    PatientCareContextLink:
+      example:
+        patient:
+          referenceNumber: TMH-PUID-001
+          display: display
+          careContexts:
+          - referenceNumber: referenceNumber
+            display: display
+          - referenceNumber: referenceNumber
+            display: display
+        accessToken: accessToken
+      properties:
+        accessToken:
+          description: AccessToken fetched in the user auth process for the purpose
+            specified
+          title: accessToken
+          type: string
+        patient:
+          $ref: '#/components/schemas/PatientCareContextLink_patient'
+      required:
+      - accessToken
+      - patient
+      title: PatientCareContextLink
+      type: object
+    PatientCareContextLinkRequest:
+      example:
+        requestId: 5f7a535d-a3fd-416b-b069-c97d021fbacd
+        link:
+          patient:
+            referenceNumber: TMH-PUID-001
+            display: display
+            careContexts:
+            - referenceNumber: referenceNumber
+              display: display
+            - referenceNumber: referenceNumber
+              display: display
+          accessToken: accessToken
+        timestamp: 2000-01-23T04:56:07.000+00:00
+      properties:
+        link:
+          $ref: '#/components/schemas/PatientCareContextLink'
+        requestId:
+          description: "a nonce, unique for each HTTP request"
+          example: 5f7a535d-a3fd-416b-b069-c97d021fbacd
+          format: uuid
+          title: requestId
+          type: string
+        timestamp:
+          description: "Date time format in UTC, includes miliseconds YYYY-MM-DDThh:mm:ss.vZ"
+          format: date-time
+          title: timestamp
+          type: string
+      required:
+      - link
+      - requestId
+      - timestamp
+      title: PatientCareContextLinkRequest
+      type: object
+    PatientDemographic:
+      description: Demographic details must be same as registered
+      example:
+        identifier:
+          type: MOBILE
+          value: "+919800083232"
+        gender: M
+        name: janki das
+        dateOfBirth: 1972-02-29
+      properties:
+        dateOfBirth:
+          description: date of birth in YYYY-MM-DD format.
+          example: 1972-02-29
+          title: dateOfBirth
+          type: string
+        gender:
+          $ref: '#/components/schemas/PatientGender'
+        identifier:
+          $ref: '#/components/schemas/AuthConfirmIdentifier'
+        name:
+          example: janki das
+          title: name
+          type: string
+      required:
+      - dateOfBirth
+      - gender
+      - name
+      title: PatientDemographic
+      type: object
+    PatientDiscoveryResult:
+      example:
+        resp:
+          requestId: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        patient:
+          referenceNumber: referenceNumber
+          display: display
+          matchedBy:
+          - MOBILE
+          - MOBILE
+          careContexts:
+          - referenceNumber: referenceNumber
+            display: display
+          - referenceNumber: referenceNumber
+            display: display
+        requestId: 5f7a535d-a3fd-416b-b069-c97d021fbacd
+        error:
+          code: 0
+          message: message
+        transactionId: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        timestamp: 2000-01-23T04:56:07.000+00:00
+      properties:
+        error:
+          $ref: '#/components/schemas/Error'
+        patient:
+          $ref: '#/components/schemas/PatientRepresentation'
+        requestId:
+          description: "a nonce, unique for each HTTP request"
+          example: 5f7a535d-a3fd-416b-b069-c97d021fbacd
+          format: uuid
+          title: requestId
+          type: string
+        resp:
+          $ref: '#/components/schemas/RequestReference'
+        timestamp:
+          description: "Date time format in UTC, includes miliseconds YYYY-MM-DDThh:mm:ss.vZ"
+          format: date-time
+          title: timestamp
+          type: string
+        transactionId:
+          format: uuid
+          title: transactionId
+          type: string
+      required:
+      - requestId
+      - resp
+      - timestamp
+      - transactionId
+      title: PatientDiscoveryResult
+      type: object
+      xml:
+        name: PatientDiscoveryResult
+    PatientGender:
+      enum:
+      - M
+      - F
+      - O
+      - U
+      title: PatientGender
+      type: string
+    PatientIdentificationRequest:
+      example:
+        requestId: 5f7a535d-a3fd-416b-b069-c97d021fbacd
+        query:
+          requester:
+            id: "100005"
+            type: HIU
+          patient:
+            id: hinapatel79@ndhm
+        timestamp: 2000-01-23T04:56:07.000+00:00
+      properties:
+        query:
+          $ref: '#/components/schemas/PatientIdentificationRequest_query'
+        requestId:
+          description: "a nonce, unique for each HTTP request"
+          example: 5f7a535d-a3fd-416b-b069-c97d021fbacd
+          format: uuid
+          title: requestId
+          type: string
+        timestamp:
+          description: "Date time format in UTC, includes miliseconds YYYY-MM-DDThh:mm:ss.vZ"
+          format: date-time
+          title: timestamp
+          type: string
+      required:
+      - query
+      - requestId
+      - timestamp
+      title: PatientIdentificationRequest
+      type: object
+    PatientLinkReferenceResult:
+      example:
+        resp:
+          requestId: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        requestId: 5f7a535d-a3fd-416b-b069-c97d021fbacd
+        link:
+          referenceNumber: referenceNumber
+          meta:
+            communicationMedium: MOBILE
+            communicationHint: communicationHint
+            communicationExpiry: 2019-12-30T12:01:55Z
+          authenticationType: DIRECT
+        error:
+          code: 0
+          message: message
+        transactionId: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        timestamp: 2000-01-23T04:56:07.000+00:00
+      properties:
+        error:
+          $ref: '#/components/schemas/Error'
+        link:
+          $ref: '#/components/schemas/PatientLinkReferenceResult_link'
+        requestId:
+          description: "a nonce, unique for each HTTP request"
+          example: 5f7a535d-a3fd-416b-b069-c97d021fbacd
+          format: uuid
+          title: requestId
+          type: string
+        resp:
+          $ref: '#/components/schemas/RequestReference'
+        timestamp:
+          description: "Date time format in UTC, includes miliseconds YYYY-MM-DDThh:mm:ss.vZ"
+          format: date-time
+          title: timestamp
+          type: string
+        transactionId:
+          format: uuid
+          title: UuidSchema
+          type: string
+      required:
+      - requestId
+      - resp
+      - timestamp
+      - transactionId
+      title: PatientLinkReferenceResult
+      type: object
+    PatientLinkResult:
+      example:
+        resp:
+          requestId: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        patient:
+          referenceNumber: referenceNumber
+          display: display
+          careContexts:
+          - referenceNumber: referenceNumber
+            display: display
+          - referenceNumber: referenceNumber
+            display: display
+        requestId: 5f7a535d-a3fd-416b-b069-c97d021fbacd
+        error:
+          code: 0
+          message: message
+        timestamp: 2000-01-23T04:56:07.000+00:00
+      properties:
+        error:
+          $ref: '#/components/schemas/Error'
+        patient:
+          $ref: '#/components/schemas/PatientLinkResult_patient'
+        requestId:
+          description: "a nonce, unique for each HTTP request"
+          example: 5f7a535d-a3fd-416b-b069-c97d021fbacd
+          format: uuid
+          title: requestId
+          type: string
+        resp:
+          $ref: '#/components/schemas/RequestReference'
+        timestamp:
+          description: "Date time format in UTC, includes miliseconds YYYY-MM-DDThh:mm:ss.vZ"
+          format: date-time
+          title: timestamp
+          type: string
+      required:
+      - requestId
+      - resp
+      - timestamp
+      title: PatientLinkResult
+      type: object
+    PatientRepresentation:
+      example:
+        referenceNumber: referenceNumber
+        display: display
+        matchedBy:
+        - MOBILE
+        - MOBILE
+        careContexts:
+        - referenceNumber: referenceNumber
+          display: display
+        - referenceNumber: referenceNumber
+          display: display
+      properties:
+        careContexts:
+          items:
+            $ref: '#/components/schemas/CareContextRepresentation'
+          title: careContexts
+          type: array
+        display:
+          title: display
+          type: string
+        matchedBy:
+          items:
+            $ref: '#/components/schemas/IdentifierType'
+          title: matchedBy
+          type: array
+        referenceNumber:
+          title: referenceNumber
+          type: string
+      required:
+      - careContexts
+      - display
+      - referenceNumber
+      title: PatientRepresentation
+      type: object
+      xml:
+        name: Patient
+    Permission:
+      example:
+        dateRange:
+          from: 2000-01-23T04:56:07.000+00:00
+          to: 2000-01-23T04:56:07.000+00:00
+        accessMode: VIEW
+        dataEraseAt: 2000-01-23T04:56:07.000+00:00
+        frequency:
+          repeats: 0
+          unit: HOUR
+          value: 6
+      properties:
+        accessMode:
+          enum:
+          - VIEW
+          - STORE
+          - QUERY
+          - STREAM
+          title: accessMode
+          type: string
+        dataEraseAt:
+          format: date-time
+          title: dataEraseAt
+          type: string
+        dateRange:
+          $ref: '#/components/schemas/Permission_dateRange'
+        frequency:
+          $ref: '#/components/schemas/Permission_frequency'
+      required:
+      - accessMode
+      - dataEraseAt
+      - dateRange
+      - frequency
+      title: Permission
+      type: object
+      xml:
+        name: Permission
+    RequestReference:
+      example:
+        requestId: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+      properties:
+        requestId:
+          description: the requestId that was passed
+          format: uuid
+          title: requestId
+          type: string
+      required:
+      - requestId
+      title: RequestReference
+      type: object
+    Requester:
+      example:
+        identifier:
+          system: https://www.mciindia.org
+          type: REGNO
+          value: MH1001
+        name: Dr. Manju
+      properties:
+        identifier:
+          $ref: '#/components/schemas/Requester_identifier'
+        name:
+          example: Dr. Manju
+          title: name
+          type: string
+      required:
+      - name
+      title: Requester
+      type: object
+    ShareProfileAcknowledgement:
+      example:
+        healthId: <username>@<suffix>
+        status: SUCCESS
+      properties:
+        healthId:
+          example: <username>@<suffix>
+          title: healthId
+          type: string
+        status:
+          enum:
+          - SUCCESS
+          - FAILURE
+          title: status
+          type: string
+      required:
+      - healthId
+      - status
+      title: ShareProfileAcknowledgement
+      type: object
+    ShareProfileResult:
+      example:
+        acknowledgement:
+          healthId: <username>@<suffix>
+          status: SUCCESS
+        resp:
+          requestId: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        requestId: 5f7a535d-a3fd-416b-b069-c97d021fbacd
+        error:
+          code: 0
+          message: message
+        timestamp: 2000-01-23T04:56:07.000+00:00
+      properties:
+        acknowledgement:
+          $ref: '#/components/schemas/ShareProfileAcknowledgement'
+        error:
+          $ref: '#/components/schemas/Error'
+        requestId:
+          description: "a nonce, unique for each HTTP request"
+          example: 5f7a535d-a3fd-416b-b069-c97d021fbacd
+          format: uuid
+          title: requestId
+          type: string
+        resp:
+          $ref: '#/components/schemas/RequestReference'
+        timestamp:
+          description: "Date time format in UTC, includes miliseconds YYYY-MM-DDThh:mm:ss.vZ"
+          format: date-time
+          title: timestamp
+          type: string
+      required:
+      - acknowledgement
+      - requestId
+      - resp
+      - timestamp
+      title: ShareProfileResult
+      type: object
+      xml:
+        name: ShareProfileResult
+    SubscriptionCategory:
+      enum:
+      - LINK
+      title: SubscriptionCategory
+      type: string
+    SubscriptionPeriod:
+      example:
+        from: 2000-01-23T04:56:07.000+00:00
+        to: 2000-01-23T04:56:07.000+00:00
+      properties:
+        from:
+          format: date-time
+          title: from
+          type: string
+        to:
+          format: date-time
+          title: to
+          type: string
+      required:
+      - from
+      - to
+      title: SubscriptionPeriod
+      type: object
+    SubscriptionRequest:
+      example:
+        requestId: 499a5a4a-7dda-4f20-9b67-e24589627061
+        subscription:
+          period:
+            from: 2000-01-23T04:56:07.000+00:00
+            to: 2000-01-23T04:56:07.000+00:00
+          hips:
+          - id: id
+          - id: id
+          hiu:
+            id: id
+          purpose:
+            code: code
+            text: text
+            refUri: https://openapi-generator.tech
+          patient:
+            id: hinapatel79@ndhm
+          categories:
+          - LINK
+          - LINK
+        timestamp: 2000-01-23T04:56:07.000+00:00
+      properties:
+        requestId:
+          description: "a nonce, unique for each HTTP request."
+          example: 499a5a4a-7dda-4f20-9b67-e24589627061
+          format: uuid
+          title: requestId
+          type: string
+        subscription:
+          $ref: '#/components/schemas/SubscriptionRequest_subscription'
+        timestamp:
+          description: "Date time format in UTC, includes miliseconds YYYY-MM-DDThh:mm:ss.vZ"
+          format: date-time
+          title: timestamp
+          type: string
+      required:
+      - requestId
+      - subscription
+      - timestamp
+      title: SubscriptionRequest
+      type: object
+    TimestampSchema:
+      description: "Date time format in UTC, includes miliseconds YYYY-MM-DDThh:mm:ss.vZ"
+      format: date-time
+      title: timestamp
+      type: string
+    UsePurpose:
+      example:
+        code: code
+        text: text
+        refUri: https://openapi-generator.tech
+      properties:
+        code:
+          description: "From the fixed set, documented at refUri"
+          title: code
+          type: string
+        refUri:
+          format: uri
+          title: refUri
+          type: string
+        text:
+          title: text
+          type: string
+      required:
+      - code
+      - text
+      title: UsePurpose
+      type: object
+    UuidSchema:
+      format: uuid
+      title: UuidSchema
+      type: string
+    consent:
+      example:
+        id: id
+      properties:
+        id:
+          title: id
+          type: string
+      required:
+      - id
+      title: consent
+      type: object
+    keyMaterial:
+      example:
+        curve: Curve25519
+        cryptoAlg: ECDH
+        dhPublicKey:
+          keyValue: keyValue
+          expiry: 2000-01-23T04:56:07.000+00:00
+          parameters: Curve25519/32byte random key
+        nonce: 3fa85f64-5717-4562-b3fc-2c963f66afa6
+      properties:
+        cryptoAlg:
+          example: ECDH
+          format: string
+          title: cryptoAlg
+          type: string
+        curve:
+          example: Curve25519
+          format: string
+          title: curve
+          type: string
+        dhPublicKey:
+          $ref: '#/components/schemas/KeyObject'
+        nonce:
+          example: 3fa85f64-5717-4562-b3fc-2c963f66afa6
+          format: 32 byte string
+          title: nonce
+          type: string
+      required:
+      - cryptoAlg
+      - curve
+      - dhPublicKey
+      - nonce
+      title: keyMaterial
+      type: object
+    ConsentRequest_consent_hip:
+      allOf:
+      - $ref: '#/components/schemas/OrganizationRepresentation'
+      - xml:
+          name: hip
+      example:
+        id: id
+      title: ConsentRequest_consent_hip
+      type: object
+    ConsentRequest_consent_hiu:
+      allOf:
+      - $ref: '#/components/schemas/OrganizationRepresentation'
+      - xml:
+          name: hiu
+      example:
+        id: id
+      title: ConsentRequest_consent_hiu
+      type: object
+    ConsentRequest_consent_patient:
+      allOf:
+      - $ref: '#/components/schemas/ConsentManagerPatientID'
+      - xml:
+          name: patient
+      example:
+        id: hinapatel79@ndhm
+      title: ConsentRequest_consent_patient
+      type: object
+    ConsentRequest_consent:
+      example:
+        requester:
+          identifier:
+            system: https://www.mciindia.org
+            type: REGNO
+            value: MH1001
+          name: Dr. Manju
+        hiTypes:
+        - OPConsultation
+        - OPConsultation
+        hiu:
+          id: id
+        purpose:
+          code: code
+          text: text
+          refUri: https://openapi-generator.tech
+        patient:
+          id: hinapatel79@ndhm
+        permission:
+          dateRange:
+            from: 2000-01-23T04:56:07.000+00:00
+            to: 2000-01-23T04:56:07.000+00:00
+          accessMode: VIEW
+          dataEraseAt: 2000-01-23T04:56:07.000+00:00
+          frequency:
+            repeats: 0
+            unit: HOUR
+            value: 6
+        careContexts:
+        - careContextReference: Episode1
+          patientReference: batman@tmh
+        - careContextReference: Episode1
+          patientReference: batman@tmh
+        hip:
+          id: id
+      properties:
+        careContexts:
+          items:
+            $ref: '#/components/schemas/CareContextDefinition'
+          title: careContexts
+          type: array
+        hiTypes:
+          items:
+            $ref: '#/components/schemas/HITypeEnum'
+          title: hiTypes
+          type: array
+        hip:
+          $ref: '#/components/schemas/ConsentRequest_consent_hip'
+        hiu:
+          $ref: '#/components/schemas/ConsentRequest_consent_hiu'
+        patient:
+          $ref: '#/components/schemas/ConsentRequest_consent_patient'
+        permission:
+          $ref: '#/components/schemas/Permission'
+        purpose:
+          $ref: '#/components/schemas/UsePurpose'
+        requester:
+          $ref: '#/components/schemas/Requester'
+      required:
+      - consentNotificationUrl
+      - hiTypes
+      - hiu
+      - patient
+      - permission
+      - purpose
+      - requester
+      title: ConsentRequest_consent
+      type: object
+    HIPHealthInformationRequestAcknowledgement_hiRequest:
+      example:
+        sessionStatus: ACKNOWLEDGED
+        transactionId: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+      properties:
+        sessionStatus:
+          enum:
+          - ACKNOWLEDGED
+          title: sessionStatus
+          type: string
+        transactionId:
+          format: uuid
+          title: transactionId
+          type: string
+      required:
+      - sessionStatus
+      - transactionId
+      title: HIPHealthInformationRequestAcknowledgement_hiRequest
+      type: object
+    HIRequest_hiRequest:
+      example:
+        keyMaterial:
+          curve: Curve25519
+          cryptoAlg: ECDH
+          dhPublicKey:
+            keyValue: keyValue
+            expiry: 2000-01-23T04:56:07.000+00:00
+            parameters: Curve25519/32byte random key
+          nonce: 3fa85f64-5717-4562-b3fc-2c963f66afa6
+        dateRange:
+          from: 2000-01-23T04:56:07.000+00:00
+          to: 2000-01-23T04:56:07.000+00:00
+        dataPushUrl: dataPushUrl
+        consent:
+          id: id
+      properties:
+        consent:
+          $ref: '#/components/schemas/consent'
+        dataPushUrl:
+          title: dataPushUrl
+          type: string
+        dateRange:
+          $ref: '#/components/schemas/DateRange'
+        keyMaterial:
+          $ref: '#/components/schemas/keyMaterial'
+      required:
+      - consent
+      - dataPushUrl
+      - dateRange
+      - keyMaterial
+      title: HIRequest_hiRequest
+      type: object
+    HIUSubscriptionNotificationAcknowledgment_acknowledgement:
+      example:
+        eventId: subscription event Id
+        status: OK
+      properties:
+        eventId:
+          example: subscription event Id
+          title: eventId
+          type: string
+        status:
+          enum:
+          - OK
+          title: status
+          type: string
+      required:
+      - eventId
+      - status
+      title: HIUSubscriptionNotificationAcknowledgment_acknowledgement
+      type: object
+    HIUSubscriptionRequestNotificationAcknowledgement_acknowledgement:
+      example:
+        subscriptionRequestId: subscription Id
+        status: OK
+      properties:
+        status:
+          enum:
+          - OK
+          title: status
+          type: string
+        subscriptionRequestId:
+          example: subscription Id
+          title: subscriptionRequestId
+          type: string
+      required:
+      - status
+      - subscriptionRequestId
+      title: HIUSubscriptionRequestNotificationAcknowledgement_acknowledgement
+      type: object
+    HealthInformationNotification_notification_notifier:
+      example:
+        id: "100005"
+        type: HIU
+      properties:
+        id:
+          example: "100005"
+          title: id
+          type: string
+        type:
+          enum:
+          - HIU
+          - HIP
+          title: type
+          type: string
+      required:
+      - id
+      - type
+      title: HealthInformationNotification_notification_notifier
+      type: object
+    HealthInformationNotification_notification_statusNotification_statusResponses_inner:
+      example:
+        careContextReference: careContextReference
+        hiStatus: OK
+        description: description
+      properties:
+        careContextReference:
+          title: careContextReference
+          type: string
+        description:
+          title: description
+          type: string
+        hiStatus:
+          enum:
+          - DELIVERED
+          - OK
+          - ERRORED
+          example: OK
+          title: hiStatus
+          type: string
+      required:
+      - careContextReference
+      - hiStatus
+      title: HealthInformationNotification_notification_statusNotification_statusResponses_inner
+      type: object
+    HealthInformationNotification_notification_statusNotification:
+      example:
+        hipId: max
+        statusResponses:
+        - careContextReference: careContextReference
+          hiStatus: OK
+          description: description
+        - careContextReference: careContextReference
+          hiStatus: OK
+          description: description
+        sessionStatus: TRANSFERRED
+      properties:
+        hipId:
+          example: max
+          title: hipId
+          type: string
+        sessionStatus:
+          enum:
+          - TRANSFERRED
+          - FAILED
+          title: sessionStatus
+          type: string
+        statusResponses:
+          items:
+            $ref: '#/components/schemas/HealthInformationNotification_notification_statusNotification_statusResponses_inner'
+          title: statusResponses
+          type: array
+      required:
+      - hipId
+      - sessionStatus
+      title: HealthInformationNotification_notification_statusNotification
+      type: object
+    HealthInformationNotification_notification:
+      example:
+        doneAt: 2000-01-23T04:56:07.000+00:00
+        consentId: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        notifier:
+          id: "100005"
+          type: HIU
+        statusNotification:
+          hipId: max
+          statusResponses:
+          - careContextReference: careContextReference
+            hiStatus: OK
+            description: description
+          - careContextReference: careContextReference
+            hiStatus: OK
+            description: description
+          sessionStatus: TRANSFERRED
+        transactionId: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+      properties:
+        consentId:
+          format: uuid
+          title: UuidSchema
+          type: string
+        doneAt:
+          format: date-time
+          title: doneAt
+          type: string
+        notifier:
+          $ref: '#/components/schemas/HealthInformationNotification_notification_notifier'
+        statusNotification:
+          $ref: '#/components/schemas/HealthInformationNotification_notification_statusNotification'
+        transactionId:
+          format: uuid
+          title: UuidSchema
+          type: string
+      required:
+      - consentId
+      - doneAt
+      - notifier
+      - statusNotification
+      - transactionId
+      title: HealthInformationNotification_notification
+      type: object
+    PatientAuthConfirmRequest_credential:
+      description: "note, demographic details are only required for demographic verfication."
+      example:
+        authCode: authCode
+        demographic:
+          identifier:
+            type: MOBILE
+            value: "+919800083232"
+          gender: M
+          name: janki das
+          dateOfBirth: 1972-02-29
+      properties:
+        authCode:
+          title: authCode
+          type: string
+        demographic:
+          $ref: '#/components/schemas/PatientDemographic'
+      title: PatientAuthConfirmRequest_credential
+      type: object
+    PatientAuthInitRequest_query:
+      example:
+        authMode: MOBILE_OTP
+        requester:
+          id: "100005"
+          type: HIP
+        purpose: LINK
+        id: hinapatel@ndhm
+      properties:
+        authMode:
+          $ref: '#/components/schemas/AuthenticationMode'
+        id:
+          description: id  of the patient understood by the CM
+          example: hinapatel@ndhm
+          title: id
+          type: string
+        purpose:
+          $ref: '#/components/schemas/PatientAuthPurpose'
+        requester:
+          $ref: '#/components/schemas/PatientAuthRequester'
+      required:
+      - id
+      - purpose
+      - requester
+      title: PatientAuthInitRequest_query
+      type: object
+    PatientAuthModeQueryRequest_query_requester:
+      example:
+        id: "100005"
+        type: HIP
+      properties:
+        id:
+          example: "100005"
+          title: id
+          type: string
+        type:
+          enum:
+          - HIP
+          - HIU
+          title: type
+          type: string
+      required:
+      - id
+      - type
+      title: PatientAuthModeQueryRequest_query_requester
+      type: object
+    PatientAuthModeQueryRequest_query:
+      example:
+        requester:
+          id: "100005"
+          type: HIP
+        purpose: LINK
+        id: hinapatel79@ndhm
+      properties:
+        id:
+          example: hinapatel79@ndhm
+          title: id
+          type: string
+        purpose:
+          $ref: '#/components/schemas/PatientAuthPurpose'
+        requester:
+          $ref: '#/components/schemas/PatientAuthModeQueryRequest_query_requester'
+      required:
+      - id
+      - purpose
+      - requester
+      title: PatientAuthModeQueryRequest_query
+      type: object
+    PatientAuthNotificationAcknowledgement_acknowledgement:
+      example:
+        status: OK
+      properties:
+        status:
+          enum:
+          - OK
+          title: status
+          type: string
+      required:
+      - status
+      title: PatientAuthNotificationAcknowledgement_acknowledgement
+      type: object
+    PatientCareContextLink_patient:
+      example:
+        referenceNumber: TMH-PUID-001
+        display: display
+        careContexts:
+        - referenceNumber: referenceNumber
+          display: display
+        - referenceNumber: referenceNumber
+          display: display
+      properties:
+        careContexts:
+          items:
+            $ref: '#/components/schemas/CareContextRepresentation'
+          title: careContexts
+          type: array
+          xml:
+            name: careContexts
+            wrapped: true
+        display:
+          title: display
+          type: string
+        referenceNumber:
+          description: patient reference id at HIP
+          example: TMH-PUID-001
+          title: referenceNumber
+          type: string
+      required:
+      - careContexts
+      - display
+      - referenceNumber
+      title: PatientCareContextLink_patient
+      type: object
+    PatientIdentificationRequest_query_patient:
+      example:
+        id: hinapatel79@ndhm
+      properties:
+        id:
+          example: hinapatel79@ndhm
+          title: id
+          type: string
+      required:
+      - id
+      title: PatientIdentificationRequest_query_patient
+      type: object
+    PatientIdentificationRequest_query:
+      example:
+        requester:
+          id: "100005"
+          type: HIU
+        patient:
+          id: hinapatel79@ndhm
+      properties:
+        patient:
+          $ref: '#/components/schemas/PatientIdentificationRequest_query_patient'
+        requester:
+          $ref: '#/components/schemas/HealthInformationNotification_notification_notifier'
+      required:
+      - patient
+      - requester
+      title: PatientIdentificationRequest_query
+      type: object
+    PatientLinkReferenceResult_link:
+      example:
+        referenceNumber: referenceNumber
+        meta:
+          communicationMedium: MOBILE
+          communicationHint: communicationHint
+          communicationExpiry: 2019-12-30T12:01:55Z
+        authenticationType: DIRECT
+      properties:
+        authenticationType:
+          enum:
+          - DIRECT
+          - MEDIATED
+          title: authenticationType
+          type: string
+        meta:
+          $ref: '#/components/schemas/Meta'
+        referenceNumber:
+          title: referenceNumber
+          type: string
+      required:
+      - authenticationType
+      - referenceNumber
+      title: PatientLinkReferenceResult_link
+      type: object
+    PatientLinkResult_patient:
+      example:
+        referenceNumber: referenceNumber
+        display: display
+        careContexts:
+        - referenceNumber: referenceNumber
+          display: display
+        - referenceNumber: referenceNumber
+          display: display
+      properties:
+        careContexts:
+          items:
+            $ref: '#/components/schemas/CareContextRepresentation'
+          title: careContexts
+          type: array
+        display:
+          title: display
+          type: string
+        referenceNumber:
+          title: referenceNumber
+          type: string
+      required:
+      - careContexts
+      - display
+      - referenceNumber
+      title: PatientLinkResult_patient
+      type: object
+    Permission_dateRange:
+      example:
+        from: 2000-01-23T04:56:07.000+00:00
+        to: 2000-01-23T04:56:07.000+00:00
+      properties:
+        from:
+          format: date-time
+          title: from
+          type: string
+        to:
+          format: date-time
+          title: to
+          type: string
+      required:
+      - from
+      - to
+      title: Permission_dateRange
+      type: object
+    Permission_frequency:
+      example:
+        repeats: 0
+        unit: HOUR
+        value: 6
+      properties:
+        repeats:
+          title: repeats
+          type: integer
+        unit:
+          enum:
+          - HOUR
+          - WEEK
+          - DAY
+          - MONTH
+          - YEAR
+          title: unit
+          type: string
+        value:
+          title: value
+          type: integer
+      title: Permission_frequency
+      type: object
+    Requester_identifier:
+      example:
+        system: https://www.mciindia.org
+        type: REGNO
+        value: MH1001
+      properties:
+        system:
+          example: https://www.mciindia.org
+          title: system
+          type: string
+        type:
+          example: REGNO
+          title: type
+          type: string
+        value:
+          example: MH1001
+          title: value
+          type: string
+      required:
+      - type
+      - value
+      title: Requester_identifier
+      type: object
+    SubscriptionRequest_subscription:
+      example:
+        period:
+          from: 2000-01-23T04:56:07.000+00:00
+          to: 2000-01-23T04:56:07.000+00:00
+        hips:
+        - id: id
+        - id: id
+        hiu:
+          id: id
+        purpose:
+          code: code
+          text: text
+          refUri: https://openapi-generator.tech
+        patient:
+          id: hinapatel79@ndhm
+        categories:
+        - LINK
+        - LINK
+      properties:
+        categories:
+          items:
+            $ref: '#/components/schemas/SubscriptionCategory'
+          title: categories
+          type: array
+        hips:
+          items:
+            $ref: '#/components/schemas/OrganizationRepresentation'
+          title: hips
+          type: array
+        hiu:
+          $ref: '#/components/schemas/OrganizationRepresentation'
+        patient:
+          $ref: '#/components/schemas/ConsentManagerPatientID'
+        period:
+          $ref: '#/components/schemas/SubscriptionPeriod'
+        purpose:
+          $ref: '#/components/schemas/UsePurpose'
+      required:
+      - categories
+      - hiu
+      - patient
+      - period
+      - purpose
+      title: SubscriptionRequest_subscription
+      type: object

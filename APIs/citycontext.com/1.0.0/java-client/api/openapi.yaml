@@ -1,0 +1,389 @@
+openapi: 3.0.1
+info:
+  description: "City Context provides a straightforward API to access UK Open Data:\
+    \ crime statistics, schools, demographics and more."
+  title: City Context
+  version: 1.0.0
+  x-apisguru-categories:
+  - open_data
+  x-logo:
+    url: https://twitter.com/citycontext/profile_image?size=original
+  x-origin:
+  - converter:
+      url: https://github.com/lucybot/api-spec-converter
+      version: 2.6.0
+    format: swagger
+    url: https://www.citycontext.com/swagger/spec.json
+    version: "1.2"
+  x-providerName: citycontext.com
+servers:
+- url: http://api.citycontext.com/v1
+security:
+- user_key: []
+tags:
+- description: Core City Context API
+  name: citycontext
+paths:
+  /@{lat},{lon}:
+    get:
+      operationId: byPoint
+      parameters:
+      - description: Latitude
+        in: path
+        name: lat
+        required: true
+        schema:
+          format: float
+          type: number
+      - description: Longitude
+        in: path
+        name: lon
+        required: true
+        schema:
+          format: float
+          type: number
+      - description: "Search radius for schools, in metres, between 100 and 4000"
+        in: query
+        name: school_search_radius
+        schema:
+          type: integer
+      - description: "Search radius for parks, in metres, between 100 and 2000"
+        in: query
+        name: park_search_radius
+        schema:
+          type: integer
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PointInfo'
+          description: No response was specified
+      summary: Query by coordinates (SRID 4326 - decimal degrees)
+      tags:
+      - citycontext
+      x-accepts:
+      - application/json
+  /postcodes/{postcode}:
+    get:
+      operationId: byPostcode
+      parameters:
+      - description: Postcode
+        in: path
+        name: postcode
+        required: true
+        schema:
+          type: string
+      - description: "Search radius for schools, in metres, between 100 and 4000"
+        in: query
+        name: school_search_radius
+        schema:
+          type: integer
+      - description: "Search radius for parks, in metres, between 100 and 2000"
+        in: query
+        name: park_search_radius
+        schema:
+          type: integer
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PointInfo'
+          description: No response was specified
+      summary: Query by postcode
+      tags:
+      - citycontext
+      x-accepts:
+      - application/json
+  /usage:
+    get:
+      operationId: usage
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Usage'
+          description: No response was specified
+      summary: Get usage in current month
+      tags:
+      - citycontext
+      x-accepts:
+      - application/json
+components:
+  schemas:
+    Latlon:
+      type: object
+    Location:
+      description: "Latitude, Longitude and other info related to the given point"
+      example:
+        withinLondonCCZ: true
+        lon: 36.988422
+        lat: -71.38592
+      properties:
+        lat:
+          format: float
+          maximum: 85
+          minimum: -85
+          type: number
+        lon:
+          format: float
+          maximum: 180
+          minimum: -180
+          type: number
+        withinLondonCCZ:
+          description: Boolean flag indicating whether this point is located within
+            London's Congestion Charge zone
+          type: boolean
+      required:
+      - lat
+      - lon
+      type: object
+    PointInfo:
+      description: Contextual information around a given point
+      example:
+        parks:
+        - distanceMeters: 2
+          areaSqm: 3
+          centroid: "{}"
+          name: name
+        - distanceMeters: 2
+          areaSqm: 3
+          centroid: "{}"
+          name: name
+        schools:
+        - phase: phase
+          typeOfEstablishment: typeOfEstablishment
+          urn: 1
+          distanceMeters: 4
+          lastInpectionUrl: lastInpectionUrl
+          lastInspectionDate: 2000-01-23T04:56:07.000+00:00
+          location: "{}"
+          qualityOfTeaching: 1
+          schoolName: schoolName
+          overallEffectiveness: 1
+          leadershipAndManagement: 3
+        - phase: phase
+          typeOfEstablishment: typeOfEstablishment
+          urn: 1
+          distanceMeters: 4
+          lastInpectionUrl: lastInpectionUrl
+          lastInspectionDate: 2000-01-23T04:56:07.000+00:00
+          location: "{}"
+          qualityOfTeaching: 1
+          schoolName: schoolName
+          overallEffectiveness: 1
+          leadershipAndManagement: 3
+        location:
+          withinLondonCCZ: true
+          lon: 36.988422
+          lat: -71.38592
+        lsoa:
+          crimes: "{}"
+          name: name
+          population:
+            householdResidents: 5
+            allUsualResidents: 1
+            personsPerHectare: 7
+            communalEstablishmentResidents: 5
+            households: 2
+            personsPerHousehold: 9
+      properties:
+        location:
+          $ref: '#/components/schemas/Location'
+        lsoa:
+          $ref: '#/components/schemas/PointInfo_lsoa'
+        parks:
+          description: "Parks within 1km of the point of interest, sorted by descending\
+            \ area"
+          items:
+            $ref: '#/components/schemas/PointInfo_parks_inner'
+          type: array
+        schools:
+          description: "Schools within 1km of the point of interest, sorted by ascending\
+            \ distance from the POI"
+          items:
+            $ref: '#/components/schemas/PointInfo_schools_inner'
+          type: array
+      required:
+      - location
+      - parks
+      - schools
+      type: object
+    Usage:
+      description: User plan monthly API quota and usage
+      example:
+        period: period
+        usage: 6
+        allowance: 0
+        periodStart: 2000-01-23T04:56:07.000+00:00
+        plan: plan
+        periodEnd: 2000-01-23T04:56:07.000+00:00
+      properties:
+        allowance:
+          type: integer
+        period:
+          type: string
+        periodEnd:
+          format: date-time
+          type: string
+        periodStart:
+          format: date-time
+          type: string
+        plan:
+          type: string
+        usage:
+          type: integer
+      required:
+      - period
+      - periodEnd
+      - periodStart
+      - plan
+      - usage
+      type: object
+    PointInfo_lsoa_population:
+      example:
+        householdResidents: 5
+        allUsualResidents: 1
+        personsPerHectare: 7
+        communalEstablishmentResidents: 5
+        households: 2
+        personsPerHousehold: 9
+      properties:
+        allUsualResidents:
+          type: integer
+        communalEstablishmentResidents:
+          type: integer
+        householdResidents:
+          type: integer
+        households:
+          type: integer
+        personsPerHectare:
+          type: integer
+        personsPerHousehold:
+          type: integer
+      required:
+      - allUsualResidents
+      - communalEstablishmentResidents
+      - householdResidents
+      - households
+      - personsPerHectare
+      - personsPerHousehold
+      type: object
+    PointInfo_lsoa:
+      description: Statistics for lower layer super output areas (LSOA)
+      example:
+        crimes: "{}"
+        name: name
+        population:
+          householdResidents: 5
+          allUsualResidents: 1
+          personsPerHectare: 7
+          communalEstablishmentResidents: 5
+          households: 2
+          personsPerHousehold: 9
+      properties:
+        crimes:
+          properties: {}
+          type: object
+        name:
+          type: string
+        population:
+          $ref: '#/components/schemas/PointInfo_lsoa_population'
+      required:
+      - name
+      type: object
+    PointInfo_parks_inner:
+      example:
+        distanceMeters: 2
+        areaSqm: 3
+        centroid: "{}"
+        name: name
+      properties:
+        areaSqm:
+          type: integer
+        centroid:
+          type: object
+        distanceMeters:
+          type: integer
+        name:
+          type: string
+      required:
+      - areaSqm
+      - centroid
+      - distanceMeters
+      type: object
+    PointInfo_schools_inner:
+      example:
+        phase: phase
+        typeOfEstablishment: typeOfEstablishment
+        urn: 1
+        distanceMeters: 4
+        lastInpectionUrl: lastInpectionUrl
+        lastInspectionDate: 2000-01-23T04:56:07.000+00:00
+        location: "{}"
+        qualityOfTeaching: 1
+        schoolName: schoolName
+        overallEffectiveness: 1
+        leadershipAndManagement: 3
+      properties:
+        distanceMeters:
+          type: integer
+        lastInpectionUrl:
+          description: URL to the last inspection report
+          type: string
+        lastInspectionDate:
+          description: Date of the last Ofsted inspection
+          format: date-time
+          type: string
+        leadershipAndManagement:
+          description: "Leadership and management grade in the last Ofsted report,\
+            \ from 1 (outstanding) to 4 (inadequate)"
+          maximum: 4
+          minimum: 1
+          type: integer
+        location:
+          type: object
+        overallEffectiveness:
+          description: "Overall effectiveness grade in the last Ofsted report, from\
+            \ 1 (outstanding) to 4 (inadequate)"
+          maximum: 4
+          minimum: 1
+          type: integer
+        phase:
+          type: string
+        qualityOfTeaching:
+          description: "Quality of teaching grade in the last Ofsted report, from\
+            \ 1 (outstanding) to 4 (inadequate)"
+          maximum: 4
+          minimum: 1
+          type: integer
+        schoolName:
+          type: string
+        typeOfEstablishment:
+          type: string
+        urn:
+          description: Unique school identifier
+          type: integer
+      required:
+      - distanceMeters
+      - lastInpectionUrl
+      - lastInspectionDate
+      - leadershipAndManagement
+      - location
+      - overallEffectiveness
+      - phase
+      - qualityOfTeaching
+      - schoolName
+      - typeOfEstablishment
+      - urn
+      type: object
+  securitySchemes:
+    user_key:
+      description: City context user key
+      in: query
+      name: user_key
+      type: apiKey
+x-original-swagger-version: "2.0"
+
