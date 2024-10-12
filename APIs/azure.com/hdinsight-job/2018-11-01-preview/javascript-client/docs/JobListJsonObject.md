@@ -1,0 +1,10 @@
+# HdInsightJobManagementClient.JobListJsonObject
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**detail** | [**JobDetailRootJsonObject**](JobDetailRootJsonObject.md) |  | [optional] 
+**id** | **String** | The Id of the job. | [optional] 
+
+
