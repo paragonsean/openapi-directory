@@ -1,0 +1,9 @@
+# coding: utf-8
+
+# import models into model package
+from openapi_server.models.watcher import Watcher
+from openapi_server.models.watcher_list_by_automation_account_default_response import WatcherListByAutomationAccountDefaultResponse
+from openapi_server.models.watcher_list_result import WatcherListResult
+from openapi_server.models.watcher_properties import WatcherProperties
+from openapi_server.models.watcher_update_parameters import WatcherUpdateParameters
+from openapi_server.models.watcher_update_properties import WatcherUpdateProperties

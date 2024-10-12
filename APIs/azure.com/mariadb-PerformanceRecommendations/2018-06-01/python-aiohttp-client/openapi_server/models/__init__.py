@@ -1,0 +1,9 @@
+# coding: utf-8
+
+# import models into model package
+from openapi_server.models.advisor import Advisor
+from openapi_server.models.advisors_result_list import AdvisorsResultList
+from openapi_server.models.recommendation_action import RecommendationAction
+from openapi_server.models.recommendation_action_properties import RecommendationActionProperties
+from openapi_server.models.recommendation_actions_result_list import RecommendationActionsResultList
+from openapi_server.models.recommended_action_sessions_operation_status import RecommendedActionSessionsOperationStatus

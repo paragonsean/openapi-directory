@@ -1,0 +1,16 @@
+# coding: utf-8
+
+# import models into model package
+from openapi_server.models.redis_access_keys import RedisAccessKeys
+from openapi_server.models.redis_create_or_update_parameters import RedisCreateOrUpdateParameters
+from openapi_server.models.redis_list_keys_result import RedisListKeysResult
+from openapi_server.models.redis_list_result import RedisListResult
+from openapi_server.models.redis_properties import RedisProperties
+from openapi_server.models.redis_readable_properties import RedisReadableProperties
+from openapi_server.models.redis_readable_properties_with_access_key import RedisReadablePropertiesWithAccessKey
+from openapi_server.models.redis_reboot_parameters import RedisRebootParameters
+from openapi_server.models.redis_regenerate_key_parameters import RedisRegenerateKeyParameters
+from openapi_server.models.redis_resource import RedisResource
+from openapi_server.models.redis_resource_with_access_key import RedisResourceWithAccessKey
+from openapi_server.models.resource import Resource
+from openapi_server.models.sku import Sku

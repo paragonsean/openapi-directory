@@ -1,0 +1,32 @@
+# EventGridManagementClient.EventSubscriptionProperties
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**destination** | [**EventSubscriptionDestination**](EventSubscriptionDestination.md) |  | [optional] 
+**filter** | [**EventSubscriptionFilter**](EventSubscriptionFilter.md) |  | [optional] 
+**labels** | **[String]** | List of user defined labels. | [optional] 
+**provisioningState** | **String** | Provisioning state of the event subscription. | [optional] [readonly] 
+**topic** | **String** | Name of the topic of the event subscription. | [optional] [readonly] 
+
+
+
+## Enum: ProvisioningStateEnum
+
+
+* `Creating` (value: `"Creating"`)
+
+* `Updating` (value: `"Updating"`)
+
+* `Deleting` (value: `"Deleting"`)
+
+* `Succeeded` (value: `"Succeeded"`)
+
+* `Canceled` (value: `"Canceled"`)
+
+* `Failed` (value: `"Failed"`)
+
+
+
+

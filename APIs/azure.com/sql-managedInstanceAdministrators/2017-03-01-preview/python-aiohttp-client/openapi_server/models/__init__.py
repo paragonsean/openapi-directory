@@ -1,0 +1,8 @@
+# coding: utf-8
+
+# import models into model package
+from openapi_server.models.managed_instance_administrator import ManagedInstanceAdministrator
+from openapi_server.models.managed_instance_administrator_list_result import ManagedInstanceAdministratorListResult
+from openapi_server.models.managed_instance_administrator_properties import ManagedInstanceAdministratorProperties
+from openapi_server.models.proxy_resource import ProxyResource
+from openapi_server.models.resource import Resource

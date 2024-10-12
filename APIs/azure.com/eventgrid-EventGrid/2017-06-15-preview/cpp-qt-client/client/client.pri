@@ -1,0 +1,79 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIEventSubscription.h \
+    $${PWD}/OAIEventSubscriptionDestination.h \
+    $${PWD}/OAIEventSubscriptionDestinationProperties.h \
+    $${PWD}/OAIEventSubscriptionFilter.h \
+    $${PWD}/OAIEventSubscriptionFullUrl.h \
+    $${PWD}/OAIEventSubscriptionProperties.h \
+    $${PWD}/OAIEventSubscriptionUpdateParameters.h \
+    $${PWD}/OAIEventSubscriptionsListResult.h \
+    $${PWD}/OAIEventType.h \
+    $${PWD}/OAIEventTypeProperties.h \
+    $${PWD}/OAIEventTypesListResult.h \
+    $${PWD}/OAIOperation.h \
+    $${PWD}/OAIOperationInfo.h \
+    $${PWD}/OAIOperationsListResult.h \
+    $${PWD}/OAIResource.h \
+    $${PWD}/OAITopic.h \
+    $${PWD}/OAITopicProperties.h \
+    $${PWD}/OAITopicRegenerateKeyRequest.h \
+    $${PWD}/OAITopicSharedAccessKeys.h \
+    $${PWD}/OAITopicTypeInfo.h \
+    $${PWD}/OAITopicTypeProperties.h \
+    $${PWD}/OAITopicTypesListResult.h \
+    $${PWD}/OAITopicsListResult.h \
+    $${PWD}/OAITrackedResource.h \
+# APIs
+    $${PWD}/OAIEventSubscriptionsApi.h \
+    $${PWD}/OAIOperationsApi.h \
+    $${PWD}/OAITopicTypesApi.h \
+    $${PWD}/OAITopicsApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIEventSubscription.cpp \
+    $${PWD}/OAIEventSubscriptionDestination.cpp \
+    $${PWD}/OAIEventSubscriptionDestinationProperties.cpp \
+    $${PWD}/OAIEventSubscriptionFilter.cpp \
+    $${PWD}/OAIEventSubscriptionFullUrl.cpp \
+    $${PWD}/OAIEventSubscriptionProperties.cpp \
+    $${PWD}/OAIEventSubscriptionUpdateParameters.cpp \
+    $${PWD}/OAIEventSubscriptionsListResult.cpp \
+    $${PWD}/OAIEventType.cpp \
+    $${PWD}/OAIEventTypeProperties.cpp \
+    $${PWD}/OAIEventTypesListResult.cpp \
+    $${PWD}/OAIOperation.cpp \
+    $${PWD}/OAIOperationInfo.cpp \
+    $${PWD}/OAIOperationsListResult.cpp \
+    $${PWD}/OAIResource.cpp \
+    $${PWD}/OAITopic.cpp \
+    $${PWD}/OAITopicProperties.cpp \
+    $${PWD}/OAITopicRegenerateKeyRequest.cpp \
+    $${PWD}/OAITopicSharedAccessKeys.cpp \
+    $${PWD}/OAITopicTypeInfo.cpp \
+    $${PWD}/OAITopicTypeProperties.cpp \
+    $${PWD}/OAITopicTypesListResult.cpp \
+    $${PWD}/OAITopicsListResult.cpp \
+    $${PWD}/OAITrackedResource.cpp \
+# APIs
+    $${PWD}/OAIEventSubscriptionsApi.cpp \
+    $${PWD}/OAIOperationsApi.cpp \
+    $${PWD}/OAITopicTypesApi.cpp \
+    $${PWD}/OAITopicsApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

@@ -1,0 +1,103 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIDeadLetterDestination.h \
+    $${PWD}/OAIEventHubEventSubscriptionDestination.h \
+    $${PWD}/OAIEventHubEventSubscriptionDestinationProperties.h \
+    $${PWD}/OAIEventSubscription.h \
+    $${PWD}/OAIEventSubscriptionDestination.h \
+    $${PWD}/OAIEventSubscriptionFilter.h \
+    $${PWD}/OAIEventSubscriptionFullUrl.h \
+    $${PWD}/OAIEventSubscriptionProperties.h \
+    $${PWD}/OAIEventSubscriptionUpdateParameters.h \
+    $${PWD}/OAIEventSubscriptionsListResult.h \
+    $${PWD}/OAIEventType.h \
+    $${PWD}/OAIEventTypeProperties.h \
+    $${PWD}/OAIEventTypesListResult.h \
+    $${PWD}/OAIHybridConnectionEventSubscriptionDestination.h \
+    $${PWD}/OAIHybridConnectionEventSubscriptionDestinationProperties.h \
+    $${PWD}/OAIOperation.h \
+    $${PWD}/OAIOperationInfo.h \
+    $${PWD}/OAIOperationsListResult.h \
+    $${PWD}/OAIResource.h \
+    $${PWD}/OAIRetryPolicy.h \
+    $${PWD}/OAIStorageBlobDeadLetterDestination.h \
+    $${PWD}/OAIStorageBlobDeadLetterDestinationProperties.h \
+    $${PWD}/OAIStorageQueueEventSubscriptionDestination.h \
+    $${PWD}/OAIStorageQueueEventSubscriptionDestinationProperties.h \
+    $${PWD}/OAITopic.h \
+    $${PWD}/OAITopicProperties.h \
+    $${PWD}/OAITopicRegenerateKeyRequest.h \
+    $${PWD}/OAITopicSharedAccessKeys.h \
+    $${PWD}/OAITopicTypeInfo.h \
+    $${PWD}/OAITopicTypeProperties.h \
+    $${PWD}/OAITopicTypesListResult.h \
+    $${PWD}/OAITopicUpdateParameters.h \
+    $${PWD}/OAITopicsListResult.h \
+    $${PWD}/OAITrackedResource.h \
+    $${PWD}/OAIWebHookEventSubscriptionDestination.h \
+    $${PWD}/OAIWebHookEventSubscriptionDestinationProperties.h \
+# APIs
+    $${PWD}/OAIEventSubscriptionsApi.h \
+    $${PWD}/OAIOperationsApi.h \
+    $${PWD}/OAITopicTypesApi.h \
+    $${PWD}/OAITopicsApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIDeadLetterDestination.cpp \
+    $${PWD}/OAIEventHubEventSubscriptionDestination.cpp \
+    $${PWD}/OAIEventHubEventSubscriptionDestinationProperties.cpp \
+    $${PWD}/OAIEventSubscription.cpp \
+    $${PWD}/OAIEventSubscriptionDestination.cpp \
+    $${PWD}/OAIEventSubscriptionFilter.cpp \
+    $${PWD}/OAIEventSubscriptionFullUrl.cpp \
+    $${PWD}/OAIEventSubscriptionProperties.cpp \
+    $${PWD}/OAIEventSubscriptionUpdateParameters.cpp \
+    $${PWD}/OAIEventSubscriptionsListResult.cpp \
+    $${PWD}/OAIEventType.cpp \
+    $${PWD}/OAIEventTypeProperties.cpp \
+    $${PWD}/OAIEventTypesListResult.cpp \
+    $${PWD}/OAIHybridConnectionEventSubscriptionDestination.cpp \
+    $${PWD}/OAIHybridConnectionEventSubscriptionDestinationProperties.cpp \
+    $${PWD}/OAIOperation.cpp \
+    $${PWD}/OAIOperationInfo.cpp \
+    $${PWD}/OAIOperationsListResult.cpp \
+    $${PWD}/OAIResource.cpp \
+    $${PWD}/OAIRetryPolicy.cpp \
+    $${PWD}/OAIStorageBlobDeadLetterDestination.cpp \
+    $${PWD}/OAIStorageBlobDeadLetterDestinationProperties.cpp \
+    $${PWD}/OAIStorageQueueEventSubscriptionDestination.cpp \
+    $${PWD}/OAIStorageQueueEventSubscriptionDestinationProperties.cpp \
+    $${PWD}/OAITopic.cpp \
+    $${PWD}/OAITopicProperties.cpp \
+    $${PWD}/OAITopicRegenerateKeyRequest.cpp \
+    $${PWD}/OAITopicSharedAccessKeys.cpp \
+    $${PWD}/OAITopicTypeInfo.cpp \
+    $${PWD}/OAITopicTypeProperties.cpp \
+    $${PWD}/OAITopicTypesListResult.cpp \
+    $${PWD}/OAITopicUpdateParameters.cpp \
+    $${PWD}/OAITopicsListResult.cpp \
+    $${PWD}/OAITrackedResource.cpp \
+    $${PWD}/OAIWebHookEventSubscriptionDestination.cpp \
+    $${PWD}/OAIWebHookEventSubscriptionDestinationProperties.cpp \
+# APIs
+    $${PWD}/OAIEventSubscriptionsApi.cpp \
+    $${PWD}/OAIOperationsApi.cpp \
+    $${PWD}/OAITopicTypesApi.cpp \
+    $${PWD}/OAITopicsApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp
