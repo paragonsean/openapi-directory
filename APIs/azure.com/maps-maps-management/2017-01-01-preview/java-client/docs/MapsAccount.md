@@ -1,0 +1,20 @@
+
+
+# MapsAccount
+
+An Azure resource which represents access to a suite of Maps REST APIs.
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**location** | **String** | The location of the resource. |  [optional] [readonly] |
+|**properties** | [**MapsAccountProperties**](MapsAccountProperties.md) |  |  [optional] |
+|**sku** | [**Sku**](Sku.md) |  |  [optional] |
+|**tags** | **Map&lt;String, String&gt;** | Gets a list of key value pairs that describe the resource. These tags can be used in viewing and grouping this resource (across resource groups). A maximum of 15 tags can be provided for a resource. Each tag must have a key no greater than 128 characters and value no greater than 256 characters. |  [optional] [readonly] |
+|**id** | **String** | The fully qualified Maps Account resource identifier. |  [optional] [readonly] |
+|**name** | **String** | The name of the Maps Account, which is unique within a Resource Group. |  [optional] [readonly] |
+|**type** | **String** | Azure resource type. |  [optional] [readonly] |
+
+
+

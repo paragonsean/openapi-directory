@@ -1,0 +1,7 @@
+# coding: utf-8
+
+# import models into model package
+from openapi_server.models.backup_storage_config import BackupStorageConfig
+from openapi_server.models.backup_storage_config_properties import BackupStorageConfigProperties
+from openapi_server.models.backup_vault_config import BackupVaultConfig
+from openapi_server.models.backup_vault_config_properties import BackupVaultConfigProperties
