@@ -1,0 +1,25 @@
+# DataflowApi.SourceSplitShard
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**derivationMode** | **String** | DEPRECATED | [optional] 
+**source** | [**Source**](Source.md) |  | [optional] 
+
+
+
+## Enum: DerivationModeEnum
+
+
+* `UNKNOWN` (value: `"SOURCE_DERIVATION_MODE_UNKNOWN"`)
+
+* `INDEPENDENT` (value: `"SOURCE_DERIVATION_MODE_INDEPENDENT"`)
+
+* `CHILD_OF_CURRENT` (value: `"SOURCE_DERIVATION_MODE_CHILD_OF_CURRENT"`)
+
+* `SIBLING_OF_CURRENT` (value: `"SOURCE_DERIVATION_MODE_SIBLING_OF_CURRENT"`)
+
+
+
+

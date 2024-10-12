@@ -1,0 +1,103 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIAddFirebaseRequest.h \
+    $${PWD}/OAIAddGoogleAnalyticsRequest.h \
+    $${PWD}/OAIAdminSdkConfig.h \
+    $${PWD}/OAIAnalyticsDetails.h \
+    $${PWD}/OAIAnalyticsProperty.h \
+    $${PWD}/OAIAndroidApp.h \
+    $${PWD}/OAIAndroidAppConfig.h \
+    $${PWD}/OAIDefaultResources.h \
+    $${PWD}/OAIFinalizeDefaultLocationRequest.h \
+    $${PWD}/OAIFirebaseAppInfo.h \
+    $${PWD}/OAIFirebaseProject.h \
+    $${PWD}/OAIIosApp.h \
+    $${PWD}/OAIIosAppConfig.h \
+    $${PWD}/OAIListAndroidAppsResponse.h \
+    $${PWD}/OAIListAvailableLocationsResponse.h \
+    $${PWD}/OAIListAvailableProjectsResponse.h \
+    $${PWD}/OAIListFirebaseProjectsResponse.h \
+    $${PWD}/OAIListIosAppsResponse.h \
+    $${PWD}/OAIListShaCertificatesResponse.h \
+    $${PWD}/OAIListWebAppsResponse.h \
+    $${PWD}/OAILocation.h \
+    $${PWD}/OAIOperation.h \
+    $${PWD}/OAIProductMetadata.h \
+    $${PWD}/OAIProjectInfo.h \
+    $${PWD}/OAIRemoveAnalyticsRequest.h \
+    $${PWD}/OAIRemoveAndroidAppRequest.h \
+    $${PWD}/OAIRemoveIosAppRequest.h \
+    $${PWD}/OAIRemoveWebAppRequest.h \
+    $${PWD}/OAISearchFirebaseAppsResponse.h \
+    $${PWD}/OAIShaCertificate.h \
+    $${PWD}/OAIStatus.h \
+    $${PWD}/OAIStatusProto.h \
+    $${PWD}/OAIStreamMapping.h \
+    $${PWD}/OAIUndeleteAndroidAppRequest.h \
+    $${PWD}/OAIUndeleteIosAppRequest.h \
+    $${PWD}/OAIUndeleteWebAppRequest.h \
+    $${PWD}/OAIWebApp.h \
+    $${PWD}/OAIWebAppConfig.h \
+# APIs
+    $${PWD}/OAIAvailableProjectsApi.h \
+    $${PWD}/OAIProjectsApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIAddFirebaseRequest.cpp \
+    $${PWD}/OAIAddGoogleAnalyticsRequest.cpp \
+    $${PWD}/OAIAdminSdkConfig.cpp \
+    $${PWD}/OAIAnalyticsDetails.cpp \
+    $${PWD}/OAIAnalyticsProperty.cpp \
+    $${PWD}/OAIAndroidApp.cpp \
+    $${PWD}/OAIAndroidAppConfig.cpp \
+    $${PWD}/OAIDefaultResources.cpp \
+    $${PWD}/OAIFinalizeDefaultLocationRequest.cpp \
+    $${PWD}/OAIFirebaseAppInfo.cpp \
+    $${PWD}/OAIFirebaseProject.cpp \
+    $${PWD}/OAIIosApp.cpp \
+    $${PWD}/OAIIosAppConfig.cpp \
+    $${PWD}/OAIListAndroidAppsResponse.cpp \
+    $${PWD}/OAIListAvailableLocationsResponse.cpp \
+    $${PWD}/OAIListAvailableProjectsResponse.cpp \
+    $${PWD}/OAIListFirebaseProjectsResponse.cpp \
+    $${PWD}/OAIListIosAppsResponse.cpp \
+    $${PWD}/OAIListShaCertificatesResponse.cpp \
+    $${PWD}/OAIListWebAppsResponse.cpp \
+    $${PWD}/OAILocation.cpp \
+    $${PWD}/OAIOperation.cpp \
+    $${PWD}/OAIProductMetadata.cpp \
+    $${PWD}/OAIProjectInfo.cpp \
+    $${PWD}/OAIRemoveAnalyticsRequest.cpp \
+    $${PWD}/OAIRemoveAndroidAppRequest.cpp \
+    $${PWD}/OAIRemoveIosAppRequest.cpp \
+    $${PWD}/OAIRemoveWebAppRequest.cpp \
+    $${PWD}/OAISearchFirebaseAppsResponse.cpp \
+    $${PWD}/OAIShaCertificate.cpp \
+    $${PWD}/OAIStatus.cpp \
+    $${PWD}/OAIStatusProto.cpp \
+    $${PWD}/OAIStreamMapping.cpp \
+    $${PWD}/OAIUndeleteAndroidAppRequest.cpp \
+    $${PWD}/OAIUndeleteIosAppRequest.cpp \
+    $${PWD}/OAIUndeleteWebAppRequest.cpp \
+    $${PWD}/OAIWebApp.cpp \
+    $${PWD}/OAIWebAppConfig.cpp \
+# APIs
+    $${PWD}/OAIAvailableProjectsApi.cpp \
+    $${PWD}/OAIProjectsApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

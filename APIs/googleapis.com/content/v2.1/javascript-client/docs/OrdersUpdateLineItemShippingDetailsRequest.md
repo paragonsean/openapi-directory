@@ -1,0 +1,13 @@
+# ContentApiForShopping.OrdersUpdateLineItemShippingDetailsRequest
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**deliverByDate** | **String** | Updated delivery by date, in ISO 8601 format. If not specified only ship by date is updated. Provided date should be within 1 year timeframe and can&#39;t be a date in the past. | [optional] 
+**lineItemId** | **String** | The ID of the line item to set metadata. Either lineItemId or productId is required. | [optional] 
+**operationId** | **String** | The ID of the operation. Unique across all operations for a given order. | [optional] 
+**productId** | **String** | The ID of the product to set metadata. This is the REST ID used in the products service. Either lineItemId or productId is required. | [optional] 
+**shipByDate** | **String** | Updated ship by date, in ISO 8601 format. If not specified only deliver by date is updated. Provided date should be within 1 year timeframe and can&#39;t be a date in the past. | [optional] 
+
+

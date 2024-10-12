@@ -1,0 +1,14 @@
+
+
+# GoogleCloudDatalabelingV1beta1LabelTextEntityExtractionOperationMetadata
+
+Details of a LabelTextEntityExtraction operation metadata.
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**basicConfig** | [**GoogleCloudDatalabelingV1beta1HumanAnnotationConfig**](GoogleCloudDatalabelingV1beta1HumanAnnotationConfig.md) |  |  [optional] |
+
+
+

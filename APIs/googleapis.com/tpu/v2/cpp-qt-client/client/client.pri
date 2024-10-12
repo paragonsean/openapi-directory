@@ -1,0 +1,101 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIAcceleratorConfig.h \
+    $${PWD}/OAIAcceleratorType.h \
+    $${PWD}/OAIAccessConfig.h \
+    $${PWD}/OAIAttachedDisk.h \
+    $${PWD}/OAIFailedData.h \
+    $${PWD}/OAIGenerateServiceIdentityResponse.h \
+    $${PWD}/OAIGetGuestAttributesRequest.h \
+    $${PWD}/OAIGetGuestAttributesResponse.h \
+    $${PWD}/OAIGuaranteed.h \
+    $${PWD}/OAIGuestAttributes.h \
+    $${PWD}/OAIGuestAttributesEntry.h \
+    $${PWD}/OAIGuestAttributesValue.h \
+    $${PWD}/OAIInterval.h \
+    $${PWD}/OAIListAcceleratorTypesResponse.h \
+    $${PWD}/OAIListLocationsResponse.h \
+    $${PWD}/OAIListNodesResponse.h \
+    $${PWD}/OAIListOperationsResponse.h \
+    $${PWD}/OAIListQueuedResourcesResponse.h \
+    $${PWD}/OAIListRuntimeVersionsResponse.h \
+    $${PWD}/OAILocation.h \
+    $${PWD}/OAIMultisliceParams.h \
+    $${PWD}/OAINetworkConfig.h \
+    $${PWD}/OAINetworkEndpoint.h \
+    $${PWD}/OAINode.h \
+    $${PWD}/OAINodeSpec.h \
+    $${PWD}/OAIOperation.h \
+    $${PWD}/OAIOperationMetadata.h \
+    $${PWD}/OAIQueuedResource.h \
+    $${PWD}/OAIQueuedResourceState.h \
+    $${PWD}/OAIQueueingPolicy.h \
+    $${PWD}/OAIRuntimeVersion.h \
+    $${PWD}/OAISchedulingConfig.h \
+    $${PWD}/OAIServiceAccount.h \
+    $${PWD}/OAIServiceIdentity.h \
+    $${PWD}/OAIShieldedInstanceConfig.h \
+    $${PWD}/OAIStatus.h \
+    $${PWD}/OAISymptom.h \
+    $${PWD}/OAITpu.h \
+# APIs
+    $${PWD}/OAIProjectsApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIAcceleratorConfig.cpp \
+    $${PWD}/OAIAcceleratorType.cpp \
+    $${PWD}/OAIAccessConfig.cpp \
+    $${PWD}/OAIAttachedDisk.cpp \
+    $${PWD}/OAIFailedData.cpp \
+    $${PWD}/OAIGenerateServiceIdentityResponse.cpp \
+    $${PWD}/OAIGetGuestAttributesRequest.cpp \
+    $${PWD}/OAIGetGuestAttributesResponse.cpp \
+    $${PWD}/OAIGuaranteed.cpp \
+    $${PWD}/OAIGuestAttributes.cpp \
+    $${PWD}/OAIGuestAttributesEntry.cpp \
+    $${PWD}/OAIGuestAttributesValue.cpp \
+    $${PWD}/OAIInterval.cpp \
+    $${PWD}/OAIListAcceleratorTypesResponse.cpp \
+    $${PWD}/OAIListLocationsResponse.cpp \
+    $${PWD}/OAIListNodesResponse.cpp \
+    $${PWD}/OAIListOperationsResponse.cpp \
+    $${PWD}/OAIListQueuedResourcesResponse.cpp \
+    $${PWD}/OAIListRuntimeVersionsResponse.cpp \
+    $${PWD}/OAILocation.cpp \
+    $${PWD}/OAIMultisliceParams.cpp \
+    $${PWD}/OAINetworkConfig.cpp \
+    $${PWD}/OAINetworkEndpoint.cpp \
+    $${PWD}/OAINode.cpp \
+    $${PWD}/OAINodeSpec.cpp \
+    $${PWD}/OAIOperation.cpp \
+    $${PWD}/OAIOperationMetadata.cpp \
+    $${PWD}/OAIQueuedResource.cpp \
+    $${PWD}/OAIQueuedResourceState.cpp \
+    $${PWD}/OAIQueueingPolicy.cpp \
+    $${PWD}/OAIRuntimeVersion.cpp \
+    $${PWD}/OAISchedulingConfig.cpp \
+    $${PWD}/OAIServiceAccount.cpp \
+    $${PWD}/OAIServiceIdentity.cpp \
+    $${PWD}/OAIShieldedInstanceConfig.cpp \
+    $${PWD}/OAIStatus.cpp \
+    $${PWD}/OAISymptom.cpp \
+    $${PWD}/OAITpu.cpp \
+# APIs
+    $${PWD}/OAIProjectsApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

@@ -1,0 +1,11 @@
+# DigitalAssetLinksApi.Statement
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**relation** | **String** | The relation identifies the use of the statement as intended by the source asset&#39;s owner (that is, the person or entity who issued the statement). Every complete statement has a relation. We identify relations with strings of the format &#x60;/&#x60;, where &#x60;&#x60; must be one of a set of pre-defined purpose categories, and &#x60;&#x60; is a free-form lowercase alphanumeric string that describes the specific use case of the statement. Refer to [our API documentation](/digital-asset-links/v1/relation-strings) for the current list of supported relations. Example: &#x60;delegate_permission/common.handle_all_urls&#x60; REQUIRED | [optional] 
+**source** | [**Asset**](Asset.md) |  | [optional] 
+**target** | [**Asset**](Asset.md) |  | [optional] 
+
+

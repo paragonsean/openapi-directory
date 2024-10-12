@@ -1,0 +1,92 @@
+
+
+# Product
+
+ Required product attributes are primarily defined by the products data specification. See the Products Data Specification Help Center article for information. Product data. After inserting, updating, or deleting a product, it may take several minutes before changes take effect.
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**additionalImageLinks** | **List&lt;String&gt;** | Additional URLs of images of the item. |  [optional] |
+|**additionalProductTypes** | **List&lt;String&gt;** | Additional categories of the item (formatted as in products data specification). |  [optional] |
+|**adult** | **Boolean** | Should be set to true if the item is targeted towards adults. |  [optional] |
+|**adwordsGrouping** | **String** | Used to group items in an arbitrary way. Only for CPA%, discouraged otherwise. |  [optional] |
+|**adwordsLabels** | **List&lt;String&gt;** | Similar to adwords_grouping, but only works on CPC. |  [optional] |
+|**adwordsRedirect** | **String** | Allows advertisers to override the item URL when the product is shown within the context of Product Ads. |  [optional] |
+|**ageGroup** | **String** | Target age group of the item. Acceptable values are: - \&quot;&#x60;adult&#x60;\&quot; - \&quot;&#x60;infant&#x60;\&quot; - \&quot;&#x60;kids&#x60;\&quot; - \&quot;&#x60;newborn&#x60;\&quot; - \&quot;&#x60;toddler&#x60;\&quot; - \&quot;&#x60;youngAdult&#x60;\&quot;  |  [optional] |
+|**aspects** | [**List&lt;ProductAspect&gt;**](ProductAspect.md) | Deprecated. Do not use. |  [optional] |
+|**availability** | **String** | Availability status of the item. Acceptable values are: - \&quot;&#x60;in stock&#x60;\&quot; - \&quot;&#x60;out of stock&#x60;\&quot; - \&quot;&#x60;preorder&#x60;\&quot;  |  [optional] |
+|**availabilityDate** | **String** | The day a pre-ordered product becomes available for delivery, in ISO 8601 format. |  [optional] |
+|**brand** | **String** | Brand of the item. |  [optional] |
+|**canonicalLink** | **String** | URL for the canonical version of your item&#39;s landing page. |  [optional] |
+|**channel** | **String** | Required. The item&#39;s channel (online or local). Acceptable values are: - \&quot;&#x60;local&#x60;\&quot; - \&quot;&#x60;online&#x60;\&quot;  |  [optional] |
+|**color** | **String** | Color of the item. |  [optional] |
+|**condition** | **String** | Condition or state of the item. Acceptable values are: - \&quot;&#x60;new&#x60;\&quot; - \&quot;&#x60;refurbished&#x60;\&quot; - \&quot;&#x60;used&#x60;\&quot;  |  [optional] |
+|**contentLanguage** | **String** | Required. The two-letter ISO 639-1 language code for the item. |  [optional] |
+|**costOfGoodsSold** | [**Price**](Price.md) |  |  [optional] |
+|**customAttributes** | [**List&lt;CustomAttribute&gt;**](CustomAttribute.md) | A list of custom (merchant-provided) attributes. It can also be used for submitting any attribute of the feed specification in its generic form (e.g., &#x60;{ \&quot;name\&quot;: \&quot;size type\&quot;, \&quot;value\&quot;: \&quot;regular\&quot; }&#x60;). This is useful for submitting attributes not explicitly exposed by the API, such as additional attributes used for Buy on Google (formerly known as Shopping Actions). |  [optional] |
+|**customGroups** | [**List&lt;CustomGroup&gt;**](CustomGroup.md) | A list of custom (merchant-provided) custom attribute groups. |  [optional] |
+|**customLabel0** | **String** | Custom label 0 for custom grouping of items in a Shopping campaign. |  [optional] |
+|**customLabel1** | **String** | Custom label 1 for custom grouping of items in a Shopping campaign. |  [optional] |
+|**customLabel2** | **String** | Custom label 2 for custom grouping of items in a Shopping campaign. |  [optional] |
+|**customLabel3** | **String** | Custom label 3 for custom grouping of items in a Shopping campaign. |  [optional] |
+|**customLabel4** | **String** | Custom label 4 for custom grouping of items in a Shopping campaign. |  [optional] |
+|**description** | **String** | Description of the item. |  [optional] |
+|**destinations** | [**List&lt;ProductDestination&gt;**](ProductDestination.md) | Specifies the intended destinations for the product. |  [optional] |
+|**displayAdsId** | **String** | An identifier for an item for dynamic remarketing campaigns. |  [optional] |
+|**displayAdsLink** | **String** | URL directly to your item&#39;s landing page for dynamic remarketing campaigns. |  [optional] |
+|**displayAdsSimilarIds** | **List&lt;String&gt;** | Advertiser-specified recommendations. |  [optional] |
+|**displayAdsTitle** | **String** | Title of an item for dynamic remarketing campaigns. |  [optional] |
+|**displayAdsValue** | **Double** | Offer margin for dynamic remarketing campaigns. |  [optional] |
+|**energyEfficiencyClass** | **String** | The energy efficiency class as defined in EU directive 2010/30/EU. Acceptable values are: - \&quot;&#x60;A&#x60;\&quot; - \&quot;&#x60;A+&#x60;\&quot; - \&quot;&#x60;A++&#x60;\&quot; - \&quot;&#x60;A+++&#x60;\&quot; - \&quot;&#x60;B&#x60;\&quot; - \&quot;&#x60;C&#x60;\&quot; - \&quot;&#x60;D&#x60;\&quot; - \&quot;&#x60;E&#x60;\&quot; - \&quot;&#x60;F&#x60;\&quot; - \&quot;&#x60;G&#x60;\&quot;  |  [optional] |
+|**expirationDate** | **String** | Date on which the item should expire, as specified upon insertion, in ISO 8601 format. The actual expiration date in Google Shopping is exposed in &#x60;productstatuses&#x60; as &#x60;googleExpirationDate&#x60; and might be earlier if &#x60;expirationDate&#x60; is too far in the future. |  [optional] |
+|**gender** | **String** | Target gender of the item. Acceptable values are: - \&quot;&#x60;female&#x60;\&quot; - \&quot;&#x60;male&#x60;\&quot; - \&quot;&#x60;unisex&#x60;\&quot;  |  [optional] |
+|**googleProductCategory** | **String** | Google&#39;s category of the item (see [Google product taxonomy](https://support.google.com/merchants/answer/1705911)). When querying products, this field will contain the user provided value. There is currently no way to get back the auto assigned google product categories through the API. |  [optional] |
+|**gtin** | **String** | Global Trade Item Number (GTIN) of the item. |  [optional] |
+|**id** | **String** | The REST ID of the product. Content API methods that operate on products take this as their &#x60;productId&#x60; parameter. The REST ID for a product is of the form channel:contentLanguage: targetCountry: offerId. |  [optional] |
+|**identifierExists** | **Boolean** | False when the item does not have unique product identifiers appropriate to its category, such as GTIN, MPN, and brand. Required according to the Unique Product Identifier Rules for all target countries except for Canada. |  [optional] |
+|**imageLink** | **String** | URL of an image of the item. |  [optional] |
+|**installment** | [**Installment**](Installment.md) |  |  [optional] |
+|**isBundle** | **Boolean** | Whether the item is a merchant-defined bundle. A bundle is a custom grouping of different products sold by a merchant for a single price. |  [optional] |
+|**itemGroupId** | **String** | Shared identifier for all variants of the same product. |  [optional] |
+|**kind** | **String** | Identifies what kind of resource this is. Value: the fixed string \&quot;&#x60;content#product&#x60;\&quot; |  [optional] |
+|**link** | **String** | URL directly linking to your item&#39;s page on your website. |  [optional] |
+|**loyaltyPoints** | [**LoyaltyPoints**](LoyaltyPoints.md) |  |  [optional] |
+|**material** | **String** | The material of which the item is made. |  [optional] |
+|**maxEnergyEfficiencyClass** | **String** | The energy efficiency class as defined in EU directive 2010/30/EU. Acceptable values are: - \&quot;&#x60;A&#x60;\&quot; - \&quot;&#x60;A+&#x60;\&quot; - \&quot;&#x60;A++&#x60;\&quot; - \&quot;&#x60;A+++&#x60;\&quot; - \&quot;&#x60;B&#x60;\&quot; - \&quot;&#x60;C&#x60;\&quot; - \&quot;&#x60;D&#x60;\&quot; - \&quot;&#x60;E&#x60;\&quot; - \&quot;&#x60;F&#x60;\&quot; - \&quot;&#x60;G&#x60;\&quot;  |  [optional] |
+|**maxHandlingTime** | **String** | Maximal product handling time (in business days). |  [optional] |
+|**minEnergyEfficiencyClass** | **String** | The energy efficiency class as defined in EU directive 2010/30/EU. Acceptable values are: - \&quot;&#x60;A&#x60;\&quot; - \&quot;&#x60;A+&#x60;\&quot; - \&quot;&#x60;A++&#x60;\&quot; - \&quot;&#x60;A+++&#x60;\&quot; - \&quot;&#x60;B&#x60;\&quot; - \&quot;&#x60;C&#x60;\&quot; - \&quot;&#x60;D&#x60;\&quot; - \&quot;&#x60;E&#x60;\&quot; - \&quot;&#x60;F&#x60;\&quot; - \&quot;&#x60;G&#x60;\&quot;  |  [optional] |
+|**minHandlingTime** | **String** | Minimal product handling time (in business days). |  [optional] |
+|**mobileLink** | **String** | URL for the mobile-optimized version of your item&#39;s landing page. |  [optional] |
+|**mpn** | **String** | Manufacturer Part Number (MPN) of the item. |  [optional] |
+|**multipack** | **String** | The number of identical products in a merchant-defined multipack. |  [optional] |
+|**offerId** | **String** | Required. A unique identifier for the item. Leading and trailing whitespaces are stripped and multiple whitespaces are replaced by a single whitespace upon submission. Only valid unicode characters are accepted. See the products feed specification for details. *Note:* Content API methods that operate on products take the REST ID of the product, *not* this identifier. |  [optional] |
+|**onlineOnly** | **Boolean** | Deprecated. |  [optional] |
+|**pattern** | **String** | The item&#39;s pattern (e.g. polka dots). |  [optional] |
+|**price** | [**Price**](Price.md) |  |  [optional] |
+|**productType** | **String** | Your category of the item (formatted as in products data specification). |  [optional] |
+|**promotionIds** | **List&lt;String&gt;** | The unique ID of a promotion. |  [optional] |
+|**salePrice** | [**Price**](Price.md) |  |  [optional] |
+|**salePriceEffectiveDate** | **String** | Date range during which the item is on sale (see products data specification ). |  [optional] |
+|**sellOnGoogleQuantity** | **String** | The quantity of the product that is available for selling on Google. Supported only for online products. |  [optional] |
+|**shipping** | [**List&lt;ProductShipping&gt;**](ProductShipping.md) | Shipping rules. |  [optional] |
+|**shippingHeight** | [**ProductShippingDimension**](ProductShippingDimension.md) |  |  [optional] |
+|**shippingLabel** | **String** | The shipping label of the product, used to group product in account-level shipping rules. |  [optional] |
+|**shippingLength** | [**ProductShippingDimension**](ProductShippingDimension.md) |  |  [optional] |
+|**shippingWeight** | [**ProductShippingWeight**](ProductShippingWeight.md) |  |  [optional] |
+|**shippingWidth** | [**ProductShippingDimension**](ProductShippingDimension.md) |  |  [optional] |
+|**sizeSystem** | **String** | System in which the size is specified. Recommended for apparel items. Acceptable values are: - \&quot;&#x60;AU&#x60;\&quot; - \&quot;&#x60;BR&#x60;\&quot; - \&quot;&#x60;CN&#x60;\&quot; - \&quot;&#x60;DE&#x60;\&quot; - \&quot;&#x60;EU&#x60;\&quot; - \&quot;&#x60;FR&#x60;\&quot; - \&quot;&#x60;IT&#x60;\&quot; - \&quot;&#x60;JP&#x60;\&quot; - \&quot;&#x60;MEX&#x60;\&quot; - \&quot;&#x60;UK&#x60;\&quot; - \&quot;&#x60;US&#x60;\&quot;  |  [optional] |
+|**sizeType** | **String** | The cut of the item. Recommended for apparel items. Acceptable values are: - \&quot;&#x60;big and tall&#x60;\&quot; - \&quot;&#x60;maternity&#x60;\&quot; - \&quot;&#x60;oversize&#x60;\&quot; - \&quot;&#x60;petite&#x60;\&quot; - \&quot;&#x60;plus&#x60;\&quot; - \&quot;&#x60;regular&#x60;\&quot;  |  [optional] |
+|**sizes** | **List&lt;String&gt;** | Size of the item. Only one value is allowed. For variants with different sizes, insert a separate product for each size with the same &#x60;itemGroupId&#x60; value (see size definition). |  [optional] |
+|**source** | **String** | The source of the offer, i.e., how the offer was created. Acceptable values are: - \&quot;&#x60;api&#x60;\&quot; - \&quot;&#x60;crawl&#x60;\&quot; - \&quot;&#x60;feed&#x60;\&quot;  |  [optional] |
+|**targetCountry** | **String** | Required. The CLDR territory code for the item. |  [optional] |
+|**taxes** | [**List&lt;ProductTax&gt;**](ProductTax.md) | Tax information. |  [optional] |
+|**title** | **String** | Title of the item. |  [optional] |
+|**unitPricingBaseMeasure** | [**ProductUnitPricingBaseMeasure**](ProductUnitPricingBaseMeasure.md) |  |  [optional] |
+|**unitPricingMeasure** | [**ProductUnitPricingMeasure**](ProductUnitPricingMeasure.md) |  |  [optional] |
+|**validatedDestinations** | **List&lt;String&gt;** | Deprecated. The read-only list of intended destinations which passed validation. |  [optional] |
+|**warnings** | [**List&lt;Error&gt;**](Error.md) | Read-only warnings. |  [optional] |
+
+
+

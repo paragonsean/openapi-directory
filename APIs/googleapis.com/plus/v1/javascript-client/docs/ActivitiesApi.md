@@ -1,0 +1,229 @@
+# GoogleApi.ActivitiesApi
+
+All URIs are relative to *https://www.googleapis.com/plus/v1*
+
+Method | HTTP request | Description
+------------- | ------------- | -------------
+[**plusActivitiesGet**](ActivitiesApi.md#plusActivitiesGet) | **GET** /activities/{activityId} | 
+[**plusActivitiesList**](ActivitiesApi.md#plusActivitiesList) | **GET** /people/{userId}/activities/{collection} | 
+[**plusActivitiesSearch**](ActivitiesApi.md#plusActivitiesSearch) | **GET** /activities | 
+
+
+
+## plusActivitiesGet
+
+> Activity plusActivitiesGet(activityId, opts)
+
+
+
+Shut down. See https://developers.google.com/+/api-shutdown for more details.
+
+### Example
+
+```javascript
+import GoogleApi from 'google_api';
+let defaultClient = GoogleApi.ApiClient.instance;
+// Configure OAuth2 access token for authorization: Oauth2c
+let Oauth2c = defaultClient.authentications['Oauth2c'];
+Oauth2c.accessToken = 'YOUR ACCESS TOKEN';
+// Configure OAuth2 access token for authorization: Oauth2
+let Oauth2 = defaultClient.authentications['Oauth2'];
+Oauth2.accessToken = 'YOUR ACCESS TOKEN';
+
+let apiInstance = new GoogleApi.ActivitiesApi();
+let activityId = "activityId_example"; // String | The ID of the activity to get.
+let opts = {
+  'alt': "alt_example", // String | Data format for the response.
+  'fields': "fields_example", // String | Selector specifying which fields to include in a partial response.
+  'key': "key_example", // String | API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.
+  'oauthToken': "oauthToken_example", // String | OAuth 2.0 token for the current user.
+  'prettyPrint': true, // Boolean | Returns response with indentations and line breaks.
+  'quotaUser': "quotaUser_example", // String | An opaque string that represents a user for quota purposes. Must not exceed 40 characters.
+  'userIp': "userIp_example" // String | Deprecated. Please use quotaUser instead.
+};
+apiInstance.plusActivitiesGet(activityId, opts, (error, data, response) => {
+  if (error) {
+    console.error(error);
+  } else {
+    console.log('API called successfully. Returned data: ' + data);
+  }
+});
+```
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **activityId** | **String**| The ID of the activity to get. | 
+ **alt** | **String**| Data format for the response. | [optional] 
+ **fields** | **String**| Selector specifying which fields to include in a partial response. | [optional] 
+ **key** | **String**| API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token. | [optional] 
+ **oauthToken** | **String**| OAuth 2.0 token for the current user. | [optional] 
+ **prettyPrint** | **Boolean**| Returns response with indentations and line breaks. | [optional] 
+ **quotaUser** | **String**| An opaque string that represents a user for quota purposes. Must not exceed 40 characters. | [optional] 
+ **userIp** | **String**| Deprecated. Please use quotaUser instead. | [optional] 
+
+### Return type
+
+[**Activity**](Activity.md)
+
+### Authorization
+
+[Oauth2c](../README.md#Oauth2c), [Oauth2](../README.md#Oauth2)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+
+## plusActivitiesList
+
+> ActivityFeed plusActivitiesList(userId, collection, opts)
+
+
+
+Shut down. See https://developers.google.com/+/api-shutdown for more details.
+
+### Example
+
+```javascript
+import GoogleApi from 'google_api';
+let defaultClient = GoogleApi.ApiClient.instance;
+// Configure OAuth2 access token for authorization: Oauth2c
+let Oauth2c = defaultClient.authentications['Oauth2c'];
+Oauth2c.accessToken = 'YOUR ACCESS TOKEN';
+// Configure OAuth2 access token for authorization: Oauth2
+let Oauth2 = defaultClient.authentications['Oauth2'];
+Oauth2.accessToken = 'YOUR ACCESS TOKEN';
+
+let apiInstance = new GoogleApi.ActivitiesApi();
+let userId = "userId_example"; // String | The ID of the user to get activities for. The special value \"me\" can be used to indicate the authenticated user.
+let collection = "collection_example"; // String | The collection of activities to list.
+let opts = {
+  'alt': "alt_example", // String | Data format for the response.
+  'fields': "fields_example", // String | Selector specifying which fields to include in a partial response.
+  'key': "key_example", // String | API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.
+  'oauthToken': "oauthToken_example", // String | OAuth 2.0 token for the current user.
+  'prettyPrint': true, // Boolean | Returns response with indentations and line breaks.
+  'quotaUser': "quotaUser_example", // String | An opaque string that represents a user for quota purposes. Must not exceed 40 characters.
+  'userIp': "userIp_example", // String | Deprecated. Please use quotaUser instead.
+  'maxResults': 56, // Number | The maximum number of activities to include in the response, which is used for paging. For any response, the actual number returned might be less than the specified maxResults.
+  'pageToken': "pageToken_example" // String | The continuation token, which is used to page through large result sets. To get the next page of results, set this parameter to the value of \"nextPageToken\" from the previous response.
+};
+apiInstance.plusActivitiesList(userId, collection, opts, (error, data, response) => {
+  if (error) {
+    console.error(error);
+  } else {
+    console.log('API called successfully. Returned data: ' + data);
+  }
+});
+```
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **userId** | **String**| The ID of the user to get activities for. The special value \&quot;me\&quot; can be used to indicate the authenticated user. | 
+ **collection** | **String**| The collection of activities to list. | 
+ **alt** | **String**| Data format for the response. | [optional] 
+ **fields** | **String**| Selector specifying which fields to include in a partial response. | [optional] 
+ **key** | **String**| API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token. | [optional] 
+ **oauthToken** | **String**| OAuth 2.0 token for the current user. | [optional] 
+ **prettyPrint** | **Boolean**| Returns response with indentations and line breaks. | [optional] 
+ **quotaUser** | **String**| An opaque string that represents a user for quota purposes. Must not exceed 40 characters. | [optional] 
+ **userIp** | **String**| Deprecated. Please use quotaUser instead. | [optional] 
+ **maxResults** | **Number**| The maximum number of activities to include in the response, which is used for paging. For any response, the actual number returned might be less than the specified maxResults. | [optional] 
+ **pageToken** | **String**| The continuation token, which is used to page through large result sets. To get the next page of results, set this parameter to the value of \&quot;nextPageToken\&quot; from the previous response. | [optional] 
+
+### Return type
+
+[**ActivityFeed**](ActivityFeed.md)
+
+### Authorization
+
+[Oauth2c](../README.md#Oauth2c), [Oauth2](../README.md#Oauth2)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+
+## plusActivitiesSearch
+
+> ActivityFeed plusActivitiesSearch(query, opts)
+
+
+
+Shut down. See https://developers.google.com/+/api-shutdown for more details.
+
+### Example
+
+```javascript
+import GoogleApi from 'google_api';
+let defaultClient = GoogleApi.ApiClient.instance;
+// Configure OAuth2 access token for authorization: Oauth2c
+let Oauth2c = defaultClient.authentications['Oauth2c'];
+Oauth2c.accessToken = 'YOUR ACCESS TOKEN';
+// Configure OAuth2 access token for authorization: Oauth2
+let Oauth2 = defaultClient.authentications['Oauth2'];
+Oauth2.accessToken = 'YOUR ACCESS TOKEN';
+
+let apiInstance = new GoogleApi.ActivitiesApi();
+let query = "query_example"; // String | Full-text search query string.
+let opts = {
+  'alt': "alt_example", // String | Data format for the response.
+  'fields': "fields_example", // String | Selector specifying which fields to include in a partial response.
+  'key': "key_example", // String | API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.
+  'oauthToken': "oauthToken_example", // String | OAuth 2.0 token for the current user.
+  'prettyPrint': true, // Boolean | Returns response with indentations and line breaks.
+  'quotaUser': "quotaUser_example", // String | An opaque string that represents a user for quota purposes. Must not exceed 40 characters.
+  'userIp': "userIp_example", // String | Deprecated. Please use quotaUser instead.
+  'language': "language_example", // String | Specify the preferred language to search with. See search language codes for available values.
+  'maxResults': 56, // Number | The maximum number of activities to include in the response, which is used for paging. For any response, the actual number returned might be less than the specified maxResults.
+  'orderBy': "orderBy_example", // String | Specifies how to order search results.
+  'pageToken': "pageToken_example" // String | The continuation token, which is used to page through large result sets. To get the next page of results, set this parameter to the value of \"nextPageToken\" from the previous response. This token can be of any length.
+};
+apiInstance.plusActivitiesSearch(query, opts, (error, data, response) => {
+  if (error) {
+    console.error(error);
+  } else {
+    console.log('API called successfully. Returned data: ' + data);
+  }
+});
+```
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **query** | **String**| Full-text search query string. | 
+ **alt** | **String**| Data format for the response. | [optional] 
+ **fields** | **String**| Selector specifying which fields to include in a partial response. | [optional] 
+ **key** | **String**| API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token. | [optional] 
+ **oauthToken** | **String**| OAuth 2.0 token for the current user. | [optional] 
+ **prettyPrint** | **Boolean**| Returns response with indentations and line breaks. | [optional] 
+ **quotaUser** | **String**| An opaque string that represents a user for quota purposes. Must not exceed 40 characters. | [optional] 
+ **userIp** | **String**| Deprecated. Please use quotaUser instead. | [optional] 
+ **language** | **String**| Specify the preferred language to search with. See search language codes for available values. | [optional] 
+ **maxResults** | **Number**| The maximum number of activities to include in the response, which is used for paging. For any response, the actual number returned might be less than the specified maxResults. | [optional] 
+ **orderBy** | **String**| Specifies how to order search results. | [optional] 
+ **pageToken** | **String**| The continuation token, which is used to page through large result sets. To get the next page of results, set this parameter to the value of \&quot;nextPageToken\&quot; from the previous response. This token can be of any length. | [optional] 
+
+### Return type
+
+[**ActivityFeed**](ActivityFeed.md)
+
+### Authorization
+
+[Oauth2c](../README.md#Oauth2c), [Oauth2](../README.md#Oauth2)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+

@@ -1,0 +1,25 @@
+# coding: utf-8
+
+# import models into model package
+from openapi_server.models.bucket import Bucket
+from openapi_server.models.bucket_access_control import BucketAccessControl
+from openapi_server.models.bucket_access_controls import BucketAccessControls
+from openapi_server.models.bucket_cors_inner import BucketCorsInner
+from openapi_server.models.bucket_lifecycle import BucketLifecycle
+from openapi_server.models.bucket_lifecycle_rule_inner import BucketLifecycleRuleInner
+from openapi_server.models.bucket_lifecycle_rule_inner_action import BucketLifecycleRuleInnerAction
+from openapi_server.models.bucket_lifecycle_rule_inner_condition import BucketLifecycleRuleInnerCondition
+from openapi_server.models.bucket_logging import BucketLogging
+from openapi_server.models.bucket_owner import BucketOwner
+from openapi_server.models.bucket_versioning import BucketVersioning
+from openapi_server.models.bucket_website import BucketWebsite
+from openapi_server.models.buckets import Buckets
+from openapi_server.models.channel import Channel
+from openapi_server.models.compose_request import ComposeRequest
+from openapi_server.models.compose_request_source_objects_inner import ComposeRequestSourceObjectsInner
+from openapi_server.models.compose_request_source_objects_inner_object_preconditions import ComposeRequestSourceObjectsInnerObjectPreconditions
+from openapi_server.models.object import Object
+from openapi_server.models.object_access_control import ObjectAccessControl
+from openapi_server.models.object_access_controls import ObjectAccessControls
+from openapi_server.models.object_owner import ObjectOwner
+from openapi_server.models.objects import Objects

@@ -1,0 +1,19 @@
+
+
+# ProductstatusesCustomBatchRequestEntry
+
+A batch entry encoding a single non-batch productstatuses request.
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**batchId** | **Integer** | An entry ID, unique within the batch request. |  [optional] |
+|**destinations** | **List&lt;String&gt;** | If set, only issues for the specified destinations are returned, otherwise only issues for the Shopping destination. |  [optional] |
+|**includeAttributes** | **Boolean** |  |  [optional] |
+|**merchantId** | **String** | The ID of the managing account. |  [optional] |
+|**method** | **String** | The method of the batch entry. Acceptable values are: - \&quot;&#x60;get&#x60;\&quot;  |  [optional] |
+|**productId** | **String** | The ID of the product whose status to get. |  [optional] |
+
+
+

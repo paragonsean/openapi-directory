@@ -1,0 +1,79 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIBucket.h \
+    $${PWD}/OAIBucketAccessControl.h \
+    $${PWD}/OAIBucketAccessControls.h \
+    $${PWD}/OAIBucket_cors_inner.h \
+    $${PWD}/OAIBucket_lifecycle.h \
+    $${PWD}/OAIBucket_lifecycle_rule_inner.h \
+    $${PWD}/OAIBucket_lifecycle_rule_inner_action.h \
+    $${PWD}/OAIBucket_lifecycle_rule_inner_condition.h \
+    $${PWD}/OAIBucket_logging.h \
+    $${PWD}/OAIBucket_owner.h \
+    $${PWD}/OAIBucket_versioning.h \
+    $${PWD}/OAIBucket_website.h \
+    $${PWD}/OAIBuckets.h \
+    $${PWD}/OAIChannel.h \
+    $${PWD}/OAIComposeRequest.h \
+    $${PWD}/OAIComposeRequest_sourceObjects_inner.h \
+    $${PWD}/OAIComposeRequest_sourceObjects_inner_objectPreconditions.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIObjectAccessControl.h \
+    $${PWD}/OAIObjectAccessControls.h \
+    $${PWD}/OAIObject_owner.h \
+    $${PWD}/OAIObjects.h \
+# APIs
+    $${PWD}/OAIBucketAccessControlsApi.h \
+    $${PWD}/OAIBucketsApi.h \
+    $${PWD}/OAIChannelsApi.h \
+    $${PWD}/OAIDefaultObjectAccessControlsApi.h \
+    $${PWD}/OAIObjectAccessControlsApi.h \
+    $${PWD}/OAIObjectsApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIBucket.cpp \
+    $${PWD}/OAIBucketAccessControl.cpp \
+    $${PWD}/OAIBucketAccessControls.cpp \
+    $${PWD}/OAIBucket_cors_inner.cpp \
+    $${PWD}/OAIBucket_lifecycle.cpp \
+    $${PWD}/OAIBucket_lifecycle_rule_inner.cpp \
+    $${PWD}/OAIBucket_lifecycle_rule_inner_action.cpp \
+    $${PWD}/OAIBucket_lifecycle_rule_inner_condition.cpp \
+    $${PWD}/OAIBucket_logging.cpp \
+    $${PWD}/OAIBucket_owner.cpp \
+    $${PWD}/OAIBucket_versioning.cpp \
+    $${PWD}/OAIBucket_website.cpp \
+    $${PWD}/OAIBuckets.cpp \
+    $${PWD}/OAIChannel.cpp \
+    $${PWD}/OAIComposeRequest.cpp \
+    $${PWD}/OAIComposeRequest_sourceObjects_inner.cpp \
+    $${PWD}/OAIComposeRequest_sourceObjects_inner_objectPreconditions.cpp \
+    $${PWD}/OAIObject.cpp \
+    $${PWD}/OAIObjectAccessControl.cpp \
+    $${PWD}/OAIObjectAccessControls.cpp \
+    $${PWD}/OAIObject_owner.cpp \
+    $${PWD}/OAIObjects.cpp \
+# APIs
+    $${PWD}/OAIBucketAccessControlsApi.cpp \
+    $${PWD}/OAIBucketsApi.cpp \
+    $${PWD}/OAIChannelsApi.cpp \
+    $${PWD}/OAIDefaultObjectAccessControlsApi.cpp \
+    $${PWD}/OAIObjectAccessControlsApi.cpp \
+    $${PWD}/OAIObjectsApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

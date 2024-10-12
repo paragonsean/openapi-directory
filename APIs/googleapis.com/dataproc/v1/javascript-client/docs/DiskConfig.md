@@ -1,0 +1,12 @@
+# CloudDataprocApi.DiskConfig
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**bootDiskSizeGb** | **Number** | Optional. Size in GB of the boot disk (default is 500GB). | [optional] 
+**bootDiskType** | **String** | Optional. Type of the boot disk (default is \&quot;pd-standard\&quot;). Valid values: \&quot;pd-balanced\&quot; (Persistent Disk Balanced Solid State Drive), \&quot;pd-ssd\&quot; (Persistent Disk Solid State Drive), or \&quot;pd-standard\&quot; (Persistent Disk Hard Disk Drive). See Disk types (https://cloud.google.com/compute/docs/disks#disk-types). | [optional] 
+**localSsdInterface** | **String** | Optional. Interface type of local SSDs (default is \&quot;scsi\&quot;). Valid values: \&quot;scsi\&quot; (Small Computer System Interface), \&quot;nvme\&quot; (Non-Volatile Memory Express). See local SSD performance (https://cloud.google.com/compute/docs/disks/local-ssd#performance). | [optional] 
+**numLocalSsds** | **Number** | Optional. Number of attached SSDs, from 0 to 8 (default is 0). If SSDs are not attached, the boot disk is used to store runtime logs and HDFS (https://hadoop.apache.org/docs/r1.2.1/hdfs_user_guide.html) data. If one or more SSDs are attached, this runtime bulk data is spread across them, and the boot disk contains only basic config and installed binaries.Note: Local SSD options may vary by machine type and number of vCPUs selected. | [optional] 
+
+

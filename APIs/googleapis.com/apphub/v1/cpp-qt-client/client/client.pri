@@ -1,0 +1,99 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIApplication.h \
+    $${PWD}/OAIAttributes.h \
+    $${PWD}/OAIAuditConfig.h \
+    $${PWD}/OAIAuditLogConfig.h \
+    $${PWD}/OAIBinding.h \
+    $${PWD}/OAIContactInfo.h \
+    $${PWD}/OAICriticality.h \
+    $${PWD}/OAIDiscoveredService.h \
+    $${PWD}/OAIDiscoveredWorkload.h \
+    $${PWD}/OAIEnvironment.h \
+    $${PWD}/OAIExpr.h \
+    $${PWD}/OAIListApplicationsResponse.h \
+    $${PWD}/OAIListDiscoveredServicesResponse.h \
+    $${PWD}/OAIListDiscoveredWorkloadsResponse.h \
+    $${PWD}/OAIListLocationsResponse.h \
+    $${PWD}/OAIListOperationsResponse.h \
+    $${PWD}/OAIListServiceProjectAttachmentsResponse.h \
+    $${PWD}/OAIListServicesResponse.h \
+    $${PWD}/OAIListWorkloadsResponse.h \
+    $${PWD}/OAILocation.h \
+    $${PWD}/OAILookupServiceProjectAttachmentResponse.h \
+    $${PWD}/OAIOperation.h \
+    $${PWD}/OAIOperationMetadata.h \
+    $${PWD}/OAIPolicy.h \
+    $${PWD}/OAIReconciliationOperationMetadata.h \
+    $${PWD}/OAIScope.h \
+    $${PWD}/OAIService.h \
+    $${PWD}/OAIServiceProjectAttachment.h \
+    $${PWD}/OAIServiceProperties.h \
+    $${PWD}/OAIServiceReference.h \
+    $${PWD}/OAISetIamPolicyRequest.h \
+    $${PWD}/OAIStatus.h \
+    $${PWD}/OAITestIamPermissionsRequest.h \
+    $${PWD}/OAITestIamPermissionsResponse.h \
+    $${PWD}/OAIWorkload.h \
+    $${PWD}/OAIWorkloadProperties.h \
+    $${PWD}/OAIWorkloadReference.h \
+# APIs
+    $${PWD}/OAIProjectsApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIApplication.cpp \
+    $${PWD}/OAIAttributes.cpp \
+    $${PWD}/OAIAuditConfig.cpp \
+    $${PWD}/OAIAuditLogConfig.cpp \
+    $${PWD}/OAIBinding.cpp \
+    $${PWD}/OAIContactInfo.cpp \
+    $${PWD}/OAICriticality.cpp \
+    $${PWD}/OAIDiscoveredService.cpp \
+    $${PWD}/OAIDiscoveredWorkload.cpp \
+    $${PWD}/OAIEnvironment.cpp \
+    $${PWD}/OAIExpr.cpp \
+    $${PWD}/OAIListApplicationsResponse.cpp \
+    $${PWD}/OAIListDiscoveredServicesResponse.cpp \
+    $${PWD}/OAIListDiscoveredWorkloadsResponse.cpp \
+    $${PWD}/OAIListLocationsResponse.cpp \
+    $${PWD}/OAIListOperationsResponse.cpp \
+    $${PWD}/OAIListServiceProjectAttachmentsResponse.cpp \
+    $${PWD}/OAIListServicesResponse.cpp \
+    $${PWD}/OAIListWorkloadsResponse.cpp \
+    $${PWD}/OAILocation.cpp \
+    $${PWD}/OAILookupServiceProjectAttachmentResponse.cpp \
+    $${PWD}/OAIOperation.cpp \
+    $${PWD}/OAIOperationMetadata.cpp \
+    $${PWD}/OAIPolicy.cpp \
+    $${PWD}/OAIReconciliationOperationMetadata.cpp \
+    $${PWD}/OAIScope.cpp \
+    $${PWD}/OAIService.cpp \
+    $${PWD}/OAIServiceProjectAttachment.cpp \
+    $${PWD}/OAIServiceProperties.cpp \
+    $${PWD}/OAIServiceReference.cpp \
+    $${PWD}/OAISetIamPolicyRequest.cpp \
+    $${PWD}/OAIStatus.cpp \
+    $${PWD}/OAITestIamPermissionsRequest.cpp \
+    $${PWD}/OAITestIamPermissionsResponse.cpp \
+    $${PWD}/OAIWorkload.cpp \
+    $${PWD}/OAIWorkloadProperties.cpp \
+    $${PWD}/OAIWorkloadReference.cpp \
+# APIs
+    $${PWD}/OAIProjectsApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

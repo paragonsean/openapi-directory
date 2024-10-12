@@ -1,0 +1,287 @@
+# coding: utf-8
+
+import pytest
+import json
+from aiohttp import web
+
+from openapi_server.models.list_locations_response import ListLocationsResponse
+from openapi_server.models.list_operations_response import ListOperationsResponse
+from openapi_server.models.operation import Operation
+from openapi_server.models.policy import Policy
+from openapi_server.models.set_iam_policy_request import SetIamPolicyRequest
+from openapi_server.models.test_iam_permissions_request import TestIamPermissionsRequest
+from openapi_server.models.test_iam_permissions_response import TestIamPermissionsResponse
+
+
+pytestmark = pytest.mark.asyncio
+
+async def test_gameservices_projects_locations_game_server_deployments_get_iam_policy(client):
+    """Test case for gameservices_projects_locations_game_server_deployments_get_iam_policy
+
+    
+    """
+    params = [('$.xgafv', 'xgafv_example'),
+                    ('access_token', 'access_token_example'),
+                    ('alt', 'alt_example'),
+                    ('callback', 'param_callback_example'),
+                    ('fields', 'fields_example'),
+                    ('key', 'key_example'),
+                    ('oauth_token', 'oauth_token_example'),
+                    ('prettyPrint', True),
+                    ('quotaUser', 'quota_user_example'),
+                    ('upload_protocol', 'upload_protocol_example'),
+                    ('uploadType', 'upload_type_example'),
+                    ('options.requestedPolicyVersion', 56)]
+    headers = { 
+        'Accept': 'application/json',
+        'Authorization': 'Bearer special-key',
+        'Authorization': 'Bearer special-key',
+    }
+    response = await client.request(
+        method='GET',
+        path='/v1beta/{resourceget_iam_polic}'.format(resource='resource_example'),
+        headers=headers,
+        params=params,
+        )
+    assert response.status == 200, 'Response body is : ' + (await response.read()).decode('utf-8')
+
+
+pytestmark = pytest.mark.asyncio
+
+async def test_gameservices_projects_locations_game_server_deployments_set_iam_policy(client):
+    """Test case for gameservices_projects_locations_game_server_deployments_set_iam_policy
+
+    
+    """
+    body = {"updateMask":"updateMask","policy":{"bindings":[{"condition":{"expression":"expression","description":"description","location":"location","title":"title"},"role":"role","members":["members","members"],"bindingId":"bindingId"},{"condition":{"expression":"expression","description":"description","location":"location","title":"title"},"role":"role","members":["members","members"],"bindingId":"bindingId"}],"etag":"etag","rules":[{"logConfig":[{"dataAccess":{"logMode":"LOG_MODE_UNSPECIFIED"},"cloudAudit":{"authorizationLoggingOptions":{"permissionType":"PERMISSION_TYPE_UNSPECIFIED"},"logName":"UNSPECIFIED_LOG_NAME"},"counter":{"field":"field","metric":"metric","customFields":[{"name":"name","value":"value"},{"name":"name","value":"value"}]}},{"dataAccess":{"logMode":"LOG_MODE_UNSPECIFIED"},"cloudAudit":{"authorizationLoggingOptions":{"permissionType":"PERMISSION_TYPE_UNSPECIFIED"},"logName":"UNSPECIFIED_LOG_NAME"},"counter":{"field":"field","metric":"metric","customFields":[{"name":"name","value":"value"},{"name":"name","value":"value"}]}}],"in":["in","in"],"permissions":["permissions","permissions"],"action":"NO_ACTION","description":"description","notIn":["notIn","notIn"],"conditions":[{"op":"NO_OP","svc":"svc","iam":"NO_ATTR","values":["values","values"],"sys":"NO_ATTR"},{"op":"NO_OP","svc":"svc","iam":"NO_ATTR","values":["values","values"],"sys":"NO_ATTR"}]},{"logConfig":[{"dataAccess":{"logMode":"LOG_MODE_UNSPECIFIED"},"cloudAudit":{"authorizationLoggingOptions":{"permissionType":"PERMISSION_TYPE_UNSPECIFIED"},"logName":"UNSPECIFIED_LOG_NAME"},"counter":{"field":"field","metric":"metric","customFields":[{"name":"name","value":"value"},{"name":"name","value":"value"}]}},{"dataAccess":{"logMode":"LOG_MODE_UNSPECIFIED"},"cloudAudit":{"authorizationLoggingOptions":{"permissionType":"PERMISSION_TYPE_UNSPECIFIED"},"logName":"UNSPECIFIED_LOG_NAME"},"counter":{"field":"field","metric":"metric","customFields":[{"name":"name","value":"value"},{"name":"name","value":"value"}]}}],"in":["in","in"],"permissions":["permissions","permissions"],"action":"NO_ACTION","description":"description","notIn":["notIn","notIn"],"conditions":[{"op":"NO_OP","svc":"svc","iam":"NO_ATTR","values":["values","values"],"sys":"NO_ATTR"},{"op":"NO_OP","svc":"svc","iam":"NO_ATTR","values":["values","values"],"sys":"NO_ATTR"}]}],"version":0,"auditConfigs":[{"auditLogConfigs":[{"logType":"LOG_TYPE_UNSPECIFIED","exemptedMembers":["exemptedMembers","exemptedMembers"],"ignoreChildExemptions":True},{"logType":"LOG_TYPE_UNSPECIFIED","exemptedMembers":["exemptedMembers","exemptedMembers"],"ignoreChildExemptions":True}],"service":"service"},{"auditLogConfigs":[{"logType":"LOG_TYPE_UNSPECIFIED","exemptedMembers":["exemptedMembers","exemptedMembers"],"ignoreChildExemptions":True},{"logType":"LOG_TYPE_UNSPECIFIED","exemptedMembers":["exemptedMembers","exemptedMembers"],"ignoreChildExemptions":True}],"service":"service"}]}}
+    params = [('$.xgafv', 'xgafv_example'),
+                    ('access_token', 'access_token_example'),
+                    ('alt', 'alt_example'),
+                    ('callback', 'param_callback_example'),
+                    ('fields', 'fields_example'),
+                    ('key', 'key_example'),
+                    ('oauth_token', 'oauth_token_example'),
+                    ('prettyPrint', True),
+                    ('quotaUser', 'quota_user_example'),
+                    ('upload_protocol', 'upload_protocol_example'),
+                    ('uploadType', 'upload_type_example')]
+    headers = { 
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer special-key',
+        'Authorization': 'Bearer special-key',
+    }
+    response = await client.request(
+        method='POST',
+        path='/v1beta/{resourceset_iam_polic}'.format(resource='resource_example'),
+        headers=headers,
+        json=body,
+        params=params,
+        )
+    assert response.status == 200, 'Response body is : ' + (await response.read()).decode('utf-8')
+
+
+pytestmark = pytest.mark.asyncio
+
+async def test_gameservices_projects_locations_game_server_deployments_test_iam_permissions(client):
+    """Test case for gameservices_projects_locations_game_server_deployments_test_iam_permissions
+
+    
+    """
+    body = {"permissions":["permissions","permissions"]}
+    params = [('$.xgafv', 'xgafv_example'),
+                    ('access_token', 'access_token_example'),
+                    ('alt', 'alt_example'),
+                    ('callback', 'param_callback_example'),
+                    ('fields', 'fields_example'),
+                    ('key', 'key_example'),
+                    ('oauth_token', 'oauth_token_example'),
+                    ('prettyPrint', True),
+                    ('quotaUser', 'quota_user_example'),
+                    ('upload_protocol', 'upload_protocol_example'),
+                    ('uploadType', 'upload_type_example')]
+    headers = { 
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer special-key',
+        'Authorization': 'Bearer special-key',
+    }
+    response = await client.request(
+        method='POST',
+        path='/v1beta/{resourcetest_iam_permission}'.format(resource='resource_example'),
+        headers=headers,
+        json=body,
+        params=params,
+        )
+    assert response.status == 200, 'Response body is : ' + (await response.read()).decode('utf-8')
+
+
+pytestmark = pytest.mark.asyncio
+
+async def test_gameservices_projects_locations_list(client):
+    """Test case for gameservices_projects_locations_list
+
+    
+    """
+    params = [('$.xgafv', 'xgafv_example'),
+                    ('access_token', 'access_token_example'),
+                    ('alt', 'alt_example'),
+                    ('callback', 'param_callback_example'),
+                    ('fields', 'fields_example'),
+                    ('key', 'key_example'),
+                    ('oauth_token', 'oauth_token_example'),
+                    ('prettyPrint', True),
+                    ('quotaUser', 'quota_user_example'),
+                    ('upload_protocol', 'upload_protocol_example'),
+                    ('uploadType', 'upload_type_example'),
+                    ('filter', 'filter_example'),
+                    ('includeUnrevealedLocations', True),
+                    ('pageSize', 56),
+                    ('pageToken', 'page_token_example')]
+    headers = { 
+        'Accept': 'application/json',
+        'Authorization': 'Bearer special-key',
+        'Authorization': 'Bearer special-key',
+    }
+    response = await client.request(
+        method='GET',
+        path='/v1beta/{name}/locations'.format(name='name_example'),
+        headers=headers,
+        params=params,
+        )
+    assert response.status == 200, 'Response body is : ' + (await response.read()).decode('utf-8')
+
+
+pytestmark = pytest.mark.asyncio
+
+async def test_gameservices_projects_locations_operations_cancel(client):
+    """Test case for gameservices_projects_locations_operations_cancel
+
+    
+    """
+    body = None
+    params = [('$.xgafv', 'xgafv_example'),
+                    ('access_token', 'access_token_example'),
+                    ('alt', 'alt_example'),
+                    ('callback', 'param_callback_example'),
+                    ('fields', 'fields_example'),
+                    ('key', 'key_example'),
+                    ('oauth_token', 'oauth_token_example'),
+                    ('prettyPrint', True),
+                    ('quotaUser', 'quota_user_example'),
+                    ('upload_protocol', 'upload_protocol_example'),
+                    ('uploadType', 'upload_type_example')]
+    headers = { 
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer special-key',
+        'Authorization': 'Bearer special-key',
+    }
+    response = await client.request(
+        method='POST',
+        path='/v1beta/{namecance}'.format(name='name_example'),
+        headers=headers,
+        json=body,
+        params=params,
+        )
+    assert response.status == 200, 'Response body is : ' + (await response.read()).decode('utf-8')
+
+
+pytestmark = pytest.mark.asyncio
+
+async def test_gameservices_projects_locations_operations_delete(client):
+    """Test case for gameservices_projects_locations_operations_delete
+
+    
+    """
+    params = [('$.xgafv', 'xgafv_example'),
+                    ('access_token', 'access_token_example'),
+                    ('alt', 'alt_example'),
+                    ('callback', 'param_callback_example'),
+                    ('fields', 'fields_example'),
+                    ('key', 'key_example'),
+                    ('oauth_token', 'oauth_token_example'),
+                    ('prettyPrint', True),
+                    ('quotaUser', 'quota_user_example'),
+                    ('upload_protocol', 'upload_protocol_example'),
+                    ('uploadType', 'upload_type_example')]
+    headers = { 
+        'Accept': 'application/json',
+        'Authorization': 'Bearer special-key',
+        'Authorization': 'Bearer special-key',
+    }
+    response = await client.request(
+        method='DELETE',
+        path='/v1beta/{name}'.format(name='name_example'),
+        headers=headers,
+        params=params,
+        )
+    assert response.status == 200, 'Response body is : ' + (await response.read()).decode('utf-8')
+
+
+pytestmark = pytest.mark.asyncio
+
+async def test_gameservices_projects_locations_operations_get(client):
+    """Test case for gameservices_projects_locations_operations_get
+
+    
+    """
+    params = [('$.xgafv', 'xgafv_example'),
+                    ('access_token', 'access_token_example'),
+                    ('alt', 'alt_example'),
+                    ('callback', 'param_callback_example'),
+                    ('fields', 'fields_example'),
+                    ('key', 'key_example'),
+                    ('oauth_token', 'oauth_token_example'),
+                    ('prettyPrint', True),
+                    ('quotaUser', 'quota_user_example'),
+                    ('upload_protocol', 'upload_protocol_example'),
+                    ('uploadType', 'upload_type_example')]
+    headers = { 
+        'Accept': 'application/json',
+        'Authorization': 'Bearer special-key',
+        'Authorization': 'Bearer special-key',
+    }
+    response = await client.request(
+        method='GET',
+        path='/v1beta/{name}'.format(name='name_example'),
+        headers=headers,
+        params=params,
+        )
+    assert response.status == 200, 'Response body is : ' + (await response.read()).decode('utf-8')
+
+
+pytestmark = pytest.mark.asyncio
+
+async def test_gameservices_projects_locations_operations_list(client):
+    """Test case for gameservices_projects_locations_operations_list
+
+    
+    """
+    params = [('$.xgafv', 'xgafv_example'),
+                    ('access_token', 'access_token_example'),
+                    ('alt', 'alt_example'),
+                    ('callback', 'param_callback_example'),
+                    ('fields', 'fields_example'),
+                    ('key', 'key_example'),
+                    ('oauth_token', 'oauth_token_example'),
+                    ('prettyPrint', True),
+                    ('quotaUser', 'quota_user_example'),
+                    ('upload_protocol', 'upload_protocol_example'),
+                    ('uploadType', 'upload_type_example'),
+                    ('filter', 'filter_example'),
+                    ('pageSize', 56),
+                    ('pageToken', 'page_token_example')]
+    headers = { 
+        'Accept': 'application/json',
+        'Authorization': 'Bearer special-key',
+        'Authorization': 'Bearer special-key',
+    }
+    response = await client.request(
+        method='GET',
+        path='/v1beta/{name}/operations'.format(name='name_example'),
+        headers=headers,
+        params=params,
+        )
+    assert response.status == 200, 'Response body is : ' + (await response.read()).decode('utf-8')
+
