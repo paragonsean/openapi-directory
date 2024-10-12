@@ -1,0 +1,217 @@
+openapi: 3.0.1
+info:
+  description: Apis for customer in enterprise agreement migrate to new pricing model
+    or rollback to legacy pricing model.
+  title: ApplicationInsightsManagementClient
+  version: 2017-10-01
+  x-apisguru-categories:
+  - cloud
+  x-logo:
+    url: https://assets.onestore.ms/cdnfiles/onestorerolling-1606-01000/shell/v3/images/logo/microsoft.png
+  x-origin:
+  - format: swagger
+    url: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/applicationinsights/resource-manager/Microsoft.Insights/preview/2017-10-01/eaSubscriptionMigration_API.json
+    version: "2.0"
+  x-providerName: azure.com
+  x-serviceName: applicationinsights-eaSubscriptionMigration_API
+  x-tags:
+  - Azure
+  - Microsoft
+servers:
+- url: https://management.azure.com/
+security:
+- azure_auth:
+  - user_impersonation
+paths:
+  /subscriptions/{subscriptionId}/providers/microsoft.insights/listMigrationdate:
+    post:
+      description: list date to migrate to new pricing model.
+      operationId: e_a_subscription_list_migration_date_post
+      parameters:
+      - description: The API version to use for this operation.
+        in: query
+        name: api-version
+        required: true
+        schema:
+          minLength: 1
+          type: string
+      - description: The ID of the target subscription.
+        in: path
+        name: subscriptionId
+        required: true
+        schema:
+          minLength: 1
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EASubscriptionMigrationDate'
+          description: Success list migrate date information for this subscription.
+      x-ms-examples:
+        EASubscriptionListMigrationDate:
+          parameters:
+            api-version: 2017-10-01
+            subscriptionId: subid
+          responses:
+            "200":
+              body:
+                isGrandFatherableSubscription: false
+                optedInDate: 2018-08-15T22:15:45.5058967+00:00
+      x-openapi-router-controller: openapi_server.controllers.default_controller
+  /subscriptions/{subscriptionId}/providers/microsoft.insights/migrateToNewPricingModel:
+    post:
+      description: Enterprise Agreement Customer opted to use new pricing model.
+      operationId: e_a_subscription_migrate_to_new_pricing_model_post
+      parameters:
+      - description: The API version to use for this operation.
+        in: query
+        name: api-version
+        required: true
+        schema:
+          minLength: 1
+          type: string
+      - description: The ID of the target subscription.
+        in: path
+        name: subscriptionId
+        required: true
+        schema:
+          minLength: 1
+          type: string
+      responses:
+        "204":
+          content: {}
+          description: Success migrate to new pricing model for this subscription.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CloudError'
+          description: Error response describing why the operation failed.
+      x-ms-examples:
+        EASubscriptionMigrateToNewPricingModelPost:
+          parameters:
+            api-version: 2017-10-01
+            subscriptionId: subid
+          responses:
+            "204": {}
+      x-openapi-router-controller: openapi_server.controllers.default_controller
+  /subscriptions/{subscriptionId}/providers/microsoft.insights/rollbackToLegacyPricingModel:
+    post:
+      description: Enterprise Agreement Customer roll back to use legacy pricing model.
+      operationId: e_a_subscription_rollback_to_legacy_pricing_model_post
+      parameters:
+      - description: The API version to use for this operation.
+        in: query
+        name: api-version
+        required: true
+        schema:
+          minLength: 1
+          type: string
+      - description: The ID of the target subscription.
+        in: path
+        name: subscriptionId
+        required: true
+        schema:
+          minLength: 1
+          type: string
+      responses:
+        "204":
+          content: {}
+          description: Success roll back to legacy pricing model for this subscription.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CloudError'
+          description: Error response describing why the operation failed.
+      x-ms-examples:
+        EASubscriptionRollbackToLegacyPricingModelPost:
+          parameters:
+            api-version: 2017-10-01
+            subscriptionId: subid
+          responses:
+            "204": {}
+      x-openapi-router-controller: openapi_server.controllers.default_controller
+components:
+  schemas:
+    CloudError:
+      description: An error response from the Batch service.
+      example:
+        error:
+          code: code
+          details:
+          - null
+          - null
+          message: message
+          target: target
+      properties:
+        error:
+          $ref: '#/components/schemas/CloudErrorBody'
+      title: CloudError
+      type: object
+      x-ms-external: true
+    CloudErrorBody:
+      description: An error response from the Batch service.
+      example:
+        code: code
+        details:
+        - null
+        - null
+        message: message
+        target: target
+      properties:
+        code:
+          description: An identifier for the error. Codes are invariant and are intended
+            to be consumed programmatically.
+          title: code
+          type: string
+        details:
+          description: A list of additional details about the error.
+          items:
+            $ref: '#/components/schemas/CloudErrorBody'
+          title: details
+          type: array
+        message:
+          description: "A message describing the error, intended to be suitable for\
+            \ display in a user interface."
+          title: message
+          type: string
+        target:
+          description: "The target of the particular error. For example, the name\
+            \ of the property in error."
+          title: target
+          type: string
+      title: CloudErrorBody
+      type: object
+      x-ms-external: true
+    EASubscriptionMigrationDate:
+      description: Subscription migrate date information properties
+      example:
+        isGrandFatherableSubscription: true
+        optedInDate: 2000-01-23T04:56:07.000+00:00
+      properties:
+        isGrandFatherableSubscription:
+          description: Is subscription in the grand fatherable subscription list.
+          title: isGrandFatherableSubscription
+          type: boolean
+        optedInDate:
+          description: Time to start using new pricing model.
+          format: date-time
+          title: optedInDate
+          type: string
+      title: EASubscriptionMigrationDate
+      type: object
+  securitySchemes:
+    azure_auth:
+      description: Azure Active Directory OAuth2 Flow.
+      flows:
+        implicit:
+          authorizationUrl: https://login.microsoftonline.com/common/oauth2/authorize
+          scopes:
+            user_impersonation: impersonate your user account
+      type: oauth2
+      x-tokenInfoFunc: openapi_server.controllers.security_controller.info_from_azure_auth
+      x-scopeValidateFunc: openapi_server.controllers.security_controller.validate_scope_azure_auth
+x-original-swagger-version: "2.0"
