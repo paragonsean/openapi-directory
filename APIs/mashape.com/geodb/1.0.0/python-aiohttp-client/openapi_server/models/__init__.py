@@ -1,0 +1,37 @@
+# coding: utf-8
+
+# import models into model package
+from openapi_server.models.bad_request_response import BadRequestResponse
+from openapi_server.models.base_collection_response import BaseCollectionResponse
+from openapi_server.models.base_response import BaseResponse
+from openapi_server.models.countries_response import CountriesResponse
+from openapi_server.models.country_details import CountryDetails
+from openapi_server.models.country_response import CountryResponse
+from openapi_server.models.country_summary import CountrySummary
+from openapi_server.models.currencies_response import CurrenciesResponse
+from openapi_server.models.currency import Currency
+from openapi_server.models.date_time_response import DateTimeResponse
+from openapi_server.models.distance_response import DistanceResponse
+from openapi_server.models.error import Error
+from openapi_server.models.error_code import ErrorCode
+from openapi_server.models.forbidden_response import ForbiddenResponse
+from openapi_server.models.language_descriptor import LanguageDescriptor
+from openapi_server.models.languages_response import LanguagesResponse
+from openapi_server.models.link import Link
+from openapi_server.models.locale import Locale
+from openapi_server.models.locales_response import LocalesResponse
+from openapi_server.models.metadata import Metadata
+from openapi_server.models.not_found_response import NotFoundResponse
+from openapi_server.models.populated_place_details import PopulatedPlaceDetails
+from openapi_server.models.populated_place_response import PopulatedPlaceResponse
+from openapi_server.models.populated_place_summary import PopulatedPlaceSummary
+from openapi_server.models.populated_place_type import PopulatedPlaceType
+from openapi_server.models.populated_places_response import PopulatedPlacesResponse
+from openapi_server.models.region_details import RegionDetails
+from openapi_server.models.region_response import RegionResponse
+from openapi_server.models.region_summary import RegionSummary
+from openapi_server.models.regions_response import RegionsResponse
+from openapi_server.models.time_response import TimeResponse
+from openapi_server.models.time_zone_descriptor import TimeZoneDescriptor
+from openapi_server.models.time_zone_response import TimeZoneResponse
+from openapi_server.models.time_zones_response import TimeZonesResponse

@@ -1,0 +1,27 @@
+
+
+# LiveStreamEmbeddedSubtitleSettings
+
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**languageChannel** | [**LanguageChannelEnum**](#LanguageChannelEnum) | CEA-608 caption channel to read data from. |  [optional] |
+|**languageCode** | **String** | The language of the closed caption stream. Value must be BCP 47 compliant. |  [optional] |
+|**name** | **String** | A name for this live stream closed caption track. |  [optional] |
+|**passthrough** | **String** | Arbitrary user-supplied metadata set for the live stream closed caption track. Max 255 characters. |  [optional] |
+
+
+
+## Enum: LanguageChannelEnum
+
+| Name | Value |
+|---- | -----|
+| CC1 | &quot;cc1&quot; |
+| CC2 | &quot;cc2&quot; |
+| CC3 | &quot;cc3&quot; |
+| CC4 | &quot;cc4&quot; |
+
+
+

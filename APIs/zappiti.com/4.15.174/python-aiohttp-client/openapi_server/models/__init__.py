@@ -1,0 +1,18 @@
+# coding: utf-8
+
+# import models into model package
+from openapi_server.models.check_zappiti_service_request import CheckZappitiServiceRequest
+from openapi_server.models.check_zappiti_service_result import CheckZappitiServiceResult
+from openapi_server.models.connection_details_request import ConnectionDetailsRequest
+from openapi_server.models.connection_details_result import ConnectionDetailsResult
+from openapi_server.models.error_code import ErrorCode
+from openapi_server.models.install_zappiti_service_request import InstallZappitiServiceRequest
+from openapi_server.models.install_zappiti_service_result import InstallZappitiServiceResult
+from openapi_server.models.is_alive_request import IsAliveRequest
+from openapi_server.models.is_alive_result import IsAliveResult
+from openapi_server.models.last_media_request import LastMediaRequest
+from openapi_server.models.last_media_result import LastMediaResult
+from openapi_server.models.start_video_request import StartVideoRequest
+from openapi_server.models.start_video_result import StartVideoResult
+from openapi_server.models.start_zappiti_service_request import StartZappitiServiceRequest
+from openapi_server.models.start_zappiti_service_result import StartZappitiServiceResult

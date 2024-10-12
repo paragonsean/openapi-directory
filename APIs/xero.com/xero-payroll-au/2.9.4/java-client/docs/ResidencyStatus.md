@@ -1,0 +1,15 @@
+
+
+# ResidencyStatus
+
+## Enum
+
+
+* `AUSTRALIANRESIDENT` (value: `"AUSTRALIANRESIDENT"`)
+
+* `FOREIGNRESIDENT` (value: `"FOREIGNRESIDENT"`)
+
+* `WORKINGHOLIDAYMAKER` (value: `"WORKINGHOLIDAYMAKER"`)
+
+
+

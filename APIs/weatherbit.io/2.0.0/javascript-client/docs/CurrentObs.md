@@ -1,0 +1,46 @@
+# WeatherbitInteractiveSwaggerUiDocumentation.CurrentObs
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**appTemp** | **Number** | Apparent temperature - Default (C) | [optional] 
+**aqi** | **Number** | Air quality index (US EPA standard 0 to +500) | [optional] 
+**cityName** | **String** | City name (closest) | [optional] 
+**clouds** | **Number** | Cloud cover (%) | [optional] 
+**countryCode** | **String** | Country abbreviation | [optional] 
+**datetime** | **String** | Cycle Hour (UTC) of observation | [optional] 
+**dewpt** | **Number** | Dew point temperature - default (C) | [optional] 
+**dhi** | **Number** | Diffuse horizontal irradiance (W/m^2) | [optional] 
+**dni** | **Number** | Direct normal irradiance (W/m^2) | [optional] 
+**elevAngle** | **Number** | Current solar elevation angle (Degrees) | [optional] 
+**ghi** | **Number** | Global horizontal irradiance (W/m^2) | [optional] 
+**gust** | **Number** | Wind gust speed - Default (m/s) | [optional] 
+**hourAngle** | **Number** | Current solar hour angle (Degrees) | [optional] 
+**lat** | **Number** | Latitude | [optional] 
+**lon** | **Number** | Longitude | [optional] 
+**obTime** | **String** | Full time (UTC) of observation (YYYY-MM-DD HH:MM) | [optional] 
+**pod** | **String** | Part of the day (d &#x3D; day, n &#x3D; night) | [optional] 
+**precip** | **Number** | Precipitation in last hour - Default (mm) | [optional] 
+**pres** | **Number** | Pressure (mb) | [optional] 
+**rh** | **Number** | Relative humidity (%) | [optional] 
+**slp** | **Number** | Mean sea level pressure in millibars (mb) | [optional] 
+**snow** | **Number** | Snowfall in last hour - Default (mm) | [optional] 
+**solarRad** | **Number** | Estimated solar radiation (W/m^2) | [optional] 
+**sources** | **[String]** | List of data sources used in response | [optional] 
+**stateCode** | **String** | State abbreviation | [optional] 
+**station** | **String** | Source Station ID | [optional] 
+**sunrise** | **String** | Time (UTC) of Sunrise (HH:MM) | [optional] 
+**sunset** | **String** | Time (UTC) of Sunset (HH:MM) | [optional] 
+**temp** | **Number** | Temperature - Default (C) | [optional] 
+**timezone** | **String** | Local IANA time zone | [optional] 
+**ts** | **Number** | Unix Timestamp | [optional] 
+**uv** | **Number** | UV Index | [optional] 
+**vis** | **Number** | Visibility - default (M) | [optional] 
+**weather** | [**CurrentObsWeather**](CurrentObsWeather.md) |  | [optional] 
+**windCdir** | **String** | Cardinal wind direction | [optional] 
+**windCdirFull** | **String** | Cardinal wind direction (text) | [optional] 
+**windDir** | **Number** | Wind direction (degrees) | [optional] 
+**windSpeed** | **Number** | Wind speed - Default (m/s) | [optional] 
+
+

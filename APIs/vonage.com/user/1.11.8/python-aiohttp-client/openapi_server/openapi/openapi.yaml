@@ -1,0 +1,656 @@
+openapi: 3.0.0
+info:
+  contact:
+    name: Vonage Business Cloud Support
+    url: https://businesssupport.vonage.com/contactus
+  description: |
+    The Vonage Business Cloud User API enables you to retrieve information about users.
+
+    Your application must subscribe to the Provisioning API suite to use this API.
+  termsOfService: https://www.vonage.com/business/legal-policy-center/business-cloud/tos
+  title: User API
+  version: 1.11.8
+  x-origin:
+  - format: openapi
+    url: https://raw.githubusercontent.com/nexmo/api-specification/master/definitions/vonage-business-cloud/user.yml
+    version: "3.0"
+  x-providerName: vonage.com
+  x-serviceName: user
+servers:
+- url: https://api.vonage.com/t/vbc.prod/provisioning
+paths:
+  /api/accounts/{account_id}/users:
+    get:
+      operationId: user_ctrl_get_users
+      parameters:
+      - description: The Vonage Business Cloud account ID
+        example: 451496
+        explode: false
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: Number of records per page
+        example: 10
+        explode: true
+        in: query
+        name: page_size
+        required: false
+        schema:
+          type: number
+        style: form
+      - description: Current page number
+        example: 10
+        explode: true
+        in: query
+        name: page
+        required: false
+        schema:
+          type: number
+        style: form
+      - description: Filter by first name
+        example: John
+        explode: true
+        in: query
+        name: first_name
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Filter by last name
+        example: Smith
+        explode: true
+        in: query
+        name: last_name
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Filter by login name
+        example: jsmith
+        explode: true
+        in: query
+        name: login_name
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Filter by email address
+        example: john.smith@example.com
+        explode: true
+        in: query
+        name: email
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UsersHalResponse'
+          description: Success
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationErrorsResponse'
+          description: Invalid parameters given
+      security:
+      - bearerAuth: []
+      summary: Get account users data by account ID
+      x-openapi-router-controller: openapi_server.controllers.default_controller
+  /api/accounts/{account_id}/users/{user_id}:
+    get:
+      operationId: user_ctrl_get_user_by_id
+      parameters:
+      - description: The Vonage Business Cloud account ID
+        example: 451496
+        explode: false
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: The Vonage Business Cloud user ID
+        explode: false
+        in: path
+        name: user_id
+        required: true
+        schema:
+          type: number
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserHalResponse'
+          description: Success
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: User not found
+      security:
+      - bearerAuth: []
+      summary: Get user data by account ID and user ID
+      x-openapi-router-controller: openapi_server.controllers.default_controller
+components:
+  parameters:
+    AccountID:
+      description: The Vonage Business Cloud account ID
+      example: 451496
+      explode: false
+      in: path
+      name: account_id
+      required: true
+      schema:
+        type: string
+      style: simple
+  schemas:
+    Contact:
+      example:
+        type: Home
+        value: "14155550100"
+      properties:
+        type:
+          description: Contact type
+          example: Home
+          title: type
+          type: string
+        value:
+          description: Contact value
+          example: "14155550100"
+          title: value
+          type: string
+      title: Contact
+      type: object
+    DID:
+      example:
+        custom_tag: My Tag
+        phone_number: "14155550100"
+      properties:
+        custom_tag:
+          description: Custom tag associated with the phone number
+          example: My Tag
+          title: custom_tag
+          type: string
+        phone_number:
+          description: Phone number
+          example: "14155550100"
+          title: phone_number
+          type: string
+      title: DID
+      type: object
+    DetailedInvalidParam:
+      example:
+        reason: reason
+        name: name
+      properties:
+        name:
+          description: Invalid property name
+          title: name
+          type: string
+        reason:
+          description: Invalid property reason
+          title: reason
+          type: string
+      title: DetailedInvalidParam
+      type: object
+    ErrorResponse:
+      example:
+        msg: msg
+        status: 0.8008281904610115
+      properties:
+        msg:
+          description: Error message
+          title: msg
+          type: string
+        status:
+          description: Http Response Code
+          title: status
+          type: number
+      title: ErrorResponse
+      type: object
+    FirstHref:
+      description: URL to the first page of records
+      example:
+        href: href
+      properties:
+        href:
+          title: href
+          type: string
+      title: FirstHref
+      type: object
+    LastHref:
+      description: URL to the last page of records
+      properties:
+        href:
+          type: string
+      type: object
+    Links:
+      example:
+        next:
+          href: href
+        prev:
+          href: href
+        self:
+          href: href
+        first:
+          href: href
+      properties:
+        first:
+          $ref: '#/components/schemas/FirstHref'
+        next:
+          $ref: '#/components/schemas/NextHref'
+        prev:
+          $ref: '#/components/schemas/PrevHref'
+        self:
+          $ref: '#/components/schemas/SelfHref'
+      title: Links
+      type: object
+    NextHref:
+      description: URL to the next page of records
+      example:
+        href: href
+      properties:
+        href:
+          title: href
+          type: string
+      title: NextHref
+      type: object
+    PrevHref:
+      description: URL to the previous page of records
+      example:
+        href: href
+      properties:
+        href:
+          title: href
+          type: string
+      title: PrevHref
+      type: object
+    SelfHref:
+      description: URL to the current page of records
+      example:
+        href: href
+      properties:
+        href:
+          title: href
+          type: string
+      title: SelfHref
+      type: object
+    User:
+      example:
+        extensions:
+        - extension_number: "789"
+          dids:
+          - custom_tag: My Tag
+            phone_number: "14155550100"
+          - custom_tag: My Tag
+            phone_number: "14155550100"
+        - extension_number: "789"
+          dids:
+          - custom_tag: My Tag
+            phone_number: "14155550100"
+          - custom_tag: My Tag
+            phone_number: "14155550100"
+        login_name: jsmith
+        contact_numbers:
+        - type: Home
+          value: "14155550100"
+        - type: Home
+          value: "14155550100"
+        last_name: Smith
+        id: 869048
+        first_name: John
+        email: john.smith@example.com
+      properties:
+        contact_numbers:
+          description: Collection of contact objects
+          items:
+            $ref: '#/components/schemas/Contact'
+          title: contact_numbers
+          type: array
+        email:
+          description: Email address of the user
+          example: john.smith@example.com
+          title: email
+          type: string
+        extensions:
+          description: Collection of extension objects
+          items:
+            $ref: '#/components/schemas/UserExtension'
+          title: extensions
+          type: array
+        first_name:
+          description: First name of the user
+          example: John
+          title: first_name
+          type: string
+        id:
+          description: Unique identifier of the user
+          example: 869048
+          title: id
+          type: number
+        last_name:
+          description: Last name of the user
+          example: Smith
+          title: last_name
+          type: string
+        login_name:
+          description: Login name of the user
+          example: jsmith
+          title: login_name
+          type: string
+      title: User
+      type: object
+    UserEmbeddedObject:
+      example:
+        data:
+          extensions:
+          - extension_number: "789"
+            dids:
+            - custom_tag: My Tag
+              phone_number: "14155550100"
+            - custom_tag: My Tag
+              phone_number: "14155550100"
+          - extension_number: "789"
+            dids:
+            - custom_tag: My Tag
+              phone_number: "14155550100"
+            - custom_tag: My Tag
+              phone_number: "14155550100"
+          login_name: jsmith
+          contact_numbers:
+          - type: Home
+            value: "14155550100"
+          - type: Home
+            value: "14155550100"
+          last_name: Smith
+          id: 869048
+          first_name: John
+          email: john.smith@example.com
+      properties:
+        data:
+          $ref: '#/components/schemas/User'
+      title: UserEmbeddedObject
+      type: object
+    UserExtension:
+      example:
+        extension_number: "789"
+        dids:
+        - custom_tag: My Tag
+          phone_number: "14155550100"
+        - custom_tag: My Tag
+          phone_number: "14155550100"
+      properties:
+        dids:
+          description: Collection of phone numbers assigned to the extension
+          items:
+            $ref: '#/components/schemas/DID'
+          title: dids
+          type: array
+        extension_number:
+          description: Extension number
+          example: "789"
+          title: extension_number
+          type: string
+      title: UserExtension
+      type: object
+    UserHalResponse:
+      example:
+        _embedded:
+          data:
+            extensions:
+            - extension_number: "789"
+              dids:
+              - custom_tag: My Tag
+                phone_number: "14155550100"
+              - custom_tag: My Tag
+                phone_number: "14155550100"
+            - extension_number: "789"
+              dids:
+              - custom_tag: My Tag
+                phone_number: "14155550100"
+              - custom_tag: My Tag
+                phone_number: "14155550100"
+            login_name: jsmith
+            contact_numbers:
+            - type: Home
+              value: "14155550100"
+            - type: Home
+              value: "14155550100"
+            last_name: Smith
+            id: 869048
+            first_name: John
+            email: john.smith@example.com
+        _links:
+          next:
+            href: href
+          prev:
+            href: href
+          self:
+            href: href
+          first:
+            href: href
+        page: 1
+        total_pages: 10
+        total_items: 100
+        page_size: 10
+      properties:
+        _embedded:
+          $ref: '#/components/schemas/UserEmbeddedObject'
+        _links:
+          $ref: '#/components/schemas/Links'
+        page:
+          description: Current page number
+          example: 1
+          title: page
+          type: number
+        page_size:
+          description: Number of records per page
+          example: 10
+          title: page_size
+          type: number
+        total_items:
+          description: Total number of records
+          example: 100
+          title: total_items
+          type: number
+        total_pages:
+          description: Total number of pages
+          example: 10
+          title: total_pages
+          type: number
+      title: UserHalResponse
+      type: object
+    UsersEmbeddedObject:
+      example:
+        data:
+        - extensions:
+          - extension_number: "789"
+            dids:
+            - custom_tag: My Tag
+              phone_number: "14155550100"
+            - custom_tag: My Tag
+              phone_number: "14155550100"
+          - extension_number: "789"
+            dids:
+            - custom_tag: My Tag
+              phone_number: "14155550100"
+            - custom_tag: My Tag
+              phone_number: "14155550100"
+          login_name: jsmith
+          contact_numbers:
+          - type: Home
+            value: "14155550100"
+          - type: Home
+            value: "14155550100"
+          last_name: Smith
+          id: 869048
+          first_name: John
+          email: john.smith@example.com
+        - extensions:
+          - extension_number: "789"
+            dids:
+            - custom_tag: My Tag
+              phone_number: "14155550100"
+            - custom_tag: My Tag
+              phone_number: "14155550100"
+          - extension_number: "789"
+            dids:
+            - custom_tag: My Tag
+              phone_number: "14155550100"
+            - custom_tag: My Tag
+              phone_number: "14155550100"
+          login_name: jsmith
+          contact_numbers:
+          - type: Home
+            value: "14155550100"
+          - type: Home
+            value: "14155550100"
+          last_name: Smith
+          id: 869048
+          first_name: John
+          email: john.smith@example.com
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/User'
+          title: data
+          type: array
+      title: UsersEmbeddedObject
+      type: object
+    UsersHalResponse:
+      example:
+        _embedded:
+          data:
+          - extensions:
+            - extension_number: "789"
+              dids:
+              - custom_tag: My Tag
+                phone_number: "14155550100"
+              - custom_tag: My Tag
+                phone_number: "14155550100"
+            - extension_number: "789"
+              dids:
+              - custom_tag: My Tag
+                phone_number: "14155550100"
+              - custom_tag: My Tag
+                phone_number: "14155550100"
+            login_name: jsmith
+            contact_numbers:
+            - type: Home
+              value: "14155550100"
+            - type: Home
+              value: "14155550100"
+            last_name: Smith
+            id: 869048
+            first_name: John
+            email: john.smith@example.com
+          - extensions:
+            - extension_number: "789"
+              dids:
+              - custom_tag: My Tag
+                phone_number: "14155550100"
+              - custom_tag: My Tag
+                phone_number: "14155550100"
+            - extension_number: "789"
+              dids:
+              - custom_tag: My Tag
+                phone_number: "14155550100"
+              - custom_tag: My Tag
+                phone_number: "14155550100"
+            login_name: jsmith
+            contact_numbers:
+            - type: Home
+              value: "14155550100"
+            - type: Home
+              value: "14155550100"
+            last_name: Smith
+            id: 869048
+            first_name: John
+            email: john.smith@example.com
+        _links:
+          next:
+            href: href
+          prev:
+            href: href
+          self:
+            href: href
+          first:
+            href: href
+        page: 1
+        total_pages: 10
+        total_items: 100
+        page_size: 10
+      properties:
+        _embedded:
+          $ref: '#/components/schemas/UsersEmbeddedObject'
+        _links:
+          $ref: '#/components/schemas/Links'
+        page:
+          description: Current page number
+          example: 1
+          title: page
+          type: number
+        page_size:
+          description: Number of records per page
+          example: 10
+          title: page_size
+          type: number
+        total_items:
+          description: Total number of records
+          example: 100
+          title: total_items
+          type: number
+        total_pages:
+          description: Total number of pages
+          example: 10
+          title: total_pages
+          type: number
+      title: UsersHalResponse
+      type: object
+    ValidationErrorsResponse:
+      example:
+        instance: instance
+        title: title
+        invalid_parameters:
+        - reason: reason
+          name: name
+        - reason: reason
+          name: name
+        status: 0.8008281904610115
+      properties:
+        instance:
+          description: Error Track ID
+          title: instance
+          type: string
+        invalid_parameters:
+          description: Invalid parameters and their reason for failing
+          items:
+            $ref: '#/components/schemas/DetailedInvalidParam'
+          title: invalid_parameters
+          type: array
+        status:
+          description: Error status code
+          title: status
+          type: number
+        title:
+          description: Error title
+          title: title
+          type: string
+      title: ValidationErrorsResponse
+      type: object
+  securitySchemes:
+    bearerAuth:
+      bearerFormat: OAuth
+      scheme: bearer
+      type: http
+      x-bearerInfoFunc: openapi_server.controllers.security_controller.info_from_bearerAuth
