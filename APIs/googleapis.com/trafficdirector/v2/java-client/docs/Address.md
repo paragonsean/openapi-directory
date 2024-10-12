@@ -1,0 +1,15 @@
+
+
+# Address
+
+Addresses specify either a logical or physical address and port, which are used to tell Envoy where to bind/listen, connect to upstream and find management servers.
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**pipe** | [**Pipe**](Pipe.md) |  |  [optional] |
+|**socketAddress** | [**SocketAddress**](SocketAddress.md) |  |  [optional] |
+
+
+

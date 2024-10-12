@@ -1,0 +1,111 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIAddress.h \
+    $${PWD}/OAIBuildVersion.h \
+    $${PWD}/OAIClientConfig.h \
+    $${PWD}/OAIClientStatusRequest.h \
+    $${PWD}/OAIClientStatusResponse.h \
+    $${PWD}/OAIClustersConfigDump.h \
+    $${PWD}/OAIContextParams.h \
+    $${PWD}/OAIDoubleMatcher.h \
+    $${PWD}/OAIDoubleRange.h \
+    $${PWD}/OAIDynamicCluster.h \
+    $${PWD}/OAIDynamicEndpointConfig.h \
+    $${PWD}/OAIDynamicListener.h \
+    $${PWD}/OAIDynamicListenerState.h \
+    $${PWD}/OAIDynamicRouteConfig.h \
+    $${PWD}/OAIDynamicScopedRouteConfigs.h \
+    $${PWD}/OAIEndpointsConfigDump.h \
+    $${PWD}/OAIEnvoyInternalAddress.h \
+    $${PWD}/OAIExtension.h \
+    $${PWD}/OAIGenericXdsConfig.h \
+    $${PWD}/OAIGoogleRE2.h \
+    $${PWD}/OAIInlineScopedRouteConfigs.h \
+    $${PWD}/OAIListMatcher.h \
+    $${PWD}/OAIListenersConfigDump.h \
+    $${PWD}/OAILocality.h \
+    $${PWD}/OAINode.h \
+    $${PWD}/OAINodeMatcher.h \
+    $${PWD}/OAIOrMatcher.h \
+    $${PWD}/OAIPathSegment.h \
+    $${PWD}/OAIPerXdsConfig.h \
+    $${PWD}/OAIPipe.h \
+    $${PWD}/OAIRegexMatcher.h \
+    $${PWD}/OAIRoutesConfigDump.h \
+    $${PWD}/OAIScopedRoutesConfigDump.h \
+    $${PWD}/OAISemanticVersion.h \
+    $${PWD}/OAISocketAddress.h \
+    $${PWD}/OAIStaticCluster.h \
+    $${PWD}/OAIStaticEndpointConfig.h \
+    $${PWD}/OAIStaticListener.h \
+    $${PWD}/OAIStaticRouteConfig.h \
+    $${PWD}/OAIStringMatcher.h \
+    $${PWD}/OAIStructMatcher.h \
+    $${PWD}/OAIUpdateFailureState.h \
+    $${PWD}/OAIValueMatcher.h \
+# APIs
+    $${PWD}/OAIDiscoveryApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIAddress.cpp \
+    $${PWD}/OAIBuildVersion.cpp \
+    $${PWD}/OAIClientConfig.cpp \
+    $${PWD}/OAIClientStatusRequest.cpp \
+    $${PWD}/OAIClientStatusResponse.cpp \
+    $${PWD}/OAIClustersConfigDump.cpp \
+    $${PWD}/OAIContextParams.cpp \
+    $${PWD}/OAIDoubleMatcher.cpp \
+    $${PWD}/OAIDoubleRange.cpp \
+    $${PWD}/OAIDynamicCluster.cpp \
+    $${PWD}/OAIDynamicEndpointConfig.cpp \
+    $${PWD}/OAIDynamicListener.cpp \
+    $${PWD}/OAIDynamicListenerState.cpp \
+    $${PWD}/OAIDynamicRouteConfig.cpp \
+    $${PWD}/OAIDynamicScopedRouteConfigs.cpp \
+    $${PWD}/OAIEndpointsConfigDump.cpp \
+    $${PWD}/OAIEnvoyInternalAddress.cpp \
+    $${PWD}/OAIExtension.cpp \
+    $${PWD}/OAIGenericXdsConfig.cpp \
+    $${PWD}/OAIGoogleRE2.cpp \
+    $${PWD}/OAIInlineScopedRouteConfigs.cpp \
+    $${PWD}/OAIListMatcher.cpp \
+    $${PWD}/OAIListenersConfigDump.cpp \
+    $${PWD}/OAILocality.cpp \
+    $${PWD}/OAINode.cpp \
+    $${PWD}/OAINodeMatcher.cpp \
+    $${PWD}/OAIOrMatcher.cpp \
+    $${PWD}/OAIPathSegment.cpp \
+    $${PWD}/OAIPerXdsConfig.cpp \
+    $${PWD}/OAIPipe.cpp \
+    $${PWD}/OAIRegexMatcher.cpp \
+    $${PWD}/OAIRoutesConfigDump.cpp \
+    $${PWD}/OAIScopedRoutesConfigDump.cpp \
+    $${PWD}/OAISemanticVersion.cpp \
+    $${PWD}/OAISocketAddress.cpp \
+    $${PWD}/OAIStaticCluster.cpp \
+    $${PWD}/OAIStaticEndpointConfig.cpp \
+    $${PWD}/OAIStaticListener.cpp \
+    $${PWD}/OAIStaticRouteConfig.cpp \
+    $${PWD}/OAIStringMatcher.cpp \
+    $${PWD}/OAIStructMatcher.cpp \
+    $${PWD}/OAIUpdateFailureState.cpp \
+    $${PWD}/OAIValueMatcher.cpp \
+# APIs
+    $${PWD}/OAIDiscoveryApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

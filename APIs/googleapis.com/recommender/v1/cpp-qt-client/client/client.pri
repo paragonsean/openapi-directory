@@ -1,0 +1,79 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIGoogleCloudRecommenderV1CostProjection.h \
+    $${PWD}/OAIGoogleCloudRecommenderV1Impact.h \
+    $${PWD}/OAIGoogleCloudRecommenderV1Insight.h \
+    $${PWD}/OAIGoogleCloudRecommenderV1InsightRecommendationReference.h \
+    $${PWD}/OAIGoogleCloudRecommenderV1InsightStateInfo.h \
+    $${PWD}/OAIGoogleCloudRecommenderV1InsightTypeConfig.h \
+    $${PWD}/OAIGoogleCloudRecommenderV1InsightTypeGenerationConfig.h \
+    $${PWD}/OAIGoogleCloudRecommenderV1ListInsightsResponse.h \
+    $${PWD}/OAIGoogleCloudRecommenderV1ListRecommendationsResponse.h \
+    $${PWD}/OAIGoogleCloudRecommenderV1MarkInsightAcceptedRequest.h \
+    $${PWD}/OAIGoogleCloudRecommenderV1MarkRecommendationClaimedRequest.h \
+    $${PWD}/OAIGoogleCloudRecommenderV1MarkRecommendationDismissedRequest.h \
+    $${PWD}/OAIGoogleCloudRecommenderV1MarkRecommendationFailedRequest.h \
+    $${PWD}/OAIGoogleCloudRecommenderV1MarkRecommendationSucceededRequest.h \
+    $${PWD}/OAIGoogleCloudRecommenderV1Operation.h \
+    $${PWD}/OAIGoogleCloudRecommenderV1OperationGroup.h \
+    $${PWD}/OAIGoogleCloudRecommenderV1Recommendation.h \
+    $${PWD}/OAIGoogleCloudRecommenderV1RecommendationContent.h \
+    $${PWD}/OAIGoogleCloudRecommenderV1RecommendationInsightReference.h \
+    $${PWD}/OAIGoogleCloudRecommenderV1RecommendationStateInfo.h \
+    $${PWD}/OAIGoogleCloudRecommenderV1RecommenderConfig.h \
+    $${PWD}/OAIGoogleCloudRecommenderV1RecommenderGenerationConfig.h \
+    $${PWD}/OAIGoogleCloudRecommenderV1ReliabilityProjection.h \
+    $${PWD}/OAIGoogleCloudRecommenderV1SecurityProjection.h \
+    $${PWD}/OAIGoogleCloudRecommenderV1SustainabilityProjection.h \
+    $${PWD}/OAIGoogleCloudRecommenderV1ValueMatcher.h \
+    $${PWD}/OAIGoogleTypeMoney.h \
+# APIs
+    $${PWD}/OAIProjectsApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIGoogleCloudRecommenderV1CostProjection.cpp \
+    $${PWD}/OAIGoogleCloudRecommenderV1Impact.cpp \
+    $${PWD}/OAIGoogleCloudRecommenderV1Insight.cpp \
+    $${PWD}/OAIGoogleCloudRecommenderV1InsightRecommendationReference.cpp \
+    $${PWD}/OAIGoogleCloudRecommenderV1InsightStateInfo.cpp \
+    $${PWD}/OAIGoogleCloudRecommenderV1InsightTypeConfig.cpp \
+    $${PWD}/OAIGoogleCloudRecommenderV1InsightTypeGenerationConfig.cpp \
+    $${PWD}/OAIGoogleCloudRecommenderV1ListInsightsResponse.cpp \
+    $${PWD}/OAIGoogleCloudRecommenderV1ListRecommendationsResponse.cpp \
+    $${PWD}/OAIGoogleCloudRecommenderV1MarkInsightAcceptedRequest.cpp \
+    $${PWD}/OAIGoogleCloudRecommenderV1MarkRecommendationClaimedRequest.cpp \
+    $${PWD}/OAIGoogleCloudRecommenderV1MarkRecommendationDismissedRequest.cpp \
+    $${PWD}/OAIGoogleCloudRecommenderV1MarkRecommendationFailedRequest.cpp \
+    $${PWD}/OAIGoogleCloudRecommenderV1MarkRecommendationSucceededRequest.cpp \
+    $${PWD}/OAIGoogleCloudRecommenderV1Operation.cpp \
+    $${PWD}/OAIGoogleCloudRecommenderV1OperationGroup.cpp \
+    $${PWD}/OAIGoogleCloudRecommenderV1Recommendation.cpp \
+    $${PWD}/OAIGoogleCloudRecommenderV1RecommendationContent.cpp \
+    $${PWD}/OAIGoogleCloudRecommenderV1RecommendationInsightReference.cpp \
+    $${PWD}/OAIGoogleCloudRecommenderV1RecommendationStateInfo.cpp \
+    $${PWD}/OAIGoogleCloudRecommenderV1RecommenderConfig.cpp \
+    $${PWD}/OAIGoogleCloudRecommenderV1RecommenderGenerationConfig.cpp \
+    $${PWD}/OAIGoogleCloudRecommenderV1ReliabilityProjection.cpp \
+    $${PWD}/OAIGoogleCloudRecommenderV1SecurityProjection.cpp \
+    $${PWD}/OAIGoogleCloudRecommenderV1SustainabilityProjection.cpp \
+    $${PWD}/OAIGoogleCloudRecommenderV1ValueMatcher.cpp \
+    $${PWD}/OAIGoogleTypeMoney.cpp \
+# APIs
+    $${PWD}/OAIProjectsApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp
