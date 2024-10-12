@@ -1,0 +1,87 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIBgpPeerStatus.h \
+    $${PWD}/OAIBgpPeerStatusListResult.h \
+    $${PWD}/OAIBgpSettings.h \
+    $${PWD}/OAIConnectionResetSharedKey.h \
+    $${PWD}/OAIConnectionSharedKey.h \
+    $${PWD}/OAIGatewayRoute.h \
+    $${PWD}/OAIGatewayRouteListResult.h \
+    $${PWD}/OAIIpsecPolicy.h \
+    $${PWD}/OAILocalNetworkGateway.h \
+    $${PWD}/OAILocalNetworkGatewayListResult.h \
+    $${PWD}/OAILocalNetworkGatewayPropertiesFormat.h \
+    $${PWD}/OAILocalNetworkGatewayPropertiesFormat_localNetworkAddressSpace.h \
+    $${PWD}/OAITunnelConnectionHealth.h \
+    $${PWD}/OAIVirtualNetworkGateway.h \
+    $${PWD}/OAIVirtualNetworkGatewayConnection.h \
+    $${PWD}/OAIVirtualNetworkGatewayConnectionListResult.h \
+    $${PWD}/OAIVirtualNetworkGatewayConnectionPropertiesFormat.h \
+    $${PWD}/OAIVirtualNetworkGatewayConnectionPropertiesFormat_peer.h \
+    $${PWD}/OAIVirtualNetworkGatewayIPConfiguration.h \
+    $${PWD}/OAIVirtualNetworkGatewayIPConfigurationPropertiesFormat.h \
+    $${PWD}/OAIVirtualNetworkGatewayListResult.h \
+    $${PWD}/OAIVirtualNetworkGatewayPropertiesFormat.h \
+    $${PWD}/OAIVirtualNetworkGatewaySku.h \
+    $${PWD}/OAIVpnClientConfiguration.h \
+    $${PWD}/OAIVpnClientParameters.h \
+    $${PWD}/OAIVpnClientRevokedCertificate.h \
+    $${PWD}/OAIVpnClientRevokedCertificatePropertiesFormat.h \
+    $${PWD}/OAIVpnClientRootCertificate.h \
+    $${PWD}/OAIVpnClientRootCertificatePropertiesFormat.h \
+# APIs
+    $${PWD}/OAILocalNetworkGatewaysApi.h \
+    $${PWD}/OAIVirtualNetworkGatewayConnectionsApi.h \
+    $${PWD}/OAIVirtualNetworkGatewaysApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIBgpPeerStatus.cpp \
+    $${PWD}/OAIBgpPeerStatusListResult.cpp \
+    $${PWD}/OAIBgpSettings.cpp \
+    $${PWD}/OAIConnectionResetSharedKey.cpp \
+    $${PWD}/OAIConnectionSharedKey.cpp \
+    $${PWD}/OAIGatewayRoute.cpp \
+    $${PWD}/OAIGatewayRouteListResult.cpp \
+    $${PWD}/OAIIpsecPolicy.cpp \
+    $${PWD}/OAILocalNetworkGateway.cpp \
+    $${PWD}/OAILocalNetworkGatewayListResult.cpp \
+    $${PWD}/OAILocalNetworkGatewayPropertiesFormat.cpp \
+    $${PWD}/OAILocalNetworkGatewayPropertiesFormat_localNetworkAddressSpace.cpp \
+    $${PWD}/OAITunnelConnectionHealth.cpp \
+    $${PWD}/OAIVirtualNetworkGateway.cpp \
+    $${PWD}/OAIVirtualNetworkGatewayConnection.cpp \
+    $${PWD}/OAIVirtualNetworkGatewayConnectionListResult.cpp \
+    $${PWD}/OAIVirtualNetworkGatewayConnectionPropertiesFormat.cpp \
+    $${PWD}/OAIVirtualNetworkGatewayConnectionPropertiesFormat_peer.cpp \
+    $${PWD}/OAIVirtualNetworkGatewayIPConfiguration.cpp \
+    $${PWD}/OAIVirtualNetworkGatewayIPConfigurationPropertiesFormat.cpp \
+    $${PWD}/OAIVirtualNetworkGatewayListResult.cpp \
+    $${PWD}/OAIVirtualNetworkGatewayPropertiesFormat.cpp \
+    $${PWD}/OAIVirtualNetworkGatewaySku.cpp \
+    $${PWD}/OAIVpnClientConfiguration.cpp \
+    $${PWD}/OAIVpnClientParameters.cpp \
+    $${PWD}/OAIVpnClientRevokedCertificate.cpp \
+    $${PWD}/OAIVpnClientRevokedCertificatePropertiesFormat.cpp \
+    $${PWD}/OAIVpnClientRootCertificate.cpp \
+    $${PWD}/OAIVpnClientRootCertificatePropertiesFormat.cpp \
+# APIs
+    $${PWD}/OAILocalNetworkGatewaysApi.cpp \
+    $${PWD}/OAIVirtualNetworkGatewayConnectionsApi.cpp \
+    $${PWD}/OAIVirtualNetworkGatewaysApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp
