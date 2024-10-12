@@ -1,0 +1,17 @@
+
+
+# TopologyResource
+
+The network resource topology information for the given resource group.
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**associations** | [**List&lt;TopologyAssociation&gt;**](TopologyAssociation.md) | Holds the associations the resource has with other resources in the resource group. |  [optional] |
+|**id** | **String** | ID of the resource. |  [optional] |
+|**location** | **String** | Resource location. |  [optional] |
+|**name** | **String** | Name of the resource. |  [optional] |
+
+
+
