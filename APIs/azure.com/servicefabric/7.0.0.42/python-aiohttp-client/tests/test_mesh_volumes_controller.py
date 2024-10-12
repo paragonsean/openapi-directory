@@ -1,0 +1,94 @@
+# coding: utf-8
+
+import pytest
+import json
+from aiohttp import web
+
+from openapi_server.models.fabric_error import FabricError
+from openapi_server.models.paged_volume_resource_description_list import PagedVolumeResourceDescriptionList
+from openapi_server.models.volume_resource_description import VolumeResourceDescription
+
+
+pytestmark = pytest.mark.asyncio
+
+@pytest.mark.skip("*/* not supported by Connexion. Use application/json instead. See https://github.com/zalando/connexion/pull/760")
+async def test_mesh_volume_create_or_update(client):
+    """Test case for mesh_volume_create_or_update
+
+    Creates or updates a Volume resource.
+    """
+    volume_resource_description = openapi_server.VolumeResourceDescription()
+    params = [('api-version', 6.4-preview)]
+    headers = { 
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+    }
+    response = await client.request(
+        method='PUT',
+        path='/Resources/Volumes/{volume_resource_name}'.format(volume_resource_name='volume_resource_name_example'),
+        headers=headers,
+        json=volume_resource_description,
+        params=params,
+        )
+    assert response.status == 200, 'Response body is : ' + (await response.read()).decode('utf-8')
+
+
+pytestmark = pytest.mark.asyncio
+
+async def test_mesh_volume_delete(client):
+    """Test case for mesh_volume_delete
+
+    Deletes the Volume resource.
+    """
+    params = [('api-version', 6.4-preview)]
+    headers = { 
+        'Accept': 'application/json',
+    }
+    response = await client.request(
+        method='DELETE',
+        path='/Resources/Volumes/{volume_resource_name}'.format(volume_resource_name='volume_resource_name_example'),
+        headers=headers,
+        params=params,
+        )
+    assert response.status == 200, 'Response body is : ' + (await response.read()).decode('utf-8')
+
+
+pytestmark = pytest.mark.asyncio
+
+async def test_mesh_volume_get(client):
+    """Test case for mesh_volume_get
+
+    Gets the Volume resource with the given name.
+    """
+    params = [('api-version', 6.4-preview)]
+    headers = { 
+        'Accept': 'application/json',
+    }
+    response = await client.request(
+        method='GET',
+        path='/Resources/Volumes/{volume_resource_name}'.format(volume_resource_name='volume_resource_name_example'),
+        headers=headers,
+        params=params,
+        )
+    assert response.status == 200, 'Response body is : ' + (await response.read()).decode('utf-8')
+
+
+pytestmark = pytest.mark.asyncio
+
+async def test_mesh_volume_list(client):
+    """Test case for mesh_volume_list
+
+    Lists all the volume resources.
+    """
+    params = [('api-version', 6.4-preview)]
+    headers = { 
+        'Accept': 'application/json',
+    }
+    response = await client.request(
+        method='GET',
+        path='/Resources/Volumes',
+        headers=headers,
+        params=params,
+        )
+    assert response.status == 200, 'Response body is : ' + (await response.read()).decode('utf-8')
+

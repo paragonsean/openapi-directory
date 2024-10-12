@@ -1,0 +1,15 @@
+
+
+# ApplicationUpgradeDeployedApplicationHealthStates
+
+The states of the deployed application health
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**domainName** | **String** |  |  [optional] |
+|**nodeUpgradeProgressList** | **String** |  |  [optional] |
+
+
+

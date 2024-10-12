@@ -1,0 +1,288 @@
+# ServiceFabricClientApis.ServiceTypeApi
+
+All URIs are relative to *http://azure.local:19080*
+
+Method | HTTP request | Description
+------------- | ------------- | -------------
+[**getDeployedServiceTypeInfoByName**](ServiceTypeApi.md#getDeployedServiceTypeInfoByName) | **GET** /Nodes/{nodeName}/$/GetApplications/{applicationId}/$/GetServiceTypes/{serviceTypeName} | Gets the information about a specified service type of the application deployed on a node in a Service Fabric cluster.
+[**getDeployedServiceTypeInfoList**](ServiceTypeApi.md#getDeployedServiceTypeInfoList) | **GET** /Nodes/{nodeName}/$/GetApplications/{applicationId}/$/GetServiceTypes | Gets the list containing the information about service types from the applications deployed on a node in a Service Fabric cluster.
+[**getServiceManifest**](ServiceTypeApi.md#getServiceManifest) | **GET** /ApplicationTypes/{applicationTypeName}/$/GetServiceManifest | Gets the manifest describing a service type.
+[**getServiceTypeInfoByName**](ServiceTypeApi.md#getServiceTypeInfoByName) | **GET** /ApplicationTypes/{applicationTypeName}/$/GetServiceTypes/{serviceTypeName} | Gets the information about a specific service type that is supported by a provisioned application type in a Service Fabric cluster.
+[**getServiceTypeInfoList**](ServiceTypeApi.md#getServiceTypeInfoList) | **GET** /ApplicationTypes/{applicationTypeName}/$/GetServiceTypes | Gets the list containing the information about service types that are supported by a provisioned application type in a Service Fabric cluster.
+
+
+
+## getDeployedServiceTypeInfoByName
+
+> [DeployedServiceTypeInfo] getDeployedServiceTypeInfoByName(apiVersion, nodeName, applicationId, serviceTypeName, opts)
+
+Gets the information about a specified service type of the application deployed on a node in a Service Fabric cluster.
+
+Gets the list containing the information about a specific service type from the applications deployed on a node in a Service Fabric cluster. The response includes the name of the service type, its registration status, the code package that registered it and activation ID of the service package. Each entry represents one activation of a service type, differentiated by the activation ID.
+
+### Example
+
+```javascript
+import ServiceFabricClientApis from 'service_fabric_client_apis';
+
+let apiInstance = new ServiceFabricClientApis.ServiceTypeApi();
+let apiVersion = "'6.0'"; // String | The version of the API. This parameter is required and its value must be '6.0'.  Service Fabric REST API version is based on the runtime version in which the API was introduced or was changed. Service Fabric runtime supports more than one version of the API. This is the latest supported version of the API. If a lower API version is passed, the returned response may be different from the one documented in this specification.  Additionally the runtime accept any version that is higher than the latest supported version up to the current version of the runtime. So if the latest API version is 6.0, but if the runtime is 6.1, in order to make it easier to write the clients, the runtime will accept version 6.1 for that API. However the behavior of the API will be as per the documented 6.0 version.
+let nodeName = "nodeName_example"; // String | The name of the node.
+let applicationId = "applicationId_example"; // String | The identity of the application. This is typically the full name of the application without the 'fabric:' URI scheme. Starting from version 6.0, hierarchical names are delimited with the \"~\" character. For example, if the application name is \"fabric:/myapp/app1\", the application identity would be \"myapp~app1\" in 6.0+ and \"myapp/app1\" in previous versions.
+let serviceTypeName = "serviceTypeName_example"; // String | Specifies the name of a Service Fabric service type.
+let opts = {
+  'serviceManifestName': "serviceManifestName_example", // String | The name of the service manifest to filter the list of deployed service type information. If specified, the response will only contain the information about service types that are defined in this service manifest.
+  'timeout': 60 // Number | The server timeout for performing the operation in seconds. This timeout specifies the time duration that the client is willing to wait for the requested operation to complete. The default value for this parameter is 60 seconds.
+};
+apiInstance.getDeployedServiceTypeInfoByName(apiVersion, nodeName, applicationId, serviceTypeName, opts, (error, data, response) => {
+  if (error) {
+    console.error(error);
+  } else {
+    console.log('API called successfully. Returned data: ' + data);
+  }
+});
+```
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **apiVersion** | **String**| The version of the API. This parameter is required and its value must be &#39;6.0&#39;.  Service Fabric REST API version is based on the runtime version in which the API was introduced or was changed. Service Fabric runtime supports more than one version of the API. This is the latest supported version of the API. If a lower API version is passed, the returned response may be different from the one documented in this specification.  Additionally the runtime accept any version that is higher than the latest supported version up to the current version of the runtime. So if the latest API version is 6.0, but if the runtime is 6.1, in order to make it easier to write the clients, the runtime will accept version 6.1 for that API. However the behavior of the API will be as per the documented 6.0 version. | [default to &#39;6.0&#39;]
+ **nodeName** | **String**| The name of the node. | 
+ **applicationId** | **String**| The identity of the application. This is typically the full name of the application without the &#39;fabric:&#39; URI scheme. Starting from version 6.0, hierarchical names are delimited with the \&quot;~\&quot; character. For example, if the application name is \&quot;fabric:/myapp/app1\&quot;, the application identity would be \&quot;myapp~app1\&quot; in 6.0+ and \&quot;myapp/app1\&quot; in previous versions. | 
+ **serviceTypeName** | **String**| Specifies the name of a Service Fabric service type. | 
+ **serviceManifestName** | **String**| The name of the service manifest to filter the list of deployed service type information. If specified, the response will only contain the information about service types that are defined in this service manifest. | [optional] 
+ **timeout** | **Number**| The server timeout for performing the operation in seconds. This timeout specifies the time duration that the client is willing to wait for the requested operation to complete. The default value for this parameter is 60 seconds. | [optional] [default to 60]
+
+### Return type
+
+[**[DeployedServiceTypeInfo]**](DeployedServiceTypeInfo.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+
+## getDeployedServiceTypeInfoList
+
+> [DeployedServiceTypeInfo] getDeployedServiceTypeInfoList(apiVersion, nodeName, applicationId, opts)
+
+Gets the list containing the information about service types from the applications deployed on a node in a Service Fabric cluster.
+
+Gets the list containing the information about service types from the applications deployed on a node in a Service Fabric cluster. The response includes the name of the service type, its registration status, the code package that registered it and activation ID of the service package.
+
+### Example
+
+```javascript
+import ServiceFabricClientApis from 'service_fabric_client_apis';
+
+let apiInstance = new ServiceFabricClientApis.ServiceTypeApi();
+let apiVersion = "'6.0'"; // String | The version of the API. This parameter is required and its value must be '6.0'.  Service Fabric REST API version is based on the runtime version in which the API was introduced or was changed. Service Fabric runtime supports more than one version of the API. This is the latest supported version of the API. If a lower API version is passed, the returned response may be different from the one documented in this specification.  Additionally the runtime accept any version that is higher than the latest supported version up to the current version of the runtime. So if the latest API version is 6.0, but if the runtime is 6.1, in order to make it easier to write the clients, the runtime will accept version 6.1 for that API. However the behavior of the API will be as per the documented 6.0 version.
+let nodeName = "nodeName_example"; // String | The name of the node.
+let applicationId = "applicationId_example"; // String | The identity of the application. This is typically the full name of the application without the 'fabric:' URI scheme. Starting from version 6.0, hierarchical names are delimited with the \"~\" character. For example, if the application name is \"fabric:/myapp/app1\", the application identity would be \"myapp~app1\" in 6.0+ and \"myapp/app1\" in previous versions.
+let opts = {
+  'serviceManifestName': "serviceManifestName_example", // String | The name of the service manifest to filter the list of deployed service type information. If specified, the response will only contain the information about service types that are defined in this service manifest.
+  'timeout': 60 // Number | The server timeout for performing the operation in seconds. This timeout specifies the time duration that the client is willing to wait for the requested operation to complete. The default value for this parameter is 60 seconds.
+};
+apiInstance.getDeployedServiceTypeInfoList(apiVersion, nodeName, applicationId, opts, (error, data, response) => {
+  if (error) {
+    console.error(error);
+  } else {
+    console.log('API called successfully. Returned data: ' + data);
+  }
+});
+```
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **apiVersion** | **String**| The version of the API. This parameter is required and its value must be &#39;6.0&#39;.  Service Fabric REST API version is based on the runtime version in which the API was introduced or was changed. Service Fabric runtime supports more than one version of the API. This is the latest supported version of the API. If a lower API version is passed, the returned response may be different from the one documented in this specification.  Additionally the runtime accept any version that is higher than the latest supported version up to the current version of the runtime. So if the latest API version is 6.0, but if the runtime is 6.1, in order to make it easier to write the clients, the runtime will accept version 6.1 for that API. However the behavior of the API will be as per the documented 6.0 version. | [default to &#39;6.0&#39;]
+ **nodeName** | **String**| The name of the node. | 
+ **applicationId** | **String**| The identity of the application. This is typically the full name of the application without the &#39;fabric:&#39; URI scheme. Starting from version 6.0, hierarchical names are delimited with the \&quot;~\&quot; character. For example, if the application name is \&quot;fabric:/myapp/app1\&quot;, the application identity would be \&quot;myapp~app1\&quot; in 6.0+ and \&quot;myapp/app1\&quot; in previous versions. | 
+ **serviceManifestName** | **String**| The name of the service manifest to filter the list of deployed service type information. If specified, the response will only contain the information about service types that are defined in this service manifest. | [optional] 
+ **timeout** | **Number**| The server timeout for performing the operation in seconds. This timeout specifies the time duration that the client is willing to wait for the requested operation to complete. The default value for this parameter is 60 seconds. | [optional] [default to 60]
+
+### Return type
+
+[**[DeployedServiceTypeInfo]**](DeployedServiceTypeInfo.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+
+## getServiceManifest
+
+> ServiceTypeManifest getServiceManifest(apiVersion, applicationTypeName, applicationTypeVersion, serviceManifestName, opts)
+
+Gets the manifest describing a service type.
+
+Gets the manifest describing a service type. The response contains the service manifest XML as a string.
+
+### Example
+
+```javascript
+import ServiceFabricClientApis from 'service_fabric_client_apis';
+
+let apiInstance = new ServiceFabricClientApis.ServiceTypeApi();
+let apiVersion = "'6.0'"; // String | The version of the API. This parameter is required and its value must be '6.0'.  Service Fabric REST API version is based on the runtime version in which the API was introduced or was changed. Service Fabric runtime supports more than one version of the API. This is the latest supported version of the API. If a lower API version is passed, the returned response may be different from the one documented in this specification.  Additionally the runtime accept any version that is higher than the latest supported version up to the current version of the runtime. So if the latest API version is 6.0, but if the runtime is 6.1, in order to make it easier to write the clients, the runtime will accept version 6.1 for that API. However the behavior of the API will be as per the documented 6.0 version.
+let applicationTypeName = "applicationTypeName_example"; // String | The name of the application type.
+let applicationTypeVersion = "applicationTypeVersion_example"; // String | The version of the application type.
+let serviceManifestName = "serviceManifestName_example"; // String | The name of a service manifest registered as part of an application type in a Service Fabric cluster.
+let opts = {
+  'timeout': 60 // Number | The server timeout for performing the operation in seconds. This timeout specifies the time duration that the client is willing to wait for the requested operation to complete. The default value for this parameter is 60 seconds.
+};
+apiInstance.getServiceManifest(apiVersion, applicationTypeName, applicationTypeVersion, serviceManifestName, opts, (error, data, response) => {
+  if (error) {
+    console.error(error);
+  } else {
+    console.log('API called successfully. Returned data: ' + data);
+  }
+});
+```
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **apiVersion** | **String**| The version of the API. This parameter is required and its value must be &#39;6.0&#39;.  Service Fabric REST API version is based on the runtime version in which the API was introduced or was changed. Service Fabric runtime supports more than one version of the API. This is the latest supported version of the API. If a lower API version is passed, the returned response may be different from the one documented in this specification.  Additionally the runtime accept any version that is higher than the latest supported version up to the current version of the runtime. So if the latest API version is 6.0, but if the runtime is 6.1, in order to make it easier to write the clients, the runtime will accept version 6.1 for that API. However the behavior of the API will be as per the documented 6.0 version. | [default to &#39;6.0&#39;]
+ **applicationTypeName** | **String**| The name of the application type. | 
+ **applicationTypeVersion** | **String**| The version of the application type. | 
+ **serviceManifestName** | **String**| The name of a service manifest registered as part of an application type in a Service Fabric cluster. | 
+ **timeout** | **Number**| The server timeout for performing the operation in seconds. This timeout specifies the time duration that the client is willing to wait for the requested operation to complete. The default value for this parameter is 60 seconds. | [optional] [default to 60]
+
+### Return type
+
+[**ServiceTypeManifest**](ServiceTypeManifest.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+
+## getServiceTypeInfoByName
+
+> ServiceTypeInfo getServiceTypeInfoByName(apiVersion, applicationTypeName, applicationTypeVersion, serviceTypeName, opts)
+
+Gets the information about a specific service type that is supported by a provisioned application type in a Service Fabric cluster.
+
+Gets the information about a specific service type that is supported by a provisioned application type in a Service Fabric cluster. The provided application type must exist. Otherwise, a 404 status is returned. A 204 response is returned if the specified service type is not found in the cluster.
+
+### Example
+
+```javascript
+import ServiceFabricClientApis from 'service_fabric_client_apis';
+
+let apiInstance = new ServiceFabricClientApis.ServiceTypeApi();
+let apiVersion = "'6.0'"; // String | The version of the API. This parameter is required and its value must be '6.0'.  Service Fabric REST API version is based on the runtime version in which the API was introduced or was changed. Service Fabric runtime supports more than one version of the API. This is the latest supported version of the API. If a lower API version is passed, the returned response may be different from the one documented in this specification.  Additionally the runtime accept any version that is higher than the latest supported version up to the current version of the runtime. So if the latest API version is 6.0, but if the runtime is 6.1, in order to make it easier to write the clients, the runtime will accept version 6.1 for that API. However the behavior of the API will be as per the documented 6.0 version.
+let applicationTypeName = "applicationTypeName_example"; // String | The name of the application type.
+let applicationTypeVersion = "applicationTypeVersion_example"; // String | The version of the application type.
+let serviceTypeName = "serviceTypeName_example"; // String | Specifies the name of a Service Fabric service type.
+let opts = {
+  'timeout': 60 // Number | The server timeout for performing the operation in seconds. This timeout specifies the time duration that the client is willing to wait for the requested operation to complete. The default value for this parameter is 60 seconds.
+};
+apiInstance.getServiceTypeInfoByName(apiVersion, applicationTypeName, applicationTypeVersion, serviceTypeName, opts, (error, data, response) => {
+  if (error) {
+    console.error(error);
+  } else {
+    console.log('API called successfully. Returned data: ' + data);
+  }
+});
+```
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **apiVersion** | **String**| The version of the API. This parameter is required and its value must be &#39;6.0&#39;.  Service Fabric REST API version is based on the runtime version in which the API was introduced or was changed. Service Fabric runtime supports more than one version of the API. This is the latest supported version of the API. If a lower API version is passed, the returned response may be different from the one documented in this specification.  Additionally the runtime accept any version that is higher than the latest supported version up to the current version of the runtime. So if the latest API version is 6.0, but if the runtime is 6.1, in order to make it easier to write the clients, the runtime will accept version 6.1 for that API. However the behavior of the API will be as per the documented 6.0 version. | [default to &#39;6.0&#39;]
+ **applicationTypeName** | **String**| The name of the application type. | 
+ **applicationTypeVersion** | **String**| The version of the application type. | 
+ **serviceTypeName** | **String**| Specifies the name of a Service Fabric service type. | 
+ **timeout** | **Number**| The server timeout for performing the operation in seconds. This timeout specifies the time duration that the client is willing to wait for the requested operation to complete. The default value for this parameter is 60 seconds. | [optional] [default to 60]
+
+### Return type
+
+[**ServiceTypeInfo**](ServiceTypeInfo.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+
+## getServiceTypeInfoList
+
+> [ServiceTypeInfo] getServiceTypeInfoList(apiVersion, applicationTypeName, applicationTypeVersion, opts)
+
+Gets the list containing the information about service types that are supported by a provisioned application type in a Service Fabric cluster.
+
+Gets the list containing the information about service types that are supported by a provisioned application type in a Service Fabric cluster. The provided application type must exist. Otherwise, a 404 status is returned.
+
+### Example
+
+```javascript
+import ServiceFabricClientApis from 'service_fabric_client_apis';
+
+let apiInstance = new ServiceFabricClientApis.ServiceTypeApi();
+let apiVersion = "'6.0'"; // String | The version of the API. This parameter is required and its value must be '6.0'.  Service Fabric REST API version is based on the runtime version in which the API was introduced or was changed. Service Fabric runtime supports more than one version of the API. This is the latest supported version of the API. If a lower API version is passed, the returned response may be different from the one documented in this specification.  Additionally the runtime accept any version that is higher than the latest supported version up to the current version of the runtime. So if the latest API version is 6.0, but if the runtime is 6.1, in order to make it easier to write the clients, the runtime will accept version 6.1 for that API. However the behavior of the API will be as per the documented 6.0 version.
+let applicationTypeName = "applicationTypeName_example"; // String | The name of the application type.
+let applicationTypeVersion = "applicationTypeVersion_example"; // String | The version of the application type.
+let opts = {
+  'timeout': 60 // Number | The server timeout for performing the operation in seconds. This timeout specifies the time duration that the client is willing to wait for the requested operation to complete. The default value for this parameter is 60 seconds.
+};
+apiInstance.getServiceTypeInfoList(apiVersion, applicationTypeName, applicationTypeVersion, opts, (error, data, response) => {
+  if (error) {
+    console.error(error);
+  } else {
+    console.log('API called successfully. Returned data: ' + data);
+  }
+});
+```
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **apiVersion** | **String**| The version of the API. This parameter is required and its value must be &#39;6.0&#39;.  Service Fabric REST API version is based on the runtime version in which the API was introduced or was changed. Service Fabric runtime supports more than one version of the API. This is the latest supported version of the API. If a lower API version is passed, the returned response may be different from the one documented in this specification.  Additionally the runtime accept any version that is higher than the latest supported version up to the current version of the runtime. So if the latest API version is 6.0, but if the runtime is 6.1, in order to make it easier to write the clients, the runtime will accept version 6.1 for that API. However the behavior of the API will be as per the documented 6.0 version. | [default to &#39;6.0&#39;]
+ **applicationTypeName** | **String**| The name of the application type. | 
+ **applicationTypeVersion** | **String**| The version of the application type. | 
+ **timeout** | **Number**| The server timeout for performing the operation in seconds. This timeout specifies the time duration that the client is willing to wait for the requested operation to complete. The default value for this parameter is 60 seconds. | [optional] [default to 60]
+
+### Return type
+
+[**[ServiceTypeInfo]**](ServiceTypeInfo.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+

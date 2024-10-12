@@ -1,0 +1,14 @@
+
+
+# StatelessServiceInstanceInfo
+
+Represents a stateless service instance. This includes information about the identity, status, health, node name, uptime, and other details about the instance.
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**instanceId** | **String** | Id of a stateless service instance. InstanceId is used by Service Fabric to uniquely identify an instance of a partition of a stateless service. It is unique within a partition and does not change for the lifetime of the instance. If the instance has failed over on the same or different node, it will get a different value for the InstanceId. |  [optional] |
+
+
+

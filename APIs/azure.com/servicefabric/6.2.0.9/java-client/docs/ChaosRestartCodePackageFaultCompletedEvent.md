@@ -1,0 +1,19 @@
+
+
+# ChaosRestartCodePackageFaultCompletedEvent
+
+Chaos Restart Code Package Fault Completed event.
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**codePackageName** | **String** | Code package name. |  |
+|**faultGroupId** | **UUID** | Id of fault group. |  |
+|**faultId** | **UUID** | Id of fault. |  |
+|**nodeName** | **String** | The name of a Service Fabric node. |  |
+|**serviceManifestName** | **String** | Service manifest name. |  |
+|**servicePackageActivationId** | **String** | Id of Service package activation. |  |
+
+
+

@@ -1,0 +1,15 @@
+
+
+# DeployedStatelessServiceInstanceDetailInfo
+
+Information about a stateless instance running in a code package. Note that DeployedServiceReplicaQueryResult will contain duplicate data like ServiceKind, ServiceName, PartitionId and InstanceId.
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**deployedServiceReplicaQueryResult** | [**DeployedStatelessServiceInstanceInfo**](DeployedStatelessServiceInstanceInfo.md) |  |  [optional] |
+|**instanceId** | **String** | Id of a stateless service instance. InstanceId is used by Service Fabric to uniquely identify an instance of a partition of a stateless service. It is unique within a partition and does not change for the lifetime of the instance. If the instance has failed over on the same or different node, it will get a different value for the InstanceId. |  [optional] |
+
+
+

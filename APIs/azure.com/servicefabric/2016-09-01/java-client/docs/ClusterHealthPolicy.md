@@ -1,0 +1,15 @@
+
+
+# ClusterHealthPolicy
+
+Defines a health policy used to evaluate the health of the cluster or of a cluster node.
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**maxPercentUnhealthyApplications** | **Integer** | The maximum allowed percentage of unhealthy applications before reporting an error. For example, to allow 10% of applications to be unhealthy, this value would be 10.  |  [optional] |
+|**maxPercentUnhealthyNodes** | **Integer** | The maximum allowed percentage of unhealthy nodes before reporting an error. For example, to allow 10% of nodes to be unhealthy, this value would be 10.  |  [optional] |
+
+
+

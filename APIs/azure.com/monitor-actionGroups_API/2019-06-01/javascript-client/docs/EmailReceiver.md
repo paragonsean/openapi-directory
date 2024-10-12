@@ -1,0 +1,12 @@
+# AzureActionGroups.EmailReceiver
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**emailAddress** | **String** | The email address of this receiver. | 
+**name** | **String** | The name of the email receiver. Names must be unique across all receivers within an action group. | 
+**status** | [**ReceiverStatus**](ReceiverStatus.md) |  | [optional] 
+**useCommonAlertSchema** | **Boolean** | Indicates whether to use common alert schema. | 
+
+
