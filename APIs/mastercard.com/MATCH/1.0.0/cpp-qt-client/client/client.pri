@@ -1,0 +1,113 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIAddMerchantMerchant.h \
+    $${PWD}/OAIAddMerchantRequest.h \
+    $${PWD}/OAIAddMerchantResponse.h \
+    $${PWD}/OAIAddTerminatedMerchantRequestSchema.h \
+    $${PWD}/OAIAddTerminatedMerchantResponseSchema.h \
+    $${PWD}/OAIAddress.h \
+    $${PWD}/OAIContact.h \
+    $${PWD}/OAIContactRequest.h \
+    $${PWD}/OAIContactRequestSchema.h \
+    $${PWD}/OAIContactResponse.h \
+    $${PWD}/OAIContactResponseSchema.h \
+    $${PWD}/OAIDriversLicense.h \
+    $${PWD}/OAIError.h \
+    $${PWD}/OAIErrors.h \
+    $${PWD}/OAIErrorsResponse.h \
+    $${PWD}/OAIInquiredMerchant.h \
+    $${PWD}/OAIInquiredMerchant_Merchant.h \
+    $${PWD}/OAIMerchant.h \
+    $${PWD}/OAIMerchantMatch.h \
+    $${PWD}/OAIPossibleInquiryMatches.h \
+    $${PWD}/OAIPossibleMerchantMatches.h \
+    $${PWD}/OAIPrincipal.h \
+    $${PWD}/OAIPrincipalMatch.h \
+    $${PWD}/OAIRetroInquiryRequest.h \
+    $${PWD}/OAIRetroInquiryRequestSchema.h \
+    $${PWD}/OAIRetroInquiryResponse.h \
+    $${PWD}/OAIRetroInquiryResponseSchema.h \
+    $${PWD}/OAIRetroRequest.h \
+    $${PWD}/OAIRetroRequestSchema.h \
+    $${PWD}/OAIRetroResponse.h \
+    $${PWD}/OAIRetroResponseSchema.h \
+    $${PWD}/OAISearchCriteria.h \
+    $${PWD}/OAITerminatedMerchant.h \
+    $${PWD}/OAITerminationInquiry.h \
+    $${PWD}/OAITerminationInquiryRequest.h \
+    $${PWD}/OAITerminationInquiryRequestSchema.h \
+    $${PWD}/OAITerminationInquirySchema.h \
+    $${PWD}/OAIUrl.h \
+    $${PWD}/OAIUrlGroup.h \
+# APIs
+    $${PWD}/OAIAcquirerContactRequestApi.h \
+    $${PWD}/OAIAddTerminatedMerchantApi.h \
+    $${PWD}/OAIRetroactiveInquiryDetailsRequestApi.h \
+    $${PWD}/OAIRetroactiveInquiryRequestApi.h \
+    $${PWD}/OAITerminationInquiryHistoryRequestApi.h \
+    $${PWD}/OAITerminationInquiryRequestApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIAddMerchantMerchant.cpp \
+    $${PWD}/OAIAddMerchantRequest.cpp \
+    $${PWD}/OAIAddMerchantResponse.cpp \
+    $${PWD}/OAIAddTerminatedMerchantRequestSchema.cpp \
+    $${PWD}/OAIAddTerminatedMerchantResponseSchema.cpp \
+    $${PWD}/OAIAddress.cpp \
+    $${PWD}/OAIContact.cpp \
+    $${PWD}/OAIContactRequest.cpp \
+    $${PWD}/OAIContactRequestSchema.cpp \
+    $${PWD}/OAIContactResponse.cpp \
+    $${PWD}/OAIContactResponseSchema.cpp \
+    $${PWD}/OAIDriversLicense.cpp \
+    $${PWD}/OAIError.cpp \
+    $${PWD}/OAIErrors.cpp \
+    $${PWD}/OAIErrorsResponse.cpp \
+    $${PWD}/OAIInquiredMerchant.cpp \
+    $${PWD}/OAIInquiredMerchant_Merchant.cpp \
+    $${PWD}/OAIMerchant.cpp \
+    $${PWD}/OAIMerchantMatch.cpp \
+    $${PWD}/OAIPossibleInquiryMatches.cpp \
+    $${PWD}/OAIPossibleMerchantMatches.cpp \
+    $${PWD}/OAIPrincipal.cpp \
+    $${PWD}/OAIPrincipalMatch.cpp \
+    $${PWD}/OAIRetroInquiryRequest.cpp \
+    $${PWD}/OAIRetroInquiryRequestSchema.cpp \
+    $${PWD}/OAIRetroInquiryResponse.cpp \
+    $${PWD}/OAIRetroInquiryResponseSchema.cpp \
+    $${PWD}/OAIRetroRequest.cpp \
+    $${PWD}/OAIRetroRequestSchema.cpp \
+    $${PWD}/OAIRetroResponse.cpp \
+    $${PWD}/OAIRetroResponseSchema.cpp \
+    $${PWD}/OAISearchCriteria.cpp \
+    $${PWD}/OAITerminatedMerchant.cpp \
+    $${PWD}/OAITerminationInquiry.cpp \
+    $${PWD}/OAITerminationInquiryRequest.cpp \
+    $${PWD}/OAITerminationInquiryRequestSchema.cpp \
+    $${PWD}/OAITerminationInquirySchema.cpp \
+    $${PWD}/OAIUrl.cpp \
+    $${PWD}/OAIUrlGroup.cpp \
+# APIs
+    $${PWD}/OAIAcquirerContactRequestApi.cpp \
+    $${PWD}/OAIAddTerminatedMerchantApi.cpp \
+    $${PWD}/OAIRetroactiveInquiryDetailsRequestApi.cpp \
+    $${PWD}/OAIRetroactiveInquiryRequestApi.cpp \
+    $${PWD}/OAITerminationInquiryHistoryRequestApi.cpp \
+    $${PWD}/OAITerminationInquiryRequestApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

@@ -1,0 +1,10 @@
+# GitHubV3RestApi.BranchShortCommit
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**sha** | **String** |  | 
+**url** | **String** |  | 
+
+

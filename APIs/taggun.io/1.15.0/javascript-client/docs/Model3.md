@@ -1,0 +1,12 @@
+# TaggunReceiptOcrScanningApi.Model3
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**confidenceLevel** | **Number** |  | [optional] 
+**data** | **String** |  | [optional] 
+**keyword** | **String** |  | [optional] 
+**text** | **String** |  | [optional] 
+
+

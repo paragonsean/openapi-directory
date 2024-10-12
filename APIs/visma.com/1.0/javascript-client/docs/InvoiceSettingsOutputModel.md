@@ -1,0 +1,45 @@
+# SeveraPublicRestApiDocumentation.InvoiceSettingsOutputModel
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**categorySortOrder** | **String** |  | [optional] 
+**createdBy** | [**UserWithFirstNameLastNameAndPhotoFileModel**](UserWithFirstNameLastNameAndPhotoFileModel.md) |  | [optional] 
+**createdDateTime** | **Date** |  | [optional] [readonly] 
+**entryDate** | **Date** |  | [optional] 
+**guid** | **String** |  | [optional] [readonly] 
+**isReverseCharged** | **Boolean** |  | [optional] 
+**lastUpdatedBy** | [**UserWithFirstNameLastNameAndPhotoFileModel**](UserWithFirstNameLastNameAndPhotoFileModel.md) |  | [optional] 
+**lastUpdatedDateTime** | **Date** |  | [optional] [readonly] 
+**paymentDate** | **Date** |  | [optional] 
+**projectFeeDescriptionFormat** | **String** |  | [optional] [default to &#39;&#39;]
+**projectFeeGrouping** | [**InvoiceGrouping**](InvoiceGrouping.md) |  | [optional] 
+**projectFeePrimaryGroupBy** | **String** |  | [optional] 
+**projectFeeSecondaryGroupBy** | **String** |  | [optional] 
+**projectTravelExpenseDescriptionFormat** | **String** |  | [optional] [default to &#39;&#39;]
+**projectTravelExpenseGrouping** | [**InvoiceGrouping**](InvoiceGrouping.md) |  | [optional] 
+**projectTravelExpensePrimaryGroupBy** | **String** |  | [optional] 
+**projectTravelExpenseSecondaryGroupBy** | **String** |  | [optional] 
+**reverseChargeDescription** | **String** |  | [optional] 
+**showAttachmentPriceExcludingValueAddedTax** | **Boolean** |  | [optional] 
+**showAttachmentQuantity** | **Boolean** |  | [optional] [readonly] 
+**showAttachmentUnit** | **Boolean** |  | [optional] 
+**showAttachmentUnitPrice** | **Boolean** |  | [optional] 
+**showAttachmentValueAddedTax** | **Boolean** |  | [optional] 
+**showCategories** | **Boolean** |  | [optional] [default to true]
+**showFooter** | **Boolean** |  | [optional] 
+**showLogoAndTitle** | **Boolean** |  | [optional] 
+**showPriceExcludingValueAddedTax** | **Boolean** |  | [optional] [readonly] 
+**showQuantity** | **Boolean** |  | [optional] 
+**showReferenceNumber** | **Boolean** |  | [optional] [default to true]
+**showUnit** | **Boolean** |  | [optional] 
+**showUnitPrice** | **Boolean** |  | [optional] 
+**showValueAddedTax** | **Boolean** |  | [optional] 
+**style** | [**InvoiceSkin**](InvoiceSkin.md) |  | [optional] 
+**workHourDescriptionFormat** | **String** |  | [optional] [default to &#39;&#39;]
+**workHourGrouping** | [**InvoiceGrouping**](InvoiceGrouping.md) |  | [optional] 
+**workHourPrimaryGroupBy** | **String** |  | [optional] 
+**workHourSecondaryGroupBy** | **String** |  | [optional] 
+
+

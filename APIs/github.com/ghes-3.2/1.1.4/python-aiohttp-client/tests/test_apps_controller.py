@@ -1,0 +1,663 @@
+# coding: utf-8
+
+import pytest
+import json
+from aiohttp import web
+
+from openapi_server.models.apps_check_token_request import AppsCheckTokenRequest
+from openapi_server.models.apps_create_content_attachment_request import AppsCreateContentAttachmentRequest
+from openapi_server.models.apps_create_from_manifest201_response import AppsCreateFromManifest201Response
+from openapi_server.models.apps_create_installation_access_token_request import AppsCreateInstallationAccessTokenRequest
+from openapi_server.models.apps_delete_authorization_request import AppsDeleteAuthorizationRequest
+from openapi_server.models.apps_list_installation_repos_for_authenticated_user200_response import AppsListInstallationReposForAuthenticatedUser200Response
+from openapi_server.models.apps_list_repos_accessible_to_installation200_response import AppsListReposAccessibleToInstallation200Response
+from openapi_server.models.apps_scope_token_request import AppsScopeTokenRequest
+from openapi_server.models.apps_update_webhook_config_for_app_request import AppsUpdateWebhookConfigForAppRequest
+from openapi_server.models.authorization import Authorization
+from openapi_server.models.basic_error import BasicError
+from openapi_server.models.content_reference_attachment import ContentReferenceAttachment
+from openapi_server.models.hook_delivery import HookDelivery
+from openapi_server.models.hook_delivery_item import HookDeliveryItem
+from openapi_server.models.installation import Installation
+from openapi_server.models.installation_token import InstallationToken
+from openapi_server.models.integration import Integration
+from openapi_server.models.nullable_authorization import NullableAuthorization
+from openapi_server.models.orgs_list_app_installations200_response import OrgsListAppInstallations200Response
+from openapi_server.models.reactions_create_for_commit_comment415_response import ReactionsCreateForCommitComment415Response
+from openapi_server.models.scim_error import ScimError
+from openapi_server.models.validation_error import ValidationError
+from openapi_server.models.validation_error_simple import ValidationErrorSimple
+from openapi_server.models.webhook_config import WebhookConfig
+
+
+pytestmark = pytest.mark.asyncio
+
+async def test_apps_add_repo_to_installation_for_authenticated_user(client):
+    """Test case for apps_add_repo_to_installation_for_authenticated_user
+
+    Add a repository to an app installation
+    """
+    headers = { 
+        'Accept': 'application/json',
+    }
+    response = await client.request(
+        method='PUT',
+        path='/user/installations/{installation_id}/repositories/{repository_id}'.format(installation_id=1, repository_id=56),
+        headers=headers,
+        )
+    assert response.status == 200, 'Response body is : ' + (await response.read()).decode('utf-8')
+
+
+pytestmark = pytest.mark.asyncio
+
+async def test_apps_check_authorization(client):
+    """Test case for apps_check_authorization
+
+    Check an authorization
+    """
+    headers = { 
+        'Accept': 'application/json',
+    }
+    response = await client.request(
+        method='GET',
+        path='/applications/{client_id}/tokens/{access_token}'.format(client_id='Iv1.8a61f9b3a7aba766', access_token='access_token_example'),
+        headers=headers,
+        )
+    assert response.status == 200, 'Response body is : ' + (await response.read()).decode('utf-8')
+
+
+pytestmark = pytest.mark.asyncio
+
+async def test_apps_check_token(client):
+    """Test case for apps_check_token
+
+    Check a token
+    """
+    body = {"access_token":"e72e16c7e42f292c6912e7710c838347ae178b4a"}
+    headers = { 
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+    }
+    response = await client.request(
+        method='POST',
+        path='/applications/{client_id}/token'.format(client_id='Iv1.8a61f9b3a7aba766'),
+        headers=headers,
+        json=body,
+        )
+    assert response.status == 200, 'Response body is : ' + (await response.read()).decode('utf-8')
+
+
+pytestmark = pytest.mark.asyncio
+
+async def test_apps_create_content_attachment(client):
+    """Test case for apps_create_content_attachment
+
+    Create a content attachment
+    """
+    body = openapi_server.AppsCreateContentAttachmentRequest()
+    headers = { 
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+    }
+    response = await client.request(
+        method='POST',
+        path='/repos/{owner}/{repo}/content_references/{content_reference_id}/attachments'.format(owner='owner_example', repo='repo_example', content_reference_id=56),
+        headers=headers,
+        json=body,
+        )
+    assert response.status == 200, 'Response body is : ' + (await response.read()).decode('utf-8')
+
+
+pytestmark = pytest.mark.asyncio
+
+async def test_apps_create_from_manifest(client):
+    """Test case for apps_create_from_manifest
+
+    Create a GitHub App from a manifest
+    """
+    headers = { 
+        'Accept': 'application/json',
+    }
+    response = await client.request(
+        method='POST',
+        path='/app-manifests/{code}/conversions'.format(code='code_example'),
+        headers=headers,
+        )
+    assert response.status == 200, 'Response body is : ' + (await response.read()).decode('utf-8')
+
+
+pytestmark = pytest.mark.asyncio
+
+async def test_apps_create_installation_access_token(client):
+    """Test case for apps_create_installation_access_token
+
+    Create an installation access token for an app
+    """
+    body = {"permissions":{"contents":"read","issues":"write"},"repository":"Hello-World"}
+    headers = { 
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+    }
+    response = await client.request(
+        method='POST',
+        path='/app/installations/{installation_id}/access_tokens'.format(installation_id=1),
+        headers=headers,
+        json=body,
+        )
+    assert response.status == 200, 'Response body is : ' + (await response.read()).decode('utf-8')
+
+
+pytestmark = pytest.mark.asyncio
+
+async def test_apps_delete_authorization(client):
+    """Test case for apps_delete_authorization
+
+    Delete an app authorization
+    """
+    body = {"access_token":"e72e16c7e42f292c6912e7710c838347ae178b4a"}
+    headers = { 
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+    }
+    response = await client.request(
+        method='DELETE',
+        path='/applications/{client_id}/grant'.format(client_id='Iv1.8a61f9b3a7aba766'),
+        headers=headers,
+        json=body,
+        )
+    assert response.status == 200, 'Response body is : ' + (await response.read()).decode('utf-8')
+
+
+pytestmark = pytest.mark.asyncio
+
+async def test_apps_delete_installation(client):
+    """Test case for apps_delete_installation
+
+    Delete an installation for the authenticated app
+    """
+    headers = { 
+        'Accept': 'application/json',
+    }
+    response = await client.request(
+        method='DELETE',
+        path='/app/installations/{installation_id}'.format(installation_id=1),
+        headers=headers,
+        )
+    assert response.status == 200, 'Response body is : ' + (await response.read()).decode('utf-8')
+
+
+pytestmark = pytest.mark.asyncio
+
+async def test_apps_delete_token(client):
+    """Test case for apps_delete_token
+
+    Delete an app token
+    """
+    body = {"access_token":"e72e16c7e42f292c6912e7710c838347ae178b4a"}
+    headers = { 
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+    }
+    response = await client.request(
+        method='DELETE',
+        path='/applications/{client_id}/token'.format(client_id='Iv1.8a61f9b3a7aba766'),
+        headers=headers,
+        json=body,
+        )
+    assert response.status == 200, 'Response body is : ' + (await response.read()).decode('utf-8')
+
+
+pytestmark = pytest.mark.asyncio
+
+async def test_apps_get_authenticated(client):
+    """Test case for apps_get_authenticated
+
+    Get the authenticated app
+    """
+    headers = { 
+        'Accept': 'application/json',
+    }
+    response = await client.request(
+        method='GET',
+        path='/app',
+        headers=headers,
+        )
+    assert response.status == 200, 'Response body is : ' + (await response.read()).decode('utf-8')
+
+
+pytestmark = pytest.mark.asyncio
+
+async def test_apps_get_by_slug(client):
+    """Test case for apps_get_by_slug
+
+    Get an app
+    """
+    headers = { 
+        'Accept': 'application/json',
+    }
+    response = await client.request(
+        method='GET',
+        path='/apps/{app_slug}'.format(app_slug='app_slug_example'),
+        headers=headers,
+        )
+    assert response.status == 200, 'Response body is : ' + (await response.read()).decode('utf-8')
+
+
+pytestmark = pytest.mark.asyncio
+
+async def test_apps_get_installation(client):
+    """Test case for apps_get_installation
+
+    Get an installation for the authenticated app
+    """
+    headers = { 
+        'Accept': 'application/json',
+    }
+    response = await client.request(
+        method='GET',
+        path='/app/installations/{installation_id}'.format(installation_id=1),
+        headers=headers,
+        )
+    assert response.status == 200, 'Response body is : ' + (await response.read()).decode('utf-8')
+
+
+pytestmark = pytest.mark.asyncio
+
+async def test_apps_get_org_installation(client):
+    """Test case for apps_get_org_installation
+
+    Get an organization installation for the authenticated app
+    """
+    headers = { 
+        'Accept': 'application/json',
+    }
+    response = await client.request(
+        method='GET',
+        path='/orgs/{org}/installation'.format(org='org_example'),
+        headers=headers,
+        )
+    assert response.status == 200, 'Response body is : ' + (await response.read()).decode('utf-8')
+
+
+pytestmark = pytest.mark.asyncio
+
+async def test_apps_get_repo_installation(client):
+    """Test case for apps_get_repo_installation
+
+    Get a repository installation for the authenticated app
+    """
+    headers = { 
+        'Accept': 'application/json',
+    }
+    response = await client.request(
+        method='GET',
+        path='/repos/{owner}/{repo}/installation'.format(owner='owner_example', repo='repo_example'),
+        headers=headers,
+        )
+    assert response.status == 200, 'Response body is : ' + (await response.read()).decode('utf-8')
+
+
+pytestmark = pytest.mark.asyncio
+
+async def test_apps_get_user_installation(client):
+    """Test case for apps_get_user_installation
+
+    Get a user installation for the authenticated app
+    """
+    headers = { 
+        'Accept': 'application/json',
+    }
+    response = await client.request(
+        method='GET',
+        path='/users/{username}/installation'.format(username='username_example'),
+        headers=headers,
+        )
+    assert response.status == 200, 'Response body is : ' + (await response.read()).decode('utf-8')
+
+
+pytestmark = pytest.mark.asyncio
+
+async def test_apps_get_webhook_config_for_app(client):
+    """Test case for apps_get_webhook_config_for_app
+
+    Get a webhook configuration for an app
+    """
+    headers = { 
+        'Accept': 'application/json',
+    }
+    response = await client.request(
+        method='GET',
+        path='/app/hook/config',
+        headers=headers,
+        )
+    assert response.status == 200, 'Response body is : ' + (await response.read()).decode('utf-8')
+
+
+pytestmark = pytest.mark.asyncio
+
+async def test_apps_get_webhook_delivery(client):
+    """Test case for apps_get_webhook_delivery
+
+    Get a delivery for an app webhook
+    """
+    headers = { 
+        'Accept': 'application/json',
+    }
+    response = await client.request(
+        method='GET',
+        path='/app/hook/deliveries/{delivery_id}'.format(delivery_id=56),
+        headers=headers,
+        )
+    assert response.status == 200, 'Response body is : ' + (await response.read()).decode('utf-8')
+
+
+pytestmark = pytest.mark.asyncio
+
+async def test_apps_list_installation_repos_for_authenticated_user(client):
+    """Test case for apps_list_installation_repos_for_authenticated_user
+
+    List repositories accessible to the user access token
+    """
+    params = [('per_page', 30),
+                    ('page', 1)]
+    headers = { 
+        'Accept': 'application/json',
+    }
+    response = await client.request(
+        method='GET',
+        path='/user/installations/{installation_id}/repositories'.format(installation_id=1),
+        headers=headers,
+        params=params,
+        )
+    assert response.status == 200, 'Response body is : ' + (await response.read()).decode('utf-8')
+
+
+pytestmark = pytest.mark.asyncio
+
+async def test_apps_list_installations(client):
+    """Test case for apps_list_installations
+
+    List installations for the authenticated app
+    """
+    params = [('per_page', 30),
+                    ('page', 1),
+                    ('since', '2013-10-20T19:20:30+01:00'),
+                    ('outdated', 'outdated_example')]
+    headers = { 
+        'Accept': 'application/json',
+    }
+    response = await client.request(
+        method='GET',
+        path='/app/installations',
+        headers=headers,
+        params=params,
+        )
+    assert response.status == 200, 'Response body is : ' + (await response.read()).decode('utf-8')
+
+
+pytestmark = pytest.mark.asyncio
+
+async def test_apps_list_installations_for_authenticated_user(client):
+    """Test case for apps_list_installations_for_authenticated_user
+
+    List app installations accessible to the user access token
+    """
+    params = [('per_page', 30),
+                    ('page', 1)]
+    headers = { 
+        'Accept': 'application/json',
+    }
+    response = await client.request(
+        method='GET',
+        path='/user/installations',
+        headers=headers,
+        params=params,
+        )
+    assert response.status == 200, 'Response body is : ' + (await response.read()).decode('utf-8')
+
+
+pytestmark = pytest.mark.asyncio
+
+async def test_apps_list_repos_accessible_to_installation(client):
+    """Test case for apps_list_repos_accessible_to_installation
+
+    List repositories accessible to the app installation
+    """
+    params = [('per_page', 30),
+                    ('page', 1)]
+    headers = { 
+        'Accept': 'application/json',
+    }
+    response = await client.request(
+        method='GET',
+        path='/installation/repositories',
+        headers=headers,
+        params=params,
+        )
+    assert response.status == 200, 'Response body is : ' + (await response.read()).decode('utf-8')
+
+
+pytestmark = pytest.mark.asyncio
+
+async def test_apps_list_webhook_deliveries(client):
+    """Test case for apps_list_webhook_deliveries
+
+    List deliveries for an app webhook
+    """
+    params = [('per_page', 30),
+                    ('cursor', 'cursor_example')]
+    headers = { 
+        'Accept': 'application/json',
+    }
+    response = await client.request(
+        method='GET',
+        path='/app/hook/deliveries',
+        headers=headers,
+        params=params,
+        )
+    assert response.status == 200, 'Response body is : ' + (await response.read()).decode('utf-8')
+
+
+pytestmark = pytest.mark.asyncio
+
+async def test_apps_redeliver_webhook_delivery(client):
+    """Test case for apps_redeliver_webhook_delivery
+
+    Redeliver a delivery for an app webhook
+    """
+    headers = { 
+        'Accept': 'application/json',
+    }
+    response = await client.request(
+        method='POST',
+        path='/app/hook/deliveries/{delivery_id}/attempts'.format(delivery_id=56),
+        headers=headers,
+        )
+    assert response.status == 200, 'Response body is : ' + (await response.read()).decode('utf-8')
+
+
+pytestmark = pytest.mark.asyncio
+
+async def test_apps_remove_repo_from_installation_for_authenticated_user(client):
+    """Test case for apps_remove_repo_from_installation_for_authenticated_user
+
+    Remove a repository from an app installation
+    """
+    headers = { 
+        'Accept': 'application/json',
+    }
+    response = await client.request(
+        method='DELETE',
+        path='/user/installations/{installation_id}/repositories/{repository_id}'.format(installation_id=1, repository_id=56),
+        headers=headers,
+        )
+    assert response.status == 200, 'Response body is : ' + (await response.read()).decode('utf-8')
+
+
+pytestmark = pytest.mark.asyncio
+
+async def test_apps_reset_authorization(client):
+    """Test case for apps_reset_authorization
+
+    Reset an authorization
+    """
+    headers = { 
+        'Accept': 'application/json',
+    }
+    response = await client.request(
+        method='POST',
+        path='/applications/{client_id}/tokens/{access_token}'.format(client_id='Iv1.8a61f9b3a7aba766', access_token='access_token_example'),
+        headers=headers,
+        )
+    assert response.status == 200, 'Response body is : ' + (await response.read()).decode('utf-8')
+
+
+pytestmark = pytest.mark.asyncio
+
+async def test_apps_reset_token(client):
+    """Test case for apps_reset_token
+
+    Reset a token
+    """
+    body = {"access_token":"e72e16c7e42f292c6912e7710c838347ae178b4a"}
+    headers = { 
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+    }
+    response = await client.request(
+        method='PATCH',
+        path='/applications/{client_id}/token'.format(client_id='Iv1.8a61f9b3a7aba766'),
+        headers=headers,
+        json=body,
+        )
+    assert response.status == 200, 'Response body is : ' + (await response.read()).decode('utf-8')
+
+
+pytestmark = pytest.mark.asyncio
+
+async def test_apps_revoke_authorization_for_application(client):
+    """Test case for apps_revoke_authorization_for_application
+
+    Revoke an authorization for an application
+    """
+    headers = { 
+    }
+    response = await client.request(
+        method='DELETE',
+        path='/applications/{client_id}/tokens/{access_token}'.format(client_id='Iv1.8a61f9b3a7aba766', access_token='access_token_example'),
+        headers=headers,
+        )
+    assert response.status == 200, 'Response body is : ' + (await response.read()).decode('utf-8')
+
+
+pytestmark = pytest.mark.asyncio
+
+async def test_apps_revoke_grant_for_application(client):
+    """Test case for apps_revoke_grant_for_application
+
+    Revoke a grant for an application
+    """
+    headers = { 
+    }
+    response = await client.request(
+        method='DELETE',
+        path='/applications/{client_id}/grants/{access_token}'.format(client_id='Iv1.8a61f9b3a7aba766', access_token='access_token_example'),
+        headers=headers,
+        )
+    assert response.status == 200, 'Response body is : ' + (await response.read()).decode('utf-8')
+
+
+pytestmark = pytest.mark.asyncio
+
+async def test_apps_revoke_installation_access_token(client):
+    """Test case for apps_revoke_installation_access_token
+
+    Revoke an installation access token
+    """
+    headers = { 
+    }
+    response = await client.request(
+        method='DELETE',
+        path='/installation/token',
+        headers=headers,
+        )
+    assert response.status == 200, 'Response body is : ' + (await response.read()).decode('utf-8')
+
+
+pytestmark = pytest.mark.asyncio
+
+async def test_apps_scope_token(client):
+    """Test case for apps_scope_token
+
+    Create a scoped access token
+    """
+    body = {"access_token":"e72e16c7e42f292c6912e7710c838347ae178b4a","permissions":{"contents":"read","issues":"write","metadata":"read"},"target":"octocat"}
+    headers = { 
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+    }
+    response = await client.request(
+        method='POST',
+        path='/applications/{client_id}/token/scoped'.format(client_id='Iv1.8a61f9b3a7aba766'),
+        headers=headers,
+        json=body,
+        )
+    assert response.status == 200, 'Response body is : ' + (await response.read()).decode('utf-8')
+
+
+pytestmark = pytest.mark.asyncio
+
+async def test_apps_suspend_installation(client):
+    """Test case for apps_suspend_installation
+
+    Suspend an app installation
+    """
+    headers = { 
+        'Accept': 'application/json',
+    }
+    response = await client.request(
+        method='PUT',
+        path='/app/installations/{installation_id}/suspended'.format(installation_id=1),
+        headers=headers,
+        )
+    assert response.status == 200, 'Response body is : ' + (await response.read()).decode('utf-8')
+
+
+pytestmark = pytest.mark.asyncio
+
+async def test_apps_unsuspend_installation(client):
+    """Test case for apps_unsuspend_installation
+
+    Unsuspend an app installation
+    """
+    headers = { 
+        'Accept': 'application/json',
+    }
+    response = await client.request(
+        method='DELETE',
+        path='/app/installations/{installation_id}/suspended'.format(installation_id=1),
+        headers=headers,
+        )
+    assert response.status == 200, 'Response body is : ' + (await response.read()).decode('utf-8')
+
+
+pytestmark = pytest.mark.asyncio
+
+async def test_apps_update_webhook_config_for_app(client):
+    """Test case for apps_update_webhook_config_for_app
+
+    Update a webhook configuration for an app
+    """
+    body = {"content_type":"json","insecure_ssl":"0","secret":"********","url":"https://example.com/webhook"}
+    headers = { 
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+    }
+    response = await client.request(
+        method='PATCH',
+        path='/app/hook/config',
+        headers=headers,
+        json=body,
+        )
+    assert response.status == 200, 'Response body is : ' + (await response.read()).decode('utf-8')
+
