@@ -1,0 +1,71 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIDimension.h \
+    $${PWD}/OAIMetricSpecification.h \
+    $${PWD}/OAINameAvailability.h \
+    $${PWD}/OAINameAvailabilityParameters.h \
+    $${PWD}/OAIOperation.h \
+    $${PWD}/OAIOperationDisplay.h \
+    $${PWD}/OAIOperationList.h \
+    $${PWD}/OAIOperationProperties.h \
+    $${PWD}/OAIRegenerateKeyParameters.h \
+    $${PWD}/OAIResource.h \
+    $${PWD}/OAIResourceSku.h \
+    $${PWD}/OAIServiceSpecification.h \
+    $${PWD}/OAISignalRCreateOrUpdateProperties.h \
+    $${PWD}/OAISignalRCreateParameters.h \
+    $${PWD}/OAISignalRKeys.h \
+    $${PWD}/OAISignalRProperties.h \
+    $${PWD}/OAISignalRResource.h \
+    $${PWD}/OAISignalRResourceList.h \
+    $${PWD}/OAISignalRUpdateParameters.h \
+    $${PWD}/OAISignalRUsage.h \
+    $${PWD}/OAISignalRUsageList.h \
+    $${PWD}/OAISignalRUsageName.h \
+    $${PWD}/OAITrackedResource.h \
+# APIs
+    $${PWD}/OAISignalRApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIDimension.cpp \
+    $${PWD}/OAIMetricSpecification.cpp \
+    $${PWD}/OAINameAvailability.cpp \
+    $${PWD}/OAINameAvailabilityParameters.cpp \
+    $${PWD}/OAIOperation.cpp \
+    $${PWD}/OAIOperationDisplay.cpp \
+    $${PWD}/OAIOperationList.cpp \
+    $${PWD}/OAIOperationProperties.cpp \
+    $${PWD}/OAIRegenerateKeyParameters.cpp \
+    $${PWD}/OAIResource.cpp \
+    $${PWD}/OAIResourceSku.cpp \
+    $${PWD}/OAIServiceSpecification.cpp \
+    $${PWD}/OAISignalRCreateOrUpdateProperties.cpp \
+    $${PWD}/OAISignalRCreateParameters.cpp \
+    $${PWD}/OAISignalRKeys.cpp \
+    $${PWD}/OAISignalRProperties.cpp \
+    $${PWD}/OAISignalRResource.cpp \
+    $${PWD}/OAISignalRResourceList.cpp \
+    $${PWD}/OAISignalRUpdateParameters.cpp \
+    $${PWD}/OAISignalRUsage.cpp \
+    $${PWD}/OAISignalRUsageList.cpp \
+    $${PWD}/OAISignalRUsageName.cpp \
+    $${PWD}/OAITrackedResource.cpp \
+# APIs
+    $${PWD}/OAISignalRApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

@@ -1,0 +1,85 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAICheckNameRequest.h \
+    $${PWD}/OAICheckNameResult.h \
+    $${PWD}/OAIDigitalTwinsDescription.h \
+    $${PWD}/OAIDigitalTwinsDescriptionListResult.h \
+    $${PWD}/OAIDigitalTwinsEndpointResource.h \
+    $${PWD}/OAIDigitalTwinsEndpointResourceListResult.h \
+    $${PWD}/OAIDigitalTwinsEndpointResourceProperties.h \
+    $${PWD}/OAIDigitalTwinsIntegrationResourceListResult.h \
+    $${PWD}/OAIDigitalTwinsPatchDescription.h \
+    $${PWD}/OAIDigitalTwinsProperties.h \
+    $${PWD}/OAIDigitalTwinsResource.h \
+    $${PWD}/OAIDigitalTwinsSkuInfo.h \
+    $${PWD}/OAIErrorDefinition.h \
+    $${PWD}/OAIErrorResponse.h \
+    $${PWD}/OAIEventGrid.h \
+    $${PWD}/OAIEventHub.h \
+    $${PWD}/OAIExternalResource.h \
+    $${PWD}/OAIIntegrationResource.h \
+    $${PWD}/OAIIntegrationResourceProperties.h \
+    $${PWD}/OAIIntegrationResourceState.h \
+    $${PWD}/OAIIntegrationResourceUpdateInfo.h \
+    $${PWD}/OAIIntegrationResourceUpdateProperties.h \
+    $${PWD}/OAIOperation.h \
+    $${PWD}/OAIOperationDisplay.h \
+    $${PWD}/OAIOperationListResult.h \
+    $${PWD}/OAIServiceBus.h \
+# APIs
+    $${PWD}/OAICheckNameAvailabilityApi.h \
+    $${PWD}/OAIDigitalTwinsInstanceApi.h \
+    $${PWD}/OAIEndpointsApi.h \
+    $${PWD}/OAIIoTHubIntegrationApi.h \
+    $${PWD}/OAIOperationsApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAICheckNameRequest.cpp \
+    $${PWD}/OAICheckNameResult.cpp \
+    $${PWD}/OAIDigitalTwinsDescription.cpp \
+    $${PWD}/OAIDigitalTwinsDescriptionListResult.cpp \
+    $${PWD}/OAIDigitalTwinsEndpointResource.cpp \
+    $${PWD}/OAIDigitalTwinsEndpointResourceListResult.cpp \
+    $${PWD}/OAIDigitalTwinsEndpointResourceProperties.cpp \
+    $${PWD}/OAIDigitalTwinsIntegrationResourceListResult.cpp \
+    $${PWD}/OAIDigitalTwinsPatchDescription.cpp \
+    $${PWD}/OAIDigitalTwinsProperties.cpp \
+    $${PWD}/OAIDigitalTwinsResource.cpp \
+    $${PWD}/OAIDigitalTwinsSkuInfo.cpp \
+    $${PWD}/OAIErrorDefinition.cpp \
+    $${PWD}/OAIErrorResponse.cpp \
+    $${PWD}/OAIEventGrid.cpp \
+    $${PWD}/OAIEventHub.cpp \
+    $${PWD}/OAIExternalResource.cpp \
+    $${PWD}/OAIIntegrationResource.cpp \
+    $${PWD}/OAIIntegrationResourceProperties.cpp \
+    $${PWD}/OAIIntegrationResourceState.cpp \
+    $${PWD}/OAIIntegrationResourceUpdateInfo.cpp \
+    $${PWD}/OAIIntegrationResourceUpdateProperties.cpp \
+    $${PWD}/OAIOperation.cpp \
+    $${PWD}/OAIOperationDisplay.cpp \
+    $${PWD}/OAIOperationListResult.cpp \
+    $${PWD}/OAIServiceBus.cpp \
+# APIs
+    $${PWD}/OAICheckNameAvailabilityApi.cpp \
+    $${PWD}/OAIDigitalTwinsInstanceApi.cpp \
+    $${PWD}/OAIEndpointsApi.cpp \
+    $${PWD}/OAIIoTHubIntegrationApi.cpp \
+    $${PWD}/OAIOperationsApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

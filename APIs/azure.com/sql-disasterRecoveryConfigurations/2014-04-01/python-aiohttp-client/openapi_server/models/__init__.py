@@ -1,0 +1,6 @@
+# coding: utf-8
+
+# import models into model package
+from openapi_server.models.disaster_recovery_configuration import DisasterRecoveryConfiguration
+from openapi_server.models.disaster_recovery_configuration_list_result import DisasterRecoveryConfigurationListResult
+from openapi_server.models.disaster_recovery_configuration_properties import DisasterRecoveryConfigurationProperties

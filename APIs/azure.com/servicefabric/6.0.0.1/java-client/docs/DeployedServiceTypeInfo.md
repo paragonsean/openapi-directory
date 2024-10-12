@@ -1,0 +1,18 @@
+
+
+# DeployedServiceTypeInfo
+
+Information about service type deployed on a node, information such as the status of the service type registration on a node.
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**codePackageName** | **String** | The name of the code package defined in the service manifest. |  [optional] |
+|**serviceManifestName** | **String** | The name of the service manifest. |  [optional] |
+|**servicePackageActivationId** | **String** | The ActivationId of a deployed service package. If ServicePackageActivationMode specified at the time of creating the service is &#39;SharedProcess&#39; (or if it is not specified, in which case it defaults to &#39;SharedProcess&#39;), then value of ServicePackageActivationId is always an empty string.  |  [optional] |
+|**serviceTypeName** | **String** | Name of the service type as specified in the service manifest. |  [optional] |
+|**status** | **ServiceTypeRegistrationStatus** |  |  [optional] |
+
+
+
