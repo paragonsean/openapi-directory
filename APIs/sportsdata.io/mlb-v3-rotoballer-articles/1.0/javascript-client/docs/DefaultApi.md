@@ -1,0 +1,177 @@
+# MlbV3RotoBallerArticles.DefaultApi
+
+All URIs are relative to *http://azure-api.sportsdata.io/v3/mlb/articles-rotoballer*
+
+Method | HTTP request | Description
+------------- | ------------- | -------------
+[**rotoballerArticles**](DefaultApi.md#rotoballerArticles) | **GET** /{format}/RotoBallerArticles | RotoBaller Articles
+[**rotoballerArticlesByDate**](DefaultApi.md#rotoballerArticlesByDate) | **GET** /{format}/RotoBallerArticlesByDate/{date} | RotoBaller Articles By Date
+[**rotoballerArticlesByPlayer**](DefaultApi.md#rotoballerArticlesByPlayer) | **GET** /{format}/RotoBallerArticlesByPlayerID/{playerid} | RotoBaller Articles By Player
+
+
+
+## rotoballerArticles
+
+> [Article] rotoballerArticles(format)
+
+RotoBaller Articles
+
+### Example
+
+```javascript
+import MlbV3RotoBallerArticles from 'mlb_v3_roto_baller_articles';
+let defaultClient = MlbV3RotoBallerArticles.ApiClient.instance;
+// Configure API key authorization: apiKeyQuery
+let apiKeyQuery = defaultClient.authentications['apiKeyQuery'];
+apiKeyQuery.apiKey = 'YOUR API KEY';
+// Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+//apiKeyQuery.apiKeyPrefix = 'Token';
+// Configure API key authorization: apiKeyHeader
+let apiKeyHeader = defaultClient.authentications['apiKeyHeader'];
+apiKeyHeader.apiKey = 'YOUR API KEY';
+// Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+//apiKeyHeader.apiKeyPrefix = 'Token';
+
+let apiInstance = new MlbV3RotoBallerArticles.DefaultApi();
+let format = "'xml'"; // String | Desired response format. Valid entries are <code>XML</code> or <code>JSON</code>.
+apiInstance.rotoballerArticles(format, (error, data, response) => {
+  if (error) {
+    console.error(error);
+  } else {
+    console.log('API called successfully. Returned data: ' + data);
+  }
+});
+```
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **format** | **String**| Desired response format. Valid entries are &lt;code&gt;XML&lt;/code&gt; or &lt;code&gt;JSON&lt;/code&gt;. | [default to &#39;xml&#39;]
+
+### Return type
+
+[**[Article]**](Article.md)
+
+### Authorization
+
+[apiKeyQuery](../README.md#apiKeyQuery), [apiKeyHeader](../README.md#apiKeyHeader)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+
+## rotoballerArticlesByDate
+
+> [Article] rotoballerArticlesByDate(format, date)
+
+RotoBaller Articles By Date
+
+### Example
+
+```javascript
+import MlbV3RotoBallerArticles from 'mlb_v3_roto_baller_articles';
+let defaultClient = MlbV3RotoBallerArticles.ApiClient.instance;
+// Configure API key authorization: apiKeyQuery
+let apiKeyQuery = defaultClient.authentications['apiKeyQuery'];
+apiKeyQuery.apiKey = 'YOUR API KEY';
+// Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+//apiKeyQuery.apiKeyPrefix = 'Token';
+// Configure API key authorization: apiKeyHeader
+let apiKeyHeader = defaultClient.authentications['apiKeyHeader'];
+apiKeyHeader.apiKey = 'YOUR API KEY';
+// Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+//apiKeyHeader.apiKeyPrefix = 'Token';
+
+let apiInstance = new MlbV3RotoBallerArticles.DefaultApi();
+let format = "'xml'"; // String | Desired response format. Valid entries are <code>XML</code> or <code>JSON</code>.
+let date = "date_example"; // String | The date of the news. <br>Examples: <code>2017-JUL-31</code>, <code>2017-SEP-01</code>.
+apiInstance.rotoballerArticlesByDate(format, date, (error, data, response) => {
+  if (error) {
+    console.error(error);
+  } else {
+    console.log('API called successfully. Returned data: ' + data);
+  }
+});
+```
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **format** | **String**| Desired response format. Valid entries are &lt;code&gt;XML&lt;/code&gt; or &lt;code&gt;JSON&lt;/code&gt;. | [default to &#39;xml&#39;]
+ **date** | **String**| The date of the news. &lt;br&gt;Examples: &lt;code&gt;2017-JUL-31&lt;/code&gt;, &lt;code&gt;2017-SEP-01&lt;/code&gt;. | 
+
+### Return type
+
+[**[Article]**](Article.md)
+
+### Authorization
+
+[apiKeyQuery](../README.md#apiKeyQuery), [apiKeyHeader](../README.md#apiKeyHeader)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+
+## rotoballerArticlesByPlayer
+
+> [Article] rotoballerArticlesByPlayer(format, playerid)
+
+RotoBaller Articles By Player
+
+### Example
+
+```javascript
+import MlbV3RotoBallerArticles from 'mlb_v3_roto_baller_articles';
+let defaultClient = MlbV3RotoBallerArticles.ApiClient.instance;
+// Configure API key authorization: apiKeyQuery
+let apiKeyQuery = defaultClient.authentications['apiKeyQuery'];
+apiKeyQuery.apiKey = 'YOUR API KEY';
+// Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+//apiKeyQuery.apiKeyPrefix = 'Token';
+// Configure API key authorization: apiKeyHeader
+let apiKeyHeader = defaultClient.authentications['apiKeyHeader'];
+apiKeyHeader.apiKey = 'YOUR API KEY';
+// Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+//apiKeyHeader.apiKeyPrefix = 'Token';
+
+let apiInstance = new MlbV3RotoBallerArticles.DefaultApi();
+let format = "'xml'"; // String | Desired response format. Valid entries are <code>XML</code> or <code>JSON</code>.
+let playerid = "playerid_example"; // String | Unique FantasyData Player ID. Example:<code>10000507</code>.
+apiInstance.rotoballerArticlesByPlayer(format, playerid, (error, data, response) => {
+  if (error) {
+    console.error(error);
+  } else {
+    console.log('API called successfully. Returned data: ' + data);
+  }
+});
+```
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **format** | **String**| Desired response format. Valid entries are &lt;code&gt;XML&lt;/code&gt; or &lt;code&gt;JSON&lt;/code&gt;. | [default to &#39;xml&#39;]
+ **playerid** | **String**| Unique FantasyData Player ID. Example:&lt;code&gt;10000507&lt;/code&gt;. | 
+
+### Return type
+
+[**[Article]**](Article.md)
+
+### Authorization
+
+[apiKeyQuery](../README.md#apiKeyQuery), [apiKeyHeader](../README.md#apiKeyHeader)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+

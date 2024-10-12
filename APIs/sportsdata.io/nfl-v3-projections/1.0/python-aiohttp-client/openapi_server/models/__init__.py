@@ -1,0 +1,16 @@
+# coding: utf-8
+
+# import models into model package
+from openapi_server.models.dfs_slate import DfsSlate
+from openapi_server.models.dfs_slate_game import DfsSlateGame
+from openapi_server.models.dfs_slate_player import DfsSlatePlayer
+from openapi_server.models.dfs_slate_player_ownership_projection import DfsSlatePlayerOwnershipProjection
+from openapi_server.models.dfs_slate_with_ownership_projection import DfsSlateWithOwnershipProjection
+from openapi_server.models.fantasy_defense_game_projection import FantasyDefenseGameProjection
+from openapi_server.models.fantasy_defense_season_projection import FantasyDefenseSeasonProjection
+from openapi_server.models.player import Player
+from openapi_server.models.player_game_projection import PlayerGameProjection
+from openapi_server.models.player_season_projection import PlayerSeasonProjection
+from openapi_server.models.schedule import Schedule
+from openapi_server.models.scoring_detail import ScoringDetail
+from openapi_server.models.stadium import Stadium

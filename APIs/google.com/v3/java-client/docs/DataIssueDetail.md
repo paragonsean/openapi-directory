@@ -1,0 +1,88 @@
+
+
+# DataIssueDetail
+
+Details on a data issue in the listing.
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**dataIssueSeverity** | [**DataIssueSeverityEnum**](#DataIssueSeverityEnum) | The severity of the data issue. |  [optional] |
+|**dataIssueType** | [**DataIssueTypeEnum**](#DataIssueTypeEnum) | The type of the data issue. |  [optional] |
+|**isSelfResolving** | **Boolean** | Whether or not the issue is self-resolving. If true, the issue is expected to resolve itself. If false or not set, action is needed to resolve the issue. Refer to documentation on the data issue’s type for further information. |  [optional] |
+
+
+
+## Enum: DataIssueSeverityEnum
+
+| Name | Value |
+|---- | -----|
+| DATA_ISSUE_SEVERITY_UNSPECIFIED | &quot;DATA_ISSUE_SEVERITY_UNSPECIFIED&quot; |
+| ERROR | &quot;ERROR&quot; |
+| WARNING | &quot;WARNING&quot; |
+| INFO | &quot;INFO&quot; |
+
+
+
+## Enum: DataIssueTypeEnum
+
+| Name | Value |
+|---- | -----|
+| FEED_DATA_ISSUE_UNSPECIFIED | &quot;FEED_DATA_ISSUE_UNSPECIFIED&quot; |
+| FEED_DATA_ISSUE_UNKNOWN | &quot;FEED_DATA_ISSUE_UNKNOWN&quot; |
+| NO_DATA_ISSUE | &quot;NO_DATA_ISSUE&quot; |
+| DUPLICATE_ADDRESS | &quot;DUPLICATE_ADDRESS&quot; |
+| MISSING_PHYSICAL_STREET_ADDRESS | &quot;MISSING_PHYSICAL_STREET_ADDRESS&quot; |
+| MISSING_STREET_NAME | &quot;MISSING_STREET_NAME&quot; |
+| MISSING_STREET_NUMBER | &quot;MISSING_STREET_NUMBER&quot; |
+| MISSING_ADDRESS | &quot;MISSING_ADDRESS&quot; |
+| MISSING_COUNTRY | &quot;MISSING_COUNTRY&quot; |
+| INVALID_POSTAL_CODE | &quot;INVALID_POSTAL_CODE&quot; |
+| INVALID_POSTAL_CODE_SUFFIX | &quot;INVALID_POSTAL_CODE_SUFFIX&quot; |
+| UNEXPECTED_POSTAL_CODE_SUFFIX | &quot;UNEXPECTED_POSTAL_CODE_SUFFIX&quot; |
+| UNEXPECTED_POSTAL_CODE | &quot;UNEXPECTED_POSTAL_CODE&quot; |
+| INVALID_AMENITIES | &quot;INVALID_AMENITIES&quot; |
+| INVALID_EMAIL_ADDRESS | &quot;INVALID_EMAIL_ADDRESS&quot; |
+| DUPLICATE_LATLONG | &quot;DUPLICATE_LATLONG&quot; |
+| LATLONG_INCONSISTENT_WITH_ADDRESS | &quot;LATLONG_INCONSISTENT_WITH_ADDRESS&quot; |
+| MISSING_LATLONG | &quot;MISSING_LATLONG&quot; |
+| COULD_NOT_GEOCODE | &quot;COULD_NOT_GEOCODE&quot; |
+| MISSING_HOTEL_NAME | &quot;MISSING_HOTEL_NAME&quot; |
+| HOTEL_NAME_EMPTY | &quot;HOTEL_NAME_EMPTY&quot; |
+| INVALID_HOTEL_NAME | &quot;INVALID_HOTEL_NAME&quot; |
+| HOTEL_NAME_TOO_LONG | &quot;HOTEL_NAME_TOO_LONG&quot; |
+| PARSE_ERROR_IN_XML | &quot;PARSE_ERROR_IN_XML&quot; |
+| UNEXPECTED_ATTRIBUTE_IN_XML | &quot;UNEXPECTED_ATTRIBUTE_IN_XML&quot; |
+| DUPLICATE_PHONE_NUMBER | &quot;DUPLICATE_PHONE_NUMBER&quot; |
+| MISSING_PHONE_NUMBER | &quot;MISSING_PHONE_NUMBER&quot; |
+| MISSING_VOICE_PHONE_NUMBER | &quot;MISSING_VOICE_PHONE_NUMBER&quot; |
+| INVALID_PHONE_NUMBER_FORMAT | &quot;INVALID_PHONE_NUMBER_FORMAT&quot; |
+| INVALID_PHONE_NUMBER | &quot;INVALID_PHONE_NUMBER&quot; |
+| INVALID_PHONE_NUMBER_COUNTRY_CODE | &quot;INVALID_PHONE_NUMBER_COUNTRY_CODE&quot; |
+| PHONE_NUMBER_TOO_LONG | &quot;PHONE_NUMBER_TOO_LONG&quot; |
+| PHONE_NUMBER_TOO_SHORT | &quot;PHONE_NUMBER_TOO_SHORT&quot; |
+| INVALID_WEBSITE_URL | &quot;INVALID_WEBSITE_URL&quot; |
+| ADWORDS_ATTRIBUTE_TOO_LONG | &quot;ADWORDS_ATTRIBUTE_TOO_LONG&quot; |
+| BRAND_NOT_ALLOWED | &quot;BRAND_NOT_ALLOWED&quot; |
+| FLAGGED_DUE_TO_SUSPICIOUS_METADATA | &quot;FLAGGED_DUE_TO_SUSPICIOUS_METADATA&quot; |
+| NOT_ENOUGH_IMAGES_PROVIDED | &quot;NOT_ENOUGH_IMAGES_PROVIDED&quot; |
+| IMAGE_PROCESSING_IN_PROGRESS | &quot;IMAGE_PROCESSING_IN_PROGRESS&quot; |
+| CANNOT_FETCH_IMAGES | &quot;CANNOT_FETCH_IMAGES&quot; |
+| INCOMPATIBLE_IMAGE_SIZE_OR_LOW_QUALITY | &quot;INCOMPATIBLE_IMAGE_SIZE_OR_LOW_QUALITY&quot; |
+| MISSING_LANG_IN_RAW_LISTING | &quot;MISSING_LANG_IN_RAW_LISTING&quot; |
+| IS_HOTEL | &quot;IS_HOTEL&quot; |
+| MISSING_REQ_ATTR | &quot;MISSING_REQ_ATTR&quot; |
+| MISSING_NAME | &quot;MISSING_NAME&quot; |
+| MISSING_LANG_IN_NAME | &quot;MISSING_LANG_IN_NAME&quot; |
+| VR_NAME_TOO_LONG | &quot;VR_NAME_TOO_LONG&quot; |
+| TEST_PROPERTY | &quot;TEST_PROPERTY&quot; |
+| NON_VR_ACCOMMODATION_TYPE_BASED_ON_LISTING_NAME | &quot;NON_VR_ACCOMMODATION_TYPE_BASED_ON_LISTING_NAME&quot; |
+| BRAND_NAME_TOO_LONG | &quot;BRAND_NAME_TOO_LONG&quot; |
+| MISSING_BRAND_NAME | &quot;MISSING_BRAND_NAME&quot; |
+| INVALID_REVIEW_RATING | &quot;INVALID_REVIEW_RATING&quot; |
+| INVALID_CHECKIN_FORMAT | &quot;INVALID_CHECKIN_FORMAT&quot; |
+| INVALID_CHECKOUT_FORMAT | &quot;INVALID_CHECKOUT_FORMAT&quot; |
+
+
+

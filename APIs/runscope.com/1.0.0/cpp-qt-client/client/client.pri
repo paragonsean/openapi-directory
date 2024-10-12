@@ -1,0 +1,105 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIAccount.h \
+    $${PWD}/OAIAgent.h \
+    $${PWD}/OAIAssertion.h \
+    $${PWD}/OAIBucket.h \
+    $${PWD}/OAIEnvironment.h \
+    $${PWD}/OAIError.h \
+    $${PWD}/OAIError400.h \
+    $${PWD}/OAIIntegration.h \
+    $${PWD}/OAIMeta.h \
+    $${PWD}/OAIMetrics.h \
+    $${PWD}/OAIMetrics_response_times_inner.h \
+    $${PWD}/OAINewBucket.h \
+    $${PWD}/OAINewMessage.h \
+    $${PWD}/OAINewMessage_request.h \
+    $${PWD}/OAINewMessage_response.h \
+    $${PWD}/OAISchedule.h \
+    $${PWD}/OAIStandardError.h \
+    $${PWD}/OAITeam.h \
+    $${PWD}/OAITest.h \
+    $${PWD}/OAITestDetail.h \
+    $${PWD}/OAITestStep.h \
+    $${PWD}/OAITestStepRequest.h \
+    $${PWD}/OAITest_created_by.h \
+    $${PWD}/OAIVariable.h \
+    $${PWD}/OAI_account_get_200_response.h \
+    $${PWD}/OAI_buckets__bucketKey__messages_post_200_response.h \
+    $${PWD}/OAI_buckets__bucketKey__messages_post_200_response_data_inner.h \
+    $${PWD}/OAI_buckets__bucketKey__messages_post_200_response_data_inner_error.h \
+    $${PWD}/OAI_buckets__bucketKey__messages_post_200_response_data_inner_warning.h \
+    $${PWD}/OAI_buckets__bucketKey__messages_post_200_response_meta.h \
+    $${PWD}/OAI_buckets__bucketKey__tests__testId__environments_get_200_response.h \
+    $${PWD}/OAI_buckets__bucketKey__tests_get_200_response.h \
+    $${PWD}/OAI_buckets_get_200_response.h \
+    $${PWD}/OAI_teams__teamId__integrations_get_200_response.h \
+# APIs
+    $${PWD}/OAIAccountApi.h \
+    $${PWD}/OAIBucketsApi.h \
+    $${PWD}/OAIMessagesApi.h \
+    $${PWD}/OAISharedEnvironmentsApi.h \
+    $${PWD}/OAITestEnvironmentsApi.h \
+    $${PWD}/OAITestStepsApi.h \
+    $${PWD}/OAITestsApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIAccount.cpp \
+    $${PWD}/OAIAgent.cpp \
+    $${PWD}/OAIAssertion.cpp \
+    $${PWD}/OAIBucket.cpp \
+    $${PWD}/OAIEnvironment.cpp \
+    $${PWD}/OAIError.cpp \
+    $${PWD}/OAIError400.cpp \
+    $${PWD}/OAIIntegration.cpp \
+    $${PWD}/OAIMeta.cpp \
+    $${PWD}/OAIMetrics.cpp \
+    $${PWD}/OAIMetrics_response_times_inner.cpp \
+    $${PWD}/OAINewBucket.cpp \
+    $${PWD}/OAINewMessage.cpp \
+    $${PWD}/OAINewMessage_request.cpp \
+    $${PWD}/OAINewMessage_response.cpp \
+    $${PWD}/OAISchedule.cpp \
+    $${PWD}/OAIStandardError.cpp \
+    $${PWD}/OAITeam.cpp \
+    $${PWD}/OAITest.cpp \
+    $${PWD}/OAITestDetail.cpp \
+    $${PWD}/OAITestStep.cpp \
+    $${PWD}/OAITestStepRequest.cpp \
+    $${PWD}/OAITest_created_by.cpp \
+    $${PWD}/OAIVariable.cpp \
+    $${PWD}/OAI_account_get_200_response.cpp \
+    $${PWD}/OAI_buckets__bucketKey__messages_post_200_response.cpp \
+    $${PWD}/OAI_buckets__bucketKey__messages_post_200_response_data_inner.cpp \
+    $${PWD}/OAI_buckets__bucketKey__messages_post_200_response_data_inner_error.cpp \
+    $${PWD}/OAI_buckets__bucketKey__messages_post_200_response_data_inner_warning.cpp \
+    $${PWD}/OAI_buckets__bucketKey__messages_post_200_response_meta.cpp \
+    $${PWD}/OAI_buckets__bucketKey__tests__testId__environments_get_200_response.cpp \
+    $${PWD}/OAI_buckets__bucketKey__tests_get_200_response.cpp \
+    $${PWD}/OAI_buckets_get_200_response.cpp \
+    $${PWD}/OAI_teams__teamId__integrations_get_200_response.cpp \
+# APIs
+    $${PWD}/OAIAccountApi.cpp \
+    $${PWD}/OAIBucketsApi.cpp \
+    $${PWD}/OAIMessagesApi.cpp \
+    $${PWD}/OAISharedEnvironmentsApi.cpp \
+    $${PWD}/OAITestEnvironmentsApi.cpp \
+    $${PWD}/OAITestStepsApi.cpp \
+    $${PWD}/OAITestsApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

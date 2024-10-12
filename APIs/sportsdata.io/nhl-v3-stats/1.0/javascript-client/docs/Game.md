@@ -1,0 +1,47 @@
+# NhlV3Stats.Game
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**attendance** | **Number** |  | [optional] 
+**awayRotationNumber** | **Number** |  | [optional] 
+**awayTeam** | **String** |  | [optional] 
+**awayTeamID** | **Number** |  | [optional] 
+**awayTeamMoneyLine** | **Number** |  | [optional] 
+**awayTeamScore** | **Number** |  | [optional] 
+**channel** | **String** |  | [optional] 
+**dateTime** | **String** |  | [optional] 
+**dateTimeUTC** | **String** |  | [optional] 
+**day** | **String** |  | [optional] 
+**gameEndDateTime** | **String** |  | [optional] 
+**gameID** | **Number** |  | [optional] 
+**globalAwayTeamID** | **Number** |  | [optional] 
+**globalGameID** | **Number** |  | [optional] 
+**globalHomeTeamID** | **Number** |  | [optional] 
+**homeRotationNumber** | **Number** |  | [optional] 
+**homeTeam** | **String** |  | [optional] 
+**homeTeamID** | **Number** |  | [optional] 
+**homeTeamMoneyLine** | **Number** |  | [optional] 
+**homeTeamScore** | **Number** |  | [optional] 
+**isClosed** | **Boolean** |  | [optional] 
+**lastPlay** | **String** |  | [optional] 
+**neutralVenue** | **Boolean** |  | [optional] 
+**overPayout** | **Number** |  | [optional] 
+**overUnder** | **Number** |  | [optional] 
+**period** | **String** |  | [optional] 
+**periods** | [**[Period]**](Period.md) |  | [optional] 
+**pointSpread** | **Number** |  | [optional] 
+**pointSpreadAwayTeamMoneyLine** | **Number** |  | [optional] 
+**pointSpreadHomeTeamMoneyLine** | **Number** |  | [optional] 
+**season** | **Number** |  | [optional] 
+**seasonType** | **Number** |  | [optional] 
+**seriesInfo** | [**Series**](Series.md) |  | [optional] 
+**stadiumID** | **Number** |  | [optional] 
+**status** | **String** |  | [optional] 
+**timeRemainingMinutes** | **Number** |  | [optional] 
+**timeRemainingSeconds** | **Number** |  | [optional] 
+**underPayout** | **Number** |  | [optional] 
+**updated** | **String** |  | [optional] 
+
+

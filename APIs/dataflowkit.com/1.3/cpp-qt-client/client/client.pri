@@ -1,0 +1,83 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIAction.h \
+    $${PWD}/OAIClick.h \
+    $${PWD}/OAIDoubleClick.h \
+    $${PWD}/OAIExecute.h \
+    $${PWD}/OAIFetchrequest.h \
+    $${PWD}/OAIField.h \
+    $${PWD}/OAIField_filters_inner.h \
+    $${PWD}/OAIField_filters_inner_anyOf.h \
+    $${PWD}/OAIField_filters_inner_anyOf_1.h \
+    $${PWD}/OAIGetcontent.h \
+    $${PWD}/OAIInitialCookie.h \
+    $${PWD}/OAIInput.h \
+    $${PWD}/OAIJsclick.h \
+    $${PWD}/OAILoop____times.h \
+    $${PWD}/OAIPaginator.h \
+    $${PWD}/OAIParserequest.h \
+    $${PWD}/OAIPause.h \
+    $${PWD}/OAIScroll.h \
+    $${PWD}/OAISendKeys.h \
+    $${PWD}/OAISerprequest.h \
+    $${PWD}/OAISubmit.h \
+    $${PWD}/OAIUrl2pdfrequest.h \
+    $${PWD}/OAIUrl2screenshotrequest.h \
+    $${PWD}/OAIWaitNotVisible.h \
+    $${PWD}/OAIWaitVisible.h \
+# APIs
+    $${PWD}/OAIFetchApi.h \
+    $${PWD}/OAIParseApi.h \
+    $${PWD}/OAISerpApi.h \
+    $${PWD}/OAIUrlToPdfApi.h \
+    $${PWD}/OAIUrlToScreenshotApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIAction.cpp \
+    $${PWD}/OAIClick.cpp \
+    $${PWD}/OAIDoubleClick.cpp \
+    $${PWD}/OAIExecute.cpp \
+    $${PWD}/OAIFetchrequest.cpp \
+    $${PWD}/OAIField.cpp \
+    $${PWD}/OAIField_filters_inner.cpp \
+    $${PWD}/OAIField_filters_inner_anyOf.cpp \
+    $${PWD}/OAIField_filters_inner_anyOf_1.cpp \
+    $${PWD}/OAIGetcontent.cpp \
+    $${PWD}/OAIInitialCookie.cpp \
+    $${PWD}/OAIInput.cpp \
+    $${PWD}/OAIJsclick.cpp \
+    $${PWD}/OAILoop____times.cpp \
+    $${PWD}/OAIPaginator.cpp \
+    $${PWD}/OAIParserequest.cpp \
+    $${PWD}/OAIPause.cpp \
+    $${PWD}/OAIScroll.cpp \
+    $${PWD}/OAISendKeys.cpp \
+    $${PWD}/OAISerprequest.cpp \
+    $${PWD}/OAISubmit.cpp \
+    $${PWD}/OAIUrl2pdfrequest.cpp \
+    $${PWD}/OAIUrl2screenshotrequest.cpp \
+    $${PWD}/OAIWaitNotVisible.cpp \
+    $${PWD}/OAIWaitVisible.cpp \
+# APIs
+    $${PWD}/OAIFetchApi.cpp \
+    $${PWD}/OAIParseApi.cpp \
+    $${PWD}/OAISerpApi.cpp \
+    $${PWD}/OAIUrlToPdfApi.cpp \
+    $${PWD}/OAIUrlToScreenshotApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

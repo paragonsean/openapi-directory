@@ -1,0 +1,21 @@
+
+
+# ImageAttribute
+
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**depth** | **Integer** |  |  [optional] |
+|**element** | **String** |  |  [optional] |
+|**group** | **String** |  |  [optional] |
+|**length** | **Integer** |  |  [optional] |
+|**multiplicity** | **Integer** |  |  [optional] |
+|**name** | **String** |  |  [optional] |
+|**path** | **String** |  |  [optional] |
+|**value** | **String** |  |  [optional] |
+|**vr** | **String** |  |  [optional] |
+
+
+

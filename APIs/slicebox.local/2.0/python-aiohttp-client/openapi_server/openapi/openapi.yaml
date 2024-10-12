@@ -1,0 +1,5261 @@
+openapi: 3.0.1
+info:
+  contact:
+    url: http://github.org/slicebox/slicebox
+  description: Slicebox - safe sharing of medical images
+  license:
+    name: Apache 2.0 License
+    url: http://opensource.org/licenses/Apache-2.0
+  title: Slicebox API
+  version: "2.0"
+  x-apisguru-categories:
+  - collaboration
+  x-logo:
+    backgroundColor: '#FFFFFF'
+    url: https://avatars0.githubusercontent.com/u/12760279?s=200&v=4
+  x-origin:
+  - format: swagger
+    url: https://slicebox.github.io/slicebox-api/swagger.yaml
+    version: "2.0"
+  x-providerName: slicebox.local
+servers:
+- url: http://slicebox.local/api
+tags:
+- description: General routes applicable to multiple aspects of the slicebox API and
+    to the slicebox system
+  name: General
+- description: Methods for handling structured importing of DICOM files into slicebox
+  name: Import
+- description: Methods for handling DICOM meta data (attributes)
+  name: Meta Data
+- description: Methods concerning images and datasets
+  name: Images
+- description: Methods concerning anonymization and de-anonymization of images and
+    the associated anonymization data
+  name: Anonymization
+- description: Methods for handling box-to-box connections and issuing box commands
+  name: Boxes
+- description: Methods for handling box-to-box transactions of images (primarily for
+    internal slicebox use)
+  name: Transactions
+- description: Methods for handling DICOM storage class providers for receiving images
+    from PACS
+  name: SCPs
+- description: Methods for handling DICOM storage class users for sending images to
+    PACS
+  name: SCUs
+- description: Methods for handling watch directories for importing images stored
+    as files
+  name: Directories
+- description: Methods for handling forwarding rules for automatically forwarding
+    image data from sources to destinations.
+  name: Forwarding
+- description: Methods for handling filtering of DICOM attributes on incoming objects.
+  name: Filtering
+- description: Methods for defining and handling series types
+  name: Series Types
+- description: Methods for handling slicebox system log messages
+  name: Logs
+- description: Methods for handling users
+  name: Users
+paths:
+  /anonymization/anonymize:
+    post:
+      description: "anonymize the images corresponding to the supplied list of image\
+        \ IDs (each paired with a list of DICOM tag translation). This route corresponds\
+        \ to repeated use of the route /images/{id}/anonymize."
+      operationId: anonymization_anonymize_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              items:
+                $ref: '#/components/schemas/imageTagValues'
+              type: array
+          application/octet-stream:
+            schema:
+              items:
+                $ref: '#/components/schemas/imageTagValues'
+              type: array
+          multipart/form-data:
+            schema:
+              items:
+                $ref: '#/components/schemas/imageTagValues'
+              type: array
+        description: parameters of anonymization key query
+        required: true
+        x-body-name: query
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/image'
+                type: array
+            application/octet-stream:
+              schema:
+                items:
+                  $ref: '#/components/schemas/image'
+                type: array
+          description: the list of newly created anonymous images
+      tags:
+      - Anonymization
+      x-codegen-request-body-name: query
+      x-openapi-router-controller: openapi_server.controllers.anonymization_controller
+  /anonymization/keys:
+    get:
+      description: "get a list of anonymization keys, each specifying how vital DICOM\
+        \ attributes have been anonymized for a particular image"
+      operationId: anonymization_keys_get
+      parameters:
+      - description: start index of returned slice of anonymization keys
+        in: query
+        name: startindex
+        schema:
+          default: 0
+          format: int64
+          type: integer
+      - description: size of returned slice of anonymization keys
+        in: query
+        name: count
+        schema:
+          default: 20
+          format: int64
+          type: integer
+      - description: property to order results by
+        in: query
+        name: orderby
+        schema:
+          type: string
+      - description: "order result ascendingly if true, descendingly otherwise"
+        in: query
+        name: orderascending
+        schema:
+          default: true
+          type: boolean
+      - description: filter the results by matching substrings of properties against
+          this value
+        in: query
+        name: filter
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/anonymizationKey'
+                type: array
+            application/octet-stream:
+              schema:
+                items:
+                  $ref: '#/components/schemas/anonymizationKey'
+                type: array
+          description: "anonymization keys, one per DICOM image"
+      tags:
+      - Anonymization
+      x-openapi-router-controller: openapi_server.controllers.anonymization_controller
+  /anonymization/keys/export/csv:
+    get:
+      description: export all anonymization keys as a csv file
+      operationId: anonymization_keys_export_csv_get
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: string
+            application/octet-stream:
+              schema:
+                type: string
+          description: all anonymization keys as a csv file
+      tags:
+      - Anonymization
+      x-openapi-router-controller: openapi_server.controllers.anonymization_controller
+  /anonymization/keys/query:
+    post:
+      description: submit a query for anonymization keys
+      operationId: anonymization_keys_query_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/anonymizationKeyQuery'
+          application/octet-stream:
+            schema:
+              $ref: '#/components/schemas/anonymizationKeyQuery'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/anonymizationKeyQuery'
+        description: parameters of anonymization key query
+        required: true
+        x-body-name: query
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/anonymizationKey'
+                type: array
+            application/octet-stream:
+              schema:
+                items:
+                  $ref: '#/components/schemas/anonymizationKey'
+                type: array
+          description: anonymization keys
+      tags:
+      - Anonymization
+      x-codegen-request-body-name: query
+      x-openapi-router-controller: openapi_server.controllers.anonymization_controller
+  /anonymization/keys/{id}:
+    delete:
+      description: delete an anonymization key that is no longer of interest
+      operationId: anonymization_keys_id_delete
+      parameters:
+      - description: ID of anonymization key
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int64
+          type: integer
+      responses:
+        "204":
+          content: {}
+          description: anonymization key deleted
+      tags:
+      - Anonymization
+      x-openapi-router-controller: openapi_server.controllers.anonymization_controller
+    get:
+      description: get the anonymization key with the supplied ID
+      operationId: anonymization_keys_id_get
+      parameters:
+      - description: ID of anonymization key
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int64
+          type: integer
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/anonymizationKey'
+            application/octet-stream:
+              schema:
+                $ref: '#/components/schemas/anonymizationKey'
+          description: anonymization key for the supplied ID
+        "404":
+          content: {}
+          description: if no anonymization key could be found for the supplied ID
+      tags:
+      - Anonymization
+      x-openapi-router-controller: openapi_server.controllers.anonymization_controller
+  /anonymization/keys/{id}/keyvalues:
+    get:
+      description: get pointers to the images corresponding to the anonymization key
+        with the supplied ID
+      operationId: anonymization_keys_id_keyvalues_get
+      parameters:
+      - description: ID of anonymization key
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int64
+          type: integer
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/anonymizationKeyValue'
+                type: array
+            application/octet-stream:
+              schema:
+                items:
+                  $ref: '#/components/schemas/anonymizationKeyValue'
+                type: array
+          description: an array of anonymization key-value pairs corresponding to
+            the anonymization key for the supplied ID
+        "404":
+          content: {}
+          description: if no anonymization key could be found for the supplied ID
+      tags:
+      - Anonymization
+      x-openapi-router-controller: openapi_server.controllers.anonymization_controller
+  /anonymization/options:
+    get:
+      description: list all supported anonymization options defining an anonymization
+        profile
+      operationId: anonymization_options_get
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/confidentialityOption'
+                type: array
+            application/octet-stream:
+              schema:
+                items:
+                  $ref: '#/components/schemas/confidentialityOption'
+                type: array
+          description: supported anonymization options
+      tags:
+      - Anonymization
+      x-openapi-router-controller: openapi_server.controllers.anonymization_controller
+  /boxes:
+    get:
+      description: get a list of box connections
+      operationId: boxes_get
+      parameters:
+      - description: start index of returned slice of boxes
+        in: query
+        name: startindex
+        schema:
+          default: 0
+          format: int64
+          type: integer
+      - description: size of returned slice of boxes
+        in: query
+        name: count
+        schema:
+          default: 20
+          format: int64
+          type: integer
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/box'
+                type: array
+            application/octet-stream:
+              schema:
+                items:
+                  $ref: '#/components/schemas/box'
+                type: array
+          description: box connections
+      tags:
+      - Boxes
+      x-openapi-router-controller: openapi_server.controllers.boxes_controller
+  /boxes/connect:
+    post:
+      description: connect to another box using a received URL. Used to connect to
+        a public box.
+      operationId: boxes_connect_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/remoteBox'
+          application/octet-stream:
+            schema:
+              $ref: '#/components/schemas/remoteBox'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/remoteBox'
+        description: remote box to connect with
+        required: true
+        x-body-name: remoteBox
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/box'
+            application/octet-stream:
+              schema:
+                $ref: '#/components/schemas/box'
+          description: connected box
+      tags:
+      - Boxes
+      x-codegen-request-body-name: remoteBox
+      x-openapi-router-controller: openapi_server.controllers.boxes_controller
+  /boxes/createconnection:
+    post:
+      description: create a new box connection where the supplied entity holds the
+        remote box name. Used by publicly available boxes.
+      operationId: boxes_createconnection_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/remoteBoxConnectionData'
+          application/octet-stream:
+            schema:
+              $ref: '#/components/schemas/remoteBoxConnectionData'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/remoteBoxConnectionData'
+        description: name of box to connect (and send URL) to
+        required: true
+        x-body-name: remoteBoxConnectionData
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/box'
+            application/octet-stream:
+              schema:
+                $ref: '#/components/schemas/box'
+          description: remote box of the connection
+      tags:
+      - Boxes
+      x-codegen-request-body-name: remoteBoxConnectionData
+      x-openapi-router-controller: openapi_server.controllers.boxes_controller
+  /boxes/incoming:
+    get:
+      description: "get incoming transactions (finished, currently receiving, waiting\
+        \ or failed)"
+      operationId: boxes_incoming_get
+      parameters:
+      - description: start index of returned slice of transactions
+        in: query
+        name: startindex
+        schema:
+          default: 0
+          format: int64
+          type: integer
+      - description: size of returned slice of transactions
+        in: query
+        name: count
+        schema:
+          default: 20
+          format: int64
+          type: integer
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/incomingTransaction'
+                type: array
+            application/octet-stream:
+              schema:
+                items:
+                  $ref: '#/components/schemas/incomingTransaction'
+                type: array
+          description: "incoming transactions, sorted from most to least recently\
+            \ updated"
+      tags:
+      - Boxes
+      x-openapi-router-controller: openapi_server.controllers.boxes_controller
+  /boxes/incoming/{id}:
+    delete:
+      description: "delete an incoming transaction. If a currently active transaction\
+        \ is deleted, a new transaction with the remainder of the images is created\
+        \ when receiving the next incoming image."
+      operationId: boxes_incoming_id_delete
+      parameters:
+      - description: ID of incoming transaction
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int64
+          type: integer
+      responses:
+        "204":
+          content: {}
+          description: incoming transaction deleted
+      tags:
+      - Boxes
+      x-openapi-router-controller: openapi_server.controllers.boxes_controller
+  /boxes/incoming/{id}/images:
+    get:
+      description: get the received images corresponding to the incoming transaction
+        with the supplied ID
+      operationId: boxes_incoming_id_images_get
+      parameters:
+      - description: ID of incoming transaction
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int64
+          type: integer
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/image'
+                type: array
+            application/octet-stream:
+              schema:
+                items:
+                  $ref: '#/components/schemas/image'
+                type: array
+          description: images received corresponding to the specified incoming transaction
+        "404":
+          content: {}
+          description: incoming transaction not found (invalid ID)
+      tags:
+      - Boxes
+      x-openapi-router-controller: openapi_server.controllers.boxes_controller
+  /boxes/outgoing:
+    get:
+      description: "get outgoing transactions (finished, currently sending, waiting\
+        \ or failed)"
+      operationId: boxes_outgoing_get
+      parameters:
+      - description: start index of returned slice of transactions
+        in: query
+        name: startindex
+        schema:
+          default: 0
+          format: int64
+          type: integer
+      - description: size of returned slice of transactions
+        in: query
+        name: count
+        schema:
+          default: 20
+          format: int64
+          type: integer
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/outgoingTransaction'
+                type: array
+            application/octet-stream:
+              schema:
+                items:
+                  $ref: '#/components/schemas/outgoingTransaction'
+                type: array
+          description: "outgoing transactions, finished, sending, waiting or failed"
+      tags:
+      - Boxes
+      x-openapi-router-controller: openapi_server.controllers.boxes_controller
+  /boxes/outgoing/{id}:
+    delete:
+      description: delete an outgoing transaction. This will stop ongoing transactions.
+      operationId: boxes_outgoing_id_delete
+      parameters:
+      - description: ID of outgoing transaction
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int64
+          type: integer
+      responses:
+        "204":
+          content: {}
+          description: outgoing transaction deleted
+      tags:
+      - Boxes
+      x-openapi-router-controller: openapi_server.controllers.boxes_controller
+  /boxes/outgoing/{id}/images:
+    get:
+      description: get the sent images corresponding to the outgoing transaction with
+        the supplied ID
+      operationId: boxes_outgoing_id_images_get
+      parameters:
+      - description: ID of outgoing transaction
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int64
+          type: integer
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/image'
+                type: array
+            application/octet-stream:
+              schema:
+                items:
+                  $ref: '#/components/schemas/image'
+                type: array
+          description: images sent corresponding to the specified outgoing transaction
+        "404":
+          content: {}
+          description: outgoing transaction not found (invalid ID)
+      tags:
+      - Boxes
+      x-openapi-router-controller: openapi_server.controllers.boxes_controller
+  /boxes/{id}:
+    delete:
+      description: Delete the remote box with the supplied ID
+      operationId: boxes_id_delete
+      parameters:
+      - description: ID of box to remove
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int64
+          type: integer
+      responses:
+        "204":
+          content: {}
+          description: box deleted
+      tags:
+      - Boxes
+      x-openapi-router-controller: openapi_server.controllers.boxes_controller
+  /boxes/{id}/send:
+    post:
+      description: send images corresponding to the supplied image ids to the remote
+        box with the supplied ID
+      operationId: boxes_id_send_post
+      parameters:
+      - description: ID of box to send images to
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int64
+          type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/bulkAnonymizationData'
+          application/octet-stream:
+            schema:
+              $ref: '#/components/schemas/bulkAnonymizationData'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/bulkAnonymizationData'
+        description: specification of which images to send and list of DICOM attribute
+          values to use in anonymized datasets
+        required: true
+        x-body-name: sequence of image tag values
+      responses:
+        "201":
+          content: {}
+          description: images sent
+        "404":
+          content: {}
+          description: box not found (invalid ID)
+      tags:
+      - Boxes
+      x-codegen-request-body-name: sequence of image tag values
+      x-openapi-router-controller: openapi_server.controllers.boxes_controller
+  /destinations:
+    get:
+      description: "Returns a list of currently available destinations. Possible destinations\
+        \ are box - sending data to a remote box, and scu - sending data a receiving\
+        \ SCP."
+      operationId: destinations_get
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/destination'
+                type: array
+            application/octet-stream:
+              schema:
+                items:
+                  $ref: '#/components/schemas/destination'
+                type: array
+          description: currently available destinations
+      tags:
+      - General
+      x-openapi-router-controller: openapi_server.controllers.general_controller
+  /directorywatches:
+    get:
+      description: "get a list of watch directories. Each watch directory and its\
+        \ sub-directories are watched for incoming DICOM files, which are read and\
+        \ imported into slicebox."
+      operationId: directorywatches_get
+      parameters:
+      - description: start index of returned slice of watched directories
+        in: query
+        name: startindex
+        schema:
+          default: 0
+          format: int64
+          type: integer
+      - description: size of returned slice of watched directories
+        in: query
+        name: count
+        schema:
+          default: 20
+          format: int64
+          type: integer
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/watchedDirectory'
+                type: array
+            application/octet-stream:
+              schema:
+                items:
+                  $ref: '#/components/schemas/watchedDirectory'
+                type: array
+          description: the list of watched directories
+      tags:
+      - Directories
+      x-openapi-router-controller: openapi_server.controllers.directories_controller
+    post:
+      description: add a new directory to watch for incoming DICOM files
+      operationId: directorywatches_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/watchedDirectory'
+          application/octet-stream:
+            schema:
+              $ref: '#/components/schemas/watchedDirectory'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/watchedDirectory'
+        description: "directory to setup a watch for. The ID property is irrelevant,\
+          \ the ID of the inserted record is present in the returned data."
+        required: false
+        x-body-name: watchedDirectory
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/watchedDirectory'
+            application/octet-stream:
+              schema:
+                $ref: '#/components/schemas/watchedDirectory'
+          description: the directory now being watched
+      tags:
+      - Directories
+      x-codegen-request-body-name: watchedDirectory
+      x-openapi-router-controller: openapi_server.controllers.directories_controller
+  /directorywatches/{id}:
+    delete:
+      description: stop watching and remove the directory corresponding to the supplied
+        ID
+      operationId: directorywatches_id_delete
+      parameters:
+      - description: id of directory to stop watching
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int64
+          type: integer
+      responses:
+        "204":
+          content: {}
+          description: directory watch removed
+      tags:
+      - Directories
+      x-openapi-router-controller: openapi_server.controllers.directories_controller
+  /filtering/associations:
+    get:
+      description: Get a list of source to filter associations.
+      operationId: filtering_associations_get
+      parameters:
+      - description: start index of returned slice of source <-> filter associations
+        in: query
+        name: startindex
+        schema:
+          default: 0
+          format: int64
+          type: integer
+      - description: size of returned slice of source <-> filter associations
+        in: query
+        name: count
+        schema:
+          default: 20
+          format: int64
+          type: integer
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/sourceTagFilter'
+                type: array
+            application/octet-stream:
+              schema:
+                items:
+                  $ref: '#/components/schemas/sourceTagFilter'
+                type: array
+          description: the list of source <-> filter associations
+      tags:
+      - Filtering
+      x-openapi-router-controller: openapi_server.controllers.filtering_controller
+    post:
+      description: "Inserts or updates a source <-> filter associations. If the specified\
+        \ Source already  has an association this is updated, otherwise a new is inserted."
+      operationId: filtering_associations_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/sourceTagFilter'
+          application/octet-stream:
+            schema:
+              $ref: '#/components/schemas/sourceTagFilter'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/sourceTagFilter'
+        description: Source to Filter association
+        required: true
+        x-body-name: sourcetagfilter
+      responses:
+        "201":
+          content: {}
+          description: Upserted source <-> filter association
+      tags:
+      - Filtering
+      x-codegen-request-body-name: sourcetagfilter
+      x-openapi-router-controller: openapi_server.controllers.filtering_controller
+  /filtering/associations/{id}:
+    delete:
+      description: remove the source <-> filter association corresponding to the supplied
+        ID
+      operationId: filtering_associations_id_delete
+      parameters:
+      - description: id of source <-> filter association to remove
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int64
+          type: integer
+      responses:
+        "204":
+          content: {}
+          description: source <-> filter association removed
+      tags:
+      - Filtering
+      x-openapi-router-controller: openapi_server.controllers.filtering_controller
+  /filtering/filters:
+    get:
+      description: List defined filters
+      operationId: filtering_filters_get
+      parameters:
+      - description: start index of returned slice of filters
+        in: query
+        name: startindex
+        schema:
+          default: 0
+          format: int64
+          type: integer
+      - description: size of returned slice of filters
+        in: query
+        name: count
+        schema:
+          default: 20
+          format: int64
+          type: integer
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/filter'
+                type: array
+            application/octet-stream:
+              schema:
+                items:
+                  $ref: '#/components/schemas/filter'
+                type: array
+          description: the list of filters
+      tags:
+      - Filtering
+      x-openapi-router-controller: openapi_server.controllers.filtering_controller
+    post:
+      description: "Inserts or updates a filter. If a filter with same name as supplied\
+        \ filter exists this filter is updated, otherwise a new filter is inserted."
+      operationId: filtering_filters_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/filter'
+          application/octet-stream:
+            schema:
+              $ref: '#/components/schemas/filter'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/filter'
+        description: Filter
+        required: true
+        x-body-name: tagFilter
+      responses:
+        "201":
+          content: {}
+          description: Filter upserted
+      tags:
+      - Filtering
+      x-codegen-request-body-name: tagFilter
+      x-openapi-router-controller: openapi_server.controllers.filtering_controller
+  /filtering/filters/{id}:
+    delete:
+      description: remove the filter corresponding to the supplied ID
+      operationId: filtering_filters_id_delete
+      parameters:
+      - description: id of filter to remove
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int64
+          type: integer
+      responses:
+        "204":
+          content: {}
+          description: Filter removed
+      tags:
+      - Filtering
+      x-openapi-router-controller: openapi_server.controllers.filtering_controller
+  /filtering/filters/{id}/tagpaths:
+    get:
+      description: List tagpaths for the selected filter
+      operationId: filtering_filters_id_tagpaths_get
+      parameters:
+      - description: id of filter
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int64
+          type: integer
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/tagPathTag'
+                type: array
+            application/octet-stream:
+              schema:
+                items:
+                  $ref: '#/components/schemas/tagPathTag'
+                type: array
+          description: the list of tagpaths
+      tags:
+      - Filtering
+      x-openapi-router-controller: openapi_server.controllers.filtering_controller
+    post:
+      description: add a tagpath to a filter
+      operationId: filtering_filters_id_tagpaths_post
+      parameters:
+      - description: id of filter to remove
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int64
+          type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/tagPathTag'
+          application/octet-stream:
+            schema:
+              $ref: '#/components/schemas/tagPathTag'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/tagPathTag'
+        description: id of filter to remove
+        required: true
+        x-body-name: tagpath
+      responses:
+        "201":
+          content: {}
+          description: TagPath added
+      tags:
+      - Filtering
+      x-codegen-request-body-name: tagpath
+      x-openapi-router-controller: openapi_server.controllers.filtering_controller
+  /filtering/filters/{id}/tagpaths/{tagpathid}:
+    delete:
+      description: remove the tagpath corresponding to the supplied ID
+      operationId: filtering_filters_id_tagpaths_tagpathid_delete
+      parameters:
+      - description: id of filter
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int64
+          type: integer
+      - description: id of TagPath to remove
+        in: path
+        name: tagpathid
+        required: true
+        schema:
+          format: int64
+          type: integer
+      responses:
+        "204":
+          content: {}
+          description: TagPath removed
+      tags:
+      - Filtering
+      x-openapi-router-controller: openapi_server.controllers.filtering_controller
+  /forwarding/rule/{id}:
+    delete:
+      description: remove the forwarding rule corresponding to the supplied ID
+      operationId: forwarding_rule_id_delete
+      parameters:
+      - description: id of forwarding rule to remove
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int64
+          type: integer
+      responses:
+        "204":
+          content: {}
+          description: forwarding rule removed
+      tags:
+      - Forwarding
+      x-openapi-router-controller: openapi_server.controllers.forwarding_controller
+  /forwarding/rules:
+    get:
+      description: "get a list of all forwarding rules. A forwarding rule specifies\
+        \ the automatic forwarding of images from a source (SCP, BOX, etc.) to a destimation\
+        \ (BOX, SCU, etc.)"
+      operationId: forwarding_rules_get
+      parameters:
+      - description: start index of returned slice of rules
+        in: query
+        name: startindex
+        schema:
+          default: 0
+          format: int64
+          type: integer
+      - description: size of returned slice of rules
+        in: query
+        name: count
+        schema:
+          default: 20
+          format: int64
+          type: integer
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/forwardingrule'
+                type: array
+            application/octet-stream:
+              schema:
+                items:
+                  $ref: '#/components/schemas/forwardingrule'
+                type: array
+          description: the list of forwarding rules
+      tags:
+      - Forwarding
+      x-openapi-router-controller: openapi_server.controllers.forwarding_controller
+    post:
+      description: add a new forwarding rule
+      operationId: forwarding_rules_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/forwardingrule'
+          application/octet-stream:
+            schema:
+              $ref: '#/components/schemas/forwardingrule'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/forwardingrule'
+        description: "The forwarding rule to add. The ID property is irrelevant, the\
+          \ ID of the inserted record is present in the returned data."
+        required: false
+        x-body-name: FowardingRule
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/forwardingrule'
+            application/octet-stream:
+              schema:
+                $ref: '#/components/schemas/forwardingrule'
+          description: the created forwarding rule
+      tags:
+      - Forwarding
+      x-codegen-request-body-name: FowardingRule
+      x-openapi-router-controller: openapi_server.controllers.forwarding_controller
+  /images:
+    post:
+      description: add a DICOM dataset to slicebox
+      operationId: images_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/_images_post_request'
+          application/octet-stream:
+            schema:
+              $ref: '#/components/schemas/_images_post_request'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/_images_post_request'
+        required: true
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/image'
+            application/octet-stream:
+              schema:
+                $ref: '#/components/schemas/image'
+          description: meta data for added dataset on the image level of the DICOM
+            hierarchy. Status code 200 signifies that this image was already present
+            in the slicebox database.
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/image'
+            application/octet-stream:
+              schema:
+                $ref: '#/components/schemas/image'
+          description: meta data for added dataset on the image level of the DICOM
+            hierarchy
+      tags:
+      - Images
+      x-openapi-router-controller: openapi_server.controllers.images_controller
+      x-codegen-request-body-name: body
+  /images/delete:
+    post:
+      description: "bulk delete a sequence of images according to the supplied image\
+        \ IDs. This is the same as a sequence of DELETE requests to /images/{id}"
+      operationId: images_delete_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              items:
+                format: int64
+                type: integer
+              type: array
+          application/octet-stream:
+            schema:
+              items:
+                format: int64
+                type: integer
+              type: array
+          multipart/form-data:
+            schema:
+              items:
+                format: int64
+                type: integer
+              type: array
+        description: IDs of images to delete
+        required: true
+        x-body-name: image IDs
+      responses:
+        "204":
+          content: {}
+          description: Images deleted
+      tags:
+      - Images
+      x-codegen-request-body-name: image IDs
+      x-openapi-router-controller: openapi_server.controllers.images_controller
+  /images/export:
+    get:
+      description: download the export set with the supplied export set ID as a zip
+        archive
+      operationId: images_export_get
+      parameters:
+      - description: ID of export set to download
+        in: query
+        name: id
+        required: true
+        schema:
+          format: int64
+          type: integer
+      responses:
+        "200":
+          content: {}
+          description: zip archive of images
+      tags:
+      - Images
+      x-openapi-router-controller: openapi_server.controllers.images_controller
+    post:
+      description: "create an export set, a group of image IDs of images to export.\
+        \ The export set will contain the selected images. The export set is available\
+        \ for download 12 hours before it is automatically deleted."
+      operationId: images_export_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              items:
+                format: int64
+                type: integer
+              type: array
+          application/octet-stream:
+            schema:
+              items:
+                format: int64
+                type: integer
+              type: array
+          multipart/form-data:
+            schema:
+              items:
+                format: int64
+                type: integer
+              type: array
+        description: ids of images to export
+        required: true
+        x-body-name: image ids
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/exportSetId'
+            application/octet-stream:
+              schema:
+                $ref: '#/components/schemas/exportSetId'
+          description: ID of created export set. To be used with the associated GET
+            method for downloading.
+        "201":
+          content: {}
+          description: if the supplied list of image ids is empty or no if images
+            could be found
+      tags:
+      - Images
+      x-codegen-request-body-name: image ids
+      x-openapi-router-controller: openapi_server.controllers.images_controller
+  /images/jpeg:
+    post:
+      description: add a JPEG image to slicebox. The image data will be wrapped in
+        a DICOM file and added as a new series belonging to the study with the supplied
+        ID
+      operationId: images_jpeg_post
+      parameters:
+      - description: ID of study to add new series to
+        in: query
+        name: studyid
+        required: true
+        schema:
+          format: int64
+          type: integer
+      - description: DICOM series description of the resulting secondary capture series
+        in: query
+        name: description
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+          application/octet-stream:
+            schema:
+              type: object
+          multipart/form-data:
+            schema:
+              type: object
+        description: The jpeg image data
+        required: true
+        x-body-name: jpeg bytes
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/image'
+            application/octet-stream:
+              schema:
+                $ref: '#/components/schemas/image'
+          description: meta data for added dataset on the image level of the DICOM
+            hierarchy
+      tags:
+      - Images
+      x-codegen-request-body-name: jpeg bytes
+      x-openapi-router-controller: openapi_server.controllers.images_controller
+  /images/{id}:
+    delete:
+      description: Delete the image with the supplied ID
+      operationId: images_id_delete
+      parameters:
+      - description: ID of image
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int64
+          type: integer
+      responses:
+        "204":
+          content: {}
+          description: image deleted
+      tags:
+      - Images
+      x-openapi-router-controller: openapi_server.controllers.images_controller
+    get:
+      description: fetch dataset corresponding to the supplied image ID
+      operationId: images_id_get
+      parameters:
+      - description: ID of image
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int64
+          type: integer
+      responses:
+        "200":
+          content: {}
+          description: binary data of dataset
+        "404":
+          content: {}
+          description: if no image was found for the supplied image ID
+      tags:
+      - Images
+      x-openapi-router-controller: openapi_server.controllers.images_controller
+  /images/{id}/anonymize:
+    put:
+      description: delete the selected image and replace it with an anonymized version
+      operationId: images_id_anonymize_put
+      parameters:
+      - description: ID of image to anonymize
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int64
+          type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/anonymizationData'
+          application/octet-stream:
+            schema:
+              $ref: '#/components/schemas/anonymizationData'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/anonymizationData'
+        description: specification of values for anonymous DICOM attributes
+        required: true
+        x-body-name: tag values
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/image'
+            application/octet-stream:
+              schema:
+                $ref: '#/components/schemas/image'
+          description: the newly created anonymous image
+        "404":
+          content: {}
+          description: image or corresponding dataset not found
+      tags:
+      - Anonymization
+      - Images
+      x-codegen-request-body-name: tag values
+      x-openapi-router-controller: openapi_server.controllers.anonymization_controller
+  /images/{id}/anonymized:
+    post:
+      description: get an anonymized version of the image with the supplied ID
+      operationId: images_id_anonymized_post
+      parameters:
+      - description: ID of image for which to get anonymized dataset
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int64
+          type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/anonymizationData'
+          application/octet-stream:
+            schema:
+              $ref: '#/components/schemas/anonymizationData'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/anonymizationData'
+        description: specification of values for anonymous DICOM attributes
+        required: true
+        x-body-name: tag values
+      responses:
+        "200":
+          content: {}
+          description: binary data of anonymized dataset
+        "404":
+          content: {}
+          description: if no image was found for the supplied image ID
+      tags:
+      - Anonymization
+      - Images
+      x-codegen-request-body-name: tag values
+      x-openapi-router-controller: openapi_server.controllers.anonymization_controller
+  /images/{id}/attributes:
+    get:
+      description: list all DICOM attributes of the dataset corresponding to the supplied
+        image ID
+      operationId: images_id_attributes_get
+      parameters:
+      - description: ID of image
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int64
+          type: integer
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/imageAttribute'
+                type: array
+            application/octet-stream:
+              schema:
+                items:
+                  $ref: '#/components/schemas/imageAttribute'
+                type: array
+          description: list of DICOM attributes
+        "404":
+          content: {}
+          description: if no image was found for the supplied image ID
+      tags:
+      - Images
+      x-openapi-router-controller: openapi_server.controllers.images_controller
+  /images/{id}/imageinformation:
+    get:
+      description: get basic information about the pixel data of an image
+      operationId: images_id_imageinformation_get
+      parameters:
+      - description: ID of image
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int64
+          type: integer
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/imageInformation'
+            application/octet-stream:
+              schema:
+                $ref: '#/components/schemas/imageInformation'
+          description: basic information about the pixeldata of an image
+        "404":
+          content: {}
+          description: if no image was found for the supplied image ID
+      tags:
+      - Images
+      x-openapi-router-controller: openapi_server.controllers.images_controller
+  /images/{id}/modify:
+    put:
+      description: modify and/or insert image attributes according to the input tagpath-value
+        mappings
+      operationId: images_id_modify_put
+      parameters:
+      - description: ID of image to modify
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int64
+          type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              items:
+                $ref: '#/components/schemas/tagMapping'
+              type: array
+          application/octet-stream:
+            schema:
+              items:
+                $ref: '#/components/schemas/tagMapping'
+              type: array
+          multipart/form-data:
+            schema:
+              items:
+                $ref: '#/components/schemas/tagMapping'
+              type: array
+        description: specification of tag paths and corresponding values to insert
+          or modify
+        required: true
+        x-body-name: tag path value mappings
+      responses:
+        "201":
+          content: {}
+          description: image attributes successfully modified
+      tags:
+      - Images
+      x-codegen-request-body-name: tag path value mappings
+      x-openapi-router-controller: openapi_server.controllers.images_controller
+  /images/{id}/png:
+    get:
+      description: get a PNG image representation of the image corresponding to the
+        supplied ID
+      operationId: images_id_png_get
+      parameters:
+      - description: ID of image
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int64
+          type: integer
+      - description: frame/slice to show
+        in: query
+        name: framenumber
+        schema:
+          default: 1
+          format: int32
+          type: integer
+      - description: "intensity window minimum value. If not specified or set to zero,\
+          \ windowing will be selected from relevant DICOM attributes"
+        in: query
+        name: windowmin
+        schema:
+          default: 0
+          format: int32
+          type: integer
+      - description: "intensity window maximum value. If not specified or set to zero,\
+          \ windowing will be selected from relevant DICOM attributes"
+        in: query
+        name: windowmax
+        schema:
+          default: 0
+          format: int32
+          type: integer
+      - description: "height of PNG image. If not specified or set to zero, the image\
+          \ height will equal that of the data"
+        in: query
+        name: imageheight
+        schema:
+          default: 0
+          format: int32
+          type: integer
+      responses:
+        "200":
+          content: {}
+          description: image data
+        "404":
+          content: {}
+          description: if no image was found for the supplied image ID
+        "501":
+          content: {}
+          description: if the system is not capable of creating an image representation
+            of the data
+      tags:
+      - Images
+      x-openapi-router-controller: openapi_server.controllers.images_controller
+  /import/sessions:
+    get:
+      description: Returns a list of available import sessions.
+      operationId: import_sessions_get
+      parameters:
+      - description: start index of returned slice of import sessions
+        in: query
+        name: startindex
+        schema:
+          default: 0
+          format: int64
+          type: integer
+      - description: size of returned slice of import sessions
+        in: query
+        name: count
+        schema:
+          default: 20
+          format: int64
+          type: integer
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/importSession'
+                type: array
+            application/octet-stream:
+              schema:
+                items:
+                  $ref: '#/components/schemas/importSession'
+                type: array
+          description: available import sessions
+      tags:
+      - Import
+      x-openapi-router-controller: openapi_server.controllers.import_controller
+    post:
+      description: create a new import sessions
+      operationId: import_sessions_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/importSession'
+          application/octet-stream:
+            schema:
+              $ref: '#/components/schemas/importSession'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/importSession'
+        description: The import session to create containing the user defined name
+          of the session
+        required: true
+        x-body-name: import session
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/importSession'
+            application/octet-stream:
+              schema:
+                $ref: '#/components/schemas/importSession'
+          description: the created import session
+      tags:
+      - Import
+      x-codegen-request-body-name: import session
+      x-openapi-router-controller: openapi_server.controllers.import_controller
+  /import/sessions/{id}:
+    delete:
+      description: deletes the import session with the supplied ID
+      operationId: import_sessions_id_delete
+      parameters:
+      - description: ID of import session to delete
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int64
+          type: integer
+      responses:
+        "204":
+          content: {}
+          description: import session deleted
+      tags:
+      - Import
+      x-openapi-router-controller: openapi_server.controllers.import_controller
+    get:
+      description: Returns the import sessions with the supplied ID
+      operationId: import_sessions_id_get
+      parameters:
+      - description: ID of session
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int64
+          type: integer
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/importSession'
+            application/octet-stream:
+              schema:
+                $ref: '#/components/schemas/importSession'
+          description: the import session with the supplied ID
+        "404":
+          content: {}
+          description: import session not found (invalid ID)
+      tags:
+      - Import
+      x-openapi-router-controller: openapi_server.controllers.import_controller
+  /import/sessions/{id}/images:
+    get:
+      description: get the imported images corresponding to the import session with
+        the supplied ID
+      operationId: import_sessions_id_images_get
+      parameters:
+      - description: ID of import session
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int64
+          type: integer
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/image'
+                type: array
+            application/octet-stream:
+              schema:
+                items:
+                  $ref: '#/components/schemas/image'
+                type: array
+          description: images corresponding to the specified import session
+        "404":
+          content: {}
+          description: import session not found (invalid ID)
+      tags:
+      - Import
+      x-openapi-router-controller: openapi_server.controllers.import_controller
+    post:
+      description: add a DICOM dataset to the import session with the supplied ID
+      operationId: import_sessions_id_images_post
+      parameters:
+      - description: ID of session
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int64
+          type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/_images_post_request'
+          application/octet-stream:
+            schema:
+              $ref: '#/components/schemas/_images_post_request'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/_images_post_request'
+        required: true
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/image'
+            application/octet-stream:
+              schema:
+                $ref: '#/components/schemas/image'
+          description: meta data for the imported dataset on the image level of the
+            DICOM hierarchy. Status code 200 signifies that this image was already
+            present in the slicebox database.
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/image'
+            application/octet-stream:
+              schema:
+                $ref: '#/components/schemas/image'
+          description: meta data for the imported dataset on the image level of the
+            DICOM hierarchy
+        "404":
+          content: {}
+          description: import session not found (invalid ID)
+      tags:
+      - Import
+      x-openapi-router-controller: openapi_server.controllers.import_controller
+      x-codegen-request-body-name: body
+  /log:
+    delete:
+      description: delete all log messages
+      operationId: log_delete
+      responses:
+        "204":
+          content: {}
+          description: log messages successfully
+      tags:
+      - Logs
+      x-openapi-router-controller: openapi_server.controllers.logs_controller
+    get:
+      description: get a list of slicebox log messages
+      operationId: log_get
+      parameters:
+      - description: start index of returned slice of log messages
+        in: query
+        name: startindex
+        schema:
+          default: 0
+          format: int64
+          type: integer
+      - description: size of returned slice of log messages
+        in: query
+        name: count
+        schema:
+          default: 20
+          format: int64
+          type: integer
+      - description: log subject to filter results by
+        in: query
+        name: subject
+        schema:
+          type: string
+      - description: "log type (DEFAULT, INFO, WARN, ERROR) to filter results by"
+        in: query
+        name: type
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/logEntry'
+                type: array
+            application/octet-stream:
+              schema:
+                items:
+                  $ref: '#/components/schemas/logEntry'
+                type: array
+          description: log messages
+      tags:
+      - Logs
+      x-openapi-router-controller: openapi_server.controllers.logs_controller
+  /log/{id}:
+    delete:
+      description: Delete the log entry with the supplied ID
+      operationId: log_id_delete
+      parameters:
+      - description: ID of log entry
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int64
+          type: integer
+      responses:
+        "204":
+          content: {}
+          description: log entry deleted
+      tags:
+      - Logs
+      x-openapi-router-controller: openapi_server.controllers.logs_controller
+  /metadata/flatseries:
+    get:
+      description: "Returns a list of flattened metadata on the patient, study and\
+        \ series levels"
+      operationId: metadata_flatseries_get
+      parameters:
+      - description: start index of returned slice of flat series
+        in: query
+        name: startindex
+        schema:
+          default: 0
+          format: int64
+          type: integer
+      - description: size of returned slice of flat series
+        in: query
+        name: count
+        schema:
+          default: 20
+          format: int64
+          type: integer
+      - description: flat series property to order results by
+        in: query
+        name: orderby
+        schema:
+          type: string
+      - description: "order result ascendingly if true, descendingly otherwise"
+        in: query
+        name: orderascending
+        schema:
+          default: true
+          type: boolean
+      - description: filter the results by matching substrings of flat series properties
+          against this value
+        in: query
+        name: filter
+        schema:
+          type: string
+      - description: "filter the results by matching on one or more series sources.\
+          \ Examples of sources are user, box, directory or scp. The list of sources\
+          \ to filter results by must have the form TYPE1:ID1,TYPE2:ID2,...,TYPEN:IDN.\
+          \ For instance, the argument sources=box:1,user:5 shows results either sent\
+          \ from (slice)box with id 1 or uploaded by user with id 5."
+        in: query
+        name: sources
+        schema:
+          type: string
+      - description: "filter the results by matching on one or more series types.\
+          \ The supplied list of series types must be a comma separated list of series\
+          \ type ids. For instance, the argument seriestypes=3,7,22 shows series assigned\
+          \ to either of the series types with ids 3, 7 and 22."
+        in: query
+        name: seriestypes
+        schema:
+          type: string
+      - description: "filter the results by matching on one or more series tags. The\
+          \ supplied list of series tags must be a comma separated list of series\
+          \ tag ids. For instance, the argument seriestags=6,2,11 shows series with\
+          \ either of the series tags with ids 6, 2 and 11."
+        in: query
+        name: seriestags
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/flatSeries'
+                type: array
+            application/octet-stream:
+              schema:
+                items:
+                  $ref: '#/components/schemas/flatSeries'
+                type: array
+          description: flat series
+      tags:
+      - Meta Data
+      x-openapi-router-controller: openapi_server.controllers.meta_data_controller
+  /metadata/flatseries/query:
+    post:
+      description: submit a query for flat series
+      operationId: metadata_flatseries_query_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/query'
+          application/octet-stream:
+            schema:
+              $ref: '#/components/schemas/query'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/query'
+        description: parameters of flat series query
+        required: true
+        x-body-name: query
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/flatSeries'
+                type: array
+            application/octet-stream:
+              schema:
+                items:
+                  $ref: '#/components/schemas/flatSeries'
+                type: array
+          description: flat series
+      tags:
+      - Meta Data
+      x-codegen-request-body-name: query
+      x-openapi-router-controller: openapi_server.controllers.meta_data_controller
+  /metadata/flatseries/{id}:
+    get:
+      description: Return the flat series with the supplied ID
+      operationId: metadata_flatseries_id_get
+      parameters:
+      - description: ID of flat series
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int64
+          type: integer
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/flatSeries'
+            application/octet-stream:
+              schema:
+                $ref: '#/components/schemas/flatSeries'
+          description: flat series response
+        "404":
+          content: {}
+          description: flat series not found (invalid ID)
+      tags:
+      - Meta Data
+      x-openapi-router-controller: openapi_server.controllers.meta_data_controller
+  /metadata/images:
+    get:
+      description: Returns a list of metadata on the image level of the DICOM hierarchy
+      operationId: metadata_images_get
+      parameters:
+      - description: start index of returned slice of images
+        in: query
+        name: startindex
+        schema:
+          default: 0
+          format: int64
+          type: integer
+      - description: size of returned slice of images
+        in: query
+        name: count
+        schema:
+          default: 20
+          format: int64
+          type: integer
+      - description: reference to series to list images for
+        in: query
+        name: seriesid
+        required: true
+        schema:
+          format: int64
+          type: integer
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/image'
+                type: array
+            application/octet-stream:
+              schema:
+                items:
+                  $ref: '#/components/schemas/image'
+                type: array
+          description: images
+      tags:
+      - Meta Data
+      x-openapi-router-controller: openapi_server.controllers.meta_data_controller
+  /metadata/images/query:
+    post:
+      description: submit a query for images
+      operationId: metadata_images_query_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/query'
+          application/octet-stream:
+            schema:
+              $ref: '#/components/schemas/query'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/query'
+        description: parameters of images query
+        required: true
+        x-body-name: query
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/image'
+                type: array
+            application/octet-stream:
+              schema:
+                items:
+                  $ref: '#/components/schemas/image'
+                type: array
+          description: images
+      tags:
+      - Meta Data
+      x-codegen-request-body-name: query
+      x-openapi-router-controller: openapi_server.controllers.meta_data_controller
+  /metadata/images/{id}:
+    get:
+      description: Return the image with the supplied ID
+      operationId: metadata_images_id_get
+      parameters:
+      - description: ID of image
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int64
+          type: integer
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/image'
+            application/octet-stream:
+              schema:
+                $ref: '#/components/schemas/image'
+          description: image response
+        "404":
+          content: {}
+          description: image not found (invalid ID)
+      tags:
+      - Meta Data
+      x-openapi-router-controller: openapi_server.controllers.meta_data_controller
+  /metadata/patients:
+    get:
+      description: Returns a list of metadata on the patient level of the DICOM hierarchy
+      operationId: metadata_patients_get
+      parameters:
+      - description: start index of returned slice of patients
+        in: query
+        name: startindex
+        schema:
+          default: 0
+          format: int64
+          type: integer
+      - description: size of returned slice of patients
+        in: query
+        name: count
+        schema:
+          default: 20
+          format: int64
+          type: integer
+      - description: patient property to order results by
+        in: query
+        name: orderby
+        schema:
+          type: string
+      - description: "order result ascendingly if true, descendingly otherwise"
+        in: query
+        name: orderascending
+        schema:
+          default: true
+          type: boolean
+      - description: filter the results by matching substrings of patient properties
+          against this value
+        in: query
+        name: filter
+        schema:
+          type: string
+      - description: "filter the results by matching on one or more underlying series\
+          \ sources. Examples of sources are user, box, directory or scp. The list\
+          \ of sources to filter results by must have the form TYPE1:ID1,TYPE2:ID2,...,TYPEN:IDN.\
+          \ For instance, the argument sources=box:1,user:5 shows results either sent\
+          \ from (slice)box with id 1 or uploaded by user with id 5."
+        in: query
+        name: sources
+        schema:
+          type: string
+      - description: "filter the results by matching on one or more underlying series\
+          \ types. The supplied list of series types must be a comma separated list\
+          \ of series type ids. For instance, the argument seriestypes=3,7,22 shows\
+          \ results including series assigned to either of the series types with ids\
+          \ 3, 7 and 22."
+        in: query
+        name: seriestypes
+        schema:
+          type: string
+      - description: "filter the results by matching on one or more underlying series\
+          \ tags. The supplied list of series tags must be a comma separated list\
+          \ of series tag ids. For instance, the argument seriestags=6,2,11 shows\
+          \ results including series with either of the series tags with ids 6, 2\
+          \ and 11."
+        in: query
+        name: seriestags
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/patient'
+                type: array
+            application/octet-stream:
+              schema:
+                items:
+                  $ref: '#/components/schemas/patient'
+                type: array
+          description: patients
+      tags:
+      - Meta Data
+      x-openapi-router-controller: openapi_server.controllers.meta_data_controller
+  /metadata/patients/query:
+    post:
+      description: submit a query for patients
+      operationId: metadata_patients_query_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/query'
+          application/octet-stream:
+            schema:
+              $ref: '#/components/schemas/query'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/query'
+        description: parameters of patient query
+        required: true
+        x-body-name: query
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/patient'
+                type: array
+            application/octet-stream:
+              schema:
+                items:
+                  $ref: '#/components/schemas/patient'
+                type: array
+          description: patients
+      tags:
+      - Meta Data
+      x-codegen-request-body-name: query
+      x-openapi-router-controller: openapi_server.controllers.meta_data_controller
+  /metadata/patients/{id}:
+    get:
+      description: Return the patient with the supplied ID
+      operationId: metadata_patients_id_get
+      parameters:
+      - description: ID of patient
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int64
+          type: integer
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/patient'
+            application/octet-stream:
+              schema:
+                $ref: '#/components/schemas/patient'
+          description: patient response
+        "404":
+          content: {}
+          description: patient not found (invalid ID)
+      tags:
+      - Meta Data
+      x-openapi-router-controller: openapi_server.controllers.meta_data_controller
+  /metadata/patients/{id}/images:
+    get:
+      description: Returns all images for the patient with the supplied patient ID
+      operationId: metadata_patients_id_images_get
+      parameters:
+      - description: ID of patient
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int64
+          type: integer
+      - description: "filter the results by matching on one or more series sources.\
+          \ Examples of sources are user, box, directory or scp. The list of sources\
+          \ to filter results by must have the form TYPE1:ID1,TYPE2:ID2,...,TYPEN:IDN.\
+          \ For instance, the argument sources=box:1,user:5 shows results either sent\
+          \ from (slice)box with id 1 or uploaded by user with id 5."
+        in: query
+        name: sources
+        schema:
+          type: string
+      - description: "filter the results by matching on one or more series types.\
+          \ The supplied list of series types must be a comma separated list of series\
+          \ type ids. For instance, the argument seriestypes=3,7,22 shows series assigned\
+          \ to either of the series types with ids 3, 7 and 22."
+        in: query
+        name: seriestypes
+        schema:
+          type: string
+      - description: "filter the results by matching on one or more series tags. The\
+          \ supplied list of series tags must be a comma separated list of series\
+          \ tag ids. For instance, the argument seriestags=6,2,11 shows series with\
+          \ either of the series tags with ids 6, 2 and 11."
+        in: query
+        name: seriestags
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/image'
+                type: array
+            application/octet-stream:
+              schema:
+                items:
+                  $ref: '#/components/schemas/image'
+                type: array
+          description: list of images
+      tags:
+      - Meta Data
+      x-openapi-router-controller: openapi_server.controllers.meta_data_controller
+  /metadata/series:
+    get:
+      description: Returns a list of metadata on the series level of the DICOM hierarchy
+      operationId: metadata_series_get
+      parameters:
+      - description: start index of returned slice of series
+        in: query
+        name: startindex
+        schema:
+          default: 0
+          format: int64
+          type: integer
+      - description: size of returned slice of series
+        in: query
+        name: count
+        schema:
+          default: 20
+          format: int64
+          type: integer
+      - description: reference to study to list series for
+        in: query
+        name: studyid
+        required: true
+        schema:
+          format: int64
+          type: integer
+      - description: "filter the results by matching on one or more series sources.\
+          \ Examples of sources are user, box, directory or scp. The list of sources\
+          \ to filter results by must have the form TYPE1:ID1,TYPE2:ID2,...,TYPEN:IDN.\
+          \ For instance, the argument sources=box:1,user:5 shows results either sent\
+          \ from (slice)box with id 1 or uploaded by user with id 5."
+        in: query
+        name: sources
+        schema:
+          type: string
+      - description: "filter the results by matching on one or more series types.\
+          \ The supplied list of series types must be a comma separated list of series\
+          \ type ids. For instance, the argument seriestypes=3,7,22 shows series assigned\
+          \ to either of the series types with ids 3, 7 and 22."
+        in: query
+        name: seriestypes
+        schema:
+          type: string
+      - description: "filter the results by matching on one or more series tags. The\
+          \ supplied list of series tags must be a comma separated list of series\
+          \ tag ids. For instance, the argument seriestags=6,2,11 shows series with\
+          \ either of the series tags with ids 6, 2 and 11."
+        in: query
+        name: seriestags
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/series'
+                type: array
+            application/octet-stream:
+              schema:
+                items:
+                  $ref: '#/components/schemas/series'
+                type: array
+          description: series
+      tags:
+      - Meta Data
+      x-openapi-router-controller: openapi_server.controllers.meta_data_controller
+  /metadata/series/query:
+    post:
+      description: submit a query for series
+      operationId: metadata_series_query_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/query'
+          application/octet-stream:
+            schema:
+              $ref: '#/components/schemas/query'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/query'
+        description: parameters of series query
+        required: true
+        x-body-name: query
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/series'
+                type: array
+            application/octet-stream:
+              schema:
+                items:
+                  $ref: '#/components/schemas/series'
+                type: array
+          description: series
+      tags:
+      - Meta Data
+      x-codegen-request-body-name: query
+      x-openapi-router-controller: openapi_server.controllers.meta_data_controller
+  /metadata/series/{id}:
+    get:
+      description: Return the series with the supplied ID
+      operationId: metadata_series_id_get
+      parameters:
+      - description: ID of series
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int64
+          type: integer
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/series'
+            application/octet-stream:
+              schema:
+                $ref: '#/components/schemas/series'
+          description: series response
+        "404":
+          content: {}
+          description: series not found (invalid ID)
+      tags:
+      - Meta Data
+      x-openapi-router-controller: openapi_server.controllers.meta_data_controller
+  /metadata/series/{id}/seriestags:
+    get:
+      description: get the list of series tags for the series with the supplied ID.
+      operationId: metadata_series_id_seriestags_get
+      parameters:
+      - description: ID of series
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int64
+          type: integer
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/seriestag'
+                type: array
+            application/octet-stream:
+              schema:
+                items:
+                  $ref: '#/components/schemas/seriestag'
+                type: array
+          description: the list of series tags
+        "404":
+          content: {}
+          description: series not found (invalid ID)
+      tags:
+      - Meta Data
+      x-openapi-router-controller: openapi_server.controllers.meta_data_controller
+    post:
+      description: add a series tag to the series with the supplied ID
+      operationId: metadata_series_id_seriestags_post
+      parameters:
+      - description: ID of series
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int64
+          type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/seriestag'
+          application/octet-stream:
+            schema:
+              $ref: '#/components/schemas/seriestag'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/seriestag'
+        description: series tag to add
+        required: true
+        x-body-name: query
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/seriestag'
+            application/octet-stream:
+              schema:
+                $ref: '#/components/schemas/seriestag'
+          description: added series tag
+        "404":
+          content: {}
+          description: if no series with the supplied ID exists
+      tags:
+      - Meta Data
+      x-codegen-request-body-name: query
+      x-openapi-router-controller: openapi_server.controllers.meta_data_controller
+  /metadata/series/{id}/seriestypes:
+    delete:
+      description: Delete all series types for the series with the supplied ID
+      operationId: metadata_series_id_seriestypes_delete
+      parameters:
+      - description: ID of series
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int64
+          type: integer
+      responses:
+        "204":
+          content: {}
+          description: series types deleted
+      tags:
+      - Meta Data
+      x-openapi-router-controller: openapi_server.controllers.meta_data_controller
+    get:
+      description: get the list of series types for the series with the supplied ID.
+      operationId: metadata_series_id_seriestypes_get
+      parameters:
+      - description: ID of series
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int64
+          type: integer
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/seriestype'
+                type: array
+            application/octet-stream:
+              schema:
+                items:
+                  $ref: '#/components/schemas/seriestype'
+                type: array
+          description: the list of series types
+        "404":
+          content: {}
+          description: series not found (invalid ID)
+      tags:
+      - Meta Data
+      x-openapi-router-controller: openapi_server.controllers.meta_data_controller
+  /metadata/series/{id}/source:
+    get:
+      description: Return the source of the series with the supplied ID
+      operationId: metadata_series_id_source_get
+      parameters:
+      - description: ID of series
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int64
+          type: integer
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/source'
+            application/octet-stream:
+              schema:
+                $ref: '#/components/schemas/source'
+          description: source for series
+        "404":
+          content: {}
+          description: series not found (invalid ID)
+      tags:
+      - Meta Data
+      x-openapi-router-controller: openapi_server.controllers.meta_data_controller
+  /metadata/series/{seriesId}/seriestags/{seriesTagId}:
+    delete:
+      description: Delete the series tag with the supplied series tag ID from the
+        series with the supplied series ID
+      operationId: metadata_series_series_id_seriestags_series_tag_id_delete
+      parameters:
+      - description: ID of series
+        in: path
+        name: seriesId
+        required: true
+        schema:
+          format: int64
+          type: integer
+      - description: ID of series tag to remove
+        in: path
+        name: seriesTagId
+        required: true
+        schema:
+          format: int64
+          type: integer
+      responses:
+        "204":
+          content: {}
+          description: series tag removed
+      tags:
+      - Meta Data
+      x-openapi-router-controller: openapi_server.controllers.meta_data_controller
+  /metadata/series/{seriesId}/seriestypes/{seriesTypeId}:
+    delete:
+      description: Delete the series type with the supplied series type ID from the
+        series with the supplied series ID
+      operationId: metadata_series_series_id_seriestypes_series_type_id_delete
+      parameters:
+      - description: ID of series
+        in: path
+        name: seriesId
+        required: true
+        schema:
+          format: int64
+          type: integer
+      - description: ID of series type to remove
+        in: path
+        name: seriesTypeId
+        required: true
+        schema:
+          format: int64
+          type: integer
+      responses:
+        "204":
+          content: {}
+          description: series type removed
+      tags:
+      - Meta Data
+      x-openapi-router-controller: openapi_server.controllers.meta_data_controller
+    put:
+      description: Add the series type with the supplied series type ID to the series
+        with the supplied series ID
+      operationId: metadata_series_series_id_seriestypes_series_type_id_put
+      parameters:
+      - description: ID of series
+        in: path
+        name: seriesId
+        required: true
+        schema:
+          format: int64
+          type: integer
+      - description: ID of series type to add
+        in: path
+        name: seriesTypeId
+        required: true
+        schema:
+          format: int64
+          type: integer
+      responses:
+        "204":
+          content: {}
+          description: series type added
+        "404":
+          content: {}
+          description: no series or series type found for the supplied ID(s)
+      tags:
+      - Meta Data
+      x-openapi-router-controller: openapi_server.controllers.meta_data_controller
+  /metadata/seriestags:
+    get:
+      description: Returns a list of series tags currently currently in use.
+      operationId: metadata_seriestags_get
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/seriestag'
+                type: array
+            application/octet-stream:
+              schema:
+                items:
+                  $ref: '#/components/schemas/seriestag'
+                type: array
+          description: a list of unique series tags currently used to tag series
+      tags:
+      - Meta Data
+      x-openapi-router-controller: openapi_server.controllers.meta_data_controller
+  /metadata/studies:
+    get:
+      description: Returns a list of metadata on the study level of the DICOM hierarchy
+      operationId: metadata_studies_get
+      parameters:
+      - description: start index of returned slice of studies
+        in: query
+        name: startindex
+        schema:
+          default: 0
+          format: int64
+          type: integer
+      - description: size of returned slice of studies
+        in: query
+        name: count
+        schema:
+          default: 20
+          format: int64
+          type: integer
+      - description: reference to patient to list studies for
+        in: query
+        name: patientid
+        required: true
+        schema:
+          format: int64
+          type: integer
+      - description: "filter the results by matching on one or more underlying series\
+          \ sources. Examples of sources are user, box, directory or scp. The list\
+          \ of sources to filter results by must have the form TYPE1:ID1,TYPE2:ID2,...,TYPEN:IDN.\
+          \ For instance, the argument sources=box:1,user:5 shows results either sent\
+          \ from (slice)box with id 1 or uploaded by user with id 5."
+        in: query
+        name: sources
+        schema:
+          type: string
+      - description: "filter the results by matching on one or more underlying series\
+          \ types. The supplied list of series types must be a comma separated list\
+          \ of series type ids. For instance, the argument seriestypes=3,7,22 shows\
+          \ results including series assigned to either of the series types with ids\
+          \ 3, 7 and 22."
+        in: query
+        name: seriestypes
+        schema:
+          type: string
+      - description: "filter the results by matching on one or more underlying series\
+          \ tags. The supplied list of series tags must be a comma separated list\
+          \ of series tag ids. For instance, the argument seriestags=6,2,11 shows\
+          \ results including series with either of the series tags with ids 6, 2\
+          \ and 11."
+        in: query
+        name: seriestags
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/study'
+                type: array
+            application/octet-stream:
+              schema:
+                items:
+                  $ref: '#/components/schemas/study'
+                type: array
+          description: studies
+      tags:
+      - Meta Data
+      x-openapi-router-controller: openapi_server.controllers.meta_data_controller
+  /metadata/studies/query:
+    post:
+      description: submit a query for studies
+      operationId: metadata_studies_query_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/query'
+          application/octet-stream:
+            schema:
+              $ref: '#/components/schemas/query'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/query'
+        description: parameters of study query
+        required: true
+        x-body-name: query
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/study'
+                type: array
+            application/octet-stream:
+              schema:
+                items:
+                  $ref: '#/components/schemas/study'
+                type: array
+          description: studies
+      tags:
+      - Meta Data
+      x-codegen-request-body-name: query
+      x-openapi-router-controller: openapi_server.controllers.meta_data_controller
+  /metadata/studies/{id}:
+    get:
+      description: Return the study with the supplied ID
+      operationId: metadata_studies_id_get
+      parameters:
+      - description: ID of study
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int64
+          type: integer
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/study'
+            application/octet-stream:
+              schema:
+                $ref: '#/components/schemas/study'
+          description: study response
+        "404":
+          content: {}
+          description: study not found (invalid ID)
+      tags:
+      - Meta Data
+      x-openapi-router-controller: openapi_server.controllers.meta_data_controller
+  /metadata/studies/{id}/images:
+    get:
+      description: Returns all images for the study with the supplied study ID
+      operationId: metadata_studies_id_images_get
+      parameters:
+      - description: ID of study
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int64
+          type: integer
+      - description: "filter the results by matching on one or more series sources.\
+          \ Examples of sources are user, box, directory or scp. The list of sources\
+          \ to filter results by must have the form TYPE1:ID1,TYPE2:ID2,...,TYPEN:IDN.\
+          \ For instance, the argument sources=box:1,user:5 shows results either sent\
+          \ from (slice)box with id 1 or uploaded by user with id 5."
+        in: query
+        name: sources
+        schema:
+          type: string
+      - description: "filter the results by matching on one or more series types.\
+          \ The supplied list of series types must be a comma separated list of series\
+          \ type ids. For instance, the argument seriestypes=3,7,22 shows series assigned\
+          \ to either of the series types with ids 3, 7 and 22."
+        in: query
+        name: seriestypes
+        schema:
+          type: string
+      - description: "filter the results by matching on one or more series tags. The\
+          \ supplied list of series tags must be a comma separated list of series\
+          \ tag ids. For instance, the argument seriestags=6,2,11 shows series with\
+          \ either of the series tags with ids 6, 2 and 11."
+        in: query
+        name: seriestags
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/image'
+                type: array
+            application/octet-stream:
+              schema:
+                items:
+                  $ref: '#/components/schemas/image'
+                type: array
+          description: list of images
+        "404":
+          content: {}
+          description: study not found (invalid ID)
+      tags:
+      - Meta Data
+      x-openapi-router-controller: openapi_server.controllers.meta_data_controller
+  /scps:
+    get:
+      description: get a list of DICOM SCPs. Each SCP is a server for receiving DICOM
+        images from e.g. a PACS system.
+      operationId: scps_get
+      parameters:
+      - description: start index of returned slice of SCPs
+        in: query
+        name: startindex
+        schema:
+          default: 0
+          format: int64
+          type: integer
+      - description: size of returned slice of SCPs
+        in: query
+        name: count
+        schema:
+          default: 20
+          format: int64
+          type: integer
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/scp'
+                type: array
+            application/octet-stream:
+              schema:
+                items:
+                  $ref: '#/components/schemas/scp'
+                type: array
+          description: the list of SCPs
+      tags:
+      - SCPs
+      x-openapi-router-controller: openapi_server.controllers.scps_controller
+    post:
+      description: add a new SCP for receiving DICOM images
+      operationId: scps_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/scp'
+          application/octet-stream:
+            schema:
+              $ref: '#/components/schemas/scp'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/scp'
+        description: "SCP information. The ID property is irrelevant, the ID of the\
+          \ inserted record is present in the returned data."
+        required: false
+        x-body-name: scp
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scp'
+            application/octet-stream:
+              schema:
+                $ref: '#/components/schemas/scp'
+          description: the created SCP
+        "400":
+          content: {}
+          description: Invalid port number or AE title
+      tags:
+      - SCPs
+      x-codegen-request-body-name: scp
+      x-openapi-router-controller: openapi_server.controllers.scps_controller
+  /scps/{id}:
+    delete:
+      description: shut down and remove the SCP corresponding to the supplied ID
+      operationId: scps_id_delete
+      parameters:
+      - description: id of SCP to remove
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int64
+          type: integer
+      responses:
+        "204":
+          content: {}
+          description: SCP removed
+      tags:
+      - SCPs
+      x-openapi-router-controller: openapi_server.controllers.scps_controller
+  /scus:
+    get:
+      description: "get a list of DICOM SCUs. Each SCU is a client for sending DICOM\
+        \ images to an SCP, e.g. a PACS system."
+      operationId: scus_get
+      parameters:
+      - description: start index of returned slice of SCUs
+        in: query
+        name: startindex
+        schema:
+          default: 0
+          format: int64
+          type: integer
+      - description: size of returned slice of SCUs
+        in: query
+        name: count
+        schema:
+          default: 20
+          format: int64
+          type: integer
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/scu'
+                type: array
+            application/octet-stream:
+              schema:
+                items:
+                  $ref: '#/components/schemas/scu'
+                type: array
+          description: the list of SCUs
+      tags:
+      - SCUs
+      x-openapi-router-controller: openapi_server.controllers.scus_controller
+    post:
+      description: add a new SCU for sending DICOM images
+      operationId: scus_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/scu'
+          application/octet-stream:
+            schema:
+              $ref: '#/components/schemas/scu'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/scu'
+        description: "SCU information. The ID property is irrelevant, the ID of the\
+          \ inserted record is present in the returned data."
+        required: false
+        x-body-name: scu
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scu'
+            application/octet-stream:
+              schema:
+                $ref: '#/components/schemas/scu'
+          description: the created SCU
+        "400":
+          content: {}
+          description: Invalid port number or AE title
+      tags:
+      - SCUs
+      x-codegen-request-body-name: scu
+      x-openapi-router-controller: openapi_server.controllers.scus_controller
+  /scus/{id}:
+    delete:
+      description: remove the SCU corresponding to the supplied ID
+      operationId: scus_id_delete
+      parameters:
+      - description: id of SCU to remove
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int64
+          type: integer
+      responses:
+        "204":
+          content: {}
+          description: SCU removed
+      tags:
+      - SCUs
+      x-openapi-router-controller: openapi_server.controllers.scus_controller
+  /scus/{id}/send:
+    post:
+      description: send the images with the supplied image IDs to a DICOM SCP using
+        the the SCU with the supplied scu ID
+      operationId: scus_id_send_post
+      parameters:
+      - description: id of SCU to use for sending
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int64
+          type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              items:
+                format: int64
+                type: integer
+              type: array
+          application/octet-stream:
+            schema:
+              items:
+                format: int64
+                type: integer
+              type: array
+          multipart/form-data:
+            schema:
+              items:
+                format: int64
+                type: integer
+              type: array
+        description: array of ids of images to send
+        required: true
+        x-body-name: imageids
+      responses:
+        "204":
+          content: {}
+          description: Series sent
+        "404":
+          content: {}
+          description: Series not found or SCU not found
+        "502":
+          content: {}
+          description: Receiving SCP host not available
+      tags:
+      - SCUs
+      x-codegen-request-body-name: imageids
+      x-openapi-router-controller: openapi_server.controllers.scus_controller
+  /seriestypes:
+    get:
+      description: "get a list of all added series types. By filtering search results\
+        \ for certain series types, it is easier for applications to ensure that they\
+        \ read images of applicable types."
+      operationId: seriestypes_get
+      parameters:
+      - description: start index of returned slice of series types
+        in: query
+        name: startindex
+        schema:
+          default: 0
+          format: int64
+          type: integer
+      - description: size of returned slice of series types
+        in: query
+        name: count
+        schema:
+          default: 20
+          format: int64
+          type: integer
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/seriestype'
+                type: array
+            application/octet-stream:
+              schema:
+                items:
+                  $ref: '#/components/schemas/seriestype'
+                type: array
+          description: the list of series types
+      tags:
+      - Series Types
+      x-openapi-router-controller: openapi_server.controllers.series_types_controller
+    post:
+      description: add a new series type
+      operationId: seriestypes_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/seriestype'
+          application/octet-stream:
+            schema:
+              $ref: '#/components/schemas/seriestype'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/seriestype'
+        description: "Series type information. The ID property is irrelevant, the\
+          \ ID of the inserted record is present in the returned data."
+        required: false
+        x-body-name: SeriesType
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/seriestype'
+            application/octet-stream:
+              schema:
+                $ref: '#/components/schemas/seriestype'
+          description: the created series type
+      tags:
+      - Series Types
+      x-codegen-request-body-name: SeriesType
+      x-openapi-router-controller: openapi_server.controllers.series_types_controller
+  /seriestypes/rules:
+    get:
+      description: "get a list of rules for assigning series types to series. A rule\
+        \ connects to a series of attributes with values and a resulting series type.\
+        \ If a series has the required values of the listed attributes, it is assigned\
+        \ to the series type of the rule."
+      operationId: seriestypes_rules_get
+      parameters:
+      - description: ID of series type to list rules for
+        in: query
+        name: seriestypeid
+        required: true
+        schema:
+          format: int64
+          type: integer
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/seriestyperule'
+                type: array
+            application/octet-stream:
+              schema:
+                items:
+                  $ref: '#/components/schemas/seriestyperule'
+                type: array
+          description: the list of series type rules for the series type with the
+            supplied ID
+      tags:
+      - Series Types
+      x-openapi-router-controller: openapi_server.controllers.series_types_controller
+    post:
+      description: add a new series type rule
+      operationId: seriestypes_rules_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/seriestyperule'
+          application/octet-stream:
+            schema:
+              $ref: '#/components/schemas/seriestyperule'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/seriestyperule'
+        description: "Series type rule information. The ID property is irrelevant,\
+          \ the ID of the inserted record is present in the returned data."
+        required: false
+        x-body-name: SeriesTypeRule
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/seriestyperule'
+            application/octet-stream:
+              schema:
+                $ref: '#/components/schemas/seriestyperule'
+          description: the created series type rule
+      tags:
+      - Series Types
+      x-codegen-request-body-name: SeriesTypeRule
+      x-openapi-router-controller: openapi_server.controllers.series_types_controller
+  /seriestypes/rules/updatestatus:
+    get:
+      description: "get the status of the internal process of updating series types\
+        \ for series following a change of series types, rules or attributes."
+      operationId: seriestypes_rules_updatestatus_get
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/seriestypeupdatestatus'
+            application/octet-stream:
+              schema:
+                $ref: '#/components/schemas/seriestypeupdatestatus'
+          description: "a status message, indicating if an update is running"
+      tags:
+      - Series Types
+      x-openapi-router-controller: openapi_server.controllers.series_types_controller
+  /seriestypes/rules/{id}:
+    delete:
+      description: remove the series type rule corresponding to the supplied ID
+      operationId: seriestypes_rules_id_delete
+      parameters:
+      - description: id of series type rule to remove
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int64
+          type: integer
+      responses:
+        "204":
+          content: {}
+          description: series type rule removed
+      tags:
+      - Series Types
+      x-openapi-router-controller: openapi_server.controllers.series_types_controller
+  /seriestypes/rules/{id}/attributes:
+    get:
+      description: get the list of attributes for the series type rule with the supplied
+        ID.
+      operationId: seriestypes_rules_id_attributes_get
+      parameters:
+      - description: index of series type rule to list rule attributes for
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int64
+          type: integer
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/seriestyperuleattribute'
+                type: array
+            application/octet-stream:
+              schema:
+                items:
+                  $ref: '#/components/schemas/seriestyperuleattribute'
+                type: array
+          description: the list of series type rule attributes for the series type
+            rule with the supplied ID
+      tags:
+      - Series Types
+      x-openapi-router-controller: openapi_server.controllers.series_types_controller
+    post:
+      description: add a new series type rule attribute
+      operationId: seriestypes_rules_id_attributes_post
+      parameters:
+      - description: ID of rule
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int64
+          type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/seriestyperuleattribute'
+          application/octet-stream:
+            schema:
+              $ref: '#/components/schemas/seriestyperuleattribute'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/seriestyperuleattribute'
+        description: "Series type rule attribute information. The ID property is irrelevant,\
+          \ the ID of the inserted record is present in the returned data."
+        required: false
+        x-body-name: SeriesTypeRuleAttribute
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/seriestyperuleattribute'
+            application/octet-stream:
+              schema:
+                $ref: '#/components/schemas/seriestyperuleattribute'
+          description: the created series type rule attribute
+      tags:
+      - Series Types
+      x-codegen-request-body-name: SeriesTypeRuleAttribute
+      x-openapi-router-controller: openapi_server.controllers.series_types_controller
+  /seriestypes/rules/{ruleId}/attributes/{attributeId}:
+    delete:
+      description: remove the series type rule attribute corresponding to the supplied
+        series type and attribute IDs
+      operationId: seriestypes_rules_rule_id_attributes_attribute_id_delete
+      parameters:
+      - description: id of series type rule for which to remove an attribute
+        in: path
+        name: ruleId
+        required: true
+        schema:
+          format: int64
+          type: integer
+      - description: id of attribute to remove
+        in: path
+        name: attributeId
+        required: true
+        schema:
+          format: int64
+          type: integer
+      responses:
+        "204":
+          content: {}
+          description: series type rule attribute removed
+      tags:
+      - Series Types
+      x-openapi-router-controller: openapi_server.controllers.series_types_controller
+  /seriestypes/series/query:
+    post:
+      description: submit a query for seriestypes for a list of series
+      operationId: seriestypes_series_query_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/idsquery'
+          application/octet-stream:
+            schema:
+              $ref: '#/components/schemas/idsquery'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/idsquery'
+        description: parameters of series query
+        required: true
+        x-body-name: query
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/seriesidseriestypesresult'
+            application/octet-stream:
+              schema:
+                $ref: '#/components/schemas/seriesidseriestypesresult'
+          description: series
+      tags:
+      - Meta Data
+      x-codegen-request-body-name: query
+      x-openapi-router-controller: openapi_server.controllers.meta_data_controller
+  /seriestypes/{id}:
+    delete:
+      description: remove the series type corresponding to the supplied ID
+      operationId: seriestypes_id_delete
+      parameters:
+      - description: id of series type to remove
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int64
+          type: integer
+      responses:
+        "204":
+          content: {}
+          description: series type removed
+      tags:
+      - Series Types
+      x-openapi-router-controller: openapi_server.controllers.series_types_controller
+    put:
+      description: "request an asynchronous update of all series, labelling appropriate\
+        \ series with the series type corresponding to the supplied ID."
+      operationId: seriestypes_id_put
+      parameters:
+      - description: id of series type to update series labels for
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int64
+          type: integer
+      responses:
+        "204":
+          content: {}
+          description: update successfully added to queue of series type updates
+      tags:
+      - Series Types
+      x-openapi-router-controller: openapi_server.controllers.series_types_controller
+  /sources:
+    get:
+      description: "Returns a list of currently available data sources. Possible source\
+        \ types are user - data imported by an API call by a user, box - data received\
+        \ from a remote box, directory - data imported via a watched directory, import\
+        \ - data imported into slicebox using import sessions, or scp - data received\
+        \ from a PACS."
+      operationId: sources_get
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/source'
+                type: array
+            application/octet-stream:
+              schema:
+                items:
+                  $ref: '#/components/schemas/source'
+                type: array
+          description: currently available sources
+      tags:
+      - General
+      x-openapi-router-controller: openapi_server.controllers.general_controller
+  /system/health:
+    get:
+      description: No-op route for checking whether the service is alive or not
+      operationId: system_health_get
+      responses:
+        "200":
+          content: {}
+          description: The service is up and running
+      tags:
+      - General
+      x-openapi-router-controller: openapi_server.controllers.general_controller
+  /system/stop:
+    post:
+      description: stop and shut down slicebox
+      operationId: system_stop_post
+      responses:
+        "200":
+          content: {}
+          description: shutdown message
+      tags:
+      - General
+      x-openapi-router-controller: openapi_server.controllers.general_controller
+  /transactions/{token}/image:
+    post:
+      description: add an image (dataset) as part of a transaction. This method is
+        used when sending images using the push method to a public slicebox.
+      operationId: transactions_token_image_post
+      parameters:
+      - description: authentication token identifying the current box-to-box connection
+        in: path
+        name: token
+        required: true
+        schema:
+          type: string
+      - description: the ID of the client's outgoing transaction
+        in: query
+        name: transactionid
+        required: true
+        schema:
+          format: int64
+          type: integer
+      - description: the index of this image in the transaction
+        in: query
+        name: sequencenumber
+        required: true
+        schema:
+          format: int64
+          type: integer
+      - description: the total number of images in this transaction
+        in: query
+        name: totalimagecount
+        required: true
+        schema:
+          format: int64
+          type: integer
+      requestBody:
+        content:
+          application/octet-stream:
+            schema:
+              type: object
+        description: the dataset byte array
+        required: true
+        x-body-name: dataset
+      responses:
+        "204":
+          content: {}
+          description: image data received
+        "401":
+          content: {}
+          description: "unauthorized, invalid token"
+      tags:
+      - Transactions
+      x-codegen-request-body-name: dataset
+      x-openapi-router-controller: openapi_server.controllers.transactions_controller
+  /transactions/{token}/outgoing:
+    get:
+      description: fetch an image from the connected box as part of a transaction.
+        This method is used when sending images using the poll method from a public
+        slicebox.
+      operationId: transactions_token_outgoing_get
+      parameters:
+      - description: authentication token identifying the current box-to-box connection
+        in: path
+        name: token
+        required: true
+        schema:
+          type: string
+      - description: the ID of the outgoing transaction
+        in: query
+        name: transactionid
+        required: true
+        schema:
+          format: int64
+          type: integer
+      - description: the ID of the outgoing transaction image
+        in: query
+        name: imageid
+        required: true
+        schema:
+          format: int64
+          type: integer
+      responses:
+        "200":
+          content: {}
+          description: binary data of dataset
+        "401":
+          content: {}
+          description: "unauthorized, invalid token"
+        "404":
+          content: {}
+          description: no outgoing trensaction and/or image found for the supplied
+            transaction id and transaction image id
+      tags:
+      - Transactions
+      x-openapi-router-controller: openapi_server.controllers.transactions_controller
+  /transactions/{token}/outgoing/done:
+    post:
+      description: signal that the supplied outgoing transaction and image was successfully
+        received and can be marked as sent. This method is used when sending images
+        using the poll method from a public slicebox.
+      operationId: transactions_token_outgoing_done_post
+      parameters:
+      - description: authentication token identifying the current box-to-box connection
+        in: path
+        name: token
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/outgoingTransactionImage'
+          application/octet-stream:
+            schema:
+              $ref: '#/components/schemas/outgoingTransactionImage'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/outgoingTransactionImage'
+        description: outgoing transaction and image that has been successfully received
+        required: true
+        x-body-name: outgoing entry and image information block
+      responses:
+        "204":
+          content: {}
+          description: done message received
+        "401":
+          content: {}
+          description: "unauthorized, invalid token"
+      tags:
+      - Transactions
+      x-codegen-request-body-name: outgoing entry and image information block
+      x-openapi-router-controller: openapi_server.controllers.transactions_controller
+  /transactions/{token}/outgoing/failed:
+    post:
+      description: "signal that the image corresponding to the supplied outgoing transaction\
+        \ and image could not be read or stored properly on the receiving side, and\
+        \ that the transaction should be marked as failed."
+      operationId: transactions_token_outgoing_failed_post
+      parameters:
+      - description: authentication token identifying the current box-to-box connection
+        in: path
+        name: token
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/failedOutgoingTransactionImage'
+          application/octet-stream:
+            schema:
+              $ref: '#/components/schemas/failedOutgoingTransactionImage'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/failedOutgoingTransactionImage'
+        description: "the outgoing transaction and image information block corresponding\
+          \ to the failed image transfer, along with the associated error message"
+        required: true
+        x-body-name: "outgoing transaction and image, and error message"
+      responses:
+        "204":
+          content: {}
+          description: failed message received
+        "401":
+          content: {}
+          description: "unauthorized, invalid token"
+      tags:
+      - Transactions
+      x-codegen-request-body-name: "outgoing transaction and image, and error message"
+      x-openapi-router-controller: openapi_server.controllers.transactions_controller
+  /transactions/{token}/outgoing/poll:
+    get:
+      description: "get next outgoing transaction and image (information on the next\
+        \ image that the connected box wishes to send to you), if any. This method\
+        \ is used when sending images using the poll method from a public slicebox."
+      operationId: transactions_token_outgoing_poll_get
+      parameters:
+      - description: authentication token identifying the current box-to-box connection
+        in: path
+        name: token
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/outgoingTransactionImage'
+                type: array
+            application/octet-stream:
+              schema:
+                items:
+                  $ref: '#/components/schemas/outgoingTransactionImage'
+                type: array
+          description: next outgoing transaction and image information block
+        "401":
+          content: {}
+          description: "unauthorized, invalid token"
+        "404":
+          content: {}
+          description: there are currently no outgoing transactions to fetch for the
+            box connection with the supplied token
+      tags:
+      - Transactions
+      x-openapi-router-controller: openapi_server.controllers.transactions_controller
+  /transactions/{token}/status:
+    get:
+      description: get the status of the remote incoming transaction with the supplied
+        transaction ID
+      operationId: transactions_token_status_get
+      parameters:
+      - description: authentication token identifying the current box-to-box connection
+        in: path
+        name: token
+        required: true
+        schema:
+          type: string
+      - description: the ID of the client's outgoing transaction
+        in: query
+        name: transactionid
+        required: true
+        schema:
+          format: int64
+          type: integer
+      responses:
+        "200":
+          content: {}
+          description: "string representation of the transaction status (FINISHED,\
+            \ FAILED, WAITING or PROCESSING)"
+        "401":
+          content: {}
+          description: "unauthorized, invalid token"
+        "404":
+          content: {}
+          description: no transaction found for the supplied transaction ID and box
+            token
+      tags:
+      - Transactions
+      x-openapi-router-controller: openapi_server.controllers.transactions_controller
+    put:
+      description: update the status of the transaction with the supplied ID
+      operationId: transactions_token_status_put
+      parameters:
+      - description: authentication token identifying the current box-to-box connection
+        in: path
+        name: token
+        required: true
+        schema:
+          type: string
+      - description: the ID of the client's outgoing transaction
+        in: query
+        name: transactionid
+        required: true
+        schema:
+          format: int64
+          type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: string
+          application/octet-stream:
+            schema:
+              type: string
+          multipart/form-data:
+            schema:
+              type: string
+        description: the updated status of the transaction
+        required: true
+        x-body-name: transaction status
+      responses:
+        "204":
+          content: {}
+          description: status update successfully applied to transaction
+        "404":
+          content: {}
+          description: no transaction found for the supplied transaction ID and box
+            token
+      tags:
+      - Transactions
+      x-codegen-request-body-name: transaction status
+      x-openapi-router-controller: openapi_server.controllers.transactions_controller
+  /users:
+    get:
+      description: Returns all users of slicebox
+      operationId: users_get
+      parameters:
+      - description: start index of returned slice of users
+        in: query
+        name: startindex
+        schema:
+          default: 0
+          format: int64
+          type: integer
+      - description: size of returned slice of users
+        in: query
+        name: count
+        schema:
+          default: 20
+          format: int64
+          type: integer
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/user'
+                type: array
+            application/octet-stream:
+              schema:
+                items:
+                  $ref: '#/components/schemas/user'
+                type: array
+          description: user response
+      tags:
+      - Users
+      x-openapi-router-controller: openapi_server.controllers.users_controller
+    post:
+      description: Creates a new user. Dupicates are accepted but not added.
+      operationId: users_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/newUser'
+          application/octet-stream:
+            schema:
+              $ref: '#/components/schemas/newUser'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/newUser'
+        description: User to add
+        required: true
+        x-body-name: user
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/user'
+            application/octet-stream:
+              schema:
+                $ref: '#/components/schemas/user'
+          description: user response
+      tags:
+      - Users
+      x-codegen-request-body-name: user
+      x-openapi-router-controller: openapi_server.controllers.users_controller
+  /users/current:
+    get:
+      description: "obtain information on the currently logged in user as specified\
+        \ by the supplied session cookie, IP address and user agent."
+      operationId: users_current_get
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/userInfo'
+            application/octet-stream:
+              schema:
+                $ref: '#/components/schemas/userInfo'
+          description: user information
+        "404":
+          content: {}
+          description: "no user found for the supplied session cookie, IP address\
+            \ and user agent, or if any of the required headers are missing."
+      tags:
+      - Users
+      x-openapi-router-controller: openapi_server.controllers.users_controller
+  /users/login:
+    post:
+      description: Obtain a session cookie that can be used to authenticate future
+        API calls from the present IP address and with the present user agent.
+      operationId: users_login_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/userPass'
+          application/octet-stream:
+            schema:
+              $ref: '#/components/schemas/userPass'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/userPass'
+        description: username and password for user logging in
+        required: true
+        x-body-name: UserPass
+      responses:
+        "201":
+          content: {}
+          description: if the supplied credentials are valid. The response headers
+            will contain Set-Cookie.
+        "401":
+          content: {}
+          description: if the supplied credentials are invalid.
+      tags:
+      - Users
+      x-codegen-request-body-name: UserPass
+      x-openapi-router-controller: openapi_server.controllers.users_controller
+  /users/logout:
+    post:
+      description: Logout the current user by responding with a delete cookie header
+        removing the session cookie for this user.
+      operationId: users_logout_post
+      responses:
+        "201":
+          content: {}
+          description: the user was logged out
+      tags:
+      - Users
+      x-openapi-router-controller: openapi_server.controllers.users_controller
+  /users/{id}:
+    delete:
+      description: deletes a single user based on the ID supplied
+      operationId: users_id_delete
+      parameters:
+      - description: ID of user to delete
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int64
+          type: integer
+      responses:
+        "204":
+          content: {}
+          description: user deleted
+      tags:
+      - Users
+      x-openapi-router-controller: openapi_server.controllers.users_controller
+components:
+  schemas:
+    anonymizationData:
+      properties:
+        profile:
+          $ref: '#/components/schemas/anonymizationProfile'
+        tagValues:
+          items:
+            $ref: '#/components/schemas/tagValue'
+          title: tagValues
+          type: array
+      title: anonymizationData
+      type: object
+    anonymizationKey:
+      example:
+        anonSeriesInstanceUID: anonSeriesInstanceUID
+        patientName: patientName
+        seriesInstanceUID: seriesInstanceUID
+        imageId: 1
+        patientID: patientID
+        created: 0
+        studyInstanceUID: studyInstanceUID
+        sopInstanceUID: sopInstanceUID
+        anonPatientName: anonPatientName
+        anonSOPInstanceUID: anonSOPInstanceUID
+        id: 6
+        anonPatientID: anonPatientID
+        anonStudyInstanceUID: anonStudyInstanceUID
+      properties:
+        anonPatientID:
+          title: anonPatientID
+          type: string
+        anonPatientName:
+          title: anonPatientName
+          type: string
+        anonSOPInstanceUID:
+          title: anonSOPInstanceUID
+          type: string
+        anonSeriesInstanceUID:
+          title: anonSeriesInstanceUID
+          type: string
+        anonStudyInstanceUID:
+          title: anonStudyInstanceUID
+          type: string
+        created:
+          format: int64
+          title: created
+          type: integer
+        id:
+          format: int64
+          title: id
+          type: integer
+        imageId:
+          format: int64
+          title: imageId
+          type: integer
+        patientID:
+          title: patientID
+          type: string
+        patientName:
+          title: patientName
+          type: string
+        seriesInstanceUID:
+          title: seriesInstanceUID
+          type: string
+        sopInstanceUID:
+          title: sopInstanceUID
+          type: string
+        studyInstanceUID:
+          title: studyInstanceUID
+          type: string
+      title: anonymizationKey
+      type: object
+    anonymizationKeyQuery:
+      properties:
+        count:
+          format: int64
+          title: count
+          type: integer
+        order:
+          $ref: '#/components/schemas/queryOrder'
+        queryProperties:
+          items:
+            $ref: '#/components/schemas/queryProperty'
+          title: queryProperties
+          type: array
+        startIndex:
+          format: int64
+          title: startIndex
+          type: integer
+      required:
+      - count
+      - queryProperties
+      - startIndex
+      title: anonymizationKeyQuery
+      type: object
+    anonymizationKeyValue:
+      example:
+        tagPath:
+          previous:
+            item: item
+            previous: null
+            tag: 1
+          tag: 5
+        anonymizedValue: anonymizedValue
+        anonymizationKeyId: 0
+        id: 6
+        value: value
+      properties:
+        anonymizationKeyId:
+          format: int64
+          title: anonymizationKeyId
+          type: integer
+        anonymizedValue:
+          title: anonymizedValue
+          type: string
+        id:
+          format: int64
+          title: id
+          type: integer
+        tagPath:
+          $ref: '#/components/schemas/tagPathTag'
+        value:
+          title: value
+          type: string
+      title: anonymizationKeyValue
+      type: object
+    anonymizationProfile:
+      example:
+        options:
+        - name: name
+          description: description
+          rank: 0
+          title: title
+        - name: name
+          description: description
+          rank: 0
+          title: title
+      properties:
+        options:
+          items:
+            $ref: '#/components/schemas/confidentialityOption'
+          title: options
+          type: array
+      title: anonymizationProfile
+      type: object
+    box:
+      example:
+        sendMethod: sendMethod
+        baseUrl: baseUrl
+        profile:
+          options:
+          - name: name
+            description: description
+            rank: 0
+            title: title
+          - name: name
+            description: description
+            rank: 0
+            title: title
+        name: name
+        online: true
+        id: 0
+        token: token
+      properties:
+        baseUrl:
+          title: baseUrl
+          type: string
+        id:
+          format: int64
+          title: id
+          type: integer
+        name:
+          title: name
+          type: string
+        online:
+          title: online
+          type: boolean
+        profile:
+          $ref: '#/components/schemas/anonymizationProfile'
+        sendMethod:
+          title: sendMethod
+          type: string
+        token:
+          title: token
+          type: string
+      title: box
+      type: object
+    bulkAnonymizationData:
+      properties:
+        imageTagValuesSet:
+          items:
+            $ref: '#/components/schemas/imageTagValues'
+          title: imageTagValuesSet
+          type: array
+        profile:
+          $ref: '#/components/schemas/anonymizationProfile'
+      title: bulkAnonymizationData
+      type: object
+    confidentialityOption:
+      example:
+        name: name
+        description: description
+        rank: 0
+        title: title
+      properties:
+        description:
+          title: description
+          type: string
+        name:
+          title: name
+          type: string
+        rank:
+          format: int32
+          title: rank
+          type: integer
+        title:
+          title: title
+          type: string
+      title: confidentialityOption
+      type: object
+    destination:
+      example:
+        destinationName: destinationName
+        destinationType: destinationType
+        destinationId: 0
+      properties:
+        destinationId:
+          format: int64
+          title: destinationId
+          type: integer
+        destinationName:
+          title: destinationName
+          type: string
+        destinationType:
+          title: destinationType
+          type: string
+      title: destination
+      type: object
+    dicomPropertyValue:
+      example:
+        value: value
+      properties:
+        value:
+          title: value
+          type: string
+      title: dicomPropertyValue
+      type: object
+    exportSetId:
+      example:
+        value: 0
+      properties:
+        value:
+          format: int64
+          title: value
+          type: integer
+      title: exportSetId
+      type: object
+    failedOutgoingTransactionImage:
+      properties:
+        message:
+          title: message
+          type: string
+        transactionImage:
+          $ref: '#/components/schemas/outgoingTransactionImage'
+      title: failedOutgoingTransactionImage
+      type: object
+    filter:
+      example:
+        name: name
+        id: 0
+        tagFilterType: tagFilterType
+        tags:
+        - previous:
+            item: item
+            previous: null
+            tag: 1
+          tag: 5
+        - previous:
+            item: item
+            previous: null
+            tag: 1
+          tag: 5
+      properties:
+        id:
+          format: int64
+          title: id
+          type: integer
+        name:
+          title: name
+          type: string
+        tagFilterType:
+          title: tagFilterType
+          type: string
+        tags:
+          items:
+            $ref: '#/components/schemas/tagPathTag'
+          title: tags
+          type: array
+      title: filter
+      type: object
+    flatSeries:
+      example:
+        study:
+          patientId: 2
+          studyDescription:
+            value: value
+          studyInstanceUID:
+            value: value
+          patientAge:
+            value: value
+          studyDate:
+            value: value
+          studyID:
+            value: value
+          id: 5
+          accessionNumber:
+            value: value
+        patient:
+          patientName:
+            value: value
+          patientSex:
+            value: value
+          patientID:
+            value: value
+          id: 6
+          patientBirthDate:
+            value: value
+        series:
+          seriesInstanceUID:
+            value: value
+          modality:
+            value: value
+          seriesDescription:
+            value: value
+          protocolName:
+            value: value
+          seriesDate:
+            value: value
+          bodyPartExamined:
+            value: value
+          frameOfReferenceUID:
+            value: value
+          stationName:
+            value: value
+          studyId: 5
+          id: 1
+          manufacturer:
+            value: value
+        id: 0
+      properties:
+        id:
+          format: int64
+          title: id
+          type: integer
+        patient:
+          $ref: '#/components/schemas/patient'
+        series:
+          $ref: '#/components/schemas/series'
+        study:
+          $ref: '#/components/schemas/study'
+      title: flatSeries
+      type: object
+    forwardingrule:
+      example:
+        destination:
+          destinationName: destinationName
+          destinationType: destinationType
+          destinationId: 0
+        id: 0
+        source:
+          sourceId: 6
+          sourceType: sourceType
+          sourceName: sourceName
+        keepImages: true
+      properties:
+        destination:
+          $ref: '#/components/schemas/destination'
+        id:
+          format: int64
+          title: id
+          type: integer
+        keepImages:
+          title: keepImages
+          type: boolean
+        source:
+          $ref: '#/components/schemas/source'
+      title: forwardingrule
+      type: object
+    idsquery:
+      properties:
+        ids:
+          items:
+            format: int64
+            type: integer
+          title: ids
+          type: array
+      required:
+      - ids
+      title: idsquery
+      type: object
+    image:
+      example:
+        id: 0
+        instanceNumber:
+          value: value
+        imageType:
+          value: value
+        seriesId: 6
+        sopInstanceUID:
+          value: value
+      properties:
+        id:
+          format: int64
+          title: id
+          type: integer
+        imageType:
+          $ref: '#/components/schemas/dicomPropertyValue'
+        instanceNumber:
+          $ref: '#/components/schemas/dicomPropertyValue'
+        seriesId:
+          format: int64
+          title: seriesId
+          type: integer
+        sopInstanceUID:
+          $ref: '#/components/schemas/dicomPropertyValue'
+      title: image
+      type: object
+    imageAttribute:
+      example:
+        multiplicity: 1
+        path: path
+        depth: 0
+        length: 6
+        name: name
+        vr: vr
+        value: value
+        element: element
+        group: group
+      properties:
+        depth:
+          format: int32
+          title: depth
+          type: integer
+        element:
+          title: element
+          type: string
+        group:
+          title: group
+          type: string
+        length:
+          format: int32
+          title: length
+          type: integer
+        multiplicity:
+          format: int32
+          title: multiplicity
+          type: integer
+        name:
+          title: name
+          type: string
+        path:
+          title: path
+          type: string
+        value:
+          title: value
+          type: string
+        vr:
+          title: vr
+          type: string
+      title: imageAttribute
+      type: object
+    imageInformation:
+      example:
+        frameIndex: 0
+        minimumPixelValue: 1
+        numberOfFrames: 5
+        maximumPixelValue: 6
+      properties:
+        frameIndex:
+          format: int32
+          title: frameIndex
+          type: integer
+        maximumPixelValue:
+          format: int32
+          title: maximumPixelValue
+          type: integer
+        minimumPixelValue:
+          format: int32
+          title: minimumPixelValue
+          type: integer
+        numberOfFrames:
+          format: int32
+          title: numberOfFrames
+          type: integer
+      title: imageInformation
+      type: object
+    imageTagValues:
+      properties:
+        imageId:
+          format: int64
+          title: imageId
+          type: integer
+        tagValues:
+          items:
+            $ref: '#/components/schemas/tagValue'
+          title: tagValues
+          type: array
+      title: imageTagValues
+      type: object
+    importSession:
+      example:
+        filesAdded: 6
+        lastUpdated: 2
+        created: 0
+        name: name
+        filesImported: 1
+        id: 5
+        filesRejected: 5
+        user: user
+        userId: 7
+      properties:
+        created:
+          format: int64
+          title: created
+          type: integer
+        filesAdded:
+          format: int32
+          title: filesAdded
+          type: integer
+        filesImported:
+          format: int32
+          title: filesImported
+          type: integer
+        filesRejected:
+          format: int32
+          title: filesRejected
+          type: integer
+        id:
+          format: int64
+          title: id
+          type: integer
+        lastUpdated:
+          format: int64
+          title: lastUpdated
+          type: integer
+        name:
+          title: name
+          type: string
+        user:
+          title: user
+          type: string
+        userId:
+          format: int64
+          title: userId
+          type: integer
+      title: importSession
+      type: object
+    incomingTransaction:
+      example:
+        receivedImageCount: 5
+        outgoingTransactionId: 1
+        boxName: boxName
+        id: 6
+        updated: 2
+        totalImageCount: 5
+        boxId: 0
+        status: status
+      properties:
+        boxId:
+          format: int64
+          title: boxId
+          type: integer
+        boxName:
+          title: boxName
+          type: string
+        id:
+          format: int64
+          title: id
+          type: integer
+        outgoingTransactionId:
+          format: int64
+          title: outgoingTransactionId
+          type: integer
+        receivedImageCount:
+          format: int64
+          title: receivedImageCount
+          type: integer
+        status:
+          title: status
+          type: string
+        totalImageCount:
+          format: int64
+          title: totalImageCount
+          type: integer
+        updated:
+          format: int64
+          title: updated
+          type: integer
+      title: incomingTransaction
+      type: object
+    logEntry:
+      example:
+        entryType: entryType
+        created: 0
+        subject: subject
+        id: 6
+        message: message
+      properties:
+        created:
+          format: int64
+          title: created
+          type: integer
+        entryType:
+          title: entryType
+          type: string
+        id:
+          format: int64
+          title: id
+          type: integer
+        message:
+          title: message
+          type: string
+        subject:
+          title: subject
+          type: string
+      title: logEntry
+      type: object
+    newUser:
+      properties:
+        password:
+          title: password
+          type: string
+        role:
+          title: role
+          type: string
+        user:
+          title: user
+          type: string
+      title: newUser
+      type: object
+    outgoingImage:
+      example:
+        sequenceNumber: 5
+        imageId: 6
+        outgoingTransactionId: 1
+        id: 0
+        sent: true
+      properties:
+        id:
+          format: int64
+          title: id
+          type: integer
+        imageId:
+          format: int64
+          title: imageId
+          type: integer
+        outgoingTransactionId:
+          format: int64
+          title: outgoingTransactionId
+          type: integer
+        sent:
+          title: sent
+          type: boolean
+        sequenceNumber:
+          format: int64
+          title: sequenceNumber
+          type: integer
+      title: outgoingImage
+      type: object
+    outgoingTransaction:
+      example:
+        sentImageCount: 1
+        profile:
+          options:
+          - name: name
+            description: description
+            rank: 0
+            title: title
+          - name: name
+            description: description
+            rank: 0
+            title: title
+        boxName: boxName
+        id: 6
+        updated: 5
+        totalImageCount: 5
+        boxId: 0
+        status: status
+      properties:
+        boxId:
+          format: int64
+          title: boxId
+          type: integer
+        boxName:
+          title: boxName
+          type: string
+        id:
+          format: int64
+          title: id
+          type: integer
+        profile:
+          $ref: '#/components/schemas/anonymizationProfile'
+        sentImageCount:
+          format: int64
+          title: sentImageCount
+          type: integer
+        status:
+          title: status
+          type: string
+        totalImageCount:
+          format: int64
+          title: totalImageCount
+          type: integer
+        updated:
+          format: int64
+          title: updated
+          type: integer
+      title: outgoingTransaction
+      type: object
+    outgoingTransactionImage:
+      example:
+        image:
+          sequenceNumber: 5
+          imageId: 6
+          outgoingTransactionId: 1
+          id: 0
+          sent: true
+        transaction:
+          sentImageCount: 1
+          profile:
+            options:
+            - name: name
+              description: description
+              rank: 0
+              title: title
+            - name: name
+              description: description
+              rank: 0
+              title: title
+          boxName: boxName
+          id: 6
+          updated: 5
+          totalImageCount: 5
+          boxId: 0
+          status: status
+      properties:
+        image:
+          $ref: '#/components/schemas/outgoingImage'
+        transaction:
+          $ref: '#/components/schemas/outgoingTransaction'
+      title: outgoingTransactionImage
+      type: object
+    patient:
+      example:
+        patientName:
+          value: value
+        patientSex:
+          value: value
+        patientID:
+          value: value
+        id: 6
+        patientBirthDate:
+          value: value
+      properties:
+        id:
+          format: int64
+          title: id
+          type: integer
+        patientBirthDate:
+          $ref: '#/components/schemas/dicomPropertyValue'
+        patientID:
+          $ref: '#/components/schemas/dicomPropertyValue'
+        patientName:
+          $ref: '#/components/schemas/dicomPropertyValue'
+        patientSex:
+          $ref: '#/components/schemas/dicomPropertyValue'
+      title: patient
+      type: object
+    query:
+      properties:
+        count:
+          format: int64
+          title: count
+          type: integer
+        filters:
+          $ref: '#/components/schemas/queryFilters'
+        order:
+          $ref: '#/components/schemas/queryOrder'
+        queryProperties:
+          items:
+            $ref: '#/components/schemas/queryProperty'
+          title: queryProperties
+          type: array
+        startIndex:
+          format: int64
+          title: startIndex
+          type: integer
+      required:
+      - count
+      - queryProperties
+      - startIndex
+      title: query
+      type: object
+    queryFilters:
+      properties:
+        seriesTagIds:
+          items:
+            format: int64
+            type: integer
+          title: seriesTagIds
+          type: array
+        seriesTypeIds:
+          items:
+            format: int64
+            type: integer
+          title: seriesTypeIds
+          type: array
+        sourceRefs:
+          items:
+            $ref: '#/components/schemas/sourceRef'
+          title: sourceRefs
+          type: array
+      title: queryFilters
+      type: object
+    queryOrder:
+      properties:
+        orderAscending:
+          title: orderAscending
+          type: boolean
+        orderBy:
+          title: orderBy
+          type: string
+      title: queryOrder
+      type: object
+    queryProperty:
+      properties:
+        operator:
+          title: operator
+          type: string
+        propertyName:
+          title: propertyName
+          type: string
+        propertyValue:
+          title: propertyValue
+          type: string
+      title: queryProperty
+      type: object
+    remoteBox:
+      properties:
+        baseUrl:
+          title: baseUrl
+          type: string
+        defaultProfile:
+          $ref: '#/components/schemas/anonymizationProfile'
+        name:
+          title: name
+          type: string
+      title: remoteBox
+      type: object
+    remoteBoxConnectionData:
+      properties:
+        defaultProfile:
+          $ref: '#/components/schemas/anonymizationProfile'
+        name:
+          title: name
+          type: string
+      title: remoteBoxConnectionData
+      type: object
+    scp:
+      example:
+        aeTitle: aeTitle
+        port: 6
+        name: name
+        id: 0
+      properties:
+        aeTitle:
+          title: aeTitle
+          type: string
+        id:
+          format: int64
+          title: id
+          type: integer
+        name:
+          title: name
+          type: string
+        port:
+          format: int32
+          title: port
+          type: integer
+      title: scp
+      type: object
+    scu:
+      example:
+        aeTitle: aeTitle
+        port: 6
+        host: host
+        name: name
+        id: 0
+      properties:
+        aeTitle:
+          title: aeTitle
+          type: string
+        host:
+          title: host
+          type: string
+        id:
+          format: int64
+          title: id
+          type: integer
+        name:
+          title: name
+          type: string
+        port:
+          format: int32
+          title: port
+          type: integer
+      title: scu
+      type: object
+    series:
+      example:
+        seriesInstanceUID:
+          value: value
+        modality:
+          value: value
+        seriesDescription:
+          value: value
+        protocolName:
+          value: value
+        seriesDate:
+          value: value
+        bodyPartExamined:
+          value: value
+        frameOfReferenceUID:
+          value: value
+        stationName:
+          value: value
+        studyId: 5
+        id: 1
+        manufacturer:
+          value: value
+      properties:
+        bodyPartExamined:
+          $ref: '#/components/schemas/dicomPropertyValue'
+        frameOfReferenceUID:
+          $ref: '#/components/schemas/dicomPropertyValue'
+        id:
+          format: int64
+          title: id
+          type: integer
+        manufacturer:
+          $ref: '#/components/schemas/dicomPropertyValue'
+        modality:
+          $ref: '#/components/schemas/dicomPropertyValue'
+        protocolName:
+          $ref: '#/components/schemas/dicomPropertyValue'
+        seriesDate:
+          $ref: '#/components/schemas/dicomPropertyValue'
+        seriesDescription:
+          $ref: '#/components/schemas/dicomPropertyValue'
+        seriesInstanceUID:
+          $ref: '#/components/schemas/dicomPropertyValue'
+        stationName:
+          $ref: '#/components/schemas/dicomPropertyValue'
+        studyId:
+          format: int64
+          title: studyId
+          type: integer
+      title: series
+      type: object
+    seriesidseriestype:
+      example:
+        seriestype:
+          name: name
+          id: 0
+        seriesid: 0
+      properties:
+        seriesid:
+          format: int64
+          title: seriesid
+          type: integer
+        seriestype:
+          $ref: '#/components/schemas/seriestype'
+      title: seriesidseriestype
+      type: object
+    seriesidseriestypesresult:
+      example:
+        seriesidseriestypes:
+        - seriestype:
+            name: name
+            id: 0
+          seriesid: 0
+        - seriestype:
+            name: name
+            id: 0
+          seriesid: 0
+      properties:
+        seriesidseriestypes:
+          items:
+            $ref: '#/components/schemas/seriesidseriestype'
+          title: seriesidseriestypes
+          type: array
+      title: seriesidseriestypesresult
+      type: object
+    seriestag:
+      example:
+        name: name
+        id: 0
+      properties:
+        id:
+          format: int64
+          title: id
+          type: integer
+        name:
+          title: name
+          type: string
+      title: seriestag
+      type: object
+    seriestype:
+      example:
+        name: name
+        id: 0
+      properties:
+        id:
+          format: int64
+          title: id
+          type: integer
+        name:
+          title: name
+          type: string
+      title: seriestype
+      type: object
+    seriestyperule:
+      example:
+        seriesTypeId: 6
+        id: 0
+      properties:
+        id:
+          format: int64
+          title: id
+          type: integer
+        seriesTypeId:
+          format: int64
+          title: seriesTypeId
+          type: integer
+      title: seriestyperule
+      type: object
+    seriestyperuleattribute:
+      example:
+        path: path
+        id: 1
+        value: value
+        seriesTypeRuleId: 5
+        element: 0
+        group: 6
+      properties:
+        element:
+          format: int32
+          title: element
+          type: integer
+        group:
+          format: int32
+          title: group
+          type: integer
+        id:
+          format: int64
+          title: id
+          type: integer
+        path:
+          title: path
+          type: string
+        seriesTypeRuleId:
+          format: int64
+          title: seriesTypeRuleId
+          type: integer
+        value:
+          title: value
+          type: string
+      required:
+      - element
+      - group
+      - id
+      - seriesTypeRuleId
+      - value
+      title: seriestyperuleattribute
+      type: object
+    seriestypeupdatestatus:
+      example:
+        running: true
+      properties:
+        running:
+          title: running
+          type: boolean
+      required:
+      - running
+      title: seriestypeupdatestatus
+      type: object
+    source:
+      example:
+        sourceId: 6
+        sourceType: sourceType
+        sourceName: sourceName
+      properties:
+        sourceId:
+          format: int64
+          title: sourceId
+          type: integer
+        sourceName:
+          title: sourceName
+          type: string
+        sourceType:
+          title: sourceType
+          type: string
+      title: source
+      type: object
+    sourceRef:
+      properties:
+        sourceId:
+          format: int64
+          title: sourceId
+          type: integer
+        sourceType:
+          title: sourceType
+          type: string
+      title: sourceRef
+      type: object
+    sourceTagFilter:
+      example:
+        sourceId: 6
+        sourceType: sourceType
+        tagFilterId: 1
+        id: 0
+      properties:
+        id:
+          format: int64
+          title: id
+          type: integer
+        sourceId:
+          format: int64
+          title: sourceId
+          type: integer
+        sourceType:
+          title: sourceType
+          type: string
+        tagFilterId:
+          format: int64
+          title: tagFilterId
+          type: integer
+      title: sourceTagFilter
+      type: object
+    study:
+      example:
+        patientId: 2
+        studyDescription:
+          value: value
+        studyInstanceUID:
+          value: value
+        patientAge:
+          value: value
+        studyDate:
+          value: value
+        studyID:
+          value: value
+        id: 5
+        accessionNumber:
+          value: value
+      properties:
+        accessionNumber:
+          $ref: '#/components/schemas/dicomPropertyValue'
+        id:
+          format: int64
+          title: id
+          type: integer
+        patientAge:
+          $ref: '#/components/schemas/dicomPropertyValue'
+        patientId:
+          format: int64
+          title: patientId
+          type: integer
+        studyDate:
+          $ref: '#/components/schemas/dicomPropertyValue'
+        studyDescription:
+          $ref: '#/components/schemas/dicomPropertyValue'
+        studyID:
+          $ref: '#/components/schemas/dicomPropertyValue'
+        studyInstanceUID:
+          $ref: '#/components/schemas/dicomPropertyValue'
+      title: study
+      type: object
+    tagMapping:
+      properties:
+        tagPath:
+          $ref: '#/components/schemas/tagPathTag'
+        value:
+          title: value
+          type: string
+      title: tagMapping
+      type: object
+    tagPathTag:
+      example:
+        previous:
+          item: item
+          previous: null
+          tag: 1
+        tag: 5
+      properties:
+        previous:
+          $ref: '#/components/schemas/tagPathTrunk'
+        tag:
+          format: int32
+          title: tag
+          type: integer
+      title: tagPathTag
+      type: object
+    tagPathTrunk:
+      example:
+        item: item
+        previous: null
+        tag: 1
+      properties:
+        item:
+          title: item
+          type: string
+        previous:
+          $ref: '#/components/schemas/tagPathTrunk'
+        tag:
+          format: int32
+          title: tag
+          type: integer
+      title: tagPathTrunk
+      type: object
+    tagValue:
+      properties:
+        tagPath:
+          $ref: '#/components/schemas/tagPathTag'
+        value:
+          title: value
+          type: string
+      title: tagValue
+      type: object
+    user:
+      example:
+        role: role
+        hashedPassword: hashedPassword
+        id: 0
+        user: user
+      properties:
+        hashedPassword:
+          title: hashedPassword
+          type: string
+        id:
+          format: int64
+          title: id
+          type: integer
+        role:
+          title: role
+          type: string
+        user:
+          title: user
+          type: string
+      required:
+      - id
+      - role
+      - user
+      title: user
+      type: object
+    userInfo:
+      example:
+        role: role
+        id: 0
+        user: user
+      properties:
+        id:
+          format: int64
+          title: id
+          type: integer
+        role:
+          title: role
+          type: string
+        user:
+          title: user
+          type: string
+      title: userInfo
+      type: object
+    userPass:
+      properties:
+        pass:
+          title: pass
+          type: string
+        user:
+          title: user
+          type: string
+      title: userPass
+      type: object
+    watchedDirectory:
+      example:
+        path: path
+        id: 0
+      properties:
+        id:
+          format: int64
+          title: id
+          type: integer
+        path:
+          title: path
+          type: string
+      title: watchedDirectory
+      type: object
+    _images_post_request:
+      properties:
+        dataset:
+          description: The dataset file
+          format: binary
+          title: dataset
+          type: string
+      required:
+      - dataset
+      title: _images_post_request
+      type: object
+x-original-swagger-version: "2.0"

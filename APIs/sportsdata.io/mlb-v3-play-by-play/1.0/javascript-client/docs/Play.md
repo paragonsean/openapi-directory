@@ -1,0 +1,45 @@
+# MlbV3PlayByPlay.Play
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**atBat** | **Boolean** |  | [optional] 
+**awayTeamRuns** | **Number** |  | [optional] 
+**balls** | **Number** |  | [optional] 
+**description** | **String** |  | [optional] 
+**error** | **Boolean** |  | [optional] 
+**hit** | **Boolean** |  | [optional] 
+**hitterBatHand** | **String** |  | [optional] 
+**hitterID** | **Number** |  | [optional] 
+**hitterName** | **String** |  | [optional] 
+**hitterPosition** | **String** |  | [optional] 
+**hitterTeamID** | **Number** |  | [optional] 
+**homeTeamRuns** | **Number** |  | [optional] 
+**inningBatterNumber** | **Number** |  | [optional] 
+**inningHalf** | **String** |  | [optional] 
+**inningID** | **Number** |  | [optional] 
+**inningNumber** | **Number** |  | [optional] 
+**numberOfOutsOnPlay** | **Number** |  | [optional] 
+**out** | **Boolean** |  | [optional] 
+**outs** | **Number** |  | [optional] 
+**pitchNumberThisAtBat** | **Number** |  | [optional] 
+**pitcherID** | **Number** |  | [optional] 
+**pitcherName** | **String** |  | [optional] 
+**pitcherTeamID** | **Number** |  | [optional] 
+**pitcherThrowHand** | **String** |  | [optional] 
+**pitches** | [**[Pitch]**](Pitch.md) |  | [optional] 
+**playID** | **Number** |  | [optional] 
+**playNumber** | **Number** |  | [optional] 
+**result** | **String** |  | [optional] 
+**runner1ID** | **Number** |  | [optional] 
+**runner2ID** | **Number** |  | [optional] 
+**runner3ID** | **Number** |  | [optional] 
+**runsBattedIn** | **Number** |  | [optional] 
+**sacrifice** | **Boolean** |  | [optional] 
+**strikeout** | **Boolean** |  | [optional] 
+**strikes** | **Number** |  | [optional] 
+**updated** | **String** |  | [optional] 
+**walk** | **Boolean** |  | [optional] 
+
+

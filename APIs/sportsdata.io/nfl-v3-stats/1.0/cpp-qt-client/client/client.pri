@@ -1,0 +1,107 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIBoxScore.h \
+    $${PWD}/OAIBoxScoreV3.h \
+    $${PWD}/OAIBye.h \
+    $${PWD}/OAIDailyFantasyPlayer.h \
+    $${PWD}/OAIDailyFantasyScoring.h \
+    $${PWD}/OAIDfsSlate.h \
+    $${PWD}/OAIDfsSlateGame.h \
+    $${PWD}/OAIDfsSlatePlayer.h \
+    $${PWD}/OAIFantasyDefenseGame.h \
+    $${PWD}/OAIFantasyDefenseSeason.h \
+    $${PWD}/OAIFantasyPlayer.h \
+    $${PWD}/OAIGame.h \
+    $${PWD}/OAIInjury.h \
+    $${PWD}/OAINews.h \
+    $${PWD}/OAIPlayer.h \
+    $${PWD}/OAIPlayerDefense.h \
+    $${PWD}/OAIPlayerDetail.h \
+    $${PWD}/OAIPlayerGame.h \
+    $${PWD}/OAIPlayerGameRedZone.h \
+    $${PWD}/OAIPlayerInfo.h \
+    $${PWD}/OAIPlayerKickPuntReturns.h \
+    $${PWD}/OAIPlayerKicking.h \
+    $${PWD}/OAIPlayerOwnership.h \
+    $${PWD}/OAIPlayerPassing.h \
+    $${PWD}/OAIPlayerPunting.h \
+    $${PWD}/OAIPlayerReceiving.h \
+    $${PWD}/OAIPlayerRushing.h \
+    $${PWD}/OAIPlayerSeason.h \
+    $${PWD}/OAIPlayerSeasonRedZone.h \
+    $${PWD}/OAIPlayerSeasonThirdDown.h \
+    $${PWD}/OAIQuarter.h \
+    $${PWD}/OAISchedule.h \
+    $${PWD}/OAIScore.h \
+    $${PWD}/OAIScoringDetail.h \
+    $${PWD}/OAIScoringPlay.h \
+    $${PWD}/OAIStadium.h \
+    $${PWD}/OAIStanding.h \
+    $${PWD}/OAITeam.h \
+    $${PWD}/OAITeamGame.h \
+    $${PWD}/OAITeamSeason.h \
+    $${PWD}/OAITimeframe.h \
+# APIs
+    $${PWD}/OAIDefaultApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIBoxScore.cpp \
+    $${PWD}/OAIBoxScoreV3.cpp \
+    $${PWD}/OAIBye.cpp \
+    $${PWD}/OAIDailyFantasyPlayer.cpp \
+    $${PWD}/OAIDailyFantasyScoring.cpp \
+    $${PWD}/OAIDfsSlate.cpp \
+    $${PWD}/OAIDfsSlateGame.cpp \
+    $${PWD}/OAIDfsSlatePlayer.cpp \
+    $${PWD}/OAIFantasyDefenseGame.cpp \
+    $${PWD}/OAIFantasyDefenseSeason.cpp \
+    $${PWD}/OAIFantasyPlayer.cpp \
+    $${PWD}/OAIGame.cpp \
+    $${PWD}/OAIInjury.cpp \
+    $${PWD}/OAINews.cpp \
+    $${PWD}/OAIPlayer.cpp \
+    $${PWD}/OAIPlayerDefense.cpp \
+    $${PWD}/OAIPlayerDetail.cpp \
+    $${PWD}/OAIPlayerGame.cpp \
+    $${PWD}/OAIPlayerGameRedZone.cpp \
+    $${PWD}/OAIPlayerInfo.cpp \
+    $${PWD}/OAIPlayerKickPuntReturns.cpp \
+    $${PWD}/OAIPlayerKicking.cpp \
+    $${PWD}/OAIPlayerOwnership.cpp \
+    $${PWD}/OAIPlayerPassing.cpp \
+    $${PWD}/OAIPlayerPunting.cpp \
+    $${PWD}/OAIPlayerReceiving.cpp \
+    $${PWD}/OAIPlayerRushing.cpp \
+    $${PWD}/OAIPlayerSeason.cpp \
+    $${PWD}/OAIPlayerSeasonRedZone.cpp \
+    $${PWD}/OAIPlayerSeasonThirdDown.cpp \
+    $${PWD}/OAIQuarter.cpp \
+    $${PWD}/OAISchedule.cpp \
+    $${PWD}/OAIScore.cpp \
+    $${PWD}/OAIScoringDetail.cpp \
+    $${PWD}/OAIScoringPlay.cpp \
+    $${PWD}/OAIStadium.cpp \
+    $${PWD}/OAIStanding.cpp \
+    $${PWD}/OAITeam.cpp \
+    $${PWD}/OAITeamGame.cpp \
+    $${PWD}/OAITeamSeason.cpp \
+    $${PWD}/OAITimeframe.cpp \
+# APIs
+    $${PWD}/OAIDefaultApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

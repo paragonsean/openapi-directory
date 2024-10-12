@@ -1,0 +1,663 @@
+openapi: 3.0.1
+info:
+  title: TSAPI
+  version: v1
+  x-apisguru-categories:
+  - analytics
+  x-logo:
+    url: https://www.tsapi.net/wp-content/uploads/2019/11/cropped-icon-black-1-180x180.png
+  x-origin:
+  - format: openapi
+    url: https://api.tsapi.net/swagger/v1/swagger.json
+    version: "3.0"
+  x-providerName: tsapi.net
+servers:
+- url: /
+security:
+- basic: []
+paths:
+  /Surveys:
+    get:
+      operationId: surveys_get
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/SurveyDetail'
+                type: array
+            text/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/SurveyDetail'
+                type: array
+            text/plain:
+              schema:
+                items:
+                  $ref: '#/components/schemas/SurveyDetail'
+                type: array
+          description: Success
+      summary: Returns a list of available Surveys
+      tags:
+      - Surveys
+      x-openapi-router-controller: openapi_server.controllers.surveys_controller
+  /Surveys/{surveyId}/Interviews:
+    get:
+      operationId: surveys_survey_id_interviews_get
+      parameters:
+      - explode: false
+        in: path
+        name: surveyId
+        required: true
+        schema:
+          format: uuid
+          type: string
+        style: simple
+      - explode: true
+        in: query
+        name: start
+        required: false
+        schema:
+          format: int32
+          type: integer
+        style: form
+      - explode: true
+        in: query
+        name: maxLength
+        required: false
+        schema:
+          format: int32
+          type: integer
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/Interview'
+                type: array
+            text/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/Interview'
+                type: array
+            text/plain:
+              schema:
+                items:
+                  $ref: '#/components/schemas/Interview'
+                type: array
+          description: Success
+      summary: Fetches some interview records for a specific survey
+      tags:
+      - Surveys
+      x-openapi-router-controller: openapi_server.controllers.surveys_controller
+  /Surveys/{surveyId}/Metadata:
+    get:
+      operationId: surveys_survey_id_metadata_get
+      parameters:
+      - explode: false
+        in: path
+        name: surveyId
+        required: true
+        schema:
+          format: uuid
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SurveyMetadata'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/SurveyMetadata'
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/SurveyMetadata'
+          description: Success
+      summary: Fetches the metadata for a specific survey
+      tags:
+      - Surveys
+      x-openapi-router-controller: openapi_server.controllers.surveys_controller
+components:
+  schemas:
+    AltLabel:
+      additionalProperties: false
+      properties:
+        langIdent:
+          nullable: true
+          title: langIdent
+          type: string
+        mode:
+          allOf:
+          - $ref: '#/components/schemas/AltLabelMode'
+          title: mode
+        text:
+          nullable: true
+          title: text
+          type: string
+      title: AltLabel
+      type: object
+    AltLabelMode:
+      enum:
+      - 1
+      - 2
+      format: int32
+      title: AltLabelMode
+      type: integer
+    DataItem:
+      additionalProperties: false
+      example:
+        parentIdent: ""
+        ident: ident
+        values:
+        - values
+        - values
+      properties:
+        ident:
+          nullable: true
+          title: ident
+          type: string
+        parentIdent:
+          allOf:
+          - $ref: '#/components/schemas/ParentRef'
+          nullable: true
+          title: parentIdent
+        values:
+          items:
+            type: string
+          nullable: true
+          title: values
+          type: array
+      title: DataItem
+      type: object
+    HierarchicalInterview:
+      additionalProperties: false
+      example:
+        hierarchicalInterviews:
+        - null
+        - null
+        level: ""
+        ident: ident
+        dataItems:
+        - parentIdent: ""
+          ident: ident
+          values:
+          - values
+          - values
+        - parentIdent: ""
+          ident: ident
+          values:
+          - values
+          - values
+      properties:
+        dataItems:
+          items:
+            $ref: '#/components/schemas/DataItem'
+          nullable: true
+          title: dataItems
+          type: array
+        hierarchicalInterviews:
+          items:
+            $ref: '#/components/schemas/HierarchicalInterview'
+          nullable: true
+          title: hierarchicalInterviews
+          type: array
+        ident:
+          nullable: true
+          title: ident
+          type: string
+        level:
+          allOf:
+          - $ref: '#/components/schemas/Level'
+          nullable: true
+          title: level
+      title: HierarchicalInterview
+      type: object
+    Hierarchy:
+      additionalProperties: false
+      example:
+        parent: ""
+        metadata: ""
+        ident: ident
+      properties:
+        ident:
+          nullable: true
+          title: ident
+          type: string
+        metadata:
+          allOf:
+          - $ref: '#/components/schemas/SurveyMetadataBase'
+          nullable: true
+          title: metadata
+        parent:
+          allOf:
+          - $ref: '#/components/schemas/ParentDetails'
+          nullable: true
+          title: parent
+      title: Hierarchy
+      type: object
+    Interview:
+      additionalProperties: false
+      example:
+        hierarchicalInterviews:
+        - hierarchicalInterviews:
+          - null
+          - null
+          level: ""
+          ident: ident
+          dataItems:
+          - parentIdent: ""
+            ident: ident
+            values:
+            - values
+            - values
+          - parentIdent: ""
+            ident: ident
+            values:
+            - values
+            - values
+        - hierarchicalInterviews:
+          - null
+          - null
+          level: ""
+          ident: ident
+          dataItems:
+          - parentIdent: ""
+            ident: ident
+            values:
+            - values
+            - values
+          - parentIdent: ""
+            ident: ident
+            values:
+            - values
+            - values
+        ident: ident
+        dataItems:
+        - parentIdent: ""
+          ident: ident
+          values:
+          - values
+          - values
+        - parentIdent: ""
+          ident: ident
+          values:
+          - values
+          - values
+      properties:
+        dataItems:
+          items:
+            $ref: '#/components/schemas/DataItem'
+          nullable: true
+          title: dataItems
+          type: array
+        hierarchicalInterviews:
+          items:
+            $ref: '#/components/schemas/HierarchicalInterview'
+          nullable: true
+          title: hierarchicalInterviews
+          type: array
+        ident:
+          nullable: true
+          title: ident
+          type: string
+      title: Interview
+      type: object
+    Label:
+      additionalProperties: false
+      properties:
+        altLabels:
+          items:
+            $ref: '#/components/schemas/AltLabel'
+          nullable: true
+          title: altLabels
+          type: array
+        text:
+          nullable: true
+          title: text
+          type: string
+      title: Label
+      type: object
+    Language:
+      additionalProperties: false
+      example:
+        ident: ident
+        name: name
+        subLanguages:
+        - null
+        - null
+      properties:
+        ident:
+          nullable: true
+          title: ident
+          type: string
+        name:
+          nullable: true
+          title: name
+          type: string
+        subLanguages:
+          items:
+            $ref: '#/components/schemas/Language'
+          nullable: true
+          title: subLanguages
+          type: array
+      title: Language
+      type: object
+    Level:
+      additionalProperties: false
+      properties:
+        ident:
+          nullable: true
+          title: ident
+          type: string
+      title: Level
+      type: object
+    ParentDetails:
+      additionalProperties: false
+      properties:
+        level:
+          nullable: true
+          title: level
+          type: string
+        linkVar:
+          nullable: true
+          title: linkVar
+          type: string
+        ordered:
+          title: ordered
+          type: boolean
+      title: ParentDetails
+      type: object
+    ParentRef:
+      additionalProperties: false
+      properties:
+        parentValueIdent:
+          nullable: true
+          title: parentValueIdent
+          type: string
+        parentVariableIdent:
+          nullable: true
+          title: parentVariableIdent
+          type: string
+      title: ParentRef
+      type: object
+    ParentType:
+      enum:
+      - 1
+      - 2
+      - 3
+      format: int32
+      title: ParentType
+      type: integer
+    SurveyDetail:
+      additionalProperties: false
+      example:
+        name: name
+        id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        title: title
+      properties:
+        id:
+          format: uuid
+          title: id
+          type: string
+        name:
+          nullable: true
+          title: name
+          type: string
+        title:
+          nullable: true
+          title: title
+          type: string
+      title: SurveyDetail
+      type: object
+    SurveyMetadata:
+      additionalProperties: false
+      example:
+        variables:
+        - variableValues: ""
+          ident: ident
+          use: ""
+          name: name
+          questions:
+          - null
+          - null
+          label: ""
+          maxResponses: 6
+          type: ""
+          parentType: ""
+        - variableValues: ""
+          ident: ident
+          use: ""
+          name: name
+          questions:
+          - null
+          - null
+          label: ""
+          maxResponses: 6
+          type: ""
+          parentType: ""
+        languages:
+        - ident: ident
+          name: name
+          subLanguages:
+          - null
+          - null
+        - ident: ident
+          name: name
+          subLanguages:
+          - null
+          - null
+        hierarchies:
+        - parent: ""
+          metadata: ""
+          ident: ident
+        - parent: ""
+          metadata: ""
+          ident: ident
+        name: name
+        title: title
+        interviewCount: 0
+      properties:
+        hierarchies:
+          items:
+            $ref: '#/components/schemas/Hierarchy'
+          nullable: true
+          title: hierarchies
+          type: array
+        interviewCount:
+          format: int32
+          title: interviewCount
+          type: integer
+        languages:
+          items:
+            $ref: '#/components/schemas/Language'
+          nullable: true
+          title: languages
+          type: array
+        name:
+          nullable: true
+          title: name
+          type: string
+        title:
+          nullable: true
+          title: title
+          type: string
+        variables:
+          items:
+            $ref: '#/components/schemas/Variable'
+          nullable: true
+          title: variables
+          type: array
+      title: SurveyMetadata
+      type: object
+    SurveyMetadataBase:
+      additionalProperties: false
+      properties:
+        interviewCount:
+          format: int32
+          title: interviewCount
+          type: integer
+        languages:
+          items:
+            $ref: '#/components/schemas/Language'
+          nullable: true
+          title: languages
+          type: array
+        name:
+          nullable: true
+          title: name
+          type: string
+        title:
+          nullable: true
+          title: title
+          type: string
+        variables:
+          items:
+            $ref: '#/components/schemas/Variable'
+          nullable: true
+          title: variables
+          type: array
+      title: SurveyMetadataBase
+      type: object
+    UseType:
+      enum:
+      - 1
+      - 2
+      - 3
+      - 4
+      format: int32
+      title: UseType
+      type: integer
+    Value:
+      additionalProperties: false
+      properties:
+        code:
+          nullable: true
+          title: code
+          type: string
+        ident:
+          nullable: true
+          title: ident
+          type: string
+        label:
+          allOf:
+          - $ref: '#/components/schemas/Label'
+          nullable: true
+          title: label
+        score:
+          format: int32
+          nullable: true
+          title: score
+          type: integer
+      title: Value
+      type: object
+    ValueRange:
+      additionalProperties: false
+      properties:
+        from:
+          nullable: true
+          title: from
+          type: string
+        to:
+          nullable: true
+          title: to
+          type: string
+      title: ValueRange
+      type: object
+    Variable:
+      additionalProperties: false
+      example:
+        variableValues: ""
+        ident: ident
+        use: ""
+        name: name
+        questions:
+        - null
+        - null
+        label: ""
+        maxResponses: 6
+        type: ""
+        parentType: ""
+      properties:
+        ident:
+          nullable: true
+          title: ident
+          type: string
+        label:
+          allOf:
+          - $ref: '#/components/schemas/Label'
+          nullable: true
+          title: label
+        maxResponses:
+          format: int32
+          title: maxResponses
+          type: integer
+        name:
+          nullable: true
+          title: name
+          type: string
+        parentType:
+          allOf:
+          - $ref: '#/components/schemas/ParentType'
+          title: parentType
+        questions:
+          items:
+            $ref: '#/components/schemas/Variable'
+          nullable: true
+          title: questions
+          type: array
+        type:
+          allOf:
+          - $ref: '#/components/schemas/VariableType'
+          title: type
+        use:
+          allOf:
+          - $ref: '#/components/schemas/UseType'
+          title: use
+        variableValues:
+          allOf:
+          - $ref: '#/components/schemas/VariableValues'
+          nullable: true
+          title: variableValues
+      title: Variable
+      type: object
+    VariableType:
+      enum:
+      - 1
+      - 2
+      - 3
+      - 4
+      - 5
+      - 6
+      - 7
+      - 8
+      format: int32
+      title: VariableType
+      type: integer
+    VariableValues:
+      additionalProperties: false
+      properties:
+        range:
+          allOf:
+          - $ref: '#/components/schemas/ValueRange'
+          nullable: true
+          title: range
+        values:
+          items:
+            $ref: '#/components/schemas/Value'
+          nullable: true
+          title: values
+          type: array
+      title: VariableValues
+      type: object
+  securitySchemes:
+    basic:
+      description: Basic Authorization header using the Bearer scheme.
+      in: header
+      name: Authorization
+      type: apiKey
+      x-apikeyInfoFunc: openapi_server.controllers.security_controller.info_from_basic
