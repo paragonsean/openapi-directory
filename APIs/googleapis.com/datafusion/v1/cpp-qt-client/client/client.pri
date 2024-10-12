@@ -1,0 +1,81 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIAccelerator.h \
+    $${PWD}/OAIAuditConfig.h \
+    $${PWD}/OAIAuditLogConfig.h \
+    $${PWD}/OAIBinding.h \
+    $${PWD}/OAICryptoKeyConfig.h \
+    $${PWD}/OAIDataResidencyAugmentedView.h \
+    $${PWD}/OAIDnsPeering.h \
+    $${PWD}/OAIEventPublishConfig.h \
+    $${PWD}/OAIExpr.h \
+    $${PWD}/OAIInstance.h \
+    $${PWD}/OAIListAvailableVersionsResponse.h \
+    $${PWD}/OAIListDnsPeeringsResponse.h \
+    $${PWD}/OAIListInstancesResponse.h \
+    $${PWD}/OAIListLocationsResponse.h \
+    $${PWD}/OAIListOperationsResponse.h \
+    $${PWD}/OAILocation.h \
+    $${PWD}/OAINetworkConfig.h \
+    $${PWD}/OAIOperation.h \
+    $${PWD}/OAIOperationMetadata.h \
+    $${PWD}/OAIPersistentDiskData.h \
+    $${PWD}/OAIPolicy.h \
+    $${PWD}/OAIPrivateServiceConnectConfig.h \
+    $${PWD}/OAIServiceData.h \
+    $${PWD}/OAISetIamPolicyRequest.h \
+    $${PWD}/OAIStatus.h \
+    $${PWD}/OAITestIamPermissionsRequest.h \
+    $${PWD}/OAITestIamPermissionsResponse.h \
+    $${PWD}/OAIVersion.h \
+# APIs
+    $${PWD}/OAIProjectsApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIAccelerator.cpp \
+    $${PWD}/OAIAuditConfig.cpp \
+    $${PWD}/OAIAuditLogConfig.cpp \
+    $${PWD}/OAIBinding.cpp \
+    $${PWD}/OAICryptoKeyConfig.cpp \
+    $${PWD}/OAIDataResidencyAugmentedView.cpp \
+    $${PWD}/OAIDnsPeering.cpp \
+    $${PWD}/OAIEventPublishConfig.cpp \
+    $${PWD}/OAIExpr.cpp \
+    $${PWD}/OAIInstance.cpp \
+    $${PWD}/OAIListAvailableVersionsResponse.cpp \
+    $${PWD}/OAIListDnsPeeringsResponse.cpp \
+    $${PWD}/OAIListInstancesResponse.cpp \
+    $${PWD}/OAIListLocationsResponse.cpp \
+    $${PWD}/OAIListOperationsResponse.cpp \
+    $${PWD}/OAILocation.cpp \
+    $${PWD}/OAINetworkConfig.cpp \
+    $${PWD}/OAIOperation.cpp \
+    $${PWD}/OAIOperationMetadata.cpp \
+    $${PWD}/OAIPersistentDiskData.cpp \
+    $${PWD}/OAIPolicy.cpp \
+    $${PWD}/OAIPrivateServiceConnectConfig.cpp \
+    $${PWD}/OAIServiceData.cpp \
+    $${PWD}/OAISetIamPolicyRequest.cpp \
+    $${PWD}/OAIStatus.cpp \
+    $${PWD}/OAITestIamPermissionsRequest.cpp \
+    $${PWD}/OAITestIamPermissionsResponse.cpp \
+    $${PWD}/OAIVersion.cpp \
+# APIs
+    $${PWD}/OAIProjectsApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

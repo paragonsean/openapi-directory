@@ -1,0 +1,87 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIBindDeviceToGatewayRequest.h \
+    $${PWD}/OAIBinding.h \
+    $${PWD}/OAIDevice.h \
+    $${PWD}/OAIDeviceConfig.h \
+    $${PWD}/OAIDeviceCredential.h \
+    $${PWD}/OAIDeviceRegistry.h \
+    $${PWD}/OAIDeviceState.h \
+    $${PWD}/OAIEventNotificationConfig.h \
+    $${PWD}/OAIExpr.h \
+    $${PWD}/OAIGatewayConfig.h \
+    $${PWD}/OAIGetIamPolicyRequest.h \
+    $${PWD}/OAIGetPolicyOptions.h \
+    $${PWD}/OAIHttpConfig.h \
+    $${PWD}/OAIListDeviceConfigVersionsResponse.h \
+    $${PWD}/OAIListDeviceRegistriesResponse.h \
+    $${PWD}/OAIListDeviceStatesResponse.h \
+    $${PWD}/OAIListDevicesResponse.h \
+    $${PWD}/OAIModifyCloudToDeviceConfigRequest.h \
+    $${PWD}/OAIMqttConfig.h \
+    $${PWD}/OAIPolicy.h \
+    $${PWD}/OAIPublicKeyCertificate.h \
+    $${PWD}/OAIPublicKeyCredential.h \
+    $${PWD}/OAIRegistryCredential.h \
+    $${PWD}/OAISendCommandToDeviceRequest.h \
+    $${PWD}/OAISetIamPolicyRequest.h \
+    $${PWD}/OAIStateNotificationConfig.h \
+    $${PWD}/OAIStatus.h \
+    $${PWD}/OAITestIamPermissionsRequest.h \
+    $${PWD}/OAITestIamPermissionsResponse.h \
+    $${PWD}/OAIUnbindDeviceFromGatewayRequest.h \
+    $${PWD}/OAIX509CertificateDetails.h \
+# APIs
+    $${PWD}/OAIProjectsApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIBindDeviceToGatewayRequest.cpp \
+    $${PWD}/OAIBinding.cpp \
+    $${PWD}/OAIDevice.cpp \
+    $${PWD}/OAIDeviceConfig.cpp \
+    $${PWD}/OAIDeviceCredential.cpp \
+    $${PWD}/OAIDeviceRegistry.cpp \
+    $${PWD}/OAIDeviceState.cpp \
+    $${PWD}/OAIEventNotificationConfig.cpp \
+    $${PWD}/OAIExpr.cpp \
+    $${PWD}/OAIGatewayConfig.cpp \
+    $${PWD}/OAIGetIamPolicyRequest.cpp \
+    $${PWD}/OAIGetPolicyOptions.cpp \
+    $${PWD}/OAIHttpConfig.cpp \
+    $${PWD}/OAIListDeviceConfigVersionsResponse.cpp \
+    $${PWD}/OAIListDeviceRegistriesResponse.cpp \
+    $${PWD}/OAIListDeviceStatesResponse.cpp \
+    $${PWD}/OAIListDevicesResponse.cpp \
+    $${PWD}/OAIModifyCloudToDeviceConfigRequest.cpp \
+    $${PWD}/OAIMqttConfig.cpp \
+    $${PWD}/OAIPolicy.cpp \
+    $${PWD}/OAIPublicKeyCertificate.cpp \
+    $${PWD}/OAIPublicKeyCredential.cpp \
+    $${PWD}/OAIRegistryCredential.cpp \
+    $${PWD}/OAISendCommandToDeviceRequest.cpp \
+    $${PWD}/OAISetIamPolicyRequest.cpp \
+    $${PWD}/OAIStateNotificationConfig.cpp \
+    $${PWD}/OAIStatus.cpp \
+    $${PWD}/OAITestIamPermissionsRequest.cpp \
+    $${PWD}/OAITestIamPermissionsResponse.cpp \
+    $${PWD}/OAIUnbindDeviceFromGatewayRequest.cpp \
+    $${PWD}/OAIX509CertificateDetails.cpp \
+# APIs
+    $${PWD}/OAIProjectsApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

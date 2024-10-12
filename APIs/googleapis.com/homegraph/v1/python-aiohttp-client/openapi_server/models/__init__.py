@@ -1,0 +1,21 @@
+# coding: utf-8
+
+# import models into model package
+from openapi_server.models.agent_device_id import AgentDeviceId
+from openapi_server.models.agent_other_device_id import AgentOtherDeviceId
+from openapi_server.models.device import Device
+from openapi_server.models.device_info import DeviceInfo
+from openapi_server.models.device_names import DeviceNames
+from openapi_server.models.query_request import QueryRequest
+from openapi_server.models.query_request_input import QueryRequestInput
+from openapi_server.models.query_request_payload import QueryRequestPayload
+from openapi_server.models.query_response import QueryResponse
+from openapi_server.models.query_response_payload import QueryResponsePayload
+from openapi_server.models.report_state_and_notification_device import ReportStateAndNotificationDevice
+from openapi_server.models.report_state_and_notification_request import ReportStateAndNotificationRequest
+from openapi_server.models.report_state_and_notification_response import ReportStateAndNotificationResponse
+from openapi_server.models.request_sync_devices_request import RequestSyncDevicesRequest
+from openapi_server.models.state_and_notification_payload import StateAndNotificationPayload
+from openapi_server.models.sync_request import SyncRequest
+from openapi_server.models.sync_response import SyncResponse
+from openapi_server.models.sync_response_payload import SyncResponsePayload

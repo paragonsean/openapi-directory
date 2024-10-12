@@ -1,0 +1,17 @@
+
+
+# DicomStore
+
+Represents a DICOM store.
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**labels** | **Map&lt;String, String&gt;** | User-supplied key-value pairs used to organize DICOM stores. Label keys must be between 1 and 63 characters long, have a UTF-8 encoding of maximum 128 bytes, and must conform to the following PCRE regular expression: \\p{Ll}\\p{Lo}{0,62} Label values are optional, must be between 1 and 63 characters long, have a UTF-8 encoding of maximum 128 bytes, and must conform to the following PCRE regular expression: [\\p{Ll}\\p{Lo}\\p{N}_-]{0,63} No more than 64 labels can be associated with a given store. |  [optional] |
+|**name** | **String** | Identifier. Resource name of the DICOM store, of the form &#x60;projects/{project_id}/locations/{location_id}/datasets/{dataset_id}/dicomStores/{dicom_store_id}&#x60;. |  [optional] |
+|**notificationConfig** | [**NotificationConfig**](NotificationConfig.md) |  |  [optional] |
+|**streamConfigs** | [**List&lt;GoogleCloudHealthcareV1DicomStreamConfig&gt;**](GoogleCloudHealthcareV1DicomStreamConfig.md) | Optional. A list of streaming configs used to configure the destination of streaming exports for every DICOM instance insertion in this DICOM store. After a new config is added to &#x60;stream_configs&#x60;, DICOM instance insertions are streamed to the new destination. When a config is removed from &#x60;stream_configs&#x60;, the server stops streaming to that destination. Each config must contain a unique destination. |  [optional] |
+
+
+

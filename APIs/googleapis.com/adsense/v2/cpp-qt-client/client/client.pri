@@ -1,0 +1,89 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIAccount.h \
+    $${PWD}/OAIAdBlockingRecoveryTag.h \
+    $${PWD}/OAIAdClient.h \
+    $${PWD}/OAIAdClientAdCode.h \
+    $${PWD}/OAIAdUnit.h \
+    $${PWD}/OAIAdUnitAdCode.h \
+    $${PWD}/OAIAlert.h \
+    $${PWD}/OAICell.h \
+    $${PWD}/OAIContentAdsSettings.h \
+    $${PWD}/OAICustomChannel.h \
+    $${PWD}/OAIDate.h \
+    $${PWD}/OAIHeader.h \
+    $${PWD}/OAIHttpBody.h \
+    $${PWD}/OAIListAccountsResponse.h \
+    $${PWD}/OAIListAdClientsResponse.h \
+    $${PWD}/OAIListAdUnitsResponse.h \
+    $${PWD}/OAIListAlertsResponse.h \
+    $${PWD}/OAIListChildAccountsResponse.h \
+    $${PWD}/OAIListCustomChannelsResponse.h \
+    $${PWD}/OAIListLinkedAdUnitsResponse.h \
+    $${PWD}/OAIListLinkedCustomChannelsResponse.h \
+    $${PWD}/OAIListPaymentsResponse.h \
+    $${PWD}/OAIListSavedReportsResponse.h \
+    $${PWD}/OAIListSitesResponse.h \
+    $${PWD}/OAIListUrlChannelsResponse.h \
+    $${PWD}/OAIPayment.h \
+    $${PWD}/OAIReportResult.h \
+    $${PWD}/OAIRow.h \
+    $${PWD}/OAISavedReport.h \
+    $${PWD}/OAISite.h \
+    $${PWD}/OAITimeZone.h \
+    $${PWD}/OAIUrlChannel.h \
+# APIs
+    $${PWD}/OAIAccountsApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIAccount.cpp \
+    $${PWD}/OAIAdBlockingRecoveryTag.cpp \
+    $${PWD}/OAIAdClient.cpp \
+    $${PWD}/OAIAdClientAdCode.cpp \
+    $${PWD}/OAIAdUnit.cpp \
+    $${PWD}/OAIAdUnitAdCode.cpp \
+    $${PWD}/OAIAlert.cpp \
+    $${PWD}/OAICell.cpp \
+    $${PWD}/OAIContentAdsSettings.cpp \
+    $${PWD}/OAICustomChannel.cpp \
+    $${PWD}/OAIDate.cpp \
+    $${PWD}/OAIHeader.cpp \
+    $${PWD}/OAIHttpBody.cpp \
+    $${PWD}/OAIListAccountsResponse.cpp \
+    $${PWD}/OAIListAdClientsResponse.cpp \
+    $${PWD}/OAIListAdUnitsResponse.cpp \
+    $${PWD}/OAIListAlertsResponse.cpp \
+    $${PWD}/OAIListChildAccountsResponse.cpp \
+    $${PWD}/OAIListCustomChannelsResponse.cpp \
+    $${PWD}/OAIListLinkedAdUnitsResponse.cpp \
+    $${PWD}/OAIListLinkedCustomChannelsResponse.cpp \
+    $${PWD}/OAIListPaymentsResponse.cpp \
+    $${PWD}/OAIListSavedReportsResponse.cpp \
+    $${PWD}/OAIListSitesResponse.cpp \
+    $${PWD}/OAIListUrlChannelsResponse.cpp \
+    $${PWD}/OAIPayment.cpp \
+    $${PWD}/OAIReportResult.cpp \
+    $${PWD}/OAIRow.cpp \
+    $${PWD}/OAISavedReport.cpp \
+    $${PWD}/OAISite.cpp \
+    $${PWD}/OAITimeZone.cpp \
+    $${PWD}/OAIUrlChannel.cpp \
+# APIs
+    $${PWD}/OAIAccountsApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

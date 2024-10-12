@@ -1,0 +1,89 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIAccelerator.h \
+    $${PWD}/OAIAction.h \
+    $${PWD}/OAIContainerKilledEvent.h \
+    $${PWD}/OAIContainerStartedEvent.h \
+    $${PWD}/OAIContainerStoppedEvent.h \
+    $${PWD}/OAIDelayedEvent.h \
+    $${PWD}/OAIDisk.h \
+    $${PWD}/OAIEvent.h \
+    $${PWD}/OAIExistingDisk.h \
+    $${PWD}/OAIFailedEvent.h \
+    $${PWD}/OAIListLocationsResponse.h \
+    $${PWD}/OAIListOperationsResponse.h \
+    $${PWD}/OAILocation.h \
+    $${PWD}/OAIMetadata.h \
+    $${PWD}/OAIMount.h \
+    $${PWD}/OAINFSMount.h \
+    $${PWD}/OAINetwork.h \
+    $${PWD}/OAIOperation.h \
+    $${PWD}/OAIPersistentDisk.h \
+    $${PWD}/OAIPipeline.h \
+    $${PWD}/OAIPullStartedEvent.h \
+    $${PWD}/OAIPullStoppedEvent.h \
+    $${PWD}/OAIResources.h \
+    $${PWD}/OAIRunPipelineRequest.h \
+    $${PWD}/OAISecret.h \
+    $${PWD}/OAIServiceAccount.h \
+    $${PWD}/OAIStatus.h \
+    $${PWD}/OAIUnexpectedExitStatusEvent.h \
+    $${PWD}/OAIVirtualMachine.h \
+    $${PWD}/OAIVolume.h \
+    $${PWD}/OAIWorkerAssignedEvent.h \
+    $${PWD}/OAIWorkerReleasedEvent.h \
+# APIs
+    $${PWD}/OAIProjectsApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIAccelerator.cpp \
+    $${PWD}/OAIAction.cpp \
+    $${PWD}/OAIContainerKilledEvent.cpp \
+    $${PWD}/OAIContainerStartedEvent.cpp \
+    $${PWD}/OAIContainerStoppedEvent.cpp \
+    $${PWD}/OAIDelayedEvent.cpp \
+    $${PWD}/OAIDisk.cpp \
+    $${PWD}/OAIEvent.cpp \
+    $${PWD}/OAIExistingDisk.cpp \
+    $${PWD}/OAIFailedEvent.cpp \
+    $${PWD}/OAIListLocationsResponse.cpp \
+    $${PWD}/OAIListOperationsResponse.cpp \
+    $${PWD}/OAILocation.cpp \
+    $${PWD}/OAIMetadata.cpp \
+    $${PWD}/OAIMount.cpp \
+    $${PWD}/OAINFSMount.cpp \
+    $${PWD}/OAINetwork.cpp \
+    $${PWD}/OAIOperation.cpp \
+    $${PWD}/OAIPersistentDisk.cpp \
+    $${PWD}/OAIPipeline.cpp \
+    $${PWD}/OAIPullStartedEvent.cpp \
+    $${PWD}/OAIPullStoppedEvent.cpp \
+    $${PWD}/OAIResources.cpp \
+    $${PWD}/OAIRunPipelineRequest.cpp \
+    $${PWD}/OAISecret.cpp \
+    $${PWD}/OAIServiceAccount.cpp \
+    $${PWD}/OAIStatus.cpp \
+    $${PWD}/OAIUnexpectedExitStatusEvent.cpp \
+    $${PWD}/OAIVirtualMachine.cpp \
+    $${PWD}/OAIVolume.cpp \
+    $${PWD}/OAIWorkerAssignedEvent.cpp \
+    $${PWD}/OAIWorkerReleasedEvent.cpp \
+# APIs
+    $${PWD}/OAIProjectsApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

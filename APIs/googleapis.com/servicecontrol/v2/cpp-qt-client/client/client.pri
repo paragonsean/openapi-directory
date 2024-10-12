@@ -1,0 +1,85 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIApi.h \
+    $${PWD}/OAIAttributeContext.h \
+    $${PWD}/OAIAuditLog.h \
+    $${PWD}/OAIAuth.h \
+    $${PWD}/OAIAuthenticationInfo.h \
+    $${PWD}/OAIAuthorizationInfo.h \
+    $${PWD}/OAICheckRequest.h \
+    $${PWD}/OAICheckResponse.h \
+    $${PWD}/OAIFirstPartyPrincipal.h \
+    $${PWD}/OAIOrgPolicyViolationInfo.h \
+    $${PWD}/OAIPeer.h \
+    $${PWD}/OAIPolicyViolationInfo.h \
+    $${PWD}/OAIReportRequest.h \
+    $${PWD}/OAIRequest.h \
+    $${PWD}/OAIRequestMetadata.h \
+    $${PWD}/OAIResource.h \
+    $${PWD}/OAIResourceInfo.h \
+    $${PWD}/OAIResourceLocation.h \
+    $${PWD}/OAIResponse.h \
+    $${PWD}/OAIServiceAccountDelegationInfo.h \
+    $${PWD}/OAIServiceDelegationHistory.h \
+    $${PWD}/OAIServiceMetadata.h \
+    $${PWD}/OAISpanContext.h \
+    $${PWD}/OAIStatus.h \
+    $${PWD}/OAIThirdPartyPrincipal.h \
+    $${PWD}/OAIV2HttpRequest.h \
+    $${PWD}/OAIV2LogEntry.h \
+    $${PWD}/OAIV2LogEntryOperation.h \
+    $${PWD}/OAIV2LogEntrySourceLocation.h \
+    $${PWD}/OAIViolationInfo.h \
+# APIs
+    $${PWD}/OAIServicesApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIApi.cpp \
+    $${PWD}/OAIAttributeContext.cpp \
+    $${PWD}/OAIAuditLog.cpp \
+    $${PWD}/OAIAuth.cpp \
+    $${PWD}/OAIAuthenticationInfo.cpp \
+    $${PWD}/OAIAuthorizationInfo.cpp \
+    $${PWD}/OAICheckRequest.cpp \
+    $${PWD}/OAICheckResponse.cpp \
+    $${PWD}/OAIFirstPartyPrincipal.cpp \
+    $${PWD}/OAIOrgPolicyViolationInfo.cpp \
+    $${PWD}/OAIPeer.cpp \
+    $${PWD}/OAIPolicyViolationInfo.cpp \
+    $${PWD}/OAIReportRequest.cpp \
+    $${PWD}/OAIRequest.cpp \
+    $${PWD}/OAIRequestMetadata.cpp \
+    $${PWD}/OAIResource.cpp \
+    $${PWD}/OAIResourceInfo.cpp \
+    $${PWD}/OAIResourceLocation.cpp \
+    $${PWD}/OAIResponse.cpp \
+    $${PWD}/OAIServiceAccountDelegationInfo.cpp \
+    $${PWD}/OAIServiceDelegationHistory.cpp \
+    $${PWD}/OAIServiceMetadata.cpp \
+    $${PWD}/OAISpanContext.cpp \
+    $${PWD}/OAIStatus.cpp \
+    $${PWD}/OAIThirdPartyPrincipal.cpp \
+    $${PWD}/OAIV2HttpRequest.cpp \
+    $${PWD}/OAIV2LogEntry.cpp \
+    $${PWD}/OAIV2LogEntryOperation.cpp \
+    $${PWD}/OAIV2LogEntrySourceLocation.cpp \
+    $${PWD}/OAIViolationInfo.cpp \
+# APIs
+    $${PWD}/OAIServicesApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

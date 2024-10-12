@@ -1,0 +1,115 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIAcknowledgeTaskRequest.h \
+    $${PWD}/OAIAppEngineHttpRequest.h \
+    $${PWD}/OAIAppEngineHttpTarget.h \
+    $${PWD}/OAIAppEngineRouting.h \
+    $${PWD}/OAIAttemptStatus.h \
+    $${PWD}/OAIBinding.h \
+    $${PWD}/OAIBufferTaskRequest.h \
+    $${PWD}/OAIBufferTaskResponse.h \
+    $${PWD}/OAICancelLeaseRequest.h \
+    $${PWD}/OAICmekConfig.h \
+    $${PWD}/OAICreateTaskRequest.h \
+    $${PWD}/OAIExpr.h \
+    $${PWD}/OAIGetIamPolicyRequest.h \
+    $${PWD}/OAIGetPolicyOptions.h \
+    $${PWD}/OAIHeader.h \
+    $${PWD}/OAIHeaderOverride.h \
+    $${PWD}/OAIHttpBody.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIHttpTarget.h \
+    $${PWD}/OAILeaseTasksRequest.h \
+    $${PWD}/OAILeaseTasksResponse.h \
+    $${PWD}/OAIListLocationsResponse.h \
+    $${PWD}/OAIListQueuesResponse.h \
+    $${PWD}/OAIListTasksResponse.h \
+    $${PWD}/OAILocation.h \
+    $${PWD}/OAIOAuthToken.h \
+    $${PWD}/OAIOidcToken.h \
+    $${PWD}/OAIPathOverride.h \
+    $${PWD}/OAIPolicy.h \
+    $${PWD}/OAIPullMessage.h \
+    $${PWD}/OAIQueryOverride.h \
+    $${PWD}/OAIQueue.h \
+    $${PWD}/OAIQueueStats.h \
+    $${PWD}/OAIRateLimits.h \
+    $${PWD}/OAIRenewLeaseRequest.h \
+    $${PWD}/OAIRetryConfig.h \
+    $${PWD}/OAIRunTaskRequest.h \
+    $${PWD}/OAISetIamPolicyRequest.h \
+    $${PWD}/OAIStatus.h \
+    $${PWD}/OAITask.h \
+    $${PWD}/OAITaskStatus.h \
+    $${PWD}/OAITestIamPermissionsRequest.h \
+    $${PWD}/OAITestIamPermissionsResponse.h \
+    $${PWD}/OAIUriOverride.h \
+# APIs
+    $${PWD}/OAIApiApi.h \
+    $${PWD}/OAIProjectsApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIAcknowledgeTaskRequest.cpp \
+    $${PWD}/OAIAppEngineHttpRequest.cpp \
+    $${PWD}/OAIAppEngineHttpTarget.cpp \
+    $${PWD}/OAIAppEngineRouting.cpp \
+    $${PWD}/OAIAttemptStatus.cpp \
+    $${PWD}/OAIBinding.cpp \
+    $${PWD}/OAIBufferTaskRequest.cpp \
+    $${PWD}/OAIBufferTaskResponse.cpp \
+    $${PWD}/OAICancelLeaseRequest.cpp \
+    $${PWD}/OAICmekConfig.cpp \
+    $${PWD}/OAICreateTaskRequest.cpp \
+    $${PWD}/OAIExpr.cpp \
+    $${PWD}/OAIGetIamPolicyRequest.cpp \
+    $${PWD}/OAIGetPolicyOptions.cpp \
+    $${PWD}/OAIHeader.cpp \
+    $${PWD}/OAIHeaderOverride.cpp \
+    $${PWD}/OAIHttpBody.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpTarget.cpp \
+    $${PWD}/OAILeaseTasksRequest.cpp \
+    $${PWD}/OAILeaseTasksResponse.cpp \
+    $${PWD}/OAIListLocationsResponse.cpp \
+    $${PWD}/OAIListQueuesResponse.cpp \
+    $${PWD}/OAIListTasksResponse.cpp \
+    $${PWD}/OAILocation.cpp \
+    $${PWD}/OAIOAuthToken.cpp \
+    $${PWD}/OAIOidcToken.cpp \
+    $${PWD}/OAIPathOverride.cpp \
+    $${PWD}/OAIPolicy.cpp \
+    $${PWD}/OAIPullMessage.cpp \
+    $${PWD}/OAIQueryOverride.cpp \
+    $${PWD}/OAIQueue.cpp \
+    $${PWD}/OAIQueueStats.cpp \
+    $${PWD}/OAIRateLimits.cpp \
+    $${PWD}/OAIRenewLeaseRequest.cpp \
+    $${PWD}/OAIRetryConfig.cpp \
+    $${PWD}/OAIRunTaskRequest.cpp \
+    $${PWD}/OAISetIamPolicyRequest.cpp \
+    $${PWD}/OAIStatus.cpp \
+    $${PWD}/OAITask.cpp \
+    $${PWD}/OAITaskStatus.cpp \
+    $${PWD}/OAITestIamPermissionsRequest.cpp \
+    $${PWD}/OAITestIamPermissionsResponse.cpp \
+    $${PWD}/OAIUriOverride.cpp \
+# APIs
+    $${PWD}/OAIApiApi.cpp \
+    $${PWD}/OAIProjectsApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

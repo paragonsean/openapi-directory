@@ -1,0 +1,111 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIActingUser.h \
+    $${PWD}/OAICertDnsChallenge.h \
+    $${PWD}/OAICertHttpChallenge.h \
+    $${PWD}/OAICertVerification.h \
+    $${PWD}/OAICertificate.h \
+    $${PWD}/OAIChannel.h \
+    $${PWD}/OAICloneVersionRequest.h \
+    $${PWD}/OAICloudRunRewrite.h \
+    $${PWD}/OAICustomDomain.h \
+    $${PWD}/OAICustomDomainMetadata.h \
+    $${PWD}/OAIDnsRecord.h \
+    $${PWD}/OAIDnsRecordSet.h \
+    $${PWD}/OAIDnsUpdates.h \
+    $${PWD}/OAIDomain.h \
+    $${PWD}/OAIDomainProvisioning.h \
+    $${PWD}/OAIDomainRedirect.h \
+    $${PWD}/OAIHeader.h \
+    $${PWD}/OAIHttpUpdate.h \
+    $${PWD}/OAII18nConfig.h \
+    $${PWD}/OAIListChannelsResponse.h \
+    $${PWD}/OAIListCustomDomainsResponse.h \
+    $${PWD}/OAIListDomainsResponse.h \
+    $${PWD}/OAIListOperationsResponse.h \
+    $${PWD}/OAIListReleasesResponse.h \
+    $${PWD}/OAIListSitesResponse.h \
+    $${PWD}/OAIListVersionFilesResponse.h \
+    $${PWD}/OAIListVersionsResponse.h \
+    $${PWD}/OAILiveMigrationStep.h \
+    $${PWD}/OAIOperation.h \
+    $${PWD}/OAIPathFilter.h \
+    $${PWD}/OAIPopulateVersionFilesRequest.h \
+    $${PWD}/OAIPopulateVersionFilesResponse.h \
+    $${PWD}/OAIRedirect.h \
+    $${PWD}/OAIRelease.h \
+    $${PWD}/OAIRewrite.h \
+    $${PWD}/OAIServingConfig.h \
+    $${PWD}/OAISite.h \
+    $${PWD}/OAISiteConfig.h \
+    $${PWD}/OAIStatus.h \
+    $${PWD}/OAIUndeleteCustomDomainRequest.h \
+    $${PWD}/OAIVersion.h \
+    $${PWD}/OAIVersionFile.h \
+# APIs
+    $${PWD}/OAIProjectsApi.h \
+    $${PWD}/OAISitesApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIActingUser.cpp \
+    $${PWD}/OAICertDnsChallenge.cpp \
+    $${PWD}/OAICertHttpChallenge.cpp \
+    $${PWD}/OAICertVerification.cpp \
+    $${PWD}/OAICertificate.cpp \
+    $${PWD}/OAIChannel.cpp \
+    $${PWD}/OAICloneVersionRequest.cpp \
+    $${PWD}/OAICloudRunRewrite.cpp \
+    $${PWD}/OAICustomDomain.cpp \
+    $${PWD}/OAICustomDomainMetadata.cpp \
+    $${PWD}/OAIDnsRecord.cpp \
+    $${PWD}/OAIDnsRecordSet.cpp \
+    $${PWD}/OAIDnsUpdates.cpp \
+    $${PWD}/OAIDomain.cpp \
+    $${PWD}/OAIDomainProvisioning.cpp \
+    $${PWD}/OAIDomainRedirect.cpp \
+    $${PWD}/OAIHeader.cpp \
+    $${PWD}/OAIHttpUpdate.cpp \
+    $${PWD}/OAII18nConfig.cpp \
+    $${PWD}/OAIListChannelsResponse.cpp \
+    $${PWD}/OAIListCustomDomainsResponse.cpp \
+    $${PWD}/OAIListDomainsResponse.cpp \
+    $${PWD}/OAIListOperationsResponse.cpp \
+    $${PWD}/OAIListReleasesResponse.cpp \
+    $${PWD}/OAIListSitesResponse.cpp \
+    $${PWD}/OAIListVersionFilesResponse.cpp \
+    $${PWD}/OAIListVersionsResponse.cpp \
+    $${PWD}/OAILiveMigrationStep.cpp \
+    $${PWD}/OAIOperation.cpp \
+    $${PWD}/OAIPathFilter.cpp \
+    $${PWD}/OAIPopulateVersionFilesRequest.cpp \
+    $${PWD}/OAIPopulateVersionFilesResponse.cpp \
+    $${PWD}/OAIRedirect.cpp \
+    $${PWD}/OAIRelease.cpp \
+    $${PWD}/OAIRewrite.cpp \
+    $${PWD}/OAIServingConfig.cpp \
+    $${PWD}/OAISite.cpp \
+    $${PWD}/OAISiteConfig.cpp \
+    $${PWD}/OAIStatus.cpp \
+    $${PWD}/OAIUndeleteCustomDomainRequest.cpp \
+    $${PWD}/OAIVersion.cpp \
+    $${PWD}/OAIVersionFile.cpp \
+# APIs
+    $${PWD}/OAIProjectsApi.cpp \
+    $${PWD}/OAISitesApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

@@ -1,0 +1,89 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIBlog.h \
+    $${PWD}/OAIBlogList.h \
+    $${PWD}/OAIBlogPerUserInfo.h \
+    $${PWD}/OAIBlogUserInfo.h \
+    $${PWD}/OAIBlog_locale.h \
+    $${PWD}/OAIBlog_pages.h \
+    $${PWD}/OAIBlog_posts.h \
+    $${PWD}/OAIComment.h \
+    $${PWD}/OAICommentList.h \
+    $${PWD}/OAIComment_author.h \
+    $${PWD}/OAIComment_author_image.h \
+    $${PWD}/OAIComment_blog.h \
+    $${PWD}/OAIComment_inReplyTo.h \
+    $${PWD}/OAIComment_post.h \
+    $${PWD}/OAIPage.h \
+    $${PWD}/OAIPageList.h \
+    $${PWD}/OAIPage_author.h \
+    $${PWD}/OAIPage_blog.h \
+    $${PWD}/OAIPost.h \
+    $${PWD}/OAIPostList.h \
+    $${PWD}/OAIPost_author.h \
+    $${PWD}/OAIPost_blog.h \
+    $${PWD}/OAIPost_images_inner.h \
+    $${PWD}/OAIPost_location.h \
+    $${PWD}/OAIPost_replies.h \
+    $${PWD}/OAIUser.h \
+    $${PWD}/OAIUser_blogs.h \
+    $${PWD}/OAIUser_locale.h \
+# APIs
+    $${PWD}/OAIBlogsApi.h \
+    $${PWD}/OAICommentsApi.h \
+    $${PWD}/OAIPagesApi.h \
+    $${PWD}/OAIPostsApi.h \
+    $${PWD}/OAIUsersApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIBlog.cpp \
+    $${PWD}/OAIBlogList.cpp \
+    $${PWD}/OAIBlogPerUserInfo.cpp \
+    $${PWD}/OAIBlogUserInfo.cpp \
+    $${PWD}/OAIBlog_locale.cpp \
+    $${PWD}/OAIBlog_pages.cpp \
+    $${PWD}/OAIBlog_posts.cpp \
+    $${PWD}/OAIComment.cpp \
+    $${PWD}/OAICommentList.cpp \
+    $${PWD}/OAIComment_author.cpp \
+    $${PWD}/OAIComment_author_image.cpp \
+    $${PWD}/OAIComment_blog.cpp \
+    $${PWD}/OAIComment_inReplyTo.cpp \
+    $${PWD}/OAIComment_post.cpp \
+    $${PWD}/OAIPage.cpp \
+    $${PWD}/OAIPageList.cpp \
+    $${PWD}/OAIPage_author.cpp \
+    $${PWD}/OAIPage_blog.cpp \
+    $${PWD}/OAIPost.cpp \
+    $${PWD}/OAIPostList.cpp \
+    $${PWD}/OAIPost_author.cpp \
+    $${PWD}/OAIPost_blog.cpp \
+    $${PWD}/OAIPost_images_inner.cpp \
+    $${PWD}/OAIPost_location.cpp \
+    $${PWD}/OAIPost_replies.cpp \
+    $${PWD}/OAIUser.cpp \
+    $${PWD}/OAIUser_blogs.cpp \
+    $${PWD}/OAIUser_locale.cpp \
+# APIs
+    $${PWD}/OAIBlogsApi.cpp \
+    $${PWD}/OAICommentsApi.cpp \
+    $${PWD}/OAIPagesApi.cpp \
+    $${PWD}/OAIPostsApi.cpp \
+    $${PWD}/OAIUsersApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

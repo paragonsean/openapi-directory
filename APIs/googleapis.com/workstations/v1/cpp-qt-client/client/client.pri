@@ -1,0 +1,99 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIAuditConfig.h \
+    $${PWD}/OAIAuditLogConfig.h \
+    $${PWD}/OAIBinding.h \
+    $${PWD}/OAIContainer.h \
+    $${PWD}/OAICustomerEncryptionKey.h \
+    $${PWD}/OAIDomainConfig.h \
+    $${PWD}/OAIExpr.h \
+    $${PWD}/OAIGceConfidentialInstanceConfig.h \
+    $${PWD}/OAIGceInstance.h \
+    $${PWD}/OAIGceRegionalPersistentDisk.h \
+    $${PWD}/OAIGceShieldedInstanceConfig.h \
+    $${PWD}/OAIGenerateAccessTokenRequest.h \
+    $${PWD}/OAIGenerateAccessTokenResponse.h \
+    $${PWD}/OAIHost.h \
+    $${PWD}/OAIListLocationsResponse.h \
+    $${PWD}/OAIListOperationsResponse.h \
+    $${PWD}/OAIListUsableWorkstationConfigsResponse.h \
+    $${PWD}/OAIListUsableWorkstationsResponse.h \
+    $${PWD}/OAIListWorkstationClustersResponse.h \
+    $${PWD}/OAIListWorkstationConfigsResponse.h \
+    $${PWD}/OAIListWorkstationsResponse.h \
+    $${PWD}/OAILocation.h \
+    $${PWD}/OAIOperation.h \
+    $${PWD}/OAIOperationMetadata.h \
+    $${PWD}/OAIPersistentDirectory.h \
+    $${PWD}/OAIPolicy.h \
+    $${PWD}/OAIPrivateClusterConfig.h \
+    $${PWD}/OAIReadinessCheck.h \
+    $${PWD}/OAISetIamPolicyRequest.h \
+    $${PWD}/OAIStartWorkstationRequest.h \
+    $${PWD}/OAIStatus.h \
+    $${PWD}/OAIStopWorkstationRequest.h \
+    $${PWD}/OAITestIamPermissionsRequest.h \
+    $${PWD}/OAITestIamPermissionsResponse.h \
+    $${PWD}/OAIWorkstation.h \
+    $${PWD}/OAIWorkstationCluster.h \
+    $${PWD}/OAIWorkstationConfig.h \
+# APIs
+    $${PWD}/OAIProjectsApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIAuditConfig.cpp \
+    $${PWD}/OAIAuditLogConfig.cpp \
+    $${PWD}/OAIBinding.cpp \
+    $${PWD}/OAIContainer.cpp \
+    $${PWD}/OAICustomerEncryptionKey.cpp \
+    $${PWD}/OAIDomainConfig.cpp \
+    $${PWD}/OAIExpr.cpp \
+    $${PWD}/OAIGceConfidentialInstanceConfig.cpp \
+    $${PWD}/OAIGceInstance.cpp \
+    $${PWD}/OAIGceRegionalPersistentDisk.cpp \
+    $${PWD}/OAIGceShieldedInstanceConfig.cpp \
+    $${PWD}/OAIGenerateAccessTokenRequest.cpp \
+    $${PWD}/OAIGenerateAccessTokenResponse.cpp \
+    $${PWD}/OAIHost.cpp \
+    $${PWD}/OAIListLocationsResponse.cpp \
+    $${PWD}/OAIListOperationsResponse.cpp \
+    $${PWD}/OAIListUsableWorkstationConfigsResponse.cpp \
+    $${PWD}/OAIListUsableWorkstationsResponse.cpp \
+    $${PWD}/OAIListWorkstationClustersResponse.cpp \
+    $${PWD}/OAIListWorkstationConfigsResponse.cpp \
+    $${PWD}/OAIListWorkstationsResponse.cpp \
+    $${PWD}/OAILocation.cpp \
+    $${PWD}/OAIOperation.cpp \
+    $${PWD}/OAIOperationMetadata.cpp \
+    $${PWD}/OAIPersistentDirectory.cpp \
+    $${PWD}/OAIPolicy.cpp \
+    $${PWD}/OAIPrivateClusterConfig.cpp \
+    $${PWD}/OAIReadinessCheck.cpp \
+    $${PWD}/OAISetIamPolicyRequest.cpp \
+    $${PWD}/OAIStartWorkstationRequest.cpp \
+    $${PWD}/OAIStatus.cpp \
+    $${PWD}/OAIStopWorkstationRequest.cpp \
+    $${PWD}/OAITestIamPermissionsRequest.cpp \
+    $${PWD}/OAITestIamPermissionsResponse.cpp \
+    $${PWD}/OAIWorkstation.cpp \
+    $${PWD}/OAIWorkstationCluster.cpp \
+    $${PWD}/OAIWorkstationConfig.cpp \
+# APIs
+    $${PWD}/OAIProjectsApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

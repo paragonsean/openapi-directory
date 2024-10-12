@@ -1,0 +1,1225 @@
+# coding: utf-8
+
+import pytest
+import json
+from aiohttp import web
+
+from openapi_server.models.google_api_http_body import GoogleApiHttpBody
+from openapi_server.models.google_cloud_discoveryengine_v1beta_batch_create_target_sites_request import GoogleCloudDiscoveryengineV1betaBatchCreateTargetSitesRequest
+from openapi_server.models.google_cloud_discoveryengine_v1beta_complete_query_response import GoogleCloudDiscoveryengineV1betaCompleteQueryResponse
+from openapi_server.models.google_cloud_discoveryengine_v1beta_conversation import GoogleCloudDiscoveryengineV1betaConversation
+from openapi_server.models.google_cloud_discoveryengine_v1beta_converse_conversation_request import GoogleCloudDiscoveryengineV1betaConverseConversationRequest
+from openapi_server.models.google_cloud_discoveryengine_v1beta_converse_conversation_response import GoogleCloudDiscoveryengineV1betaConverseConversationResponse
+from openapi_server.models.google_cloud_discoveryengine_v1beta_data_store import GoogleCloudDiscoveryengineV1betaDataStore
+from openapi_server.models.google_cloud_discoveryengine_v1beta_document import GoogleCloudDiscoveryengineV1betaDocument
+from openapi_server.models.google_cloud_discoveryengine_v1beta_engine import GoogleCloudDiscoveryengineV1betaEngine
+from openapi_server.models.google_cloud_discoveryengine_v1beta_fetch_domain_verification_status_response import GoogleCloudDiscoveryengineV1betaFetchDomainVerificationStatusResponse
+from openapi_server.models.google_cloud_discoveryengine_v1beta_import_documents_request import GoogleCloudDiscoveryengineV1betaImportDocumentsRequest
+from openapi_server.models.google_cloud_discoveryengine_v1beta_import_suggestion_deny_list_entries_request import GoogleCloudDiscoveryengineV1betaImportSuggestionDenyListEntriesRequest
+from openapi_server.models.google_cloud_discoveryengine_v1beta_import_user_events_request import GoogleCloudDiscoveryengineV1betaImportUserEventsRequest
+from openapi_server.models.google_cloud_discoveryengine_v1beta_list_conversations_response import GoogleCloudDiscoveryengineV1betaListConversationsResponse
+from openapi_server.models.google_cloud_discoveryengine_v1beta_list_data_stores_response import GoogleCloudDiscoveryengineV1betaListDataStoresResponse
+from openapi_server.models.google_cloud_discoveryengine_v1beta_list_documents_response import GoogleCloudDiscoveryengineV1betaListDocumentsResponse
+from openapi_server.models.google_cloud_discoveryengine_v1beta_list_engines_response import GoogleCloudDiscoveryengineV1betaListEnginesResponse
+from openapi_server.models.google_cloud_discoveryengine_v1beta_list_schemas_response import GoogleCloudDiscoveryengineV1betaListSchemasResponse
+from openapi_server.models.google_cloud_discoveryengine_v1beta_list_serving_configs_response import GoogleCloudDiscoveryengineV1betaListServingConfigsResponse
+from openapi_server.models.google_cloud_discoveryengine_v1beta_list_target_sites_response import GoogleCloudDiscoveryengineV1betaListTargetSitesResponse
+from openapi_server.models.google_cloud_discoveryengine_v1beta_purge_documents_request import GoogleCloudDiscoveryengineV1betaPurgeDocumentsRequest
+from openapi_server.models.google_cloud_discoveryengine_v1beta_recommend_request import GoogleCloudDiscoveryengineV1betaRecommendRequest
+from openapi_server.models.google_cloud_discoveryengine_v1beta_recommend_response import GoogleCloudDiscoveryengineV1betaRecommendResponse
+from openapi_server.models.google_cloud_discoveryengine_v1beta_recrawl_uris_request import GoogleCloudDiscoveryengineV1betaRecrawlUrisRequest
+from openapi_server.models.google_cloud_discoveryengine_v1beta_schema import GoogleCloudDiscoveryengineV1betaSchema
+from openapi_server.models.google_cloud_discoveryengine_v1beta_search_request import GoogleCloudDiscoveryengineV1betaSearchRequest
+from openapi_server.models.google_cloud_discoveryengine_v1beta_search_response import GoogleCloudDiscoveryengineV1betaSearchResponse
+from openapi_server.models.google_cloud_discoveryengine_v1beta_target_site import GoogleCloudDiscoveryengineV1betaTargetSite
+from openapi_server.models.google_cloud_discoveryengine_v1beta_user_event import GoogleCloudDiscoveryengineV1betaUserEvent
+from openapi_server.models.google_longrunning_list_operations_response import GoogleLongrunningListOperationsResponse
+from openapi_server.models.google_longrunning_operation import GoogleLongrunningOperation
+
+
+pytestmark = pytest.mark.asyncio
+
+async def test_discoveryengine_projects_locations_collections_data_stores_site_search_engine_batch_verify_target_sites(client):
+    """Test case for discoveryengine_projects_locations_collections_data_stores_site_search_engine_batch_verify_target_sites
+
+    
+    """
+    body = None
+    params = [('$.xgafv', 'xgafv_example'),
+                    ('access_token', 'access_token_example'),
+                    ('alt', 'alt_example'),
+                    ('callback', 'param_callback_example'),
+                    ('fields', 'fields_example'),
+                    ('key', 'key_example'),
+                    ('oauth_token', 'oauth_token_example'),
+                    ('prettyPrint', True),
+                    ('quotaUser', 'quota_user_example'),
+                    ('upload_protocol', 'upload_protocol_example'),
+                    ('uploadType', 'upload_type_example')]
+    headers = { 
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer special-key',
+        'Authorization': 'Bearer special-key',
+    }
+    response = await client.request(
+        method='POST',
+        path='/v1beta/{parentbatch_verify_target_site}'.format(parent='parent_example'),
+        headers=headers,
+        json=body,
+        params=params,
+        )
+    assert response.status == 200, 'Response body is : ' + (await response.read()).decode('utf-8')
+
+
+pytestmark = pytest.mark.asyncio
+
+async def test_discoveryengine_projects_locations_collections_data_stores_site_search_engine_fetch_domain_verification_status(client):
+    """Test case for discoveryengine_projects_locations_collections_data_stores_site_search_engine_fetch_domain_verification_status
+
+    
+    """
+    params = [('$.xgafv', 'xgafv_example'),
+                    ('access_token', 'access_token_example'),
+                    ('alt', 'alt_example'),
+                    ('callback', 'param_callback_example'),
+                    ('fields', 'fields_example'),
+                    ('key', 'key_example'),
+                    ('oauth_token', 'oauth_token_example'),
+                    ('prettyPrint', True),
+                    ('quotaUser', 'quota_user_example'),
+                    ('upload_protocol', 'upload_protocol_example'),
+                    ('uploadType', 'upload_type_example'),
+                    ('pageSize', 56),
+                    ('pageToken', 'page_token_example')]
+    headers = { 
+        'Accept': 'application/json',
+        'Authorization': 'Bearer special-key',
+        'Authorization': 'Bearer special-key',
+    }
+    response = await client.request(
+        method='GET',
+        path='/v1beta/{site_search_enginefetch_domain_verification_statu}'.format(site_search_engine='site_search_engine_example'),
+        headers=headers,
+        params=params,
+        )
+    assert response.status == 200, 'Response body is : ' + (await response.read()).decode('utf-8')
+
+
+pytestmark = pytest.mark.asyncio
+
+async def test_discoveryengine_projects_locations_collections_engines_create(client):
+    """Test case for discoveryengine_projects_locations_collections_engines_create
+
+    
+    """
+    body = {"commonConfig":{"companyName":"companyName"},"dataStoreIds":["dataStoreIds","dataStoreIds"],"createTime":"createTime","chatEngineMetadata":{"dialogflowAgent":"dialogflowAgent"},"displayName":"displayName","industryVertical":"INDUSTRY_VERTICAL_UNSPECIFIED","name":"name","searchEngineConfig":{"searchAddOns":["SEARCH_ADD_ON_UNSPECIFIED","SEARCH_ADD_ON_UNSPECIFIED"],"searchTier":"SEARCH_TIER_UNSPECIFIED"},"updateTime":"updateTime","solutionType":"SOLUTION_TYPE_UNSPECIFIED","chatEngineConfig":{"agentCreationConfig":{"business":"business","timeZone":"timeZone","defaultLanguageCode":"defaultLanguageCode","location":"location"},"dialogflowAgentToLink":"dialogflowAgentToLink"}}
+    params = [('$.xgafv', 'xgafv_example'),
+                    ('access_token', 'access_token_example'),
+                    ('alt', 'alt_example'),
+                    ('callback', 'param_callback_example'),
+                    ('fields', 'fields_example'),
+                    ('key', 'key_example'),
+                    ('oauth_token', 'oauth_token_example'),
+                    ('prettyPrint', True),
+                    ('quotaUser', 'quota_user_example'),
+                    ('upload_protocol', 'upload_protocol_example'),
+                    ('uploadType', 'upload_type_example'),
+                    ('engineId', 'engine_id_example')]
+    headers = { 
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer special-key',
+        'Authorization': 'Bearer special-key',
+    }
+    response = await client.request(
+        method='POST',
+        path='/v1beta/{parent}/engines'.format(parent='parent_example'),
+        headers=headers,
+        json=body,
+        params=params,
+        )
+    assert response.status == 200, 'Response body is : ' + (await response.read()).decode('utf-8')
+
+
+pytestmark = pytest.mark.asyncio
+
+async def test_discoveryengine_projects_locations_collections_engines_list(client):
+    """Test case for discoveryengine_projects_locations_collections_engines_list
+
+    
+    """
+    params = [('$.xgafv', 'xgafv_example'),
+                    ('access_token', 'access_token_example'),
+                    ('alt', 'alt_example'),
+                    ('callback', 'param_callback_example'),
+                    ('fields', 'fields_example'),
+                    ('key', 'key_example'),
+                    ('oauth_token', 'oauth_token_example'),
+                    ('prettyPrint', True),
+                    ('quotaUser', 'quota_user_example'),
+                    ('upload_protocol', 'upload_protocol_example'),
+                    ('uploadType', 'upload_type_example'),
+                    ('filter', 'filter_example'),
+                    ('pageSize', 56),
+                    ('pageToken', 'page_token_example')]
+    headers = { 
+        'Accept': 'application/json',
+        'Authorization': 'Bearer special-key',
+        'Authorization': 'Bearer special-key',
+    }
+    response = await client.request(
+        method='GET',
+        path='/v1beta/{parent}/engines'.format(parent='parent_example'),
+        headers=headers,
+        params=params,
+        )
+    assert response.status == 200, 'Response body is : ' + (await response.read()).decode('utf-8')
+
+
+pytestmark = pytest.mark.asyncio
+
+async def test_discoveryengine_projects_locations_data_stores_branches_documents_create(client):
+    """Test case for discoveryengine_projects_locations_data_stores_branches_documents_create
+
+    
+    """
+    body = {"indexTime":"indexTime","jsonData":"jsonData","derivedStructData":{"key":""},"schemaId":"schemaId","name":"name","id":"id","content":{"mimeType":"mimeType","uri":"uri","rawBytes":"rawBytes"},"parentDocumentId":"parentDocumentId","structData":{"key":""}}
+    params = [('$.xgafv', 'xgafv_example'),
+                    ('access_token', 'access_token_example'),
+                    ('alt', 'alt_example'),
+                    ('callback', 'param_callback_example'),
+                    ('fields', 'fields_example'),
+                    ('key', 'key_example'),
+                    ('oauth_token', 'oauth_token_example'),
+                    ('prettyPrint', True),
+                    ('quotaUser', 'quota_user_example'),
+                    ('upload_protocol', 'upload_protocol_example'),
+                    ('uploadType', 'upload_type_example'),
+                    ('documentId', 'document_id_example')]
+    headers = { 
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer special-key',
+        'Authorization': 'Bearer special-key',
+    }
+    response = await client.request(
+        method='POST',
+        path='/v1beta/{parent}/documents'.format(parent='parent_example'),
+        headers=headers,
+        json=body,
+        params=params,
+        )
+    assert response.status == 200, 'Response body is : ' + (await response.read()).decode('utf-8')
+
+
+pytestmark = pytest.mark.asyncio
+
+async def test_discoveryengine_projects_locations_data_stores_branches_documents_import(client):
+    """Test case for discoveryengine_projects_locations_data_stores_branches_documents_import
+
+    
+    """
+    body = {"idField":"idField","bigquerySource":{"dataSchema":"dataSchema","datasetId":"datasetId","partitionDate":{"month":6,"year":1,"day":0},"tableId":"tableId","projectId":"projectId","gcsStagingDir":"gcsStagingDir"},"gcsSource":{"dataSchema":"dataSchema","inputUris":["inputUris","inputUris"]},"autoGenerateIds":True,"inlineSource":{"documents":[{"indexTime":"indexTime","jsonData":"jsonData","derivedStructData":{"key":""},"schemaId":"schemaId","name":"name","id":"id","content":{"mimeType":"mimeType","uri":"uri","rawBytes":"rawBytes"},"parentDocumentId":"parentDocumentId","structData":{"key":""}},{"indexTime":"indexTime","jsonData":"jsonData","derivedStructData":{"key":""},"schemaId":"schemaId","name":"name","id":"id","content":{"mimeType":"mimeType","uri":"uri","rawBytes":"rawBytes"},"parentDocumentId":"parentDocumentId","structData":{"key":""}}]},"reconciliationMode":"RECONCILIATION_MODE_UNSPECIFIED","errorConfig":{"gcsPrefix":"gcsPrefix"}}
+    params = [('$.xgafv', 'xgafv_example'),
+                    ('access_token', 'access_token_example'),
+                    ('alt', 'alt_example'),
+                    ('callback', 'param_callback_example'),
+                    ('fields', 'fields_example'),
+                    ('key', 'key_example'),
+                    ('oauth_token', 'oauth_token_example'),
+                    ('prettyPrint', True),
+                    ('quotaUser', 'quota_user_example'),
+                    ('upload_protocol', 'upload_protocol_example'),
+                    ('uploadType', 'upload_type_example')]
+    headers = { 
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer special-key',
+        'Authorization': 'Bearer special-key',
+    }
+    response = await client.request(
+        method='POST',
+        path='/v1beta/{parent}/documents:import'.format(parent='parent_example'),
+        headers=headers,
+        json=body,
+        params=params,
+        )
+    assert response.status == 200, 'Response body is : ' + (await response.read()).decode('utf-8')
+
+
+pytestmark = pytest.mark.asyncio
+
+async def test_discoveryengine_projects_locations_data_stores_branches_documents_list(client):
+    """Test case for discoveryengine_projects_locations_data_stores_branches_documents_list
+
+    
+    """
+    params = [('$.xgafv', 'xgafv_example'),
+                    ('access_token', 'access_token_example'),
+                    ('alt', 'alt_example'),
+                    ('callback', 'param_callback_example'),
+                    ('fields', 'fields_example'),
+                    ('key', 'key_example'),
+                    ('oauth_token', 'oauth_token_example'),
+                    ('prettyPrint', True),
+                    ('quotaUser', 'quota_user_example'),
+                    ('upload_protocol', 'upload_protocol_example'),
+                    ('uploadType', 'upload_type_example'),
+                    ('pageSize', 56),
+                    ('pageToken', 'page_token_example')]
+    headers = { 
+        'Accept': 'application/json',
+        'Authorization': 'Bearer special-key',
+        'Authorization': 'Bearer special-key',
+    }
+    response = await client.request(
+        method='GET',
+        path='/v1beta/{parent}/documents'.format(parent='parent_example'),
+        headers=headers,
+        params=params,
+        )
+    assert response.status == 200, 'Response body is : ' + (await response.read()).decode('utf-8')
+
+
+pytestmark = pytest.mark.asyncio
+
+async def test_discoveryengine_projects_locations_data_stores_branches_documents_purge(client):
+    """Test case for discoveryengine_projects_locations_data_stores_branches_documents_purge
+
+    
+    """
+    body = {"filter":"filter","force":True}
+    params = [('$.xgafv', 'xgafv_example'),
+                    ('access_token', 'access_token_example'),
+                    ('alt', 'alt_example'),
+                    ('callback', 'param_callback_example'),
+                    ('fields', 'fields_example'),
+                    ('key', 'key_example'),
+                    ('oauth_token', 'oauth_token_example'),
+                    ('prettyPrint', True),
+                    ('quotaUser', 'quota_user_example'),
+                    ('upload_protocol', 'upload_protocol_example'),
+                    ('uploadType', 'upload_type_example')]
+    headers = { 
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer special-key',
+        'Authorization': 'Bearer special-key',
+    }
+    response = await client.request(
+        method='POST',
+        path='/v1beta/{parent}/documents:purge'.format(parent='parent_example'),
+        headers=headers,
+        json=body,
+        params=params,
+        )
+    assert response.status == 200, 'Response body is : ' + (await response.read()).decode('utf-8')
+
+
+pytestmark = pytest.mark.asyncio
+
+async def test_discoveryengine_projects_locations_data_stores_complete_query(client):
+    """Test case for discoveryengine_projects_locations_data_stores_complete_query
+
+    
+    """
+    params = [('$.xgafv', 'xgafv_example'),
+                    ('access_token', 'access_token_example'),
+                    ('alt', 'alt_example'),
+                    ('callback', 'param_callback_example'),
+                    ('fields', 'fields_example'),
+                    ('key', 'key_example'),
+                    ('oauth_token', 'oauth_token_example'),
+                    ('prettyPrint', True),
+                    ('quotaUser', 'quota_user_example'),
+                    ('upload_protocol', 'upload_protocol_example'),
+                    ('uploadType', 'upload_type_example'),
+                    ('includeTailSuggestions', True),
+                    ('query', 'query_example'),
+                    ('queryModel', 'query_model_example'),
+                    ('userPseudoId', 'user_pseudo_id_example')]
+    headers = { 
+        'Accept': 'application/json',
+        'Authorization': 'Bearer special-key',
+        'Authorization': 'Bearer special-key',
+    }
+    response = await client.request(
+        method='GET',
+        path='/v1beta/{data_storecomplete_quer}'.format(data_store='data_store_example'),
+        headers=headers,
+        params=params,
+        )
+    assert response.status == 200, 'Response body is : ' + (await response.read()).decode('utf-8')
+
+
+pytestmark = pytest.mark.asyncio
+
+async def test_discoveryengine_projects_locations_data_stores_conversations_converse(client):
+    """Test case for discoveryengine_projects_locations_data_stores_conversations_converse
+
+    
+    """
+    body = {"filter":"filter","servingConfig":"servingConfig","summarySpec":{"ignoreAdversarialQuery":True,"ignoreNonSummarySeekingQuery":True,"modelSpec":{"version":"version"},"summaryResultCount":6,"includeCitations":True,"languageCode":"languageCode","modelPromptSpec":{"preamble":"preamble"}},"query":{"input":"input","context":{"contextDocuments":["contextDocuments","contextDocuments"],"activeDocument":"activeDocument"}},"userLabels":{"key":"userLabels"},"safeSearch":True,"boostSpec":{"conditionBoostSpecs":[{"condition":"condition","boost":0.8008282},{"condition":"condition","boost":0.8008282}]},"conversation":{"userPseudoId":"userPseudoId","name":"name","messages":[{"createTime":"createTime","userInput":{"input":"input","context":{"contextDocuments":["contextDocuments","contextDocuments"],"activeDocument":"activeDocument"}},"reply":{"summary":{"summarySkippedReasons":["SUMMARY_SKIPPED_REASON_UNSPECIFIED","SUMMARY_SKIPPED_REASON_UNSPECIFIED"],"summaryText":"summaryText","summaryWithMetadata":{"summary":"summary","references":[{"document":"document","title":"title","uri":"uri"},{"document":"document","title":"title","uri":"uri"}],"citationMetadata":{"citations":[{"startIndex":"startIndex","sources":[{"referenceIndex":"referenceIndex"},{"referenceIndex":"referenceIndex"}],"endIndex":"endIndex"},{"startIndex":"startIndex","sources":[{"referenceIndex":"referenceIndex"},{"referenceIndex":"referenceIndex"}],"endIndex":"endIndex"}]}},"safetyAttributes":{"scores":[1.4658129,1.4658129],"categories":["categories","categories"]}},"references":[{"anchorText":"anchorText","start":6,"end":0,"uri":"uri"},{"anchorText":"anchorText","start":6,"end":0,"uri":"uri"}],"reply":"reply"}},{"createTime":"createTime","userInput":{"input":"input","context":{"contextDocuments":["contextDocuments","contextDocuments"],"activeDocument":"activeDocument"}},"reply":{"summary":{"summarySkippedReasons":["SUMMARY_SKIPPED_REASON_UNSPECIFIED","SUMMARY_SKIPPED_REASON_UNSPECIFIED"],"summaryText":"summaryText","summaryWithMetadata":{"summary":"summary","references":[{"document":"document","title":"title","uri":"uri"},{"document":"document","title":"title","uri":"uri"}],"citationMetadata":{"citations":[{"startIndex":"startIndex","sources":[{"referenceIndex":"referenceIndex"},{"referenceIndex":"referenceIndex"}],"endIndex":"endIndex"},{"startIndex":"startIndex","sources":[{"referenceIndex":"referenceIndex"},{"referenceIndex":"referenceIndex"}],"endIndex":"endIndex"}]}},"safetyAttributes":{"scores":[1.4658129,1.4658129],"categories":["categories","categories"]}},"references":[{"anchorText":"anchorText","start":6,"end":0,"uri":"uri"},{"anchorText":"anchorText","start":6,"end":0,"uri":"uri"}],"reply":"reply"}}],"startTime":"startTime","endTime":"endTime","state":"STATE_UNSPECIFIED"}}
+    params = [('$.xgafv', 'xgafv_example'),
+                    ('access_token', 'access_token_example'),
+                    ('alt', 'alt_example'),
+                    ('callback', 'param_callback_example'),
+                    ('fields', 'fields_example'),
+                    ('key', 'key_example'),
+                    ('oauth_token', 'oauth_token_example'),
+                    ('prettyPrint', True),
+                    ('quotaUser', 'quota_user_example'),
+                    ('upload_protocol', 'upload_protocol_example'),
+                    ('uploadType', 'upload_type_example')]
+    headers = { 
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer special-key',
+        'Authorization': 'Bearer special-key',
+    }
+    response = await client.request(
+        method='POST',
+        path='/v1beta/{nameconvers}'.format(name='name_example'),
+        headers=headers,
+        json=body,
+        params=params,
+        )
+    assert response.status == 200, 'Response body is : ' + (await response.read()).decode('utf-8')
+
+
+pytestmark = pytest.mark.asyncio
+
+async def test_discoveryengine_projects_locations_data_stores_conversations_create(client):
+    """Test case for discoveryengine_projects_locations_data_stores_conversations_create
+
+    
+    """
+    body = {"userPseudoId":"userPseudoId","name":"name","messages":[{"createTime":"createTime","userInput":{"input":"input","context":{"contextDocuments":["contextDocuments","contextDocuments"],"activeDocument":"activeDocument"}},"reply":{"summary":{"summarySkippedReasons":["SUMMARY_SKIPPED_REASON_UNSPECIFIED","SUMMARY_SKIPPED_REASON_UNSPECIFIED"],"summaryText":"summaryText","summaryWithMetadata":{"summary":"summary","references":[{"document":"document","title":"title","uri":"uri"},{"document":"document","title":"title","uri":"uri"}],"citationMetadata":{"citations":[{"startIndex":"startIndex","sources":[{"referenceIndex":"referenceIndex"},{"referenceIndex":"referenceIndex"}],"endIndex":"endIndex"},{"startIndex":"startIndex","sources":[{"referenceIndex":"referenceIndex"},{"referenceIndex":"referenceIndex"}],"endIndex":"endIndex"}]}},"safetyAttributes":{"scores":[1.4658129,1.4658129],"categories":["categories","categories"]}},"references":[{"anchorText":"anchorText","start":6,"end":0,"uri":"uri"},{"anchorText":"anchorText","start":6,"end":0,"uri":"uri"}],"reply":"reply"}},{"createTime":"createTime","userInput":{"input":"input","context":{"contextDocuments":["contextDocuments","contextDocuments"],"activeDocument":"activeDocument"}},"reply":{"summary":{"summarySkippedReasons":["SUMMARY_SKIPPED_REASON_UNSPECIFIED","SUMMARY_SKIPPED_REASON_UNSPECIFIED"],"summaryText":"summaryText","summaryWithMetadata":{"summary":"summary","references":[{"document":"document","title":"title","uri":"uri"},{"document":"document","title":"title","uri":"uri"}],"citationMetadata":{"citations":[{"startIndex":"startIndex","sources":[{"referenceIndex":"referenceIndex"},{"referenceIndex":"referenceIndex"}],"endIndex":"endIndex"},{"startIndex":"startIndex","sources":[{"referenceIndex":"referenceIndex"},{"referenceIndex":"referenceIndex"}],"endIndex":"endIndex"}]}},"safetyAttributes":{"scores":[1.4658129,1.4658129],"categories":["categories","categories"]}},"references":[{"anchorText":"anchorText","start":6,"end":0,"uri":"uri"},{"anchorText":"anchorText","start":6,"end":0,"uri":"uri"}],"reply":"reply"}}],"startTime":"startTime","endTime":"endTime","state":"STATE_UNSPECIFIED"}
+    params = [('$.xgafv', 'xgafv_example'),
+                    ('access_token', 'access_token_example'),
+                    ('alt', 'alt_example'),
+                    ('callback', 'param_callback_example'),
+                    ('fields', 'fields_example'),
+                    ('key', 'key_example'),
+                    ('oauth_token', 'oauth_token_example'),
+                    ('prettyPrint', True),
+                    ('quotaUser', 'quota_user_example'),
+                    ('upload_protocol', 'upload_protocol_example'),
+                    ('uploadType', 'upload_type_example')]
+    headers = { 
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer special-key',
+        'Authorization': 'Bearer special-key',
+    }
+    response = await client.request(
+        method='POST',
+        path='/v1beta/{parent}/conversations'.format(parent='parent_example'),
+        headers=headers,
+        json=body,
+        params=params,
+        )
+    assert response.status == 200, 'Response body is : ' + (await response.read()).decode('utf-8')
+
+
+pytestmark = pytest.mark.asyncio
+
+async def test_discoveryengine_projects_locations_data_stores_conversations_list(client):
+    """Test case for discoveryengine_projects_locations_data_stores_conversations_list
+
+    
+    """
+    params = [('$.xgafv', 'xgafv_example'),
+                    ('access_token', 'access_token_example'),
+                    ('alt', 'alt_example'),
+                    ('callback', 'param_callback_example'),
+                    ('fields', 'fields_example'),
+                    ('key', 'key_example'),
+                    ('oauth_token', 'oauth_token_example'),
+                    ('prettyPrint', True),
+                    ('quotaUser', 'quota_user_example'),
+                    ('upload_protocol', 'upload_protocol_example'),
+                    ('uploadType', 'upload_type_example'),
+                    ('filter', 'filter_example'),
+                    ('orderBy', 'order_by_example'),
+                    ('pageSize', 56),
+                    ('pageToken', 'page_token_example')]
+    headers = { 
+        'Accept': 'application/json',
+        'Authorization': 'Bearer special-key',
+        'Authorization': 'Bearer special-key',
+    }
+    response = await client.request(
+        method='GET',
+        path='/v1beta/{parent}/conversations'.format(parent='parent_example'),
+        headers=headers,
+        params=params,
+        )
+    assert response.status == 200, 'Response body is : ' + (await response.read()).decode('utf-8')
+
+
+pytestmark = pytest.mark.asyncio
+
+async def test_discoveryengine_projects_locations_data_stores_create(client):
+    """Test case for discoveryengine_projects_locations_data_stores_create
+
+    
+    """
+    body = {"createTime":"createTime","displayName":"displayName","industryVertical":"INDUSTRY_VERTICAL_UNSPECIFIED","name":"name","startingSchema":{"structSchema":{"key":""},"jsonSchema":"jsonSchema","name":"name"},"contentConfig":"CONTENT_CONFIG_UNSPECIFIED","solutionTypes":["SOLUTION_TYPE_UNSPECIFIED","SOLUTION_TYPE_UNSPECIFIED"],"defaultSchemaId":"defaultSchemaId","documentProcessingConfig":{"name":"name","defaultParsingConfig":{"ocrParsingConfig":{"enhancedDocumentElements":["enhancedDocumentElements","enhancedDocumentElements"],"useNativeText":True},"digitalParsingConfig":"{}"},"parsingConfigOverrides":{"key":{"ocrParsingConfig":{"enhancedDocumentElements":["enhancedDocumentElements","enhancedDocumentElements"],"useNativeText":True},"digitalParsingConfig":"{}"}}}}
+    params = [('$.xgafv', 'xgafv_example'),
+                    ('access_token', 'access_token_example'),
+                    ('alt', 'alt_example'),
+                    ('callback', 'param_callback_example'),
+                    ('fields', 'fields_example'),
+                    ('key', 'key_example'),
+                    ('oauth_token', 'oauth_token_example'),
+                    ('prettyPrint', True),
+                    ('quotaUser', 'quota_user_example'),
+                    ('upload_protocol', 'upload_protocol_example'),
+                    ('uploadType', 'upload_type_example'),
+                    ('createAdvancedSiteSearch', True),
+                    ('dataStoreId', 'data_store_id_example')]
+    headers = { 
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer special-key',
+        'Authorization': 'Bearer special-key',
+    }
+    response = await client.request(
+        method='POST',
+        path='/v1beta/{parent}/dataStores'.format(parent='parent_example'),
+        headers=headers,
+        json=body,
+        params=params,
+        )
+    assert response.status == 200, 'Response body is : ' + (await response.read()).decode('utf-8')
+
+
+pytestmark = pytest.mark.asyncio
+
+async def test_discoveryengine_projects_locations_data_stores_list(client):
+    """Test case for discoveryengine_projects_locations_data_stores_list
+
+    
+    """
+    params = [('$.xgafv', 'xgafv_example'),
+                    ('access_token', 'access_token_example'),
+                    ('alt', 'alt_example'),
+                    ('callback', 'param_callback_example'),
+                    ('fields', 'fields_example'),
+                    ('key', 'key_example'),
+                    ('oauth_token', 'oauth_token_example'),
+                    ('prettyPrint', True),
+                    ('quotaUser', 'quota_user_example'),
+                    ('upload_protocol', 'upload_protocol_example'),
+                    ('uploadType', 'upload_type_example'),
+                    ('filter', 'filter_example'),
+                    ('pageSize', 56),
+                    ('pageToken', 'page_token_example')]
+    headers = { 
+        'Accept': 'application/json',
+        'Authorization': 'Bearer special-key',
+        'Authorization': 'Bearer special-key',
+    }
+    response = await client.request(
+        method='GET',
+        path='/v1beta/{parent}/dataStores'.format(parent='parent_example'),
+        headers=headers,
+        params=params,
+        )
+    assert response.status == 200, 'Response body is : ' + (await response.read()).decode('utf-8')
+
+
+pytestmark = pytest.mark.asyncio
+
+async def test_discoveryengine_projects_locations_data_stores_schemas_create(client):
+    """Test case for discoveryengine_projects_locations_data_stores_schemas_create
+
+    
+    """
+    body = {"structSchema":{"key":""},"jsonSchema":"jsonSchema","name":"name"}
+    params = [('$.xgafv', 'xgafv_example'),
+                    ('access_token', 'access_token_example'),
+                    ('alt', 'alt_example'),
+                    ('callback', 'param_callback_example'),
+                    ('fields', 'fields_example'),
+                    ('key', 'key_example'),
+                    ('oauth_token', 'oauth_token_example'),
+                    ('prettyPrint', True),
+                    ('quotaUser', 'quota_user_example'),
+                    ('upload_protocol', 'upload_protocol_example'),
+                    ('uploadType', 'upload_type_example'),
+                    ('schemaId', 'schema_id_example')]
+    headers = { 
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer special-key',
+        'Authorization': 'Bearer special-key',
+    }
+    response = await client.request(
+        method='POST',
+        path='/v1beta/{parent}/schemas'.format(parent='parent_example'),
+        headers=headers,
+        json=body,
+        params=params,
+        )
+    assert response.status == 200, 'Response body is : ' + (await response.read()).decode('utf-8')
+
+
+pytestmark = pytest.mark.asyncio
+
+async def test_discoveryengine_projects_locations_data_stores_schemas_list(client):
+    """Test case for discoveryengine_projects_locations_data_stores_schemas_list
+
+    
+    """
+    params = [('$.xgafv', 'xgafv_example'),
+                    ('access_token', 'access_token_example'),
+                    ('alt', 'alt_example'),
+                    ('callback', 'param_callback_example'),
+                    ('fields', 'fields_example'),
+                    ('key', 'key_example'),
+                    ('oauth_token', 'oauth_token_example'),
+                    ('prettyPrint', True),
+                    ('quotaUser', 'quota_user_example'),
+                    ('upload_protocol', 'upload_protocol_example'),
+                    ('uploadType', 'upload_type_example'),
+                    ('pageSize', 56),
+                    ('pageToken', 'page_token_example')]
+    headers = { 
+        'Accept': 'application/json',
+        'Authorization': 'Bearer special-key',
+        'Authorization': 'Bearer special-key',
+    }
+    response = await client.request(
+        method='GET',
+        path='/v1beta/{parent}/schemas'.format(parent='parent_example'),
+        headers=headers,
+        params=params,
+        )
+    assert response.status == 200, 'Response body is : ' + (await response.read()).decode('utf-8')
+
+
+pytestmark = pytest.mark.asyncio
+
+async def test_discoveryengine_projects_locations_data_stores_serving_configs_list(client):
+    """Test case for discoveryengine_projects_locations_data_stores_serving_configs_list
+
+    
+    """
+    params = [('$.xgafv', 'xgafv_example'),
+                    ('access_token', 'access_token_example'),
+                    ('alt', 'alt_example'),
+                    ('callback', 'param_callback_example'),
+                    ('fields', 'fields_example'),
+                    ('key', 'key_example'),
+                    ('oauth_token', 'oauth_token_example'),
+                    ('prettyPrint', True),
+                    ('quotaUser', 'quota_user_example'),
+                    ('upload_protocol', 'upload_protocol_example'),
+                    ('uploadType', 'upload_type_example'),
+                    ('pageSize', 56),
+                    ('pageToken', 'page_token_example')]
+    headers = { 
+        'Accept': 'application/json',
+        'Authorization': 'Bearer special-key',
+        'Authorization': 'Bearer special-key',
+    }
+    response = await client.request(
+        method='GET',
+        path='/v1beta/{parent}/servingConfigs'.format(parent='parent_example'),
+        headers=headers,
+        params=params,
+        )
+    assert response.status == 200, 'Response body is : ' + (await response.read()).decode('utf-8')
+
+
+pytestmark = pytest.mark.asyncio
+
+async def test_discoveryengine_projects_locations_data_stores_serving_configs_recommend(client):
+    """Test case for discoveryengine_projects_locations_data_stores_serving_configs_recommend
+
+    
+    """
+    body = {"filter":"filter","userEvent":{"userInfo":{"userAgent":"userAgent","userId":"userId"},"documents":[{"quantity":1,"name":"name","promotionIds":["promotionIds","promotionIds"],"id":"id","uri":"uri"},{"quantity":1,"name":"name","promotionIds":["promotionIds","promotionIds"],"id":"id","uri":"uri"}],"attributionToken":"attributionToken","tagIds":["tagIds","tagIds"],"userPseudoId":"userPseudoId","pageInfo":{"referrerUri":"referrerUri","pageCategory":"pageCategory","uri":"uri","pageviewId":"pageviewId"},"promotionIds":["promotionIds","promotionIds"],"eventType":"eventType","sessionId":"sessionId","transactionInfo":{"cost":9.301444,"currency":"currency","tax":2.027123,"discountValue":3.6160767,"value":4.145608,"transactionId":"transactionId"},"filter":"filter","directUserRequest":True,"searchInfo":{"offset":7,"searchQuery":"searchQuery","orderBy":"orderBy"},"eventTime":"eventTime","completionInfo":{"selectedSuggestion":"selectedSuggestion","selectedPosition":6},"attributes":{"key":{"numbers":[0.8008281904610115,0.8008281904610115],"text":["text","text"]}},"panel":{"panelPosition":5,"panelId":"panelId","displayName":"displayName","totalPanels":2},"mediaInfo":{"mediaProgressPercentage":5.962134,"mediaProgressDuration":"mediaProgressDuration"}},"validateOnly":True,"pageSize":0,"userLabels":{"key":"userLabels"},"params":{"key":""}}
+    params = [('$.xgafv', 'xgafv_example'),
+                    ('access_token', 'access_token_example'),
+                    ('alt', 'alt_example'),
+                    ('callback', 'param_callback_example'),
+                    ('fields', 'fields_example'),
+                    ('key', 'key_example'),
+                    ('oauth_token', 'oauth_token_example'),
+                    ('prettyPrint', True),
+                    ('quotaUser', 'quota_user_example'),
+                    ('upload_protocol', 'upload_protocol_example'),
+                    ('uploadType', 'upload_type_example')]
+    headers = { 
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer special-key',
+        'Authorization': 'Bearer special-key',
+    }
+    response = await client.request(
+        method='POST',
+        path='/v1beta/{serving_configrecommen}'.format(serving_config='serving_config_example'),
+        headers=headers,
+        json=body,
+        params=params,
+        )
+    assert response.status == 200, 'Response body is : ' + (await response.read()).decode('utf-8')
+
+
+pytestmark = pytest.mark.asyncio
+
+async def test_discoveryengine_projects_locations_data_stores_serving_configs_search(client):
+    """Test case for discoveryengine_projects_locations_data_stores_serving_configs_search
+
+    
+    """
+    body = {"queryExpansionSpec":{"condition":"CONDITION_UNSPECIFIED","pinUnexpandedResults":True},"userInfo":{"userAgent":"userAgent","userId":"userId"},"offset":1,"rankingExpression":"rankingExpression","query":"query","userPseudoId":"userPseudoId","orderBy":"orderBy","pageSize":5,"userLabels":{"key":"userLabels"},"contentSearchSpec":{"extractiveContentSpec":{"maxExtractiveAnswerCount":0,"maxExtractiveSegmentCount":6,"numPreviousSegments":5,"numNextSegments":1},"summarySpec":{"ignoreAdversarialQuery":True,"ignoreNonSummarySeekingQuery":True,"modelSpec":{"version":"version"},"summaryResultCount":6,"includeCitations":True,"languageCode":"languageCode","modelPromptSpec":{"preamble":"preamble"}},"snippetSpec":{"maxSnippetCount":5,"referenceOnly":True,"returnSnippet":True}},"params":{"key":""},"branch":"branch","safeSearch":True,"boostSpec":{"conditionBoostSpecs":[{"condition":"condition","boost":0.8008282},{"condition":"condition","boost":0.8008282}]},"embeddingSpec":{"embeddingVectors":[{"fieldPath":"fieldPath","vector":[0.8008282,0.8008282]},{"fieldPath":"fieldPath","vector":[0.8008282,0.8008282]}]},"filter":"filter","spellCorrectionSpec":{"mode":"MODE_UNSPECIFIED"},"imageQuery":{"imageBytes":"imageBytes"},"facetSpecs":[{"facetKey":{"contains":["contains","contains"],"intervals":[{"exclusiveMaximum":0.8008281904610115,"maximum":1.4658129805029452,"exclusiveMinimum":6.027456183070403,"minimum":5.962133916683182},{"exclusiveMaximum":0.8008281904610115,"maximum":1.4658129805029452,"exclusiveMinimum":6.027456183070403,"minimum":5.962133916683182}],"prefixes":["prefixes","prefixes"],"restrictedValues":["restrictedValues","restrictedValues"],"caseInsensitive":True,"orderBy":"orderBy","key":"key"},"enableDynamicPosition":True,"limit":6,"excludedFilterKeys":["excludedFilterKeys","excludedFilterKeys"]},{"facetKey":{"contains":["contains","contains"],"intervals":[{"exclusiveMaximum":0.8008281904610115,"maximum":1.4658129805029452,"exclusiveMinimum":6.027456183070403,"minimum":5.962133916683182},{"exclusiveMaximum":0.8008281904610115,"maximum":1.4658129805029452,"exclusiveMinimum":6.027456183070403,"minimum":5.962133916683182}],"prefixes":["prefixes","prefixes"],"restrictedValues":["restrictedValues","restrictedValues"],"caseInsensitive":True,"orderBy":"orderBy","key":"key"},"enableDynamicPosition":True,"limit":6,"excludedFilterKeys":["excludedFilterKeys","excludedFilterKeys"]}],"pageToken":"pageToken","canonicalFilter":"canonicalFilter"}
+    params = [('$.xgafv', 'xgafv_example'),
+                    ('access_token', 'access_token_example'),
+                    ('alt', 'alt_example'),
+                    ('callback', 'param_callback_example'),
+                    ('fields', 'fields_example'),
+                    ('key', 'key_example'),
+                    ('oauth_token', 'oauth_token_example'),
+                    ('prettyPrint', True),
+                    ('quotaUser', 'quota_user_example'),
+                    ('upload_protocol', 'upload_protocol_example'),
+                    ('uploadType', 'upload_type_example')]
+    headers = { 
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer special-key',
+        'Authorization': 'Bearer special-key',
+    }
+    response = await client.request(
+        method='POST',
+        path='/v1beta/{serving_configsearc}'.format(serving_config='serving_config_example'),
+        headers=headers,
+        json=body,
+        params=params,
+        )
+    assert response.status == 200, 'Response body is : ' + (await response.read()).decode('utf-8')
+
+
+pytestmark = pytest.mark.asyncio
+
+async def test_discoveryengine_projects_locations_data_stores_site_search_engine_disable_advanced_site_search(client):
+    """Test case for discoveryengine_projects_locations_data_stores_site_search_engine_disable_advanced_site_search
+
+    
+    """
+    body = None
+    params = [('$.xgafv', 'xgafv_example'),
+                    ('access_token', 'access_token_example'),
+                    ('alt', 'alt_example'),
+                    ('callback', 'param_callback_example'),
+                    ('fields', 'fields_example'),
+                    ('key', 'key_example'),
+                    ('oauth_token', 'oauth_token_example'),
+                    ('prettyPrint', True),
+                    ('quotaUser', 'quota_user_example'),
+                    ('upload_protocol', 'upload_protocol_example'),
+                    ('uploadType', 'upload_type_example')]
+    headers = { 
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer special-key',
+        'Authorization': 'Bearer special-key',
+    }
+    response = await client.request(
+        method='POST',
+        path='/v1beta/{site_search_enginedisable_advanced_site_searc}'.format(site_search_engine='site_search_engine_example'),
+        headers=headers,
+        json=body,
+        params=params,
+        )
+    assert response.status == 200, 'Response body is : ' + (await response.read()).decode('utf-8')
+
+
+pytestmark = pytest.mark.asyncio
+
+async def test_discoveryengine_projects_locations_data_stores_site_search_engine_enable_advanced_site_search(client):
+    """Test case for discoveryengine_projects_locations_data_stores_site_search_engine_enable_advanced_site_search
+
+    
+    """
+    body = None
+    params = [('$.xgafv', 'xgafv_example'),
+                    ('access_token', 'access_token_example'),
+                    ('alt', 'alt_example'),
+                    ('callback', 'param_callback_example'),
+                    ('fields', 'fields_example'),
+                    ('key', 'key_example'),
+                    ('oauth_token', 'oauth_token_example'),
+                    ('prettyPrint', True),
+                    ('quotaUser', 'quota_user_example'),
+                    ('upload_protocol', 'upload_protocol_example'),
+                    ('uploadType', 'upload_type_example')]
+    headers = { 
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer special-key',
+        'Authorization': 'Bearer special-key',
+    }
+    response = await client.request(
+        method='POST',
+        path='/v1beta/{site_search_engineenable_advanced_site_searc}'.format(site_search_engine='site_search_engine_example'),
+        headers=headers,
+        json=body,
+        params=params,
+        )
+    assert response.status == 200, 'Response body is : ' + (await response.read()).decode('utf-8')
+
+
+pytestmark = pytest.mark.asyncio
+
+async def test_discoveryengine_projects_locations_data_stores_site_search_engine_recrawl_uris(client):
+    """Test case for discoveryengine_projects_locations_data_stores_site_search_engine_recrawl_uris
+
+    
+    """
+    body = {"uris":["uris","uris"]}
+    params = [('$.xgafv', 'xgafv_example'),
+                    ('access_token', 'access_token_example'),
+                    ('alt', 'alt_example'),
+                    ('callback', 'param_callback_example'),
+                    ('fields', 'fields_example'),
+                    ('key', 'key_example'),
+                    ('oauth_token', 'oauth_token_example'),
+                    ('prettyPrint', True),
+                    ('quotaUser', 'quota_user_example'),
+                    ('upload_protocol', 'upload_protocol_example'),
+                    ('uploadType', 'upload_type_example')]
+    headers = { 
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer special-key',
+        'Authorization': 'Bearer special-key',
+    }
+    response = await client.request(
+        method='POST',
+        path='/v1beta/{site_search_enginerecrawl_uri}'.format(site_search_engine='site_search_engine_example'),
+        headers=headers,
+        json=body,
+        params=params,
+        )
+    assert response.status == 200, 'Response body is : ' + (await response.read()).decode('utf-8')
+
+
+pytestmark = pytest.mark.asyncio
+
+async def test_discoveryengine_projects_locations_data_stores_site_search_engine_target_sites_batch_create(client):
+    """Test case for discoveryengine_projects_locations_data_stores_site_search_engine_target_sites_batch_create
+
+    
+    """
+    body = {"requests":[{"parent":"parent","targetSite":{"providedUriPattern":"providedUriPattern","siteVerificationInfo":{"siteVerificationState":"SITE_VERIFICATION_STATE_UNSPECIFIED","verifyTime":"verifyTime"},"exactMatch":True,"failureReason":{"quotaFailure":{"totalRequiredQuota":"totalRequiredQuota"}},"name":"name","indexingStatus":"INDEXING_STATUS_UNSPECIFIED","updateTime":"updateTime","generatedUriPattern":"generatedUriPattern","type":"TYPE_UNSPECIFIED"}},{"parent":"parent","targetSite":{"providedUriPattern":"providedUriPattern","siteVerificationInfo":{"siteVerificationState":"SITE_VERIFICATION_STATE_UNSPECIFIED","verifyTime":"verifyTime"},"exactMatch":True,"failureReason":{"quotaFailure":{"totalRequiredQuota":"totalRequiredQuota"}},"name":"name","indexingStatus":"INDEXING_STATUS_UNSPECIFIED","updateTime":"updateTime","generatedUriPattern":"generatedUriPattern","type":"TYPE_UNSPECIFIED"}}]}
+    params = [('$.xgafv', 'xgafv_example'),
+                    ('access_token', 'access_token_example'),
+                    ('alt', 'alt_example'),
+                    ('callback', 'param_callback_example'),
+                    ('fields', 'fields_example'),
+                    ('key', 'key_example'),
+                    ('oauth_token', 'oauth_token_example'),
+                    ('prettyPrint', True),
+                    ('quotaUser', 'quota_user_example'),
+                    ('upload_protocol', 'upload_protocol_example'),
+                    ('uploadType', 'upload_type_example')]
+    headers = { 
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer special-key',
+        'Authorization': 'Bearer special-key',
+    }
+    response = await client.request(
+        method='POST',
+        path='/v1beta/{parent}/targetSites:batchCreate'.format(parent='parent_example'),
+        headers=headers,
+        json=body,
+        params=params,
+        )
+    assert response.status == 200, 'Response body is : ' + (await response.read()).decode('utf-8')
+
+
+pytestmark = pytest.mark.asyncio
+
+async def test_discoveryengine_projects_locations_data_stores_site_search_engine_target_sites_create(client):
+    """Test case for discoveryengine_projects_locations_data_stores_site_search_engine_target_sites_create
+
+    
+    """
+    body = {"providedUriPattern":"providedUriPattern","siteVerificationInfo":{"siteVerificationState":"SITE_VERIFICATION_STATE_UNSPECIFIED","verifyTime":"verifyTime"},"exactMatch":True,"failureReason":{"quotaFailure":{"totalRequiredQuota":"totalRequiredQuota"}},"name":"name","indexingStatus":"INDEXING_STATUS_UNSPECIFIED","updateTime":"updateTime","generatedUriPattern":"generatedUriPattern","type":"TYPE_UNSPECIFIED"}
+    params = [('$.xgafv', 'xgafv_example'),
+                    ('access_token', 'access_token_example'),
+                    ('alt', 'alt_example'),
+                    ('callback', 'param_callback_example'),
+                    ('fields', 'fields_example'),
+                    ('key', 'key_example'),
+                    ('oauth_token', 'oauth_token_example'),
+                    ('prettyPrint', True),
+                    ('quotaUser', 'quota_user_example'),
+                    ('upload_protocol', 'upload_protocol_example'),
+                    ('uploadType', 'upload_type_example')]
+    headers = { 
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer special-key',
+        'Authorization': 'Bearer special-key',
+    }
+    response = await client.request(
+        method='POST',
+        path='/v1beta/{parent}/targetSites'.format(parent='parent_example'),
+        headers=headers,
+        json=body,
+        params=params,
+        )
+    assert response.status == 200, 'Response body is : ' + (await response.read()).decode('utf-8')
+
+
+pytestmark = pytest.mark.asyncio
+
+async def test_discoveryengine_projects_locations_data_stores_site_search_engine_target_sites_delete(client):
+    """Test case for discoveryengine_projects_locations_data_stores_site_search_engine_target_sites_delete
+
+    
+    """
+    params = [('$.xgafv', 'xgafv_example'),
+                    ('access_token', 'access_token_example'),
+                    ('alt', 'alt_example'),
+                    ('callback', 'param_callback_example'),
+                    ('fields', 'fields_example'),
+                    ('key', 'key_example'),
+                    ('oauth_token', 'oauth_token_example'),
+                    ('prettyPrint', True),
+                    ('quotaUser', 'quota_user_example'),
+                    ('upload_protocol', 'upload_protocol_example'),
+                    ('uploadType', 'upload_type_example')]
+    headers = { 
+        'Accept': 'application/json',
+        'Authorization': 'Bearer special-key',
+        'Authorization': 'Bearer special-key',
+    }
+    response = await client.request(
+        method='DELETE',
+        path='/v1beta/{name}'.format(name='name_example'),
+        headers=headers,
+        params=params,
+        )
+    assert response.status == 200, 'Response body is : ' + (await response.read()).decode('utf-8')
+
+
+pytestmark = pytest.mark.asyncio
+
+async def test_discoveryengine_projects_locations_data_stores_site_search_engine_target_sites_list(client):
+    """Test case for discoveryengine_projects_locations_data_stores_site_search_engine_target_sites_list
+
+    
+    """
+    params = [('$.xgafv', 'xgafv_example'),
+                    ('access_token', 'access_token_example'),
+                    ('alt', 'alt_example'),
+                    ('callback', 'param_callback_example'),
+                    ('fields', 'fields_example'),
+                    ('key', 'key_example'),
+                    ('oauth_token', 'oauth_token_example'),
+                    ('prettyPrint', True),
+                    ('quotaUser', 'quota_user_example'),
+                    ('upload_protocol', 'upload_protocol_example'),
+                    ('uploadType', 'upload_type_example'),
+                    ('pageSize', 56),
+                    ('pageToken', 'page_token_example')]
+    headers = { 
+        'Accept': 'application/json',
+        'Authorization': 'Bearer special-key',
+        'Authorization': 'Bearer special-key',
+    }
+    response = await client.request(
+        method='GET',
+        path='/v1beta/{parent}/targetSites'.format(parent='parent_example'),
+        headers=headers,
+        params=params,
+        )
+    assert response.status == 200, 'Response body is : ' + (await response.read()).decode('utf-8')
+
+
+pytestmark = pytest.mark.asyncio
+
+async def test_discoveryengine_projects_locations_data_stores_site_search_engine_target_sites_patch(client):
+    """Test case for discoveryengine_projects_locations_data_stores_site_search_engine_target_sites_patch
+
+    
+    """
+    body = {"providedUriPattern":"providedUriPattern","siteVerificationInfo":{"siteVerificationState":"SITE_VERIFICATION_STATE_UNSPECIFIED","verifyTime":"verifyTime"},"exactMatch":True,"failureReason":{"quotaFailure":{"totalRequiredQuota":"totalRequiredQuota"}},"name":"name","indexingStatus":"INDEXING_STATUS_UNSPECIFIED","updateTime":"updateTime","generatedUriPattern":"generatedUriPattern","type":"TYPE_UNSPECIFIED"}
+    params = [('$.xgafv', 'xgafv_example'),
+                    ('access_token', 'access_token_example'),
+                    ('alt', 'alt_example'),
+                    ('callback', 'param_callback_example'),
+                    ('fields', 'fields_example'),
+                    ('key', 'key_example'),
+                    ('oauth_token', 'oauth_token_example'),
+                    ('prettyPrint', True),
+                    ('quotaUser', 'quota_user_example'),
+                    ('upload_protocol', 'upload_protocol_example'),
+                    ('uploadType', 'upload_type_example'),
+                    ('updateMask', 'update_mask_example')]
+    headers = { 
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer special-key',
+        'Authorization': 'Bearer special-key',
+    }
+    response = await client.request(
+        method='PATCH',
+        path='/v1beta/{name}'.format(name='name_example'),
+        headers=headers,
+        json=body,
+        params=params,
+        )
+    assert response.status == 200, 'Response body is : ' + (await response.read()).decode('utf-8')
+
+
+pytestmark = pytest.mark.asyncio
+
+async def test_discoveryengine_projects_locations_data_stores_suggestion_deny_list_entries_import(client):
+    """Test case for discoveryengine_projects_locations_data_stores_suggestion_deny_list_entries_import
+
+    
+    """
+    body = {"gcsSource":{"dataSchema":"dataSchema","inputUris":["inputUris","inputUris"]},"inlineSource":{"entries":[{"blockPhrase":"blockPhrase","matchOperator":"MATCH_OPERATOR_UNSPECIFIED"},{"blockPhrase":"blockPhrase","matchOperator":"MATCH_OPERATOR_UNSPECIFIED"}]}}
+    params = [('$.xgafv', 'xgafv_example'),
+                    ('access_token', 'access_token_example'),
+                    ('alt', 'alt_example'),
+                    ('callback', 'param_callback_example'),
+                    ('fields', 'fields_example'),
+                    ('key', 'key_example'),
+                    ('oauth_token', 'oauth_token_example'),
+                    ('prettyPrint', True),
+                    ('quotaUser', 'quota_user_example'),
+                    ('upload_protocol', 'upload_protocol_example'),
+                    ('uploadType', 'upload_type_example')]
+    headers = { 
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer special-key',
+        'Authorization': 'Bearer special-key',
+    }
+    response = await client.request(
+        method='POST',
+        path='/v1beta/{parent}/suggestionDenyListEntries:import'.format(parent='parent_example'),
+        headers=headers,
+        json=body,
+        params=params,
+        )
+    assert response.status == 200, 'Response body is : ' + (await response.read()).decode('utf-8')
+
+
+pytestmark = pytest.mark.asyncio
+
+async def test_discoveryengine_projects_locations_data_stores_suggestion_deny_list_entries_purge(client):
+    """Test case for discoveryengine_projects_locations_data_stores_suggestion_deny_list_entries_purge
+
+    
+    """
+    body = None
+    params = [('$.xgafv', 'xgafv_example'),
+                    ('access_token', 'access_token_example'),
+                    ('alt', 'alt_example'),
+                    ('callback', 'param_callback_example'),
+                    ('fields', 'fields_example'),
+                    ('key', 'key_example'),
+                    ('oauth_token', 'oauth_token_example'),
+                    ('prettyPrint', True),
+                    ('quotaUser', 'quota_user_example'),
+                    ('upload_protocol', 'upload_protocol_example'),
+                    ('uploadType', 'upload_type_example')]
+    headers = { 
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer special-key',
+        'Authorization': 'Bearer special-key',
+    }
+    response = await client.request(
+        method='POST',
+        path='/v1beta/{parent}/suggestionDenyListEntries:purge'.format(parent='parent_example'),
+        headers=headers,
+        json=body,
+        params=params,
+        )
+    assert response.status == 200, 'Response body is : ' + (await response.read()).decode('utf-8')
+
+
+pytestmark = pytest.mark.asyncio
+
+async def test_discoveryengine_projects_locations_data_stores_user_events_collect(client):
+    """Test case for discoveryengine_projects_locations_data_stores_user_events_collect
+
+    
+    """
+    params = [('$.xgafv', 'xgafv_example'),
+                    ('access_token', 'access_token_example'),
+                    ('alt', 'alt_example'),
+                    ('callback', 'param_callback_example'),
+                    ('fields', 'fields_example'),
+                    ('key', 'key_example'),
+                    ('oauth_token', 'oauth_token_example'),
+                    ('prettyPrint', True),
+                    ('quotaUser', 'quota_user_example'),
+                    ('upload_protocol', 'upload_protocol_example'),
+                    ('uploadType', 'upload_type_example'),
+                    ('ets', 'ets_example'),
+                    ('uri', 'uri_example'),
+                    ('userEvent', 'user_event_example')]
+    headers = { 
+        'Accept': 'application/json',
+        'Authorization': 'Bearer special-key',
+        'Authorization': 'Bearer special-key',
+    }
+    response = await client.request(
+        method='GET',
+        path='/v1beta/{parent}/userEvents:collect'.format(parent='parent_example'),
+        headers=headers,
+        params=params,
+        )
+    assert response.status == 200, 'Response body is : ' + (await response.read()).decode('utf-8')
+
+
+pytestmark = pytest.mark.asyncio
+
+async def test_discoveryengine_projects_locations_data_stores_user_events_import(client):
+    """Test case for discoveryengine_projects_locations_data_stores_user_events_import
+
+    
+    """
+    body = {"bigquerySource":{"dataSchema":"dataSchema","datasetId":"datasetId","partitionDate":{"month":6,"year":1,"day":0},"tableId":"tableId","projectId":"projectId","gcsStagingDir":"gcsStagingDir"},"gcsSource":{"dataSchema":"dataSchema","inputUris":["inputUris","inputUris"]},"inlineSource":{"userEvents":[{"userInfo":{"userAgent":"userAgent","userId":"userId"},"documents":[{"quantity":1,"name":"name","promotionIds":["promotionIds","promotionIds"],"id":"id","uri":"uri"},{"quantity":1,"name":"name","promotionIds":["promotionIds","promotionIds"],"id":"id","uri":"uri"}],"attributionToken":"attributionToken","tagIds":["tagIds","tagIds"],"userPseudoId":"userPseudoId","pageInfo":{"referrerUri":"referrerUri","pageCategory":"pageCategory","uri":"uri","pageviewId":"pageviewId"},"promotionIds":["promotionIds","promotionIds"],"eventType":"eventType","sessionId":"sessionId","transactionInfo":{"cost":9.301444,"currency":"currency","tax":2.027123,"discountValue":3.6160767,"value":4.145608,"transactionId":"transactionId"},"filter":"filter","directUserRequest":True,"searchInfo":{"offset":7,"searchQuery":"searchQuery","orderBy":"orderBy"},"eventTime":"eventTime","completionInfo":{"selectedSuggestion":"selectedSuggestion","selectedPosition":6},"attributes":{"key":{"numbers":[0.8008281904610115,0.8008281904610115],"text":["text","text"]}},"panel":{"panelPosition":5,"panelId":"panelId","displayName":"displayName","totalPanels":2},"mediaInfo":{"mediaProgressPercentage":5.962134,"mediaProgressDuration":"mediaProgressDuration"}},{"userInfo":{"userAgent":"userAgent","userId":"userId"},"documents":[{"quantity":1,"name":"name","promotionIds":["promotionIds","promotionIds"],"id":"id","uri":"uri"},{"quantity":1,"name":"name","promotionIds":["promotionIds","promotionIds"],"id":"id","uri":"uri"}],"attributionToken":"attributionToken","tagIds":["tagIds","tagIds"],"userPseudoId":"userPseudoId","pageInfo":{"referrerUri":"referrerUri","pageCategory":"pageCategory","uri":"uri","pageviewId":"pageviewId"},"promotionIds":["promotionIds","promotionIds"],"eventType":"eventType","sessionId":"sessionId","transactionInfo":{"cost":9.301444,"currency":"currency","tax":2.027123,"discountValue":3.6160767,"value":4.145608,"transactionId":"transactionId"},"filter":"filter","directUserRequest":True,"searchInfo":{"offset":7,"searchQuery":"searchQuery","orderBy":"orderBy"},"eventTime":"eventTime","completionInfo":{"selectedSuggestion":"selectedSuggestion","selectedPosition":6},"attributes":{"key":{"numbers":[0.8008281904610115,0.8008281904610115],"text":["text","text"]}},"panel":{"panelPosition":5,"panelId":"panelId","displayName":"displayName","totalPanels":2},"mediaInfo":{"mediaProgressPercentage":5.962134,"mediaProgressDuration":"mediaProgressDuration"}}]},"errorConfig":{"gcsPrefix":"gcsPrefix"}}
+    params = [('$.xgafv', 'xgafv_example'),
+                    ('access_token', 'access_token_example'),
+                    ('alt', 'alt_example'),
+                    ('callback', 'param_callback_example'),
+                    ('fields', 'fields_example'),
+                    ('key', 'key_example'),
+                    ('oauth_token', 'oauth_token_example'),
+                    ('prettyPrint', True),
+                    ('quotaUser', 'quota_user_example'),
+                    ('upload_protocol', 'upload_protocol_example'),
+                    ('uploadType', 'upload_type_example')]
+    headers = { 
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer special-key',
+        'Authorization': 'Bearer special-key',
+    }
+    response = await client.request(
+        method='POST',
+        path='/v1beta/{parent}/userEvents:import'.format(parent='parent_example'),
+        headers=headers,
+        json=body,
+        params=params,
+        )
+    assert response.status == 200, 'Response body is : ' + (await response.read()).decode('utf-8')
+
+
+pytestmark = pytest.mark.asyncio
+
+async def test_discoveryengine_projects_locations_data_stores_user_events_write(client):
+    """Test case for discoveryengine_projects_locations_data_stores_user_events_write
+
+    
+    """
+    body = {"userInfo":{"userAgent":"userAgent","userId":"userId"},"documents":[{"quantity":1,"name":"name","promotionIds":["promotionIds","promotionIds"],"id":"id","uri":"uri"},{"quantity":1,"name":"name","promotionIds":["promotionIds","promotionIds"],"id":"id","uri":"uri"}],"attributionToken":"attributionToken","tagIds":["tagIds","tagIds"],"userPseudoId":"userPseudoId","pageInfo":{"referrerUri":"referrerUri","pageCategory":"pageCategory","uri":"uri","pageviewId":"pageviewId"},"promotionIds":["promotionIds","promotionIds"],"eventType":"eventType","sessionId":"sessionId","transactionInfo":{"cost":9.301444,"currency":"currency","tax":2.027123,"discountValue":3.6160767,"value":4.145608,"transactionId":"transactionId"},"filter":"filter","directUserRequest":True,"searchInfo":{"offset":7,"searchQuery":"searchQuery","orderBy":"orderBy"},"eventTime":"eventTime","completionInfo":{"selectedSuggestion":"selectedSuggestion","selectedPosition":6},"attributes":{"key":{"numbers":[0.8008281904610115,0.8008281904610115],"text":["text","text"]}},"panel":{"panelPosition":5,"panelId":"panelId","displayName":"displayName","totalPanels":2},"mediaInfo":{"mediaProgressPercentage":5.962134,"mediaProgressDuration":"mediaProgressDuration"}}
+    params = [('$.xgafv', 'xgafv_example'),
+                    ('access_token', 'access_token_example'),
+                    ('alt', 'alt_example'),
+                    ('callback', 'param_callback_example'),
+                    ('fields', 'fields_example'),
+                    ('key', 'key_example'),
+                    ('oauth_token', 'oauth_token_example'),
+                    ('prettyPrint', True),
+                    ('quotaUser', 'quota_user_example'),
+                    ('upload_protocol', 'upload_protocol_example'),
+                    ('uploadType', 'upload_type_example')]
+    headers = { 
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer special-key',
+        'Authorization': 'Bearer special-key',
+    }
+    response = await client.request(
+        method='POST',
+        path='/v1beta/{parent}/userEvents:write'.format(parent='parent_example'),
+        headers=headers,
+        json=body,
+        params=params,
+        )
+    assert response.status == 200, 'Response body is : ' + (await response.read()).decode('utf-8')
+
+
+pytestmark = pytest.mark.asyncio
+
+async def test_discoveryengine_projects_operations_get(client):
+    """Test case for discoveryengine_projects_operations_get
+
+    
+    """
+    params = [('$.xgafv', 'xgafv_example'),
+                    ('access_token', 'access_token_example'),
+                    ('alt', 'alt_example'),
+                    ('callback', 'param_callback_example'),
+                    ('fields', 'fields_example'),
+                    ('key', 'key_example'),
+                    ('oauth_token', 'oauth_token_example'),
+                    ('prettyPrint', True),
+                    ('quotaUser', 'quota_user_example'),
+                    ('upload_protocol', 'upload_protocol_example'),
+                    ('uploadType', 'upload_type_example')]
+    headers = { 
+        'Accept': 'application/json',
+        'Authorization': 'Bearer special-key',
+        'Authorization': 'Bearer special-key',
+    }
+    response = await client.request(
+        method='GET',
+        path='/v1beta/{name}'.format(name='name_example'),
+        headers=headers,
+        params=params,
+        )
+    assert response.status == 200, 'Response body is : ' + (await response.read()).decode('utf-8')
+
+
+pytestmark = pytest.mark.asyncio
+
+async def test_discoveryengine_projects_operations_list(client):
+    """Test case for discoveryengine_projects_operations_list
+
+    
+    """
+    params = [('$.xgafv', 'xgafv_example'),
+                    ('access_token', 'access_token_example'),
+                    ('alt', 'alt_example'),
+                    ('callback', 'param_callback_example'),
+                    ('fields', 'fields_example'),
+                    ('key', 'key_example'),
+                    ('oauth_token', 'oauth_token_example'),
+                    ('prettyPrint', True),
+                    ('quotaUser', 'quota_user_example'),
+                    ('upload_protocol', 'upload_protocol_example'),
+                    ('uploadType', 'upload_type_example'),
+                    ('filter', 'filter_example'),
+                    ('pageSize', 56),
+                    ('pageToken', 'page_token_example')]
+    headers = { 
+        'Accept': 'application/json',
+        'Authorization': 'Bearer special-key',
+        'Authorization': 'Bearer special-key',
+    }
+    response = await client.request(
+        method='GET',
+        path='/v1beta/{name}/operations'.format(name='name_example'),
+        headers=headers,
+        params=params,
+        )
+    assert response.status == 200, 'Response body is : ' + (await response.read()).decode('utf-8')
+

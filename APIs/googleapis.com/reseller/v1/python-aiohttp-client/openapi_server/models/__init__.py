@@ -1,0 +1,17 @@
+# coding: utf-8
+
+# import models into model package
+from openapi_server.models.address import Address
+from openapi_server.models.change_plan_request import ChangePlanRequest
+from openapi_server.models.customer import Customer
+from openapi_server.models.primary_admin import PrimaryAdmin
+from openapi_server.models.renewal_settings import RenewalSettings
+from openapi_server.models.resellernotify_getwatchdetails_response import ResellernotifyGetwatchdetailsResponse
+from openapi_server.models.resellernotify_resource import ResellernotifyResource
+from openapi_server.models.seats import Seats
+from openapi_server.models.subscription import Subscription
+from openapi_server.models.subscription_plan import SubscriptionPlan
+from openapi_server.models.subscription_plan_commitment_interval import SubscriptionPlanCommitmentInterval
+from openapi_server.models.subscription_transfer_info import SubscriptionTransferInfo
+from openapi_server.models.subscription_trial_settings import SubscriptionTrialSettings
+from openapi_server.models.subscriptions import Subscriptions
