@@ -1,0 +1,50 @@
+# RawgVideoGamesDatabaseApi.GameSingle
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**achievementsCount** | **Number** |  | [optional] [readonly] 
+**added** | **Number** |  | [optional] [readonly] 
+**addedByStatus** | **Object** |  | [optional] [readonly] 
+**additionsCount** | **Number** |  | [optional] [readonly] 
+**alternativeNames** | **[String]** |  | [optional] [readonly] 
+**backgroundImage** | **String** |  | [optional] [readonly] 
+**backgroundImageAdditional** | **String** |  | [optional] [readonly] 
+**creatorsCount** | **Number** |  | [optional] [readonly] 
+**description** | **String** |  | [optional] [readonly] 
+**esrbRating** | [**GameEsrbRating**](GameEsrbRating.md) |  | [optional] 
+**gameSeriesCount** | **Number** |  | [optional] [readonly] 
+**id** | **Number** |  | [optional] [readonly] 
+**metacritic** | **Number** |  | [optional] [readonly] 
+**metacriticPlatforms** | [**[GamePlatformMetacritic]**](GamePlatformMetacritic.md) |  | [optional] [readonly] 
+**metacriticUrl** | **String** | For example \&quot;http://www.metacritic.com/game/playstation-4/the-witcher-3-wild-hunt\&quot; | [optional] [readonly] 
+**moviesCount** | **Number** |  | [optional] [readonly] 
+**name** | **String** |  | [optional] [readonly] 
+**nameOriginal** | **String** |  | [optional] [readonly] 
+**parentAchievementsCount** | **String** |  | [optional] [readonly] 
+**parentsCount** | **Number** |  | [optional] [readonly] 
+**platforms** | [**[GamePlatformsInner]**](GamePlatformsInner.md) |  | [optional] 
+**playtime** | **Number** | in hours | [optional] [readonly] 
+**rating** | **Number** |  | 
+**ratingTop** | **Number** |  | [optional] [readonly] 
+**ratings** | **Object** |  | [optional] [readonly] 
+**ratingsCount** | **Number** |  | [optional] [readonly] 
+**reactions** | **Object** |  | [optional] [readonly] 
+**redditCount** | **Number** |  | [optional] [readonly] 
+**redditDescription** | **String** |  | [optional] [readonly] 
+**redditLogo** | **String** |  | [optional] [readonly] 
+**redditName** | **String** |  | [optional] [readonly] 
+**redditUrl** | **String** | For example \&quot;https://www.reddit.com/r/uncharted/\&quot; or \&quot;uncharted\&quot; | [optional] [readonly] 
+**released** | **Date** |  | [optional] [readonly] 
+**reviewsTextCount** | **String** |  | [optional] [readonly] 
+**screenshotsCount** | **Number** |  | [optional] [readonly] 
+**slug** | **String** |  | [optional] [readonly] 
+**suggestionsCount** | **Number** |  | [optional] [readonly] 
+**tba** | **Boolean** |  | [optional] [readonly] 
+**twitchCount** | **String** |  | [optional] [readonly] 
+**updated** | **Date** |  | [optional] [readonly] 
+**website** | **String** |  | [optional] [readonly] 
+**youtubeCount** | **String** |  | [optional] [readonly] 
+
+
