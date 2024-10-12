@@ -1,0 +1,9 @@
+# coding: utf-8
+
+# import models into model package
+from openapi_server.models.nat_gateway import NatGateway
+from openapi_server.models.nat_gateway_list_result import NatGatewayListResult
+from openapi_server.models.nat_gateway_properties_format import NatGatewayPropertiesFormat
+from openapi_server.models.nat_gateway_properties_format_public_ip_addresses_inner import NatGatewayPropertiesFormatPublicIpAddressesInner
+from openapi_server.models.nat_gateway_sku import NatGatewaySku
+from openapi_server.models.nat_gateways_update_tags_request import NatGatewaysUpdateTagsRequest

@@ -1,0 +1,6 @@
+# coding: utf-8
+
+# import models into model package
+from openapi_server.models.backup_short_term_retention_policy import BackupShortTermRetentionPolicy
+from openapi_server.models.backup_short_term_retention_policy_list_result import BackupShortTermRetentionPolicyListResult
+from openapi_server.models.backup_short_term_retention_policy_properties import BackupShortTermRetentionPolicyProperties

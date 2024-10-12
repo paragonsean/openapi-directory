@@ -1,0 +1,26 @@
+# coding: utf-8
+
+# import models into model package
+from openapi_server.models.a_record import ARecord
+from openapi_server.models.aaaa_record import AaaaRecord
+from openapi_server.models.cloud_error import CloudError
+from openapi_server.models.cloud_error_body import CloudErrorBody
+from openapi_server.models.cname_record import CnameRecord
+from openapi_server.models.mx_record import MxRecord
+from openapi_server.models.private_zone import PrivateZone
+from openapi_server.models.private_zone_list_result import PrivateZoneListResult
+from openapi_server.models.private_zone_properties import PrivateZoneProperties
+from openapi_server.models.proxy_resource import ProxyResource
+from openapi_server.models.ptr_record import PtrRecord
+from openapi_server.models.record_set import RecordSet
+from openapi_server.models.record_set_list_result import RecordSetListResult
+from openapi_server.models.record_set_properties import RecordSetProperties
+from openapi_server.models.resource import Resource
+from openapi_server.models.soa_record import SoaRecord
+from openapi_server.models.srv_record import SrvRecord
+from openapi_server.models.sub_resource import SubResource
+from openapi_server.models.tracked_resource import TrackedResource
+from openapi_server.models.txt_record import TxtRecord
+from openapi_server.models.virtual_network_link import VirtualNetworkLink
+from openapi_server.models.virtual_network_link_list_result import VirtualNetworkLinkListResult
+from openapi_server.models.virtual_network_link_properties import VirtualNetworkLinkProperties

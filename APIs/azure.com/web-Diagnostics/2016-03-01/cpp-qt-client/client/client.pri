@@ -1,0 +1,73 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIAbnormalTimePeriod.h \
+    $${PWD}/OAIAnalysisData.h \
+    $${PWD}/OAIAnalysisData_data_inner_inner.h \
+    $${PWD}/OAIAnalysisDefinition.h \
+    $${PWD}/OAIDataSource.h \
+    $${PWD}/OAIDataTableResponseColumn.h \
+    $${PWD}/OAIDataTableResponseObject.h \
+    $${PWD}/OAIDetectorAbnormalTimePeriod.h \
+    $${PWD}/OAIDetectorDefinition.h \
+    $${PWD}/OAIDetectorInfo.h \
+    $${PWD}/OAIDetectorResponse.h \
+    $${PWD}/OAIDetectorResponseCollection.h \
+    $${PWD}/OAIDiagnosticAnalysis.h \
+    $${PWD}/OAIDiagnosticAnalysisCollection.h \
+    $${PWD}/OAIDiagnosticCategory.h \
+    $${PWD}/OAIDiagnosticCategoryCollection.h \
+    $${PWD}/OAIDiagnosticData.h \
+    $${PWD}/OAIDiagnosticDetectorCollection.h \
+    $${PWD}/OAIDiagnosticDetectorResponse.h \
+    $${PWD}/OAIDiagnosticMetricSample.h \
+    $${PWD}/OAIDiagnosticMetricSet.h \
+    $${PWD}/OAIRendering.h \
+    $${PWD}/OAIResponseMetaData.h \
+    $${PWD}/OAISolution.h \
+# APIs
+    $${PWD}/OAIDiagnosticsApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIAbnormalTimePeriod.cpp \
+    $${PWD}/OAIAnalysisData.cpp \
+    $${PWD}/OAIAnalysisData_data_inner_inner.cpp \
+    $${PWD}/OAIAnalysisDefinition.cpp \
+    $${PWD}/OAIDataSource.cpp \
+    $${PWD}/OAIDataTableResponseColumn.cpp \
+    $${PWD}/OAIDataTableResponseObject.cpp \
+    $${PWD}/OAIDetectorAbnormalTimePeriod.cpp \
+    $${PWD}/OAIDetectorDefinition.cpp \
+    $${PWD}/OAIDetectorInfo.cpp \
+    $${PWD}/OAIDetectorResponse.cpp \
+    $${PWD}/OAIDetectorResponseCollection.cpp \
+    $${PWD}/OAIDiagnosticAnalysis.cpp \
+    $${PWD}/OAIDiagnosticAnalysisCollection.cpp \
+    $${PWD}/OAIDiagnosticCategory.cpp \
+    $${PWD}/OAIDiagnosticCategoryCollection.cpp \
+    $${PWD}/OAIDiagnosticData.cpp \
+    $${PWD}/OAIDiagnosticDetectorCollection.cpp \
+    $${PWD}/OAIDiagnosticDetectorResponse.cpp \
+    $${PWD}/OAIDiagnosticMetricSample.cpp \
+    $${PWD}/OAIDiagnosticMetricSet.cpp \
+    $${PWD}/OAIRendering.cpp \
+    $${PWD}/OAIResponseMetaData.cpp \
+    $${PWD}/OAISolution.cpp \
+# APIs
+    $${PWD}/OAIDiagnosticsApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp
