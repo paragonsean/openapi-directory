@@ -1,0 +1,16 @@
+
+
+# ApplicationUpdateParameters
+
+Parameters for an update application request.
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**allowUpdates** | **Boolean** | A value indicating whether packages within the application may be overwritten using the same version string. |  [optional] |
+|**defaultVersion** | **String** | The package to use if a client requests the application but does not specify a version. |  [optional] |
+|**displayName** | **String** | The display name for the application. |  [optional] |
+
+
+

@@ -1,0 +1,58 @@
+# ManagedLabsClient.ProviderOperationsApi
+
+All URIs are relative to *https://management.azure.com*
+
+Method | HTTP request | Description
+------------- | ------------- | -------------
+[**providerOperationsList**](ProviderOperationsApi.md#providerOperationsList) | **GET** /providers/Microsoft.LabServices/operations | 
+
+
+
+## providerOperationsList
+
+> ProviderOperationResult providerOperationsList(apiVersion)
+
+
+
+Result of the request to list REST API operations
+
+### Example
+
+```javascript
+import ManagedLabsClient from 'managed_labs_client';
+let defaultClient = ManagedLabsClient.ApiClient.instance;
+// Configure OAuth2 access token for authorization: azure_auth
+let azure_auth = defaultClient.authentications['azure_auth'];
+azure_auth.accessToken = 'YOUR ACCESS TOKEN';
+
+let apiInstance = new ManagedLabsClient.ProviderOperationsApi();
+let apiVersion = "'2018-10-15'"; // String | Client API version.
+apiInstance.providerOperationsList(apiVersion, (error, data, response) => {
+  if (error) {
+    console.error(error);
+  } else {
+    console.log('API called successfully. Returned data: ' + data);
+  }
+});
+```
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **apiVersion** | **String**| Client API version. | [default to &#39;2018-10-15&#39;]
+
+### Return type
+
+[**ProviderOperationResult**](ProviderOperationResult.md)
+
+### Authorization
+
+[azure_auth](../README.md#azure_auth)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
