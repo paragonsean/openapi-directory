@@ -1,0 +1,12 @@
+# AzureMediaServices.EnvelopeEncryption
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**clearTracks** | [**[TrackSelection]**](TrackSelection.md) | Representing which tracks should not be encrypted | [optional] 
+**contentKeys** | [**StreamingPolicyContentKeys**](StreamingPolicyContentKeys.md) |  | [optional] 
+**customLicenseAcquisitionUrlTemplate** | **String** | LicenseAcquisitionUrlTemplate is used to point to user specified service to delivery content keys | [optional] 
+**enabledProtocols** | [**EnabledProtocols**](EnabledProtocols.md) |  | [optional] 
+
+

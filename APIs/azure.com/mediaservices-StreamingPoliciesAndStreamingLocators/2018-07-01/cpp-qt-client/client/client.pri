@@ -1,0 +1,79 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIApiError.h \
+    $${PWD}/OAICbcsDrmConfiguration.h \
+    $${PWD}/OAICencDrmConfiguration.h \
+    $${PWD}/OAICommonEncryptionCbcs.h \
+    $${PWD}/OAICommonEncryptionCenc.h \
+    $${PWD}/OAIDefaultKey.h \
+    $${PWD}/OAIEnabledProtocols.h \
+    $${PWD}/OAIEnvelopeEncryption.h \
+    $${PWD}/OAIListContentKeysResponse.h \
+    $${PWD}/OAIListPathsResponse.h \
+    $${PWD}/OAINoEncryption.h \
+    $${PWD}/OAIODataError.h \
+    $${PWD}/OAIStreamingLocator.h \
+    $${PWD}/OAIStreamingLocatorCollection.h \
+    $${PWD}/OAIStreamingLocatorContentKey.h \
+    $${PWD}/OAIStreamingLocatorProperties.h \
+    $${PWD}/OAIStreamingPath.h \
+    $${PWD}/OAIStreamingPolicy.h \
+    $${PWD}/OAIStreamingPolicyCollection.h \
+    $${PWD}/OAIStreamingPolicyContentKey.h \
+    $${PWD}/OAIStreamingPolicyContentKeys.h \
+    $${PWD}/OAIStreamingPolicyFairPlayConfiguration.h \
+    $${PWD}/OAIStreamingPolicyPlayReadyConfiguration.h \
+    $${PWD}/OAIStreamingPolicyProperties.h \
+    $${PWD}/OAIStreamingPolicyWidevineConfiguration.h \
+    $${PWD}/OAITrackPropertyCondition.h \
+    $${PWD}/OAITrackSelection.h \
+# APIs
+    $${PWD}/OAIDefaultApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIApiError.cpp \
+    $${PWD}/OAICbcsDrmConfiguration.cpp \
+    $${PWD}/OAICencDrmConfiguration.cpp \
+    $${PWD}/OAICommonEncryptionCbcs.cpp \
+    $${PWD}/OAICommonEncryptionCenc.cpp \
+    $${PWD}/OAIDefaultKey.cpp \
+    $${PWD}/OAIEnabledProtocols.cpp \
+    $${PWD}/OAIEnvelopeEncryption.cpp \
+    $${PWD}/OAIListContentKeysResponse.cpp \
+    $${PWD}/OAIListPathsResponse.cpp \
+    $${PWD}/OAINoEncryption.cpp \
+    $${PWD}/OAIODataError.cpp \
+    $${PWD}/OAIStreamingLocator.cpp \
+    $${PWD}/OAIStreamingLocatorCollection.cpp \
+    $${PWD}/OAIStreamingLocatorContentKey.cpp \
+    $${PWD}/OAIStreamingLocatorProperties.cpp \
+    $${PWD}/OAIStreamingPath.cpp \
+    $${PWD}/OAIStreamingPolicy.cpp \
+    $${PWD}/OAIStreamingPolicyCollection.cpp \
+    $${PWD}/OAIStreamingPolicyContentKey.cpp \
+    $${PWD}/OAIStreamingPolicyContentKeys.cpp \
+    $${PWD}/OAIStreamingPolicyFairPlayConfiguration.cpp \
+    $${PWD}/OAIStreamingPolicyPlayReadyConfiguration.cpp \
+    $${PWD}/OAIStreamingPolicyProperties.cpp \
+    $${PWD}/OAIStreamingPolicyWidevineConfiguration.cpp \
+    $${PWD}/OAITrackPropertyCondition.cpp \
+    $${PWD}/OAITrackSelection.cpp \
+# APIs
+    $${PWD}/OAIDefaultApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

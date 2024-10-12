@@ -1,0 +1,17 @@
+
+
+# StreamingPolicy
+
+A Streaming Policy resource
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**properties** | [**StreamingPolicyProperties**](StreamingPolicyProperties.md) |  |  [optional] |
+|**id** | **String** | Fully qualified resource ID for the resource. |  [optional] [readonly] |
+|**name** | **String** | The name of the resource. |  [optional] [readonly] |
+|**type** | **String** | The type of the resource. |  [optional] [readonly] |
+
+
+

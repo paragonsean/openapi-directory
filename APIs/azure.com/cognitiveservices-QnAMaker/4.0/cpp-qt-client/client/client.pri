@@ -1,0 +1,91 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIActiveLearningSettingsDTO.h \
+    $${PWD}/OAIAlterationsDTO.h \
+    $${PWD}/OAIContextDTO.h \
+    $${PWD}/OAICreateKbDTO.h \
+    $${PWD}/OAICreateKbInputDTO.h \
+    $${PWD}/OAIDeleteKbContentsDTO.h \
+    $${PWD}/OAIEndpointKeysDTO.h \
+    $${PWD}/OAIEndpointSettingsDTO.h \
+    $${PWD}/OAIError.h \
+    $${PWD}/OAIErrorCode.h \
+    $${PWD}/OAIErrorResponse.h \
+    $${PWD}/OAIFileDTO.h \
+    $${PWD}/OAIInnerErrorModel.h \
+    $${PWD}/OAIKnowledgebaseDTO.h \
+    $${PWD}/OAIKnowledgebasesDTO.h \
+    $${PWD}/OAIMetadataDTO.h \
+    $${PWD}/OAIOperation.h \
+    $${PWD}/OAIOperationState.h \
+    $${PWD}/OAIPromptDTO.h \
+    $${PWD}/OAIQnADTO.h \
+    $${PWD}/OAIQnADocumentsDTO.h \
+    $${PWD}/OAIReplaceKbDTO.h \
+    $${PWD}/OAIUpdateContextDTO.h \
+    $${PWD}/OAIUpdateKbContentsDTO.h \
+    $${PWD}/OAIUpdateKbOperationDTO.h \
+    $${PWD}/OAIUpdateMetadataDTO.h \
+    $${PWD}/OAIUpdateQnaDTO.h \
+    $${PWD}/OAIUpdateQuestionsDTO.h \
+    $${PWD}/OAIWordAlterationsDTO.h \
+# APIs
+    $${PWD}/OAIAlterationsApi.h \
+    $${PWD}/OAIDefaultApi.h \
+    $${PWD}/OAIEndpointKeysApi.h \
+    $${PWD}/OAIKnowledgebasesApi.h \
+    $${PWD}/OAIOperationsApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIActiveLearningSettingsDTO.cpp \
+    $${PWD}/OAIAlterationsDTO.cpp \
+    $${PWD}/OAIContextDTO.cpp \
+    $${PWD}/OAICreateKbDTO.cpp \
+    $${PWD}/OAICreateKbInputDTO.cpp \
+    $${PWD}/OAIDeleteKbContentsDTO.cpp \
+    $${PWD}/OAIEndpointKeysDTO.cpp \
+    $${PWD}/OAIEndpointSettingsDTO.cpp \
+    $${PWD}/OAIError.cpp \
+    $${PWD}/OAIErrorCode.cpp \
+    $${PWD}/OAIErrorResponse.cpp \
+    $${PWD}/OAIFileDTO.cpp \
+    $${PWD}/OAIInnerErrorModel.cpp \
+    $${PWD}/OAIKnowledgebaseDTO.cpp \
+    $${PWD}/OAIKnowledgebasesDTO.cpp \
+    $${PWD}/OAIMetadataDTO.cpp \
+    $${PWD}/OAIOperation.cpp \
+    $${PWD}/OAIOperationState.cpp \
+    $${PWD}/OAIPromptDTO.cpp \
+    $${PWD}/OAIQnADTO.cpp \
+    $${PWD}/OAIQnADocumentsDTO.cpp \
+    $${PWD}/OAIReplaceKbDTO.cpp \
+    $${PWD}/OAIUpdateContextDTO.cpp \
+    $${PWD}/OAIUpdateKbContentsDTO.cpp \
+    $${PWD}/OAIUpdateKbOperationDTO.cpp \
+    $${PWD}/OAIUpdateMetadataDTO.cpp \
+    $${PWD}/OAIUpdateQnaDTO.cpp \
+    $${PWD}/OAIUpdateQuestionsDTO.cpp \
+    $${PWD}/OAIWordAlterationsDTO.cpp \
+# APIs
+    $${PWD}/OAIAlterationsApi.cpp \
+    $${PWD}/OAIDefaultApi.cpp \
+    $${PWD}/OAIEndpointKeysApi.cpp \
+    $${PWD}/OAIKnowledgebasesApi.cpp \
+    $${PWD}/OAIOperationsApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp
