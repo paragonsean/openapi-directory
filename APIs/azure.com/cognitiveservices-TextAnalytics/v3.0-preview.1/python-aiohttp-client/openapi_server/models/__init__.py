@@ -1,0 +1,28 @@
+# coding: utf-8
+
+# import models into model package
+from openapi_server.models.detected_language import DetectedLanguage
+from openapi_server.models.document_entities import DocumentEntities
+from openapi_server.models.document_error import DocumentError
+from openapi_server.models.document_key_phrases import DocumentKeyPhrases
+from openapi_server.models.document_language import DocumentLanguage
+from openapi_server.models.document_linked_entities import DocumentLinkedEntities
+from openapi_server.models.document_sentiment import DocumentSentiment
+from openapi_server.models.document_statistics import DocumentStatistics
+from openapi_server.models.entities_result import EntitiesResult
+from openapi_server.models.entity import Entity
+from openapi_server.models.entity_linking_result import EntityLinkingResult
+from openapi_server.models.inner_error import InnerError
+from openapi_server.models.key_phrase_result import KeyPhraseResult
+from openapi_server.models.language_batch_input import LanguageBatchInput
+from openapi_server.models.language_input import LanguageInput
+from openapi_server.models.language_result import LanguageResult
+from openapi_server.models.linked_entity import LinkedEntity
+from openapi_server.models.match import Match
+from openapi_server.models.multi_language_batch_input import MultiLanguageBatchInput
+from openapi_server.models.multi_language_input import MultiLanguageInput
+from openapi_server.models.request_statistics import RequestStatistics
+from openapi_server.models.sentence_sentiment import SentenceSentiment
+from openapi_server.models.sentiment_confidence_score_per_label import SentimentConfidenceScorePerLabel
+from openapi_server.models.sentiment_response import SentimentResponse
+from openapi_server.models.text_analytics_error import TextAnalyticsError

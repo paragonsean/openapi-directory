@@ -1,0 +1,23 @@
+# coding: utf-8
+
+# import models into model package
+from openapi_server.models.detected_language import DetectedLanguage
+from openapi_server.models.document_statistics import DocumentStatistics
+from openapi_server.models.entities_batch_result import EntitiesBatchResult
+from openapi_server.models.entities_batch_result_item import EntitiesBatchResultItem
+from openapi_server.models.entity_record import EntityRecord
+from openapi_server.models.error_record import ErrorRecord
+from openapi_server.models.error_response import ErrorResponse
+from openapi_server.models.internal_error import InternalError
+from openapi_server.models.key_phrase_batch_result import KeyPhraseBatchResult
+from openapi_server.models.key_phrase_batch_result_item import KeyPhraseBatchResultItem
+from openapi_server.models.language_batch_input import LanguageBatchInput
+from openapi_server.models.language_batch_result import LanguageBatchResult
+from openapi_server.models.language_batch_result_item import LanguageBatchResultItem
+from openapi_server.models.language_input import LanguageInput
+from openapi_server.models.match_record import MatchRecord
+from openapi_server.models.multi_language_batch_input import MultiLanguageBatchInput
+from openapi_server.models.multi_language_input import MultiLanguageInput
+from openapi_server.models.request_statistics import RequestStatistics
+from openapi_server.models.sentiment_batch_result import SentimentBatchResult
+from openapi_server.models.sentiment_batch_result_item import SentimentBatchResultItem

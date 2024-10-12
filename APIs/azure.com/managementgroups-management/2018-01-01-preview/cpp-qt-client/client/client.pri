@@ -1,0 +1,95 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAICheckNameAvailabilityRequest.h \
+    $${PWD}/OAICheckNameAvailabilityResult.h \
+    $${PWD}/OAICreateManagementGroupChildInfo.h \
+    $${PWD}/OAICreateManagementGroupDetails.h \
+    $${PWD}/OAICreateManagementGroupProperties.h \
+    $${PWD}/OAICreateManagementGroupRequest.h \
+    $${PWD}/OAICreateParentGroupInfo.h \
+    $${PWD}/OAIEntityHierarchyItem.h \
+    $${PWD}/OAIEntityHierarchyItemProperties.h \
+    $${PWD}/OAIEntityInfo.h \
+    $${PWD}/OAIEntityInfoProperties.h \
+    $${PWD}/OAIEntityListResult.h \
+    $${PWD}/OAIEntityParentGroupInfo.h \
+    $${PWD}/OAIErrorDetails.h \
+    $${PWD}/OAIErrorResponse.h \
+    $${PWD}/OAIManagementGroup.h \
+    $${PWD}/OAIManagementGroupChildInfo.h \
+    $${PWD}/OAIManagementGroupChildType.h \
+    $${PWD}/OAIManagementGroupDetails.h \
+    $${PWD}/OAIManagementGroupInfo.h \
+    $${PWD}/OAIManagementGroupInfoProperties.h \
+    $${PWD}/OAIManagementGroupListResult.h \
+    $${PWD}/OAIManagementGroupProperties.h \
+    $${PWD}/OAIOperation.h \
+    $${PWD}/OAIOperationDisplayProperties.h \
+    $${PWD}/OAIOperationListResult.h \
+    $${PWD}/OAIOperationResults.h \
+    $${PWD}/OAIParentGroupInfo.h \
+    $${PWD}/OAIPatchManagementGroupRequest.h \
+    $${PWD}/OAIPermissions.h \
+    $${PWD}/OAIProperties.h \
+    $${PWD}/OAIProvisioningState.h \
+# APIs
+    $${PWD}/OAICheckNameAvailabilityApi.h \
+    $${PWD}/OAIEntitiesApi.h \
+    $${PWD}/OAIManagementGroupsApi.h \
+    $${PWD}/OAIOperationsApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAICheckNameAvailabilityRequest.cpp \
+    $${PWD}/OAICheckNameAvailabilityResult.cpp \
+    $${PWD}/OAICreateManagementGroupChildInfo.cpp \
+    $${PWD}/OAICreateManagementGroupDetails.cpp \
+    $${PWD}/OAICreateManagementGroupProperties.cpp \
+    $${PWD}/OAICreateManagementGroupRequest.cpp \
+    $${PWD}/OAICreateParentGroupInfo.cpp \
+    $${PWD}/OAIEntityHierarchyItem.cpp \
+    $${PWD}/OAIEntityHierarchyItemProperties.cpp \
+    $${PWD}/OAIEntityInfo.cpp \
+    $${PWD}/OAIEntityInfoProperties.cpp \
+    $${PWD}/OAIEntityListResult.cpp \
+    $${PWD}/OAIEntityParentGroupInfo.cpp \
+    $${PWD}/OAIErrorDetails.cpp \
+    $${PWD}/OAIErrorResponse.cpp \
+    $${PWD}/OAIManagementGroup.cpp \
+    $${PWD}/OAIManagementGroupChildInfo.cpp \
+    $${PWD}/OAIManagementGroupChildType.cpp \
+    $${PWD}/OAIManagementGroupDetails.cpp \
+    $${PWD}/OAIManagementGroupInfo.cpp \
+    $${PWD}/OAIManagementGroupInfoProperties.cpp \
+    $${PWD}/OAIManagementGroupListResult.cpp \
+    $${PWD}/OAIManagementGroupProperties.cpp \
+    $${PWD}/OAIOperation.cpp \
+    $${PWD}/OAIOperationDisplayProperties.cpp \
+    $${PWD}/OAIOperationListResult.cpp \
+    $${PWD}/OAIOperationResults.cpp \
+    $${PWD}/OAIParentGroupInfo.cpp \
+    $${PWD}/OAIPatchManagementGroupRequest.cpp \
+    $${PWD}/OAIPermissions.cpp \
+    $${PWD}/OAIProperties.cpp \
+    $${PWD}/OAIProvisioningState.cpp \
+# APIs
+    $${PWD}/OAICheckNameAvailabilityApi.cpp \
+    $${PWD}/OAIEntitiesApi.cpp \
+    $${PWD}/OAIManagementGroupsApi.cpp \
+    $${PWD}/OAIOperationsApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

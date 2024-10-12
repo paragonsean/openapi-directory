@@ -1,0 +1,95 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIAssetItem.h \
+    $${PWD}/OAIAsyncOperationErrorInfo.h \
+    $${PWD}/OAIAsyncOperationStatus.h \
+    $${PWD}/OAIBlobLocation.h \
+    $${PWD}/OAIColumnSpecification.h \
+    $${PWD}/OAICommitmentPlan.h \
+    $${PWD}/OAIDiagnosticsConfiguration.h \
+    $${PWD}/OAIExampleRequest.h \
+    $${PWD}/OAIGraphEdge.h \
+    $${PWD}/OAIGraphNode.h \
+    $${PWD}/OAIGraphPackage.h \
+    $${PWD}/OAIGraphParameter.h \
+    $${PWD}/OAIGraphParameterLink.h \
+    $${PWD}/OAIInputPort.h \
+    $${PWD}/OAIMachineLearningWorkspace.h \
+    $${PWD}/OAIModeValueInfo.h \
+    $${PWD}/OAIModuleAssetParameter.h \
+    $${PWD}/OAIOperationDisplayInfo.h \
+    $${PWD}/OAIOperationEntity.h \
+    $${PWD}/OAIOperationEntityListResult.h \
+    $${PWD}/OAIOutputPort.h \
+    $${PWD}/OAIPaginatedWebServicesList.h \
+    $${PWD}/OAIPatchedResource.h \
+    $${PWD}/OAIPatchedWebService.h \
+    $${PWD}/OAIRealtimeConfiguration.h \
+    $${PWD}/OAIResource.h \
+    $${PWD}/OAIServiceInputOutputSpecification.h \
+    $${PWD}/OAIStorageAccount.h \
+    $${PWD}/OAITableSpecification.h \
+    $${PWD}/OAIWebService.h \
+    $${PWD}/OAIWebServiceKeys.h \
+    $${PWD}/OAIWebServiceParameter.h \
+    $${PWD}/OAIWebServiceProperties.h \
+    $${PWD}/OAIWebServicePropertiesForGraph.h \
+# APIs
+    $${PWD}/OAIDefaultApi.h \
+    $${PWD}/OAIWebServicesApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIAssetItem.cpp \
+    $${PWD}/OAIAsyncOperationErrorInfo.cpp \
+    $${PWD}/OAIAsyncOperationStatus.cpp \
+    $${PWD}/OAIBlobLocation.cpp \
+    $${PWD}/OAIColumnSpecification.cpp \
+    $${PWD}/OAICommitmentPlan.cpp \
+    $${PWD}/OAIDiagnosticsConfiguration.cpp \
+    $${PWD}/OAIExampleRequest.cpp \
+    $${PWD}/OAIGraphEdge.cpp \
+    $${PWD}/OAIGraphNode.cpp \
+    $${PWD}/OAIGraphPackage.cpp \
+    $${PWD}/OAIGraphParameter.cpp \
+    $${PWD}/OAIGraphParameterLink.cpp \
+    $${PWD}/OAIInputPort.cpp \
+    $${PWD}/OAIMachineLearningWorkspace.cpp \
+    $${PWD}/OAIModeValueInfo.cpp \
+    $${PWD}/OAIModuleAssetParameter.cpp \
+    $${PWD}/OAIOperationDisplayInfo.cpp \
+    $${PWD}/OAIOperationEntity.cpp \
+    $${PWD}/OAIOperationEntityListResult.cpp \
+    $${PWD}/OAIOutputPort.cpp \
+    $${PWD}/OAIPaginatedWebServicesList.cpp \
+    $${PWD}/OAIPatchedResource.cpp \
+    $${PWD}/OAIPatchedWebService.cpp \
+    $${PWD}/OAIRealtimeConfiguration.cpp \
+    $${PWD}/OAIResource.cpp \
+    $${PWD}/OAIServiceInputOutputSpecification.cpp \
+    $${PWD}/OAIStorageAccount.cpp \
+    $${PWD}/OAITableSpecification.cpp \
+    $${PWD}/OAIWebService.cpp \
+    $${PWD}/OAIWebServiceKeys.cpp \
+    $${PWD}/OAIWebServiceParameter.cpp \
+    $${PWD}/OAIWebServiceProperties.cpp \
+    $${PWD}/OAIWebServicePropertiesForGraph.cpp \
+# APIs
+    $${PWD}/OAIDefaultApi.cpp \
+    $${PWD}/OAIWebServicesApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

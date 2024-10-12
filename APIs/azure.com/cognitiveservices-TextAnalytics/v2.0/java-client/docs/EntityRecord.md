@@ -1,0 +1,18 @@
+
+
+# EntityRecord
+
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**bingId** | **String** | Bing unique identifier of the recognized entity. Use in conjunction with the Bing Entity Search API to fetch additional relevant information. |  [optional] |
+|**matches** | [**List&lt;MatchRecord&gt;**](MatchRecord.md) | List of instances this entity appears in the text. |  [optional] [readonly] |
+|**name** | **String** | Entity formal name. |  [optional] |
+|**wikipediaId** | **String** | Wikipedia unique identifier of the recognized entity. |  [optional] |
+|**wikipediaLanguage** | **String** | Wikipedia language for which the WikipediaId and WikipediaUrl refers to. |  [optional] |
+|**wikipediaUrl** | **String** | URL for the entity&#39;s English Wikipedia page. |  [optional] [readonly] |
+
+
+
