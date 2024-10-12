@@ -1,0 +1,99 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIAccountProperties.h \
+    $${PWD}/OAIActiveDirectory.h \
+    $${PWD}/OAICapacityPool.h \
+    $${PWD}/OAICapacityPoolList.h \
+    $${PWD}/OAICapacityPoolPatch.h \
+    $${PWD}/OAIDimension.h \
+    $${PWD}/OAIError.h \
+    $${PWD}/OAIExportPolicyRule.h \
+    $${PWD}/OAIMetricSpecification.h \
+    $${PWD}/OAIMountTarget.h \
+    $${PWD}/OAIMountTargetList.h \
+    $${PWD}/OAIMountTargetProperties.h \
+    $${PWD}/OAINetAppAccount.h \
+    $${PWD}/OAINetAppAccountList.h \
+    $${PWD}/OAINetAppAccountPatch.h \
+    $${PWD}/OAIOperation.h \
+    $${PWD}/OAIOperationListResult.h \
+    $${PWD}/OAIOperationProperties.h \
+    $${PWD}/OAIOperation_display.h \
+    $${PWD}/OAIPoolPatchProperties.h \
+    $${PWD}/OAIPoolProperties.h \
+    $${PWD}/OAIServiceSpecification.h \
+    $${PWD}/OAISnapshot.h \
+    $${PWD}/OAISnapshotPatch.h \
+    $${PWD}/OAISnapshotProperties.h \
+    $${PWD}/OAISnapshotsList.h \
+    $${PWD}/OAIVolume.h \
+    $${PWD}/OAIVolumeList.h \
+    $${PWD}/OAIVolumePatch.h \
+    $${PWD}/OAIVolumePatchProperties.h \
+    $${PWD}/OAIVolumePatchProperties_exportPolicy.h \
+    $${PWD}/OAIVolumeProperties.h \
+# APIs
+    $${PWD}/OAICapacityPoolsApi.h \
+    $${PWD}/OAIMountTargetsApi.h \
+    $${PWD}/OAINetAppAccountsApi.h \
+    $${PWD}/OAIOperationsApi.h \
+    $${PWD}/OAISnapshotsApi.h \
+    $${PWD}/OAIVolumesApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIAccountProperties.cpp \
+    $${PWD}/OAIActiveDirectory.cpp \
+    $${PWD}/OAICapacityPool.cpp \
+    $${PWD}/OAICapacityPoolList.cpp \
+    $${PWD}/OAICapacityPoolPatch.cpp \
+    $${PWD}/OAIDimension.cpp \
+    $${PWD}/OAIError.cpp \
+    $${PWD}/OAIExportPolicyRule.cpp \
+    $${PWD}/OAIMetricSpecification.cpp \
+    $${PWD}/OAIMountTarget.cpp \
+    $${PWD}/OAIMountTargetList.cpp \
+    $${PWD}/OAIMountTargetProperties.cpp \
+    $${PWD}/OAINetAppAccount.cpp \
+    $${PWD}/OAINetAppAccountList.cpp \
+    $${PWD}/OAINetAppAccountPatch.cpp \
+    $${PWD}/OAIOperation.cpp \
+    $${PWD}/OAIOperationListResult.cpp \
+    $${PWD}/OAIOperationProperties.cpp \
+    $${PWD}/OAIOperation_display.cpp \
+    $${PWD}/OAIPoolPatchProperties.cpp \
+    $${PWD}/OAIPoolProperties.cpp \
+    $${PWD}/OAIServiceSpecification.cpp \
+    $${PWD}/OAISnapshot.cpp \
+    $${PWD}/OAISnapshotPatch.cpp \
+    $${PWD}/OAISnapshotProperties.cpp \
+    $${PWD}/OAISnapshotsList.cpp \
+    $${PWD}/OAIVolume.cpp \
+    $${PWD}/OAIVolumeList.cpp \
+    $${PWD}/OAIVolumePatch.cpp \
+    $${PWD}/OAIVolumePatchProperties.cpp \
+    $${PWD}/OAIVolumePatchProperties_exportPolicy.cpp \
+    $${PWD}/OAIVolumeProperties.cpp \
+# APIs
+    $${PWD}/OAICapacityPoolsApi.cpp \
+    $${PWD}/OAIMountTargetsApi.cpp \
+    $${PWD}/OAINetAppAccountsApi.cpp \
+    $${PWD}/OAIOperationsApi.cpp \
+    $${PWD}/OAISnapshotsApi.cpp \
+    $${PWD}/OAIVolumesApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

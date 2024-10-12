@@ -1,0 +1,17 @@
+# coding: utf-8
+
+# import models into model package
+from openapi_server.models.automation import Automation
+from openapi_server.models.automation_action import AutomationAction
+from openapi_server.models.automation_action_event_hub import AutomationActionEventHub
+from openapi_server.models.automation_action_logic_app import AutomationActionLogicApp
+from openapi_server.models.automation_action_workspace import AutomationActionWorkspace
+from openapi_server.models.automation_list import AutomationList
+from openapi_server.models.automation_properties import AutomationProperties
+from openapi_server.models.automation_rule_set import AutomationRuleSet
+from openapi_server.models.automation_scope import AutomationScope
+from openapi_server.models.automation_source import AutomationSource
+from openapi_server.models.automation_triggering_rule import AutomationTriggeringRule
+from openapi_server.models.automation_validation_status import AutomationValidationStatus
+from openapi_server.models.automations_list_default_response import AutomationsListDefaultResponse
+from openapi_server.models.automations_list_default_response_error import AutomationsListDefaultResponseError

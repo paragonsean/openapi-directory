@@ -1,0 +1,1298 @@
+openapi: 3.0.1
+info:
+  description: APIs to manage web application firewall rules
+  title: WebApplicationFirewallManagement
+  version: 2018-08-01
+  x-apisguru-categories:
+  - cloud
+  x-logo:
+    url: https://assets.onestore.ms/cdnfiles/onestorerolling-1606-01000/shell/v3/images/logo/microsoft.png
+  x-origin:
+  - format: swagger
+    url: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/frontdoor/resource-manager/Microsoft.Network/preview/2018-08-01-preview/webapplicationfirewall.json
+    version: "2.0"
+  x-preferred: false
+  x-providerName: azure.com
+  x-serviceName: frontdoor-webapplicationfirewall
+  x-tags:
+  - Azure
+  - Microsoft
+servers:
+- url: https://management.azure.com/
+security:
+- azure_auth:
+  - user_impersonation
+paths:
+  ? /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/FrontDoorWebApplicationFirewallPolicies
+  : get:
+      description: Lists all of the protection policies within a resource group.
+      operationId: policies_list
+      parameters:
+      - description: The name of the resource group.
+        in: path
+        name: resourceGroupName
+        required: true
+        schema:
+          type: string
+      - description: The subscription credentials which uniquely identify the Microsoft
+          Azure subscription. The subscription ID forms part of the URI for every
+          service call.
+        in: path
+        name: subscriptionId
+        required: true
+        schema:
+          type: string
+      - description: Client API version.
+        in: query
+        name: api-version
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebApplicationFirewallPolicyListResult'
+          description: OK. The request has succeeded.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Error response describing why the operation failed.
+      tags:
+      - ListWebApplicationFirewallPolicies
+      x-ms-examples:
+        List Policies in a Resource Group:
+          parameters:
+            api-version: 2018-08-01
+            resourceGroupName: rg1
+            subscriptionId: subid
+          responses:
+            "200":
+              body:
+                value:
+                - id: /subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/FrontDoorWebApplicationFirewallPolicies/Policy1
+                  location: WestUs
+                  name: Policy1
+                  properties:
+                    customRules:
+                      rules:
+                      - action: Block
+                        matchConditions:
+                        - matchValue:
+                          - 192.168.1.0/24
+                          - 10.0.0.0/24
+                          matchVariable: RemoteAddr
+                          negateCondition: false
+                          operator: IPMatch
+                        name: Rule1
+                        priority: 1
+                        rateLimitDurationInMinutes: 0
+                        rateLimitThreshold: 1000
+                        ruleType: RateLimitRule
+                        transforms: []
+                      - action: Block
+                        matchConditions:
+                        - matchValue:
+                          - CH
+                          matchVariable: RemoteAddr
+                          negateCondition: false
+                          operator: GeoMatch
+                        - matchValue:
+                          - Windows
+                          matchVariable: RequestHeader
+                          negateCondition: false
+                          operator: Contains
+                          selector: UserAgent
+                        name: Rule2
+                        priority: 2
+                        rateLimitDurationInMinutes: 0
+                        rateLimitThreshold: 0
+                        ruleType: MatchRule
+                        transforms: []
+                    managedRules:
+                      ruleSets:
+                      - priority: 1
+                        ruleGroupOverrides:
+                        - action: Block
+                          ruleGroupOverride: SqlInjection
+                        - action: Log
+                          ruleGroupOverride: XSS
+                        ruleSetType: AzureManagedRuleSet
+                        version: 0
+                    policySettings:
+                      enabledState: Enabled
+                      mode: Prevention
+                    provisioningState: Succeeded
+                    resourceState: Enabled
+                  tags:
+                    key1: value1
+                    key2: value2
+                  type: Microsoft.Network/frontdoorwebapplicationfirewallpolicies
+      x-ms-pageable:
+        nextLinkName: nextLink
+      x-openapi-router-controller: openapi_server.controllers.list_web_application_firewall_policies_controller
+  ? /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/FrontDoorWebApplicationFirewallPolicies/{policyName}
+  : delete:
+      description: Deletes Policy
+      operationId: policies_delete
+      parameters:
+      - description: The name of the resource group.
+        in: path
+        name: resourceGroupName
+        required: true
+        schema:
+          type: string
+      - description: The name of the resource group.
+        in: path
+        name: policyName
+        required: true
+        schema:
+          maxLength: 128
+          type: string
+      - description: The subscription credentials which uniquely identify the Microsoft
+          Azure subscription. The subscription ID forms part of the URI for every
+          service call.
+        in: path
+        name: subscription_id
+        required: true
+        schema:
+          type: string
+      - description: Client API version.
+        in: query
+        name: api_version
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content: {}
+          description: Delete successful.
+        "202":
+          content: {}
+          description: Accepted. The request has been accepted for processing and
+            the operation will complete asynchronously.
+        "204":
+          content: {}
+          description: No Content. The request has been accepted but the policy was
+            not found.
+      tags:
+      - DeleteWebApplicationFirewallPolicy
+      x-ms-examples:
+        Delete protection policy:
+          parameters:
+            api-version: 2018-08-01
+            policyName: Policy1
+            resourceGroupName: rg1
+            subscriptionId: subid
+          responses:
+            "200": {}
+            "202": {}
+            "204": {}
+      x-ms-long-running-operation: true
+      x-openapi-router-controller: openapi_server.controllers.delete_web_application_firewall_policy_controller
+    get:
+      description: Retrieve protection policy with specified name within a resource
+        group.
+      operationId: policies_get
+      parameters:
+      - description: The name of the resource group.
+        in: path
+        name: resourceGroupName
+        required: true
+        schema:
+          type: string
+      - description: The name of the resource group.
+        in: path
+        name: policyName
+        required: true
+        schema:
+          maxLength: 128
+          type: string
+      - description: The subscription credentials which uniquely identify the Microsoft
+          Azure subscription. The subscription ID forms part of the URI for every
+          service call.
+        in: path
+        name: subscription_id
+        required: true
+        schema:
+          type: string
+      - description: Client API version.
+        in: query
+        name: api_version
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebApplicationFirewallPolicy'
+          description: OK. The request has succeeded.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Error response describing why the operation failed.
+      tags:
+      - GetWebapplicationfirewallPolicy
+      x-ms-examples:
+        policy get:
+          parameters:
+            api-version: 2018-08-01
+            policyName: Policy1
+            resourceGroupName: rg1
+            subscriptionId: subid
+          responses:
+            "200":
+              body:
+                id: /subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/FrontDoorWebApplicationFirewallPolicies/Policy1
+                location: WestUs
+                name: Policy1
+                properties:
+                  customRules:
+                    rules:
+                    - action: Block
+                      matchConditions:
+                      - matchValue:
+                        - 192.168.1.0/24
+                        - 10.0.0.0/24
+                        matchVariable: RemoteAddr
+                        negateCondition: false
+                        operator: IPMatch
+                      name: Rule1
+                      priority: 1
+                      rateLimitDurationInMinutes: 0
+                      rateLimitThreshold: 1000
+                      ruleType: RateLimitRule
+                      transforms: []
+                    - action: Block
+                      matchConditions:
+                      - matchValue:
+                        - CH
+                        matchVariable: RemoteAddr
+                        negateCondition: false
+                        operator: GeoMatch
+                      - matchValue:
+                        - Windows
+                        matchVariable: RequestHeader
+                        negateCondition: false
+                        operator: Contains
+                        selector: UserAgent
+                      name: Rule2
+                      priority: 2
+                      rateLimitDurationInMinutes: 0
+                      rateLimitThreshold: 0
+                      ruleType: MatchRule
+                      transforms: []
+                  managedRules:
+                    ruleSets:
+                    - priority: 1
+                      ruleGroupOverrides:
+                      - action: Block
+                        ruleGroupOverride: SqlInjection
+                      - action: Log
+                        ruleGroupOverride: XSS
+                      ruleSetType: AzureManagedRuleSet
+                      version: 0
+                  policySettings:
+                    enabledState: Enabled
+                    mode: Prevention
+                  provisioningState: Succeeded
+                  resourceState: Enabled
+                tags:
+                  key1: value1
+                  key2: value2
+                type: Microsoft.Network/frontdoorwebapplicationfirewallpolicies
+      x-openapi-router-controller: openapi_server.controllers.get_webapplicationfirewall_policy_controller
+    put:
+      description: Creates or update policy with specified rule set name within a
+        resource group.
+      operationId: policies_create_or_update
+      parameters:
+      - description: The name of the resource group.
+        in: path
+        name: resourceGroupName
+        required: true
+        schema:
+          type: string
+      - description: The name of the resource group.
+        in: path
+        name: policyName
+        required: true
+        schema:
+          maxLength: 128
+          type: string
+      - description: The subscription credentials which uniquely identify the Microsoft
+          Azure subscription. The subscription ID forms part of the URI for every
+          service call.
+        in: path
+        name: subscription_id
+        required: true
+        schema:
+          type: string
+      - description: Client API version.
+        in: query
+        name: api-version
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebApplicationFirewallPolicy'
+        description: Policy to be created.
+        required: true
+        x-body-name: parameters
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebApplicationFirewallPolicy'
+          description: OK. The request has succeeded.
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebApplicationFirewallPolicy'
+          description: Created. The request has been fulfilled and a new protection
+            policy has been created.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Error response describing why the operation failed.
+      tags:
+      - CreateOrUpdateWebApplicationFirewallPolicy
+      x-ms-examples:
+        Creates specific policy:
+          parameters:
+            api-version: 2018-08-01
+            parameters:
+              properties:
+                customRules:
+                  rules:
+                  - action: Block
+                    matchConditions:
+                    - matchValue:
+                      - 192.168.1.0/24
+                      - 10.0.0.0/24
+                      matchVariable: RemoteAddr
+                      operator: IPMatch
+                    name: Rule1
+                    priority: 1
+                    rateLimitThreshold: 1000
+                    ruleType: RateLimitRule
+                  - action: Block
+                    matchConditions:
+                    - matchValue:
+                      - CH
+                      matchVariable: RemoteAddr
+                      operator: GeoMatch
+                    - matchValue:
+                      - Windows
+                      matchVariable: RequestHeader
+                      operator: Contains
+                      selector: UserAgent
+                    name: Rule2
+                    priority: 2
+                    ruleType: MatchRule
+                managedRules:
+                  ruleSets:
+                  - priority: 1
+                    ruleGroupOverrides:
+                    - action: Block
+                      ruleGroupOverride: SqlInjection
+                    - action: Log
+                      ruleGroupOverride: XSS
+                    ruleSetType: AzureManagedRuleSet
+            policyName: Policy1
+            resourceGroupName: rg1
+            subscriptionId: subid
+          responses:
+            "200":
+              body:
+                id: /subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/FrontDoorWebApplicationFirewallPolicies/Policy1
+                location: WestUs
+                name: Policy1
+                properties:
+                  customRules:
+                    rules:
+                    - action: Block
+                      matchConditions:
+                      - matchValue:
+                        - 192.168.1.0/24
+                        - 10.0.0.0/24
+                        matchVariable: RemoteAddr
+                        negateCondition: false
+                        operator: IPMatch
+                      name: Rule1
+                      priority: 1
+                      rateLimitDurationInMinutes: 0
+                      rateLimitThreshold: 1000
+                      ruleType: RateLimitRule
+                      transforms: []
+                    - action: Block
+                      matchConditions:
+                      - matchValue:
+                        - CH
+                        matchVariable: RemoteAddr
+                        negateCondition: false
+                        operator: GeoMatch
+                      - matchValue:
+                        - Windows
+                        matchVariable: RequestHeader
+                        negateCondition: false
+                        operator: Contains
+                        selector: UserAgent
+                      name: Rule2
+                      priority: 2
+                      rateLimitDurationInMinutes: 0
+                      rateLimitThreshold: 0
+                      ruleType: MatchRule
+                      transforms: []
+                  managedRules:
+                    ruleSets:
+                    - priority: 1
+                      ruleGroupOverrides:
+                      - action: Block
+                        ruleGroupOverride: SqlInjection
+                      - action: Log
+                        ruleGroupOverride: XSS
+                      ruleSetType: AzureManagedRuleSet
+                      version: 0
+                  policySettings:
+                    enabledState: Enabled
+                    mode: Prevention
+                  provisioningState: Succeeded
+                  resourceState: Enabled
+                tags:
+                  key1: value1
+                  key2: value2
+                type: Microsoft.Network/frontdoorwebapplicationfirewallpolicies
+            "201":
+              body:
+                id: /subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/FrontDoorWebApplicationFirewallPolicies/Policy1
+                location: WestUs
+                name: Policy1
+                properties:
+                  customRules:
+                    rules:
+                    - action: Block
+                      matchConditions:
+                      - matchValue:
+                        - 192.168.1.0/24
+                        - 10.0.0.0/24
+                        matchVariable: RemoteAddr
+                        negateCondition: false
+                        operator: IPMatch
+                      name: Rule1
+                      priority: 1
+                      rateLimitDurationInMinutes: 0
+                      rateLimitThreshold: 1000
+                      ruleType: RateLimitRule
+                      transforms: []
+                    - action: Block
+                      matchConditions:
+                      - matchValue:
+                        - CH
+                        matchVariable: RemoteAddr
+                        negateCondition: false
+                        operator: GeoMatch
+                      - matchValue:
+                        - Windows
+                        matchVariable: RequestHeader
+                        negateCondition: false
+                        operator: Contains
+                        selector: UserAgent
+                      name: Rule2
+                      priority: 2
+                      rateLimitDurationInMinutes: 0
+                      rateLimitThreshold: 0
+                      ruleType: MatchRule
+                      transforms: []
+                  managedRules:
+                    ruleSets:
+                    - priority: 1
+                      ruleGroupOverrides:
+                      - action: Block
+                        ruleGroupOverride: SqlInjection
+                      - action: Log
+                        ruleGroupOverride: XSS
+                      ruleSetType: AzureManagedRuleSet
+                      version: 0
+                  policySettings:
+                    enabledState: Enabled
+                    mode: Prevention
+                  provisioningState: Succeeded
+                  resourceState: Enabled
+                tags:
+                  key1: value1
+                  key2: value2
+                type: Microsoft.Network/frontdoorwebapplicationfirewallpolicies
+      x-codegen-request-body-name: parameters
+      x-openapi-router-controller: openapi_server.controllers.create_or_update_web_application_firewall_policy_controller
+components:
+  parameters:
+    ApiVersionParameter:
+      description: Client API version.
+      in: query
+      name: api-version
+      required: true
+      schema:
+        type: string
+    SubscriptionIdParameter:
+      description: The subscription credentials which uniquely identify the Microsoft
+        Azure subscription. The subscription ID forms part of the URI for every service
+        call.
+      in: path
+      name: subscriptionId
+      required: true
+      schema:
+        type: string
+  schemas:
+    AzureManagedOverrideRuleGroup:
+      description: Defines contents of a web application rule
+      properties:
+        action:
+          description: Type of Actions
+          enum:
+          - Allow
+          - Block
+          - Log
+          title: action
+          type: string
+          x-ms-enum:
+            modelAsString: true
+            name: action
+        ruleGroupOverride:
+          description: Describes override rule group
+          enum:
+          - SqlInjection
+          - XSS
+          title: ruleGroupOverride
+          type: string
+          x-ms-enum:
+            modelAsString: true
+            name: ruleGroupOverride
+      required:
+      - action
+      - ruleGroupOverride
+      title: AzureManagedOverrideRuleGroup
+      type: object
+    AzureManagedRuleSet:
+      allOf:
+      - $ref: '#/components/schemas/ManagedRuleSet'
+      description: Describes azure managed provider.
+      properties:
+        ruleGroupOverrides:
+          description: List of azure managed provider override configuration (optional)
+          items:
+            $ref: '#/components/schemas/AzureManagedOverrideRuleGroup'
+          type: array
+      x-ms-discriminator-value: AzureManagedRuleSet
+    CustomRule:
+      description: Defines contents of a web application rule
+      example:
+        ruleType: MatchRule
+        name: name
+        transforms:
+        - Lowercase
+        - Lowercase
+        action: Allow
+        etag: etag
+        rateLimitDurationInMinutes: 6
+        matchConditions:
+        - matchValue:
+          - matchValue
+          - matchValue
+          selector: selector
+          matchVariable: RemoteAddr
+          negateCondition: true
+          operator: Any
+        - matchValue:
+          - matchValue
+          - matchValue
+          selector: selector
+          matchVariable: RemoteAddr
+          negateCondition: true
+          operator: Any
+        priority: 0
+        rateLimitThreshold: 1
+      properties:
+        action:
+          description: Type of Actions
+          enum:
+          - Allow
+          - Block
+          - Log
+          title: action
+          type: string
+          x-ms-enum:
+            modelAsString: true
+            name: action
+        etag:
+          description: Gets a unique read-only string that changes whenever the resource
+            is updated.
+          readOnly: true
+          title: etag
+          type: string
+        matchConditions:
+          description: List of match conditions
+          items:
+            $ref: '#/components/schemas/MatchCondition'
+          title: matchConditions
+          type: array
+        name:
+          description: Gets name of the resource that is unique within a policy. This
+            name can be used to access the resource.
+          maxLength: 128
+          title: name
+          type: string
+        priority:
+          description: Describes priority of the rule. Rules with a lower value will
+            be evaluated before rules with a higher value
+          title: priority
+          type: integer
+        rateLimitDurationInMinutes:
+          description: Defines rate limit duration. Default - 1 minute
+          title: rateLimitDurationInMinutes
+          type: integer
+        rateLimitThreshold:
+          description: Defines rate limit threshold
+          title: rateLimitThreshold
+          type: integer
+        ruleType:
+          description: Describes type of rule
+          enum:
+          - MatchRule
+          - RateLimitRule
+          title: ruleType
+          type: string
+          x-ms-enum:
+            modelAsString: true
+            name: ruleType
+        transforms:
+          description: List of transforms
+          items:
+            $ref: '#/components/schemas/transform'
+          title: transforms
+          type: array
+      required:
+      - action
+      - matchConditions
+      - priority
+      - ruleType
+      title: CustomRule
+      type: object
+    CustomRules:
+      description: Defines contents of custom rules
+      example:
+        rules:
+        - ruleType: MatchRule
+          name: name
+          transforms:
+          - Lowercase
+          - Lowercase
+          action: Allow
+          etag: etag
+          rateLimitDurationInMinutes: 6
+          matchConditions:
+          - matchValue:
+            - matchValue
+            - matchValue
+            selector: selector
+            matchVariable: RemoteAddr
+            negateCondition: true
+            operator: Any
+          - matchValue:
+            - matchValue
+            - matchValue
+            selector: selector
+            matchVariable: RemoteAddr
+            negateCondition: true
+            operator: Any
+          priority: 0
+          rateLimitThreshold: 1
+        - ruleType: MatchRule
+          name: name
+          transforms:
+          - Lowercase
+          - Lowercase
+          action: Allow
+          etag: etag
+          rateLimitDurationInMinutes: 6
+          matchConditions:
+          - matchValue:
+            - matchValue
+            - matchValue
+            selector: selector
+            matchVariable: RemoteAddr
+            negateCondition: true
+            operator: Any
+          - matchValue:
+            - matchValue
+            - matchValue
+            selector: selector
+            matchVariable: RemoteAddr
+            negateCondition: true
+            operator: Any
+          priority: 0
+          rateLimitThreshold: 1
+      properties:
+        rules:
+          description: List of rules
+          items:
+            $ref: '#/components/schemas/CustomRule'
+          title: rules
+          type: array
+      title: CustomRules
+      type: object
+    ErrorResponse:
+      description: Error response indicates Front Door service is not able to process
+        the incoming request. The reason is provided in the error message.
+      example:
+        code: code
+        message: message
+      properties:
+        code:
+          description: Error code.
+          readOnly: true
+          title: code
+          type: string
+        message:
+          description: Error message indicating why the operation failed.
+          readOnly: true
+          title: message
+          type: string
+      title: ErrorResponse
+      type: object
+    ManagedRuleSet:
+      description: Base class for all types of ManagedRuleSet.
+      discriminator:
+        propertyName: ruleSetType
+      example:
+        ruleSetType: ruleSetType
+        priority: 5
+        version: 5
+      properties:
+        priority:
+          description: Describes priority of the rule
+          title: priority
+          type: integer
+        ruleSetType:
+          description: RuleSetType - AzureManagedRuleSet or OWASP RuleSets.
+          title: ruleSetType
+          type: string
+        version:
+          description: defines version of the rule set
+          title: version
+          type: integer
+      required:
+      - ruleSetType
+      title: ManagedRuleSet
+      type: object
+      x-ms-discriminator-value: Unknown
+    ManagedRuleSets:
+      description: Defines ManagedRuleSets - array of managedRuleSet
+      example:
+        ruleSets:
+        - ruleSetType: ruleSetType
+          priority: 5
+          version: 5
+        - ruleSetType: ruleSetType
+          priority: 5
+          version: 5
+      properties:
+        ruleSets:
+          description: List of rules
+          items:
+            $ref: '#/components/schemas/ManagedRuleSet'
+          title: ruleSets
+          type: array
+      title: ManagedRuleSets
+      type: object
+    MatchCondition:
+      description: Define match conditions
+      example:
+        matchValue:
+        - matchValue
+        - matchValue
+        selector: selector
+        matchVariable: RemoteAddr
+        negateCondition: true
+        operator: Any
+      properties:
+        matchValue:
+          description: Match value
+          items:
+            type: string
+          title: matchValue
+          type: array
+        matchVariable:
+          description: Match Variable
+          enum:
+          - RemoteAddr
+          - RequestMethod
+          - QueryString
+          - PostArgs
+          - RequestUri
+          - RequestHeader
+          - RequestBody
+          title: matchVariable
+          type: string
+          x-ms-enum:
+            modelAsString: true
+            name: MatchCondition
+        negateCondition:
+          description: Describes if this is negate condition or not
+          title: negateCondition
+          type: boolean
+        operator:
+          description: Describes operator to be matched
+          enum:
+          - Any
+          - IPMatch
+          - GeoMatch
+          - Equal
+          - Contains
+          - LessThan
+          - GreaterThan
+          - LessThanOrEqual
+          - GreaterThanOrEqual
+          - BeginsWith
+          - EndsWith
+          title: operator
+          type: string
+          x-ms-enum:
+            modelAsString: true
+            name: operator
+        selector:
+          description: Name of selector in RequestHeader or RequestBody to be matched
+          title: selector
+          type: string
+      required:
+      - matchValue
+      - matchVariable
+      - operator
+      title: MatchCondition
+      type: object
+    WebApplicationFirewallPolicy:
+      allOf:
+      - description: Common resource representation.
+        properties:
+          id:
+            description: Resource ID.
+            readOnly: true
+            type: string
+          location:
+            description: Resource location.
+            type: string
+          name:
+            description: Resource name.
+            readOnly: true
+            type: string
+          tags:
+            additionalProperties:
+              type: string
+            description: Resource tags.
+            type: object
+          type:
+            description: Resource type.
+            readOnly: true
+            type: string
+        type: object
+        x-ms-azure-resource: true
+      description: Defines web application firewall policy.
+      example:
+        etag: etag
+        properties:
+          customRules:
+            rules:
+            - ruleType: MatchRule
+              name: name
+              transforms:
+              - Lowercase
+              - Lowercase
+              action: Allow
+              etag: etag
+              rateLimitDurationInMinutes: 6
+              matchConditions:
+              - matchValue:
+                - matchValue
+                - matchValue
+                selector: selector
+                matchVariable: RemoteAddr
+                negateCondition: true
+                operator: Any
+              - matchValue:
+                - matchValue
+                - matchValue
+                selector: selector
+                matchVariable: RemoteAddr
+                negateCondition: true
+                operator: Any
+              priority: 0
+              rateLimitThreshold: 1
+            - ruleType: MatchRule
+              name: name
+              transforms:
+              - Lowercase
+              - Lowercase
+              action: Allow
+              etag: etag
+              rateLimitDurationInMinutes: 6
+              matchConditions:
+              - matchValue:
+                - matchValue
+                - matchValue
+                selector: selector
+                matchVariable: RemoteAddr
+                negateCondition: true
+                operator: Any
+              - matchValue:
+                - matchValue
+                - matchValue
+                selector: selector
+                matchVariable: RemoteAddr
+                negateCondition: true
+                operator: Any
+              priority: 0
+              rateLimitThreshold: 1
+          policySettings:
+            mode: Prevention
+            enabledState: Disabled
+          resourceState: Creating
+          provisioningState: provisioningState
+          managedRules:
+            ruleSets:
+            - ruleSetType: ruleSetType
+              priority: 5
+              version: 5
+            - ruleSetType: ruleSetType
+              priority: 5
+              version: 5
+      properties:
+        etag:
+          description: Gets a unique read-only string that changes whenever the resource
+            is updated.
+          title: etag
+          type: string
+        properties:
+          $ref: '#/components/schemas/WebApplicationFirewallPolicyPropertiesFormat'
+      title: WebApplicationFirewallPolicy
+    WebApplicationFirewallPolicyListResult:
+      description: Result of the request to list WebApplicationFirewallPolicies. It
+        contains a list of WebApplicationFirewallPolicy objects and a URL link to
+        get the next set of results.
+      example:
+        value:
+        - etag: etag
+          properties:
+            customRules:
+              rules:
+              - ruleType: MatchRule
+                name: name
+                transforms:
+                - Lowercase
+                - Lowercase
+                action: Allow
+                etag: etag
+                rateLimitDurationInMinutes: 6
+                matchConditions:
+                - matchValue:
+                  - matchValue
+                  - matchValue
+                  selector: selector
+                  matchVariable: RemoteAddr
+                  negateCondition: true
+                  operator: Any
+                - matchValue:
+                  - matchValue
+                  - matchValue
+                  selector: selector
+                  matchVariable: RemoteAddr
+                  negateCondition: true
+                  operator: Any
+                priority: 0
+                rateLimitThreshold: 1
+              - ruleType: MatchRule
+                name: name
+                transforms:
+                - Lowercase
+                - Lowercase
+                action: Allow
+                etag: etag
+                rateLimitDurationInMinutes: 6
+                matchConditions:
+                - matchValue:
+                  - matchValue
+                  - matchValue
+                  selector: selector
+                  matchVariable: RemoteAddr
+                  negateCondition: true
+                  operator: Any
+                - matchValue:
+                  - matchValue
+                  - matchValue
+                  selector: selector
+                  matchVariable: RemoteAddr
+                  negateCondition: true
+                  operator: Any
+                priority: 0
+                rateLimitThreshold: 1
+            policySettings:
+              mode: Prevention
+              enabledState: Disabled
+            resourceState: Creating
+            provisioningState: provisioningState
+            managedRules:
+              ruleSets:
+              - ruleSetType: ruleSetType
+                priority: 5
+                version: 5
+              - ruleSetType: ruleSetType
+                priority: 5
+                version: 5
+        - etag: etag
+          properties:
+            customRules:
+              rules:
+              - ruleType: MatchRule
+                name: name
+                transforms:
+                - Lowercase
+                - Lowercase
+                action: Allow
+                etag: etag
+                rateLimitDurationInMinutes: 6
+                matchConditions:
+                - matchValue:
+                  - matchValue
+                  - matchValue
+                  selector: selector
+                  matchVariable: RemoteAddr
+                  negateCondition: true
+                  operator: Any
+                - matchValue:
+                  - matchValue
+                  - matchValue
+                  selector: selector
+                  matchVariable: RemoteAddr
+                  negateCondition: true
+                  operator: Any
+                priority: 0
+                rateLimitThreshold: 1
+              - ruleType: MatchRule
+                name: name
+                transforms:
+                - Lowercase
+                - Lowercase
+                action: Allow
+                etag: etag
+                rateLimitDurationInMinutes: 6
+                matchConditions:
+                - matchValue:
+                  - matchValue
+                  - matchValue
+                  selector: selector
+                  matchVariable: RemoteAddr
+                  negateCondition: true
+                  operator: Any
+                - matchValue:
+                  - matchValue
+                  - matchValue
+                  selector: selector
+                  matchVariable: RemoteAddr
+                  negateCondition: true
+                  operator: Any
+                priority: 0
+                rateLimitThreshold: 1
+            policySettings:
+              mode: Prevention
+              enabledState: Disabled
+            resourceState: Creating
+            provisioningState: provisioningState
+            managedRules:
+              ruleSets:
+              - ruleSetType: ruleSetType
+                priority: 5
+                version: 5
+              - ruleSetType: ruleSetType
+                priority: 5
+                version: 5
+        nextLink: nextLink
+      properties:
+        nextLink:
+          description: URL to get the next set of WebApplicationFirewallPolicy objects
+            if there are any.
+          title: nextLink
+          type: string
+        value:
+          description: List of WebApplicationFirewallPolicies within a resource group.
+          items:
+            $ref: '#/components/schemas/WebApplicationFirewallPolicy'
+          readOnly: true
+          title: value
+          type: array
+      title: WebApplicationFirewallPolicyListResult
+      type: object
+    WebApplicationFirewallPolicyPropertiesFormat:
+      description: Defines web application firewall policy properties
+      example:
+        customRules:
+          rules:
+          - ruleType: MatchRule
+            name: name
+            transforms:
+            - Lowercase
+            - Lowercase
+            action: Allow
+            etag: etag
+            rateLimitDurationInMinutes: 6
+            matchConditions:
+            - matchValue:
+              - matchValue
+              - matchValue
+              selector: selector
+              matchVariable: RemoteAddr
+              negateCondition: true
+              operator: Any
+            - matchValue:
+              - matchValue
+              - matchValue
+              selector: selector
+              matchVariable: RemoteAddr
+              negateCondition: true
+              operator: Any
+            priority: 0
+            rateLimitThreshold: 1
+          - ruleType: MatchRule
+            name: name
+            transforms:
+            - Lowercase
+            - Lowercase
+            action: Allow
+            etag: etag
+            rateLimitDurationInMinutes: 6
+            matchConditions:
+            - matchValue:
+              - matchValue
+              - matchValue
+              selector: selector
+              matchVariable: RemoteAddr
+              negateCondition: true
+              operator: Any
+            - matchValue:
+              - matchValue
+              - matchValue
+              selector: selector
+              matchVariable: RemoteAddr
+              negateCondition: true
+              operator: Any
+            priority: 0
+            rateLimitThreshold: 1
+        policySettings:
+          mode: Prevention
+          enabledState: Disabled
+        resourceState: Creating
+        provisioningState: provisioningState
+        managedRules:
+          ruleSets:
+          - ruleSetType: ruleSetType
+            priority: 5
+            version: 5
+          - ruleSetType: ruleSetType
+            priority: 5
+            version: 5
+      properties:
+        customRules:
+          $ref: '#/components/schemas/CustomRules'
+        managedRules:
+          $ref: '#/components/schemas/ManagedRuleSets'
+        policySettings:
+          $ref: '#/components/schemas/policySettings'
+        provisioningState:
+          description: Provisioning state of the WebApplicationFirewallPolicy.
+          readOnly: true
+          title: provisioningState
+          type: string
+        resourceState:
+          enum:
+          - Creating
+          - Enabling
+          - Enabled
+          - Disabling
+          - Disabled
+          - Deleting
+          readOnly: true
+          title: Resource status of the policy.
+          type: string
+          x-ms-enum:
+            modelAsString: true
+            name: WebApplicationFirewallPolicy
+      title: WebApplicationFirewallPolicyPropertiesFormat
+      type: object
+    policySettings:
+      description: Defines contents of a web application firewall global configuration
+      example:
+        mode: Prevention
+        enabledState: Disabled
+      properties:
+        enabledState:
+          description: describes if the policy is in enabled state or disabled state
+          enum:
+          - Disabled
+          - Enabled
+          title: enabledState
+          type: string
+          x-ms-enum:
+            modelAsString: true
+            name: enabledState
+        mode:
+          description: Describes if it is in detection mode  or prevention mode at
+            policy level
+          enum:
+          - Prevention
+          - Detection
+          title: mode
+          type: string
+          x-ms-enum:
+            modelAsString: true
+            name: mode
+      title: policySettings
+      type: object
+    transform:
+      description: Describes what transforms applied before matching
+      enum:
+      - Lowercase
+      - Uppercase
+      - Trim
+      - UrlDecode
+      - UrlEncode
+      - RemoveNulls
+      - HtmlEntityDecode
+      title: transform
+      type: string
+      x-ms-enum:
+        modelAsString: true
+        name: transform
+  securitySchemes:
+    azure_auth:
+      description: Azure Active Directory OAuth2 Flow
+      flows:
+        implicit:
+          authorizationUrl: https://login.microsoftonline.com/common/oauth2/authorize
+          scopes:
+            user_impersonation: impersonate your user account
+      type: oauth2
+      x-tokenInfoFunc: openapi_server.controllers.security_controller.info_from_azure_auth
+      x-scopeValidateFunc: openapi_server.controllers.security_controller.validate_scope_azure_auth
+x-original-swagger-version: "2.0"

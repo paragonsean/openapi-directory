@@ -1,0 +1,18 @@
+
+
+# Resource
+
+The Azure Resource Manager resource.
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**id** | **String** | The id of the resource. |  [optional] [readonly] |
+|**location** | **String** | The geographic location of the resource. This must be one of the supported and registered Azure Geo Regions (for example, West US, East US, Southeast Asia, and so forth). |  [optional] |
+|**name** | **String** | The name of the resource. |  [optional] [readonly] |
+|**tags** | **Map&lt;String, String&gt;** | Tags to help categorize the resource in the Azure portal. |  [optional] |
+|**type** | **String** | The type of the resource |  [optional] [readonly] |
+
+
+

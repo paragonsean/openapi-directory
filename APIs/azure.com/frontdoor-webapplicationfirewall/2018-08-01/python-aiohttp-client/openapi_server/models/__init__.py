@@ -1,0 +1,16 @@
+# coding: utf-8
+
+# import models into model package
+from openapi_server.models.azure_managed_override_rule_group import AzureManagedOverrideRuleGroup
+from openapi_server.models.azure_managed_rule_set import AzureManagedRuleSet
+from openapi_server.models.custom_rule import CustomRule
+from openapi_server.models.custom_rules import CustomRules
+from openapi_server.models.error_response import ErrorResponse
+from openapi_server.models.managed_rule_set import ManagedRuleSet
+from openapi_server.models.managed_rule_sets import ManagedRuleSets
+from openapi_server.models.match_condition import MatchCondition
+from openapi_server.models.policy_settings import PolicySettings
+from openapi_server.models.transform import Transform
+from openapi_server.models.web_application_firewall_policy import WebApplicationFirewallPolicy
+from openapi_server.models.web_application_firewall_policy_list_result import WebApplicationFirewallPolicyListResult
+from openapi_server.models.web_application_firewall_policy_properties_format import WebApplicationFirewallPolicyPropertiesFormat

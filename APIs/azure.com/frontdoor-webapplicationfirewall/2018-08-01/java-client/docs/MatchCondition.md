@@ -1,0 +1,50 @@
+
+
+# MatchCondition
+
+Define match conditions
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**matchValue** | **List&lt;String&gt;** | Match value |  |
+|**matchVariable** | [**MatchVariableEnum**](#MatchVariableEnum) | Match Variable |  |
+|**negateCondition** | **Boolean** | Describes if this is negate condition or not |  [optional] |
+|**operator** | [**OperatorEnum**](#OperatorEnum) | Describes operator to be matched |  |
+|**selector** | **String** | Name of selector in RequestHeader or RequestBody to be matched |  [optional] |
+
+
+
+## Enum: MatchVariableEnum
+
+| Name | Value |
+|---- | -----|
+| REMOTE_ADDR | &quot;RemoteAddr&quot; |
+| REQUEST_METHOD | &quot;RequestMethod&quot; |
+| QUERY_STRING | &quot;QueryString&quot; |
+| POST_ARGS | &quot;PostArgs&quot; |
+| REQUEST_URI | &quot;RequestUri&quot; |
+| REQUEST_HEADER | &quot;RequestHeader&quot; |
+| REQUEST_BODY | &quot;RequestBody&quot; |
+
+
+
+## Enum: OperatorEnum
+
+| Name | Value |
+|---- | -----|
+| ANY | &quot;Any&quot; |
+| IP_MATCH | &quot;IPMatch&quot; |
+| GEO_MATCH | &quot;GeoMatch&quot; |
+| EQUAL | &quot;Equal&quot; |
+| CONTAINS | &quot;Contains&quot; |
+| LESS_THAN | &quot;LessThan&quot; |
+| GREATER_THAN | &quot;GreaterThan&quot; |
+| LESS_THAN_OR_EQUAL | &quot;LessThanOrEqual&quot; |
+| GREATER_THAN_OR_EQUAL | &quot;GreaterThanOrEqual&quot; |
+| BEGINS_WITH | &quot;BeginsWith&quot; |
+| ENDS_WITH | &quot;EndsWith&quot; |
+
+
+
