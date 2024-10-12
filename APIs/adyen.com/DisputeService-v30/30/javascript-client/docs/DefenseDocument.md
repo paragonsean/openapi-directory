@@ -1,0 +1,11 @@
+# DisputesApi.DefenseDocument
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**content** | **String** | The content of the defense document. | 
+**contentType** | **String** | The content type of the defense document. | 
+**defenseDocumentTypeCode** | **String** | The document type code of the defense document. | 
+
+

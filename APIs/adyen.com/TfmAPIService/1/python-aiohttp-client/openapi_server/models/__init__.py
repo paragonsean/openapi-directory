@@ -1,0 +1,17 @@
+# coding: utf-8
+
+# import models into model package
+from openapi_server.models.address import Address
+from openapi_server.models.assign_terminals_request import AssignTerminalsRequest
+from openapi_server.models.assign_terminals_response import AssignTerminalsResponse
+from openapi_server.models.find_terminal_request import FindTerminalRequest
+from openapi_server.models.find_terminal_response import FindTerminalResponse
+from openapi_server.models.get_stores_under_account_request import GetStoresUnderAccountRequest
+from openapi_server.models.get_stores_under_account_response import GetStoresUnderAccountResponse
+from openapi_server.models.get_terminal_details_request import GetTerminalDetailsRequest
+from openapi_server.models.get_terminal_details_response import GetTerminalDetailsResponse
+from openapi_server.models.get_terminals_under_account_request import GetTerminalsUnderAccountRequest
+from openapi_server.models.get_terminals_under_account_response import GetTerminalsUnderAccountResponse
+from openapi_server.models.merchant_account import MerchantAccount
+from openapi_server.models.service_error import ServiceError
+from openapi_server.models.store import Store
