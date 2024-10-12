@@ -1,0 +1,37 @@
+# coding: utf-8
+
+# import models into model package
+from openapi_server.models.configuration import Configuration
+from openapi_server.models.configuration_list_result import ConfigurationListResult
+from openapi_server.models.configuration_properties import ConfigurationProperties
+from openapi_server.models.database import Database
+from openapi_server.models.database_list_result import DatabaseListResult
+from openapi_server.models.database_properties import DatabaseProperties
+from openapi_server.models.firewall_rule import FirewallRule
+from openapi_server.models.firewall_rule_list_result import FirewallRuleListResult
+from openapi_server.models.firewall_rule_properties import FirewallRuleProperties
+from openapi_server.models.log_file import LogFile
+from openapi_server.models.log_file_list_result import LogFileListResult
+from openapi_server.models.log_file_properties import LogFileProperties
+from openapi_server.models.name_availability import NameAvailability
+from openapi_server.models.name_availability_request import NameAvailabilityRequest
+from openapi_server.models.operation import Operation
+from openapi_server.models.operation_display import OperationDisplay
+from openapi_server.models.operation_list_result import OperationListResult
+from openapi_server.models.performance_tier_list_result import PerformanceTierListResult
+from openapi_server.models.performance_tier_properties import PerformanceTierProperties
+from openapi_server.models.performance_tier_service_level_objectives import PerformanceTierServiceLevelObjectives
+from openapi_server.models.proxy_resource import ProxyResource
+from openapi_server.models.server import Server
+from openapi_server.models.server_for_create import ServerForCreate
+from openapi_server.models.server_list_result import ServerListResult
+from openapi_server.models.server_properties import ServerProperties
+from openapi_server.models.server_properties_for_create import ServerPropertiesForCreate
+from openapi_server.models.server_properties_for_default_create import ServerPropertiesForDefaultCreate
+from openapi_server.models.server_properties_for_restore import ServerPropertiesForRestore
+from openapi_server.models.server_update_parameters import ServerUpdateParameters
+from openapi_server.models.server_update_parameters_properties import ServerUpdateParametersProperties
+from openapi_server.models.server_version import ServerVersion
+from openapi_server.models.sku import Sku
+from openapi_server.models.ssl_enforcement import SslEnforcement
+from openapi_server.models.tracked_resource import TrackedResource

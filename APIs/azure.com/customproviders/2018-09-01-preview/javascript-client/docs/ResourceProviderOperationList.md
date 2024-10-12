@@ -1,0 +1,10 @@
+# Customproviders.ResourceProviderOperationList
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**nextLink** | **String** | The URL to use for getting the next set of results. | [optional] 
+**value** | [**[ResourceProviderOperation]**](ResourceProviderOperation.md) | List of operations supported by this resource provider. | [optional] 
+
+

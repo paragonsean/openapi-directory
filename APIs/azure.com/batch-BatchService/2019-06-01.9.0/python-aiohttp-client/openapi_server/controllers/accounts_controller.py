@@ -1,0 +1,57 @@
+from typing import List, Dict
+from aiohttp import web
+
+from openapi_server.models.account_list_supported_images_result import AccountListSupportedImagesResult
+from openapi_server.models.batch_error import BatchError
+from openapi_server.models.pool_node_counts_list_result import PoolNodeCountsListResult
+from openapi_server import util
+
+
+async def account_list_pool_node_counts(request: web.Request, api_version, filter=None, maxresults=None, timeout=None, client_request_id=None, return_client_request_id=None, ocp_date=None) -> web.Response:
+    """account_list_pool_node_counts
+
+    Gets the number of Compute Nodes in each state, grouped by Pool.
+
+    :param api_version: Client API Version.
+    :type api_version: str
+    :param filter: An OData $filter clause. For more information on constructing this filter, see https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch.
+    :type filter: str
+    :param maxresults: The maximum number of items to return in the response.
+    :type maxresults: int
+    :param timeout: The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds.
+    :type timeout: int
+    :param client_request_id: The caller-generated request identity, in the form of a GUID with no decoration such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.
+    :type client_request_id: str
+    :type client_request_id: str
+    :param return_client_request_id: Whether the server should return the client-request-id in the response.
+    :type return_client_request_id: bool
+    :param ocp_date: The time the request was issued. Client libraries typically set this to the current system clock time; set it explicitly if you are calling the REST API directly.
+    :type ocp_date: str
+
+    """
+    return web.Response(status=200)
+
+
+async def account_list_supported_images(request: web.Request, api_version, filter=None, maxresults=None, timeout=None, client_request_id=None, return_client_request_id=None, ocp_date=None) -> web.Response:
+    """Lists all Virtual Machine Images supported by the Azure Batch service.
+
+    
+
+    :param api_version: Client API Version.
+    :type api_version: str
+    :param filter: An OData $filter clause. For more information on constructing this filter, see https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-support-images.
+    :type filter: str
+    :param maxresults: The maximum number of items to return in the response. A maximum of 1000 results will be returned.
+    :type maxresults: int
+    :param timeout: The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds.
+    :type timeout: int
+    :param client_request_id: The caller-generated request identity, in the form of a GUID with no decoration such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.
+    :type client_request_id: str
+    :type client_request_id: str
+    :param return_client_request_id: Whether the server should return the client-request-id in the response.
+    :type return_client_request_id: bool
+    :param ocp_date: The time the request was issued. Client libraries typically set this to the current system clock time; set it explicitly if you are calling the REST API directly.
+    :type ocp_date: str
+
+    """
+    return web.Response(status=200)

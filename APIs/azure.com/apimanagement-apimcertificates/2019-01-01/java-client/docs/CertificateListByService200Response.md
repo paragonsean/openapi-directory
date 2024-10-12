@@ -1,0 +1,15 @@
+
+
+# CertificateListByService200Response
+
+Paged Certificates list representation.
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**nextLink** | **String** | Next page link if any. |  [optional] |
+|**value** | [**List&lt;CertificateListByService200ResponseValueInner&gt;**](CertificateListByService200ResponseValueInner.md) | Page values. |  [optional] |
+
+
+
