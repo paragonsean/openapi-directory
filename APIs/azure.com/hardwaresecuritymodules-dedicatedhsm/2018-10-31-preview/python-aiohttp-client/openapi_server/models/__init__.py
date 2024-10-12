@@ -1,0 +1,15 @@
+# coding: utf-8
+
+# import models into model package
+from openapi_server.models.api_entity_reference import ApiEntityReference
+from openapi_server.models.dedicated_hsm import DedicatedHsm
+from openapi_server.models.dedicated_hsm_error import DedicatedHsmError
+from openapi_server.models.dedicated_hsm_list_result import DedicatedHsmListResult
+from openapi_server.models.dedicated_hsm_patch_parameters import DedicatedHsmPatchParameters
+from openapi_server.models.dedicated_hsm_properties import DedicatedHsmProperties
+from openapi_server.models.error import Error
+from openapi_server.models.network_interface import NetworkInterface
+from openapi_server.models.network_profile import NetworkProfile
+from openapi_server.models.resource import Resource
+from openapi_server.models.resource_list_result import ResourceListResult
+from openapi_server.models.sku import Sku
