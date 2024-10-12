@@ -1,0 +1,21 @@
+# coding: utf-8
+
+# import models into model package
+from openapi_server.models.analyze_result import AnalyzeResult
+from openapi_server.models.analyze_with_custom_model_request import AnalyzeWithCustomModelRequest
+from openapi_server.models.error_information import ErrorInformation
+from openapi_server.models.error_response import ErrorResponse
+from openapi_server.models.extracted_key_value_pair import ExtractedKeyValuePair
+from openapi_server.models.extracted_page import ExtractedPage
+from openapi_server.models.extracted_table import ExtractedTable
+from openapi_server.models.extracted_table_column import ExtractedTableColumn
+from openapi_server.models.extracted_token import ExtractedToken
+from openapi_server.models.form_document_report import FormDocumentReport
+from openapi_server.models.form_operation_error import FormOperationError
+from openapi_server.models.inner_error import InnerError
+from openapi_server.models.keys_result import KeysResult
+from openapi_server.models.model_result import ModelResult
+from openapi_server.models.models_result import ModelsResult
+from openapi_server.models.train_request import TrainRequest
+from openapi_server.models.train_result import TrainResult
+from openapi_server.models.train_source_filter import TrainSourceFilter
