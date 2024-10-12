@@ -1,0 +1,306 @@
+openapi: 3.0.2
+info:
+  description: "Domain API (WHOIS, Check, Batch)"
+  title: Bulk WHOIS API
+  version: "2.0"
+  x-apisguru-categories:
+  - developer_tools
+  x-logo:
+    url: https://s3.amazonaws.com/rapidapi-prod-user/e7a9c6f8-f01f-4dca-8fda-68f7424ad817
+  x-origin:
+  - format: openapi
+    url: https://apispot.io/static/whois.yml
+    version: "3.0"
+  x-providerName: apispot.io
+  x-serviceName: whois
+servers:
+- url: https://apispot.io/api/v2
+security:
+- ApiKeyAuth: []
+paths:
+  /batch:
+    get:
+      description: Get your batches
+      operationId: get_batches
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ArrayOfBatch'
+          description: OK
+      x-openapi-router-controller: openapi_server.controllers.default_controller
+    post:
+      description: Create batch. Batch is then being processed until all provided
+        items have been completed. At any time it can be `get` to provide current
+        status with results optionally.
+      operationId: create_batch
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/createBatch_request'
+        required: true
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Batch'
+          description: OK
+      x-openapi-router-controller: openapi_server.controllers.default_controller
+      x-codegen-request-body-name: body
+  /batch/{id}:
+    delete:
+      description: Delete batch
+      operationId: delete_batch
+      parameters:
+      - description: Batch ID
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          description: OK
+      x-openapi-router-controller: openapi_server.controllers.default_controller
+    get:
+      description: Get batch
+      operationId: get_batch
+      parameters:
+      - description: Batch ID
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Batch'
+          description: OK
+      x-openapi-router-controller: openapi_server.controllers.default_controller
+  /db:
+    get:
+      description: Query domain database
+      operationId: query_db
+      parameters:
+      - description: "Query (contact name, dns, domain etc)"
+        explode: true
+        in: query
+        name: query
+        required: true
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: object
+          description: OK
+      x-openapi-router-controller: openapi_server.controllers.default_controller
+  /domains/{domain}/check:
+    get:
+      description: Check domain availability
+      operationId: check_domain
+      parameters:
+      - description: Domain
+        explode: false
+        in: path
+        name: domain
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/checkDomain_200_response'
+          description: OK
+      x-openapi-router-controller: openapi_server.controllers.default_controller
+  /domains/{domain}/rank:
+    get:
+      description: Check domain rank (authority).
+      operationId: domain_rank
+      parameters:
+      - description: Domain
+        explode: false
+        in: path
+        name: domain
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/domainRank_200_response'
+          description: OK
+      x-openapi-router-controller: openapi_server.controllers.default_controller
+  /domains/{domain}/whois:
+    get:
+      description: WHOIS query for a domain
+      operationId: whois
+      parameters:
+      - description: Domain
+        explode: false
+        in: path
+        name: domain
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: true
+        in: query
+        name: format
+        required: false
+        schema:
+          enum:
+          - raw
+          - formatted
+          - json
+          type: string
+        style: form
+      responses:
+        "200":
+          description: OK
+      x-openapi-router-controller: openapi_server.controllers.default_controller
+components:
+  schemas:
+    ArrayOfBatch:
+      example:
+        batches:
+        - count: 0
+          created_at: created_at
+          completed: true
+          id: id
+          operation: operation
+          results:
+          - ""
+          - ""
+          status: status
+        - count: 0
+          created_at: created_at
+          completed: true
+          id: id
+          operation: operation
+          results:
+          - ""
+          - ""
+          status: status
+      properties:
+        batches:
+          items:
+            $ref: '#/components/schemas/Batch'
+          title: batches
+          type: array
+      title: ArrayOfBatch
+    Batch:
+      example:
+        count: 0
+        created_at: created_at
+        completed: true
+        id: id
+        operation: operation
+        results:
+        - ""
+        - ""
+        status: status
+      properties:
+        completed:
+          title: completed
+          type: boolean
+        count:
+          title: count
+          type: integer
+        created_at:
+          title: created_at
+          type: string
+        id:
+          title: id
+          type: string
+        operation:
+          title: operation
+          type: string
+        results:
+          items: {}
+          title: results
+          type: array
+        status:
+          title: status
+          type: string
+      title: Batch
+    createBatch_request_options:
+      properties:
+        format:
+          enum:
+          - raw
+          - formatted
+          - json
+          title: format
+          type: string
+      title: createBatch_request_options
+      type: object
+    createBatch_request:
+      properties:
+        domains:
+          example:
+          - foo.com
+          - foo.net
+          - foo.io
+          items:
+            type: string
+          title: domains
+          type: array
+        operation:
+          enum:
+          - whois
+          - check
+          title: operation
+          type: string
+        options:
+          $ref: '#/components/schemas/createBatch_request_options'
+      required:
+      - domains
+      - operation
+      title: createBatch_request
+      type: object
+    checkDomain_200_response:
+      example:
+        isAvailable: true
+      properties:
+        isAvailable:
+          title: isAvailable
+          type: boolean
+      title: checkDomain_200_response
+      type: object
+    domainRank_200_response:
+      example:
+        rank: 0.8008281904610115
+      properties:
+        rank:
+          title: rank
+          type: number
+      title: domainRank_200_response
+      type: object
+  securitySchemes:
+    ApiKeyAuth:
+      description: API Key can be found on your 'Account' page upon login.
+      in: header
+      name: X-API-KEY
+      type: apiKey
+      x-apikeyInfoFunc: openapi_server.controllers.security_controller.info_from_ApiKeyAuth

@@ -1,0 +1,5674 @@
+openapi: 3.0.1
+info:
+  contact:
+    email: contact@ijenko.com
+    name: IJENKO
+    url: http://developers.ijenko.com/
+  title: IoE² IoT API - to create end-user applications
+  version: 3.0.0
+  x-apisguru-categories:
+  - iot
+  x-logo:
+    backgroundColor: '#383D41'
+    url: https://pbs.twimg.com/profile_images/1706275304/_0_logo_carr__fd_gris_400x400.png
+  x-origin:
+  - format: swagger
+    url: http://developers.ijenko.com/swagger.json
+    version: "2.0"
+  x-providerName: ijenko.net
+servers:
+- url: https://ioe2api.ijenko.net/
+security:
+- Token in query: []
+- Token in Access-Token header: []
+tags:
+- name: Entry points
+- name: Authentication
+- name: Account
+- name: User
+- name: Place
+- name: Device
+- name: Functionality
+- name: Action
+- name: Program
+- name: Notification
+- name: Electricity
+paths:
+  /account/change-password:
+    post:
+      description: |
+        Set a new password for the account.
+
+        **Note**: requires full access to the *Account*.
+      operationId: account_change_password
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthChangePassword'
+        description: Old and new password
+        required: true
+        x-body-name: changePasswordInfo
+      responses:
+        "204":
+          content: {}
+          description: Change successful.
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEntity'
+          description: |
+            The authentication token doesn't allow to modify the *Account*.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultError'
+          description: Other error.
+      summary: Change the password
+      tags:
+      - Account
+      x-codegen-request-body-name: changePasswordInfo
+      x-openapi-router-controller: openapi_server.controllers.account_controller
+  /account/places:
+    get:
+      description: |
+        List the *Places* of the account.
+
+        **Note:** requires full access to the *Account*.
+      operationId: account_places
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/PlaceItem'
+                type: array
+                uniqueItems: true
+          description: Successful response
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEntity'
+          description: |
+            The authentication token doesn't allow to modify the *Account*.
+      summary: List Places of the Account
+      tags:
+      - Account
+      x-openapi-router-controller: openapi_server.controllers.account_controller
+    post:
+      description: |
+        Create a new *Place*.
+
+        A *Device* (`class`: `MINT`, `address`: `0`) is automatically created and attached to the new *Place*.
+
+        **Note:** requires full access to the *Account*.
+      operationId: account_new_place
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PlaceNew'
+        required: false
+        x-body-name: place
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PlaceCreated'
+          description: '*Place* successfully created.'
+          headers:
+            Location:
+              description: "Path of the Place created (`/places/{id}`)"
+              schema:
+                type: string
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEntity'
+          description: |
+            The authentication token doesn't allow to modify the *Account*.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultError'
+          description: Other error.
+      summary: Create a Place
+      tags:
+      - Account
+      x-codegen-request-body-name: place
+      x-openapi-router-controller: openapi_server.controllers.account_controller
+  /account/tokens:
+    get:
+      description: |
+        List the active *Tokens* on the account.
+
+        **Note:** requires full access to the *Account*.
+      operationId: account_tokens
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/UserTokenItem'
+                type: array
+                uniqueItems: true
+          description: Successful.
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEntity'
+          description: |
+            The authentication token doesn't allow to modify the *Account*.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultError'
+          description: Other error.
+      summary: List active Tokens of the Account
+      tags:
+      - Account
+      x-openapi-router-controller: openapi_server.controllers.account_controller
+  /account/tokens/{tokenId}:
+    delete:
+      description: |
+        Revoke the given *Token*.
+
+        **Note:** requires full access to the *Account*.
+      operationId: account_revoke_token
+      parameters:
+      - description: Identifier of the token
+        in: path
+        name: tokenId
+        required: true
+        schema:
+          type: string
+      responses:
+        "204":
+          content: {}
+          description: Resource successfully deleted.
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEntity'
+          description: |
+            The authentication token doesn't allow to modify the *Account*.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultError'
+          description: Other error.
+      summary: Revoke a Token
+      tags:
+      - Account
+      x-openapi-router-controller: openapi_server.controllers.account_controller
+  /account/users:
+    get:
+      description: Get the list of *Users* of this *Account*.
+      operationId: account_users
+      parameters:
+      - description: |
+          Request to include the given keys of metadata in the response. If a key doesn't exist on the resource it is ignored.
+          **Note:** This only applies to the top level resources.
+        explode: false
+        in: query
+        name: embed-metadata
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/UserItem'
+                type: array
+                uniqueItems: true
+          description: Successful.
+      summary: List Users of the Account
+      tags:
+      - Account
+      x-openapi-router-controller: openapi_server.controllers.account_controller
+    post:
+      description: |
+        Add a *User*.
+
+        **Note**: requires full access to the *Account*.
+      operationId: account_new_user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserNew'
+        required: true
+        x-body-name: userInfo
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserCreated'
+          description: '*User* successfully created.'
+          headers:
+            Location:
+              description: Path of the User created
+              schema:
+                type: string
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEntity'
+          description: |
+            The authentication token doesn't allow to modify the *Account*.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultError'
+          description: Other error.
+      summary: New User
+      tags:
+      - Account
+      x-codegen-request-body-name: userInfo
+      x-openapi-router-controller: openapi_server.controllers.account_controller
+  /account/users/{userId}:
+    delete:
+      description: |
+        Delete a *User* from this *Account*, and revoke all his/her *Tokens*.
+
+        **Note**: requires full access to the *Account*.
+      operationId: account_delete_user
+      parameters:
+      - description: Unique identifier of a *User*.
+        in: path
+        name: user_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "204":
+          content: {}
+          description: Resource successfully deleted.
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEntity'
+          description: |
+            The authentication token doesn't allow to modify the *Account*.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultError'
+          description: Other error.
+      summary: Delete a User
+      tags:
+      - Account
+      x-openapi-router-controller: openapi_server.controllers.account_controller
+    get:
+      description: Get information about a *User* in the same *Account*.
+      operationId: account_get_user
+      parameters:
+      - description: Unique identifier of a *User*.
+        in: path
+        name: userId
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: |
+            *User* information.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultError'
+          description: Other error.
+      summary: Information about a User
+      tags:
+      - Account
+      x-openapi-router-controller: openapi_server.controllers.account_controller
+    patch:
+      description: |
+        Modify a *User*.
+
+        **Note**: requires full access to the *Account*.
+      operationId: account_patch_user
+      parameters:
+      - description: Unique identifier of a *User*.
+        in: path
+        name: user_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserPatch'
+        required: true
+        x-body-name: userPatch
+      responses:
+        "204":
+          content: {}
+          description: Modification successful.
+        "304":
+          content: {}
+          description: "Successful, but nothing changed."
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEntity'
+          description: |
+            The authentication token doesn't allow to modify the *Account*.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultError'
+          description: Other error.
+      summary: Modify a User
+      tags:
+      - Account
+      x-codegen-request-body-name: userPatch
+      x-openapi-router-controller: openapi_server.controllers.account_controller
+  /account/users/{userId}/metadata:
+    get:
+      description: Get the metadata.
+      operationId: user_get_metadata
+      parameters:
+      - description: Unique identifier of a *User*.
+        in: path
+        name: user_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Metadata'
+          description: Successful.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultError'
+          description: Other error.
+      summary: List metadata
+      tags:
+      - Account
+      x-openapi-router-controller: openapi_server.controllers.account_controller
+    patch:
+      description: |
+        Modify the metadata.
+        Keys are limited to the same format as tags (up to 21 characters, [a-z0-9], starting with [a-z]). Values can be any JSON value.
+      operationId: user_patch_metadata
+      parameters:
+      - description: Unique identifier of a *User*.
+        in: path
+        name: user_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MetadataPatch'
+        description: |
+          Modifications to apply to the metadata of the resource.
+        required: true
+        x-body-name: metadataPatch
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Metadata'
+          description: Successful. The new metadata is returned.
+        "304":
+          content: {}
+          description: "Successful, but nothing changed."
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEntity'
+          description: |
+            *User* doesn't exist in this *Account* or the requester doesn't have access to a *Place* on which this *User* has access.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultError'
+          description: Other error.
+      summary: Modify metadata
+      tags:
+      - Account
+      x-codegen-request-body-name: metadataPatch
+      x-openapi-router-controller: openapi_server.controllers.account_controller
+  /auth/login:
+    post:
+      description: |
+        Get an access+refresh tokens pair from login and password information.
+
+        The *access token* obtained with this request can then be used in
+        an `Access-Token` HTTP header or in a `token` URL query parameter
+        in requests that require authentication.
+
+        The *refresh token* can be used with `/auth/refresh` when the *access
+        token* expires to retrieve a new *access token*. The lifetime of the
+        refresh token is the maximum lifetime of this authentication request.
+
+        The default lifetime of the *refresh token* is defined by the `appId`
+        used. The `ttl` input parameter allows to request a *refresh token*
+        with a shorter lifetime.
+
+        To implement *logout*, use `/auth/revoke`.
+      operationId: auth_account_login
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthLogin'
+        description: Login information.
+        required: true
+        x-body-name: loginInfo
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthTokens'
+          description: Login successful. The access token is given to use the API.
+            The refresh token must be stored in a safe place.
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultError'
+          description: Authentication failure.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultError'
+          description: Other error.
+      security: []
+      summary: Get a token using login+password
+      tags:
+      - Authentication
+      - Entry points
+      x-codegen-request-body-name: loginInfo
+      x-openapi-router-controller: openapi_server.controllers.authentication_controller
+  /auth/refresh:
+    post:
+      description: |
+        Get a new *access token* using a valid *refresh token*.
+
+        This is a **replacement** of the *access token*: if an existing *access
+        token* was still not expired, it is invalidated.
+      operationId: auth_refresh_token
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthRefresh'
+        description: Refresh token information.
+        required: true
+        x-body-name: refreshInfo
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthTokens'
+          description: Refresh successful. A new access token is given to use the
+            API.
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultError'
+          description: Authentication failure.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultError'
+          description: Other error.
+      security: []
+      summary: Refresh a token
+      tags:
+      - Authentication
+      x-codegen-request-body-name: refreshInfo
+      x-openapi-router-controller: openapi_server.controllers.authentication_controller
+  /auth/reset-password:
+    post:
+      description: |
+        Trigger the request of a new password.
+
+        The account administrator will receive an e-mail with an URL pointing to a form
+        to allow him/her to enter a new password.
+        The old password is still functional until a new one is submitted.
+
+        Either the login or e-mail of the account must be given.
+      operationId: auth_reset_password
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthResetPassword'
+        description: Account identification information
+        required: true
+        x-body-name: resetPasswordInfo
+      responses:
+        "204":
+          content: {}
+          description: "As this request is not authenticated, response is always successful\
+            \ to not reveal (in)existence of accounts."
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultError'
+          description: Other error.
+      security: []
+      summary: Ask for a new password
+      tags:
+      - Authentication
+      x-codegen-request-body-name: resetPasswordInfo
+      x-openapi-router-controller: openapi_server.controllers.authentication_controller
+  /auth/revoke:
+    post:
+      description: |
+        Invalidate the authentication used for the request. The access token and the refresh token will be invalid after this request.
+        This request is typically called to implement logout.
+      operationId: auth_revoke_token
+      responses:
+        "204":
+          content: {}
+          description: Revocation successful. The token used for the request is now
+            invalid.
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultError'
+          description: Authentication failure.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultError'
+          description: Other error.
+      summary: Revoke a token
+      tags:
+      - Authentication
+      x-openapi-router-controller: openapi_server.controllers.authentication_controller
+  /devices/{deviceId}:
+    get:
+      description: Get information about a *Device*.
+      operationId: devices_get
+      parameters:
+      - description: Unique identifier of a *Device*.
+        in: path
+        name: deviceId
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Device'
+          description: Successful.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultError'
+          description: Other error.
+      summary: Information about a Device
+      tags:
+      - Device
+      x-openapi-router-controller: openapi_server.controllers.device_controller
+    patch:
+      description: |
+        Modify information about a *Device*: its name.
+      operationId: devices_patch
+      parameters:
+      - description: Unique identifier of a *Device*.
+        in: path
+        name: device_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DevicePatch'
+        required: true
+        x-body-name: devicePatch
+      responses:
+        "204":
+          content: {}
+          description: Modification successful.
+        "304":
+          content: {}
+          description: "Successful, but nothing changed."
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEntity'
+          description: |
+            *Device* doesn't exist or the requester doesn't have appropriate access to the *Place*.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultError'
+          description: Other error.
+      summary: Update a Device
+      tags:
+      - Device
+      x-codegen-request-body-name: devicePatch
+      x-openapi-router-controller: openapi_server.controllers.device_controller
+  /devices/{deviceId}/functionalities:
+    post:
+      description: |
+        Add a *Functionality* to the device.
+
+        Required parameters are :
+        - functionality class
+        - endpoint
+
+        Each device class has its own restrictions on which Functionality classes can be added and on which endpoints.
+        Only a few devices allow to add Functionalities.
+
+        |Device class|Functionality class|Endpoints|
+        |------------|-------------------|---------|
+        |MINT        |CurrentPeriod      |1,2,3    |
+        |MINT        |ElectricityRates   |1,2,3    |
+        |MINT        |GenericRate        |1,2,3    |
+
+        **Note**: requires full access to the *Account*.
+      operationId: device_add_functionality
+      parameters:
+      - description: Unique identifier of a *Device*.
+        in: path
+        name: device_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FunctionalityNew'
+        required: true
+        x-body-name: functionalityInfo
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FunctionalityCreated'
+          description: '*Functionality* successfully created.'
+          headers:
+            Location:
+              description: Path of the Functionality created
+              schema:
+                type: string
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEntity'
+          description: |
+            *Device* doesn't exist or the requester doesn't have appropriate access to the *Place*.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultError'
+          description: Other error.
+      summary: Add dynamically a functionality
+      tags:
+      - Device
+      - Functionality
+      x-codegen-request-body-name: functionalityInfo
+      x-openapi-router-controller: openapi_server.controllers.device_controller
+  /devices/{deviceId}/metadata:
+    get:
+      description: Get the metadata.
+      operationId: device_get_metadata
+      parameters:
+      - description: Unique identifier of a *Device*.
+        in: path
+        name: device_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Metadata'
+          description: Successful.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultError'
+          description: Other error.
+      summary: List metadata
+      tags:
+      - Device
+      x-openapi-router-controller: openapi_server.controllers.device_controller
+    patch:
+      description: |
+        Modify the metadata.
+        Keys are limited to the same format as tags (up to 21 characters, [a-z0-9], starting with [a-z]). Values can be any JSON value.
+      operationId: device_patch_metadata
+      parameters:
+      - description: Unique identifier of a *Device*.
+        in: path
+        name: device_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MetadataPatch'
+        description: |
+          Modifications to apply to the metadata of the resource.
+        required: true
+        x-body-name: metadataPatch
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Metadata'
+          description: Successful. The new metadata is returned.
+        "304":
+          content: {}
+          description: "Successful, but nothing changed."
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEntity'
+          description: |
+            *Device* doesn't exist or the requester doesn't have appropriate access to the *Place*.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultError'
+          description: Other error.
+      summary: Modify metadata
+      tags:
+      - Device
+      x-codegen-request-body-name: metadataPatch
+      x-openapi-router-controller: openapi_server.controllers.device_controller
+  /devices/{deviceId}/run/{action}:
+    post:
+      description: |
+        Run an *Action* on zero, one or multiple Functionalities selected with tags.
+      operationId: device_run
+      parameters:
+      - description: Unique identifier of a *Device*.
+        in: path
+        name: device_id
+        required: true
+        schema:
+          type: string
+      - description: Identifier of an *Action* inside a *Functionality*.
+        in: path
+        name: action
+        required: true
+        schema:
+          type: string
+      - description: |
+          Functionality selector: Functionality tags or functionality class (optionally, '@' followed by a endpoint in decimal) or '*' for all. Multiple values are separated by '|' and are interpreted as « OR ».
+        in: query
+        name: functionalities
+        required: true
+        schema:
+          pattern: "^(?:\\\\*|(?:[A-Z][A-Za-z0-9]+(?:@(?:0|1[0-9]{,2}|[3-9][0-9]?|2(?:[0-4][0-9]?|5[0-5]?|[6-9])?))?|[a-z][a-z0-9_:]{0,20}|[A-Za-z0-9-_]{22})(?:\\\
+            \\|(?:[A-Z][A-Za-z0-9]+(?:@(?:0|1[0-9]{,2}|[3-9][0-9]?|2(?:[0-4][0-9]?|5[0-5]?|[6-9])?))?|[a-z][a-z0-9_:]{0,20}|[A-Za-z0-9-_]{22}))*)$"
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ActionArgs'
+        required: true
+        x-body-name: arguments
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ActionMultiResult'
+          description: Successful.
+        "450":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorGatewayUnreachable'
+          description: The gateway of the Place is not reachable.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultError'
+          description: Other error.
+      summary: Run actions
+      tags:
+      - Action
+      x-codegen-request-body-name: arguments
+      x-openapi-router-controller: openapi_server.controllers.action_controller
+  /devices/{deviceId}/tags:
+    get:
+      description: Get the tags of a *Device*.
+      operationId: device_get_tags
+      parameters:
+      - description: Unique identifier of a *Device*.
+        in: path
+        name: device_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tags'
+          description: Successful.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultError'
+          description: Other error.
+      summary: List tags
+      tags:
+      - Device
+      x-openapi-router-controller: openapi_server.controllers.device_controller
+    patch:
+      description: Modify the tags of a *Device*.
+      operationId: device_patch_tags
+      parameters:
+      - description: Unique identifier of a *Device*.
+        in: path
+        name: device_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TagsPatch'
+        description: |
+          Modifications to apply to the tags list of the resource.
+        required: true
+        x-body-name: tagsPatch
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tags'
+          description: Successful. The new list of tags is returned.
+        "304":
+          content: {}
+          description: "Successful, but nothing changed."
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEntity'
+          description: |
+            *Device* doesn't exist or the requester doesn't have appropriate access to the *Place*.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultError'
+          description: Other error.
+      summary: Modify tags
+      tags:
+      - Device
+      x-codegen-request-body-name: tagsPatch
+      x-openapi-router-controller: openapi_server.controllers.device_controller
+  /functionalities/{functionalityId}:
+    get:
+      description: Get the *Functionality*.
+      operationId: functionalities_get
+      parameters:
+      - description: Unique identifier of a *Functionality*.
+        in: path
+        name: functionalityId
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Functionality'
+          description: Successful.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultError'
+          description: Other error.
+      summary: Information about a Functionality
+      tags:
+      - Functionality
+      x-openapi-router-controller: openapi_server.controllers.functionality_controller
+    patch:
+      description: |
+        Modify information about a *Functionality*: its name.
+      operationId: functionality_patch
+      parameters:
+      - description: Unique identifier of a *Functionality*.
+        in: path
+        name: functionality_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FunctionalityPatch'
+        required: true
+        x-body-name: functionalityPatch
+      responses:
+        "204":
+          content: {}
+          description: Modification successful.
+        "304":
+          content: {}
+          description: "Successful, but nothing changed."
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEntity'
+          description: |
+            *Functionality* doesn't exist or the requester doesn't have appropriate access to the *Place*.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultError'
+          description: Other error.
+      summary: Modify a Functionality
+      tags:
+      - Functionality
+      x-codegen-request-body-name: functionalityPatch
+      x-openapi-router-controller: openapi_server.controllers.functionality_controller
+  /functionalities/{functionalityId}/attributes:
+    get:
+      description: |
+        Get the values of multiple *Attributes* and their history.
+
+        If the `names` parameter is not given, all the attributes of the *Functionality*
+        are returned. As the list may be huge, this must be avoided.
+
+        If the `to` parameter is set, `from` must also be set.
+
+        If `from` is not set, only the last value is returned.
+
+        The `surround` parameter allows to ask also for one value beyond each interval boundaries.
+
+        The request may fail if too many values are asked.
+      operationId: functionality_values
+      parameters:
+      - description: Unique identifier of a *Functionality*.
+        in: path
+        name: functionality_id
+        required: true
+        schema:
+          type: string
+      - description: One or multiple *Attribute* names separated by commas
+        explode: false
+        in: query
+        name: names
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: Beginning of the time interval.
+        in: query
+        name: from
+        schema:
+          format: date-time
+          type: string
+      - description: |
+          End of the interval. Default: now.
+        in: query
+        name: to
+        schema:
+          format: date-time
+          type: string
+      - description: "If true, return also one value before from and one value after\
+          \ to"
+        in: query
+        name: surround
+        schema:
+          type: boolean
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AttributesValues'
+          description: Successful.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultError'
+          description: Other error.
+      summary: Get history of multiple attributes
+      tags:
+      - Functionality
+      x-openapi-router-controller: openapi_server.controllers.functionality_controller
+  /functionalities/{functionalityId}/attributes/{attributeName}:
+    get:
+      description: Get the *Attribute* value and the last time when it changed.
+      operationId: functionality_value
+      parameters:
+      - description: Unique identifier of a *Functionality*.
+        in: path
+        name: functionality_id
+        required: true
+        schema:
+          type: string
+      - description: Identifier of an *Attribute* inside a *Functionality*.
+        in: path
+        name: attributeName
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AttributeValue'
+          description: Successful.
+        "204":
+          content: {}
+          description: No value has yet been set on this attribute.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultError'
+          description: Other error.
+      summary: Get an Attribute value
+      tags:
+      - Functionality
+      x-openapi-router-controller: openapi_server.controllers.functionality_controller
+    put:
+      description: Modify the value of the *Attribute*.
+      operationId: functionality_set
+      parameters:
+      - description: Unique identifier of a *Functionality*.
+        in: path
+        name: functionality_id
+        required: true
+        schema:
+          type: string
+      - description: Identifier of an *Attribute* inside a *Functionality*.
+        in: path
+        name: attribute_name
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AnyJSON'
+        description: New value for the *Attribute*.
+        required: true
+        x-body-name: value
+      responses:
+        "204":
+          content: {}
+          description: Successful.
+        "405":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorSubEntity'
+          description: |
+            *Attribute* is not writable.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultError'
+          description: Other error.
+      summary: Modify an Attribute value
+      tags:
+      - Functionality
+      x-codegen-request-body-name: value
+      x-openapi-router-controller: openapi_server.controllers.functionality_controller
+  /functionalities/{functionalityId}/metadata:
+    get:
+      description: Get the metadata.
+      operationId: functionality_get_metadata
+      parameters:
+      - description: Unique identifier of a *Functionality*.
+        in: path
+        name: functionality_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Metadata'
+          description: Successful.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultError'
+          description: Other error.
+      summary: List metadata
+      tags:
+      - Functionality
+      x-openapi-router-controller: openapi_server.controllers.functionality_controller
+    patch:
+      description: |
+        Modify the metadata.
+        Keys are limited to the same format as tags (up to 21 characters, [a-z0-9], starting with [a-z]). Values can be any JSON value.
+      operationId: functionality_patch_metadata
+      parameters:
+      - description: Unique identifier of a *Functionality*.
+        in: path
+        name: functionality_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MetadataPatch'
+        description: |
+          Modifications to apply to the metadata of the resource.
+        required: true
+        x-body-name: metadataPatch
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Metadata'
+          description: Successful. The new metadata is returned.
+        "304":
+          content: {}
+          description: "Successful, but nothing changed."
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEntity'
+          description: |
+            *Functionality* doesn't exist or the requester doesn't have appropriate access to the *Place*.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultError'
+          description: Other error.
+      summary: Modify metadata
+      tags:
+      - Functionality
+      x-codegen-request-body-name: metadataPatch
+      x-openapi-router-controller: openapi_server.controllers.functionality_controller
+  /functionalities/{functionalityId}/run/{action}:
+    post:
+      description: |
+        Run an action on the Functionality.
+      operationId: functionality_run
+      parameters:
+      - description: Unique identifier of a *Functionality*.
+        in: path
+        name: functionality_id
+        required: true
+        schema:
+          type: string
+      - description: Identifier of an *Action* inside a *Functionality*.
+        in: path
+        name: action
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ActionArgs'
+        required: true
+        x-body-name: arguments
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ActionResult'
+          description: Successful.
+        "450":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorGatewayUnreachable'
+          description: The gateway of the Place is not reachable.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultError'
+          description: Other error.
+      summary: Run an action
+      tags:
+      - Action
+      x-codegen-request-body-name: arguments
+      x-openapi-router-controller: openapi_server.controllers.action_controller
+  /functionalities/{functionalityId}/tags:
+    get:
+      description: Get the tags of a *Functionality*.
+      operationId: functionality_get_tags
+      parameters:
+      - description: Unique identifier of a *Functionality*.
+        in: path
+        name: functionality_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tags'
+          description: Successful.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultError'
+          description: Other error.
+      summary: List tags
+      tags:
+      - Functionality
+      x-openapi-router-controller: openapi_server.controllers.functionality_controller
+    patch:
+      description: Modify the tags of a *Functionality*.
+      operationId: functionality_patch_tags
+      parameters:
+      - description: Unique identifier of a *Functionality*.
+        in: path
+        name: functionality_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TagsPatch'
+        description: |
+          Modifications to apply to the tags list of the resource.
+        required: true
+        x-body-name: tagsPatch
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tags'
+          description: Successful. The new list of tags is returned.
+        "304":
+          content: {}
+          description: "Successful, but nothing changed."
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEntity'
+          description: |
+            *Functionality* doesn't exist or the requester doesn't have appropriate access to the *Place*.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultError'
+          description: Other error.
+      summary: Modify tags
+      tags:
+      - Functionality
+      x-codegen-request-body-name: tagsPatch
+      x-openapi-router-controller: openapi_server.controllers.functionality_controller
+  /me:
+    get:
+      description: |
+        Get information on the authenticated *User* who does the request.
+
+        The *login* property is returned only if the *User* is the administrator of
+        the *Account*.
+      operationId: me_get
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserMe'
+          description: Successful response
+      summary: Information about the User
+      tags:
+      - Entry points
+      x-openapi-router-controller: openapi_server.controllers.entry_points_controller
+    patch:
+      description: |
+        Update *User* information (locale).
+      operationId: me_patch
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserMePatch'
+        description: Updated user info.
+        required: true
+        x-body-name: userPatch
+      responses:
+        "204":
+          content: {}
+          description: Modification successful.
+        "304":
+          content: {}
+          description: "Successful, but nothing changed."
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultError'
+          description: Other error.
+      summary: Update User information
+      tags:
+      - Entry points
+      x-codegen-request-body-name: userPatch
+      x-openapi-router-controller: openapi_server.controllers.entry_points_controller
+  /notifications/{notificationId}:
+    delete:
+      description: |
+        Delete a *Notification*.
+      operationId: notification_delete
+      parameters:
+      - description: Unique identifier of a *Notification*.
+        in: path
+        name: notification_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "204":
+          content: {}
+          description: Resource successfully deleted.
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEntity'
+          description: |
+            *Notification* doesn't exist or the requester doesn't have appropriate access to the *Place*.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultError'
+          description: Other error.
+      summary: Delete a Notification
+      tags:
+      - Notification
+      x-openapi-router-controller: openapi_server.controllers.notification_controller
+    get:
+      description: |
+        Get information about a *Notification*.
+      operationId: notifications_get
+      parameters:
+      - description: Unique identifier of a *Notification*.
+        in: path
+        name: notificationId
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Notification'
+          description: Successful.
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEntity'
+          description: |
+            *Notification* doesn't exist or the requester doesn't have appropriate access to the *Place*.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultError'
+          description: Other error.
+      summary: Information about a Notification
+      tags:
+      - Notification
+      x-openapi-router-controller: openapi_server.controllers.notification_controller
+    patch:
+      description: |
+        Modify a *Notification*.
+      operationId: notification_patch
+      parameters:
+      - description: Unique identifier of a *Notification*.
+        in: path
+        name: notification_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NotificationPatch'
+        required: true
+        x-body-name: notificationPatch
+      responses:
+        "204":
+          content: {}
+          description: Modification successful.
+        "304":
+          content: {}
+          description: "Successful, but nothing changed."
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEntity'
+          description: |
+            *Notification* doesn't exist or the requester doesn't have appropriate access to the *Place*.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultError'
+          description: Other error.
+      summary: Modify a Notification
+      tags:
+      - Notification
+      x-codegen-request-body-name: notificationPatch
+      x-openapi-router-controller: openapi_server.controllers.notification_controller
+  /notifications/{notificationId}/metadata:
+    get:
+      description: Get the metadata of the *Notification*.
+      operationId: notification_get_metadata
+      parameters:
+      - description: Unique identifier of a *Notification*.
+        in: path
+        name: notification_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Metadata'
+          description: Successful.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultError'
+          description: Other error.
+      summary: List metadata
+      tags:
+      - Notification
+      x-openapi-router-controller: openapi_server.controllers.notification_controller
+    patch:
+      description: |
+        Modify the metadata of a *Notification*.
+        Keys are limited to the same format as tags (up to 21 characters, [a-z0-9], starting with [a-z]). Values can be any JSON value.
+      operationId: notification_patch_metadata
+      parameters:
+      - description: Unique identifier of a *Notification*.
+        in: path
+        name: notification_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MetadataPatch'
+        description: |
+          Modifications to apply to the metadata of the resource.
+        required: true
+        x-body-name: metadataPatch
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Metadata'
+          description: Successful. The new metadata is returned.
+        "304":
+          content: {}
+          description: "Successful, but nothing changed."
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEntity'
+          description: |
+            *Notification* doesn't exist or the requester doesn't have appropriate access to the *Place*.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultError'
+          description: Other error.
+      summary: Modify metadata of a Notification
+      tags:
+      - Notification
+      x-codegen-request-body-name: metadataPatch
+      x-openapi-router-controller: openapi_server.controllers.notification_controller
+  /places:
+    get:
+      description: List the *Places* to which the *Token* has access.
+      operationId: me_places
+      parameters:
+      - description: |
+          Request to include the given keys of metadata in the response. If a key doesn't exist on the resource it is ignored.
+          **Note:** This only applies to the top level resources.
+        explode: false
+        in: query
+        name: embed_metadata
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/PlaceItem'
+                type: array
+                uniqueItems: true
+          description: Successful response
+      summary: List accessible Places
+      tags:
+      - Entry points
+      x-openapi-router-controller: openapi_server.controllers.entry_points_controller
+  /places/{placeId}:
+    get:
+      description: Get information about a *Place*.
+      operationId: places_get
+      parameters:
+      - description: Unique identifier of a *Place*.
+        in: path
+        name: placeId
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Place'
+          description: Successful response.
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEntity'
+          description: |
+            *Place* doesn't exist or the requester doesn't have access.
+      summary: Information about a Place
+      tags:
+      - Place
+      x-openapi-router-controller: openapi_server.controllers.place_controller
+    patch:
+      description: |
+        Change information about a *Place*.
+
+        **Note**: requires full access to the *Account*.
+      operationId: place_patch
+      parameters:
+      - description: Unique identifier of a *Place*.
+        in: path
+        name: place_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PlacePatch'
+        required: true
+        x-body-name: placePatch
+      responses:
+        "204":
+          content: {}
+          description: Modification successful.
+        "304":
+          content: {}
+          description: "Successful, but nothing changed."
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEntity'
+          description: |
+            The authentication token doesn't allow to modify the *Account*.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultError'
+          description: Other error.
+      summary: Update a Place
+      tags:
+      - Place
+      x-codegen-request-body-name: placePatch
+      x-openapi-router-controller: openapi_server.controllers.place_controller
+  /places/{placeId}/buses:
+    get:
+      description: |-
+        Get the list of *Buses* available on the gateway of this *Place*.
+        If `withPairing` is `true`, return only buses that allow device pairing (see `/places/{placeId}/buses/{busId}/pairing`).
+      operationId: place_buses
+      parameters:
+      - description: Unique identifier of a *Place*.
+        in: path
+        name: place_id
+        required: true
+        schema:
+          type: string
+      - description: Filter out buses that have no pairing window
+        in: query
+        name: withPairing
+        schema:
+          default: false
+          type: boolean
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/BusItem'
+                type: array
+                uniqueItems: true
+          description: Successful.
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorSubEntity'
+          description: |
+            *Bus* doesn't exist or the requester doesn't have appropriate access to the *Place*.
+      summary: List Buses
+      tags:
+      - Place
+      x-openapi-router-controller: openapi_server.controllers.place_controller
+  /places/{placeId}/buses/{busId}/pairing:
+    get:
+      description: |
+        Get the state of the pairing window of the *Bus*.
+
+        **Note**: requires full access to the *Account*.
+      operationId: place_pairing
+      parameters:
+      - description: Unique identifier of a *Place*.
+        in: path
+        name: place_id
+        required: true
+        schema:
+          type: string
+      - description: Unique identifier of a *Bus*.
+        in: path
+        name: busId
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BusPairing'
+          description: State information.
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorSubEntity'
+          description: |
+            *Bus* doesn't exist or the requester doesn't have appropriate access to the *Place*.
+      summary: State of the pairing window
+      tags:
+      - Place
+      x-openapi-router-controller: openapi_server.controllers.place_controller
+    put:
+      description: |
+        Open/Close the pairing window.
+
+        **Note**: requires full access to the *Account*.
+      operationId: place_open_pairing
+      parameters:
+      - description: Unique identifier of a *Place*.
+        in: path
+        name: place_id
+        required: true
+        schema:
+          type: string
+      - description: Unique identifier of a *Bus*.
+        in: path
+        name: bus_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BusPairing'
+        required: true
+        x-body-name: pairing
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BusPairing'
+          description: State information.
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorSubEntity'
+          description: |
+            *Bus* doesn't exist or the requester doesn't have appropriate access to the *Place*.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultError'
+          description: Other error.
+      summary: Open/Close the pairing window
+      tags:
+      - Place
+      x-codegen-request-body-name: pairing
+      x-openapi-router-controller: openapi_server.controllers.place_controller
+  /places/{placeId}/devices:
+    get:
+      description: Get the list of *Devices* available in this *Place*.
+      operationId: place_devices
+      parameters:
+      - description: Unique identifier of a *Place*.
+        in: path
+        name: place_id
+        required: true
+        schema:
+          type: string
+      - description: Devices selector. Device tags or device classes or device ids
+          or '*' for any. Multiple values are separated by '|' and interpreted as
+          « OR ».
+        in: query
+        name: devices
+        schema:
+          pattern: "^(?:\\\\*|(?:[A-Z][A-Z0-9]{3}|[a-z][a-z0-9_:]{0,20}|[A-Za-z0-9-_]{22})(?:\\\
+            \\|(?:[A-Z][A-Z0-9]{3}|[a-z][a-z0-9_:]{0,20}|[A-Za-z0-9-_]{22}))*)$"
+          type: string
+      - description: |
+          Request to include the given keys of metadata in the response. If a key doesn't exist on the resource it is ignored.
+          **Note:** This only applies to the top level resources.
+        explode: false
+        in: query
+        name: embed_metadata
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/DeviceItem'
+                type: array
+                uniqueItems: true
+          description: Successful.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultError'
+          description: Other error.
+      summary: List of Devices
+      tags:
+      - Device
+      x-openapi-router-controller: openapi_server.controllers.device_controller
+  /places/{placeId}/electricity/autonomy:
+    get:
+      description: |
+        Compute the autonomy rate of the *Place* on a time period.
+
+        `autonomy = 1 - (elec_drawn / elec_total_usage)`
+      operationId: place_electricity_autonomy
+      parameters:
+      - description: Unique identifier of a *Place*.
+        in: path
+        name: place_id
+        required: true
+        schema:
+          type: string
+      - description: A time part of the time span.
+        in: query
+        name: when
+        required: true
+        schema:
+          format: date-time
+          type: string
+      - description: "Timespan: H (hour), D (day), Wmo (week starting on Monday),\
+          \ Wsu (week starting on Sunday), M (month), Y (year)"
+        in: query
+        name: span
+        required: true
+        schema:
+          enum:
+          - H
+          - D
+          - Wmo
+          - Wsu
+          - M
+          - "Y"
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ElectricityAutonomy'
+          description: Successful.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultError'
+          description: Other error.
+      summary: Get autonomy rate of the place
+      tags:
+      - Electricity
+      x-openapi-router-controller: openapi_server.controllers.electricity_controller
+  /places/{placeId}/electricity/flows:
+    get:
+      description: |
+        Get the mapping of virtual electricity flows to functionalities.
+
+        Some rules are applied to expand the virtual flows using the concrete
+        flows available.
+
+        The `factor` tells how each energy value coming from a functionality
+        must be added with values from other functionality to compute the
+        energy of the virtual flow. Factors are usually `1` or `-1`.
+
+        The `code` property gives the result which may be partial:
+        - If all flows are available, `200000` is returned.
+        - If no flows are available (indicating that the place has no
+          electricity functionality or that no functionality has been attached
+          to a flow), the `code` is `200001`. The `missing` property contains
+          all the requested flows.
+        - If some flows are missing, the `code` is `200002` and the `missing`
+          property lists them.
+      operationId: place_electricity_get_flows
+      parameters:
+      - description: Unique identifier of a *Place*.
+        in: path
+        name: place_id
+        required: true
+        schema:
+          type: string
+      - description: Names of the flows requested
+        explode: false
+        in: query
+        name: flows
+        required: true
+        schema:
+          items:
+            enum:
+            - battery_charge
+            - battery_discharge
+            - battery_grid
+            - elec_total_gen
+            - elec_total_usage
+            - elec_feed_in
+            - elec_drawn
+            - elec_local
+            - elec_from_household
+            - elec_to_pv
+            - elec_usage
+            type: string
+          type: array
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ElectricityFlows'
+          description: Place is available. `code` gives the functional result.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultError'
+          description: Other error.
+      summary: Get electricity virtual flows
+      tags:
+      - Electricity
+      x-openapi-router-controller: openapi_server.controllers.electricity_controller
+  /places/{placeId}/electricity/flows/setup:
+    get:
+      description: |
+        Get the mapping of functionalities to electricity flows.
+
+        A functionality is attached to *at most* one flow.
+      operationId: place_electricity_get_flows_setup
+      parameters:
+      - description: Unique identifier of a *Place*.
+        in: path
+        name: place_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ElectricityFlowsSetup'
+          description: Successful.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultError'
+          description: Other error.
+      summary: Get electricity flows setup
+      tags:
+      - Electricity
+      x-openapi-router-controller: openapi_server.controllers.electricity_controller
+  /places/{placeId}/electricity/self-consumption:
+    get:
+      description: |
+        Compute the self-consumption rate of the *Place* on a time period.
+
+        `selfConsumption = 1 - (elec_feed_in / elec_total_usage)`
+      operationId: place_electricity_self_consumption
+      parameters:
+      - description: Unique identifier of a *Place*.
+        in: path
+        name: place_id
+        required: true
+        schema:
+          type: string
+      - description: A time part of the time span.
+        in: query
+        name: when
+        required: true
+        schema:
+          format: date-time
+          type: string
+      - description: "Timespan: H (hour), D (day), Wmo (week starting on Monday),\
+          \ Wsu (week starting on Sunday), M (month), Y (year)"
+        in: query
+        name: span
+        required: true
+        schema:
+          enum:
+          - H
+          - D
+          - Wmo
+          - Wsu
+          - M
+          - "Y"
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ElectricitySelfConsumption'
+          description: Successful.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultError'
+          description: Other error.
+      summary: Get self-consumption rate of the place
+      tags:
+      - Electricity
+      x-openapi-router-controller: openapi_server.controllers.electricity_controller
+  /places/{placeId}/functionalities:
+    get:
+      description: Get the list of *Functionalities* available in this *Place*.
+      operationId: place_functionalities
+      parameters:
+      - description: Unique identifier of a *Place*.
+        in: path
+        name: place_id
+        required: true
+        schema:
+          type: string
+      - description: Devices selector. Device tags or device classes or device ids
+          or '*' for any. Multiple values are separated by '|' and interpreted as
+          « OR ».
+        in: query
+        name: devices
+        schema:
+          pattern: "^(?:\\\\*|(?:[A-Z][A-Z0-9]{3}|[a-z][a-z0-9_:]{0,20}|[A-Za-z0-9-_]{22})(?:\\\
+            \\|(?:[A-Z][A-Z0-9]{3}|[a-z][a-z0-9_:]{0,20}|[A-Za-z0-9-_]{22}))*)$"
+          type: string
+      - description: |
+          Functionality selector: Functionality tags or functionality class (optionally, '@' followed by a endpoint in decimal) or '*' for all. Multiple values are separated by '|' and are interpreted as « OR ».
+        in: query
+        name: functionalities
+        schema:
+          pattern: "^(?:\\\\*|(?:[A-Z][A-Za-z0-9]+(?:@(?:0|1[0-9]{,2}|[3-9][0-9]?|2(?:[0-4][0-9]?|5[0-5]?|[6-9])?))?|[a-z][a-z0-9_:]{0,20}|[A-Za-z0-9-_]{22})(?:\\\
+            \\|(?:[A-Z][A-Za-z0-9]+(?:@(?:0|1[0-9]{,2}|[3-9][0-9]?|2(?:[0-4][0-9]?|5[0-5]?|[6-9])?))?|[a-z][a-z0-9_:]{0,20}|[A-Za-z0-9-_]{22}))*)$"
+          type: string
+      - description: |
+          Request to include the given keys of metadata in the response. If a key doesn't exist on the resource it is ignored.
+          **Note:** This only applies to the top level resources.
+        explode: false
+        in: query
+        name: embed_metadata
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/FunctionalityItem'
+                type: array
+                uniqueItems: true
+          description: Successful.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultError'
+          description: Other error.
+      summary: List Functionalities
+      tags:
+      - Functionality
+      x-openapi-router-controller: openapi_server.controllers.functionality_controller
+  /places/{placeId}/metadata:
+    get:
+      description: Get the metadata.
+      operationId: place_get_metadata
+      parameters:
+      - description: Unique identifier of a *Place*.
+        in: path
+        name: place_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Metadata'
+          description: Successful.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultError'
+          description: Other error.
+      summary: List metadata
+      tags:
+      - Place
+      x-openapi-router-controller: openapi_server.controllers.place_controller
+    patch:
+      description: |
+        Modify the metadata.
+        Keys are limited to the same format as tags (up to 21 characters, [a-z0-9], starting with [a-z]). Values can be any JSON value.
+      operationId: place_patch_metadata
+      parameters:
+      - description: Unique identifier of a *Place*.
+        in: path
+        name: place_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MetadataPatch'
+        description: |
+          Modifications to apply to the metadata of the resource.
+        required: true
+        x-body-name: metadataPatch
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Metadata'
+          description: Successful. The new metadata is returned.
+        "304":
+          content: {}
+          description: "Successful, but nothing changed."
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEntity'
+          description: |
+            *Place* doesn't exist or the requester doesn't have access.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultError'
+          description: Other error.
+      summary: Modify metadata
+      tags:
+      - Place
+      x-codegen-request-body-name: metadataPatch
+      x-openapi-router-controller: openapi_server.controllers.place_controller
+  /places/{placeId}/notifications:
+    get:
+      description: Get the list of *Notifications* available in this *Place*.
+      operationId: place_notifications
+      parameters:
+      - description: Unique identifier of a *Place*.
+        in: path
+        name: place_id
+        required: true
+        schema:
+          type: string
+      - description: |
+          Request to include the given keys of metadata in the response. If a key doesn't exist on the resource it is ignored.
+          **Note:** This only applies to the top level resources.
+        explode: false
+        in: query
+        name: embed_metadata
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/NotificationItem'
+                type: array
+                uniqueItems: true
+          description: Successful.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultError'
+          description: Other error.
+      summary: List Notifications
+      tags:
+      - Notification
+      x-openapi-router-controller: openapi_server.controllers.notification_controller
+    post:
+      description: Create a new *Notification*.
+      operationId: place_new_notification
+      parameters:
+      - description: Unique identifier of a *Place*.
+        in: path
+        name: place_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NotificationNew'
+        required: true
+        x-body-name: notification
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotificationCreated'
+          description: '*Notification* successfully created.'
+          headers:
+            Location:
+              description: "Path of the Notification created (`/notifications/{id}`)"
+              schema:
+                type: string
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEntity'
+          description: |
+            *Place* doesn't exist or the requester doesn't have access.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultError'
+          description: Other error.
+      summary: Create a Notification
+      tags:
+      - Notification
+      x-codegen-request-body-name: notification
+      x-openapi-router-controller: openapi_server.controllers.notification_controller
+  /places/{placeId}/programs:
+    get:
+      description: Get the list of *Programs* available in this *Place*.
+      operationId: place_programs
+      parameters:
+      - description: Unique identifier of a *Place*.
+        in: path
+        name: place_id
+        required: true
+        schema:
+          type: string
+      - description: |
+          Request to include the given keys of metadata in the response. If a key doesn't exist on the resource it is ignored.
+          **Note:** This only applies to the top level resources.
+        explode: false
+        in: query
+        name: embed_metadata
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/ProgramItem'
+                type: array
+                uniqueItems: true
+          description: Successful.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultError'
+          description: Other error.
+      summary: List Programs
+      tags:
+      - Program
+      x-openapi-router-controller: openapi_server.controllers.program_controller
+    post:
+      description: |
+        Create a new *Program*.
+
+        **Note**: requires full access to the *Account*.
+      operationId: place_new_program
+      parameters:
+      - description: Unique identifier of a *Place*.
+        in: path
+        name: place_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProgramNew'
+        required: true
+        x-body-name: programInfo
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProgramCreated'
+          description: '*Program* successfully created.'
+          headers:
+            Location:
+              description: "Path of the Program created (`/programs/{id}`)"
+              schema:
+                type: string
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEntity'
+          description: |
+            *Place* doesn't exist or the requester doesn't have access.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultError'
+          description: Other error.
+      summary: Create a Program
+      tags:
+      - Program
+      x-codegen-request-body-name: programInfo
+      x-openapi-router-controller: openapi_server.controllers.program_controller
+  /places/{placeId}/run/{action}:
+    post:
+      description: |
+        Run an *Action* on zero, one or multiple *Functionalities* selected with tags.
+
+        *Device* and *Functionality* selection are combined with « AND ».
+
+        If no functionality is matched by the device/functionality selection, an empty array is returned.
+      operationId: place_run
+      parameters:
+      - description: Unique identifier of a *Place*.
+        in: path
+        name: place_id
+        required: true
+        schema:
+          type: string
+      - description: Identifier of an *Action* inside a *Functionality*.
+        in: path
+        name: action
+        required: true
+        schema:
+          type: string
+      - description: Devices selector. Device tags or device classes or device ids
+          or '*' for any. Multiple values are separated by '|' and interpreted as
+          « OR ».
+        in: query
+        name: devices
+        required: true
+        schema:
+          pattern: "^(?:\\\\*|(?:[A-Z][A-Z0-9]{3}|[a-z][a-z0-9_:]{0,20}|[A-Za-z0-9-_]{22})(?:\\\
+            \\|(?:[A-Z][A-Z0-9]{3}|[a-z][a-z0-9_:]{0,20}|[A-Za-z0-9-_]{22}))*)$"
+          type: string
+      - description: |
+          Functionality selector: Functionality tags or functionality class (optionally, '@' followed by a endpoint in decimal) or '*' for all. Multiple values are separated by '|' and are interpreted as « OR ».
+        in: query
+        name: functionalities
+        required: true
+        schema:
+          pattern: "^(?:\\\\*|(?:[A-Z][A-Za-z0-9]+(?:@(?:0|1[0-9]{,2}|[3-9][0-9]?|2(?:[0-4][0-9]?|5[0-5]?|[6-9])?))?|[a-z][a-z0-9_:]{0,20}|[A-Za-z0-9-_]{22})(?:\\\
+            \\|(?:[A-Z][A-Za-z0-9]+(?:@(?:0|1[0-9]{,2}|[3-9][0-9]?|2(?:[0-4][0-9]?|5[0-5]?|[6-9])?))?|[a-z][a-z0-9_:]{0,20}|[A-Za-z0-9-_]{22}))*)$"
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ActionArgs'
+        required: true
+        x-body-name: arguments
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ActionMultiResult'
+          description: Successful.
+        "450":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorGatewayUnreachable'
+          description: The gateway of the Place is not reachable.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultError'
+          description: Other error.
+      summary: Run actions
+      tags:
+      - Action
+      x-codegen-request-body-name: arguments
+      x-openapi-router-controller: openapi_server.controllers.action_controller
+  /programs/{programId}:
+    delete:
+      description: |
+        Delete a *Program*.
+
+        **Note**: requires full access to the *Account*.
+      operationId: program_delete
+      parameters:
+      - description: Unique identifier of a *Program*.
+        in: path
+        name: program_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "204":
+          content: {}
+          description: Resource successfully deleted.
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEntity'
+          description: |
+            *Program* doesn't exist or the requester doesn't have appropriate access to the *Place*.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultError'
+          description: Other error.
+      summary: Delete a Program
+      tags:
+      - Program
+      x-openapi-router-controller: openapi_server.controllers.program_controller
+    get:
+      description: |
+        Get information about a *Program*.
+      operationId: programs_get
+      parameters:
+      - description: Unique identifier of a *Program*.
+        in: path
+        name: programId
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Program'
+          description: Successful.
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEntity'
+          description: |
+            *Program* doesn't exist or the requester doesn't have appropriate access to the *Place*.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultError'
+          description: Other error.
+      summary: Information about a Program
+      tags:
+      - Program
+      x-openapi-router-controller: openapi_server.controllers.program_controller
+    patch:
+      description: |
+        Modify a *Program*:
+        - name
+        - status (enabled/disabled)
+        - code
+
+        **Note**: requires full access to the *Account*.
+      operationId: program_patch
+      parameters:
+      - description: Unique identifier of a *Program*.
+        in: path
+        name: program_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProgramPatch'
+        required: true
+        x-body-name: programPatch
+      responses:
+        "204":
+          content: {}
+          description: Modification successful.
+        "304":
+          content: {}
+          description: "Successful, but nothing changed."
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEntity'
+          description: |
+            *Program* doesn't exist or the requester doesn't have appropriate access to the *Place*.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultError'
+          description: Other error.
+      summary: Modify a Program
+      tags:
+      - Program
+      x-codegen-request-body-name: programPatch
+      x-openapi-router-controller: openapi_server.controllers.program_controller
+  /programs/{programId}/log:
+    get:
+      description: Get the execution history list of this *Program*.
+      operationId: program_log
+      parameters:
+      - description: Unique identifier of a *Program*.
+        in: path
+        name: program_id
+        required: true
+        schema:
+          type: string
+      - description: Beginning of the time interval.
+        in: query
+        name: from
+        required: true
+        schema:
+          format: date-time
+          type: string
+      - description: |
+          End of the interval. Default: now.
+        in: query
+        name: to
+        schema:
+          format: date-time
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/ProgramLog'
+                type: array
+                uniqueItems: true
+          description: Successful.
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEntity'
+          description: |
+            *Program* doesn't exist or the requester doesn't have appropriate access to the *Place*.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultError'
+          description: Other error.
+      summary: History of executions of a Program
+      tags:
+      - Program
+      x-openapi-router-controller: openapi_server.controllers.program_controller
+  /programs/{programId}/metadata:
+    get:
+      description: Get the metadata of the *Program*.
+      operationId: program_get_metadata
+      parameters:
+      - description: Unique identifier of a *Program*.
+        in: path
+        name: program_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Metadata'
+          description: Successful.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultError'
+          description: Other error.
+      summary: List metadata
+      tags:
+      - Program
+      x-openapi-router-controller: openapi_server.controllers.program_controller
+    patch:
+      description: |
+        Modify the metadata of a *Program*.
+        Keys are limited to the same format as tags (up to 21 characters, [a-z0-9], starting with [a-z]). Values can be any JSON value.
+      operationId: program_patch_metadata
+      parameters:
+      - description: Unique identifier of a *Program*.
+        in: path
+        name: program_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MetadataPatch'
+        description: |
+          Modifications to apply to the metadata of the resource.
+        required: true
+        x-body-name: metadataPatch
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Metadata'
+          description: Successful. The new metadata is returned.
+        "304":
+          content: {}
+          description: "Successful, but nothing changed."
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEntity'
+          description: |
+            *Program* doesn't exist or the requester doesn't have appropriate access to the *Place*.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultError'
+          description: Other error.
+      summary: Modify metadata of a Program
+      tags:
+      - Program
+      x-codegen-request-body-name: metadataPatch
+      x-openapi-router-controller: openapi_server.controllers.program_controller
+  /programs/{programId}/run:
+    post:
+      description: |-
+        Launch the *Program*.
+        The result will be available later in the run history.
+      operationId: program_run
+      parameters:
+      - description: Unique identifier of a *Program*.
+        in: path
+        name: program_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "204":
+          content: {}
+          description: '*Program* successfully launched.'
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEntity'
+          description: |
+            *Program* doesn't exist or the requester doesn't have appropriate access to the *Place*.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultError'
+          description: Other error.
+      summary: Run the Program
+      tags:
+      - Program
+      x-openapi-router-controller: openapi_server.controllers.program_controller
+components:
+  parameters:
+    accountId:
+      description: Unique identifier of an *Account*.
+      in: path
+      name: accountId
+      required: true
+      schema:
+        type: string
+    action:
+      description: Identifier of an *Action* inside a *Functionality*.
+      in: path
+      name: action
+      required: true
+      schema:
+        type: string
+    attributeName:
+      description: Identifier of an *Attribute* inside a *Functionality*.
+      in: path
+      name: attributeName
+      required: true
+      schema:
+        type: string
+    attributesNames:
+      description: One or multiple *Attribute* names separated by commas
+      explode: false
+      in: query
+      name: names
+      schema:
+        items:
+          type: string
+        type: array
+      style: form
+    busId:
+      description: Unique identifier of a *Bus*.
+      in: path
+      name: busId
+      required: true
+      schema:
+        type: string
+    deviceId:
+      description: Unique identifier of a *Device*.
+      in: path
+      name: deviceId
+      required: true
+      schema:
+        type: string
+    devicesSelector.Opt:
+      description: Devices selector. Device tags or device classes or device ids or
+        '*' for any. Multiple values are separated by '|' and interpreted as « OR
+        ».
+      in: query
+      name: devices
+      schema:
+        pattern: "^(?:\\\\*|(?:[A-Z][A-Z0-9]{3}|[a-z][a-z0-9_:]{0,20}|[A-Za-z0-9-_]{22})(?:\\\
+          \\|(?:[A-Z][A-Z0-9]{3}|[a-z][a-z0-9_:]{0,20}|[A-Za-z0-9-_]{22}))*)$"
+        type: string
+    devicesSelector.Req:
+      description: Devices selector. Device tags or device classes or device ids or
+        '*' for any. Multiple values are separated by '|' and interpreted as « OR
+        ».
+      in: query
+      name: devices
+      required: true
+      schema:
+        pattern: "^(?:\\\\*|(?:[A-Z][A-Z0-9]{3}|[a-z][a-z0-9_:]{0,20}|[A-Za-z0-9-_]{22})(?:\\\
+          \\|(?:[A-Z][A-Z0-9]{3}|[a-z][a-z0-9_:]{0,20}|[A-Za-z0-9-_]{22}))*)$"
+        type: string
+    embedMetadata:
+      description: |
+        Request to include the given keys of metadata in the response. If a key doesn't exist on the resource it is ignored.
+        **Note:** This only applies to the top level resources.
+      explode: false
+      in: query
+      name: embed-metadata
+      schema:
+        items:
+          type: string
+        type: array
+      style: form
+    from.Opt:
+      description: Beginning of the time interval.
+      in: query
+      name: from
+      schema:
+        format: date-time
+        type: string
+    from.Req:
+      description: Beginning of the time interval.
+      in: query
+      name: from
+      required: true
+      schema:
+        format: date-time
+        type: string
+    functionalitiesSelector.Opt:
+      description: |
+        Functionality selector: Functionality tags or functionality class (optionally, '@' followed by a endpoint in decimal) or '*' for all. Multiple values are separated by '|' and are interpreted as « OR ».
+      in: query
+      name: functionalities
+      schema:
+        pattern: "^(?:\\\\*|(?:[A-Z][A-Za-z0-9]+(?:@(?:0|1[0-9]{,2}|[3-9][0-9]?|2(?:[0-4][0-9]?|5[0-5]?|[6-9])?))?|[a-z][a-z0-9_:]{0,20}|[A-Za-z0-9-_]{22})(?:\\\
+          \\|(?:[A-Z][A-Za-z0-9]+(?:@(?:0|1[0-9]{,2}|[3-9][0-9]?|2(?:[0-4][0-9]?|5[0-5]?|[6-9])?))?|[a-z][a-z0-9_:]{0,20}|[A-Za-z0-9-_]{22}))*)$"
+        type: string
+    functionalitiesSelector.Req:
+      description: |
+        Functionality selector: Functionality tags or functionality class (optionally, '@' followed by a endpoint in decimal) or '*' for all. Multiple values are separated by '|' and are interpreted as « OR ».
+      in: query
+      name: functionalities
+      required: true
+      schema:
+        pattern: "^(?:\\\\*|(?:[A-Z][A-Za-z0-9]+(?:@(?:0|1[0-9]{,2}|[3-9][0-9]?|2(?:[0-4][0-9]?|5[0-5]?|[6-9])?))?|[a-z][a-z0-9_:]{0,20}|[A-Za-z0-9-_]{22})(?:\\\
+          \\|(?:[A-Z][A-Za-z0-9]+(?:@(?:0|1[0-9]{,2}|[3-9][0-9]?|2(?:[0-4][0-9]?|5[0-5]?|[6-9])?))?|[a-z][a-z0-9_:]{0,20}|[A-Za-z0-9-_]{22}))*)$"
+        type: string
+    functionalityId:
+      description: Unique identifier of a *Functionality*.
+      in: path
+      name: functionalityId
+      required: true
+      schema:
+        type: string
+    notificationId:
+      description: Unique identifier of a *Notification*.
+      in: path
+      name: notificationId
+      required: true
+      schema:
+        type: string
+    placeId:
+      description: Unique identifier of a *Place*.
+      in: path
+      name: placeId
+      required: true
+      schema:
+        type: string
+    programId:
+      description: Unique identifier of a *Program*.
+      in: path
+      name: programId
+      required: true
+      schema:
+        type: string
+    span.Req:
+      description: "Timespan: H (hour), D (day), Wmo (week starting on Monday), Wsu\
+        \ (week starting on Sunday), M (month), Y (year)"
+      in: query
+      name: span
+      required: true
+      schema:
+        enum:
+        - H
+        - D
+        - Wmo
+        - Wsu
+        - M
+        - "Y"
+        type: string
+    to:
+      description: |
+        End of the interval. Default: now.
+      in: query
+      name: to
+      schema:
+        format: date-time
+        type: string
+    tokenId:
+      description: Identifier of the token
+      in: path
+      name: tokenId
+      required: true
+      schema:
+        type: string
+    userId:
+      description: Unique identifier of a *User*.
+      in: path
+      name: userId
+      required: true
+      schema:
+        type: string
+    when.Req:
+      description: A time part of the time span.
+      in: query
+      name: when
+      required: true
+      schema:
+        format: date-time
+        type: string
+  requestBodies:
+    metadataPatch:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/MetadataPatch'
+      description: |
+        Modifications to apply to the metadata of the resource.
+      required: true
+      x-body-name: metadataPatch
+    tagsPatch:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/TagsPatch'
+      description: |
+        Modifications to apply to the tags list of the resource.
+      required: true
+      x-body-name: tagsPatch
+  responses:
+    ActionMultiResultOK:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ActionMultiResult'
+      description: Successful.
+    DefaultError:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/DefaultError'
+      description: Other error.
+    DeleteOK:
+      content: {}
+      description: Resource successfully deleted.
+    ErrorAccessAccount:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEntity'
+      description: |
+        The authentication token doesn't allow to modify the *Account*.
+    ErrorAccessBus:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSubEntity'
+      description: |
+        *Bus* doesn't exist or the requester doesn't have appropriate access to the *Place*.
+    ErrorAccessDevice:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEntity'
+      description: |
+        *Device* doesn't exist or the requester doesn't have appropriate access to the *Place*.
+    ErrorAccessFunctionality:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEntity'
+      description: |
+        *Functionality* doesn't exist or the requester doesn't have appropriate access to the *Place*.
+    ErrorAccessNotification:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEntity'
+      description: |
+        *Notification* doesn't exist or the requester doesn't have appropriate access to the *Place*.
+    ErrorAccessPlace:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEntity'
+      description: |
+        *Place* doesn't exist or the requester doesn't have access.
+    ErrorAccessProgram:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEntity'
+      description: |
+        *Program* doesn't exist or the requester doesn't have appropriate access to the *Place*.
+    ErrorAccessUser:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEntity'
+      description: |
+        *User* doesn't exist in this *Account* or the requester doesn't have access to a *Place* on which this *User* has access.
+    ErrorGatewayUnreachable:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorGatewayUnreachable'
+      description: The gateway of the Place is not reachable.
+    ErrorWriteAttribute:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSubEntity'
+      description: |
+        *Attribute* is not writable.
+    PatchNotModified:
+      content: {}
+      description: "Successful, but nothing changed."
+    PatchOK:
+      content: {}
+      description: Modification successful.
+  schemas:
+    AccountId:
+      description: Unique identifier of the *Account*
+      example: t1hqYcQITCFX-AObjs_t4Q
+      maxLength: 22
+      minLength: 22
+      pattern: "^[A-Za-z0-9-_]{22}$"
+      title: account
+      type: string
+    AccountLogin:
+      minLength: 1
+      title: login
+      type: string
+    ActionArgs:
+      example:
+      - true
+      - 1
+      - hello
+      items:
+        $ref: '#/components/schemas/AnyJSON'
+      type: array
+    ActionMultiResult:
+      items:
+        $ref: '#/components/schemas/ActionResult'
+      type: array
+    ActionName:
+      minLength: 1
+      title: ActionName
+      type: string
+    ActionResult:
+      example:
+        functionality: RnVuY3Rpb25hbGl0eTAwMA
+        result: []
+        status: 200
+      properties:
+        functionality:
+          description: Unique identifier of the *Functionality*
+          example: RnVuY3Rpb25hbGl0eTAwMA
+          maxLength: 22
+          minLength: 22
+          pattern: "^[A-Za-z0-9-_]{22}$"
+          title: FunctionalityId
+          type: string
+        result:
+          items:
+            $ref: '#/components/schemas/AnyJSON'
+          type: array
+        status:
+          description: Return code (HTTP status code)
+          example: 200
+          maximum: 599
+          minimum: 200
+          type: integer
+      required:
+      - status
+      title: ActionResult
+      type: object
+      x-links:
+      - href: "/functionalities/{functionality}"
+        rel: functionality
+    AnyJSON:
+      description: null/boolean/integer/number/string/object/array
+      title: AnyJSON
+      type: object
+      x-type: any
+    AppId:
+      minLength: 1
+      title: appId
+      type: string
+    AttributeName:
+      minLength: 1
+      title: AttributeName
+      type: string
+    AttributeValue:
+      example:
+        value: 0
+        when: 2014-02-17T12:31:00Z
+      properties:
+        value:
+          description: null/boolean/integer/number/string/object/array
+          title: AnyJSON
+          type: object
+          x-type: any
+        when:
+          format: date-time
+          type: string
+      required:
+      - value
+      - when
+      title: AttributeValue
+      type: object
+    AttributesValues:
+      additionalProperties:
+        items:
+          $ref: '#/components/schemas/AttributeValue'
+        type: array
+      description: Keys are attribute ids
+      example:
+        Counter:
+        - value: 0
+          when: 2014-02-17T12:31:00Z
+        Schedule:
+        - value:
+          - DTSTAMP: 20120101T000000Z
+            DTSTART:
+              ? ""
+              : 20120101T063000
+              TZID: Europe/Paris
+            RRULE:
+              FREQ: DAILY
+            SUMMARY: "2"
+            UID: HP-06h30@si.ijenko.net
+          - DTSTAMP: 20120101T000000Z
+            DTSTART:
+              ? ""
+              : 20120101T223000
+              TZID: Europe/Paris
+            RRULE:
+              FREQ: DAILY
+            SUMMARY: "3"
+            UID: HC-22h30@si.ijenko.net
+          when: 2014-02-17T00:00:00Z
+      type: object
+    AuthChangePassword:
+      example:
+        oldPassword: oldPassword
+        newPassword: newPassword
+      properties:
+        newPassword:
+          format: password
+          minLength: 5
+          title: newPassword
+          type: string
+        oldPassword:
+          format: password
+          minLength: 5
+          title: newPassword
+          type: string
+      required:
+      - newPassword
+      - oldPassword
+      title: AuthChangePassword
+      type: object
+    AuthLogin:
+      example:
+        password: password
+        appId: appId
+        login: login
+        ttl: 1800
+      properties:
+        appId:
+          minLength: 1
+          title: appId
+          type: string
+        login:
+          minLength: 1
+          title: login
+          type: string
+        password:
+          format: password
+          minLength: 5
+          title: newPassword
+          type: string
+        ttl:
+          description: Desired maximum life-time in seconds for the refresh token
+          example: 1800
+          minimum: 0
+          title: ttl
+          type: integer
+      required:
+      - appId
+      - login
+      - password
+      title: AuthLogin
+      type: object
+    AuthRefresh:
+      example:
+        appId: appId
+        refreshToken: refreshToken
+      properties:
+        appId:
+          minLength: 1
+          title: appId
+          type: string
+        refreshToken:
+          minLength: 1
+          title: refreshToken
+          type: string
+      required:
+      - appId
+      - refreshToken
+      title: AuthRefresh
+      type: object
+    AuthResetPassword:
+      example:
+        appId: appId
+        login: login
+        email: email
+      properties:
+        appId:
+          minLength: 1
+          title: appId
+          type: string
+        email:
+          format: email
+          minLength: 6
+          title: email
+          type: string
+        login:
+          minLength: 1
+          title: login
+          type: string
+      required:
+      - appId
+      title: AuthResetPassword
+      type: object
+    AuthTokens:
+      example:
+        refreshTokenExpires: 2000-01-23T04:56:07.000+00:00
+        accessTokenExpires: 2000-01-23T04:56:07.000+00:00
+        accessToken: accessToken
+        refreshToken: refreshToken
+      properties:
+        accessToken:
+          minLength: 1
+          title: accessToken
+          type: string
+        accessTokenExpires:
+          format: date-time
+          title: accessTokenExpires
+          type: string
+        refreshToken:
+          minLength: 1
+          title: refreshToken
+          type: string
+        refreshTokenExpires:
+          format: date-time
+          title: refreshTokenExpires
+          type: string
+      required:
+      - accessToken
+      - accessTokenExpires
+      - refreshToken
+      - refreshTokenExpires
+      title: AuthTokens
+      type: object
+    BusId:
+      minLength: 3
+      title: id
+      type: string
+    BusItem:
+      example:
+        protocol: protocol
+        functionality: RnVuY3Rpb25hbGl0eTAwMA
+        id: id
+      properties:
+        functionality:
+          description: Unique identifier of the *Functionality*
+          example: RnVuY3Rpb25hbGl0eTAwMA
+          maxLength: 22
+          minLength: 22
+          pattern: "^[A-Za-z0-9-_]{22}$"
+          title: FunctionalityId
+          type: string
+        id:
+          minLength: 3
+          title: id
+          type: string
+        protocol:
+          minLength: 1
+          title: protocol
+          type: string
+      required:
+      - functionality
+      - id
+      - protocol
+      title: BusItem
+      type: object
+    BusPairing:
+      example:
+        duration: 0
+        enabled: true
+      properties:
+        duration:
+          description: Duration of the pairing window.
+          title: duration
+          type: integer
+        enabled:
+          title: enabled
+          type: boolean
+      required:
+      - enabled
+      title: BusPairing
+      type: object
+    BusProtocol:
+      minLength: 1
+      title: protocol
+      type: string
+    CountryCode:
+      description: Country code (ISO 3166-1 alpha-2)
+      example: FR
+      maxLength: 2
+      minLength: 2
+      pattern: "^[A-Z][A-Z]$"
+      title: country
+      type: string
+    DefaultError:
+      description: Any error.
+      example:
+        code: 6
+        message: message
+      properties:
+        code:
+          title: code
+          type: integer
+        message:
+          title: message
+          type: string
+      required:
+      - code
+      - message
+      title: DefaultError
+      type: object
+    Device:
+      example:
+        metadata:
+          key: null
+        protocol: protocol
+        address: address
+        functionalities:
+        - endpoint: 20
+          metadata:
+            key: null
+          name: name
+          id: RnVuY3Rpb25hbGl0eTAwMA
+          class: class
+          device: RGV2aWNlMDAwMDAwMDAwMA
+          tags:
+          - null
+          - null
+        - endpoint: 20
+          metadata:
+            key: null
+          name: name
+          id: RnVuY3Rpb25hbGl0eTAwMA
+          class: class
+          device: RGV2aWNlMDAwMDAwMDAwMA
+          tags:
+          - null
+          - null
+        name: name
+        attributes:
+          key:
+            key: null
+        isOnline: true
+        model: model
+        place: 3HA6YcSCTSFX6SPPrI9PxQ
+        class: class
+        manufacturer: manufacturer
+        tags:
+        - null
+        - null
+      properties:
+        address:
+          minLength: 1
+          pattern: "^[A-Z0-9]{1,32}$"
+          title: address
+          type: string
+        attributes:
+          additionalProperties:
+            additionalProperties:
+              $ref: '#/components/schemas/AnyJSON'
+            description: Each key is an attribute name
+            type: object
+          description: Each key is <FunctionalityClass>@<Endpoint>
+          title: attributes
+          type: object
+        class:
+          maxLength: 4
+          minLength: 4
+          pattern: "^[A-Z][A-Z0-9]{3}$"
+          title: class
+          type: string
+        functionalities:
+          items:
+            $ref: '#/components/schemas/FunctionalityItem'
+          readOnly: true
+          title: functionalities
+          type: array
+          uniqueItems: true
+        isOnline:
+          readOnly: true
+          title: isOnline
+          type: boolean
+        manufacturer:
+          readOnly: true
+          title: manufacturer
+          type: string
+        metadata:
+          additionalProperties:
+            $ref: '#/components/schemas/AnyJSON'
+          description: "Keys are limited to the same format as tags (up to 21 characters,\
+            \ [a-z0-9], starting with [a-z]). Values can be any JSON value."
+          title: metadata
+          type: object
+        model:
+          readOnly: true
+          title: model
+          type: string
+        name:
+          description: Name of the device. User defined.
+          minLength: 2
+          title: name
+          type: string
+        place:
+          description: Unique identifier of the *Place*
+          example: 3HA6YcSCTSFX6SPPrI9PxQ
+          maxLength: 22
+          minLength: 22
+          pattern: "^[A-Za-z0-9-_]{22}$"
+          title: id
+          type: string
+        protocol:
+          minLength: 1
+          title: protocol
+          type: string
+        tags:
+          items:
+            $ref: '#/components/schemas/DeviceTag'
+          title: tags
+          type: array
+          uniqueItems: true
+      required:
+      - address
+      - class
+      - functionalities
+      - isOnline
+      - place
+      - tags
+      title: Device
+      type: object
+      x-links:
+      - href: "/places/{place}"
+        rel: place
+    DeviceAddress:
+      minLength: 1
+      pattern: "^[A-Z0-9]{1,32}$"
+      title: address
+      type: string
+    DeviceClass:
+      maxLength: 4
+      minLength: 4
+      pattern: "^[A-Z][A-Z0-9]{3}$"
+      title: class
+      type: string
+    DeviceId:
+      description: Unique identifier of the *Device*
+      example: RGV2aWNlMDAwMDAwMDAwMA
+      maxLength: 22
+      minLength: 22
+      pattern: "^[A-Za-z0-9-_]{22}$"
+      title: DeviceId
+      type: string
+    DeviceItem:
+      example:
+        metadata:
+          key: null
+        address: address
+        name: name
+        isOnline: true
+        id: RGV2aWNlMDAwMDAwMDAwMA
+        place: 3HA6YcSCTSFX6SPPrI9PxQ
+        class: class
+        tags:
+        - null
+        - null
+      properties:
+        address:
+          minLength: 1
+          pattern: "^[A-Z0-9]{1,32}$"
+          title: address
+          type: string
+        class:
+          maxLength: 4
+          minLength: 4
+          pattern: "^[A-Z][A-Z0-9]{3}$"
+          title: class
+          type: string
+        id:
+          description: Unique identifier of the *Device*
+          example: RGV2aWNlMDAwMDAwMDAwMA
+          maxLength: 22
+          minLength: 22
+          pattern: "^[A-Za-z0-9-_]{22}$"
+          title: DeviceId
+          type: string
+        isOnline:
+          title: isOnline
+          type: boolean
+        metadata:
+          additionalProperties:
+            $ref: '#/components/schemas/AnyJSON'
+          description: Subset of metadata attached to the resource selected using
+            the 'embed-metadata' parameter
+          title: MetadataSelected
+          type: object
+        name:
+          description: Name of the *Device* as defined by the user. Can be used for
+            user interfaces.
+          minLength: 2
+          title: name
+          type: string
+        place:
+          description: Unique identifier of the *Place*
+          example: 3HA6YcSCTSFX6SPPrI9PxQ
+          maxLength: 22
+          minLength: 22
+          pattern: "^[A-Za-z0-9-_]{22}$"
+          title: id
+          type: string
+        tags:
+          items:
+            $ref: '#/components/schemas/DeviceTag'
+          title: tags
+          type: array
+          uniqueItems: true
+      required:
+      - address
+      - class
+      - id
+      - isOnline
+      - place
+      - tags
+      title: DeviceItem
+      type: object
+      x-links:
+      - href: "/devices/{id}"
+        rel: full
+      - href: "/places/{place}"
+        rel: place
+    DevicePatch:
+      example:
+        name: name
+      properties:
+        name:
+          description: Name of the *Device* as defined by the user. Can be used for
+            user interfaces.
+          minLength: 2
+          title: name
+          type: string
+      title: DevicePatch
+      type: object
+    DeviceTag:
+      maxLength: 21
+      minLength: 1
+      pattern: "^[a-z](?:[a-z0-9_]{0,20}|[a-z0-9_]:[a-z0-9_]{1,18}|[a-z0-9_]{2}:[a-z0-9_]{1,17}|[a-z0-9_]{3}:[a-z0-9_]{1,16}|[a-z0-9_]{4}:[a-z0-9_]{1,15})$"
+      title: DeviceTag
+      type: string
+    ElectricityAutonomy:
+      example:
+        autonomy: 0.4
+        code: 200000
+        from: 2016-03-02T09:00:00Z
+        to: 2016-03-02T10:00:00Z
+      properties:
+        autonomy:
+          description: "Average electricity autonomy in % (value in range [0, 1],\
+            \ rounded)"
+          example: 0.4
+          maximum: 1
+          minimum: 0
+          type: number
+        code:
+          $ref: '#/components/schemas/ElectricityStatusCode'
+        from:
+          format: date-time
+          type: string
+        message:
+          description: "Message for cases where computation is not possible (codes\
+            \ 200001, 200002)"
+          minLength: 1
+          type: string
+        to:
+          format: date-time
+          type: string
+      required:
+      - code
+      title: ElectricityAutonomy
+      type: object
+    ElectricityFlow:
+      items:
+        $ref: '#/components/schemas/ElectricityFunctionality'
+      type: array
+      uniqueItems: true
+    ElectricityFlowFormula:
+      items:
+        $ref: '#/components/schemas/ElectricityFlowFunctionality'
+      title: ElectricityFlowFormula
+      type: array
+      uniqueItems: true
+    ElectricityFlowFunctionality:
+      example:
+        class: ElecMetering
+        factor: 1
+        flow: elec_total_gen
+        id: RnVuY3Rpb25hbGl0eTAwMA
+      properties:
+        class:
+          minLength: 2
+          pattern: "^[A-Z][A-Za-z0-9]+$"
+          title: FunctionalityClass
+          type: string
+        factor:
+          type: integer
+        flow:
+          $ref: '#/components/schemas/ElectricityFlowName'
+        id:
+          description: Unique identifier of the *Functionality*
+          example: RnVuY3Rpb25hbGl0eTAwMA
+          maxLength: 22
+          minLength: 22
+          pattern: "^[A-Za-z0-9-_]{22}$"
+          title: FunctionalityId
+          type: string
+      required:
+      - class
+      - factor
+      - flow
+      - id
+      title: ElectricityFlowFunctionality
+      type: object
+      x-links:
+      - href: "/functionalities/{id}"
+        rel: full
+    ElectricityFlowName:
+      description: Name of an electricity flow
+      enum:
+      - battery_charge
+      - battery_discharge
+      - battery_grid
+      - elec_total_gen
+      - elec_total_usage
+      - elec_feed_in
+      - elec_drawn
+      - elec_local
+      - elec_from_household
+      - elec_to_pv
+      - elec_usage
+      minLength: 1
+      title: ElectricityFlowName
+      type: string
+    ElectricityFlows:
+      example:
+        code: 200000
+        flows:
+          elec_local:
+          - class: ElecMetering
+            factor: 1
+            id: SF4_y4SoTCpYXgGODJplJQ
+          elec_total_usage:
+          - class: ElecMetering
+            factor: 1
+            flow: elec_total_gen
+            id: SF4_y4SoTCpYXgGODJplJQ
+          - class: ElecSmartMetering
+            factor: 1
+            flow: elec_drawn
+            id: lvxvQ9SqXCpYSqHOJI7tIA
+          - class: ElecSmartMetering
+            factor: -1
+            flow: elec_feed_in
+            id: d1xvwdWKWCpYH6GPjovnLg
+      properties:
+        code:
+          $ref: '#/components/schemas/ElectricityStatusCode'
+        flows:
+          $ref: '#/components/schemas/ElectricityVirtualFlows'
+        message:
+          description: "Message for cases where computation is not possible (codes\
+            \ 200001, 200002)"
+          minLength: 1
+          type: string
+        missing:
+          $ref: '#/components/schemas/ElectricityMissingFlows'
+      required:
+      - code
+      title: ElectricityFlows
+      type: object
+    ElectricityFlowsSetup:
+      example:
+        elec_drawn:
+        - class: ElecSmartMetering
+          id: lvxvQ9SqXCpYSqHOJI7tIA
+        elec_feed_in:
+        - class: ElecSmartMetering
+          id: d1xvwdWKWCpYH6GPjovnLg
+        elec_total_gen:
+        - class: ElecMetering
+          id: SF4_y4SoTCpYXgGODJplJQ
+      properties:
+        battery_charge:
+          items:
+            $ref: '#/components/schemas/ElectricityFunctionality'
+          type: array
+          uniqueItems: true
+        battery_discharge:
+          items:
+            $ref: '#/components/schemas/ElectricityFunctionality'
+          type: array
+          uniqueItems: true
+        battery_grid:
+          items:
+            $ref: '#/components/schemas/ElectricityFunctionality'
+          type: array
+          uniqueItems: true
+        elec_drawn:
+          items:
+            $ref: '#/components/schemas/ElectricityFunctionality'
+          type: array
+          uniqueItems: true
+        elec_feed_in:
+          items:
+            $ref: '#/components/schemas/ElectricityFunctionality'
+          type: array
+          uniqueItems: true
+        elec_from_household:
+          items:
+            $ref: '#/components/schemas/ElectricityFunctionality'
+          type: array
+          uniqueItems: true
+        elec_local:
+          items:
+            $ref: '#/components/schemas/ElectricityFunctionality'
+          type: array
+          uniqueItems: true
+        elec_to_pv:
+          items:
+            $ref: '#/components/schemas/ElectricityFunctionality'
+          type: array
+          uniqueItems: true
+        elec_total_gen:
+          items:
+            $ref: '#/components/schemas/ElectricityFunctionality'
+          type: array
+          uniqueItems: true
+        elec_total_usage:
+          items:
+            $ref: '#/components/schemas/ElectricityFunctionality'
+          type: array
+          uniqueItems: true
+        elec_usage:
+          items:
+            $ref: '#/components/schemas/ElectricityFunctionality'
+          type: array
+          uniqueItems: true
+      title: ElectricityFlowsSetup
+      type: object
+    ElectricityFunctionality:
+      example:
+        class: ElecMetering
+        id: RnVuY3Rpb25hbGl0eTAwMA
+      properties:
+        class:
+          minLength: 2
+          pattern: "^[A-Z][A-Za-z0-9]+$"
+          title: FunctionalityClass
+          type: string
+        id:
+          description: Unique identifier of the *Functionality*
+          example: RnVuY3Rpb25hbGl0eTAwMA
+          maxLength: 22
+          minLength: 22
+          pattern: "^[A-Za-z0-9-_]{22}$"
+          title: FunctionalityId
+          type: string
+      required:
+      - class
+      - id
+      title: ElectricityFunctionality
+      type: object
+      x-links:
+      - href: "/functionalities/{id}"
+        rel: full
+    ElectricityMissingFlows:
+      description: List of missing flows (not available either directly or indirectly)
+      properties:
+        battery_charge:
+          title: battery_charge
+          type: boolean
+        battery_discharge:
+          title: battery_discharge
+          type: boolean
+        battery_grid:
+          title: battery_grid
+          type: boolean
+        elec_drawn:
+          title: elec_drawn
+          type: boolean
+        elec_feed_in:
+          title: elec_feed_in
+          type: boolean
+        elec_from_household:
+          title: elec_from_household
+          type: boolean
+        elec_local:
+          title: elec_local
+          type: boolean
+        elec_to_pv:
+          title: elec_to_pv
+          type: boolean
+        elec_total_gen:
+          title: elec_total_gen
+          type: boolean
+        elec_total_usage:
+          title: elec_total_usage
+          type: boolean
+        elec_usage:
+          title: elec_usage
+          type: boolean
+      title: ElectricityMissingFlows
+      type: object
+    ElectricitySelfConsumption:
+      example:
+        code: 200000
+        from: 2016-03-02T10:00:00Z
+        selfConsumption: 1
+        to: 2016-03-02T11:00:00Z
+      properties:
+        code:
+          $ref: '#/components/schemas/ElectricityStatusCode'
+        from:
+          format: date-time
+          type: string
+        message:
+          description: "Message for cases where computation is not possible (codes\
+            \ 200001, 200002)"
+          minLength: 1
+          type: string
+        selfConsumption:
+          description: "Average self-consumption rate in % (value in range [0, 1],\
+            \ rounded)"
+          example: 0.555555
+          maximum: 1
+          minimum: 0
+          type: number
+        to:
+          format: date-time
+          type: string
+      required:
+      - code
+      title: ElectricitySelfConsumption
+      type: object
+    ElectricityStatusCode:
+      description: Status code. 200000 means OK. Other codes indicate full or partial
+        failure.
+      enum:
+      - 200000
+      - 200001
+      - 200002
+      example: 200000
+      title: ElectricityStatusCode
+      type: integer
+    ElectricityStatusMessage:
+      description: "Message for cases where computation is not possible (codes 200001,\
+        \ 200002)"
+      minLength: 1
+      type: string
+    ElectricityVirtualFlows:
+      properties:
+        battery_charge:
+          items:
+            $ref: '#/components/schemas/ElectricityFlowFunctionality'
+          title: ElectricityFlowFormula
+          type: array
+          uniqueItems: true
+        battery_discharge:
+          items:
+            $ref: '#/components/schemas/ElectricityFlowFunctionality'
+          title: ElectricityFlowFormula
+          type: array
+          uniqueItems: true
+        battery_grid:
+          items:
+            $ref: '#/components/schemas/ElectricityFlowFunctionality'
+          title: ElectricityFlowFormula
+          type: array
+          uniqueItems: true
+        elec_drawn:
+          items:
+            $ref: '#/components/schemas/ElectricityFlowFunctionality'
+          title: ElectricityFlowFormula
+          type: array
+          uniqueItems: true
+        elec_feed_in:
+          items:
+            $ref: '#/components/schemas/ElectricityFlowFunctionality'
+          title: ElectricityFlowFormula
+          type: array
+          uniqueItems: true
+        elec_from_household:
+          items:
+            $ref: '#/components/schemas/ElectricityFlowFunctionality'
+          title: ElectricityFlowFormula
+          type: array
+          uniqueItems: true
+        elec_local:
+          items:
+            $ref: '#/components/schemas/ElectricityFlowFunctionality'
+          title: ElectricityFlowFormula
+          type: array
+          uniqueItems: true
+        elec_to_pv:
+          items:
+            $ref: '#/components/schemas/ElectricityFlowFunctionality'
+          title: ElectricityFlowFormula
+          type: array
+          uniqueItems: true
+        elec_total_gen:
+          items:
+            $ref: '#/components/schemas/ElectricityFlowFunctionality'
+          title: ElectricityFlowFormula
+          type: array
+          uniqueItems: true
+        elec_total_usage:
+          items:
+            $ref: '#/components/schemas/ElectricityFlowFunctionality'
+          title: ElectricityFlowFormula
+          type: array
+          uniqueItems: true
+        elec_usage:
+          items:
+            $ref: '#/components/schemas/ElectricityFlowFunctionality'
+          title: ElectricityFlowFormula
+          type: array
+          uniqueItems: true
+      title: ElectricityVirtualFlows
+      type: object
+    ErrorEntity:
+      description: "An error related to access to an entity (400, 403, 404, 410)"
+      example:
+        code: 0
+        resource:
+          href: href
+          id: id
+          entity: Device
+        message: message
+      properties:
+        code:
+          title: code
+          type: integer
+        message:
+          title: message
+          type: string
+        resource:
+          $ref: '#/components/schemas/ResourceRef'
+      required:
+      - code
+      - message
+      - resource
+      title: ErrorEntity
+      type: object
+    ErrorGatewayUnreachable:
+      description: The gateway of the Place is not reachable.
+      example:
+        code: "450"
+        message: message
+      properties:
+        code:
+          enum:
+          - "450"
+          title: code
+          type: string
+        message:
+          title: message
+          type: string
+      required:
+      - code
+      - message
+      title: ErrorGatewayUnreachable
+      type: object
+    ErrorSubEntity:
+      description: "An error related to access to an sub-entity (400, 403, 404, 410)"
+      example:
+        code: 0
+        resource:
+          parent:
+            id: id
+            entity: Place
+          href: href
+          id: id
+          entity: Action
+        message: message
+      properties:
+        code:
+          title: code
+          type: integer
+        message:
+          title: message
+          type: string
+        resource:
+          $ref: '#/components/schemas/ErrorSubEntity_resource'
+      required:
+      - code
+      - message
+      - resource
+      title: ErrorSubEntity
+      type: object
+    Functionality:
+      example:
+        endpoint: 20
+        metadata:
+          key: null
+        name: name
+        attributes:
+        - null
+        - null
+        actions:
+        - null
+        - null
+        class: class
+        device: RGV2aWNlMDAwMDAwMDAwMA
+        tags:
+        - null
+        - null
+      properties:
+        actions:
+          items:
+            $ref: '#/components/schemas/ActionName'
+          readOnly: true
+          title: actions
+          type: array
+          uniqueItems: true
+        attributes:
+          items:
+            $ref: '#/components/schemas/AttributeName'
+          readOnly: true
+          title: attributes
+          type: array
+          uniqueItems: true
+        class:
+          minLength: 2
+          pattern: "^[A-Z][A-Za-z0-9]+$"
+          title: FunctionalityClass
+          type: string
+        device:
+          description: Unique identifier of the *Device*
+          example: RGV2aWNlMDAwMDAwMDAwMA
+          maxLength: 22
+          minLength: 22
+          pattern: "^[A-Za-z0-9-_]{22}$"
+          title: DeviceId
+          type: string
+        endpoint:
+          maximum: 255
+          minimum: 0
+          title: FunctionalityEndpoint
+          type: integer
+        metadata:
+          additionalProperties:
+            $ref: '#/components/schemas/AnyJSON'
+          description: "Keys are limited to the same format as tags (up to 21 characters,\
+            \ [a-z0-9], starting with [a-z]). Values can be any JSON value."
+          title: metadata
+          type: object
+        name:
+          description: Free functionality name
+          title: FunctionalityName
+          type: string
+        tags:
+          items:
+            $ref: '#/components/schemas/FunctionalityTag'
+          title: tags
+          type: array
+          uniqueItems: true
+      required:
+      - attributes
+      - class
+      - device
+      - endpoint
+      - tags
+      title: Functionality
+      type: object
+      x-links:
+      - href: "/devices/{id}"
+        rel: device
+    FunctionalityClass:
+      minLength: 2
+      pattern: "^[A-Z][A-Za-z0-9]+$"
+      title: FunctionalityClass
+      type: string
+    FunctionalityCreated:
+      description: A resource has been created. The `resource` property gives its
+        reference.
+      example:
+        code: 201
+        message: Functionality created
+        resource:
+          entity: Functionality
+          href: /functionalities/RnVuY3Rpb25hbGl0eTAwMA
+          id: RnVuY3Rpb25hbGl0eTAwMA
+      properties:
+        code:
+          example: 201
+          type: integer
+        message:
+          enum:
+          - Functionality created
+          type: string
+        resource:
+          $ref: '#/components/schemas/FunctionalityResource'
+      required:
+      - code
+      - message
+      - resource
+      title: FunctionalityCreated
+      type: object
+    FunctionalityEndpoint:
+      maximum: 255
+      minimum: 0
+      title: FunctionalityEndpoint
+      type: integer
+    FunctionalityId:
+      description: Unique identifier of the *Functionality*
+      example: RnVuY3Rpb25hbGl0eTAwMA
+      maxLength: 22
+      minLength: 22
+      pattern: "^[A-Za-z0-9-_]{22}$"
+      title: FunctionalityId
+      type: string
+    FunctionalityItem:
+      example:
+        endpoint: 20
+        metadata:
+          key: null
+        name: name
+        id: RnVuY3Rpb25hbGl0eTAwMA
+        class: class
+        device: RGV2aWNlMDAwMDAwMDAwMA
+        tags:
+        - null
+        - null
+      properties:
+        class:
+          minLength: 2
+          pattern: "^[A-Z][A-Za-z0-9]+$"
+          title: FunctionalityClass
+          type: string
+        device:
+          description: Unique identifier of the *Device*
+          example: RGV2aWNlMDAwMDAwMDAwMA
+          maxLength: 22
+          minLength: 22
+          pattern: "^[A-Za-z0-9-_]{22}$"
+          title: DeviceId
+          type: string
+        endpoint:
+          maximum: 255
+          minimum: 0
+          title: FunctionalityEndpoint
+          type: integer
+        id:
+          description: Unique identifier of the *Functionality*
+          example: RnVuY3Rpb25hbGl0eTAwMA
+          maxLength: 22
+          minLength: 22
+          pattern: "^[A-Za-z0-9-_]{22}$"
+          title: FunctionalityId
+          type: string
+        metadata:
+          additionalProperties:
+            $ref: '#/components/schemas/AnyJSON'
+          description: Subset of metadata attached to the resource selected using
+            the 'embed-metadata' parameter
+          title: MetadataSelected
+          type: object
+        name:
+          description: Free functionality name
+          title: FunctionalityName
+          type: string
+        tags:
+          items:
+            $ref: '#/components/schemas/FunctionalityTag'
+          title: tags
+          type: array
+          uniqueItems: true
+      required:
+      - class
+      - device
+      - endpoint
+      - id
+      title: FunctionalityItem
+      type: object
+      x-links:
+      - href: "/functionalities/{id}"
+        rel: full
+      - href: "/devices/{device}"
+        rel: device
+    FunctionalityName:
+      description: Free functionality name
+      title: FunctionalityName
+      type: string
+    FunctionalityNew:
+      example:
+        endpoint: 20
+        metadata:
+          key: null
+        name: name
+        class: class
+        tags:
+        - null
+        - null
+      properties:
+        class:
+          minLength: 2
+          pattern: "^[A-Z][A-Za-z0-9]+$"
+          title: FunctionalityClass
+          type: string
+        endpoint:
+          maximum: 255
+          minimum: 0
+          title: FunctionalityEndpoint
+          type: integer
+        metadata:
+          additionalProperties:
+            $ref: '#/components/schemas/AnyJSON'
+          description: "Keys are limited to the same format as tags (up to 21 characters,\
+            \ [a-z0-9], starting with [a-z]). Values can be any JSON value."
+          title: metadata
+          type: object
+        name:
+          description: Free functionality name
+          title: FunctionalityName
+          type: string
+        tags:
+          items:
+            $ref: '#/components/schemas/FunctionalityTag'
+          title: tags
+          type: array
+          uniqueItems: true
+      required:
+      - class
+      - endpoint
+      title: FunctionalityNew
+      type: object
+    FunctionalityPatch:
+      example:
+        name: name
+      properties:
+        name:
+          description: Free functionality name
+          title: FunctionalityName
+          type: string
+      title: FunctionalityPatch
+      type: object
+    FunctionalityResource:
+      example:
+        entity: Functionality
+        href: /functionalities/RnVuY3Rpb25hbGl0eTAwMA
+        id: RnVuY3Rpb25hbGl0eTAwMA
+      properties:
+        entity:
+          enum:
+          - Functionality
+          type: string
+        href:
+          minLength: 1
+          type: string
+        id:
+          description: Unique identifier of the *Functionality*
+          example: RnVuY3Rpb25hbGl0eTAwMA
+          maxLength: 22
+          minLength: 22
+          pattern: "^[A-Za-z0-9-_]{22}$"
+          title: FunctionalityId
+          type: string
+      required:
+      - entity
+      - href
+      - id
+      title: FunctionalityResource
+      type: object
+    FunctionalityTag:
+      maxLength: 21
+      minLength: 1
+      pattern: "^[a-z](?:[a-z0-9_]{0,20}|[a-z0-9_]:[a-z0-9_]{1,18}|[a-z0-9_]{2}:[a-z0-9_]{1,17}|[a-z0-9_]{3}:[a-z0-9_]{1,16}|[a-z0-9_]{4}:[a-z0-9_]{1,15})$"
+      title: FunctionalityTag
+      type: string
+    Locale:
+      description: |
+        Locale identifier (language, region). See https://tools.ietf.org/html/rfc5646 and https://www.iana.org/assignments/lang-subtags-templates/lang-subtags-templates.xhtml .
+      example: fr-FR
+      minLength: 2
+      pattern: "^[a-z]{2}[A-Za-z0-9-]*$"
+      title: locale
+      type: string
+    Metadata:
+      additionalProperties:
+        $ref: '#/components/schemas/AnyJSON'
+      description: "Keys are limited to the same format as tags (up to 21 characters,\
+        \ [a-z0-9], starting with [a-z]). Values can be any JSON value."
+      title: metadata
+      type: object
+    MetadataKey:
+      maxLength: 21
+      minLength: 1
+      pattern: "^[a-z](?:[a-z0-9_]{0,20}|[a-z0-9_]:[a-z0-9_]{1,18}|[a-z0-9_]{2}:[a-z0-9_]{1,17}|[a-z0-9_]{3}:[a-z0-9_]{1,16}|[a-z0-9_]{4}:[a-z0-9_]{1,15})$"
+      title: MetadataKey
+      type: string
+    MetadataPatch:
+      example:
+        add:
+          key: null
+        remove:
+        - null
+        - null
+      properties:
+        add:
+          additionalProperties:
+            $ref: '#/components/schemas/AnyJSON'
+          description: list of pairs key/value to add/replace
+          title: add
+          type: object
+        remove:
+          description: list of keys to remove
+          items:
+            $ref: '#/components/schemas/MetadataKey'
+          title: remove
+          type: array
+          uniqueItems: true
+      title: MetadataPatch
+      type: object
+    MetadataSelected:
+      additionalProperties:
+        $ref: '#/components/schemas/AnyJSON'
+      description: Subset of metadata attached to the resource selected using the
+        'embed-metadata' parameter
+      title: MetadataSelected
+      type: object
+    Notification:
+      example:
+        routing: https://openapi-generator.tech
+        metadata:
+          key: null
+        data: "{}"
+        name: name
+        place: 3HA6YcSCTSFX6SPPrI9PxQ
+      properties:
+        data:
+          properties: {}
+          title: data
+          type: object
+        metadata:
+          additionalProperties:
+            $ref: '#/components/schemas/AnyJSON'
+          description: "Keys are limited to the same format as tags (up to 21 characters,\
+            \ [a-z0-9], starting with [a-z]). Values can be any JSON value."
+          title: metadata
+          type: object
+        name:
+          minLength: 1
+          title: name
+          type: string
+        place:
+          description: Unique identifier of the *Place*
+          example: 3HA6YcSCTSFX6SPPrI9PxQ
+          maxLength: 22
+          minLength: 22
+          pattern: "^[A-Za-z0-9-_]{22}$"
+          title: id
+          type: string
+        routing:
+          format: uri
+          title: routing
+          type: string
+      required:
+      - name
+      - place
+      title: Notification
+      type: object
+      x-links:
+      - href: "/places/{place}"
+        rel: place
+    NotificationCreated:
+      description: A resource has been created. The `resource` property gives its
+        reference.
+      example:
+        code: 201
+        message: Notification created
+        resource:
+          entity: Notification
+          href: /notifications/InovwcCIGM5X7KvKrJ7vJw
+          id: InovwcCIGM5X7KvKrJ7vJw
+      properties:
+        code:
+          example: 201
+          type: integer
+        message:
+          enum:
+          - Notification created
+          type: string
+        resource:
+          $ref: '#/components/schemas/NotificationResource'
+      required:
+      - code
+      - message
+      - resource
+      title: NotificationCreated
+      type: object
+    NotificationId:
+      description: Unique identifier of the *Notification*
+      example: InovwcCIGM5X7KvKrJ7vJw
+      maxLength: 22
+      minLength: 22
+      pattern: "^[A-Za-z0-9-_]{22}$"
+      title: NotificationId
+      type: string
+    NotificationItem:
+      description: Notification
+      example:
+        metadata:
+          key: null
+        name: name
+        id: InovwcCIGM5X7KvKrJ7vJw
+      properties:
+        id:
+          description: Unique identifier of the *Notification*
+          example: InovwcCIGM5X7KvKrJ7vJw
+          maxLength: 22
+          minLength: 22
+          pattern: "^[A-Za-z0-9-_]{22}$"
+          title: NotificationId
+          type: string
+        metadata:
+          additionalProperties:
+            $ref: '#/components/schemas/AnyJSON'
+          description: Subset of metadata attached to the resource selected using
+            the 'embed-metadata' parameter
+          title: MetadataSelected
+          type: object
+        name:
+          title: name
+          type: string
+      required:
+      - id
+      - name
+      title: NotificationItem
+      type: object
+      x-links:
+      - href: "/notifications/{id}"
+        rel: full
+    NotificationNew:
+      example:
+        routing: https://openapi-generator.tech
+        metadata:
+          key: null
+        data: "{}"
+        name: name
+      properties:
+        data:
+          properties: {}
+          title: data
+          type: object
+        metadata:
+          additionalProperties:
+            $ref: '#/components/schemas/AnyJSON'
+          description: "Keys are limited to the same format as tags (up to 21 characters,\
+            \ [a-z0-9], starting with [a-z]). Values can be any JSON value."
+          title: metadata
+          type: object
+        name:
+          minLength: 1
+          title: name
+          type: string
+        routing:
+          format: uri
+          title: routing
+          type: string
+      required:
+      - name
+      title: NotificationNew
+      type: object
+    NotificationPatch:
+      example:
+        routing: https://openapi-generator.tech
+        data: "{}"
+        name: name
+      properties:
+        data:
+          properties: {}
+          title: data
+          type: object
+        name:
+          minLength: 1
+          title: name
+          type: string
+        routing:
+          format: uri
+          title: routing
+          type: string
+      title: NotificationPatch
+      type: object
+    NotificationResource:
+      example:
+        entity: Notification
+        href: /notifications/InovwcCIGM5X7KvKrJ7vJw
+        id: InovwcCIGM5X7KvKrJ7vJw
+      properties:
+        entity:
+          enum:
+          - Notification
+          type: string
+        href:
+          minLength: 1
+          type: string
+        id:
+          description: Unique identifier of the *Notification*
+          example: InovwcCIGM5X7KvKrJ7vJw
+          maxLength: 22
+          minLength: 22
+          pattern: "^[A-Za-z0-9-_]{22}$"
+          title: NotificationId
+          type: string
+      required:
+      - entity
+      - href
+      - id
+      title: NotificationResource
+      type: object
+    Password:
+      format: password
+      minLength: 5
+      title: newPassword
+      type: string
+    PhoneNumber:
+      description: "Phone number of the *User* in international format, for SMS notifications."
+      example: "+33177494646"
+      minLength: 6
+      pattern: "^\\+[0-9]{5,}$"
+      title: phoneNumber
+      type: string
+    Place:
+      example:
+        country: FR
+        zipCode: zipCode
+        metadata:
+          key: null
+        name: ⌂ Home
+        timeZone: Europe/Paris
+        account: t1hqYcQITCFX-AObjs_t4Q
+      properties:
+        account:
+          description: Unique identifier of the *Account*
+          example: t1hqYcQITCFX-AObjs_t4Q
+          maxLength: 22
+          minLength: 22
+          pattern: "^[A-Za-z0-9-_]{22}$"
+          title: account
+          type: string
+        country:
+          description: Country code (ISO 3166-1 alpha-2)
+          example: FR
+          maxLength: 2
+          minLength: 2
+          pattern: "^[A-Z][A-Z]$"
+          title: country
+          type: string
+        metadata:
+          additionalProperties:
+            $ref: '#/components/schemas/AnyJSON'
+          description: "Keys are limited to the same format as tags (up to 21 characters,\
+            \ [a-z0-9], starting with [a-z]). Values can be any JSON value."
+          title: metadata
+          type: object
+        name:
+          example: ⌂ Home
+          minLength: 1
+          title: name
+          type: string
+        timeZone:
+          description: A time zone name from the Time Zone Database at https://www.iana.org/time-zones
+          example: Europe/Paris
+          minLength: 2
+          pattern: "^[A-Z][A-Za-z0-9-_+]+(?:/[A-Z][A-Za-z0-9-_+]+)*$"
+          title: timeZone
+          type: string
+        zipCode:
+          description: Postal code
+          maxLength: 10
+          minLength: 0
+          pattern: "^(?:[A-Z0-9](?:[A-Z0-9][- ]?)*[A-Z0-9])?$"
+          title: zipCode
+          type: string
+      required:
+      - country
+      - name
+      - timeZone
+      - zipCode
+      title: Place
+      type: object
+    PlaceCreated:
+      description: A resource has been created. The `resource` property gives its
+        reference.
+      example:
+        code: 201
+        message: Place created
+        resource:
+          entity: Place
+          href: /places/3HA6YcSCTSFX6SPPrI9PxQ
+          id: 3HA6YcSCTSFX6SPPrI9PxQ
+      properties:
+        code:
+          example: 201
+          type: integer
+        message:
+          enum:
+          - Place created
+          type: string
+        resource:
+          $ref: '#/components/schemas/PlaceResource'
+      required:
+      - code
+      - message
+      - resource
+      title: PlaceCreated
+      type: object
+    PlaceId:
+      description: Unique identifier of the *Place*
+      example: 3HA6YcSCTSFX6SPPrI9PxQ
+      maxLength: 22
+      minLength: 22
+      pattern: "^[A-Za-z0-9-_]{22}$"
+      title: id
+      type: string
+    PlaceItem:
+      example:
+        name: name
+        id: 3HA6YcSCTSFX6SPPrI9PxQ
+      properties:
+        id:
+          description: Unique identifier of the *Place*
+          example: 3HA6YcSCTSFX6SPPrI9PxQ
+          maxLength: 22
+          minLength: 22
+          pattern: "^[A-Za-z0-9-_]{22}$"
+          title: id
+          type: string
+        name:
+          title: name
+          type: string
+      required:
+      - id
+      - name
+      title: PlaceItem
+      type: object
+      x-links:
+      - href: "/places/{id}"
+        rel: full
+    PlaceNew:
+      example:
+        country: FR
+        zipCode: zipCode
+        metadata:
+          key: null
+        name: ⌂ Home
+        timeZone: Europe/Paris
+      properties:
+        country:
+          description: Country code (ISO 3166-1 alpha-2)
+          example: FR
+          maxLength: 2
+          minLength: 2
+          pattern: "^[A-Z][A-Z]$"
+          title: country
+          type: string
+        metadata:
+          additionalProperties:
+            $ref: '#/components/schemas/AnyJSON'
+          description: "Keys are limited to the same format as tags (up to 21 characters,\
+            \ [a-z0-9], starting with [a-z]). Values can be any JSON value."
+          title: metadata
+          type: object
+        name:
+          example: ⌂ Home
+          minLength: 1
+          title: name
+          type: string
+        timeZone:
+          description: A time zone name from the Time Zone Database at https://www.iana.org/time-zones
+          example: Europe/Paris
+          minLength: 2
+          pattern: "^[A-Z][A-Za-z0-9-_+]+(?:/[A-Z][A-Za-z0-9-_+]+)*$"
+          title: timeZone
+          type: string
+        zipCode:
+          description: Postal code
+          maxLength: 10
+          minLength: 0
+          pattern: "^(?:[A-Z0-9](?:[A-Z0-9][- ]?)*[A-Z0-9])?$"
+          title: zipCode
+          type: string
+      required:
+      - country
+      - name
+      - timeZone
+      - zipCode
+      title: PlaceNew
+      type: object
+    PlacePatch:
+      example:
+        country: FR
+        zipCode: zipCode
+        name: ⌂ Home
+        timeZone: Europe/Paris
+      properties:
+        country:
+          description: Country code (ISO 3166-1 alpha-2)
+          example: FR
+          maxLength: 2
+          minLength: 2
+          pattern: "^[A-Z][A-Z]$"
+          title: country
+          type: string
+        name:
+          example: ⌂ Home
+          minLength: 1
+          title: name
+          type: string
+        timeZone:
+          description: A time zone name from the Time Zone Database at https://www.iana.org/time-zones
+          example: Europe/Paris
+          minLength: 2
+          pattern: "^[A-Z][A-Za-z0-9-_+]+(?:/[A-Z][A-Za-z0-9-_+]+)*$"
+          title: timeZone
+          type: string
+        zipCode:
+          description: Postal code
+          maxLength: 10
+          minLength: 0
+          pattern: "^(?:[A-Z0-9](?:[A-Z0-9][- ]?)*[A-Z0-9])?$"
+          title: zipCode
+          type: string
+      title: PlacePatch
+      type: object
+    PlaceResource:
+      example:
+        entity: Place
+        href: /places/3HA6YcSCTSFX6SPPrI9PxQ
+        id: 3HA6YcSCTSFX6SPPrI9PxQ
+      properties:
+        entity:
+          enum:
+          - Place
+          type: string
+        href:
+          minLength: 1
+          type: string
+        id:
+          description: Unique identifier of the *Place*
+          example: 3HA6YcSCTSFX6SPPrI9PxQ
+          maxLength: 22
+          minLength: 22
+          pattern: "^[A-Za-z0-9-_]{22}$"
+          title: id
+          type: string
+      required:
+      - entity
+      - href
+      - id
+      title: PlaceResource
+      type: object
+    Program:
+      example:
+        metadata:
+          key: null
+        code: "{}"
+        name: name
+        place: 3HA6YcSCTSFX6SPPrI9PxQ
+        enabled: true
+      properties:
+        code:
+          description: null/boolean/integer/number/string/object/array
+          title: AnyJSON
+          type: object
+          x-type: any
+        enabled:
+          title: enabled
+          type: boolean
+        metadata:
+          additionalProperties:
+            $ref: '#/components/schemas/AnyJSON'
+          description: "Keys are limited to the same format as tags (up to 21 characters,\
+            \ [a-z0-9], starting with [a-z]). Values can be any JSON value."
+          title: metadata
+          type: object
+        name:
+          minLength: 1
+          title: name
+          type: string
+        place:
+          description: Unique identifier of the *Place*
+          example: 3HA6YcSCTSFX6SPPrI9PxQ
+          maxLength: 22
+          minLength: 22
+          pattern: "^[A-Za-z0-9-_]{22}$"
+          title: id
+          type: string
+      required:
+      - code
+      - enabled
+      - name
+      title: Program
+      type: object
+      x-links:
+      - href: "/places/{place}"
+        rel: place
+    ProgramCreated:
+      description: A resource has been created. The `resource` property gives its
+        reference.
+      example:
+        code: 201
+        message: Program created
+        resource:
+          entity: Program
+          href: /programs/3_J_6ZWICc5X_KverorNvw
+          id: 3_J_6ZWICc5X_KverorNvw
+      properties:
+        code:
+          example: 201
+          type: integer
+        message:
+          enum:
+          - Program created
+          type: string
+        resource:
+          $ref: '#/components/schemas/ProgramResource'
+      required:
+      - code
+      - message
+      - resource
+      title: ProgramCreated
+      type: object
+    ProgramId:
+      description: Unique identifier of the *Program*
+      example: 3_J_6ZWICc5X_KverorNvw
+      maxLength: 22
+      minLength: 22
+      pattern: "^[A-Za-z0-9-_]{22}$"
+      title: id
+      type: string
+    ProgramItem:
+      example:
+        metadata:
+          key: null
+        name: name
+        id: 3_J_6ZWICc5X_KverorNvw
+        enabled: true
+      properties:
+        enabled:
+          title: enabled
+          type: boolean
+        id:
+          description: Unique identifier of the *Program*
+          example: 3_J_6ZWICc5X_KverorNvw
+          maxLength: 22
+          minLength: 22
+          pattern: "^[A-Za-z0-9-_]{22}$"
+          title: id
+          type: string
+        metadata:
+          additionalProperties:
+            $ref: '#/components/schemas/AnyJSON'
+          description: Subset of metadata attached to the resource selected using
+            the 'embed-metadata' parameter
+          title: MetadataSelected
+          type: object
+        name:
+          title: name
+          type: string
+      required:
+      - enabled
+      - id
+      - name
+      title: ProgramItem
+      type: object
+      x-links:
+      - href: "/programs/{id}"
+        rel: full
+    ProgramLog:
+      example:
+        actions:
+        - functionality: RnVuY3Rpb25hbGl0eTAwMA
+          result: []
+          status: 200
+        - functionality: RnVuY3Rpb25hbGl0eTAwMA
+          result: []
+          status: 200
+        when: 2000-01-23T04:56:07.000+00:00
+        errors:
+        - errors
+        - errors
+        notifications:
+        - InovwcCIGM5X7KvKrJ7vJw
+        - InovwcCIGM5X7KvKrJ7vJw
+      properties:
+        actions:
+          items:
+            $ref: '#/components/schemas/ActionResult'
+          title: actions
+          type: array
+        errors:
+          items:
+            type: string
+          title: errors
+          type: array
+        notifications:
+          items:
+            $ref: '#/components/schemas/NotificationId'
+          title: notifications
+          type: array
+          uniqueItems: true
+        when:
+          format: date-time
+          title: when
+          type: string
+      required:
+      - when
+      title: ProgramLog
+      type: object
+    ProgramNew:
+      example:
+        code: []
+        enabled: false
+        name: NOOP
+      properties:
+        code:
+          description: null/boolean/integer/number/string/object/array
+          title: AnyJSON
+          type: object
+          x-type: any
+        enabled:
+          default: true
+          type: boolean
+        metadata:
+          additionalProperties:
+            $ref: '#/components/schemas/AnyJSON'
+          description: "Keys are limited to the same format as tags (up to 21 characters,\
+            \ [a-z0-9], starting with [a-z]). Values can be any JSON value."
+          title: metadata
+          type: object
+        name:
+          minLength: 1
+          type: string
+      required:
+      - code
+      - name
+      title: ProgramNew
+      type: object
+    ProgramPatch:
+      example:
+        code: "{}"
+        name: name
+        enabled: true
+      properties:
+        code:
+          description: null/boolean/integer/number/string/object/array
+          title: AnyJSON
+          type: object
+          x-type: any
+        enabled:
+          title: enabled
+          type: boolean
+        name:
+          minLength: 1
+          title: name
+          type: string
+      title: ProgramPatch
+      type: object
+    ProgramResource:
+      example:
+        entity: Program
+        href: /programs/3_J_6ZWICc5X_KverorNvw
+        id: 3_J_6ZWICc5X_KverorNvw
+      properties:
+        entity:
+          enum:
+          - Program
+          type: string
+        href:
+          minLength: 1
+          type: string
+        id:
+          description: Unique identifier of the *Program*
+          example: 3_J_6ZWICc5X_KverorNvw
+          maxLength: 22
+          minLength: 22
+          pattern: "^[A-Za-z0-9-_]{22}$"
+          title: id
+          type: string
+      required:
+      - entity
+      - href
+      - id
+      title: ProgramResource
+      type: object
+    ResourceRef:
+      example:
+        href: href
+        id: id
+        entity: Device
+      properties:
+        entity:
+          enum:
+          - Device
+          - Functionality
+          - Notification
+          - Place
+          - Program
+          - User
+          - Account
+          - AccountsBase
+          title: entity
+          type: string
+        href:
+          minLength: 1
+          title: href
+          type: string
+        id:
+          minLength: 1
+          title: id
+          type: string
+      required:
+      - entity
+      - href
+      - id
+      title: ResourceRef
+      type: object
+    Tag:
+      maxLength: 21
+      minLength: 1
+      pattern: "^[a-z](?:[a-z0-9_]{0,20}|[a-z0-9_]:[a-z0-9_]{1,18}|[a-z0-9_]{2}:[a-z0-9_]{1,17}|[a-z0-9_]{3}:[a-z0-9_]{1,16}|[a-z0-9_]{4}:[a-z0-9_]{1,15})$"
+      title: Tag
+      type: string
+    Tags:
+      items:
+        $ref: '#/components/schemas/Tag'
+      type: array
+      uniqueItems: true
+    TagsPatch:
+      example:
+        add:
+        - null
+        - null
+        remove:
+        - null
+        - null
+      properties:
+        add:
+          description: list of tags to add
+          items:
+            $ref: '#/components/schemas/Tag'
+          title: add
+          type: array
+          uniqueItems: true
+        remove:
+          description: list of tags to remove
+          items:
+            $ref: '#/components/schemas/Tag'
+          title: remove
+          type: array
+          uniqueItems: true
+      title: TagsPatch
+      type: object
+    TimeZone:
+      description: A time zone name from the Time Zone Database at https://www.iana.org/time-zones
+      example: Europe/Paris
+      minLength: 2
+      pattern: "^[A-Z][A-Za-z0-9-_+]+(?:/[A-Z][A-Za-z0-9-_+]+)*$"
+      title: timeZone
+      type: string
+    TokenId:
+      example: dfSDdRcsd
+      minLength: 1
+      title: id
+      type: string
+    User:
+      example:
+        canLogin: false
+        metadata:
+          key: null
+        phoneNumber: "+33177494646"
+        name: name
+        locale: fr-FR
+        account: t1hqYcQITCFX-AObjs_t4Q
+        email: email
+      properties:
+        account:
+          description: Unique identifier of the *Account*
+          example: t1hqYcQITCFX-AObjs_t4Q
+          maxLength: 22
+          minLength: 22
+          pattern: "^[A-Za-z0-9-_]{22}$"
+          title: account
+          type: string
+        canLogin:
+          default: false
+          description: true if the user owning the account (can get tokens with /auth/login)
+          example: false
+          readOnly: true
+          title: canLogin
+          type: boolean
+        email:
+          format: email
+          minLength: 6
+          title: email
+          type: string
+        locale:
+          description: |
+            Locale identifier (language, region). See https://tools.ietf.org/html/rfc5646 and https://www.iana.org/assignments/lang-subtags-templates/lang-subtags-templates.xhtml .
+          example: fr-FR
+          minLength: 2
+          pattern: "^[a-z]{2}[A-Za-z0-9-]*$"
+          title: locale
+          type: string
+        metadata:
+          additionalProperties:
+            $ref: '#/components/schemas/AnyJSON'
+          description: "Keys are limited to the same format as tags (up to 21 characters,\
+            \ [a-z0-9], starting with [a-z]). Values can be any JSON value."
+          title: metadata
+          type: object
+        name:
+          minLength: 1
+          title: name
+          type: string
+        phoneNumber:
+          description: "Phone number of the *User* in international format, for SMS\
+            \ notifications."
+          example: "+33177494646"
+          minLength: 6
+          pattern: "^\\+[0-9]{5,}$"
+          title: phoneNumber
+          type: string
+      required:
+      - canLogin
+      - email
+      - locale
+      - name
+      title: User
+      type: object
+    UserCreated:
+      description: A resource has been created. The `resource` property gives its
+        reference.
+      example:
+        code: 201
+        message: User created
+        resource:
+          entity: User
+          href: /users/RGV2aWNlMDAwMDAwMDAwMZ
+          id: RGV2aWNlMDAwMDAwMDAwMZ
+      properties:
+        code:
+          example: 201
+          type: integer
+        message:
+          enum:
+          - User created
+          type: string
+        resource:
+          $ref: '#/components/schemas/UserResource'
+      required:
+      - code
+      - message
+      - resource
+      title: UserCreated
+      type: object
+    UserEmail:
+      format: email
+      minLength: 6
+      title: email
+      type: string
+    UserId:
+      description: Unique identifier of the *User*
+      example: RGV2aWNlMDAwMDAwMDAwMZ
+      maxLength: 22
+      minLength: 22
+      pattern: "^[A-Za-z0-9-_]{22}$"
+      title: id
+      type: string
+    UserItem:
+      example:
+        canLogin: false
+        metadata:
+          key: null
+        phoneNumber: "+33177494646"
+        name: name
+        id: RGV2aWNlMDAwMDAwMDAwMZ
+        locale: fr-FR
+        email: email
+      properties:
+        canLogin:
+          default: false
+          description: true if the user owning the account (can get tokens with /auth/login)
+          example: false
+          readOnly: true
+          title: canLogin
+          type: boolean
+        email:
+          format: email
+          minLength: 6
+          title: email
+          type: string
+        id:
+          description: Unique identifier of the *User*
+          example: RGV2aWNlMDAwMDAwMDAwMZ
+          maxLength: 22
+          minLength: 22
+          pattern: "^[A-Za-z0-9-_]{22}$"
+          title: id
+          type: string
+        locale:
+          description: |
+            Locale identifier (language, region). See https://tools.ietf.org/html/rfc5646 and https://www.iana.org/assignments/lang-subtags-templates/lang-subtags-templates.xhtml .
+          example: fr-FR
+          minLength: 2
+          pattern: "^[a-z]{2}[A-Za-z0-9-]*$"
+          title: locale
+          type: string
+        metadata:
+          additionalProperties:
+            $ref: '#/components/schemas/AnyJSON'
+          description: Subset of metadata attached to the resource selected using
+            the 'embed-metadata' parameter
+          title: MetadataSelected
+          type: object
+        name:
+          minLength: 1
+          title: name
+          type: string
+        phoneNumber:
+          description: "Phone number of the *User* in international format, for SMS\
+            \ notifications."
+          example: "+33177494646"
+          minLength: 6
+          pattern: "^\\+[0-9]{5,}$"
+          title: phoneNumber
+          type: string
+      required:
+      - email
+      - id
+      - locale
+      - name
+      title: UserItem
+      type: object
+      x-links:
+      - href: "/users/{id}"
+        rel: full
+    UserMe:
+      example:
+        metadata:
+          key: null
+        phoneNumber: "+33177494646"
+        name: name
+        id: RGV2aWNlMDAwMDAwMDAwMZ
+        locale: fr-FR
+        login: login
+        email: email
+      properties:
+        email:
+          format: email
+          minLength: 6
+          title: email
+          type: string
+        id:
+          description: Unique identifier of the *User*
+          example: RGV2aWNlMDAwMDAwMDAwMZ
+          maxLength: 22
+          minLength: 22
+          pattern: "^[A-Za-z0-9-_]{22}$"
+          title: id
+          type: string
+        locale:
+          description: |
+            Locale identifier (language, region). See https://tools.ietf.org/html/rfc5646 and https://www.iana.org/assignments/lang-subtags-templates/lang-subtags-templates.xhtml .
+          example: fr-FR
+          minLength: 2
+          pattern: "^[a-z]{2}[A-Za-z0-9-]*$"
+          title: locale
+          type: string
+        login:
+          minLength: 1
+          title: login
+          type: string
+        metadata:
+          additionalProperties:
+            $ref: '#/components/schemas/AnyJSON'
+          description: "Keys are limited to the same format as tags (up to 21 characters,\
+            \ [a-z0-9], starting with [a-z]). Values can be any JSON value."
+          title: metadata
+          type: object
+        name:
+          minLength: 1
+          title: name
+          type: string
+        phoneNumber:
+          description: "Phone number of the *User* in international format, for SMS\
+            \ notifications."
+          example: "+33177494646"
+          minLength: 6
+          pattern: "^\\+[0-9]{5,}$"
+          title: phoneNumber
+          type: string
+      required:
+      - email
+      - id
+      - locale
+      - name
+      title: UserMe
+      type: object
+      x-links:
+      - href: "/account/users/{id}"
+        rel: full
+    UserMePatch:
+      example:
+        locale: fr-FR
+      properties:
+        locale:
+          description: |
+            Locale identifier (language, region). See https://tools.ietf.org/html/rfc5646 and https://www.iana.org/assignments/lang-subtags-templates/lang-subtags-templates.xhtml .
+          example: fr-FR
+          minLength: 2
+          pattern: "^[a-z]{2}[A-Za-z0-9-]*$"
+          title: locale
+          type: string
+      title: UserMePatch
+      type: object
+    UserNew:
+      example:
+        metadata:
+          key: null
+        phoneNumber: "+33177494646"
+        name: name
+        locale: fr-FR
+        email: email
+      properties:
+        email:
+          format: email
+          minLength: 6
+          title: email
+          type: string
+        locale:
+          description: |
+            Locale identifier (language, region). See https://tools.ietf.org/html/rfc5646 and https://www.iana.org/assignments/lang-subtags-templates/lang-subtags-templates.xhtml .
+          example: fr-FR
+          minLength: 2
+          pattern: "^[a-z]{2}[A-Za-z0-9-]*$"
+          title: locale
+          type: string
+        metadata:
+          additionalProperties:
+            $ref: '#/components/schemas/AnyJSON'
+          description: "Keys are limited to the same format as tags (up to 21 characters,\
+            \ [a-z0-9], starting with [a-z]). Values can be any JSON value."
+          title: metadata
+          type: object
+        name:
+          minLength: 1
+          title: name
+          type: string
+        phoneNumber:
+          description: "Phone number of the *User* in international format, for SMS\
+            \ notifications."
+          example: "+33177494646"
+          minLength: 6
+          pattern: "^\\+[0-9]{5,}$"
+          title: phoneNumber
+          type: string
+      required:
+      - email
+      - locale
+      - name
+      title: UserNew
+      type: object
+    UserPatch:
+      example:
+        phoneNumber: "+33177494646"
+        name: name
+        locale: fr-FR
+        email: email
+      properties:
+        email:
+          format: email
+          minLength: 6
+          title: email
+          type: string
+        locale:
+          description: |
+            Locale identifier (language, region). See https://tools.ietf.org/html/rfc5646 and https://www.iana.org/assignments/lang-subtags-templates/lang-subtags-templates.xhtml .
+          example: fr-FR
+          minLength: 2
+          pattern: "^[a-z]{2}[A-Za-z0-9-]*$"
+          title: locale
+          type: string
+        name:
+          minLength: 1
+          title: name
+          type: string
+        phoneNumber:
+          description: "Phone number of the *User* in international format, for SMS\
+            \ notifications."
+          example: "+33177494646"
+          minLength: 6
+          pattern: "^\\+[0-9]{5,}$"
+          title: phoneNumber
+          type: string
+      title: UserPatch
+      type: object
+    UserResource:
+      example:
+        entity: User
+        href: /users/RGV2aWNlMDAwMDAwMDAwMZ
+        id: RGV2aWNlMDAwMDAwMDAwMZ
+      properties:
+        entity:
+          enum:
+          - User
+          type: string
+        href:
+          minLength: 1
+          type: string
+        id:
+          description: Unique identifier of the *User*
+          example: RGV2aWNlMDAwMDAwMDAwMZ
+          maxLength: 22
+          minLength: 22
+          pattern: "^[A-Za-z0-9-_]{22}$"
+          title: id
+          type: string
+      required:
+      - entity
+      - href
+      - id
+      title: UserResource
+      type: object
+    UserTokenItem:
+      description: Token for User API access
+      example:
+        lastUse: 2000-01-23T04:56:07.000+00:00
+        places:
+        - name: name
+          id: 3HA6YcSCTSFX6SPPrI9PxQ
+        - name: name
+          id: 3HA6YcSCTSFX6SPPrI9PxQ
+        refreshTokenExpires: 2000-01-23T04:56:07.000+00:00
+        appName: Home Eopath
+        self: true
+        id: dfSDdRcsd
+        user:
+          canLogin: false
+          metadata:
+            key: null
+          phoneNumber: "+33177494646"
+          name: name
+          id: RGV2aWNlMDAwMDAwMDAwMZ
+          locale: fr-FR
+          email: email
+      properties:
+        appName:
+          description: Application name
+          example: Home Eopath
+          title: appName
+          type: string
+        id:
+          example: dfSDdRcsd
+          minLength: 1
+          title: id
+          type: string
+        lastUse:
+          description: "Time of last use of the token to access the API. Updated at\
+            \ most every 15 minutes. If absent, the token has never been used."
+          format: date-time
+          title: lastUse
+          type: string
+        places:
+          description: "List of Places to which the User has access. If absent, it\
+            \ means any Place of the account are allowed."
+          items:
+            $ref: '#/components/schemas/PlaceItem'
+          title: places
+          type: array
+          uniqueItems: true
+        refreshTokenExpires:
+          description: "If absent, infinite validity."
+          format: date-time
+          title: refreshTokenExpires
+          type: string
+        self:
+          description: True if this token is the one used for this API request
+          title: self
+          type: boolean
+        user:
+          $ref: '#/components/schemas/UserItem'
+      required:
+      - appName
+      - id
+      - user
+      title: UserTokenItem
+      type: object
+    ZipCode:
+      description: Postal code
+      maxLength: 10
+      minLength: 0
+      pattern: "^(?:[A-Z0-9](?:[A-Z0-9][- ]?)*[A-Z0-9])?$"
+      title: zipCode
+      type: string
+    ErrorSubEntity_resource_parent:
+      description: Container resource.
+      example:
+        id: id
+        entity: Place
+      properties:
+        entity:
+          enum:
+          - Place
+          - Functionality
+          title: entity
+          type: string
+        id:
+          minLength: 1
+          title: id
+          type: string
+      required:
+      - entity
+      - id
+      title: ErrorSubEntity_resource_parent
+      type: object
+    ErrorSubEntity_resource:
+      example:
+        parent:
+          id: id
+          entity: Place
+        href: href
+        id: id
+        entity: Action
+      properties:
+        entity:
+          enum:
+          - Action
+          - Attribute
+          - Bus
+          title: entity
+          type: string
+        href:
+          minLength: 1
+          title: href
+          type: string
+        id:
+          minLength: 1
+          title: id
+          type: string
+        parent:
+          $ref: '#/components/schemas/ErrorSubEntity_resource_parent'
+      required:
+      - entity
+      - href
+      - id
+      title: ErrorSubEntity_resource
+      type: object
+  securitySchemes:
+    Token in Access-Token header:
+      description: Token in Access-Token header
+      in: header
+      name: Access-Token
+      type: apiKey
+      x-apikeyInfoFunc: openapi_server.controllers.security_controller.info_from_Token
+        in Access-Token header
+    Token in query:
+      description: Token in query
+      in: query
+      name: token
+      type: apiKey
+      x-apikeyInfoFunc: openapi_server.controllers.security_controller.info_from_Token
+        in query
+x-original-swagger-version: "2.0"

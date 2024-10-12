@@ -1,0 +1,823 @@
+openapi: 3.0.3
+info:
+  contact:
+    email: color-name-api@elastiq.click
+    name: meodai
+    url: https://elastiq.ch/
+  description: An API that provides names for colors based on their hex value
+  license:
+    name: MIT
+    url: https://github.com/meodai/color-name-api/blob/main/LICENSE
+  title: Color Name API
+  version: 1.0.0
+  x-apisguru-categories:
+  - developer_tools
+  x-logo:
+    url: https://github.com/meodai/color-name-api/raw/main/logo.png
+  x-origin:
+  - format: openapi
+    url: https://raw.githubusercontent.com/meodai/color-name-api/main/color-names-v1-OpenAPI.yml
+    version: "3.0"
+  x-providerName: color.pizza
+servers:
+- url: https://api.color.pizza/v1/
+paths:
+  /:
+    get:
+      operationId: root_get
+      parameters:
+      - description: The name of the color name list to use
+        explode: false
+        in: query
+        name: list
+        required: false
+        schema:
+          $ref: '#/components/schemas/possibleLists'
+        style: form
+      - description: The hex values of the colors to retrieve without '#'
+        explode: true
+        in: query
+        name: values
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Allow duplicate names or not
+        explode: true
+        in: query
+        name: noduplicates
+        required: false
+        schema:
+          type: boolean
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/__get_200_response'
+          description: OK
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: NOT FOUND
+      summary: Get all colors of the default color name list
+      x-openapi-router-controller: openapi_server.controllers.default_controller
+  /lists/:
+    get:
+      operationId: lists_get
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/_lists__get_200_response'
+          description: OK
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: NOT FOUND
+      summary: Get all colors of the default color name list
+      x-openapi-router-controller: openapi_server.controllers.default_controller
+  /names/:
+    get:
+      operationId: names_get
+      parameters:
+      - description: The name of the color to retrieve (min 3 characters)
+        explode: false
+        in: query
+        name: name
+        required: true
+        schema:
+          type: string
+        style: form
+      - description: The name of the color name list to use
+        explode: false
+        in: query
+        name: list
+        required: false
+        schema:
+          $ref: '#/components/schemas/possibleLists'
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/__get_200_response'
+          description: OK
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: NOT FOUND
+      summary: Get all colors of the default color name list
+      x-openapi-router-controller: openapi_server.controllers.default_controller
+  /swatch/:
+    get:
+      operationId: swatch_get
+      parameters:
+      - description: The hex value of the color to retrieve without '#'
+        explode: false
+        in: query
+        name: color
+        required: true
+        schema:
+          type: string
+        style: form
+      - description: The name of the color
+        explode: false
+        in: query
+        name: name
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            image/svg+xml:
+              schema:
+                type: string
+          description: OK
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: NOT FOUND
+      summary: Generate a color swatch for any color
+      x-openapi-router-controller: openapi_server.controllers.default_controller
+components:
+  schemas:
+    color:
+      example:
+        hsl:
+          s: 5.962133916683182
+          h: 6.027456183070403
+          l: 1.4658129805029452
+        luminance: 9.301444243932576
+        distance: 0.8008281904610115
+        svg: svg
+        requestedHex: requestedHex
+        svgNamed: svgNamed
+        name: name
+        hex: hex
+        lab:
+          a: 5.637376656633329
+          b: 2.3021358869347655
+          l: 7.061401241503109
+        rgb:
+          b: 2
+          r: 7
+          g: 4
+        swatchImg: "{}"
+        luminanceWCAG: 3.616076749251911
+      properties:
+        distance:
+          title: distance
+          type: number
+        hex:
+          title: hex
+          type: string
+        hsl:
+          $ref: '#/components/schemas/color_hsl'
+        lab:
+          $ref: '#/components/schemas/color_lab'
+        luminance:
+          title: luminance
+          type: number
+        luminanceWCAG:
+          title: luminanceWCAG
+          type: number
+        name:
+          title: name
+          type: string
+        requestedHex:
+          title: requestedHex
+          type: string
+        rgb:
+          $ref: '#/components/schemas/color_rgb'
+        svg:
+          title: svg
+          type: string
+        svgNamed:
+          title: svgNamed
+          type: string
+        swatchImg:
+          title: swatchImg
+          type: object
+      title: color
+      type: object
+    colorBase:
+      properties:
+        hex:
+          type: string
+        hsl:
+          $ref: '#/components/schemas/color_hsl'
+        lab:
+          $ref: '#/components/schemas/color_lab'
+        luminance:
+          type: number
+        luminanceWCAG:
+          type: number
+        name:
+          type: string
+        rgb:
+          $ref: '#/components/schemas/color_rgb'
+        swatchImg:
+          $ref: '#/components/schemas/colorBase_swatchImg'
+      type: object
+    error:
+      example:
+        message: message
+        status: status
+      properties:
+        message:
+          title: message
+          type: string
+        status:
+          title: status
+          type: string
+      title: error
+      type: object
+    listDescription:
+      example:
+        license: license
+        description: description
+        source: source
+        title: title
+        colorCount: 0
+        key: key
+        url: url
+      properties:
+        colorCount:
+          title: colorCount
+          type: integer
+        description:
+          title: description
+          type: string
+        key:
+          title: key
+          type: string
+        license:
+          title: license
+          type: string
+        source:
+          title: source
+          type: string
+        title:
+          title: title
+          type: string
+        url:
+          title: url
+          type: string
+      title: listDescription
+      type: object
+    possibleLists:
+      enum:
+      - default
+      - bestOf
+      - wikipedia
+      - french
+      - ridgway
+      - risograph
+      - basic
+      - chineseTraditional
+      - html
+      - japaneseTraditional
+      - leCorbusier
+      - nbsIscc
+      - ntc
+      - osxcrayons
+      - ral
+      - sanzoWadaI
+      - thesaurus
+      - werner
+      - windows
+      - x11
+      - xkcd
+      title: possibleLists
+      type: string
+    __get_200_response:
+      example:
+        paletteTitle: paletteTitle
+        colors:
+        - hsl:
+            s: 5.962133916683182
+            h: 6.027456183070403
+            l: 1.4658129805029452
+          luminance: 9.301444243932576
+          distance: 0.8008281904610115
+          svg: svg
+          requestedHex: requestedHex
+          svgNamed: svgNamed
+          name: name
+          hex: hex
+          lab:
+            a: 5.637376656633329
+            b: 2.3021358869347655
+            l: 7.061401241503109
+          rgb:
+            b: 2
+            r: 7
+            g: 4
+          swatchImg: "{}"
+          luminanceWCAG: 3.616076749251911
+        - hsl:
+            s: 5.962133916683182
+            h: 6.027456183070403
+            l: 1.4658129805029452
+          luminance: 9.301444243932576
+          distance: 0.8008281904610115
+          svg: svg
+          requestedHex: requestedHex
+          svgNamed: svgNamed
+          name: name
+          hex: hex
+          lab:
+            a: 5.637376656633329
+            b: 2.3021358869347655
+            l: 7.061401241503109
+          rgb:
+            b: 2
+            r: 7
+            g: 4
+          swatchImg: "{}"
+          luminanceWCAG: 3.616076749251911
+      properties:
+        colors:
+          items:
+            $ref: '#/components/schemas/color'
+          title: colors
+          type: array
+        paletteTitle:
+          title: paletteTitle
+          type: string
+      title: __get_200_response
+      type: object
+    _lists__get_200_response_listDescriptions:
+      example:
+        werner:
+          license: license
+          description: description
+          source: source
+          title: title
+          colorCount: 0
+          key: key
+          url: url
+        chineseTraditional:
+          license: license
+          description: description
+          source: source
+          title: title
+          colorCount: 0
+          key: key
+          url: url
+        thesaurus:
+          license: license
+          description: description
+          source: source
+          title: title
+          colorCount: 0
+          key: key
+          url: url
+        leCorbusier:
+          license: license
+          description: description
+          source: source
+          title: title
+          colorCount: 0
+          key: key
+          url: url
+        sanzoWadaI:
+          license: license
+          description: description
+          source: source
+          title: title
+          colorCount: 0
+          key: key
+          url: url
+        windows:
+          license: license
+          description: description
+          source: source
+          title: title
+          colorCount: 0
+          key: key
+          url: url
+        xkcd:
+          license: license
+          description: description
+          source: source
+          title: title
+          colorCount: 0
+          key: key
+          url: url
+        ridgway:
+          license: license
+          description: description
+          source: source
+          title: title
+          colorCount: 0
+          key: key
+          url: url
+        default:
+          license: license
+          description: description
+          source: source
+          title: title
+          colorCount: 0
+          key: key
+          url: url
+        japaneseTraditional:
+          license: license
+          description: description
+          source: source
+          title: title
+          colorCount: 0
+          key: key
+          url: url
+        nbsIscc:
+          license: license
+          description: description
+          source: source
+          title: title
+          colorCount: 0
+          key: key
+          url: url
+        risograph:
+          license: license
+          description: description
+          source: source
+          title: title
+          colorCount: 0
+          key: key
+          url: url
+        x11:
+          license: license
+          description: description
+          source: source
+          title: title
+          colorCount: 0
+          key: key
+          url: url
+        html:
+          license: license
+          description: description
+          source: source
+          title: title
+          colorCount: 0
+          key: key
+          url: url
+        osxcrayons:
+          license: license
+          description: description
+          source: source
+          title: title
+          colorCount: 0
+          key: key
+          url: url
+        bestOf:
+          license: license
+          description: description
+          source: source
+          title: title
+          colorCount: 0
+          key: key
+          url: url
+        wikipedia:
+          license: license
+          description: description
+          source: source
+          title: title
+          colorCount: 0
+          key: key
+          url: url
+        basic:
+          license: license
+          description: description
+          source: source
+          title: title
+          colorCount: 0
+          key: key
+          url: url
+        ntc:
+          license: license
+          description: description
+          source: source
+          title: title
+          colorCount: 0
+          key: key
+          url: url
+        ral:
+          license: license
+          description: description
+          source: source
+          title: title
+          colorCount: 0
+          key: key
+          url: url
+        french:
+          license: license
+          description: description
+          source: source
+          title: title
+          colorCount: 0
+          key: key
+          url: url
+      properties:
+        basic:
+          $ref: '#/components/schemas/listDescription'
+        bestOf:
+          $ref: '#/components/schemas/listDescription'
+        chineseTraditional:
+          $ref: '#/components/schemas/listDescription'
+        default:
+          $ref: '#/components/schemas/listDescription'
+        french:
+          $ref: '#/components/schemas/listDescription'
+        html:
+          $ref: '#/components/schemas/listDescription'
+        japaneseTraditional:
+          $ref: '#/components/schemas/listDescription'
+        leCorbusier:
+          $ref: '#/components/schemas/listDescription'
+        nbsIscc:
+          $ref: '#/components/schemas/listDescription'
+        ntc:
+          $ref: '#/components/schemas/listDescription'
+        osxcrayons:
+          $ref: '#/components/schemas/listDescription'
+        ral:
+          $ref: '#/components/schemas/listDescription'
+        ridgway:
+          $ref: '#/components/schemas/listDescription'
+        risograph:
+          $ref: '#/components/schemas/listDescription'
+        sanzoWadaI:
+          $ref: '#/components/schemas/listDescription'
+        thesaurus:
+          $ref: '#/components/schemas/listDescription'
+        werner:
+          $ref: '#/components/schemas/listDescription'
+        wikipedia:
+          $ref: '#/components/schemas/listDescription'
+        windows:
+          $ref: '#/components/schemas/listDescription'
+        x11:
+          $ref: '#/components/schemas/listDescription'
+        xkcd:
+          $ref: '#/components/schemas/listDescription'
+      title: _lists__get_200_response_listDescriptions
+      type: object
+    _lists__get_200_response:
+      example:
+        listDescriptions:
+          werner:
+            license: license
+            description: description
+            source: source
+            title: title
+            colorCount: 0
+            key: key
+            url: url
+          chineseTraditional:
+            license: license
+            description: description
+            source: source
+            title: title
+            colorCount: 0
+            key: key
+            url: url
+          thesaurus:
+            license: license
+            description: description
+            source: source
+            title: title
+            colorCount: 0
+            key: key
+            url: url
+          leCorbusier:
+            license: license
+            description: description
+            source: source
+            title: title
+            colorCount: 0
+            key: key
+            url: url
+          sanzoWadaI:
+            license: license
+            description: description
+            source: source
+            title: title
+            colorCount: 0
+            key: key
+            url: url
+          windows:
+            license: license
+            description: description
+            source: source
+            title: title
+            colorCount: 0
+            key: key
+            url: url
+          xkcd:
+            license: license
+            description: description
+            source: source
+            title: title
+            colorCount: 0
+            key: key
+            url: url
+          ridgway:
+            license: license
+            description: description
+            source: source
+            title: title
+            colorCount: 0
+            key: key
+            url: url
+          default:
+            license: license
+            description: description
+            source: source
+            title: title
+            colorCount: 0
+            key: key
+            url: url
+          japaneseTraditional:
+            license: license
+            description: description
+            source: source
+            title: title
+            colorCount: 0
+            key: key
+            url: url
+          nbsIscc:
+            license: license
+            description: description
+            source: source
+            title: title
+            colorCount: 0
+            key: key
+            url: url
+          risograph:
+            license: license
+            description: description
+            source: source
+            title: title
+            colorCount: 0
+            key: key
+            url: url
+          x11:
+            license: license
+            description: description
+            source: source
+            title: title
+            colorCount: 0
+            key: key
+            url: url
+          html:
+            license: license
+            description: description
+            source: source
+            title: title
+            colorCount: 0
+            key: key
+            url: url
+          osxcrayons:
+            license: license
+            description: description
+            source: source
+            title: title
+            colorCount: 0
+            key: key
+            url: url
+          bestOf:
+            license: license
+            description: description
+            source: source
+            title: title
+            colorCount: 0
+            key: key
+            url: url
+          wikipedia:
+            license: license
+            description: description
+            source: source
+            title: title
+            colorCount: 0
+            key: key
+            url: url
+          basic:
+            license: license
+            description: description
+            source: source
+            title: title
+            colorCount: 0
+            key: key
+            url: url
+          ntc:
+            license: license
+            description: description
+            source: source
+            title: title
+            colorCount: 0
+            key: key
+            url: url
+          ral:
+            license: license
+            description: description
+            source: source
+            title: title
+            colorCount: 0
+            key: key
+            url: url
+          french:
+            license: license
+            description: description
+            source: source
+            title: title
+            colorCount: 0
+            key: key
+            url: url
+        localAvailableColorNameLists:
+        - localAvailableColorNameLists
+        - localAvailableColorNameLists
+      properties:
+        listDescriptions:
+          $ref: '#/components/schemas/_lists__get_200_response_listDescriptions'
+        localAvailableColorNameLists:
+          items:
+            type: string
+          title: localAvailableColorNameLists
+          type: array
+      title: _lists__get_200_response
+      type: object
+    color_hsl:
+      example:
+        s: 5.962133916683182
+        h: 6.027456183070403
+        l: 1.4658129805029452
+      properties:
+        h:
+          title: h
+          type: number
+        l:
+          title: l
+          type: number
+        s:
+          title: s
+          type: number
+      title: color_hsl
+      type: object
+    color_lab:
+      example:
+        a: 5.637376656633329
+        b: 2.3021358869347655
+        l: 7.061401241503109
+      properties:
+        a:
+          title: a
+          type: number
+        b:
+          title: b
+          type: number
+        l:
+          title: l
+          type: number
+      title: color_lab
+      type: object
+    color_rgb:
+      example:
+        b: 2
+        r: 7
+        g: 4
+      properties:
+        b:
+          title: b
+          type: integer
+        g:
+          title: g
+          type: integer
+        r:
+          title: r
+          type: integer
+      title: color_rgb
+      type: object
+    colorBase_swatchImg:
+      properties:
+        svg:
+          title: svg
+          type: string
+        svgNamed:
+          title: svgNamed
+          type: string
+      title: colorBase_swatchImg
+      type: object

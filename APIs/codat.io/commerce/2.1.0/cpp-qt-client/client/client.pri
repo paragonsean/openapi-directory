@@ -1,0 +1,97 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAI0.h \
+    $${PWD}/OAIAddressType.h \
+    $${PWD}/OAICompanyInfo.h \
+    $${PWD}/OAICustomer.h \
+    $${PWD}/OAICustomerRef.h \
+    $${PWD}/OAICustomer_allOf_defaultCurrency.h \
+    $${PWD}/OAIDispute.h \
+    $${PWD}/OAILocationRef.h \
+    $${PWD}/OAILocations.h \
+    $${PWD}/OAIOrder.h \
+    $${PWD}/OAIOrderLineItem.h \
+    $${PWD}/OAIOrder_allOf_currency.h \
+    $${PWD}/OAIPayment.h \
+    $${PWD}/OAIPaymentMethod.h \
+    $${PWD}/OAIPaymentMethodRef.h \
+    $${PWD}/OAIPaymentMethodStatus.h \
+    $${PWD}/OAIPhoneNumberType.h \
+    $${PWD}/OAIProduct.h \
+    $${PWD}/OAIProductCategory.h \
+    $${PWD}/OAIProductRef.h \
+    $${PWD}/OAIProductVariantRef.h \
+    $${PWD}/OAIServiceCharge.h \
+    $${PWD}/OAITaxComponent.h \
+    $${PWD}/OAITaxComponentAllocation.h \
+    $${PWD}/OAITaxComponentRef.h \
+    $${PWD}/OAITransaction.h \
+    $${PWD}/OAITransactionType.h \
+    $${PWD}/OAIWeblink.h \
+# APIs
+    $${PWD}/OAICompanyInfoApi.h \
+    $${PWD}/OAICustomersApi.h \
+    $${PWD}/OAIDisputesApi.h \
+    $${PWD}/OAILocationsApi.h \
+    $${PWD}/OAIOrdersApi.h \
+    $${PWD}/OAIPaymentsApi.h \
+    $${PWD}/OAIProductsApi.h \
+    $${PWD}/OAITaxComponentsApi.h \
+    $${PWD}/OAITransactionsApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAI0.cpp \
+    $${PWD}/OAIAddressType.cpp \
+    $${PWD}/OAICompanyInfo.cpp \
+    $${PWD}/OAICustomer.cpp \
+    $${PWD}/OAICustomerRef.cpp \
+    $${PWD}/OAICustomer_allOf_defaultCurrency.cpp \
+    $${PWD}/OAIDispute.cpp \
+    $${PWD}/OAILocationRef.cpp \
+    $${PWD}/OAILocations.cpp \
+    $${PWD}/OAIOrder.cpp \
+    $${PWD}/OAIOrderLineItem.cpp \
+    $${PWD}/OAIOrder_allOf_currency.cpp \
+    $${PWD}/OAIPayment.cpp \
+    $${PWD}/OAIPaymentMethod.cpp \
+    $${PWD}/OAIPaymentMethodRef.cpp \
+    $${PWD}/OAIPaymentMethodStatus.cpp \
+    $${PWD}/OAIPhoneNumberType.cpp \
+    $${PWD}/OAIProduct.cpp \
+    $${PWD}/OAIProductCategory.cpp \
+    $${PWD}/OAIProductRef.cpp \
+    $${PWD}/OAIProductVariantRef.cpp \
+    $${PWD}/OAIServiceCharge.cpp \
+    $${PWD}/OAITaxComponent.cpp \
+    $${PWD}/OAITaxComponentAllocation.cpp \
+    $${PWD}/OAITaxComponentRef.cpp \
+    $${PWD}/OAITransaction.cpp \
+    $${PWD}/OAITransactionType.cpp \
+    $${PWD}/OAIWeblink.cpp \
+# APIs
+    $${PWD}/OAICompanyInfoApi.cpp \
+    $${PWD}/OAICustomersApi.cpp \
+    $${PWD}/OAIDisputesApi.cpp \
+    $${PWD}/OAILocationsApi.cpp \
+    $${PWD}/OAIOrdersApi.cpp \
+    $${PWD}/OAIPaymentsApi.cpp \
+    $${PWD}/OAIProductsApi.cpp \
+    $${PWD}/OAITaxComponentsApi.cpp \
+    $${PWD}/OAITransactionsApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

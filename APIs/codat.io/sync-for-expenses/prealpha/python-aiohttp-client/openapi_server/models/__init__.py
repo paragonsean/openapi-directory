@@ -1,0 +1,20 @@
+# coding: utf-8
+
+# import models into model package
+from openapi_server.models.account_mapping_info import AccountMappingInfo
+from openapi_server.models.attachment import Attachment
+from openapi_server.models.codat_error_message import CodatErrorMessage
+from openapi_server.models.codat_error_message_validation import CodatErrorMessageValidation
+from openapi_server.models.codat_error_message_validation_errors_inner import CodatErrorMessageValidationErrorsInner
+from openapi_server.models.company_configuration import CompanyConfiguration
+from openapi_server.models.company_sync_status import CompanySyncStatus
+from openapi_server.models.data_connection import DataConnection
+from openapi_server.models.data_connection_error import DataConnectionError
+from openapi_server.models.data_connection_status import DataConnectionStatus
+from openapi_server.models.expense_transaction import ExpenseTransaction
+from openapi_server.models.mapping_options import MappingOptions
+from openapi_server.models.post_sync import PostSync
+from openapi_server.models.sync_initiated import SyncInitiated
+from openapi_server.models.tax_rate_mapping_info import TaxRateMappingInfo
+from openapi_server.models.tracking_category_mapping_info import TrackingCategoryMappingInfo
+from openapi_server.models.transaction_metadata import TransactionMetadata

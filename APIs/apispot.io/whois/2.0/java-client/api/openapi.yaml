@@ -1,0 +1,294 @@
+openapi: 3.0.2
+info:
+  description: "Domain API (WHOIS, Check, Batch)"
+  title: Bulk WHOIS API
+  version: "2.0"
+  x-apisguru-categories:
+  - developer_tools
+  x-logo:
+    url: https://s3.amazonaws.com/rapidapi-prod-user/e7a9c6f8-f01f-4dca-8fda-68f7424ad817
+  x-origin:
+  - format: openapi
+    url: https://apispot.io/static/whois.yml
+    version: "3.0"
+  x-providerName: apispot.io
+  x-serviceName: whois
+servers:
+- url: https://apispot.io/api/v2
+security:
+- ApiKeyAuth: []
+paths:
+  /batch:
+    get:
+      description: Get your batches
+      operationId: getBatches
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ArrayOfBatch'
+          description: OK
+      x-accepts:
+      - application/json
+    post:
+      description: Create batch. Batch is then being processed until all provided
+        items have been completed. At any time it can be `get` to provide current
+        status with results optionally.
+      operationId: createBatch
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/createBatch_request'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Batch'
+          description: OK
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+  /batch/{id}:
+    delete:
+      description: Delete batch
+      operationId: deleteBatch
+      parameters:
+      - description: Batch ID
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          description: OK
+      x-accepts:
+      - application/json
+    get:
+      description: Get batch
+      operationId: getBatch
+      parameters:
+      - description: Batch ID
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Batch'
+          description: OK
+      x-accepts:
+      - application/json
+  /db:
+    get:
+      description: Query domain database
+      operationId: queryDb
+      parameters:
+      - description: "Query (contact name, dns, domain etc)"
+        explode: true
+        in: query
+        name: query
+        required: true
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: object
+          description: OK
+      x-accepts:
+      - application/json
+  /domains/{domain}/check:
+    get:
+      description: Check domain availability
+      operationId: checkDomain
+      parameters:
+      - description: Domain
+        explode: false
+        in: path
+        name: domain
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/checkDomain_200_response'
+          description: OK
+      x-accepts:
+      - application/json
+  /domains/{domain}/rank:
+    get:
+      description: Check domain rank (authority).
+      operationId: domainRank
+      parameters:
+      - description: Domain
+        explode: false
+        in: path
+        name: domain
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/domainRank_200_response'
+          description: OK
+      x-accepts:
+      - application/json
+  /domains/{domain}/whois:
+    get:
+      description: WHOIS query for a domain
+      operationId: whois
+      parameters:
+      - description: Domain
+        explode: false
+        in: path
+        name: domain
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: true
+        in: query
+        name: format
+        required: false
+        schema:
+          enum:
+          - raw
+          - formatted
+          - json
+          type: string
+        style: form
+      responses:
+        "200":
+          description: OK
+      x-accepts:
+      - application/json
+components:
+  schemas:
+    ArrayOfBatch:
+      example:
+        batches:
+        - count: 0
+          created_at: created_at
+          completed: true
+          id: id
+          operation: operation
+          results:
+          - ""
+          - ""
+          status: status
+        - count: 0
+          created_at: created_at
+          completed: true
+          id: id
+          operation: operation
+          results:
+          - ""
+          - ""
+          status: status
+      properties:
+        batches:
+          items:
+            $ref: '#/components/schemas/Batch'
+          type: array
+    Batch:
+      example:
+        count: 0
+        created_at: created_at
+        completed: true
+        id: id
+        operation: operation
+        results:
+        - ""
+        - ""
+        status: status
+      properties:
+        completed:
+          type: boolean
+        count:
+          type: integer
+        created_at:
+          type: string
+        id:
+          type: string
+        operation:
+          type: string
+        results:
+          items: {}
+          type: array
+        status:
+          type: string
+    createBatch_request_options:
+      properties:
+        format:
+          enum:
+          - raw
+          - formatted
+          - json
+          type: string
+      type: object
+    createBatch_request:
+      properties:
+        domains:
+          example:
+          - foo.com
+          - foo.net
+          - foo.io
+          items:
+            type: string
+          type: array
+        operation:
+          enum:
+          - whois
+          - check
+          type: string
+        options:
+          $ref: '#/components/schemas/createBatch_request_options'
+      required:
+      - domains
+      - operation
+      type: object
+    checkDomain_200_response:
+      example:
+        isAvailable: true
+      properties:
+        isAvailable:
+          type: boolean
+      type: object
+    domainRank_200_response:
+      example:
+        rank: 0.8008281904610115
+      properties:
+        rank:
+          type: number
+      type: object
+  securitySchemes:
+    ApiKeyAuth:
+      description: API Key can be found on your 'Account' page upon login.
+      in: header
+      name: X-API-KEY
+      type: apiKey
+

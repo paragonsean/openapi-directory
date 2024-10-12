@@ -1,0 +1,1084 @@
+openapi: 3.0.0
+info:
+  description: 1Password Events API Specification.
+  title: Events API
+  version: 1.2.0
+  x-apisguru-categories:
+  - security
+  x-logo: https://1password.com/img/meta-og-image.png
+  x-origin:
+  - format: openapi
+    url: https://i.1password.com/media/1password-events-reporting/1password-events-api.yaml
+    version: "3.0"
+  x-providerName: 1password.com
+  x-serviceName: events
+servers:
+- description: 1Password
+  url: https://events.1password.com
+- description: 1Password CA
+  url: https://events.1password.ca
+- description: 1Password EU
+  url: https://events.1password.eu
+- description: 1Password Enterprise
+  url: https://events.ent.1password.com
+paths:
+  /api/auth/introspect:
+    get:
+      deprecated: true
+      operationId: get_auth_introspect
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Introspection'
+          description: Introspection object
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Unauthorized
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Internal Server Error
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Generic error
+      security:
+      - jwtsa: []
+      summary: Performs introspection of the provided Bearer JWT token
+      tags:
+      - auth
+      x-openapi-router-controller: openapi_server.controllers.auth_controller
+  /api/v1/auditevents:
+    post:
+      description: This endpoint requires your JSON Web Token to have the *auditevents*
+        feature.
+      operationId: get_audit_events
+      requestBody:
+        $ref: '#/components/requestBodies/AuditEventsRequest'
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuditEventItems'
+          description: Audit events response object
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Unauthorized
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Internal Server Error
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Generic error
+      security:
+      - jwtsa: []
+      summary: Retrieves audit events for actions performed by team members within
+        a 1Password account
+      tags:
+      - api-v1
+      x-openapi-router-controller: openapi_server.controllers.api_v1_controller
+      x-codegen-request-body-name: body
+  /api/v1/itemusages:
+    post:
+      description: This endpoint requires your JSON Web Token to have the *itemusages*
+        feature.
+      operationId: get_item_usages
+      requestBody:
+        $ref: '#/components/requestBodies/ItemUsagesRequest'
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ItemUsageItems'
+          description: Item usages response object
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Unauthorized
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Internal Server Error
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Generic error
+      security:
+      - jwtsa: []
+      summary: Retrieves events for each usage of an item stored in a shared vault
+        within a 1Password account
+      tags:
+      - api-v1
+      x-openapi-router-controller: openapi_server.controllers.api_v1_controller
+      x-codegen-request-body-name: body
+  /api/v1/signinattempts:
+    post:
+      description: This endpoint requires your JSON Web Token to have the *signinattempts*
+        feature.
+      operationId: get_sign_in_attempts
+      requestBody:
+        $ref: '#/components/requestBodies/SignInAttemptsRequest'
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SignInAttemptItems'
+          description: Sign-in attempts response object
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Unauthorized
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Internal Server Error
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Generic error
+      security:
+      - jwtsa: []
+      summary: Retrieves events for both successful and failed attempts to sign into
+        a 1Password account
+      tags:
+      - api-v1
+      x-openapi-router-controller: openapi_server.controllers.api_v1_controller
+      x-codegen-request-body-name: body
+  /api/v2/auth/introspect:
+    get:
+      operationId: get_auth_introspect_v2
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IntrospectionV2'
+          description: Introspection v2 object
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Unauthorized
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Internal Server Error
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Generic error
+      security:
+      - jwtsa: []
+      summary: Performs introspection of the provided Bearer JWT token
+      tags:
+      - auth
+      x-openapi-router-controller: openapi_server.controllers.auth_controller
+components:
+  examples:
+    Cursor:
+      summary: Used for continued calling with a cursor
+      value:
+        cursor: aGVsbG8hIGlzIGl0IG1lIHlvdSBhcmUgbG9va2luZyBmb3IK
+    ResetCursor:
+      summary: Used for reseting the cursor
+      value:
+        limit: 100
+        start_time: 2021-06-11T16:32:50-03:00
+  requestBodies:
+    AuditEventsRequest:
+      $ref: '#/components/requestBodies/CursorRequest'
+    CursorRequest:
+      content:
+        application/json:
+          examples:
+            Continuing cursor:
+              $ref: '#/components/examples/Cursor'
+            Resetting cursor:
+              $ref: '#/components/examples/ResetCursor'
+          schema:
+            oneOf:
+            - $ref: '#/components/schemas/Cursor'
+            - $ref: '#/components/schemas/ResetCursor'
+    ItemUsagesRequest:
+      $ref: '#/components/requestBodies/CursorRequest'
+    SignInAttemptsRequest:
+      $ref: '#/components/requestBodies/CursorRequest'
+  responses:
+    AuditEventsResponse:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AuditEventItems'
+      description: Audit events response object
+    GenericErrorResponse:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+      description: Generic error
+    InternalServerErrorResponse:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+      description: Internal Server Error
+    IntrospectResponse:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Introspection'
+      description: Introspection object
+    IntrospectV2Response:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/IntrospectionV2'
+      description: Introspection v2 object
+    ItemUsagesResponse:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ItemUsageItems'
+      description: Item usages response object
+    SignInAttemptsResponse:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/SignInAttemptItems'
+      description: Sign-in attempts response object
+    UnauthorizedErrorResponse:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+      description: Unauthorized
+  schemas:
+    AuditEvent:
+      description: A single audit event object
+      example:
+        aux_uuid: 56YE2TYN2VFYRLNSHKPW5NVT5E
+        actor_uuid: 56YE2TYN2VFYRLNSHKPW5NVT5E
+        aux_info: aux_info
+        object_type: account
+        session:
+          login_time: 2020-06-11T16:32:50-03:00
+          ip: 13.227.95.22
+          uuid: 56YE2TYN2VFYRLNSHKPW5NVT5E
+          device_uuid: 56YE2TYN2VFYRLNSHKPW5NVT5E
+        aux_id: 0
+        action: activate
+        location:
+          country: CA
+          city: Toronto
+          latitude: -79.433
+          region: Ontario
+          longitude: 43.64
+        object_uuid: 56YE2TYN2VFYRLNSHKPW5NVT5E
+        uuid: 56YE2TYN2VFYRLNSHKPW5NVT5E
+        timestamp: 2020-06-11T16:32:50-03:00
+      properties:
+        action:
+          $ref: '#/components/schemas/AuditEventActions'
+        actor_uuid:
+          example: 56YE2TYN2VFYRLNSHKPW5NVT5E
+          title: UUID
+          type: string
+        aux_id:
+          title: aux_id
+          type: integer
+        aux_info:
+          title: aux_info
+          type: string
+        aux_uuid:
+          example: 56YE2TYN2VFYRLNSHKPW5NVT5E
+          title: UUID
+          type: string
+        location:
+          $ref: '#/components/schemas/Location'
+        object_type:
+          $ref: '#/components/schemas/AuditEventObjectTypes'
+        object_uuid:
+          example: 56YE2TYN2VFYRLNSHKPW5NVT5E
+          title: UUID
+          type: string
+        session:
+          $ref: '#/components/schemas/Session'
+        timestamp:
+          example: 2020-06-11T16:32:50-03:00
+          format: date-time
+          title: DateTimeRFC3339
+          type: string
+        uuid:
+          example: 56YE2TYN2VFYRLNSHKPW5NVT5E
+          title: UUID
+          type: string
+      title: AuditEvent
+    AuditEventActions:
+      enum:
+      - activate
+      - update
+      - delete
+      - convert
+      - enblduo
+      - updatduo
+      - disblduo
+      - rdmchild
+      - detchild
+      - dlgsess
+      - create
+      - deolddev
+      - dealldev
+      - reauth
+      - begin
+      - complete
+      - propose
+      - updatfw
+      - join
+      - leave
+      - role
+      - purge
+      - view
+      - export
+      - replace
+      - grant
+      - revoke
+      - share
+      - delshare
+      - uisas
+      - enblmfa
+      - updatmfa
+      - disblmfa
+      - musercom
+      - muserdec
+      - sendpkg
+      - resendts
+      - prsndall
+      - trename
+      - tverify
+      - trevoke
+      - ssotknv
+      - enblsso
+      - disblsso
+      - chngpsso
+      - chngasso
+      - chngdsso
+      - delgsso
+      - addgsso
+      - cancel
+      - hide
+      - unhide
+      - upguest
+      - verify
+      - reactive
+      - suspend
+      - beginr
+      - provsn
+      - sendts
+      - unknown
+      - completr
+      - cancelr
+      - trvlaway
+      - trvlback
+      - changeks
+      - changemp
+      - changesk
+      - changenm
+      - changela
+      - tdvcsso
+      - sdvcsso
+      - patch
+      - updatea
+      - vrfydmn
+      - uvrfydmn
+      - dvrfydmn
+      title: AuditEventActions
+      type: string
+    AuditEventItems:
+      allOf:
+      - properties:
+          items:
+            items:
+              $ref: '#/components/schemas/AuditEvent'
+            type: array
+      - $ref: '#/components/schemas/CursorCollection'
+      description: An object wrapping cursor properties and a list of audit events
+      example:
+        cursor: aGVsbG8hIGlzIGl0IG1lIHlvdSBhcmUgbG9va2luZyBmb3IK
+        has_more: true
+        items:
+        - aux_uuid: 56YE2TYN2VFYRLNSHKPW5NVT5E
+          actor_uuid: 56YE2TYN2VFYRLNSHKPW5NVT5E
+          aux_info: aux_info
+          object_type: account
+          session:
+            login_time: 2020-06-11T16:32:50-03:00
+            ip: 13.227.95.22
+            uuid: 56YE2TYN2VFYRLNSHKPW5NVT5E
+            device_uuid: 56YE2TYN2VFYRLNSHKPW5NVT5E
+          aux_id: 0
+          action: activate
+          location:
+            country: CA
+            city: Toronto
+            latitude: -79.433
+            region: Ontario
+            longitude: 43.64
+          object_uuid: 56YE2TYN2VFYRLNSHKPW5NVT5E
+          uuid: 56YE2TYN2VFYRLNSHKPW5NVT5E
+          timestamp: 2020-06-11T16:32:50-03:00
+        - aux_uuid: 56YE2TYN2VFYRLNSHKPW5NVT5E
+          actor_uuid: 56YE2TYN2VFYRLNSHKPW5NVT5E
+          aux_info: aux_info
+          object_type: account
+          session:
+            login_time: 2020-06-11T16:32:50-03:00
+            ip: 13.227.95.22
+            uuid: 56YE2TYN2VFYRLNSHKPW5NVT5E
+            device_uuid: 56YE2TYN2VFYRLNSHKPW5NVT5E
+          aux_id: 0
+          action: activate
+          location:
+            country: CA
+            city: Toronto
+            latitude: -79.433
+            region: Ontario
+            longitude: 43.64
+          object_uuid: 56YE2TYN2VFYRLNSHKPW5NVT5E
+          uuid: 56YE2TYN2VFYRLNSHKPW5NVT5E
+          timestamp: 2020-06-11T16:32:50-03:00
+      title: AuditEventItems
+    AuditEventObjectTypes:
+      enum:
+      - account
+      - user
+      - device
+      - group
+      - gm
+      - vault
+      - item
+      - items
+      - itemhist
+      - vaultkey
+      - template
+      - uva
+      - gva
+      - invite
+      - ec
+      - miguser
+      - sso
+      - sub
+      - card
+      - pm
+      - slackapp
+      - file
+      - famchild
+      - sa
+      - satoken
+      - dlgdsess
+      - ssotkn
+      - report
+      title: AuditEventObjectTypes
+      type: string
+    Client:
+      description: Metadata gathered about the client
+      example:
+        app_name: 1Password Extension
+        app_version: "20127"
+        platform_version: platform_version
+        os_version: 10.15.6
+        platform_name: Chrome
+        os_name: MacOSX
+        ip_address: 13.227.95.22
+      properties:
+        app_name:
+          example: 1Password Extension
+          title: app_name
+          type: string
+        app_version:
+          example: "20127"
+          title: app_version
+          type: string
+        ip_address:
+          example: 13.227.95.22
+          title: ip_address
+          type: string
+        os_name:
+          example: MacOSX
+          title: os_name
+          type: string
+        os_version:
+          example: 10.15.6
+          title: os_version
+          type: string
+        platform_name:
+          example: Chrome
+          title: platform_name
+          type: string
+        platform_version:
+          description: "Depending on the platform used, this can be the version of\
+            \ the browser that the client extension is installed, the model of computer\
+            \ that the native application is installed or the machine's CPU version\
+            \ that the CLI was installed"
+          title: platform_version
+          type: string
+      title: Client
+    Cursor:
+      description: Cursor
+      properties:
+        cursor:
+          description: Cursor to fetch more data if available or continue the polling
+            process if required
+          example: aGVsbG8hIGlzIGl0IG1lIHlvdSBhcmUgbG9va2luZyBmb3IK
+          title: cursor
+          type: string
+      title: Cursor
+    CursorCollection:
+      allOf:
+      - $ref: '#/components/schemas/Cursor'
+      - properties:
+          has_more:
+            description: "Whether there may still be more data to fetch using the\
+              \ returned cursor. If true, the subsequent request could still be empty."
+            type: boolean
+      description: Common cursor properties for collection responses
+      title: CursorCollection
+    DateTimeRFC3339:
+      example: 2020-06-11T16:32:50-03:00
+      format: date-time
+      title: DateTimeRFC3339
+      type: string
+    Details:
+      description: Additional information about the sign-in attempt
+      example:
+        value: Europe
+      properties:
+        value:
+          description: "For firewall prevented sign-ins, the value is the chosen continent,\
+            \ country, etc. that blocked the sign-in attempt"
+          example: Europe
+          title: value
+          type: string
+      title: Details
+    Error:
+      example:
+        Error:
+          Message: Message
+      properties:
+        Error:
+          $ref: '#/components/schemas/Error_Error'
+      title: Error
+      type: object
+    Introspection:
+      example:
+        IssuedAt: 2020-06-11T16:32:50-03:00
+        Features:
+        - auditevents
+        - itemusages
+        - signinattempts
+        UUID: UUID
+      properties:
+        Features:
+          example:
+          - auditevents
+          - itemusages
+          - signinattempts
+          items:
+            type: string
+          title: Features
+          type: array
+        IssuedAt:
+          example: 2020-06-11T16:32:50-03:00
+          format: date-time
+          title: DateTimeRFC3339
+          type: string
+        UUID:
+          title: UUID
+          type: string
+      title: Introspection
+      type: object
+    IntrospectionV2:
+      example:
+        features:
+        - auditevents
+        - itemusages
+        - signinattempts
+        issued_at: 2020-06-11T16:32:50-03:00
+        uuid: uuid
+      properties:
+        features:
+          example:
+          - auditevents
+          - itemusages
+          - signinattempts
+          items:
+            type: string
+          title: features
+          type: array
+        issued_at:
+          example: 2020-06-11T16:32:50-03:00
+          format: date-time
+          title: DateTimeRFC3339
+          type: string
+        uuid:
+          title: uuid
+          type: string
+      title: IntrospectionV2
+      type: object
+    ItemUsage:
+      description: A single item usage object
+      example:
+        used_version: 0
+        item_uuid: 56YE2TYN2VFYRLNSHKPW5NVT5E
+        action: reveal
+        client:
+          app_name: 1Password Extension
+          app_version: "20127"
+          platform_version: platform_version
+          os_version: 10.15.6
+          platform_name: Chrome
+          os_name: MacOSX
+          ip_address: 13.227.95.22
+        location:
+          country: CA
+          city: Toronto
+          latitude: -79.433
+          region: Ontario
+          longitude: 43.64
+        user:
+          name: Jack O'Neill
+          uuid: 56YE2TYN2VFYRLNSHKPW5NVT5E
+          email: email
+        uuid: 56YE2TYN2VFYRLNSHKPW5NVT5E
+        vault_uuid: 56YE2TYN2VFYRLNSHKPW5NVT5E
+        timestamp: 2020-06-11T16:32:50-03:00
+      properties:
+        action:
+          enum:
+          - fill
+          - select-sso-provider
+          - enter-item-edit-mode
+          - export
+          - share
+          - secure-copy
+          - reveal
+          - server-create
+          - server-update
+          - server-fetch
+          example: reveal
+          title: action
+          type: string
+        client:
+          $ref: '#/components/schemas/Client'
+        item_uuid:
+          example: 56YE2TYN2VFYRLNSHKPW5NVT5E
+          title: UUID
+          type: string
+        location:
+          $ref: '#/components/schemas/Location'
+        timestamp:
+          example: 2020-06-11T16:32:50-03:00
+          format: date-time
+          title: DateTimeRFC3339
+          type: string
+        used_version:
+          title: used_version
+          type: integer
+        user:
+          $ref: '#/components/schemas/User'
+        uuid:
+          example: 56YE2TYN2VFYRLNSHKPW5NVT5E
+          title: UUID
+          type: string
+        vault_uuid:
+          example: 56YE2TYN2VFYRLNSHKPW5NVT5E
+          title: UUID
+          type: string
+      title: ItemUsage
+    ItemUsageItems:
+      allOf:
+      - properties:
+          items:
+            items:
+              $ref: '#/components/schemas/ItemUsage'
+            type: array
+      - $ref: '#/components/schemas/CursorCollection'
+      description: An object wrapping cursor properties and a list of items usages
+      example:
+        cursor: aGVsbG8hIGlzIGl0IG1lIHlvdSBhcmUgbG9va2luZyBmb3IK
+        has_more: true
+        items:
+        - used_version: 0
+          item_uuid: 56YE2TYN2VFYRLNSHKPW5NVT5E
+          action: reveal
+          client:
+            app_name: 1Password Extension
+            app_version: "20127"
+            platform_version: platform_version
+            os_version: 10.15.6
+            platform_name: Chrome
+            os_name: MacOSX
+            ip_address: 13.227.95.22
+          location:
+            country: CA
+            city: Toronto
+            latitude: -79.433
+            region: Ontario
+            longitude: 43.64
+          user:
+            name: Jack O'Neill
+            uuid: 56YE2TYN2VFYRLNSHKPW5NVT5E
+            email: email
+          uuid: 56YE2TYN2VFYRLNSHKPW5NVT5E
+          vault_uuid: 56YE2TYN2VFYRLNSHKPW5NVT5E
+          timestamp: 2020-06-11T16:32:50-03:00
+        - used_version: 0
+          item_uuid: 56YE2TYN2VFYRLNSHKPW5NVT5E
+          action: reveal
+          client:
+            app_name: 1Password Extension
+            app_version: "20127"
+            platform_version: platform_version
+            os_version: 10.15.6
+            platform_name: Chrome
+            os_name: MacOSX
+            ip_address: 13.227.95.22
+          location:
+            country: CA
+            city: Toronto
+            latitude: -79.433
+            region: Ontario
+            longitude: 43.64
+          user:
+            name: Jack O'Neill
+            uuid: 56YE2TYN2VFYRLNSHKPW5NVT5E
+            email: email
+          uuid: 56YE2TYN2VFYRLNSHKPW5NVT5E
+          vault_uuid: 56YE2TYN2VFYRLNSHKPW5NVT5E
+          timestamp: 2020-06-11T16:32:50-03:00
+      title: ItemUsageItems
+    Location:
+      description: Geolocation Info about the client
+      example:
+        country: CA
+        city: Toronto
+        latitude: -79.433
+        region: Ontario
+        longitude: 43.64
+      properties:
+        city:
+          example: Toronto
+          title: city
+          type: string
+        country:
+          example: CA
+          title: country
+          type: string
+        latitude:
+          example: -79.433
+          title: latitude
+          type: number
+        longitude:
+          example: 43.64
+          title: longitude
+          type: number
+        region:
+          example: Ontario
+          title: region
+          type: string
+      title: Location
+    ResetCursor:
+      description: Reset cursor
+      properties:
+        end_time:
+          example: 2020-06-11T16:32:50-03:00
+          format: date-time
+          title: DateTimeRFC3339
+          type: string
+        limit:
+          maximum: 1000
+          minimum: 1
+          type: number
+        start_time:
+          example: 2020-06-11T16:32:50-03:00
+          format: date-time
+          title: DateTimeRFC3339
+          type: string
+    Session:
+      description: Session information gathered about the client
+      example:
+        login_time: 2020-06-11T16:32:50-03:00
+        ip: 13.227.95.22
+        uuid: 56YE2TYN2VFYRLNSHKPW5NVT5E
+        device_uuid: 56YE2TYN2VFYRLNSHKPW5NVT5E
+      properties:
+        device_uuid:
+          example: 56YE2TYN2VFYRLNSHKPW5NVT5E
+          title: UUID
+          type: string
+        ip:
+          example: 13.227.95.22
+          title: ip
+          type: string
+        login_time:
+          example: 2020-06-11T16:32:50-03:00
+          format: date-time
+          title: DateTimeRFC3339
+          type: string
+        uuid:
+          example: 56YE2TYN2VFYRLNSHKPW5NVT5E
+          title: UUID
+          type: string
+      title: Session
+    SignInAttempt:
+      description: A single sign-in attempt object
+      example:
+        country: France
+        client:
+          app_name: 1Password Extension
+          app_version: "20127"
+          platform_version: platform_version
+          os_version: 10.15.6
+          platform_name: Chrome
+          os_name: MacOSX
+          ip_address: 13.227.95.22
+        target_user:
+          name: Jack O'Neill
+          uuid: 56YE2TYN2VFYRLNSHKPW5NVT5E
+          email: email
+        details:
+          value: Europe
+        location:
+          country: CA
+          city: Toronto
+          latitude: -79.433
+          region: Ontario
+          longitude: 43.64
+        category: firewall_failed
+        type: continent_blocked
+        session_uuid: 56YE2TYN2VFYRLNSHKPW5NVT5E
+        uuid: 56YE2TYN2VFYRLNSHKPW5NVT5E
+        timestamp: 2020-06-11T16:32:50-03:00
+      properties:
+        category:
+          enum:
+          - success
+          - credentials_failed
+          - mfa_failed
+          - sso_failed
+          - modern_version_failed
+          - firewall_failed
+          - firewall_reported_success
+          example: firewall_failed
+          title: category
+          type: string
+        client:
+          $ref: '#/components/schemas/Client'
+        country:
+          description: Country ISO Code
+          example: France
+          title: country
+          type: string
+        details:
+          $ref: '#/components/schemas/Details'
+        location:
+          $ref: '#/components/schemas/Location'
+        session_uuid:
+          example: 56YE2TYN2VFYRLNSHKPW5NVT5E
+          title: UUID
+          type: string
+        target_user:
+          $ref: '#/components/schemas/User'
+        timestamp:
+          example: 2020-06-11T16:32:50-03:00
+          format: date-time
+          title: DateTimeRFC3339
+          type: string
+        type:
+          enum:
+          - credentials_ok
+          - mfa_ok
+          - password_secret_bad
+          - mfa_missing
+          - totp_disabled
+          - totp_bad
+          - totp_timeout
+          - u2f_disabled
+          - u2f_bad
+          - u2f_timout
+          - duo_disabled
+          - duo_bad
+          - duo_timeout
+          - duo_native_bad
+          - service_account_sso_denied
+          - non_sso_user
+          - sso_user_mismatch
+          - platform_secret_disabled
+          - platform_secret_bad
+          - platform_secret_proxy
+          - code_disabled
+          - code_bad
+          - code_timeout
+          - ip_blocked
+          - continent_blocked
+          - country_blocked
+          - anonymous_blocked
+          - all_blocked
+          - modern_version_missing
+          - modern_version_old
+          example: continent_blocked
+          title: type
+          type: string
+        uuid:
+          example: 56YE2TYN2VFYRLNSHKPW5NVT5E
+          title: UUID
+          type: string
+      title: SignInAttempt
+    SignInAttemptItems:
+      allOf:
+      - properties:
+          items:
+            items:
+              $ref: '#/components/schemas/SignInAttempt'
+            type: array
+      - $ref: '#/components/schemas/CursorCollection'
+      description: An object wrapping cursor properties and a list of sign-in attempts
+      example:
+        cursor: aGVsbG8hIGlzIGl0IG1lIHlvdSBhcmUgbG9va2luZyBmb3IK
+        has_more: true
+        items:
+        - country: France
+          client:
+            app_name: 1Password Extension
+            app_version: "20127"
+            platform_version: platform_version
+            os_version: 10.15.6
+            platform_name: Chrome
+            os_name: MacOSX
+            ip_address: 13.227.95.22
+          target_user:
+            name: Jack O'Neill
+            uuid: 56YE2TYN2VFYRLNSHKPW5NVT5E
+            email: email
+          details:
+            value: Europe
+          location:
+            country: CA
+            city: Toronto
+            latitude: -79.433
+            region: Ontario
+            longitude: 43.64
+          category: firewall_failed
+          type: continent_blocked
+          session_uuid: 56YE2TYN2VFYRLNSHKPW5NVT5E
+          uuid: 56YE2TYN2VFYRLNSHKPW5NVT5E
+          timestamp: 2020-06-11T16:32:50-03:00
+        - country: France
+          client:
+            app_name: 1Password Extension
+            app_version: "20127"
+            platform_version: platform_version
+            os_version: 10.15.6
+            platform_name: Chrome
+            os_name: MacOSX
+            ip_address: 13.227.95.22
+          target_user:
+            name: Jack O'Neill
+            uuid: 56YE2TYN2VFYRLNSHKPW5NVT5E
+            email: email
+          details:
+            value: Europe
+          location:
+            country: CA
+            city: Toronto
+            latitude: -79.433
+            region: Ontario
+            longitude: 43.64
+          category: firewall_failed
+          type: continent_blocked
+          session_uuid: 56YE2TYN2VFYRLNSHKPW5NVT5E
+          uuid: 56YE2TYN2VFYRLNSHKPW5NVT5E
+          timestamp: 2020-06-11T16:32:50-03:00
+      title: SignInAttemptItems
+    UUID:
+      example: 56YE2TYN2VFYRLNSHKPW5NVT5E
+      title: UUID
+      type: string
+    User:
+      description: User object
+      example:
+        name: Jack O'Neill
+        uuid: 56YE2TYN2VFYRLNSHKPW5NVT5E
+        email: email
+      properties:
+        email:
+          format: email
+          title: email
+          type: string
+        name:
+          description: Full name
+          example: Jack O'Neill
+          title: name
+          type: string
+        uuid:
+          example: 56YE2TYN2VFYRLNSHKPW5NVT5E
+          title: UUID
+          type: string
+      title: User
+    Error_Error:
+      example:
+        Message: Message
+      properties:
+        Message:
+          description: The error message.
+          title: Message
+          type: string
+      title: Error_Error
+      type: object
+  securitySchemes:
+    jwtsa:
+      bearerFormat: JWT-SA
+      description: A JWT SA token issued to this service
+      scheme: bearer
+      type: http
+      x-bearerInfoFunc: openapi_server.controllers.security_controller.info_from_jwtsa
