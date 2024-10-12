@@ -1,0 +1,115 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIAPIError.h \
+    $${PWD}/OAIAccessory.h \
+    $${PWD}/OAIApplySnapshotRequest.h \
+    $${PWD}/OAIBlur.h \
+    $${PWD}/OAICoordinate.h \
+    $${PWD}/OAIDetectedFace.h \
+    $${PWD}/OAIEmotion.h \
+    $${PWD}/OAIError.h \
+    $${PWD}/OAIExposure.h \
+    $${PWD}/OAIFaceAttributes.h \
+    $${PWD}/OAIFaceLandmarks.h \
+    $${PWD}/OAIFaceList.h \
+    $${PWD}/OAIFaceRectangle.h \
+    $${PWD}/OAIFace_DetectWithUrl_request.h \
+    $${PWD}/OAIFacialHair.h \
+    $${PWD}/OAIFindSimilarRequest.h \
+    $${PWD}/OAIGroupRequest.h \
+    $${PWD}/OAIGroupResult.h \
+    $${PWD}/OAIHair.h \
+    $${PWD}/OAIHairColor.h \
+    $${PWD}/OAIHeadPose.h \
+    $${PWD}/OAIIdentifyCandidate.h \
+    $${PWD}/OAIIdentifyRequest.h \
+    $${PWD}/OAIIdentifyResult.h \
+    $${PWD}/OAILargeFaceList.h \
+    $${PWD}/OAILargePersonGroup.h \
+    $${PWD}/OAIMakeup.h \
+    $${PWD}/OAIMetaDataContract.h \
+    $${PWD}/OAINameAndUserDataContract.h \
+    $${PWD}/OAINoise.h \
+    $${PWD}/OAIOcclusion.h \
+    $${PWD}/OAIOperationStatus.h \
+    $${PWD}/OAIPersistedFace.h \
+    $${PWD}/OAIPerson.h \
+    $${PWD}/OAIPersonGroup.h \
+    $${PWD}/OAIRecognitionModel.h \
+    $${PWD}/OAISimilarFace.h \
+    $${PWD}/OAISnapshot.h \
+    $${PWD}/OAITakeSnapshotRequest.h \
+    $${PWD}/OAITrainingStatus.h \
+    $${PWD}/OAIUpdateFaceRequest.h \
+    $${PWD}/OAIUpdateSnapshotRequest.h \
+    $${PWD}/OAIVerifyFaceToFaceRequest.h \
+    $${PWD}/OAIVerifyFaceToPersonRequest.h \
+    $${PWD}/OAIVerifyResult.h \
+# APIs
+    $${PWD}/OAIDefaultApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIAPIError.cpp \
+    $${PWD}/OAIAccessory.cpp \
+    $${PWD}/OAIApplySnapshotRequest.cpp \
+    $${PWD}/OAIBlur.cpp \
+    $${PWD}/OAICoordinate.cpp \
+    $${PWD}/OAIDetectedFace.cpp \
+    $${PWD}/OAIEmotion.cpp \
+    $${PWD}/OAIError.cpp \
+    $${PWD}/OAIExposure.cpp \
+    $${PWD}/OAIFaceAttributes.cpp \
+    $${PWD}/OAIFaceLandmarks.cpp \
+    $${PWD}/OAIFaceList.cpp \
+    $${PWD}/OAIFaceRectangle.cpp \
+    $${PWD}/OAIFace_DetectWithUrl_request.cpp \
+    $${PWD}/OAIFacialHair.cpp \
+    $${PWD}/OAIFindSimilarRequest.cpp \
+    $${PWD}/OAIGroupRequest.cpp \
+    $${PWD}/OAIGroupResult.cpp \
+    $${PWD}/OAIHair.cpp \
+    $${PWD}/OAIHairColor.cpp \
+    $${PWD}/OAIHeadPose.cpp \
+    $${PWD}/OAIIdentifyCandidate.cpp \
+    $${PWD}/OAIIdentifyRequest.cpp \
+    $${PWD}/OAIIdentifyResult.cpp \
+    $${PWD}/OAILargeFaceList.cpp \
+    $${PWD}/OAILargePersonGroup.cpp \
+    $${PWD}/OAIMakeup.cpp \
+    $${PWD}/OAIMetaDataContract.cpp \
+    $${PWD}/OAINameAndUserDataContract.cpp \
+    $${PWD}/OAINoise.cpp \
+    $${PWD}/OAIOcclusion.cpp \
+    $${PWD}/OAIOperationStatus.cpp \
+    $${PWD}/OAIPersistedFace.cpp \
+    $${PWD}/OAIPerson.cpp \
+    $${PWD}/OAIPersonGroup.cpp \
+    $${PWD}/OAIRecognitionModel.cpp \
+    $${PWD}/OAISimilarFace.cpp \
+    $${PWD}/OAISnapshot.cpp \
+    $${PWD}/OAITakeSnapshotRequest.cpp \
+    $${PWD}/OAITrainingStatus.cpp \
+    $${PWD}/OAIUpdateFaceRequest.cpp \
+    $${PWD}/OAIUpdateSnapshotRequest.cpp \
+    $${PWD}/OAIVerifyFaceToFaceRequest.cpp \
+    $${PWD}/OAIVerifyFaceToPersonRequest.cpp \
+    $${PWD}/OAIVerifyResult.cpp \
+# APIs
+    $${PWD}/OAIDefaultApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp
