@@ -1,0 +1,22 @@
+# coding: utf-8
+
+# import models into model package
+from openapi_server.models.blob_container import BlobContainer
+from openapi_server.models.blob_service_items import BlobServiceItems
+from openapi_server.models.blob_service_properties import BlobServiceProperties
+from openapi_server.models.change_feed import ChangeFeed
+from openapi_server.models.container_properties import ContainerProperties
+from openapi_server.models.cors_rule import CorsRule
+from openapi_server.models.cors_rules import CorsRules
+from openapi_server.models.delete_retention_policy import DeleteRetentionPolicy
+from openapi_server.models.immutability_policy import ImmutabilityPolicy
+from openapi_server.models.immutability_policy_properties import ImmutabilityPolicyProperties
+from openapi_server.models.immutability_policy_property import ImmutabilityPolicyProperty
+from openapi_server.models.lease_container_request import LeaseContainerRequest
+from openapi_server.models.lease_container_response import LeaseContainerResponse
+from openapi_server.models.legal_hold import LegalHold
+from openapi_server.models.legal_hold_properties import LegalHoldProperties
+from openapi_server.models.list_container_item import ListContainerItem
+from openapi_server.models.list_container_items import ListContainerItems
+from openapi_server.models.tag_property import TagProperty
+from openapi_server.models.update_history_property import UpdateHistoryProperty

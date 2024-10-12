@@ -1,0 +1,8 @@
+# coding: utf-8
+
+# import models into model package
+from openapi_server.models.virtual_network import VirtualNetwork
+from openapi_server.models.virtual_network_configuration_state import VirtualNetworkConfigurationState
+from openapi_server.models.virtual_network_configuration_status import VirtualNetworkConfigurationStatus
+from openapi_server.models.virtual_network_properties import VirtualNetworkProperties
+from openapi_server.models.virtual_networks_list import VirtualNetworksList

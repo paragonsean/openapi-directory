@@ -1,0 +1,99 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAICommonExportProperties.h \
+    $${PWD}/OAIDimension.h \
+    $${PWD}/OAIDimensionProperties.h \
+    $${PWD}/OAIDimensionsListResult.h \
+    $${PWD}/OAIErrorDetails.h \
+    $${PWD}/OAIErrorResponse.h \
+    $${PWD}/OAIExport.h \
+    $${PWD}/OAIExportDeliveryDestination.h \
+    $${PWD}/OAIExportDeliveryInfo.h \
+    $${PWD}/OAIExportExecution.h \
+    $${PWD}/OAIExportExecutionListResult.h \
+    $${PWD}/OAIExportExecutionProperties.h \
+    $${PWD}/OAIExportListResult.h \
+    $${PWD}/OAIExportProperties.h \
+    $${PWD}/OAIExportRecurrencePeriod.h \
+    $${PWD}/OAIExportSchedule.h \
+    $${PWD}/OAIOperation.h \
+    $${PWD}/OAIOperationListResult.h \
+    $${PWD}/OAIOperation_display.h \
+    $${PWD}/OAIQuery.h \
+    $${PWD}/OAIQueryAggregation.h \
+    $${PWD}/OAIQueryColumn.h \
+    $${PWD}/OAIQueryColumnType.h \
+    $${PWD}/OAIQueryComparisonExpression.h \
+    $${PWD}/OAIQueryDataset.h \
+    $${PWD}/OAIQueryDatasetConfiguration.h \
+    $${PWD}/OAIQueryDefinition.h \
+    $${PWD}/OAIQueryFilter.h \
+    $${PWD}/OAIQueryGrouping.h \
+    $${PWD}/OAIQueryProperties.h \
+    $${PWD}/OAIQueryResult.h \
+    $${PWD}/OAIQuerySortingConfiguration.h \
+    $${PWD}/OAIQueryTimePeriod.h \
+    $${PWD}/OAIResource.h \
+# APIs
+    $${PWD}/OAIDimensionsApi.h \
+    $${PWD}/OAIExportsApi.h \
+    $${PWD}/OAIOperationsApi.h \
+    $${PWD}/OAIQueryApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAICommonExportProperties.cpp \
+    $${PWD}/OAIDimension.cpp \
+    $${PWD}/OAIDimensionProperties.cpp \
+    $${PWD}/OAIDimensionsListResult.cpp \
+    $${PWD}/OAIErrorDetails.cpp \
+    $${PWD}/OAIErrorResponse.cpp \
+    $${PWD}/OAIExport.cpp \
+    $${PWD}/OAIExportDeliveryDestination.cpp \
+    $${PWD}/OAIExportDeliveryInfo.cpp \
+    $${PWD}/OAIExportExecution.cpp \
+    $${PWD}/OAIExportExecutionListResult.cpp \
+    $${PWD}/OAIExportExecutionProperties.cpp \
+    $${PWD}/OAIExportListResult.cpp \
+    $${PWD}/OAIExportProperties.cpp \
+    $${PWD}/OAIExportRecurrencePeriod.cpp \
+    $${PWD}/OAIExportSchedule.cpp \
+    $${PWD}/OAIOperation.cpp \
+    $${PWD}/OAIOperationListResult.cpp \
+    $${PWD}/OAIOperation_display.cpp \
+    $${PWD}/OAIQuery.cpp \
+    $${PWD}/OAIQueryAggregation.cpp \
+    $${PWD}/OAIQueryColumn.cpp \
+    $${PWD}/OAIQueryColumnType.cpp \
+    $${PWD}/OAIQueryComparisonExpression.cpp \
+    $${PWD}/OAIQueryDataset.cpp \
+    $${PWD}/OAIQueryDatasetConfiguration.cpp \
+    $${PWD}/OAIQueryDefinition.cpp \
+    $${PWD}/OAIQueryFilter.cpp \
+    $${PWD}/OAIQueryGrouping.cpp \
+    $${PWD}/OAIQueryProperties.cpp \
+    $${PWD}/OAIQueryResult.cpp \
+    $${PWD}/OAIQuerySortingConfiguration.cpp \
+    $${PWD}/OAIQueryTimePeriod.cpp \
+    $${PWD}/OAIResource.cpp \
+# APIs
+    $${PWD}/OAIDimensionsApi.cpp \
+    $${PWD}/OAIExportsApi.cpp \
+    $${PWD}/OAIOperationsApi.cpp \
+    $${PWD}/OAIQueryApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp
