@@ -1,0 +1,89 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIAvroSerialization.h \
+    $${PWD}/OAIBlobDataSourceProperties.h \
+    $${PWD}/OAIBlobReferenceInputDataSource.h \
+    $${PWD}/OAIBlobReferenceInputDataSourceProperties.h \
+    $${PWD}/OAIBlobStreamInputDataSource.h \
+    $${PWD}/OAIBlobStreamInputDataSourceProperties.h \
+    $${PWD}/OAICsvSerialization.h \
+    $${PWD}/OAICsvSerializationProperties.h \
+    $${PWD}/OAIDiagnosticCondition.h \
+    $${PWD}/OAIDiagnostics.h \
+    $${PWD}/OAIEncoding.h \
+    $${PWD}/OAIErrorResponse.h \
+    $${PWD}/OAIEventHubDataSourceProperties.h \
+    $${PWD}/OAIEventHubStreamInputDataSource.h \
+    $${PWD}/OAIEventHubStreamInputDataSourceProperties.h \
+    $${PWD}/OAIInput.h \
+    $${PWD}/OAIInputListResult.h \
+    $${PWD}/OAIInputProperties.h \
+    $${PWD}/OAIIoTHubStreamInputDataSource.h \
+    $${PWD}/OAIIoTHubStreamInputDataSourceProperties.h \
+    $${PWD}/OAIJsonOutputSerializationFormat.h \
+    $${PWD}/OAIJsonSerialization.h \
+    $${PWD}/OAIJsonSerializationProperties.h \
+    $${PWD}/OAIReferenceInputDataSource.h \
+    $${PWD}/OAIReferenceInputProperties.h \
+    $${PWD}/OAIResourceTestStatus.h \
+    $${PWD}/OAISerialization.h \
+    $${PWD}/OAIServiceBusDataSourceProperties.h \
+    $${PWD}/OAIStorageAccount.h \
+    $${PWD}/OAIStreamInputDataSource.h \
+    $${PWD}/OAIStreamInputProperties.h \
+    $${PWD}/OAISubResource.h \
+# APIs
+    $${PWD}/OAIInputsApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIAvroSerialization.cpp \
+    $${PWD}/OAIBlobDataSourceProperties.cpp \
+    $${PWD}/OAIBlobReferenceInputDataSource.cpp \
+    $${PWD}/OAIBlobReferenceInputDataSourceProperties.cpp \
+    $${PWD}/OAIBlobStreamInputDataSource.cpp \
+    $${PWD}/OAIBlobStreamInputDataSourceProperties.cpp \
+    $${PWD}/OAICsvSerialization.cpp \
+    $${PWD}/OAICsvSerializationProperties.cpp \
+    $${PWD}/OAIDiagnosticCondition.cpp \
+    $${PWD}/OAIDiagnostics.cpp \
+    $${PWD}/OAIEncoding.cpp \
+    $${PWD}/OAIErrorResponse.cpp \
+    $${PWD}/OAIEventHubDataSourceProperties.cpp \
+    $${PWD}/OAIEventHubStreamInputDataSource.cpp \
+    $${PWD}/OAIEventHubStreamInputDataSourceProperties.cpp \
+    $${PWD}/OAIInput.cpp \
+    $${PWD}/OAIInputListResult.cpp \
+    $${PWD}/OAIInputProperties.cpp \
+    $${PWD}/OAIIoTHubStreamInputDataSource.cpp \
+    $${PWD}/OAIIoTHubStreamInputDataSourceProperties.cpp \
+    $${PWD}/OAIJsonOutputSerializationFormat.cpp \
+    $${PWD}/OAIJsonSerialization.cpp \
+    $${PWD}/OAIJsonSerializationProperties.cpp \
+    $${PWD}/OAIReferenceInputDataSource.cpp \
+    $${PWD}/OAIReferenceInputProperties.cpp \
+    $${PWD}/OAIResourceTestStatus.cpp \
+    $${PWD}/OAISerialization.cpp \
+    $${PWD}/OAIServiceBusDataSourceProperties.cpp \
+    $${PWD}/OAIStorageAccount.cpp \
+    $${PWD}/OAIStreamInputDataSource.cpp \
+    $${PWD}/OAIStreamInputProperties.cpp \
+    $${PWD}/OAISubResource.cpp \
+# APIs
+    $${PWD}/OAIInputsApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp
