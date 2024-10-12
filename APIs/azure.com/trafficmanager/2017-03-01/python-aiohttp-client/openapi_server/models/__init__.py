@@ -1,0 +1,20 @@
+# coding: utf-8
+
+# import models into model package
+from openapi_server.models.check_traffic_manager_relative_dns_name_availability_parameters import CheckTrafficManagerRelativeDnsNameAvailabilityParameters
+from openapi_server.models.cloud_error import CloudError
+from openapi_server.models.cloud_error_body import CloudErrorBody
+from openapi_server.models.delete_operation_result import DeleteOperationResult
+from openapi_server.models.dns_config import DnsConfig
+from openapi_server.models.endpoint import Endpoint
+from openapi_server.models.endpoint_properties import EndpointProperties
+from openapi_server.models.geographic_hierarchy_properties import GeographicHierarchyProperties
+from openapi_server.models.monitor_config import MonitorConfig
+from openapi_server.models.profile import Profile
+from openapi_server.models.profile_list_result import ProfileListResult
+from openapi_server.models.profile_properties import ProfileProperties
+from openapi_server.models.region import Region
+from openapi_server.models.resource import Resource
+from openapi_server.models.sub_resource import SubResource
+from openapi_server.models.traffic_manager_geographic_hierarchy import TrafficManagerGeographicHierarchy
+from openapi_server.models.traffic_manager_name_availability import TrafficManagerNameAvailability

@@ -1,0 +1,91 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIAzureFileVolume.h \
+    $${PWD}/OAIContainer.h \
+    $${PWD}/OAIContainerExecRequest.h \
+    $${PWD}/OAIContainerExecRequest_terminalSize.h \
+    $${PWD}/OAIContainerExecResponse.h \
+    $${PWD}/OAIContainerGroup.h \
+    $${PWD}/OAIContainerGroupListResult.h \
+    $${PWD}/OAIContainerGroup_allOf_properties.h \
+    $${PWD}/OAIContainerGroup_allOf_properties_instanceView.h \
+    $${PWD}/OAIContainerPort.h \
+    $${PWD}/OAIContainerProperties.h \
+    $${PWD}/OAIContainerProperties_instanceView.h \
+    $${PWD}/OAIContainerState.h \
+    $${PWD}/OAIEnvironmentVariable.h \
+    $${PWD}/OAIEvent.h \
+    $${PWD}/OAIGitRepoVolume.h \
+    $${PWD}/OAIImageRegistryCredential.h \
+    $${PWD}/OAIIpAddress.h \
+    $${PWD}/OAILogs.h \
+    $${PWD}/OAIOperation.h \
+    $${PWD}/OAIOperationListResult.h \
+    $${PWD}/OAIOperation_display.h \
+    $${PWD}/OAIPort.h \
+    $${PWD}/OAIResource.h \
+    $${PWD}/OAIResourceLimits.h \
+    $${PWD}/OAIResourceRequests.h \
+    $${PWD}/OAIResourceRequirements.h \
+    $${PWD}/OAIUsage.h \
+    $${PWD}/OAIUsageListResult.h \
+    $${PWD}/OAIUsage_name.h \
+    $${PWD}/OAIVolume.h \
+    $${PWD}/OAIVolumeMount.h \
+# APIs
+    $${PWD}/OAIDefaultApi.h \
+    $${PWD}/OAIOperationsApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIAzureFileVolume.cpp \
+    $${PWD}/OAIContainer.cpp \
+    $${PWD}/OAIContainerExecRequest.cpp \
+    $${PWD}/OAIContainerExecRequest_terminalSize.cpp \
+    $${PWD}/OAIContainerExecResponse.cpp \
+    $${PWD}/OAIContainerGroup.cpp \
+    $${PWD}/OAIContainerGroupListResult.cpp \
+    $${PWD}/OAIContainerGroup_allOf_properties.cpp \
+    $${PWD}/OAIContainerGroup_allOf_properties_instanceView.cpp \
+    $${PWD}/OAIContainerPort.cpp \
+    $${PWD}/OAIContainerProperties.cpp \
+    $${PWD}/OAIContainerProperties_instanceView.cpp \
+    $${PWD}/OAIContainerState.cpp \
+    $${PWD}/OAIEnvironmentVariable.cpp \
+    $${PWD}/OAIEvent.cpp \
+    $${PWD}/OAIGitRepoVolume.cpp \
+    $${PWD}/OAIImageRegistryCredential.cpp \
+    $${PWD}/OAIIpAddress.cpp \
+    $${PWD}/OAILogs.cpp \
+    $${PWD}/OAIOperation.cpp \
+    $${PWD}/OAIOperationListResult.cpp \
+    $${PWD}/OAIOperation_display.cpp \
+    $${PWD}/OAIPort.cpp \
+    $${PWD}/OAIResource.cpp \
+    $${PWD}/OAIResourceLimits.cpp \
+    $${PWD}/OAIResourceRequests.cpp \
+    $${PWD}/OAIResourceRequirements.cpp \
+    $${PWD}/OAIUsage.cpp \
+    $${PWD}/OAIUsageListResult.cpp \
+    $${PWD}/OAIUsage_name.cpp \
+    $${PWD}/OAIVolume.cpp \
+    $${PWD}/OAIVolumeMount.cpp \
+# APIs
+    $${PWD}/OAIDefaultApi.cpp \
+    $${PWD}/OAIOperationsApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp
