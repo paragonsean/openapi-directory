@@ -1,0 +1,26 @@
+# ApiManagementClient.ApiVersionSetUpdateParametersProperties
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**displayName** | **String** | Name of API Version Set | [optional] 
+**versioningScheme** | **String** | An value that determines where the API Version identifer will be located in a HTTP request. | [optional] 
+**description** | **String** | Description of API Version Set. | [optional] 
+**versionHeaderName** | **String** | Name of HTTP header parameter that indicates the API Version if versioningScheme is set to &#x60;header&#x60;. | [optional] 
+**versionQueryName** | **String** | Name of query parameter that indicates the API Version if versioningScheme is set to &#x60;query&#x60;. | [optional] 
+
+
+
+## Enum: VersioningSchemeEnum
+
+
+* `Segment` (value: `"Segment"`)
+
+* `Query` (value: `"Query"`)
+
+* `Header` (value: `"Header"`)
+
+
+
+

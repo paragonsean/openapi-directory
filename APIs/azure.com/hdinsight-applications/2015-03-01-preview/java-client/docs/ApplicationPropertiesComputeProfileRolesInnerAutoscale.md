@@ -1,0 +1,15 @@
+
+
+# ApplicationPropertiesComputeProfileRolesInnerAutoscale
+
+The autoscale request parameters
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**capacity** | [**ApplicationPropertiesComputeProfileRolesInnerAutoscaleCapacity**](ApplicationPropertiesComputeProfileRolesInnerAutoscaleCapacity.md) |  |  [optional] |
+|**recurrence** | [**ApplicationPropertiesComputeProfileRolesInnerAutoscaleRecurrence**](ApplicationPropertiesComputeProfileRolesInnerAutoscaleRecurrence.md) |  |  [optional] |
+
+
+

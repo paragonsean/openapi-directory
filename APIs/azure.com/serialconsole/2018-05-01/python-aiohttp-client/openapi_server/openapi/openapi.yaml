@@ -1,0 +1,411 @@
+openapi: 3.0.1
+info:
+  description: The Azure Serial Console allows you to access the serial console of
+    a Virtual Machine or VM scale set instance
+  title: MicrosoftSerialConsoleClient
+  version: 2018-05-01
+  x-apisguru-categories:
+  - cloud
+  x-logo:
+    url: https://assets.onestore.ms/cdnfiles/onestorerolling-1606-01000/shell/v3/images/logo/microsoft.png
+  x-origin:
+  - format: swagger
+    url: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/serialconsole/resource-manager/Microsoft.SerialConsole/stable/2018-05-01/serialconsole.json
+    version: "2.0"
+  x-providerName: azure.com
+  x-serviceName: serialconsole
+  x-tags:
+  - Azure
+  - Microsoft
+servers:
+- url: https://management.azure.com/
+security:
+- azure_auth:
+  - user_impersonation
+paths:
+  /providers/Microsoft.SerialConsole/operations:
+    get:
+      description: Gets a list of Serial Console API operations.
+      operationId: list_operations
+      parameters:
+      - description: The API version to use for this operation.
+        in: query
+        name: api-version
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SerialConsoleOperations'
+          description: OK - returns a JSON object
+      tags:
+      - SerialConsole
+      x-ms-examples:
+        List all Serial Console management operations supported by Serial Console RP:
+          parameters:
+            api-version: 2018-05-01
+          responses:
+            "200":
+              body:
+                value:
+                - display:
+                    description: Retrieves the current subscription state
+                    operation: Default
+                    provider: Microsoft.SerialConsole
+                    resource: Serial Console instance
+                  isDataAction: "false"
+                  name: Microsoft.SerialConsole/consoleServices/read
+                - display:
+                    description: Disable Serial Console for a subscription
+                    operation: Disable Console
+                    provider: Microsoft.SerialConsole
+                    resource: Serial Console instance
+                  isDataAction: "false"
+                  name: Microsoft.SerialConsole/consoleServices/disableConsole/action
+                - display:
+                    description: Enable Serial Console for a subscription
+                    operation: Enable Console
+                    provider: Microsoft.SerialConsole
+                    resource: Serial Console instance
+                  isDataAction: "false"
+                  name: Microsoft.SerialConsole/consoleServices/enableConsole/action
+      x-openapi-router-controller: openapi_server.controllers.serial_console_controller
+  /subscriptions/{subscriptionId}/providers/Microsoft.SerialConsole/consoleServices/{default}:
+    get:
+      description: Gets whether or not Serial Console is disabled for a given subscription
+      operationId: get_console_status
+      parameters:
+      - description: The API version to use for this operation.
+        in: query
+        name: api_version
+        required: true
+        schema:
+          type: string
+      - description: Subscription ID which uniquely identifies the Microsoft Azure
+          subscription. The subscription ID forms part of the URI for every service
+          call requiring it.
+        in: path
+        name: subscriptionId
+        required: true
+        schema:
+          type: string
+      - description: Default parameter. Leave the value as "default".
+        in: path
+        name: default
+        required: true
+        schema:
+          type: string
+          x-ms-parameter-location: method
+        x-ms-parameter-location: method
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SerialConsoleStatus'
+          description: OK - Returns a JSON object
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetSerialConsoleSubscriptionNotFound'
+          description: Subscription not found - returns a JSON object with error details
+      summary: Get the disabled status for a subscription
+      tags:
+      - SerialConsole
+      x-ms-examples:
+        Get the Serial Console disabled status for a subscription:
+          parameters:
+            api-version: 2018-05-01
+            default: default
+            subscriptionId: 00000000-00000-0000-0000-000000000000
+          responses:
+            "200":
+              body:
+                disabled: true
+            "404":
+              body:
+                code: SubscriptionNotFound
+                message: The subscription '00000000-00000-0000-0000-000000000000'
+                  could not be found.
+      x-openapi-router-controller: openapi_server.controllers.serial_console_controller
+  /subscriptions/{subscriptionId}/providers/Microsoft.SerialConsole/consoleServices/{default}/disableConsole:
+    post:
+      description: Disables the Serial Console service for all VMs and VM scale sets
+        in the provided subscription
+      operationId: disable_console
+      parameters:
+      - description: The API version to use for this operation.
+        in: query
+        name: api_version
+        required: true
+        schema:
+          type: string
+      - description: Subscription ID which uniquely identifies the Microsoft Azure
+          subscription. The subscription ID forms part of the URI for every service
+          call requiring it.
+        in: path
+        name: subscription_id
+        required: true
+        schema:
+          type: string
+      - description: Default parameter. Leave the value as "default".
+        in: path
+        name: default
+        required: true
+        schema:
+          type: string
+          x-ms-parameter-location: method
+        x-ms-parameter-location: method
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DisableSerialConsoleResult'
+          description: OK - Returns a JSON object
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetSerialConsoleSubscriptionNotFound'
+          description: Subscription not found - returns a JSON object with error details
+      summary: Disable Serial Console for a subscription
+      tags:
+      - SerialConsole
+      x-ms-examples:
+        Disable Serial Console for a subscription:
+          parameters:
+            api-version: 2018-05-01
+            default: default
+            subscriptionId: 00000000-00000-0000-0000-000000000000
+          responses:
+            "200":
+              body:
+                disabled: true
+            "404":
+              body:
+                code: SubscriptionNotFound
+                message: The subscription '00000000-00000-0000-0000-000000000000'
+                  could not be found.
+      x-openapi-router-controller: openapi_server.controllers.serial_console_controller
+  /subscriptions/{subscriptionId}/providers/Microsoft.SerialConsole/consoleServices/{default}/enableConsole:
+    post:
+      description: Enables the Serial Console service for all VMs and VM scale sets
+        in the provided subscription
+      operationId: enable_console
+      parameters:
+      - description: The API version to use for this operation.
+        in: query
+        name: api_version
+        required: true
+        schema:
+          type: string
+      - description: Subscription ID which uniquely identifies the Microsoft Azure
+          subscription. The subscription ID forms part of the URI for every service
+          call requiring it.
+        in: path
+        name: subscription_id
+        required: true
+        schema:
+          type: string
+      - description: Default parameter. Leave the value as "default".
+        in: path
+        name: default
+        required: true
+        schema:
+          type: string
+          x-ms-parameter-location: method
+        x-ms-parameter-location: method
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EnableSerialConsoleResult'
+          description: OK - Serial Console disabled
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetSerialConsoleSubscriptionNotFound'
+          description: Subscription not found - returns a JSON object with error details
+      summary: Enable Serial Console for a subscription
+      tags:
+      - SerialConsole
+      x-ms-examples:
+        Enable Serial Console for a subscription:
+          parameters:
+            api-version: 2018-05-01
+            default: default
+            subscriptionId: 00000000-00000-0000-0000-000000000000
+          responses:
+            "200":
+              body:
+                disabled: false
+            "404":
+              body:
+                code: SubscriptionNotFound
+                message: The subscription '00000000-00000-0000-0000-000000000000'
+                  could not be found.
+      x-openapi-router-controller: openapi_server.controllers.serial_console_controller
+components:
+  parameters:
+    ApiVersionParameter:
+      description: The API version to use for this operation.
+      in: query
+      name: api-version
+      required: true
+      schema:
+        type: string
+    SubscriptionIdParameter:
+      description: Subscription ID which uniquely identifies the Microsoft Azure subscription.
+        The subscription ID forms part of the URI for every service call requiring
+        it.
+      in: path
+      name: subscriptionId
+      required: true
+      schema:
+        type: string
+    defaultParameter:
+      description: Default parameter. Leave the value as "default".
+      in: path
+      name: default
+      required: true
+      schema:
+        type: string
+        x-ms-parameter-location: method
+      x-ms-parameter-location: method
+  schemas:
+    DisableSerialConsoleResult:
+      description: Returns whether or not Serial Console is disabled.
+      example:
+        disabled: true
+      properties:
+        disabled:
+          description: Whether or not Serial Console is disabled.
+          title: disabled
+          type: boolean
+      title: Serial Console Disable Result
+      type: object
+    EnableSerialConsoleResult:
+      description: Returns whether or not Serial Console is disabled (enabled).
+      example:
+        disabled: true
+      properties:
+        disabled:
+          description: Whether or not Serial Console is disabled (enabled).
+          title: disabled
+          type: boolean
+      title: Serial Console Enable Result
+      type: object
+    GetSerialConsoleSubscriptionNotFound:
+      description: Error saying that the provided subscription could not be found
+      example:
+        code: code
+        message: message
+      properties:
+        code:
+          description: Error code
+          title: code
+          type: string
+        message:
+          description: Subscription not found message
+          title: message
+          type: string
+      title: Serial Console subscription not found
+      type: object
+    SerialConsoleOperations:
+      description: Serial Console operations
+      example:
+        value:
+        - display:
+            provider: provider
+            resource: resource
+            description: description
+            operation: operation
+          isDataAction: isDataAction
+          name: name
+        - display:
+            provider: provider
+            resource: resource
+            description: description
+            operation: operation
+          isDataAction: isDataAction
+          name: name
+      properties:
+        value:
+          description: A list of Serial Console operations
+          items:
+            $ref: '#/components/schemas/SerialConsoleOperations_value_inner'
+          title: value
+          type: array
+      title: Serial Console operations
+      type: object
+    SerialConsoleStatus:
+      description: Returns whether or not Serial Console is disabled.
+      example:
+        disabled: true
+      properties:
+        disabled:
+          description: Whether or not Serial Console is disabled.
+          title: disabled
+          type: boolean
+      title: Serial Console GET Result
+      type: object
+    SerialConsoleOperations_value_inner_display:
+      example:
+        provider: provider
+        resource: resource
+        description: description
+        operation: operation
+      properties:
+        description:
+          title: description
+          type: string
+        operation:
+          title: operation
+          type: string
+        provider:
+          title: provider
+          type: string
+        resource:
+          title: resource
+          type: string
+      title: SerialConsoleOperations_value_inner_display
+      type: object
+    SerialConsoleOperations_value_inner:
+      example:
+        display:
+          provider: provider
+          resource: resource
+          description: description
+          operation: operation
+        isDataAction: isDataAction
+        name: name
+      properties:
+        display:
+          $ref: '#/components/schemas/SerialConsoleOperations_value_inner_display'
+        isDataAction:
+          title: isDataAction
+          type: string
+        name:
+          title: name
+          type: string
+      title: SerialConsoleOperations_value_inner
+      type: object
+  securitySchemes:
+    azure_auth:
+      description: Azure Active Directory OAuth2 Flow
+      flows:
+        implicit:
+          authorizationUrl: https://login.microsoftonline.com/common/oauth2/authorize
+          scopes:
+            user_impersonation: impersonate your user account
+      type: oauth2
+      x-tokenInfoFunc: openapi_server.controllers.security_controller.info_from_azure_auth
+      x-scopeValidateFunc: openapi_server.controllers.security_controller.validate_scope_azure_auth
+x-original-swagger-version: "2.0"
