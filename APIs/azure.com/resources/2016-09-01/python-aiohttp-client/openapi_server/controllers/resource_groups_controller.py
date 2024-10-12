@@ -1,0 +1,154 @@
+from typing import List, Dict
+from aiohttp import web
+
+from openapi_server.models.export_template_request import ExportTemplateRequest
+from openapi_server.models.resource_group import ResourceGroup
+from openapi_server.models.resource_group_export_result import ResourceGroupExportResult
+from openapi_server.models.resource_group_list_result import ResourceGroupListResult
+from openapi_server.models.resource_list_result import ResourceListResult
+from openapi_server import util
+
+
+async def resource_groups_check_existence(request: web.Request, resource_group_name, api_version, subscription_id) -> web.Response:
+    """resource_groups_check_existence
+
+    Checks whether a resource group exists.
+
+    :param resource_group_name: The name of the resource group to check. The name is case insensitive.
+    :type resource_group_name: str
+    :param api_version: The API version to use for this operation.
+    :type api_version: str
+    :param subscription_id: The ID of the target subscription.
+    :type subscription_id: str
+
+    """
+    return web.Response(status=200)
+
+
+async def resource_groups_create_or_update(request: web.Request, resource_group_name, api_version, subscription_id, parameters) -> web.Response:
+    """resource_groups_create_or_update
+
+    Creates a resource group.
+
+    :param resource_group_name: The name of the resource group to create or update.
+    :type resource_group_name: str
+    :param api_version: The API version to use for this operation.
+    :type api_version: str
+    :param subscription_id: The ID of the target subscription.
+    :type subscription_id: str
+    :param parameters: Parameters supplied to the create or update a resource group.
+    :type parameters: dict | bytes
+
+    """
+    parameters = ResourceGroup.from_dict(parameters)
+    return web.Response(status=200)
+
+
+async def resource_groups_delete(request: web.Request, resource_group_name, api_version, subscription_id) -> web.Response:
+    """Deletes a resource group.
+
+    When you delete a resource group, all of its resources are also deleted. Deleting a resource group deletes all of its template deployments and currently stored operations.
+
+    :param resource_group_name: The name of the resource group to delete. The name is case insensitive.
+    :type resource_group_name: str
+    :param api_version: The API version to use for this operation.
+    :type api_version: str
+    :param subscription_id: The ID of the target subscription.
+    :type subscription_id: str
+
+    """
+    return web.Response(status=200)
+
+
+async def resource_groups_export_template(request: web.Request, resource_group_name, api_version, subscription_id, parameters) -> web.Response:
+    """resource_groups_export_template
+
+    Captures the specified resource group as a template.
+
+    :param resource_group_name: The name of the resource group to export as a template.
+    :type resource_group_name: str
+    :param api_version: The API version to use for this operation.
+    :type api_version: str
+    :param subscription_id: The ID of the target subscription.
+    :type subscription_id: str
+    :param parameters: Parameters for exporting the template.
+    :type parameters: dict | bytes
+
+    """
+    parameters = ExportTemplateRequest.from_dict(parameters)
+    return web.Response(status=200)
+
+
+async def resource_groups_get(request: web.Request, resource_group_name, api_version, subscription_id) -> web.Response:
+    """resource_groups_get
+
+    Gets a resource group.
+
+    :param resource_group_name: The name of the resource group to get. The name is case insensitive.
+    :type resource_group_name: str
+    :param api_version: The API version to use for this operation.
+    :type api_version: str
+    :param subscription_id: The ID of the target subscription.
+    :type subscription_id: str
+
+    """
+    return web.Response(status=200)
+
+
+async def resource_groups_list(request: web.Request, api_version, subscription_id, filter=None, top=None) -> web.Response:
+    """resource_groups_list
+
+    Gets all the resource groups for a subscription.
+
+    :param api_version: The API version to use for this operation.
+    :type api_version: str
+    :param subscription_id: The ID of the target subscription.
+    :type subscription_id: str
+    :param filter: The filter to apply on the operation.
+    :type filter: str
+    :param top: The number of results to return. If null is passed, returns all resource groups.
+    :type top: int
+
+    """
+    return web.Response(status=200)
+
+
+async def resource_groups_list_resources(request: web.Request, resource_group_name, api_version, subscription_id, filter=None, expand=None, top=None) -> web.Response:
+    """resource_groups_list_resources
+
+    Get all the resources for a resource group.
+
+    :param resource_group_name: The resource group with the resources to get.
+    :type resource_group_name: str
+    :param api_version: The API version to use for this operation.
+    :type api_version: str
+    :param subscription_id: The ID of the target subscription.
+    :type subscription_id: str
+    :param filter: The filter to apply on the operation.
+    :type filter: str
+    :param expand: The $expand query parameter
+    :type expand: str
+    :param top: The number of results to return. If null is passed, returns all resources.
+    :type top: int
+
+    """
+    return web.Response(status=200)
+
+
+async def resource_groups_patch(request: web.Request, resource_group_name, api_version, subscription_id, parameters) -> web.Response:
+    """Updates a resource group.
+
+    Resource groups can be updated through a simple PATCH operation to a group address. The format of the request is the same as that for creating a resource group. If a field is unspecified, the current value is retained.
+
+    :param resource_group_name: The name of the resource group to update. The name is case insensitive.
+    :type resource_group_name: str
+    :param api_version: The API version to use for this operation.
+    :type api_version: str
+    :param subscription_id: The ID of the target subscription.
+    :type subscription_id: str
+    :param parameters: Parameters supplied to update a resource group.
+    :type parameters: dict | bytes
+
+    """
+    parameters = ResourceGroup.from_dict(parameters)
+    return web.Response(status=200)

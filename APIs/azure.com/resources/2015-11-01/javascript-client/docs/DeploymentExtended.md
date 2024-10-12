@@ -1,0 +1,11 @@
+# ResourceManagementClient.DeploymentExtended
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**id** | **String** | Gets or sets the ID of the deployment. | [optional] [readonly] 
+**name** | **String** | Gets or sets the name of the deployment. | 
+**properties** | [**DeploymentPropertiesExtended**](DeploymentPropertiesExtended.md) |  | [optional] 
+
+

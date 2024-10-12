@@ -1,0 +1,15 @@
+
+
+# AliasPathType
+
+The type of the paths for alias. 
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**apiVersions** | **List&lt;String&gt;** | The API versions. |  [optional] |
+|**path** | **String** | The path of an alias. |  [optional] |
+
+
+
