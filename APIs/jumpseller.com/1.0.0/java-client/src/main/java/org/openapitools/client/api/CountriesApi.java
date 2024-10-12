@@ -1,0 +1,685 @@
+/*
+ * Jumpseller API
+ * # Endpoint Structure  All URLs are in the format:   ```text https://api.jumpseller.com/v1/path.json?login=XXXXXX&authtoken=storetoken   ```  The path is prefixed by the API version and the URL takes as parameters the login (your store specific API login) and your authentication token. <br/><br/> ***  # Version  The current version of the API is **v1**.   If we change the API in backward-incompatible ways, we'll increase the version number and maintain stable support for the old urls. <br/><br/> ***  # Authentication  The API uses a token-based authentication with a combination of a login key and an auth token. **Both parameters can be found on the left sidebar of the Account section, accessed from the main menu of your Admin Panel**. The auth token of the user can be reset on the same page.  ![Store Login](/images/support/api/apilogin.png)  The auth token is a **32 characters** string.  If you are developing a Jumpseller App, the authentication should be done using [OAuth-2](/support/oauth-2). Please read the article [Build an App](/support/apps) for more information. <br/><br/> ***  # Curl Examples  To request all the products at your store, you would append the products index path to the base url to create an URL with the format:    ```text https://api.jumpseller.com/v1/products.json?login=XXXXXX&authtoken=XXXXX ```  In curl, you can invoque that URL with:    ```text curl -X GET \"https://api.jumpseller.com/v1/products.json?login=XXXXXX&authtoken=XXXXX\" ```  To create a product, you will include the JSON data and specify the MIME Type:    ```text curl -X POST -d '{ \"product\" : {\"name\": \"My new Product!\", \"price\": 100} }' \"https://api.jumpseller.com/v1/products.json?login=XXXXXX&authtoken=XXXXX\" -H \"Content-Type:application/json\" ```  and to update the product identified with 123:    ```text curl -X PUT -d '{ \"product\" : {\"name\": \"My updated Product!\", \"price\": 99} }' \"https://api.jumpseller.com/v1/products/123.json?login=XXXXXX&authtoken=XXXXX\" -H \"Content-Type:application/json\" ```  or delete it:    ```text curl -X DELETE \"https://api.jumpseller.com/v1/products/123.json?login=XXXXXX&authtoken=XXXXX\" -H \"Content-Type:application/json\" ``` <br/><br/> ***  # PHP Examples  Create a new Product (POST method)  ```php $url = 'https://api.jumpseller.com/v1/products.json?login=XXXXX&authtoken=XXXXX; $ch = curl_init($url); curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));  curl_setopt($ch, CURLOPT_CUSTOMREQUEST, \"POST\"); //post method curl_setopt($ch, CURLOPT_POSTFIELDS, '{ \"product\" : {\"name\": \"My updated Product!\", \"price\": 99} }');  $result = curl_exec($ch); print_r($result); curl_close($ch); ``` <br/><br/> ***  # Plain JSON only. No XML.  * We only support JSON for data serialization. * Our node format has no root element.   * We use snake_case to describe attribute keys (like \"created_at\").   * All empty value are replaced with **null** strings. * All API URLs end in .json to indicate that they accept and return JSON. * POST and PUT methods require you to explicitly state the MIME type of your request's body content as **\"application/json\"**. <br/><br/> ***  # Rate Limit You can perform a maximum of:  + 240 (two hundred forty) requests per minute and + 8 (eight) requests per second   If you exceed this limit, you'll get a 403 Forbidden (Rate Limit Exceeded) response for subsequent requests.    The rate limits apply by IP address and by store. This means that multiple requests on different stores are not counted towards the same rate limit.  This limits are necessary to ensure resources are correctly used. Your application should be aware of this limits and retry any unsuccessful request, check the following Ruby stub:  ```ruby tries = 0; max_tries = 3; begin   HTTParty.send(method, uri) # perform an API call.   sleep 0.5   tries += 1 rescue   unless tries >= max_tries     sleep 1.0 # wait the necessary time before retrying the call again.     retry   end end ```  Finally, you can review the Response Headers of each request:  ```text Jumpseller-PerMinuteRateLimit-Limit: 60   Jumpseller-PerMinuteRateLimit-Remaining: 59 # requests available on the per-second interval   Jumpseller-PerSecondRateLimit-Limit: 2   Jumpseller-PerSecondRateLimit-Remaining: 1 # requests available on the per-second interval ```   to better model your application requests intervals.  In the event of getting your IP banned, the Response Header `Jumpseller-BannedByRateLimit-Reset` informs you the time when will your ban be reseted. <br/><br/> ***  # Pagination  By default we will return 50 objects (products, orders, etc) per page. There is a maximum of 100, using a query string `&limit=100`. If the result set gets paginated it is your responsibility to check the next page for more objects -- you do this by using query strings `&page=2`, `&page=3` and so on.  ```text https://api.jumpseller.com/v1/products.json?login=XXXXXX&authtoken=XXXXX&page=3&limit=100 ``` <br/><br/> ***  # More * [Jumpseller API wrapper](https://gitlab.com/jumpseller-api/ruby) provides a public Ruby abstraction over our API; * [Apps Page](/apps) showcases external integrations with Jumpseller done by technical experts; * [Imgbb API](https://api.imgbb.com/) provides an easy way to upload and temporaly host for images and files. <br/><br/> *** <br/><br/> 
+ *
+ * The version of the OpenAPI document: 1.0.0
+ * 
+ *
+ * NOTE: This class is auto generated by OpenAPI Generator (https://openapi-generator.tech).
+ * https://openapi-generator.tech
+ * Do not edit the class manually.
+ */
+
+
+package org.openapitools.client.api;
+
+import org.openapitools.client.ApiCallback;
+import org.openapitools.client.ApiClient;
+import org.openapitools.client.ApiException;
+import org.openapitools.client.ApiResponse;
+import org.openapitools.client.Configuration;
+import org.openapitools.client.Pair;
+import org.openapitools.client.ProgressRequestBody;
+import org.openapitools.client.ProgressResponseBody;
+
+import com.google.gson.reflect.TypeToken;
+
+import java.io.IOException;
+
+
+import org.openapitools.client.model.Country;
+import org.openapitools.client.model.NotFound;
+import org.openapitools.client.model.Region;
+
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+public class CountriesApi {
+    private ApiClient localVarApiClient;
+    private int localHostIndex;
+    private String localCustomBaseUrl;
+
+    public CountriesApi() {
+        this(Configuration.getDefaultApiClient());
+    }
+
+    public CountriesApi(ApiClient apiClient) {
+        this.localVarApiClient = apiClient;
+    }
+
+    public ApiClient getApiClient() {
+        return localVarApiClient;
+    }
+
+    public void setApiClient(ApiClient apiClient) {
+        this.localVarApiClient = apiClient;
+    }
+
+    public int getHostIndex() {
+        return localHostIndex;
+    }
+
+    public void setHostIndex(int hostIndex) {
+        this.localHostIndex = hostIndex;
+    }
+
+    public String getCustomBaseUrl() {
+        return localCustomBaseUrl;
+    }
+
+    public void setCustomBaseUrl(String customBaseUrl) {
+        this.localCustomBaseUrl = customBaseUrl;
+    }
+
+    /**
+     * Build call for countriesCountryCodeJsonGet
+     * @param login API OAuth login. (required)
+     * @param authtoken API OAuth token. (required)
+     * @param countryCode ISO3166 Country Code (required)
+     * @param _callback Callback for upload/download progress
+     * @return Call to execute
+     * @throws ApiException If fail to serialize the request body object
+     * @http.response.details
+     <table summary="Response Details" border="1">
+        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> A Country information object </td><td>  -  </td></tr>
+        <tr><td> 404 </td><td> Country Not Found. </td><td>  -  </td></tr>
+     </table>
+     */
+    public okhttp3.Call countriesCountryCodeJsonGetCall(String login, String authtoken, String countryCode, final ApiCallback _callback) throws ApiException {
+        String basePath = null;
+        // Operation Servers
+        String[] localBasePaths = new String[] {  };
+
+        // Determine Base Path to Use
+        if (localCustomBaseUrl != null){
+            basePath = localCustomBaseUrl;
+        } else if ( localBasePaths.length > 0 ) {
+            basePath = localBasePaths[localHostIndex];
+        } else {
+            basePath = null;
+        }
+
+        Object localVarPostBody = null;
+
+        // create path and map variables
+        String localVarPath = "/countries/{country_code}.json"
+            .replace("{" + "country_code" + "}", localVarApiClient.escapeString(countryCode.toString()));
+
+        List<Pair> localVarQueryParams = new ArrayList<Pair>();
+        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
+        Map<String, String> localVarCookieParams = new HashMap<String, String>();
+        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
+
+        if (login != null) {
+            localVarQueryParams.addAll(localVarApiClient.parameterToPair("login", login));
+        }
+
+        if (authtoken != null) {
+            localVarQueryParams.addAll(localVarApiClient.parameterToPair("authtoken", authtoken));
+        }
+
+        final String[] localVarAccepts = {
+            "application/json"
+        };
+        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
+        if (localVarAccept != null) {
+            localVarHeaderParams.put("Accept", localVarAccept);
+        }
+
+        final String[] localVarContentTypes = {
+        };
+        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
+        if (localVarContentType != null) {
+            localVarHeaderParams.put("Content-Type", localVarContentType);
+        }
+
+        String[] localVarAuthNames = new String[] {  };
+        return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
+    }
+
+    @SuppressWarnings("rawtypes")
+    private okhttp3.Call countriesCountryCodeJsonGetValidateBeforeCall(String login, String authtoken, String countryCode, final ApiCallback _callback) throws ApiException {
+        // verify the required parameter 'login' is set
+        if (login == null) {
+            throw new ApiException("Missing the required parameter 'login' when calling countriesCountryCodeJsonGet(Async)");
+        }
+
+        // verify the required parameter 'authtoken' is set
+        if (authtoken == null) {
+            throw new ApiException("Missing the required parameter 'authtoken' when calling countriesCountryCodeJsonGet(Async)");
+        }
+
+        // verify the required parameter 'countryCode' is set
+        if (countryCode == null) {
+            throw new ApiException("Missing the required parameter 'countryCode' when calling countriesCountryCodeJsonGet(Async)");
+        }
+
+        return countriesCountryCodeJsonGetCall(login, authtoken, countryCode, _callback);
+
+    }
+
+    /**
+     * Retrieve a single Country information.
+     * 
+     * @param login API OAuth login. (required)
+     * @param authtoken API OAuth token. (required)
+     * @param countryCode ISO3166 Country Code (required)
+     * @return Country
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @http.response.details
+     <table summary="Response Details" border="1">
+        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> A Country information object </td><td>  -  </td></tr>
+        <tr><td> 404 </td><td> Country Not Found. </td><td>  -  </td></tr>
+     </table>
+     */
+    public Country countriesCountryCodeJsonGet(String login, String authtoken, String countryCode) throws ApiException {
+        ApiResponse<Country> localVarResp = countriesCountryCodeJsonGetWithHttpInfo(login, authtoken, countryCode);
+        return localVarResp.getData();
+    }
+
+    /**
+     * Retrieve a single Country information.
+     * 
+     * @param login API OAuth login. (required)
+     * @param authtoken API OAuth token. (required)
+     * @param countryCode ISO3166 Country Code (required)
+     * @return ApiResponse&lt;Country&gt;
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @http.response.details
+     <table summary="Response Details" border="1">
+        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> A Country information object </td><td>  -  </td></tr>
+        <tr><td> 404 </td><td> Country Not Found. </td><td>  -  </td></tr>
+     </table>
+     */
+    public ApiResponse<Country> countriesCountryCodeJsonGetWithHttpInfo(String login, String authtoken, String countryCode) throws ApiException {
+        okhttp3.Call localVarCall = countriesCountryCodeJsonGetValidateBeforeCall(login, authtoken, countryCode, null);
+        Type localVarReturnType = new TypeToken<Country>(){}.getType();
+        return localVarApiClient.execute(localVarCall, localVarReturnType);
+    }
+
+    /**
+     * Retrieve a single Country information. (asynchronously)
+     * 
+     * @param login API OAuth login. (required)
+     * @param authtoken API OAuth token. (required)
+     * @param countryCode ISO3166 Country Code (required)
+     * @param _callback The callback to be executed when the API call finishes
+     * @return The request call
+     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
+     * @http.response.details
+     <table summary="Response Details" border="1">
+        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> A Country information object </td><td>  -  </td></tr>
+        <tr><td> 404 </td><td> Country Not Found. </td><td>  -  </td></tr>
+     </table>
+     */
+    public okhttp3.Call countriesCountryCodeJsonGetAsync(String login, String authtoken, String countryCode, final ApiCallback<Country> _callback) throws ApiException {
+
+        okhttp3.Call localVarCall = countriesCountryCodeJsonGetValidateBeforeCall(login, authtoken, countryCode, _callback);
+        Type localVarReturnType = new TypeToken<Country>(){}.getType();
+        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
+        return localVarCall;
+    }
+    /**
+     * Build call for countriesCountryCodeRegionsJsonGet
+     * @param login API OAuth login. (required)
+     * @param authtoken API OAuth token. (required)
+     * @param countryCode ISO3166 Country Code (required)
+     * @param _callback Callback for upload/download progress
+     * @return Call to execute
+     * @throws ApiException If fail to serialize the request body object
+     * @http.response.details
+     <table summary="Response Details" border="1">
+        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> An array of Regions from a single Country </td><td>  -  </td></tr>
+        <tr><td> 404 </td><td> Country Not Found. </td><td>  -  </td></tr>
+     </table>
+     */
+    public okhttp3.Call countriesCountryCodeRegionsJsonGetCall(String login, String authtoken, String countryCode, final ApiCallback _callback) throws ApiException {
+        String basePath = null;
+        // Operation Servers
+        String[] localBasePaths = new String[] {  };
+
+        // Determine Base Path to Use
+        if (localCustomBaseUrl != null){
+            basePath = localCustomBaseUrl;
+        } else if ( localBasePaths.length > 0 ) {
+            basePath = localBasePaths[localHostIndex];
+        } else {
+            basePath = null;
+        }
+
+        Object localVarPostBody = null;
+
+        // create path and map variables
+        String localVarPath = "/countries/{country_code}/regions.json"
+            .replace("{" + "country_code" + "}", localVarApiClient.escapeString(countryCode.toString()));
+
+        List<Pair> localVarQueryParams = new ArrayList<Pair>();
+        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
+        Map<String, String> localVarCookieParams = new HashMap<String, String>();
+        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
+
+        if (login != null) {
+            localVarQueryParams.addAll(localVarApiClient.parameterToPair("login", login));
+        }
+
+        if (authtoken != null) {
+            localVarQueryParams.addAll(localVarApiClient.parameterToPair("authtoken", authtoken));
+        }
+
+        final String[] localVarAccepts = {
+            "application/json"
+        };
+        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
+        if (localVarAccept != null) {
+            localVarHeaderParams.put("Accept", localVarAccept);
+        }
+
+        final String[] localVarContentTypes = {
+        };
+        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
+        if (localVarContentType != null) {
+            localVarHeaderParams.put("Content-Type", localVarContentType);
+        }
+
+        String[] localVarAuthNames = new String[] {  };
+        return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
+    }
+
+    @SuppressWarnings("rawtypes")
+    private okhttp3.Call countriesCountryCodeRegionsJsonGetValidateBeforeCall(String login, String authtoken, String countryCode, final ApiCallback _callback) throws ApiException {
+        // verify the required parameter 'login' is set
+        if (login == null) {
+            throw new ApiException("Missing the required parameter 'login' when calling countriesCountryCodeRegionsJsonGet(Async)");
+        }
+
+        // verify the required parameter 'authtoken' is set
+        if (authtoken == null) {
+            throw new ApiException("Missing the required parameter 'authtoken' when calling countriesCountryCodeRegionsJsonGet(Async)");
+        }
+
+        // verify the required parameter 'countryCode' is set
+        if (countryCode == null) {
+            throw new ApiException("Missing the required parameter 'countryCode' when calling countriesCountryCodeRegionsJsonGet(Async)");
+        }
+
+        return countriesCountryCodeRegionsJsonGetCall(login, authtoken, countryCode, _callback);
+
+    }
+
+    /**
+     * Retrieve all Regions from a single Country.
+     * 
+     * @param login API OAuth login. (required)
+     * @param authtoken API OAuth token. (required)
+     * @param countryCode ISO3166 Country Code (required)
+     * @return List&lt;Region&gt;
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @http.response.details
+     <table summary="Response Details" border="1">
+        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> An array of Regions from a single Country </td><td>  -  </td></tr>
+        <tr><td> 404 </td><td> Country Not Found. </td><td>  -  </td></tr>
+     </table>
+     */
+    public List<Region> countriesCountryCodeRegionsJsonGet(String login, String authtoken, String countryCode) throws ApiException {
+        ApiResponse<List<Region>> localVarResp = countriesCountryCodeRegionsJsonGetWithHttpInfo(login, authtoken, countryCode);
+        return localVarResp.getData();
+    }
+
+    /**
+     * Retrieve all Regions from a single Country.
+     * 
+     * @param login API OAuth login. (required)
+     * @param authtoken API OAuth token. (required)
+     * @param countryCode ISO3166 Country Code (required)
+     * @return ApiResponse&lt;List&lt;Region&gt;&gt;
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @http.response.details
+     <table summary="Response Details" border="1">
+        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> An array of Regions from a single Country </td><td>  -  </td></tr>
+        <tr><td> 404 </td><td> Country Not Found. </td><td>  -  </td></tr>
+     </table>
+     */
+    public ApiResponse<List<Region>> countriesCountryCodeRegionsJsonGetWithHttpInfo(String login, String authtoken, String countryCode) throws ApiException {
+        okhttp3.Call localVarCall = countriesCountryCodeRegionsJsonGetValidateBeforeCall(login, authtoken, countryCode, null);
+        Type localVarReturnType = new TypeToken<List<Region>>(){}.getType();
+        return localVarApiClient.execute(localVarCall, localVarReturnType);
+    }
+
+    /**
+     * Retrieve all Regions from a single Country. (asynchronously)
+     * 
+     * @param login API OAuth login. (required)
+     * @param authtoken API OAuth token. (required)
+     * @param countryCode ISO3166 Country Code (required)
+     * @param _callback The callback to be executed when the API call finishes
+     * @return The request call
+     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
+     * @http.response.details
+     <table summary="Response Details" border="1">
+        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> An array of Regions from a single Country </td><td>  -  </td></tr>
+        <tr><td> 404 </td><td> Country Not Found. </td><td>  -  </td></tr>
+     </table>
+     */
+    public okhttp3.Call countriesCountryCodeRegionsJsonGetAsync(String login, String authtoken, String countryCode, final ApiCallback<List<Region>> _callback) throws ApiException {
+
+        okhttp3.Call localVarCall = countriesCountryCodeRegionsJsonGetValidateBeforeCall(login, authtoken, countryCode, _callback);
+        Type localVarReturnType = new TypeToken<List<Region>>(){}.getType();
+        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
+        return localVarCall;
+    }
+    /**
+     * Build call for countriesCountryCodeRegionsRegionCodeJsonGet
+     * @param login API OAuth login. (required)
+     * @param authtoken API OAuth token. (required)
+     * @param countryCode ISO3166 Country Code (required)
+     * @param regionCode Region Code (required)
+     * @param _callback Callback for upload/download progress
+     * @return Call to execute
+     * @throws ApiException If fail to serialize the request body object
+     * @http.response.details
+     <table summary="Response Details" border="1">
+        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> A Region information object </td><td>  -  </td></tr>
+        <tr><td> 404 </td><td> Country or Region not found. </td><td>  -  </td></tr>
+     </table>
+     */
+    public okhttp3.Call countriesCountryCodeRegionsRegionCodeJsonGetCall(String login, String authtoken, String countryCode, String regionCode, final ApiCallback _callback) throws ApiException {
+        String basePath = null;
+        // Operation Servers
+        String[] localBasePaths = new String[] {  };
+
+        // Determine Base Path to Use
+        if (localCustomBaseUrl != null){
+            basePath = localCustomBaseUrl;
+        } else if ( localBasePaths.length > 0 ) {
+            basePath = localBasePaths[localHostIndex];
+        } else {
+            basePath = null;
+        }
+
+        Object localVarPostBody = null;
+
+        // create path and map variables
+        String localVarPath = "/countries/{country_code}/regions/{region_code}.json"
+            .replace("{" + "country_code" + "}", localVarApiClient.escapeString(countryCode.toString()))
+            .replace("{" + "region_code" + "}", localVarApiClient.escapeString(regionCode.toString()));
+
+        List<Pair> localVarQueryParams = new ArrayList<Pair>();
+        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
+        Map<String, String> localVarCookieParams = new HashMap<String, String>();
+        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
+
+        if (login != null) {
+            localVarQueryParams.addAll(localVarApiClient.parameterToPair("login", login));
+        }
+
+        if (authtoken != null) {
+            localVarQueryParams.addAll(localVarApiClient.parameterToPair("authtoken", authtoken));
+        }
+
+        final String[] localVarAccepts = {
+            "application/json"
+        };
+        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
+        if (localVarAccept != null) {
+            localVarHeaderParams.put("Accept", localVarAccept);
+        }
+
+        final String[] localVarContentTypes = {
+        };
+        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
+        if (localVarContentType != null) {
+            localVarHeaderParams.put("Content-Type", localVarContentType);
+        }
+
+        String[] localVarAuthNames = new String[] {  };
+        return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
+    }
+
+    @SuppressWarnings("rawtypes")
+    private okhttp3.Call countriesCountryCodeRegionsRegionCodeJsonGetValidateBeforeCall(String login, String authtoken, String countryCode, String regionCode, final ApiCallback _callback) throws ApiException {
+        // verify the required parameter 'login' is set
+        if (login == null) {
+            throw new ApiException("Missing the required parameter 'login' when calling countriesCountryCodeRegionsRegionCodeJsonGet(Async)");
+        }
+
+        // verify the required parameter 'authtoken' is set
+        if (authtoken == null) {
+            throw new ApiException("Missing the required parameter 'authtoken' when calling countriesCountryCodeRegionsRegionCodeJsonGet(Async)");
+        }
+
+        // verify the required parameter 'countryCode' is set
+        if (countryCode == null) {
+            throw new ApiException("Missing the required parameter 'countryCode' when calling countriesCountryCodeRegionsRegionCodeJsonGet(Async)");
+        }
+
+        // verify the required parameter 'regionCode' is set
+        if (regionCode == null) {
+            throw new ApiException("Missing the required parameter 'regionCode' when calling countriesCountryCodeRegionsRegionCodeJsonGet(Async)");
+        }
+
+        return countriesCountryCodeRegionsRegionCodeJsonGetCall(login, authtoken, countryCode, regionCode, _callback);
+
+    }
+
+    /**
+     * Retrieve a single Region information object.
+     * 
+     * @param login API OAuth login. (required)
+     * @param authtoken API OAuth token. (required)
+     * @param countryCode ISO3166 Country Code (required)
+     * @param regionCode Region Code (required)
+     * @return Region
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @http.response.details
+     <table summary="Response Details" border="1">
+        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> A Region information object </td><td>  -  </td></tr>
+        <tr><td> 404 </td><td> Country or Region not found. </td><td>  -  </td></tr>
+     </table>
+     */
+    public Region countriesCountryCodeRegionsRegionCodeJsonGet(String login, String authtoken, String countryCode, String regionCode) throws ApiException {
+        ApiResponse<Region> localVarResp = countriesCountryCodeRegionsRegionCodeJsonGetWithHttpInfo(login, authtoken, countryCode, regionCode);
+        return localVarResp.getData();
+    }
+
+    /**
+     * Retrieve a single Region information object.
+     * 
+     * @param login API OAuth login. (required)
+     * @param authtoken API OAuth token. (required)
+     * @param countryCode ISO3166 Country Code (required)
+     * @param regionCode Region Code (required)
+     * @return ApiResponse&lt;Region&gt;
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @http.response.details
+     <table summary="Response Details" border="1">
+        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> A Region information object </td><td>  -  </td></tr>
+        <tr><td> 404 </td><td> Country or Region not found. </td><td>  -  </td></tr>
+     </table>
+     */
+    public ApiResponse<Region> countriesCountryCodeRegionsRegionCodeJsonGetWithHttpInfo(String login, String authtoken, String countryCode, String regionCode) throws ApiException {
+        okhttp3.Call localVarCall = countriesCountryCodeRegionsRegionCodeJsonGetValidateBeforeCall(login, authtoken, countryCode, regionCode, null);
+        Type localVarReturnType = new TypeToken<Region>(){}.getType();
+        return localVarApiClient.execute(localVarCall, localVarReturnType);
+    }
+
+    /**
+     * Retrieve a single Region information object. (asynchronously)
+     * 
+     * @param login API OAuth login. (required)
+     * @param authtoken API OAuth token. (required)
+     * @param countryCode ISO3166 Country Code (required)
+     * @param regionCode Region Code (required)
+     * @param _callback The callback to be executed when the API call finishes
+     * @return The request call
+     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
+     * @http.response.details
+     <table summary="Response Details" border="1">
+        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> A Region information object </td><td>  -  </td></tr>
+        <tr><td> 404 </td><td> Country or Region not found. </td><td>  -  </td></tr>
+     </table>
+     */
+    public okhttp3.Call countriesCountryCodeRegionsRegionCodeJsonGetAsync(String login, String authtoken, String countryCode, String regionCode, final ApiCallback<Region> _callback) throws ApiException {
+
+        okhttp3.Call localVarCall = countriesCountryCodeRegionsRegionCodeJsonGetValidateBeforeCall(login, authtoken, countryCode, regionCode, _callback);
+        Type localVarReturnType = new TypeToken<Region>(){}.getType();
+        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
+        return localVarCall;
+    }
+    /**
+     * Build call for countriesJsonGet
+     * @param login API OAuth login. (required)
+     * @param authtoken API OAuth token. (required)
+     * @param _callback Callback for upload/download progress
+     * @return Call to execute
+     * @throws ApiException If fail to serialize the request body object
+     * @http.response.details
+     <table summary="Response Details" border="1">
+        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> An array of Countries </td><td>  -  </td></tr>
+     </table>
+     */
+    public okhttp3.Call countriesJsonGetCall(String login, String authtoken, final ApiCallback _callback) throws ApiException {
+        String basePath = null;
+        // Operation Servers
+        String[] localBasePaths = new String[] {  };
+
+        // Determine Base Path to Use
+        if (localCustomBaseUrl != null){
+            basePath = localCustomBaseUrl;
+        } else if ( localBasePaths.length > 0 ) {
+            basePath = localBasePaths[localHostIndex];
+        } else {
+            basePath = null;
+        }
+
+        Object localVarPostBody = null;
+
+        // create path and map variables
+        String localVarPath = "/countries.json";
+
+        List<Pair> localVarQueryParams = new ArrayList<Pair>();
+        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
+        Map<String, String> localVarCookieParams = new HashMap<String, String>();
+        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
+
+        if (login != null) {
+            localVarQueryParams.addAll(localVarApiClient.parameterToPair("login", login));
+        }
+
+        if (authtoken != null) {
+            localVarQueryParams.addAll(localVarApiClient.parameterToPair("authtoken", authtoken));
+        }
+
+        final String[] localVarAccepts = {
+            "application/json"
+        };
+        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
+        if (localVarAccept != null) {
+            localVarHeaderParams.put("Accept", localVarAccept);
+        }
+
+        final String[] localVarContentTypes = {
+        };
+        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
+        if (localVarContentType != null) {
+            localVarHeaderParams.put("Content-Type", localVarContentType);
+        }
+
+        String[] localVarAuthNames = new String[] {  };
+        return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
+    }
+
+    @SuppressWarnings("rawtypes")
+    private okhttp3.Call countriesJsonGetValidateBeforeCall(String login, String authtoken, final ApiCallback _callback) throws ApiException {
+        // verify the required parameter 'login' is set
+        if (login == null) {
+            throw new ApiException("Missing the required parameter 'login' when calling countriesJsonGet(Async)");
+        }
+
+        // verify the required parameter 'authtoken' is set
+        if (authtoken == null) {
+            throw new ApiException("Missing the required parameter 'authtoken' when calling countriesJsonGet(Async)");
+        }
+
+        return countriesJsonGetCall(login, authtoken, _callback);
+
+    }
+
+    /**
+     * Retrieve all Countries.
+     * 
+     * @param login API OAuth login. (required)
+     * @param authtoken API OAuth token. (required)
+     * @return List&lt;Country&gt;
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @http.response.details
+     <table summary="Response Details" border="1">
+        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> An array of Countries </td><td>  -  </td></tr>
+     </table>
+     */
+    public List<Country> countriesJsonGet(String login, String authtoken) throws ApiException {
+        ApiResponse<List<Country>> localVarResp = countriesJsonGetWithHttpInfo(login, authtoken);
+        return localVarResp.getData();
+    }
+
+    /**
+     * Retrieve all Countries.
+     * 
+     * @param login API OAuth login. (required)
+     * @param authtoken API OAuth token. (required)
+     * @return ApiResponse&lt;List&lt;Country&gt;&gt;
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @http.response.details
+     <table summary="Response Details" border="1">
+        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> An array of Countries </td><td>  -  </td></tr>
+     </table>
+     */
+    public ApiResponse<List<Country>> countriesJsonGetWithHttpInfo(String login, String authtoken) throws ApiException {
+        okhttp3.Call localVarCall = countriesJsonGetValidateBeforeCall(login, authtoken, null);
+        Type localVarReturnType = new TypeToken<List<Country>>(){}.getType();
+        return localVarApiClient.execute(localVarCall, localVarReturnType);
+    }
+
+    /**
+     * Retrieve all Countries. (asynchronously)
+     * 
+     * @param login API OAuth login. (required)
+     * @param authtoken API OAuth token. (required)
+     * @param _callback The callback to be executed when the API call finishes
+     * @return The request call
+     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
+     * @http.response.details
+     <table summary="Response Details" border="1">
+        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> An array of Countries </td><td>  -  </td></tr>
+     </table>
+     */
+    public okhttp3.Call countriesJsonGetAsync(String login, String authtoken, final ApiCallback<List<Country>> _callback) throws ApiException {
+
+        okhttp3.Call localVarCall = countriesJsonGetValidateBeforeCall(login, authtoken, _callback);
+        Type localVarReturnType = new TypeToken<List<Country>>(){}.getType();
+        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
+        return localVarCall;
+    }
+}

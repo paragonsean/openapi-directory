@@ -1,0 +1,17 @@
+
+
+# AudioType
+
+## Enum
+
+
+* `CLEAN_EFFECTS` (value: `"CLEAN_EFFECTS"`)
+
+* `HEARING_IMPAIRED` (value: `"HEARING_IMPAIRED"`)
+
+* `UNDEFINED` (value: `"UNDEFINED"`)
+
+* `VISUAL_IMPAIRED_COMMENTARY` (value: `"VISUAL_IMPAIRED_COMMENTARY"`)
+
+
+

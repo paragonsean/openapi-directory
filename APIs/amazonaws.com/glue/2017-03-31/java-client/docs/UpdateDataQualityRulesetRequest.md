@@ -1,0 +1,15 @@
+
+
+# UpdateDataQualityRulesetRequest
+
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**name** | [**String**](String.md) |  |  |
+|**description** | [**String**](String.md) |  |  [optional] |
+|**ruleset** | [**String**](String.md) |  |  [optional] |
+
+
+

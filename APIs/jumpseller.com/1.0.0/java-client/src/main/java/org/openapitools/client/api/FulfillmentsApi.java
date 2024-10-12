@@ -1,0 +1,677 @@
+/*
+ * Jumpseller API
+ * # Endpoint Structure  All URLs are in the format:   ```text https://api.jumpseller.com/v1/path.json?login=XXXXXX&authtoken=storetoken   ```  The path is prefixed by the API version and the URL takes as parameters the login (your store specific API login) and your authentication token. <br/><br/> ***  # Version  The current version of the API is **v1**.   If we change the API in backward-incompatible ways, we'll increase the version number and maintain stable support for the old urls. <br/><br/> ***  # Authentication  The API uses a token-based authentication with a combination of a login key and an auth token. **Both parameters can be found on the left sidebar of the Account section, accessed from the main menu of your Admin Panel**. The auth token of the user can be reset on the same page.  ![Store Login](/images/support/api/apilogin.png)  The auth token is a **32 characters** string.  If you are developing a Jumpseller App, the authentication should be done using [OAuth-2](/support/oauth-2). Please read the article [Build an App](/support/apps) for more information. <br/><br/> ***  # Curl Examples  To request all the products at your store, you would append the products index path to the base url to create an URL with the format:    ```text https://api.jumpseller.com/v1/products.json?login=XXXXXX&authtoken=XXXXX ```  In curl, you can invoque that URL with:    ```text curl -X GET \"https://api.jumpseller.com/v1/products.json?login=XXXXXX&authtoken=XXXXX\" ```  To create a product, you will include the JSON data and specify the MIME Type:    ```text curl -X POST -d '{ \"product\" : {\"name\": \"My new Product!\", \"price\": 100} }' \"https://api.jumpseller.com/v1/products.json?login=XXXXXX&authtoken=XXXXX\" -H \"Content-Type:application/json\" ```  and to update the product identified with 123:    ```text curl -X PUT -d '{ \"product\" : {\"name\": \"My updated Product!\", \"price\": 99} }' \"https://api.jumpseller.com/v1/products/123.json?login=XXXXXX&authtoken=XXXXX\" -H \"Content-Type:application/json\" ```  or delete it:    ```text curl -X DELETE \"https://api.jumpseller.com/v1/products/123.json?login=XXXXXX&authtoken=XXXXX\" -H \"Content-Type:application/json\" ``` <br/><br/> ***  # PHP Examples  Create a new Product (POST method)  ```php $url = 'https://api.jumpseller.com/v1/products.json?login=XXXXX&authtoken=XXXXX; $ch = curl_init($url); curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));  curl_setopt($ch, CURLOPT_CUSTOMREQUEST, \"POST\"); //post method curl_setopt($ch, CURLOPT_POSTFIELDS, '{ \"product\" : {\"name\": \"My updated Product!\", \"price\": 99} }');  $result = curl_exec($ch); print_r($result); curl_close($ch); ``` <br/><br/> ***  # Plain JSON only. No XML.  * We only support JSON for data serialization. * Our node format has no root element.   * We use snake_case to describe attribute keys (like \"created_at\").   * All empty value are replaced with **null** strings. * All API URLs end in .json to indicate that they accept and return JSON. * POST and PUT methods require you to explicitly state the MIME type of your request's body content as **\"application/json\"**. <br/><br/> ***  # Rate Limit You can perform a maximum of:  + 240 (two hundred forty) requests per minute and + 8 (eight) requests per second   If you exceed this limit, you'll get a 403 Forbidden (Rate Limit Exceeded) response for subsequent requests.    The rate limits apply by IP address and by store. This means that multiple requests on different stores are not counted towards the same rate limit.  This limits are necessary to ensure resources are correctly used. Your application should be aware of this limits and retry any unsuccessful request, check the following Ruby stub:  ```ruby tries = 0; max_tries = 3; begin   HTTParty.send(method, uri) # perform an API call.   sleep 0.5   tries += 1 rescue   unless tries >= max_tries     sleep 1.0 # wait the necessary time before retrying the call again.     retry   end end ```  Finally, you can review the Response Headers of each request:  ```text Jumpseller-PerMinuteRateLimit-Limit: 60   Jumpseller-PerMinuteRateLimit-Remaining: 59 # requests available on the per-second interval   Jumpseller-PerSecondRateLimit-Limit: 2   Jumpseller-PerSecondRateLimit-Remaining: 1 # requests available on the per-second interval ```   to better model your application requests intervals.  In the event of getting your IP banned, the Response Header `Jumpseller-BannedByRateLimit-Reset` informs you the time when will your ban be reseted. <br/><br/> ***  # Pagination  By default we will return 50 objects (products, orders, etc) per page. There is a maximum of 100, using a query string `&limit=100`. If the result set gets paginated it is your responsibility to check the next page for more objects -- you do this by using query strings `&page=2`, `&page=3` and so on.  ```text https://api.jumpseller.com/v1/products.json?login=XXXXXX&authtoken=XXXXX&page=3&limit=100 ``` <br/><br/> ***  # More * [Jumpseller API wrapper](https://gitlab.com/jumpseller-api/ruby) provides a public Ruby abstraction over our API; * [Apps Page](/apps) showcases external integrations with Jumpseller done by technical experts; * [Imgbb API](https://api.imgbb.com/) provides an easy way to upload and temporaly host for images and files. <br/><br/> *** <br/><br/> 
+ *
+ * The version of the OpenAPI document: 1.0.0
+ * 
+ *
+ * NOTE: This class is auto generated by OpenAPI Generator (https://openapi-generator.tech).
+ * https://openapi-generator.tech
+ * Do not edit the class manually.
+ */
+
+
+package org.openapitools.client.api;
+
+import org.openapitools.client.ApiCallback;
+import org.openapitools.client.ApiClient;
+import org.openapitools.client.ApiException;
+import org.openapitools.client.ApiResponse;
+import org.openapitools.client.Configuration;
+import org.openapitools.client.Pair;
+import org.openapitools.client.ProgressRequestBody;
+import org.openapitools.client.ProgressResponseBody;
+
+import com.google.gson.reflect.TypeToken;
+
+import java.io.IOException;
+
+
+import org.openapitools.client.model.Count;
+import org.openapitools.client.model.Fulfillment;
+import org.openapitools.client.model.NotFound;
+
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+public class FulfillmentsApi {
+    private ApiClient localVarApiClient;
+    private int localHostIndex;
+    private String localCustomBaseUrl;
+
+    public FulfillmentsApi() {
+        this(Configuration.getDefaultApiClient());
+    }
+
+    public FulfillmentsApi(ApiClient apiClient) {
+        this.localVarApiClient = apiClient;
+    }
+
+    public ApiClient getApiClient() {
+        return localVarApiClient;
+    }
+
+    public void setApiClient(ApiClient apiClient) {
+        this.localVarApiClient = apiClient;
+    }
+
+    public int getHostIndex() {
+        return localHostIndex;
+    }
+
+    public void setHostIndex(int hostIndex) {
+        this.localHostIndex = hostIndex;
+    }
+
+    public String getCustomBaseUrl() {
+        return localCustomBaseUrl;
+    }
+
+    public void setCustomBaseUrl(String customBaseUrl) {
+        this.localCustomBaseUrl = customBaseUrl;
+    }
+
+    /**
+     * Build call for fulfillmentsCountJsonGet
+     * @param login API OAuth login. (required)
+     * @param authtoken API OAuth token. (required)
+     * @param _callback Callback for upload/download progress
+     * @return Call to execute
+     * @throws ApiException If fail to serialize the request body object
+     * @http.response.details
+     <table summary="Response Details" border="1">
+        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
+     </table>
+     */
+    public okhttp3.Call fulfillmentsCountJsonGetCall(String login, String authtoken, final ApiCallback _callback) throws ApiException {
+        String basePath = null;
+        // Operation Servers
+        String[] localBasePaths = new String[] {  };
+
+        // Determine Base Path to Use
+        if (localCustomBaseUrl != null){
+            basePath = localCustomBaseUrl;
+        } else if ( localBasePaths.length > 0 ) {
+            basePath = localBasePaths[localHostIndex];
+        } else {
+            basePath = null;
+        }
+
+        Object localVarPostBody = null;
+
+        // create path and map variables
+        String localVarPath = "/fulfillments/count.json";
+
+        List<Pair> localVarQueryParams = new ArrayList<Pair>();
+        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
+        Map<String, String> localVarCookieParams = new HashMap<String, String>();
+        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
+
+        if (login != null) {
+            localVarQueryParams.addAll(localVarApiClient.parameterToPair("login", login));
+        }
+
+        if (authtoken != null) {
+            localVarQueryParams.addAll(localVarApiClient.parameterToPair("authtoken", authtoken));
+        }
+
+        final String[] localVarAccepts = {
+            "application/json"
+        };
+        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
+        if (localVarAccept != null) {
+            localVarHeaderParams.put("Accept", localVarAccept);
+        }
+
+        final String[] localVarContentTypes = {
+        };
+        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
+        if (localVarContentType != null) {
+            localVarHeaderParams.put("Content-Type", localVarContentType);
+        }
+
+        String[] localVarAuthNames = new String[] {  };
+        return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
+    }
+
+    @SuppressWarnings("rawtypes")
+    private okhttp3.Call fulfillmentsCountJsonGetValidateBeforeCall(String login, String authtoken, final ApiCallback _callback) throws ApiException {
+        // verify the required parameter 'login' is set
+        if (login == null) {
+            throw new ApiException("Missing the required parameter 'login' when calling fulfillmentsCountJsonGet(Async)");
+        }
+
+        // verify the required parameter 'authtoken' is set
+        if (authtoken == null) {
+            throw new ApiException("Missing the required parameter 'authtoken' when calling fulfillmentsCountJsonGet(Async)");
+        }
+
+        return fulfillmentsCountJsonGetCall(login, authtoken, _callback);
+
+    }
+
+    /**
+     * Count all Fulfillments.
+     * 
+     * @param login API OAuth login. (required)
+     * @param authtoken API OAuth token. (required)
+     * @return Count
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @http.response.details
+     <table summary="Response Details" border="1">
+        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
+     </table>
+     */
+    public Count fulfillmentsCountJsonGet(String login, String authtoken) throws ApiException {
+        ApiResponse<Count> localVarResp = fulfillmentsCountJsonGetWithHttpInfo(login, authtoken);
+        return localVarResp.getData();
+    }
+
+    /**
+     * Count all Fulfillments.
+     * 
+     * @param login API OAuth login. (required)
+     * @param authtoken API OAuth token. (required)
+     * @return ApiResponse&lt;Count&gt;
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @http.response.details
+     <table summary="Response Details" border="1">
+        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
+     </table>
+     */
+    public ApiResponse<Count> fulfillmentsCountJsonGetWithHttpInfo(String login, String authtoken) throws ApiException {
+        okhttp3.Call localVarCall = fulfillmentsCountJsonGetValidateBeforeCall(login, authtoken, null);
+        Type localVarReturnType = new TypeToken<Count>(){}.getType();
+        return localVarApiClient.execute(localVarCall, localVarReturnType);
+    }
+
+    /**
+     * Count all Fulfillments. (asynchronously)
+     * 
+     * @param login API OAuth login. (required)
+     * @param authtoken API OAuth token. (required)
+     * @param _callback The callback to be executed when the API call finishes
+     * @return The request call
+     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
+     * @http.response.details
+     <table summary="Response Details" border="1">
+        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
+     </table>
+     */
+    public okhttp3.Call fulfillmentsCountJsonGetAsync(String login, String authtoken, final ApiCallback<Count> _callback) throws ApiException {
+
+        okhttp3.Call localVarCall = fulfillmentsCountJsonGetValidateBeforeCall(login, authtoken, _callback);
+        Type localVarReturnType = new TypeToken<Count>(){}.getType();
+        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
+        return localVarCall;
+    }
+    /**
+     * Build call for fulfillmentsIdJsonGet
+     * @param login API OAuth login. (required)
+     * @param authtoken API OAuth token. (required)
+     * @param id Id of the Fulfillment (required)
+     * @param _callback Callback for upload/download progress
+     * @return Call to execute
+     * @throws ApiException If fail to serialize the request body object
+     * @http.response.details
+     <table summary="Response Details" border="1">
+        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
+        <tr><td> 404 </td><td> Fulfillment Not Found. </td><td>  -  </td></tr>
+     </table>
+     */
+    public okhttp3.Call fulfillmentsIdJsonGetCall(String login, String authtoken, Integer id, final ApiCallback _callback) throws ApiException {
+        String basePath = null;
+        // Operation Servers
+        String[] localBasePaths = new String[] {  };
+
+        // Determine Base Path to Use
+        if (localCustomBaseUrl != null){
+            basePath = localCustomBaseUrl;
+        } else if ( localBasePaths.length > 0 ) {
+            basePath = localBasePaths[localHostIndex];
+        } else {
+            basePath = null;
+        }
+
+        Object localVarPostBody = null;
+
+        // create path and map variables
+        String localVarPath = "/fulfillments/{id}.json"
+            .replace("{" + "id" + "}", localVarApiClient.escapeString(id.toString()));
+
+        List<Pair> localVarQueryParams = new ArrayList<Pair>();
+        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
+        Map<String, String> localVarCookieParams = new HashMap<String, String>();
+        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
+
+        if (login != null) {
+            localVarQueryParams.addAll(localVarApiClient.parameterToPair("login", login));
+        }
+
+        if (authtoken != null) {
+            localVarQueryParams.addAll(localVarApiClient.parameterToPair("authtoken", authtoken));
+        }
+
+        final String[] localVarAccepts = {
+            "application/json"
+        };
+        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
+        if (localVarAccept != null) {
+            localVarHeaderParams.put("Accept", localVarAccept);
+        }
+
+        final String[] localVarContentTypes = {
+        };
+        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
+        if (localVarContentType != null) {
+            localVarHeaderParams.put("Content-Type", localVarContentType);
+        }
+
+        String[] localVarAuthNames = new String[] {  };
+        return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
+    }
+
+    @SuppressWarnings("rawtypes")
+    private okhttp3.Call fulfillmentsIdJsonGetValidateBeforeCall(String login, String authtoken, Integer id, final ApiCallback _callback) throws ApiException {
+        // verify the required parameter 'login' is set
+        if (login == null) {
+            throw new ApiException("Missing the required parameter 'login' when calling fulfillmentsIdJsonGet(Async)");
+        }
+
+        // verify the required parameter 'authtoken' is set
+        if (authtoken == null) {
+            throw new ApiException("Missing the required parameter 'authtoken' when calling fulfillmentsIdJsonGet(Async)");
+        }
+
+        // verify the required parameter 'id' is set
+        if (id == null) {
+            throw new ApiException("Missing the required parameter 'id' when calling fulfillmentsIdJsonGet(Async)");
+        }
+
+        return fulfillmentsIdJsonGetCall(login, authtoken, id, _callback);
+
+    }
+
+    /**
+     * Retrieve a single Fulfillment.
+     * 
+     * @param login API OAuth login. (required)
+     * @param authtoken API OAuth token. (required)
+     * @param id Id of the Fulfillment (required)
+     * @return Fulfillment
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @http.response.details
+     <table summary="Response Details" border="1">
+        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
+        <tr><td> 404 </td><td> Fulfillment Not Found. </td><td>  -  </td></tr>
+     </table>
+     */
+    public Fulfillment fulfillmentsIdJsonGet(String login, String authtoken, Integer id) throws ApiException {
+        ApiResponse<Fulfillment> localVarResp = fulfillmentsIdJsonGetWithHttpInfo(login, authtoken, id);
+        return localVarResp.getData();
+    }
+
+    /**
+     * Retrieve a single Fulfillment.
+     * 
+     * @param login API OAuth login. (required)
+     * @param authtoken API OAuth token. (required)
+     * @param id Id of the Fulfillment (required)
+     * @return ApiResponse&lt;Fulfillment&gt;
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @http.response.details
+     <table summary="Response Details" border="1">
+        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
+        <tr><td> 404 </td><td> Fulfillment Not Found. </td><td>  -  </td></tr>
+     </table>
+     */
+    public ApiResponse<Fulfillment> fulfillmentsIdJsonGetWithHttpInfo(String login, String authtoken, Integer id) throws ApiException {
+        okhttp3.Call localVarCall = fulfillmentsIdJsonGetValidateBeforeCall(login, authtoken, id, null);
+        Type localVarReturnType = new TypeToken<Fulfillment>(){}.getType();
+        return localVarApiClient.execute(localVarCall, localVarReturnType);
+    }
+
+    /**
+     * Retrieve a single Fulfillment. (asynchronously)
+     * 
+     * @param login API OAuth login. (required)
+     * @param authtoken API OAuth token. (required)
+     * @param id Id of the Fulfillment (required)
+     * @param _callback The callback to be executed when the API call finishes
+     * @return The request call
+     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
+     * @http.response.details
+     <table summary="Response Details" border="1">
+        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
+        <tr><td> 404 </td><td> Fulfillment Not Found. </td><td>  -  </td></tr>
+     </table>
+     */
+    public okhttp3.Call fulfillmentsIdJsonGetAsync(String login, String authtoken, Integer id, final ApiCallback<Fulfillment> _callback) throws ApiException {
+
+        okhttp3.Call localVarCall = fulfillmentsIdJsonGetValidateBeforeCall(login, authtoken, id, _callback);
+        Type localVarReturnType = new TypeToken<Fulfillment>(){}.getType();
+        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
+        return localVarCall;
+    }
+    /**
+     * Build call for fulfillmentsJsonGet
+     * @param login API OAuth login. (required)
+     * @param authtoken API OAuth token. (required)
+     * @param limit List restriction (optional, default to 50)
+     * @param page List page (optional, default to 1)
+     * @param _callback Callback for upload/download progress
+     * @return Call to execute
+     * @throws ApiException If fail to serialize the request body object
+     * @http.response.details
+     <table summary="Response Details" border="1">
+        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> An array of Fulfillments </td><td>  -  </td></tr>
+     </table>
+     */
+    public okhttp3.Call fulfillmentsJsonGetCall(String login, String authtoken, Integer limit, Integer page, final ApiCallback _callback) throws ApiException {
+        String basePath = null;
+        // Operation Servers
+        String[] localBasePaths = new String[] {  };
+
+        // Determine Base Path to Use
+        if (localCustomBaseUrl != null){
+            basePath = localCustomBaseUrl;
+        } else if ( localBasePaths.length > 0 ) {
+            basePath = localBasePaths[localHostIndex];
+        } else {
+            basePath = null;
+        }
+
+        Object localVarPostBody = null;
+
+        // create path and map variables
+        String localVarPath = "/fulfillments.json";
+
+        List<Pair> localVarQueryParams = new ArrayList<Pair>();
+        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
+        Map<String, String> localVarCookieParams = new HashMap<String, String>();
+        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
+
+        if (login != null) {
+            localVarQueryParams.addAll(localVarApiClient.parameterToPair("login", login));
+        }
+
+        if (authtoken != null) {
+            localVarQueryParams.addAll(localVarApiClient.parameterToPair("authtoken", authtoken));
+        }
+
+        if (limit != null) {
+            localVarQueryParams.addAll(localVarApiClient.parameterToPair("limit", limit));
+        }
+
+        if (page != null) {
+            localVarQueryParams.addAll(localVarApiClient.parameterToPair("page", page));
+        }
+
+        final String[] localVarAccepts = {
+            "application/json"
+        };
+        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
+        if (localVarAccept != null) {
+            localVarHeaderParams.put("Accept", localVarAccept);
+        }
+
+        final String[] localVarContentTypes = {
+        };
+        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
+        if (localVarContentType != null) {
+            localVarHeaderParams.put("Content-Type", localVarContentType);
+        }
+
+        String[] localVarAuthNames = new String[] {  };
+        return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
+    }
+
+    @SuppressWarnings("rawtypes")
+    private okhttp3.Call fulfillmentsJsonGetValidateBeforeCall(String login, String authtoken, Integer limit, Integer page, final ApiCallback _callback) throws ApiException {
+        // verify the required parameter 'login' is set
+        if (login == null) {
+            throw new ApiException("Missing the required parameter 'login' when calling fulfillmentsJsonGet(Async)");
+        }
+
+        // verify the required parameter 'authtoken' is set
+        if (authtoken == null) {
+            throw new ApiException("Missing the required parameter 'authtoken' when calling fulfillmentsJsonGet(Async)");
+        }
+
+        return fulfillmentsJsonGetCall(login, authtoken, limit, page, _callback);
+
+    }
+
+    /**
+     * Retrieve all Fulfillments.
+     * 
+     * @param login API OAuth login. (required)
+     * @param authtoken API OAuth token. (required)
+     * @param limit List restriction (optional, default to 50)
+     * @param page List page (optional, default to 1)
+     * @return List&lt;Fulfillment&gt;
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @http.response.details
+     <table summary="Response Details" border="1">
+        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> An array of Fulfillments </td><td>  -  </td></tr>
+     </table>
+     */
+    public List<Fulfillment> fulfillmentsJsonGet(String login, String authtoken, Integer limit, Integer page) throws ApiException {
+        ApiResponse<List<Fulfillment>> localVarResp = fulfillmentsJsonGetWithHttpInfo(login, authtoken, limit, page);
+        return localVarResp.getData();
+    }
+
+    /**
+     * Retrieve all Fulfillments.
+     * 
+     * @param login API OAuth login. (required)
+     * @param authtoken API OAuth token. (required)
+     * @param limit List restriction (optional, default to 50)
+     * @param page List page (optional, default to 1)
+     * @return ApiResponse&lt;List&lt;Fulfillment&gt;&gt;
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @http.response.details
+     <table summary="Response Details" border="1">
+        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> An array of Fulfillments </td><td>  -  </td></tr>
+     </table>
+     */
+    public ApiResponse<List<Fulfillment>> fulfillmentsJsonGetWithHttpInfo(String login, String authtoken, Integer limit, Integer page) throws ApiException {
+        okhttp3.Call localVarCall = fulfillmentsJsonGetValidateBeforeCall(login, authtoken, limit, page, null);
+        Type localVarReturnType = new TypeToken<List<Fulfillment>>(){}.getType();
+        return localVarApiClient.execute(localVarCall, localVarReturnType);
+    }
+
+    /**
+     * Retrieve all Fulfillments. (asynchronously)
+     * 
+     * @param login API OAuth login. (required)
+     * @param authtoken API OAuth token. (required)
+     * @param limit List restriction (optional, default to 50)
+     * @param page List page (optional, default to 1)
+     * @param _callback The callback to be executed when the API call finishes
+     * @return The request call
+     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
+     * @http.response.details
+     <table summary="Response Details" border="1">
+        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> An array of Fulfillments </td><td>  -  </td></tr>
+     </table>
+     */
+    public okhttp3.Call fulfillmentsJsonGetAsync(String login, String authtoken, Integer limit, Integer page, final ApiCallback<List<Fulfillment>> _callback) throws ApiException {
+
+        okhttp3.Call localVarCall = fulfillmentsJsonGetValidateBeforeCall(login, authtoken, limit, page, _callback);
+        Type localVarReturnType = new TypeToken<List<Fulfillment>>(){}.getType();
+        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
+        return localVarCall;
+    }
+    /**
+     * Build call for orderIdFulfillmentsJsonGet
+     * @param login API OAuth login. (required)
+     * @param authtoken API OAuth token. (required)
+     * @param id Id of the Order (required)
+     * @param _callback Callback for upload/download progress
+     * @return Call to execute
+     * @throws ApiException If fail to serialize the request body object
+     * @http.response.details
+     <table summary="Response Details" border="1">
+        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
+        <tr><td> 404 </td><td> Fulfillment Not Found. </td><td>  -  </td></tr>
+     </table>
+     */
+    public okhttp3.Call orderIdFulfillmentsJsonGetCall(String login, String authtoken, Integer id, final ApiCallback _callback) throws ApiException {
+        String basePath = null;
+        // Operation Servers
+        String[] localBasePaths = new String[] {  };
+
+        // Determine Base Path to Use
+        if (localCustomBaseUrl != null){
+            basePath = localCustomBaseUrl;
+        } else if ( localBasePaths.length > 0 ) {
+            basePath = localBasePaths[localHostIndex];
+        } else {
+            basePath = null;
+        }
+
+        Object localVarPostBody = null;
+
+        // create path and map variables
+        String localVarPath = "/order/{id}/fulfillments.json"
+            .replace("{" + "id" + "}", localVarApiClient.escapeString(id.toString()));
+
+        List<Pair> localVarQueryParams = new ArrayList<Pair>();
+        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
+        Map<String, String> localVarCookieParams = new HashMap<String, String>();
+        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
+
+        if (login != null) {
+            localVarQueryParams.addAll(localVarApiClient.parameterToPair("login", login));
+        }
+
+        if (authtoken != null) {
+            localVarQueryParams.addAll(localVarApiClient.parameterToPair("authtoken", authtoken));
+        }
+
+        final String[] localVarAccepts = {
+            "application/json"
+        };
+        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
+        if (localVarAccept != null) {
+            localVarHeaderParams.put("Accept", localVarAccept);
+        }
+
+        final String[] localVarContentTypes = {
+        };
+        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
+        if (localVarContentType != null) {
+            localVarHeaderParams.put("Content-Type", localVarContentType);
+        }
+
+        String[] localVarAuthNames = new String[] {  };
+        return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
+    }
+
+    @SuppressWarnings("rawtypes")
+    private okhttp3.Call orderIdFulfillmentsJsonGetValidateBeforeCall(String login, String authtoken, Integer id, final ApiCallback _callback) throws ApiException {
+        // verify the required parameter 'login' is set
+        if (login == null) {
+            throw new ApiException("Missing the required parameter 'login' when calling orderIdFulfillmentsJsonGet(Async)");
+        }
+
+        // verify the required parameter 'authtoken' is set
+        if (authtoken == null) {
+            throw new ApiException("Missing the required parameter 'authtoken' when calling orderIdFulfillmentsJsonGet(Async)");
+        }
+
+        // verify the required parameter 'id' is set
+        if (id == null) {
+            throw new ApiException("Missing the required parameter 'id' when calling orderIdFulfillmentsJsonGet(Async)");
+        }
+
+        return orderIdFulfillmentsJsonGetCall(login, authtoken, id, _callback);
+
+    }
+
+    /**
+     * Retrieve the Fulfillments associated with the Order.
+     * 
+     * @param login API OAuth login. (required)
+     * @param authtoken API OAuth token. (required)
+     * @param id Id of the Order (required)
+     * @return List&lt;Fulfillment&gt;
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @http.response.details
+     <table summary="Response Details" border="1">
+        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
+        <tr><td> 404 </td><td> Fulfillment Not Found. </td><td>  -  </td></tr>
+     </table>
+     */
+    public List<Fulfillment> orderIdFulfillmentsJsonGet(String login, String authtoken, Integer id) throws ApiException {
+        ApiResponse<List<Fulfillment>> localVarResp = orderIdFulfillmentsJsonGetWithHttpInfo(login, authtoken, id);
+        return localVarResp.getData();
+    }
+
+    /**
+     * Retrieve the Fulfillments associated with the Order.
+     * 
+     * @param login API OAuth login. (required)
+     * @param authtoken API OAuth token. (required)
+     * @param id Id of the Order (required)
+     * @return ApiResponse&lt;List&lt;Fulfillment&gt;&gt;
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @http.response.details
+     <table summary="Response Details" border="1">
+        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
+        <tr><td> 404 </td><td> Fulfillment Not Found. </td><td>  -  </td></tr>
+     </table>
+     */
+    public ApiResponse<List<Fulfillment>> orderIdFulfillmentsJsonGetWithHttpInfo(String login, String authtoken, Integer id) throws ApiException {
+        okhttp3.Call localVarCall = orderIdFulfillmentsJsonGetValidateBeforeCall(login, authtoken, id, null);
+        Type localVarReturnType = new TypeToken<List<Fulfillment>>(){}.getType();
+        return localVarApiClient.execute(localVarCall, localVarReturnType);
+    }
+
+    /**
+     * Retrieve the Fulfillments associated with the Order. (asynchronously)
+     * 
+     * @param login API OAuth login. (required)
+     * @param authtoken API OAuth token. (required)
+     * @param id Id of the Order (required)
+     * @param _callback The callback to be executed when the API call finishes
+     * @return The request call
+     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
+     * @http.response.details
+     <table summary="Response Details" border="1">
+        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
+        <tr><td> 404 </td><td> Fulfillment Not Found. </td><td>  -  </td></tr>
+     </table>
+     */
+    public okhttp3.Call orderIdFulfillmentsJsonGetAsync(String login, String authtoken, Integer id, final ApiCallback<List<Fulfillment>> _callback) throws ApiException {
+
+        okhttp3.Call localVarCall = orderIdFulfillmentsJsonGetValidateBeforeCall(login, authtoken, id, _callback);
+        Type localVarReturnType = new TypeToken<List<Fulfillment>>(){}.getType();
+        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
+        return localVarCall;
+    }
+}

@@ -1,0 +1,19 @@
+
+
+# ErrorCode
+
+## Enum
+
+
+* `DUPLICATE_IDENTIFIER` (value: `"DUPLICATE_IDENTIFIER"`)
+
+* `ITEM_DOES_NOT_EXIST` (value: `"ITEM_DOES_NOT_EXIST"`)
+
+* `INTERNAL_ERROR` (value: `"INTERNAL_ERROR"`)
+
+* `INVALID_FINDING_ID` (value: `"INVALID_FINDING_ID"`)
+
+* `INVALID_SCAN_NAME` (value: `"INVALID_SCAN_NAME"`)
+
+
+

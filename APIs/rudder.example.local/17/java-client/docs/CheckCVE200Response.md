@@ -1,0 +1,32 @@
+
+
+# CheckCVE200Response
+
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**action** | [**ActionEnum**](#ActionEnum) | The id of the action |  |
+|**data** | [**CheckCVE200ResponseData**](CheckCVE200ResponseData.md) |  |  |
+|**result** | [**ResultEnum**](#ResultEnum) | Result of the request |  |
+
+
+
+## Enum: ActionEnum
+
+| Name | Value |
+|---- | -----|
+| CHECK_CVE | &quot;checkCVE&quot; |
+
+
+
+## Enum: ResultEnum
+
+| Name | Value |
+|---- | -----|
+| SUCCESS | &quot;success&quot; |
+| ERROR | &quot;error&quot; |
+
+
+

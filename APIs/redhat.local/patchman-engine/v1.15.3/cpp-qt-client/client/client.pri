@@ -1,0 +1,97 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIControllers_AdvisoriesResponse.h \
+    $${PWD}/OAIControllers_AdvisoriesSystemsResponse.h \
+    $${PWD}/OAIControllers_AdvisoryDetailAttributes.h \
+    $${PWD}/OAIControllers_AdvisoryDetailItem.h \
+    $${PWD}/OAIControllers_AdvisoryDetailResponse.h \
+    $${PWD}/OAIControllers_AdvisoryInlineItem.h \
+    $${PWD}/OAIControllers_AdvisoryItem.h \
+    $${PWD}/OAIControllers_AdvisoryItemAttributes.h \
+    $${PWD}/OAIControllers_AdvisorySystemsResponse.h \
+    $${PWD}/OAIControllers_FilterData.h \
+    $${PWD}/OAIControllers_Links.h \
+    $${PWD}/OAIControllers_ListMeta.h \
+    $${PWD}/OAIControllers_PackageDetailAttributes.h \
+    $${PWD}/OAIControllers_PackageDetailItem.h \
+    $${PWD}/OAIControllers_PackageDetailResponse.h \
+    $${PWD}/OAIControllers_PackageItem.h \
+    $${PWD}/OAIControllers_PackageSystemItem.h \
+    $${PWD}/OAIControllers_PackageSystemsResponse.h \
+    $${PWD}/OAIControllers_PackageVersionItem.h \
+    $${PWD}/OAIControllers_PackageVersionsResponse.h \
+    $${PWD}/OAIControllers_PackagesResponse.h \
+    $${PWD}/OAIControllers_SystemAdvisoriesDBLookup.h \
+    $${PWD}/OAIControllers_SystemAdvisoriesResponse.h \
+    $${PWD}/OAIControllers_SystemAdvisoryItem.h \
+    $${PWD}/OAIControllers_SystemAdvisoryItemAttributes.h \
+    $${PWD}/OAIControllers_SystemDetailResponse.h \
+    $${PWD}/OAIControllers_SystemInlineItem.h \
+    $${PWD}/OAIControllers_SystemItem.h \
+    $${PWD}/OAIControllers_SystemItemAttributes.h \
+    $${PWD}/OAIControllers_SystemPackageData.h \
+    $${PWD}/OAIControllers_SystemPackageInline.h \
+    $${PWD}/OAIControllers_SystemPackageResponse.h \
+    $${PWD}/OAIControllers_SystemsAdvisoriesRequest.h \
+    $${PWD}/OAIControllers_SystemsAdvisoriesResponse.h \
+    $${PWD}/OAIControllers_SystemsResponse.h \
+    $${PWD}/OAIModels_PackageUpdate.h \
+# APIs
+    $${PWD}/OAIDefaultApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIControllers_AdvisoriesResponse.cpp \
+    $${PWD}/OAIControllers_AdvisoriesSystemsResponse.cpp \
+    $${PWD}/OAIControllers_AdvisoryDetailAttributes.cpp \
+    $${PWD}/OAIControllers_AdvisoryDetailItem.cpp \
+    $${PWD}/OAIControllers_AdvisoryDetailResponse.cpp \
+    $${PWD}/OAIControllers_AdvisoryInlineItem.cpp \
+    $${PWD}/OAIControllers_AdvisoryItem.cpp \
+    $${PWD}/OAIControllers_AdvisoryItemAttributes.cpp \
+    $${PWD}/OAIControllers_AdvisorySystemsResponse.cpp \
+    $${PWD}/OAIControllers_FilterData.cpp \
+    $${PWD}/OAIControllers_Links.cpp \
+    $${PWD}/OAIControllers_ListMeta.cpp \
+    $${PWD}/OAIControllers_PackageDetailAttributes.cpp \
+    $${PWD}/OAIControllers_PackageDetailItem.cpp \
+    $${PWD}/OAIControllers_PackageDetailResponse.cpp \
+    $${PWD}/OAIControllers_PackageItem.cpp \
+    $${PWD}/OAIControllers_PackageSystemItem.cpp \
+    $${PWD}/OAIControllers_PackageSystemsResponse.cpp \
+    $${PWD}/OAIControllers_PackageVersionItem.cpp \
+    $${PWD}/OAIControllers_PackageVersionsResponse.cpp \
+    $${PWD}/OAIControllers_PackagesResponse.cpp \
+    $${PWD}/OAIControllers_SystemAdvisoriesDBLookup.cpp \
+    $${PWD}/OAIControllers_SystemAdvisoriesResponse.cpp \
+    $${PWD}/OAIControllers_SystemAdvisoryItem.cpp \
+    $${PWD}/OAIControllers_SystemAdvisoryItemAttributes.cpp \
+    $${PWD}/OAIControllers_SystemDetailResponse.cpp \
+    $${PWD}/OAIControllers_SystemInlineItem.cpp \
+    $${PWD}/OAIControllers_SystemItem.cpp \
+    $${PWD}/OAIControllers_SystemItemAttributes.cpp \
+    $${PWD}/OAIControllers_SystemPackageData.cpp \
+    $${PWD}/OAIControllers_SystemPackageInline.cpp \
+    $${PWD}/OAIControllers_SystemPackageResponse.cpp \
+    $${PWD}/OAIControllers_SystemsAdvisoriesRequest.cpp \
+    $${PWD}/OAIControllers_SystemsAdvisoriesResponse.cpp \
+    $${PWD}/OAIControllers_SystemsResponse.cpp \
+    $${PWD}/OAIModels_PackageUpdate.cpp \
+# APIs
+    $${PWD}/OAIDefaultApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

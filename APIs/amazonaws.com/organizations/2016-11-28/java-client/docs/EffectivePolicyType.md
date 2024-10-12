@@ -1,0 +1,15 @@
+
+
+# EffectivePolicyType
+
+## Enum
+
+
+* `TAG_POLICY` (value: `"TAG_POLICY"`)
+
+* `BACKUP_POLICY` (value: `"BACKUP_POLICY"`)
+
+* `AISERVICES_OPT_OUT_POLICY` (value: `"AISERVICES_OPT_OUT_POLICY"`)
+
+
+

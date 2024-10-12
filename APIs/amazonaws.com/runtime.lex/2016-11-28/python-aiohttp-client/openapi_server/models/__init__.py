@@ -1,0 +1,33 @@
+# coding: utf-8
+
+# import models into model package
+from openapi_server.models.active_context import ActiveContext
+from openapi_server.models.active_context_time_to_live import ActiveContextTimeToLive
+from openapi_server.models.button import Button
+from openapi_server.models.confirmation_status import ConfirmationStatus
+from openapi_server.models.content_type import ContentType
+from openapi_server.models.delete_session_response import DeleteSessionResponse
+from openapi_server.models.dialog_action import DialogAction
+from openapi_server.models.dialog_action_type import DialogActionType
+from openapi_server.models.dialog_state import DialogState
+from openapi_server.models.fulfillment_state import FulfillmentState
+from openapi_server.models.generic_attachment import GenericAttachment
+from openapi_server.models.get_session_response import GetSessionResponse
+from openapi_server.models.get_session_response_dialog_action import GetSessionResponseDialogAction
+from openapi_server.models.intent_confidence import IntentConfidence
+from openapi_server.models.intent_summary import IntentSummary
+from openapi_server.models.message_format_type import MessageFormatType
+from openapi_server.models.post_content_request import PostContentRequest
+from openapi_server.models.post_content_response import PostContentResponse
+from openapi_server.models.post_text_request import PostTextRequest
+from openapi_server.models.post_text_response import PostTextResponse
+from openapi_server.models.post_text_response_nlu_intent_confidence import PostTextResponseNluIntentConfidence
+from openapi_server.models.post_text_response_response_card import PostTextResponseResponseCard
+from openapi_server.models.post_text_response_sentiment_response import PostTextResponseSentimentResponse
+from openapi_server.models.predicted_intent import PredictedIntent
+from openapi_server.models.predicted_intent_nlu_intent_confidence import PredictedIntentNluIntentConfidence
+from openapi_server.models.put_session_request import PutSessionRequest
+from openapi_server.models.put_session_request_dialog_action import PutSessionRequestDialogAction
+from openapi_server.models.put_session_response import PutSessionResponse
+from openapi_server.models.response_card import ResponseCard
+from openapi_server.models.sentiment_response import SentimentResponse

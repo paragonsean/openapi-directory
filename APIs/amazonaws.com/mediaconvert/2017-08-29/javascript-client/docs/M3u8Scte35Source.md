@@ -1,0 +1,10 @@
+# AwsElementalMediaConvert.M3u8Scte35Source
+
+## Enum
+
+
+* `PASSTHROUGH` (value: `"PASSTHROUGH"`)
+
+* `NONE` (value: `"NONE"`)
+
+

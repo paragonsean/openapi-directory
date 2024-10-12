@@ -1,0 +1,53 @@
+
+
+# Crs0Cases
+
+A summary of the violation(s), environmental problem(s), and a description of the cause of action.
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**activityId** | **String** | The unique, system-generated identifier for an activity performed at or related to a particular site or Facility. |  |
+|**caaFlag** | **String** | A flag indicating that the Primary Law cited for the case was the Clean Air Act. |  |
+|**caseCategoryCode** | **String** | A three-character code that identifies the type of ICIS activity, which includes general categories such as information requests, inspections, compliance determinations, and enforcement.  Activities selected for the ECHO data download are restricted to two subcategories of enforcement:  administrative – formal (AFR), and judicial activities (JDC). |  |
+|**caseCategoryDesc** | **String** | Identifies the type of action based on the enforcement authority used.    Administrative Formal Cases are non-judicial enforcement actions taken by EPA or a state under its own authority, without involving a judicial court process. An administrative action by EPA or a state agency may be in the form of: - A notice of violation or a Superfund notice letter. -&gt; An administrative order or order (either with or without penalties) directing an individual, a business, or other entity to take action to come into compliance, or to clean up a site.  Judicial Cases are formal lawsuits, filed in court, against persons or entities that have failed to comply with statutory or regulatory requirements, with an administrative order, or who owe EPA response costs for cleaning up a Superfund site. These cases are filed by the U.S. Department of Justice on behalf of EPA and, in regulatory cases, by the State&#39;s Attorneys General for the states as well.  Criminal Cases occur when EPA or a state enforce against a company or person through a criminal action. Criminal actions are usually reserved for the most serious violations, those that are willful, or knowingly committed. A court conviction can result in fines or imprisonment. |  |
+|**caseName** | **String** | A unique number identifying the enforcement action. For EPA civil cases, these numbers begin with either the two digit EPA Region Code, \&quot;HQ\&quot; (headquarters initiated cases), and \&quot;EF\&quot; or \&quot;WF\&quot; (Eastern or Western Field Office CAA Mobile Source Program cases); followed by the fiscal year in which the action was initiated. After the fiscal year there is a sequence number. State NPDES civil cases start with the two character post abbreviation, followed by a sequence number. For criminal cases, the ID was generated in ECHO based on the following format: CR [prosecution_summary_id]. The source of the Prosecution Summary ID is the Summary of Criminal Prosecutions database. |  |
+|**caseNumber** | **String** | A unique number identifying the enforcement action. For EPA civil cases, these numbers begin with either the two digit EPA Region Code, \&quot;HQ\&quot; (headquarters initiated cases), and \&quot;EF\&quot; or \&quot;WF\&quot; (Eastern or Western Field Office CAA Mobile Source Program cases); followed by the fiscal year in which the action was initiated. After the fiscal year there is a sequence number. State NPDES civil cases start with the two character post abbreviation, followed by a sequence number. |  |
+|**caseStatusCode** | **String** | Code identifying the current status of an activity. |  |
+|**caseStatusDesc** | **String** | The description that identifies the current status of an activity. |  |
+|**cerclaFlag** | **String** | A flag indicating that the Primary Law cited for the case was the Comprehensive Environmental Response, Compensation, and Liability Act. |  |
+|**civilCriminalIndicator** | **String** | Civil vs. Criminal Indicator. |  |
+|**costRecovery** | **String** | For civil enforcement actions, cost recovery awarded is the amount of cost recovery ordered or agreed to be repaid by the responsible party of parties. |  |
+|**courtDocketNumber** | **String** |  |  |
+|**cwaFlag** | **String** | A flag indicating that the Primary Law cited for the case was the Clean Water Act. |  |
+|**doJDocketNmbr** | **String** | The docket number assigned by the Department of Justice to EPA&#39;s Enforcement Action.  This number will identify cases in the Federal Register and in DOJ press releases when a settlement is lodged and entered. |  |
+|**dateClosed** | **String** | The date the actions requested in the final order have been completed by the recipient; or the termination date of the final order (if such a date is specified) has passed; or the enforcement action has been withdrawn or dismissed; or the enforcement action has been superseded by, or combined into, another related enforcement action addressing the same violations. |  |
+|**dateFiled** | **String** | The filed/issued date can have different meanings depending on the Case Category. The date the judicial complaint is filed in U.S. District Court by the U.S. Attorney. The date that an administrative order is issued or the administrative complaint is filed. |  |
+|**dateLodged** | **String** | The date a proposed consent decree is given to the Clerk of the Court for lodging in the District Court.  Upon lodging a consent decree, a notice is published in the Federal Register indicating nature of the proposed settlement and the acceptance period for public comments. |  |
+|**enfOutcome** | **String** | The result of the enforcement action. |  |
+|**epcraFlag** | **String** | A flag indicating that the Primary Law cited for the case was the Emergency Planning and Community Right to Know Act. |  |
+|**fedPenalty** | **String** | For civil judicial Enforcement Actions, this amount is the Federal penalty assessed against the defendant(s) as specified in the final entered Consent Decree or Court Order.  For administrative Enforcement Actions, it is the penalty assessed in the Consent/Final Order.  It does not include the amount of the penalty mitigated due to a SEP or the amount shared with the state or local entities.  Interest payments associated with a penalty paid over time are not to be included in this amount.  It is the total Federal amount for each Final Order. |  |
+|**federalFlag** | **String** | A flag indicating that the  case is related to a Federally Owned facility. |  |
+|**fifraFlag** | **String** | A flag indicating that the Primary Law cited for the case was the Federal Insecticide, Fungicide, and Rodenticide Act. |  |
+|**lead** | **String** | The lead agency (e.g., EPA, State) conducting the inspection |  |
+|**maxScore** | **String** | A sorting score for internal use. |  |
+|**primaryLaw** | **String** | Identifies the primary statute/law violated and cited in the enforcement action. Many of EPA&#39;s judicial actions are based on incidents that are violations of more than one statute. One law entered into the ICIS record is designated the primary law, which is considered the law that is most seriously violated and/or for which the most significant relief is sought. |  |
+|**primaryNAICSCode** | **String** | A 6-digit code to classify industrial establishments, as identified in FRS. North American Industry Classification System (NAICS) has replaced the U.S. Standard Industrial Classification (SIC) system. For detailed information about NAICS, please refer to the U.S. Census Bureau NAICS webpage. |  |
+|**primarySICCode** | **String** | The Standard Industrial Classification (SIC) system code of the facility, as identified in FRS. SIC codes were established by the Census Bureau to identify processes, products and services. The SIC code describes the primary activity of the facility. The first two digits in the code define a major business sector; the last two digits denote a facility&#39;s specialty within the major sector. |  |
+|**primarySection** | **String** | Identifies the primary section violated and cited in the enforcement action. |  |
+|**prosecutionSummaryId** | **String** | Prosecution Summary Identifier. |  |
+|**rcraFlag** | **String** | A flag indicating that the Primary Law cited for the case was the Resource Conservation and Recovery Act. |  |
+|**sePCategories** | **String** | For civil enforcement actions, as part of a settlement, a defendant may voluntarily agree to undertake an environmentally beneficial project (Supplement Environmental Project) related to the violation in exchange for mitigation of the penalty to be paid.  It may not include activities a defendant must take to return to compliance with the law. The EPA has set out eight categories that can be acceptable SEPs: - Public Health - Pollution Prevention - Pollution Reduction - Environmental Restoration and Protection - Emergency Planning and Preparedness - Assessments and Audits - Environmental Compliance Promotion - Other Types of Projects Descriptions of each SEP category can be found on the EPA Supplemental Environmental Projects page. |  |
+|**sePCost** | **String** | The total value of all SEPs for all settlements at the enforcement case. |  |
+|**sePTexts** | **String** | A description of the SEP. These actions do not include activities a violator must take to return to compliance with the law. |  |
+|**sdwaFlag** | **String** | A flag indicating that the Primary Law cited for the case was the Safe Drinking Water Act. |  |
+|**settlementCnt** | **String** | For civil enforcement actions, the number of settlements associated with the case. Most enforcement actions tend to follow a one-case, one-settlement scenario. However, and in particular with judicial actions involving multiple defendants, more than one settlement may result. |  |
+|**settlementDate** | **String** | For federal judicial actions, this is the date the settlement document is signed by the presiding judge and entered by the Clerk of the Court. At that point, the settlement becomes a binding court order. For administrative actions, this is the date that the final order is signed and issued by the enforcement authority. |  |
+|**stateLocPenaltyAmt** | **String** | The total State or Local Penalty amount collected pursuant to a Final Order. |  |
+|**totalCompActionAmt** | **String** | For civil enforcement actions, the value of the costs incurred by the defendant/respondent to attain compliance with the law and restore the environment. This value does not include penalties, cost recovery, or costs associated with SEPs. |  |
+|**tribalLandFlag** | **String** | Flag indicating if the case is located on tribal land. |  |
+|**tscaFlag** | **String** | Flag indicating whether or not a facility has a TSCA ID |  |
+
+
+

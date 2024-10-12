@@ -1,0 +1,81 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIDocumentUploadAttributes.h \
+    $${PWD}/OAIDocumentUploadFailure.h \
+    $${PWD}/OAIDocumentUploadMetadata.h \
+    $${PWD}/OAIDocumentUploadPath.h \
+    $${PWD}/OAIDocumentUploadStatus.h \
+    $${PWD}/OAIDocumentUploadStatusAttributes.h \
+    $${PWD}/OAIDocumentUploadStatusGuidList.h \
+    $${PWD}/OAIDocumentUploadSubmission.h \
+    $${PWD}/OAIDocumentUploadSubmissionAttributes.h \
+    $${PWD}/OAIDocumentValidationErrorModel.h \
+    $${PWD}/OAIErrorModel.h \
+    $${PWD}/OAIGetBenefitsDocumentUploadStatusReport_200_response.h \
+    $${PWD}/OAIGetBenefitsDocumentUploadStatus_200_response.h \
+    $${PWD}/OAIGetBenefitsDocumentUploadStatus_404_response.h \
+    $${PWD}/OAIPdfDimensionAttributes.h \
+    $${PWD}/OAIPdfUploadAttributes.h \
+    $${PWD}/OAIPdfUploadAttributes_content.h \
+    $${PWD}/OAIPdfUploadAttributes_content_attachments_inner.h \
+    $${PWD}/OAIPostBenefitsDocumentUploadValidateDocument_200_response.h \
+    $${PWD}/OAIPostBenefitsDocumentUploadValidateDocument_200_response_data.h \
+    $${PWD}/OAIPostBenefitsDocumentUploadValidateDocument_200_response_data_attributes.h \
+    $${PWD}/OAIPostBenefitsDocumentUploadValidateDocument_422_response.h \
+    $${PWD}/OAIPostBenefitsDocumentUpload_202_response.h \
+    $${PWD}/OAIPostBenefitsDocumentUpload_403_response.h \
+    $${PWD}/OAIPutBenefitsDocumentUpload_401_response.h \
+    $${PWD}/OAIPutBenefitsDocumentUpload_422_response.h \
+    $${PWD}/OAIPutBenefitsDocumentUpload_429_response.h \
+    $${PWD}/OAIPutBenefitsDocumentUpload_500_response.h \
+# APIs
+    $${PWD}/OAIVBADocumentsApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIDocumentUploadAttributes.cpp \
+    $${PWD}/OAIDocumentUploadFailure.cpp \
+    $${PWD}/OAIDocumentUploadMetadata.cpp \
+    $${PWD}/OAIDocumentUploadPath.cpp \
+    $${PWD}/OAIDocumentUploadStatus.cpp \
+    $${PWD}/OAIDocumentUploadStatusAttributes.cpp \
+    $${PWD}/OAIDocumentUploadStatusGuidList.cpp \
+    $${PWD}/OAIDocumentUploadSubmission.cpp \
+    $${PWD}/OAIDocumentUploadSubmissionAttributes.cpp \
+    $${PWD}/OAIDocumentValidationErrorModel.cpp \
+    $${PWD}/OAIErrorModel.cpp \
+    $${PWD}/OAIGetBenefitsDocumentUploadStatusReport_200_response.cpp \
+    $${PWD}/OAIGetBenefitsDocumentUploadStatus_200_response.cpp \
+    $${PWD}/OAIGetBenefitsDocumentUploadStatus_404_response.cpp \
+    $${PWD}/OAIPdfDimensionAttributes.cpp \
+    $${PWD}/OAIPdfUploadAttributes.cpp \
+    $${PWD}/OAIPdfUploadAttributes_content.cpp \
+    $${PWD}/OAIPdfUploadAttributes_content_attachments_inner.cpp \
+    $${PWD}/OAIPostBenefitsDocumentUploadValidateDocument_200_response.cpp \
+    $${PWD}/OAIPostBenefitsDocumentUploadValidateDocument_200_response_data.cpp \
+    $${PWD}/OAIPostBenefitsDocumentUploadValidateDocument_200_response_data_attributes.cpp \
+    $${PWD}/OAIPostBenefitsDocumentUploadValidateDocument_422_response.cpp \
+    $${PWD}/OAIPostBenefitsDocumentUpload_202_response.cpp \
+    $${PWD}/OAIPostBenefitsDocumentUpload_403_response.cpp \
+    $${PWD}/OAIPutBenefitsDocumentUpload_401_response.cpp \
+    $${PWD}/OAIPutBenefitsDocumentUpload_422_response.cpp \
+    $${PWD}/OAIPutBenefitsDocumentUpload_429_response.cpp \
+    $${PWD}/OAIPutBenefitsDocumentUpload_500_response.cpp \
+# APIs
+    $${PWD}/OAIVBADocumentsApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

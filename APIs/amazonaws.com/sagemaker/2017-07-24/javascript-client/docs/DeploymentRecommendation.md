@@ -1,0 +1,10 @@
+# AmazonSageMakerService.DeploymentRecommendation
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**recommendationStatus** | [**RecommendationStatus**](RecommendationStatus.md) |  | 
+**realTimeInferenceRecommendations** | **Array** |  | [optional] 
+
+

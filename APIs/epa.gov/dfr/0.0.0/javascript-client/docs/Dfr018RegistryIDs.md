@@ -1,0 +1,16 @@
+# USEpaEnforcementAndComplianceHistoryOnlineEchoDetailedFacilityReportDfr.Dfr018RegistryIDs
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**ePASystem** | **String** | The EPA data system in which permit and facility records are kept. EPA&#39;s Facility Registry System (FRS) links all program database records (such as permit IDs and IDs facilities use in reporting to EPA) together. The following list describes the individual data systems that are linked to from the detailed facility report:   - AFS: Air Facility System for Clean Air Act stationary source programs. - ICP: Integrated Compliance Information System for Clean Water Act programs monitoring National Pollutant Discharge Elimination System (NPDES) permits. - RCR: Resource Conservation and Recovery Act Information System (RCRAInfo) for tracking the Resource Conservation and Recovery Act (RCRA) programs. - NCDB: National Compliance Database System for monitoring national performance of the Toxic Substance Control Act (TSCA); the Emergency Planning and Right-to-Know Act, Section 313 (EPCRA); the Asbestos Hazard Emergency Response (AHERA); and the Federal Insecticide, Fungicide, and Rodenticide Act (FIFRA). - TRI: Toxics Release Inventory for Emergency Planning and Community Right-to-Know Act, Section 313 submissions. - NEI: National Emissions Inventory database contains information on stationary and mobile sources that emit criteria air pollutants and their precursors, as well as hazardous air pollutants (HAPs). The database includes estimates of annual emissions, by source, of air pollutants in each area of the country, on an annual basis. - TSCA: Toxic Substances Control Act addressing the production, importation, use, and disposal of specific chemicals. | [optional] 
+**facilityCity** | **String** | The city in which the facility is located | [optional] 
+**facilityCounty** | **String** | The county that the facility is located in. | [optional] 
+**facilityName** | **String** | The name of the facility. | [optional] 
+**facilityState** | **String** | The state in which the facility is located | [optional] 
+**facilityStreet** | **String** | The street address of the facility | [optional] 
+**facilityZip** | **String** | The zip code of the area in which the facility is located | [optional] 
+**registryId** | **String** | 12-digit Facility Registry Service (FRS) identification number.  FRS uniquely identifies a facility by assigning an identification number (FRS ID), and uses this FRS ID to link together all EPA regulatory program database records | [optional] 
+
+

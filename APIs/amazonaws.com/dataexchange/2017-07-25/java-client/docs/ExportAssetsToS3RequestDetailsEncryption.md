@@ -1,0 +1,14 @@
+
+
+# ExportAssetsToS3RequestDetailsEncryption
+
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**kmsKeyArn** | [**String**](String.md) |  |  [optional] |
+|**type** | [**ServerSideEncryptionTypes**](ServerSideEncryptionTypes.md) |  |  |
+
+
+

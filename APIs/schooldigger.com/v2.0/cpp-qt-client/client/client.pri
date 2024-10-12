@@ -1,0 +1,79 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIAPIAutocompleteSchoolResult.h \
+    $${PWD}/OAIAPIBoundary12.h \
+    $${PWD}/OAIAPICounty.h \
+    $${PWD}/OAIAPIDistrict12.h \
+    $${PWD}/OAIAPIDistrict2Summary.h \
+    $${PWD}/OAIAPIDistrictList2.h \
+    $${PWD}/OAIAPIDistrictListRank2.h \
+    $${PWD}/OAIAPIDistrictSum.h \
+    $${PWD}/OAIAPILEARankHistory.h \
+    $${PWD}/OAIAPILEAYearlyDetail.h \
+    $${PWD}/OAIAPILatLong.h \
+    $${PWD}/OAIAPILocation.h \
+    $${PWD}/OAIAPIPolyline.h \
+    $${PWD}/OAIAPIRankHistory.h \
+    $${PWD}/OAIAPISchool20Full.h \
+    $${PWD}/OAIAPISchool2Summary.h \
+    $${PWD}/OAIAPISchoolAC.h \
+    $${PWD}/OAIAPISchoolFinance.h \
+    $${PWD}/OAIAPISchoolList2.h \
+    $${PWD}/OAIAPISchoolListRank2.h \
+    $${PWD}/OAIAPISchoolReview.h \
+    $${PWD}/OAIAPITestScore.h \
+    $${PWD}/OAIAPITestScoreWrapper.h \
+    $${PWD}/OAIAPIYearlyDemographics.h \
+# APIs
+    $${PWD}/OAIAutocompleteApi.h \
+    $${PWD}/OAIDistrictsApi.h \
+    $${PWD}/OAIRankingsApi.h \
+    $${PWD}/OAISchoolsApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIAPIAutocompleteSchoolResult.cpp \
+    $${PWD}/OAIAPIBoundary12.cpp \
+    $${PWD}/OAIAPICounty.cpp \
+    $${PWD}/OAIAPIDistrict12.cpp \
+    $${PWD}/OAIAPIDistrict2Summary.cpp \
+    $${PWD}/OAIAPIDistrictList2.cpp \
+    $${PWD}/OAIAPIDistrictListRank2.cpp \
+    $${PWD}/OAIAPIDistrictSum.cpp \
+    $${PWD}/OAIAPILEARankHistory.cpp \
+    $${PWD}/OAIAPILEAYearlyDetail.cpp \
+    $${PWD}/OAIAPILatLong.cpp \
+    $${PWD}/OAIAPILocation.cpp \
+    $${PWD}/OAIAPIPolyline.cpp \
+    $${PWD}/OAIAPIRankHistory.cpp \
+    $${PWD}/OAIAPISchool20Full.cpp \
+    $${PWD}/OAIAPISchool2Summary.cpp \
+    $${PWD}/OAIAPISchoolAC.cpp \
+    $${PWD}/OAIAPISchoolFinance.cpp \
+    $${PWD}/OAIAPISchoolList2.cpp \
+    $${PWD}/OAIAPISchoolListRank2.cpp \
+    $${PWD}/OAIAPISchoolReview.cpp \
+    $${PWD}/OAIAPITestScore.cpp \
+    $${PWD}/OAIAPITestScoreWrapper.cpp \
+    $${PWD}/OAIAPIYearlyDemographics.cpp \
+# APIs
+    $${PWD}/OAIAutocompleteApi.cpp \
+    $${PWD}/OAIDistrictsApi.cpp \
+    $${PWD}/OAIRankingsApi.cpp \
+    $${PWD}/OAISchoolsApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

@@ -1,0 +1,17 @@
+
+
+# ExperimentConfig
+
+<p>Associates a SageMaker job as a trial component with an experiment and trial. Specified when you call the following APIs:</p> <ul> <li> <p> <a href=\"https://docs.aws.amazon.com/sagemaker/latest/APIReference/API_CreateProcessingJob.html\">CreateProcessingJob</a> </p> </li> <li> <p> <a href=\"https://docs.aws.amazon.com/sagemaker/latest/APIReference/API_CreateTrainingJob.html\">CreateTrainingJob</a> </p> </li> <li> <p> <a href=\"https://docs.aws.amazon.com/sagemaker/latest/APIReference/API_CreateTransformJob.html\">CreateTransformJob</a> </p> </li> </ul>
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**experimentName** | [**String**](String.md) |  |  [optional] |
+|**trialName** | [**String**](String.md) |  |  [optional] |
+|**trialComponentDisplayName** | [**String**](String.md) |  |  [optional] |
+|**runName** | [**String**](String.md) |  |  [optional] |
+
+
+

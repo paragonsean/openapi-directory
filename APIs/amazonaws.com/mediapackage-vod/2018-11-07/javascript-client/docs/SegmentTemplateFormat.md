@@ -1,0 +1,12 @@
+# AwsElementalMediaPackageVod.SegmentTemplateFormat
+
+## Enum
+
+
+* `NUMBER_WITH_TIMELINE` (value: `"NUMBER_WITH_TIMELINE"`)
+
+* `TIME_WITH_TIMELINE` (value: `"TIME_WITH_TIMELINE"`)
+
+* `NUMBER_WITH_DURATION` (value: `"NUMBER_WITH_DURATION"`)
+
+

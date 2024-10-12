@@ -1,0 +1,24 @@
+# RudderApi.NodeFullMachine
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**id** | **String** | Rudder unique identifier for the machine | [optional] 
+**manufacturer** | **String** | Information about machine manufacturer | [optional] 
+**provider** | **String** | In the case of VM, the VM technology | [optional] 
+**serialNumber** | **String** | If available, a unique identifier provided by the machine | [optional] 
+**type** | **String** | Type of the machine | [optional] 
+
+
+
+## Enum: TypeEnum
+
+
+* `Physical` (value: `"Physical"`)
+
+* `Virtual` (value: `"Virtual"`)
+
+
+
+

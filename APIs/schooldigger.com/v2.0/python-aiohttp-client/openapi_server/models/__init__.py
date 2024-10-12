@@ -1,0 +1,27 @@
+# coding: utf-8
+
+# import models into model package
+from openapi_server.models.api_autocomplete_school_result import APIAutocompleteSchoolResult
+from openapi_server.models.api_boundary12 import APIBoundary12
+from openapi_server.models.api_county import APICounty
+from openapi_server.models.api_district12 import APIDistrict12
+from openapi_server.models.api_district2_summary import APIDistrict2Summary
+from openapi_server.models.api_district_list2 import APIDistrictList2
+from openapi_server.models.api_district_list_rank2 import APIDistrictListRank2
+from openapi_server.models.api_district_sum import APIDistrictSum
+from openapi_server.models.apilea_rank_history import APILEARankHistory
+from openapi_server.models.apilea_yearly_detail import APILEAYearlyDetail
+from openapi_server.models.api_lat_long import APILatLong
+from openapi_server.models.api_location import APILocation
+from openapi_server.models.api_polyline import APIPolyline
+from openapi_server.models.api_rank_history import APIRankHistory
+from openapi_server.models.api_school20_full import APISchool20Full
+from openapi_server.models.api_school2_summary import APISchool2Summary
+from openapi_server.models.api_school_ac import APISchoolAC
+from openapi_server.models.api_school_finance import APISchoolFinance
+from openapi_server.models.api_school_list2 import APISchoolList2
+from openapi_server.models.api_school_list_rank2 import APISchoolListRank2
+from openapi_server.models.api_school_review import APISchoolReview
+from openapi_server.models.api_test_score import APITestScore
+from openapi_server.models.api_test_score_wrapper import APITestScoreWrapper
+from openapi_server.models.api_yearly_demographics import APIYearlyDemographics

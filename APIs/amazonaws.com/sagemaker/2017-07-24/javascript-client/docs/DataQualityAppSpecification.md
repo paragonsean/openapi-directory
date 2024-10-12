@@ -1,0 +1,14 @@
+# AmazonSageMakerService.DataQualityAppSpecification
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**imageUri** | **String** |  | 
+**containerEntrypoint** | **Array** |  | [optional] 
+**containerArguments** | **Array** |  | [optional] 
+**recordPreprocessorSourceUri** | **String** |  | [optional] 
+**postAnalyticsProcessorSourceUri** | **String** |  | [optional] 
+**environment** | **Object** |  | [optional] 
+
+

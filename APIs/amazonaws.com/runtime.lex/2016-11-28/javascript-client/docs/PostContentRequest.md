@@ -1,0 +1,9 @@
+# AmazonLexRuntimeService.PostContentRequest
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**inputStream** | **String** | &lt;p&gt; User input in PCM or Opus audio format or text format as described in the &lt;code&gt;Content-Type&lt;/code&gt; HTTP header. &lt;/p&gt; &lt;p&gt;You can stream audio data to Amazon Lex or you can create a local buffer that captures all of the audio data before sending. In general, you get better performance if you stream audio data rather than buffering the data locally.&lt;/p&gt; | 
+
+

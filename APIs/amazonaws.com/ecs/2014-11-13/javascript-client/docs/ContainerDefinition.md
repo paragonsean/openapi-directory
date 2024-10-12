@@ -1,0 +1,48 @@
+# AmazonEc2ContainerService.ContainerDefinition
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**name** | **String** |  | [optional] 
+**image** | **String** |  | [optional] 
+**repositoryCredentials** | [**ContainerDefinitionRepositoryCredentials**](ContainerDefinitionRepositoryCredentials.md) |  | [optional] 
+**cpu** | **Number** |  | [optional] 
+**memory** | **Number** |  | [optional] 
+**memoryReservation** | **Number** |  | [optional] 
+**links** | **Array** |  | [optional] 
+**portMappings** | **Array** |  | [optional] 
+**essential** | **Boolean** |  | [optional] 
+**entryPoint** | **Array** |  | [optional] 
+**command** | **Array** |  | [optional] 
+**environment** | **Array** |  | [optional] 
+**environmentFiles** | **Array** |  | [optional] 
+**mountPoints** | **Array** |  | [optional] 
+**volumesFrom** | **Array** |  | [optional] 
+**linuxParameters** | [**ContainerDefinitionLinuxParameters**](ContainerDefinitionLinuxParameters.md) |  | [optional] 
+**secrets** | **Array** |  | [optional] 
+**dependsOn** | **Array** |  | [optional] 
+**startTimeout** | **Number** |  | [optional] 
+**stopTimeout** | **Number** |  | [optional] 
+**hostname** | **String** |  | [optional] 
+**user** | **String** |  | [optional] 
+**workingDirectory** | **String** |  | [optional] 
+**disableNetworking** | **Boolean** |  | [optional] 
+**privileged** | **Boolean** |  | [optional] 
+**readonlyRootFilesystem** | **Boolean** |  | [optional] 
+**dnsServers** | **Array** |  | [optional] 
+**dnsSearchDomains** | **Array** |  | [optional] 
+**extraHosts** | **Array** |  | [optional] 
+**dockerSecurityOptions** | **Array** |  | [optional] 
+**interactive** | **Boolean** |  | [optional] 
+**pseudoTerminal** | **Boolean** |  | [optional] 
+**dockerLabels** | **Object** |  | [optional] 
+**ulimits** | **Array** |  | [optional] 
+**logConfiguration** | [**ContainerDefinitionLogConfiguration**](ContainerDefinitionLogConfiguration.md) |  | [optional] 
+**healthCheck** | [**ContainerDefinitionHealthCheck**](ContainerDefinitionHealthCheck.md) |  | [optional] 
+**systemControls** | **Array** |  | [optional] 
+**resourceRequirements** | **Array** |  | [optional] 
+**firelensConfiguration** | [**ContainerDefinitionFirelensConfiguration**](ContainerDefinitionFirelensConfiguration.md) |  | [optional] 
+**credentialSpecs** | **Array** |  | [optional] 
+
+

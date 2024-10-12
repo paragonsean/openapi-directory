@@ -1,0 +1,16 @@
+
+
+# CreatePackagingConfigurationResponseCmafPackage
+
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**encryption** | [**CreatePackagingConfigurationRequestCmafPackageEncryption**](CreatePackagingConfigurationRequestCmafPackageEncryption.md) |  |  [optional] |
+|**hlsManifests** | [**List**](List.md) |  |  |
+|**includeEncoderConfigurationInSegments** | [**Boolean**](Boolean.md) |  |  [optional] |
+|**segmentDurationSeconds** | [**Integer**](Integer.md) |  |  [optional] |
+
+
+

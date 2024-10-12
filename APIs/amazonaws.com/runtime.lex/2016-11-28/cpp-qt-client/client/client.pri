@@ -1,0 +1,95 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIActiveContext.h \
+    $${PWD}/OAIActiveContextTimeToLive.h \
+    $${PWD}/OAIActiveContext_timeToLive.h \
+    $${PWD}/OAIButton.h \
+    $${PWD}/OAIConfirmationStatus.h \
+    $${PWD}/OAIContentType.h \
+    $${PWD}/OAIDeleteSessionResponse.h \
+    $${PWD}/OAIDialogAction.h \
+    $${PWD}/OAIDialogActionType.h \
+    $${PWD}/OAIDialogState.h \
+    $${PWD}/OAIFulfillmentState.h \
+    $${PWD}/OAIGenericAttachment.h \
+    $${PWD}/OAIGetSessionResponse.h \
+    $${PWD}/OAIGetSessionResponse_dialogAction.h \
+    $${PWD}/OAIIntentConfidence.h \
+    $${PWD}/OAIIntentSummary.h \
+    $${PWD}/OAIMessageFormatType.h \
+    $${PWD}/OAIPostContentRequest.h \
+    $${PWD}/OAIPostContentResponse.h \
+    $${PWD}/OAIPostContent_request.h \
+    $${PWD}/OAIPostTextRequest.h \
+    $${PWD}/OAIPostTextResponse.h \
+    $${PWD}/OAIPostTextResponse_nluIntentConfidence.h \
+    $${PWD}/OAIPostTextResponse_responseCard.h \
+    $${PWD}/OAIPostTextResponse_sentimentResponse.h \
+    $${PWD}/OAIPostText_request.h \
+    $${PWD}/OAIPredictedIntent.h \
+    $${PWD}/OAIPredictedIntent_nluIntentConfidence.h \
+    $${PWD}/OAIPutSessionRequest.h \
+    $${PWD}/OAIPutSessionRequest_dialogAction.h \
+    $${PWD}/OAIPutSessionResponse.h \
+    $${PWD}/OAIPutSession_request.h \
+    $${PWD}/OAIPutSession_request_dialogAction.h \
+    $${PWD}/OAIResponseCard.h \
+    $${PWD}/OAISentimentResponse.h \
+# APIs
+    $${PWD}/OAIDefaultApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIActiveContext.cpp \
+    $${PWD}/OAIActiveContextTimeToLive.cpp \
+    $${PWD}/OAIActiveContext_timeToLive.cpp \
+    $${PWD}/OAIButton.cpp \
+    $${PWD}/OAIConfirmationStatus.cpp \
+    $${PWD}/OAIContentType.cpp \
+    $${PWD}/OAIDeleteSessionResponse.cpp \
+    $${PWD}/OAIDialogAction.cpp \
+    $${PWD}/OAIDialogActionType.cpp \
+    $${PWD}/OAIDialogState.cpp \
+    $${PWD}/OAIFulfillmentState.cpp \
+    $${PWD}/OAIGenericAttachment.cpp \
+    $${PWD}/OAIGetSessionResponse.cpp \
+    $${PWD}/OAIGetSessionResponse_dialogAction.cpp \
+    $${PWD}/OAIIntentConfidence.cpp \
+    $${PWD}/OAIIntentSummary.cpp \
+    $${PWD}/OAIMessageFormatType.cpp \
+    $${PWD}/OAIPostContentRequest.cpp \
+    $${PWD}/OAIPostContentResponse.cpp \
+    $${PWD}/OAIPostContent_request.cpp \
+    $${PWD}/OAIPostTextRequest.cpp \
+    $${PWD}/OAIPostTextResponse.cpp \
+    $${PWD}/OAIPostTextResponse_nluIntentConfidence.cpp \
+    $${PWD}/OAIPostTextResponse_responseCard.cpp \
+    $${PWD}/OAIPostTextResponse_sentimentResponse.cpp \
+    $${PWD}/OAIPostText_request.cpp \
+    $${PWD}/OAIPredictedIntent.cpp \
+    $${PWD}/OAIPredictedIntent_nluIntentConfidence.cpp \
+    $${PWD}/OAIPutSessionRequest.cpp \
+    $${PWD}/OAIPutSessionRequest_dialogAction.cpp \
+    $${PWD}/OAIPutSessionResponse.cpp \
+    $${PWD}/OAIPutSession_request.cpp \
+    $${PWD}/OAIPutSession_request_dialogAction.cpp \
+    $${PWD}/OAIResponseCard.cpp \
+    $${PWD}/OAISentimentResponse.cpp \
+# APIs
+    $${PWD}/OAIDefaultApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

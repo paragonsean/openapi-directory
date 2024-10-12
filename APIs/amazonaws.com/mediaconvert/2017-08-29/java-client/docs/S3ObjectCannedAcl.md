@@ -1,0 +1,17 @@
+
+
+# S3ObjectCannedAcl
+
+## Enum
+
+
+* `PUBLIC_READ` (value: `"PUBLIC_READ"`)
+
+* `AUTHENTICATED_READ` (value: `"AUTHENTICATED_READ"`)
+
+* `BUCKET_OWNER_READ` (value: `"BUCKET_OWNER_READ"`)
+
+* `BUCKET_OWNER_FULL_CONTROL` (value: `"BUCKET_OWNER_FULL_CONTROL"`)
+
+
+

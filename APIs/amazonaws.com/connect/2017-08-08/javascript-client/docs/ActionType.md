@@ -1,0 +1,14 @@
+# AmazonConnectService.ActionType
+
+## Enum
+
+
+* `CREATE_TASK` (value: `"CREATE_TASK"`)
+
+* `ASSIGN_CONTACT_CATEGORY` (value: `"ASSIGN_CONTACT_CATEGORY"`)
+
+* `GENERATE_EVENTBRIDGE_EVENT` (value: `"GENERATE_EVENTBRIDGE_EVENT"`)
+
+* `SEND_NOTIFICATION` (value: `"SEND_NOTIFICATION"`)
+
+

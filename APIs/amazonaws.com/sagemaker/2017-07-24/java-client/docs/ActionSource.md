@@ -1,0 +1,16 @@
+
+
+# ActionSource
+
+A structure describing the source of an action.
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**sourceUri** | [**String**](String.md) |  |  |
+|**sourceType** | [**String**](String.md) |  |  [optional] |
+|**sourceId** | [**String**](String.md) |  |  [optional] |
+
+
+

@@ -1,0 +1,38 @@
+
+
+# TflApiPresentationEntitiesDisruption
+
+Represents a disruption to a route within the transport network.
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**additionalInfo** | **String** | Gets or sets the additionaInfo of this disruption. |  [optional] |
+|**affectedRoutes** | [**List&lt;TflApiPresentationEntitiesDisruptedRoute&gt;**](TflApiPresentationEntitiesDisruptedRoute.md) | Gets or sets the routes affected by this disruption |  [optional] |
+|**affectedStops** | [**List&lt;TflApiPresentationEntitiesStopPoint&gt;**](TflApiPresentationEntitiesStopPoint.md) | Gets or sets the stops affected by this disruption |  [optional] |
+|**category** | [**CategoryEnum**](#CategoryEnum) | Gets or sets the category of this dispruption. |  [optional] |
+|**categoryDescription** | **String** | Gets or sets the description of the category. |  [optional] |
+|**closureText** | **String** | Text describing the closure type |  [optional] |
+|**created** | **OffsetDateTime** | Gets or sets the date/time when this disruption was created. |  [optional] |
+|**description** | **String** | Gets or sets the description of this disruption. |  [optional] |
+|**lastUpdate** | **OffsetDateTime** | Gets or sets the date/time when this disruption was last updated. |  [optional] |
+|**summary** | **String** | Gets or sets the summary of this disruption. |  [optional] |
+|**type** | **String** | Gets or sets the disruption type of this dispruption. |  [optional] |
+
+
+
+## Enum: CategoryEnum
+
+| Name | Value |
+|---- | -----|
+| UNDEFINED | &quot;Undefined&quot; |
+| REAL_TIME | &quot;RealTime&quot; |
+| PLANNED_WORK | &quot;PlannedWork&quot; |
+| INFORMATION | &quot;Information&quot; |
+| EVENT | &quot;Event&quot; |
+| CROWDING | &quot;Crowding&quot; |
+| STATUS_ALERT | &quot;StatusAlert&quot; |
+
+
+

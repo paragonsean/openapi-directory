@@ -1,0 +1,10 @@
+# AwsElementalMediaConvert.MpdTimedMetadata
+
+## Enum
+
+
+* `PASSTHROUGH` (value: `"PASSTHROUGH"`)
+
+* `NONE` (value: `"NONE"`)
+
+

@@ -1,0 +1,13 @@
+
+
+# AsyncNotificationTopicTypes
+
+## Enum
+
+
+* `SUCCESS_NOTIFICATION_TOPIC` (value: `"SUCCESS_NOTIFICATION_TOPIC"`)
+
+* `ERROR_NOTIFICATION_TOPIC` (value: `"ERROR_NOTIFICATION_TOPIC"`)
+
+
+

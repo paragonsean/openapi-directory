@@ -1,0 +1,14 @@
+
+
+# DomainInfo
+
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**domainName** | [**String**](String.md) |  |  [optional] |
+|**engineType** | [**EngineType**](EngineType.md) |  |  [optional] |
+
+
+

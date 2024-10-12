@@ -1,0 +1,10 @@
+# AwsElementalMediaConvert.SimulateReservedQueue
+
+## Enum
+
+
+* `DISABLED` (value: `"DISABLED"`)
+
+* `ENABLED` (value: `"ENABLED"`)
+
+

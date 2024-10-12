@@ -1,0 +1,13 @@
+
+
+# ErrorType
+
+## Enum
+
+
+* `VALIDATION_EXCEPTION` (value: `"VALIDATION_EXCEPTION"`)
+
+* `RESOURCE_NOT_FOUND_EXCEPTION` (value: `"RESOURCE_NOT_FOUND_EXCEPTION"`)
+
+
+

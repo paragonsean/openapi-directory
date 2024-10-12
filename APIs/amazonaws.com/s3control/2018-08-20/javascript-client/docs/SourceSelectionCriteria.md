@@ -1,0 +1,10 @@
+# AwsS3Control.SourceSelectionCriteria
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**sseKmsEncryptedObjects** | [**SourceSelectionCriteriaSseKmsEncryptedObjects**](SourceSelectionCriteriaSseKmsEncryptedObjects.md) |  | [optional] 
+**replicaModifications** | [**SourceSelectionCriteriaReplicaModifications**](SourceSelectionCriteriaReplicaModifications.md) |  | [optional] 
+
+

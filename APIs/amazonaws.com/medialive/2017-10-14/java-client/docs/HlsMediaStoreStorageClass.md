@@ -1,0 +1,11 @@
+
+
+# HlsMediaStoreStorageClass
+
+## Enum
+
+
+* `TEMPORAL` (value: `"TEMPORAL"`)
+
+
+

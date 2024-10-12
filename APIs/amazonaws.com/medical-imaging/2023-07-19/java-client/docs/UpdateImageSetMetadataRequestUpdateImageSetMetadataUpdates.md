@@ -1,0 +1,13 @@
+
+
+# UpdateImageSetMetadataRequestUpdateImageSetMetadataUpdates
+
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**diCOMUpdates** | [**UpdateImageSetMetadataRequestUpdateImageSetMetadataUpdatesDICOMUpdates**](UpdateImageSetMetadataRequestUpdateImageSetMetadataUpdatesDICOMUpdates.md) |  |  [optional] |
+
+
+

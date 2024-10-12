@@ -1,0 +1,896 @@
+openapi: 3.0.0
+info:
+  contact:
+    email: hello@authentiq.com
+    name: Authentiq team
+    url: http://authentiq.io/support
+  description: "Strong authentication, without the passwords."
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://authentiq.com/terms/
+  title: Authentiq API
+  version: "6"
+  x-apisguru-categories:
+  - security
+  x-logo:
+    backgroundColor: '#F26641'
+    url: https://www.authentiq.com/theme/images/authentiq-logo-a-inverse.svg
+  x-origin:
+  - format: openapi
+    url: https://raw.githubusercontent.com/AuthentiqID/authentiq-docs/master/docs/swagger/issuer.yaml
+    version: "3.0"
+  x-providerName: 6-dot-authentiqio.appspot.com
+servers:
+- url: https://6-dot-authentiqio.appspot.com
+paths:
+  /key:
+    delete:
+      description: "Revoke an Authentiq ID using email & phone.\n\nIf called with\
+        \ `email` and `phone` only, a verification code \nwill be sent by email. Do\
+        \ a second call adding `code` to \ncomplete the revocation.\n"
+      operationId: key_revoke_nosecret
+      parameters:
+      - description: primary email associated to Key (ID)
+        explode: true
+        in: query
+        name: email
+        required: true
+        schema:
+          type: string
+        style: form
+      - description: "primary phone number, international representation"
+        explode: true
+        in: query
+        name: phone
+        required: true
+        schema:
+          type: string
+        style: form
+      - description: verification code sent by email
+        explode: true
+        in: query
+        name: code
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/key_revoke_nosecret_200_response'
+          description: Successfully deleted
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Authentication error `auth-error`
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Unknown key `unknown-key`
+        "409":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Confirm with code sent `confirm-first`
+        default:
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Error response
+      tags:
+      - key
+      - delete
+      x-openapi-router-controller: openapi_server.controllers.key_controller
+    post:
+      description: |
+        Register a new ID `JWT(sub, devtoken)`
+
+        v5: `JWT(sub, pk, devtoken, ...)`
+
+        See: https://github.com/skion/authentiq/wiki/JWT-Examples
+      operationId: key_register
+      requestBody:
+        $ref: '#/components/requestBodies/AuthentiqID'
+        x-body-name: body
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/key_register_201_response'
+          description: Successfully registered
+        "409":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Key already registered `duplicate-key`
+        default:
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Error response
+      tags:
+      - key
+      - post
+      x-openapi-router-controller: openapi_server.controllers.key_controller
+      x-codegen-request-body-name: body
+  /key/{PK}:
+    delete:
+      description: Revoke an Identity (Key) with a revocation secret
+      operationId: key_revoke
+      parameters:
+      - description: Public Signing Key - Authentiq ID (43 chars)
+        explode: false
+        in: path
+        name: PK
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: revokation secret
+        explode: true
+        in: query
+        name: secret
+        required: true
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/key_revoke_200_response'
+          description: Successful response
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Key not found / wrong code `auth-error`
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Unknown key `unknown-key`
+        default:
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Error response
+      tags:
+      - key
+      - delete
+      x-openapi-router-controller: openapi_server.controllers.key_controller
+    get:
+      description: |
+        Get public details of an Authentiq ID.
+      operationId: key_retrieve
+      parameters:
+      - description: Public Signing Key - Authentiq ID (43 chars)
+        explode: false
+        in: path
+        name: PK
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JWT'
+          description: Successfully retrieved
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Unknown key `unknown-key`
+        "410":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Key is revoked (gone). `revoked-key`
+        default:
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Error response
+      tags:
+      - key
+      - get
+      x-openapi-router-controller: openapi_server.controllers.key_controller
+    head:
+      description: |
+        HEAD info on Authentiq ID
+      operationId: key_pkhead
+      parameters:
+      - description: Public Signing Key - Authentiq ID (43 chars)
+        explode: false
+        in: path
+        name: PK
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          description: Key exists
+        "404":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Unknown key `unknown-key`
+        "410":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Key is revoked `revoked-key`
+        default:
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Error response
+      tags:
+      - key
+      - head
+      x-openapi-router-controller: openapi_server.controllers.key_controller
+    post:
+      description: |
+        update properties of an Authentiq ID.
+        (not operational in v4; use PUT for now)
+
+        v5: POST issuer-signed email & phone scopes in
+        a self-signed JWT
+
+        See: https://github.com/skion/authentiq/wiki/JWT-Examples
+      operationId: key_update
+      parameters:
+      - description: Public Signing Key - Authentiq ID (43 chars)
+        explode: false
+        in: path
+        name: PK
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        $ref: '#/components/requestBodies/AuthentiqID'
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/key_bind_200_response'
+          description: Successfully updated
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Unknown key `unknown-key`
+        default:
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Error response
+      tags:
+      - key
+      - post
+      x-openapi-router-controller: openapi_server.controllers.key_controller
+      x-codegen-request-body-name: body
+    put:
+      description: "Update Authentiq ID by replacing the object.\n\nv4: `JWT(sub,email,phone)`\
+        \ to bind email/phone hash; \n\nv5: POST issuer-signed email & phone scopes\n\
+        and PUT to update registration `JWT(sub, pk, devtoken, ...)`\n\nSee: https://github.com/skion/authentiq/wiki/JWT-Examples\n"
+      operationId: key_bind
+      parameters:
+      - description: Public Signing Key - Authentiq ID (43 chars)
+        explode: false
+        in: path
+        name: PK
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        $ref: '#/components/requestBodies/AuthentiqID'
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/key_bind_200_response'
+          description: Successfully updated
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Unknown key `unknown-key`
+        "409":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Already bound to another key `duplicate-hash`
+        default:
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Error response
+      tags:
+      - key
+      - put
+      x-openapi-router-controller: openapi_server.controllers.key_controller
+      x-codegen-request-body-name: body
+  /login:
+    post:
+      description: |
+        push sign-in request
+        See: https://github.com/skion/authentiq/wiki/JWT-Examples
+      operationId: push_login_request
+      parameters:
+      - description: URI App will connect to
+        explode: true
+        in: query
+        name: callback
+        required: true
+        schema:
+          type: string
+        style: form
+      requestBody:
+        content:
+          application/jwt:
+            schema:
+              $ref: '#/components/schemas/PushToken'
+        description: Push Token.
+        required: true
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/push_login_request_200_response'
+          description: Successful response
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Unauthorized for this callback audience `aud-error` or JWT
+            should be self-signed `auth-error`
+        default:
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Error response
+      tags:
+      - login
+      - post
+      x-openapi-router-controller: openapi_server.controllers.login_controller
+      x-codegen-request-body-name: body
+  /scope:
+    post:
+      description: |
+        scope verification request
+        See: https://github.com/skion/authentiq/wiki/JWT-Examples
+      operationId: sign_request
+      parameters:
+      - description: "test only mode, using test issuer"
+        explode: true
+        in: query
+        name: test
+        required: false
+        schema:
+          type: integer
+        style: form
+      requestBody:
+        content:
+          application/jwt:
+            schema:
+              $ref: '#/components/schemas/Claims'
+        description: Claims of scope
+        required: true
+        x-body-name: body
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/sign_request_201_response'
+          description: Successful response
+        "429":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Too Many Requests on same address / number `rate-limit`
+        default:
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Error response
+      tags:
+      - scope
+      - post
+      x-openapi-router-controller: openapi_server.controllers.scope_controller
+      x-codegen-request-body-name: body
+  /scope/{job}:
+    delete:
+      description: delete a verification job
+      operationId: sign_delete
+      parameters:
+      - description: Job ID (20 chars)
+        explode: false
+        in: path
+        name: job
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/key_revoke_200_response'
+          description: Successfully deleted
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Job not found `unknown-job`
+        default:
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Error response
+      tags:
+      - scope
+      - delete
+      x-openapi-router-controller: openapi_server.controllers.scope_controller
+    get:
+      description: get the status / current content of a verification job
+      operationId: sign_retrieve
+      parameters:
+      - description: Job ID (20 chars)
+        explode: false
+        in: path
+        name: job
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JWT_1'
+            application/jwt:
+              schema:
+                $ref: '#/components/schemas/JWT_1'
+          description: Successful response (JWT)
+        "204":
+          description: "Confirmed, waiting for signing"
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/jwt:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Job not found `unknown-job`
+        default:
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Error response
+      tags:
+      - scope
+      - get
+      x-openapi-router-controller: openapi_server.controllers.scope_controller
+    head:
+      description: HEAD to get the status of a verification job
+      operationId: sign_retrieve_head
+      parameters:
+      - description: Job ID (20 chars)
+        explode: false
+        in: path
+        name: job
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          description: Confirmed and signed
+        "204":
+          description: "Confirmed, waiting for signing"
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Job not found `unknown-job`
+        default:
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Error response
+      tags:
+      - scope
+      - head
+      x-openapi-router-controller: openapi_server.controllers.scope_controller
+    post:
+      description: this is a scope confirmation
+      operationId: sign_confirm
+      parameters:
+      - description: Job ID (20 chars)
+        explode: false
+        in: path
+        name: job
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "202":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/key_bind_200_response'
+          description: Successfully confirmed
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Confirmation error `auth-error`
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Job not found `unknown-job`
+        "405":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: JWT POSTed to scope `not-supported`
+        default:
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Error response
+      tags:
+      - scope
+      - post
+      x-openapi-router-controller: openapi_server.controllers.scope_controller
+    put:
+      description: |
+        authority updates a JWT with its signature
+        See: https://github.com/skion/authentiq/wiki/JWT-Examples
+      operationId: sign_update
+      parameters:
+      - description: Job ID (20 chars)
+        explode: false
+        in: path
+        name: job
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/jwt:
+              schema:
+                $ref: '#/components/schemas/sign_update_200_response'
+          description: Successfully updated
+        "404":
+          content:
+            application/jwt:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Job not found `unknown-job`
+        "409":
+          content:
+            application/jwt:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Job not confirmed yet `confirm-first`
+        default:
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Error response
+      tags:
+      - scope
+      - put
+      x-openapi-router-controller: openapi_server.controllers.scope_controller
+components:
+  parameters:
+    JobID:
+      description: Job ID (20 chars)
+      explode: false
+      in: path
+      name: job
+      required: true
+      schema:
+        type: string
+      style: simple
+    PK:
+      description: Public Signing Key - Authentiq ID (43 chars)
+      explode: false
+      in: path
+      name: PK
+      required: true
+      schema:
+        type: string
+      style: simple
+  requestBodies:
+    AuthentiqID:
+      content:
+        application/jwt:
+          schema:
+            $ref: '#/components/schemas/AuthentiqID'
+      description: Authentiq ID to register
+      required: true
+  responses:
+    ErrorResponse:
+      content:
+        '*/*':
+          schema:
+            $ref: '#/components/schemas/Error'
+      description: Error response
+  schemas:
+    AuthentiqID:
+      description: |
+        Authentiq ID in JWT format, self-signed.
+      properties:
+        devtoken:
+          description: device token for push messages
+          title: devtoken
+          type: string
+        sub:
+          description: UUID and public signing key
+          title: sub
+          type: string
+      required:
+      - sub
+      title: AuthentiqID
+    Claims:
+      description: "Claim in JWT format, self- or issuer-signed. \n"
+      properties:
+        email:
+          description: ""
+          title: email
+          type: string
+        phone:
+          description: ""
+          title: phone
+          type: string
+        scope:
+          description: claim scope
+          title: scope
+          type: string
+        sub:
+          description: UUID
+          title: sub
+          type: string
+        type:
+          description: ""
+          title: type
+          type: string
+      required:
+      - scope
+      - sub
+      title: Claims
+    Error:
+      example:
+        detail: detail
+        error: 0
+        title: title
+        type: type
+      properties:
+        detail:
+          title: detail
+          type: string
+        error:
+          title: error
+          type: integer
+        title:
+          title: title
+          type: string
+        type:
+          description: unique uri for this error
+          title: type
+          type: string
+      required:
+      - error
+      title: Error
+    PushToken:
+      description: "PushToken in JWT format, self-signed. \n"
+      properties:
+        aud:
+          description: audience (URI)
+          title: aud
+          type: string
+        exp:
+          title: exp
+          type: integer
+        iat:
+          title: iat
+          type: integer
+        iss:
+          description: issuer (URI)
+          title: iss
+          type: string
+        nbf:
+          title: nbf
+          type: integer
+        sub:
+          description: UUID and public signing key
+          title: sub
+          type: string
+      required:
+      - aud
+      - iss
+      - sub
+      title: PushToken
+    key_register_201_response:
+      example:
+        secret: secret
+        status: status
+      properties:
+        secret:
+          description: revoke key
+          title: secret
+          type: string
+        status:
+          description: registered
+          title: status
+          type: string
+      title: key_register_201_response
+      type: object
+    key_revoke_nosecret_200_response:
+      example:
+        status: status
+      properties:
+        status:
+          description: pending or done
+          title: status
+          type: string
+      title: key_revoke_nosecret_200_response
+      type: object
+    JWT:
+      example:
+        sub: sub
+        since: 2000-01-23T04:56:07.000+00:00
+        status: status
+      properties:
+        since:
+          format: date-time
+          title: since
+          type: string
+        status:
+          title: status
+          type: string
+        sub:
+          description: base64safe encoded public signing key
+          title: sub
+          type: string
+      title: JWT
+      type: object
+    key_bind_200_response:
+      example:
+        status: status
+      properties:
+        status:
+          description: confirmed
+          title: status
+          type: string
+      title: key_bind_200_response
+      type: object
+    key_revoke_200_response:
+      example:
+        status: status
+      properties:
+        status:
+          description: done
+          title: status
+          type: string
+      title: key_revoke_200_response
+      type: object
+    push_login_request_200_response:
+      example:
+        status: status
+      properties:
+        status:
+          description: sent
+          title: status
+          type: string
+      title: push_login_request_200_response
+      type: object
+    sign_request_201_response:
+      example:
+        job: job
+        status: status
+      properties:
+        job:
+          description: 20-character ID
+          title: job
+          type: string
+        status:
+          description: waiting
+          title: status
+          type: string
+      title: sign_request_201_response
+      type: object
+    JWT_1:
+      example:
+        sub: sub
+        field: field
+        exp: 0
+      properties:
+        exp:
+          title: exp
+          type: integer
+        field:
+          title: field
+          type: string
+        sub:
+          description: base64safe encoded public signing key
+          title: sub
+          type: string
+      title: JWT
+      type: object
+    sign_update_200_response:
+      properties:
+        jwt:
+          description: result is JWT or JSON??
+          title: jwt
+          type: string
+        status:
+          description: ready
+          title: status
+          type: string
+      title: sign_update_200_response
+      type: object

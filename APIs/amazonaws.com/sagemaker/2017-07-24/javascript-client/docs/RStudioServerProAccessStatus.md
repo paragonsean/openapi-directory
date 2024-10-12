@@ -1,0 +1,10 @@
+# AmazonSageMakerService.RStudioServerProAccessStatus
+
+## Enum
+
+
+* `ENABLED` (value: `"ENABLED"`)
+
+* `DISABLED` (value: `"DISABLED"`)
+
+

@@ -1,0 +1,51 @@
+# AwsElementalMediaLive.OutputGroupSettingsHlsGroupSettings
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**adMarkers** | **Array** |  | [optional] 
+**baseUrlContent** | **String** |  | [optional] 
+**baseUrlContent1** | **String** |  | [optional] 
+**baseUrlManifest** | **String** |  | [optional] 
+**baseUrlManifest1** | **String** |  | [optional] 
+**captionLanguageMappings** | **Array** |  | [optional] 
+**captionLanguageSetting** | [**HlsCaptionLanguageSetting**](HlsCaptionLanguageSetting.md) |  | [optional] 
+**clientCache** | [**HlsClientCache**](HlsClientCache.md) |  | [optional] 
+**codecSpecification** | [**HlsCodecSpecification**](HlsCodecSpecification.md) |  | [optional] 
+**constantIv** | **String** |  | [optional] 
+**destination** | [**HlsGroupSettingsDestination**](HlsGroupSettingsDestination.md) |  | 
+**directoryStructure** | [**HlsDirectoryStructure**](HlsDirectoryStructure.md) |  | [optional] 
+**discontinuityTags** | [**HlsDiscontinuityTags**](HlsDiscontinuityTags.md) |  | [optional] 
+**encryptionType** | [**HlsEncryptionType**](HlsEncryptionType.md) |  | [optional] 
+**hlsCdnSettings** | [**HlsGroupSettingsHlsCdnSettings**](HlsGroupSettingsHlsCdnSettings.md) |  | [optional] 
+**hlsId3SegmentTagging** | [**HlsId3SegmentTaggingState**](HlsId3SegmentTaggingState.md) |  | [optional] 
+**iFrameOnlyPlaylists** | [**IFrameOnlyPlaylistType**](IFrameOnlyPlaylistType.md) |  | [optional] 
+**incompleteSegmentBehavior** | [**HlsIncompleteSegmentBehavior**](HlsIncompleteSegmentBehavior.md) |  | [optional] 
+**indexNSegments** | **Number** |  | [optional] 
+**inputLossAction** | [**InputLossActionForHlsOut**](InputLossActionForHlsOut.md) |  | [optional] 
+**ivInManifest** | [**HlsIvInManifest**](HlsIvInManifest.md) |  | [optional] 
+**ivSource** | [**HlsIvSource**](HlsIvSource.md) |  | [optional] 
+**keepSegments** | **Number** |  | [optional] 
+**keyFormat** | **String** |  | [optional] 
+**keyFormatVersions** | **String** |  | [optional] 
+**keyProviderSettings** | [**HlsGroupSettingsKeyProviderSettings**](HlsGroupSettingsKeyProviderSettings.md) |  | [optional] 
+**manifestCompression** | [**HlsManifestCompression**](HlsManifestCompression.md) |  | [optional] 
+**manifestDurationFormat** | [**HlsManifestDurationFormat**](HlsManifestDurationFormat.md) |  | [optional] 
+**minSegmentLength** | **Number** |  | [optional] 
+**mode** | [**HlsMode**](HlsMode.md) |  | [optional] 
+**outputSelection** | [**HlsOutputSelection**](HlsOutputSelection.md) |  | [optional] 
+**programDateTime** | [**HlsProgramDateTime**](HlsProgramDateTime.md) |  | [optional] 
+**programDateTimeClock** | [**HlsProgramDateTimeClock**](HlsProgramDateTimeClock.md) |  | [optional] 
+**programDateTimePeriod** | **Number** |  | [optional] 
+**redundantManifest** | [**HlsRedundantManifest**](HlsRedundantManifest.md) |  | [optional] 
+**segmentLength** | **Number** |  | [optional] 
+**segmentationMode** | [**HlsSegmentationMode**](HlsSegmentationMode.md) |  | [optional] 
+**segmentsPerSubdirectory** | **Number** |  | [optional] 
+**streamInfResolution** | [**HlsStreamInfResolution**](HlsStreamInfResolution.md) |  | [optional] 
+**timedMetadataId3Frame** | [**HlsTimedMetadataId3Frame**](HlsTimedMetadataId3Frame.md) |  | [optional] 
+**timedMetadataId3Period** | **Number** |  | [optional] 
+**timestampDeltaMilliseconds** | **Number** |  | [optional] 
+**tsFileMode** | [**HlsTsFileMode**](HlsTsFileMode.md) |  | [optional] 
+
+

@@ -1,0 +1,10 @@
+# AmazonRekognition.DatasetLabelStats
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**entryCount** | **Number** |  | [optional] 
+**boundingBoxCount** | **Number** |  | [optional] 
+
+

@@ -1,0 +1,10 @@
+# AwsElementalMediaConvert.HlsAudioOnlyHeader
+
+## Enum
+
+
+* `INCLUDE` (value: `"INCLUDE"`)
+
+* `EXCLUDE` (value: `"EXCLUDE"`)
+
+

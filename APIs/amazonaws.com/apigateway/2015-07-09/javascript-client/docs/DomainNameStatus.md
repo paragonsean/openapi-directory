@@ -1,0 +1,16 @@
+# AmazonApiGateway.DomainNameStatus
+
+## Enum
+
+
+* `AVAILABLE` (value: `"AVAILABLE"`)
+
+* `UPDATING` (value: `"UPDATING"`)
+
+* `PENDING` (value: `"PENDING"`)
+
+* `PENDING_CERTIFICATE_REIMPORT` (value: `"PENDING_CERTIFICATE_REIMPORT"`)
+
+* `PENDING_OWNERSHIP_VERIFICATION` (value: `"PENDING_OWNERSHIP_VERIFICATION"`)
+
+

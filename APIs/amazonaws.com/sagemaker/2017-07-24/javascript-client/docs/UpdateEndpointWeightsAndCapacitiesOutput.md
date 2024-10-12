@@ -1,0 +1,9 @@
+# AmazonSageMakerService.UpdateEndpointWeightsAndCapacitiesOutput
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**endpointArn** | **String** |  | 
+
+

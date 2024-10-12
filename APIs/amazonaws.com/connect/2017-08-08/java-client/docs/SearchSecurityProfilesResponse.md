@@ -1,0 +1,15 @@
+
+
+# SearchSecurityProfilesResponse
+
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**securityProfiles** | [**List**](List.md) |  |  [optional] |
+|**nextToken** | [**String**](String.md) |  |  [optional] |
+|**approximateTotalCount** | [**Integer**](Integer.md) |  |  [optional] |
+
+
+

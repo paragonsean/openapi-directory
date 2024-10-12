@@ -1,0 +1,18 @@
+
+
+# Volume
+
+A data volume that's used in a task definition. For tasks that use the Amazon Elastic File System (Amazon EFS), specify an <code>efsVolumeConfiguration</code>. For Windows tasks that use Amazon FSx for Windows File Server file system, specify a <code>fsxWindowsFileServerVolumeConfiguration</code>. For tasks that use a Docker volume, specify a <code>DockerVolumeConfiguration</code>. For tasks that use a bind mount host volume, specify a <code>host</code> and optional <code>sourcePath</code>. For more information, see <a href=\"https://docs.aws.amazon.com/AmazonECS/latest/developerguide/using_data_volumes.html\">Using Data Volumes in Tasks</a>.
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**name** | [**String**](String.md) |  |  [optional] |
+|**host** | [**VolumeHost**](VolumeHost.md) |  |  [optional] |
+|**dockerVolumeConfiguration** | [**VolumeDockerVolumeConfiguration**](VolumeDockerVolumeConfiguration.md) |  |  [optional] |
+|**efsVolumeConfiguration** | [**VolumeEfsVolumeConfiguration**](VolumeEfsVolumeConfiguration.md) |  |  [optional] |
+|**fsxWindowsFileServerVolumeConfiguration** | [**VolumeFsxWindowsFileServerVolumeConfiguration**](VolumeFsxWindowsFileServerVolumeConfiguration.md) |  |  [optional] |
+
+
+

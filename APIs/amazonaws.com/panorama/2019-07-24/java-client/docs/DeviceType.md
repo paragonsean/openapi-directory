@@ -1,0 +1,13 @@
+
+
+# DeviceType
+
+## Enum
+
+
+* `APPLIANCE_DEVELOPER_KIT` (value: `"PANORAMA_APPLIANCE_DEVELOPER_KIT"`)
+
+* `APPLIANCE` (value: `"PANORAMA_APPLIANCE"`)
+
+
+

@@ -1,0 +1,115 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAICompanyAnnouncement_200_response_inner.h \
+    $${PWD}/OAICompanyDeepsearchISIN_200_response_inner.h \
+    $${PWD}/OAICompanyDeepsearchISIN_200_response_inner_listings_inner.h \
+    $${PWD}/OAICompanyDeepsearchLEI_200_response.h \
+    $${PWD}/OAICompanyDeepsearchLEI_200_response_company.h \
+    $${PWD}/OAICompanyNotificationId_200_response_inner.h \
+    $${PWD}/OAICompanyNotificationRegister_200_response.h \
+    $${PWD}/OAICompanySearchName_200_response_inner.h \
+    $${PWD}/OAIEinVerificationBasic_200_response.h \
+    $${PWD}/OAIEinVerificationComprehensive_200_response.h \
+    $${PWD}/OAIEinVerificationLookup_200_response.h \
+    $${PWD}/OAIEinVerificationLookup_200_response_matched_ein_companies_inner.h \
+    $${PWD}/OAIHealthCheck_200_response_inner.h \
+    $${PWD}/OAIIbanBasic_200_response.h \
+    $${PWD}/OAINifBasic_200_response.h \
+    $${PWD}/OAINifComprehensive_200_response.h \
+    $${PWD}/OAIPepMonitorList_200_response_inner.h \
+    $${PWD}/OAIPepRetrieve_200_response.h \
+    $${PWD}/OAIPepRetrieve_200_response_results.h \
+    $${PWD}/OAIProductAvailability_200_response.h \
+    $${PWD}/OAIProductCatalog_200_response.h \
+    $${PWD}/OAIProductNotifierCreate_200_response.h \
+    $${PWD}/OAIProductOrder_200_response.h \
+    $${PWD}/OAIProductRetrieve_200_response.h \
+    $${PWD}/OAIProductRetrieve_200_response_oneOf.h \
+    $${PWD}/OAIProductRetrieve_200_response_oneOf_1.h \
+    $${PWD}/OAIProductSearch_200_response_inner.h \
+    $${PWD}/OAISystemCountries_200_response_inner.h \
+    $${PWD}/OAISystemCountries_default_response.h \
+    $${PWD}/OAISystemPricelist_200_response_inner.h \
+    $${PWD}/OAITinVerificationBasicCheck_200_response.h \
+    $${PWD}/OAITinVerificationComprehensiveCheck_200_response.h \
+    $${PWD}/OAITinVerificationNameLookup_200_response.h \
+    $${PWD}/OAIVatBasic_200_response.h \
+    $${PWD}/OAIVatLevelTwo_200_response.h \
+    $${PWD}/OAIVatLookup_200_response.h \
+    $${PWD}/OAIVatLookup_200_response_matches_inner.h \
+# APIs
+    $${PWD}/OAIV1CompanyApi.h \
+    $${PWD}/OAIV1EinVerificationApi.h \
+    $${PWD}/OAIV1IbanVerificationApi.h \
+    $${PWD}/OAIV1NifVerificationApi.h \
+    $${PWD}/OAIV1PepsanctionApi.h \
+    $${PWD}/OAIV1ProductApi.h \
+    $${PWD}/OAIV1SystemApi.h \
+    $${PWD}/OAIV1TinVerificationApi.h \
+    $${PWD}/OAIV1VatVerificationApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAICompanyAnnouncement_200_response_inner.cpp \
+    $${PWD}/OAICompanyDeepsearchISIN_200_response_inner.cpp \
+    $${PWD}/OAICompanyDeepsearchISIN_200_response_inner_listings_inner.cpp \
+    $${PWD}/OAICompanyDeepsearchLEI_200_response.cpp \
+    $${PWD}/OAICompanyDeepsearchLEI_200_response_company.cpp \
+    $${PWD}/OAICompanyNotificationId_200_response_inner.cpp \
+    $${PWD}/OAICompanyNotificationRegister_200_response.cpp \
+    $${PWD}/OAICompanySearchName_200_response_inner.cpp \
+    $${PWD}/OAIEinVerificationBasic_200_response.cpp \
+    $${PWD}/OAIEinVerificationComprehensive_200_response.cpp \
+    $${PWD}/OAIEinVerificationLookup_200_response.cpp \
+    $${PWD}/OAIEinVerificationLookup_200_response_matched_ein_companies_inner.cpp \
+    $${PWD}/OAIHealthCheck_200_response_inner.cpp \
+    $${PWD}/OAIIbanBasic_200_response.cpp \
+    $${PWD}/OAINifBasic_200_response.cpp \
+    $${PWD}/OAINifComprehensive_200_response.cpp \
+    $${PWD}/OAIPepMonitorList_200_response_inner.cpp \
+    $${PWD}/OAIPepRetrieve_200_response.cpp \
+    $${PWD}/OAIPepRetrieve_200_response_results.cpp \
+    $${PWD}/OAIProductAvailability_200_response.cpp \
+    $${PWD}/OAIProductCatalog_200_response.cpp \
+    $${PWD}/OAIProductNotifierCreate_200_response.cpp \
+    $${PWD}/OAIProductOrder_200_response.cpp \
+    $${PWD}/OAIProductRetrieve_200_response.cpp \
+    $${PWD}/OAIProductRetrieve_200_response_oneOf.cpp \
+    $${PWD}/OAIProductRetrieve_200_response_oneOf_1.cpp \
+    $${PWD}/OAIProductSearch_200_response_inner.cpp \
+    $${PWD}/OAISystemCountries_200_response_inner.cpp \
+    $${PWD}/OAISystemCountries_default_response.cpp \
+    $${PWD}/OAISystemPricelist_200_response_inner.cpp \
+    $${PWD}/OAITinVerificationBasicCheck_200_response.cpp \
+    $${PWD}/OAITinVerificationComprehensiveCheck_200_response.cpp \
+    $${PWD}/OAITinVerificationNameLookup_200_response.cpp \
+    $${PWD}/OAIVatBasic_200_response.cpp \
+    $${PWD}/OAIVatLevelTwo_200_response.cpp \
+    $${PWD}/OAIVatLookup_200_response.cpp \
+    $${PWD}/OAIVatLookup_200_response_matches_inner.cpp \
+# APIs
+    $${PWD}/OAIV1CompanyApi.cpp \
+    $${PWD}/OAIV1EinVerificationApi.cpp \
+    $${PWD}/OAIV1IbanVerificationApi.cpp \
+    $${PWD}/OAIV1NifVerificationApi.cpp \
+    $${PWD}/OAIV1PepsanctionApi.cpp \
+    $${PWD}/OAIV1ProductApi.cpp \
+    $${PWD}/OAIV1SystemApi.cpp \
+    $${PWD}/OAIV1TinVerificationApi.cpp \
+    $${PWD}/OAIV1VatVerificationApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp
