@@ -1,0 +1,26 @@
+# coding: utf-8
+
+# import models into model package
+from openapi_server.models.appliance import Appliance
+from openapi_server.models.appliance_artifact import ApplianceArtifact
+from openapi_server.models.appliance_artifact_type import ApplianceArtifactType
+from openapi_server.models.appliance_definition import ApplianceDefinition
+from openapi_server.models.appliance_definition_list_result import ApplianceDefinitionListResult
+from openapi_server.models.appliance_definition_properties import ApplianceDefinitionProperties
+from openapi_server.models.appliance_list_result import ApplianceListResult
+from openapi_server.models.appliance_lock_level import ApplianceLockLevel
+from openapi_server.models.appliance_patchable import AppliancePatchable
+from openapi_server.models.appliance_properties import ApplianceProperties
+from openapi_server.models.appliance_properties_patchable import AppliancePropertiesPatchable
+from openapi_server.models.appliance_provider_authorization import ApplianceProviderAuthorization
+from openapi_server.models.error_response import ErrorResponse
+from openapi_server.models.generic_resource import GenericResource
+from openapi_server.models.identity import Identity
+from openapi_server.models.operation import Operation
+from openapi_server.models.operation_display import OperationDisplay
+from openapi_server.models.operation_list_result import OperationListResult
+from openapi_server.models.plan import Plan
+from openapi_server.models.plan_patchable import PlanPatchable
+from openapi_server.models.provisioning_state import ProvisioningState
+from openapi_server.models.resource import Resource
+from openapi_server.models.sku import Sku

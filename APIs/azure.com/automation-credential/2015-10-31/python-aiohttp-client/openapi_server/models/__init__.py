@@ -1,0 +1,11 @@
+# coding: utf-8
+
+# import models into model package
+from openapi_server.models.credential import Credential
+from openapi_server.models.credential_create_or_update_parameters import CredentialCreateOrUpdateParameters
+from openapi_server.models.credential_create_or_update_properties import CredentialCreateOrUpdateProperties
+from openapi_server.models.credential_get_default_response import CredentialGetDefaultResponse
+from openapi_server.models.credential_list_result import CredentialListResult
+from openapi_server.models.credential_properties import CredentialProperties
+from openapi_server.models.credential_update_parameters import CredentialUpdateParameters
+from openapi_server.models.credential_update_properties import CredentialUpdateProperties

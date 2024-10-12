@@ -1,0 +1,10 @@
+# coding: utf-8
+
+# import models into model package
+from openapi_server.models.property_collection import PropertyCollection
+from openapi_server.models.property_contract import PropertyContract
+from openapi_server.models.property_contract_properties import PropertyContractProperties
+from openapi_server.models.property_entity_base_parameters import PropertyEntityBaseParameters
+from openapi_server.models.property_get_default_response import PropertyGetDefaultResponse
+from openapi_server.models.property_get_default_response_details_inner import PropertyGetDefaultResponseDetailsInner
+from openapi_server.models.property_update_parameters import PropertyUpdateParameters
