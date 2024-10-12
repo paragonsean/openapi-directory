@@ -1,0 +1,81 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIListByocTrunkResponse.h \
+    $${PWD}/OAIListByocTrunkResponse_meta.h \
+    $${PWD}/OAIListConnectionPolicyResponse.h \
+    $${PWD}/OAIListConnectionPolicyTargetResponse.h \
+    $${PWD}/OAIListDialingPermissionsCountryResponse.h \
+    $${PWD}/OAIListDialingPermissionsHrsPrefixesResponse.h \
+    $${PWD}/OAIListIpRecordResponse.h \
+    $${PWD}/OAIListSourceIpMappingResponse.h \
+    $${PWD}/OAIVoice_v1_archived_call.h \
+    $${PWD}/OAIVoice_v1_byoc_trunk.h \
+    $${PWD}/OAIVoice_v1_connection_policy.h \
+    $${PWD}/OAIVoice_v1_connection_policy_connection_policy_target.h \
+    $${PWD}/OAIVoice_v1_dialing_permissions_dialing_permissions_country.h \
+    $${PWD}/OAIVoice_v1_dialing_permissions_dialing_permissions_country_bulk_update.h \
+    $${PWD}/OAIVoice_v1_dialing_permissions_dialing_permissions_country_dialing_permissions_hrs_prefixes.h \
+    $${PWD}/OAIVoice_v1_dialing_permissions_dialing_permissions_country_instance.h \
+    $${PWD}/OAIVoice_v1_dialing_permissions_dialing_permissions_settings.h \
+    $${PWD}/OAIVoice_v1_ip_record.h \
+    $${PWD}/OAIVoice_v1_source_ip_mapping.h \
+# APIs
+    $${PWD}/OAIVoiceV1ArchivedCallApi.h \
+    $${PWD}/OAIVoiceV1BulkCountryUpdateApi.h \
+    $${PWD}/OAIVoiceV1ByocTrunkApi.h \
+    $${PWD}/OAIVoiceV1ConnectionPolicyApi.h \
+    $${PWD}/OAIVoiceV1ConnectionPolicyTargetApi.h \
+    $${PWD}/OAIVoiceV1CountryApi.h \
+    $${PWD}/OAIVoiceV1HighriskSpecialPrefixApi.h \
+    $${PWD}/OAIVoiceV1IpRecordApi.h \
+    $${PWD}/OAIVoiceV1SettingsApi.h \
+    $${PWD}/OAIVoiceV1SourceIpMappingApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIListByocTrunkResponse.cpp \
+    $${PWD}/OAIListByocTrunkResponse_meta.cpp \
+    $${PWD}/OAIListConnectionPolicyResponse.cpp \
+    $${PWD}/OAIListConnectionPolicyTargetResponse.cpp \
+    $${PWD}/OAIListDialingPermissionsCountryResponse.cpp \
+    $${PWD}/OAIListDialingPermissionsHrsPrefixesResponse.cpp \
+    $${PWD}/OAIListIpRecordResponse.cpp \
+    $${PWD}/OAIListSourceIpMappingResponse.cpp \
+    $${PWD}/OAIVoice_v1_archived_call.cpp \
+    $${PWD}/OAIVoice_v1_byoc_trunk.cpp \
+    $${PWD}/OAIVoice_v1_connection_policy.cpp \
+    $${PWD}/OAIVoice_v1_connection_policy_connection_policy_target.cpp \
+    $${PWD}/OAIVoice_v1_dialing_permissions_dialing_permissions_country.cpp \
+    $${PWD}/OAIVoice_v1_dialing_permissions_dialing_permissions_country_bulk_update.cpp \
+    $${PWD}/OAIVoice_v1_dialing_permissions_dialing_permissions_country_dialing_permissions_hrs_prefixes.cpp \
+    $${PWD}/OAIVoice_v1_dialing_permissions_dialing_permissions_country_instance.cpp \
+    $${PWD}/OAIVoice_v1_dialing_permissions_dialing_permissions_settings.cpp \
+    $${PWD}/OAIVoice_v1_ip_record.cpp \
+    $${PWD}/OAIVoice_v1_source_ip_mapping.cpp \
+# APIs
+    $${PWD}/OAIVoiceV1ArchivedCallApi.cpp \
+    $${PWD}/OAIVoiceV1BulkCountryUpdateApi.cpp \
+    $${PWD}/OAIVoiceV1ByocTrunkApi.cpp \
+    $${PWD}/OAIVoiceV1ConnectionPolicyApi.cpp \
+    $${PWD}/OAIVoiceV1ConnectionPolicyTargetApi.cpp \
+    $${PWD}/OAIVoiceV1CountryApi.cpp \
+    $${PWD}/OAIVoiceV1HighriskSpecialPrefixApi.cpp \
+    $${PWD}/OAIVoiceV1IpRecordApi.cpp \
+    $${PWD}/OAIVoiceV1SettingsApi.cpp \
+    $${PWD}/OAIVoiceV1SourceIpMappingApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

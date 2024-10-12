@@ -1,0 +1,101 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIAggregateDatasets_200_response.h \
+    $${PWD}/OAIAttachment.h \
+    $${PWD}/OAIDataset.h \
+    $${PWD}/OAIDataset_fields_inner.h \
+    $${PWD}/OAIFacet_enumeration.h \
+    $${PWD}/OAIFacet_value_enumeration.h \
+    $${PWD}/OAIGetDatasetAttachements_200_response.h \
+    $${PWD}/OAIGetDatasetReuse_200_response.h \
+    $${PWD}/OAIGetDatasetReuses_200_response.h \
+    $${PWD}/OAIGetDatasetSnapshots_200_response.h \
+    $${PWD}/OAIGetDatasets_200_response.h \
+    $${PWD}/OAIGetDatasets_200_response_datasets_inner.h \
+    $${PWD}/OAIGetMetadataTemplatesType_200_response.h \
+    $${PWD}/OAIGetMetadataTemplatesType_200_response_metadata_templates_inner.h \
+    $${PWD}/OAIGetPages_200_response.h \
+    $${PWD}/OAIGetPages_200_response_pages_inner.h \
+    $${PWD}/OAIGetRecordsFacets_200_response.h \
+    $${PWD}/OAIGetRecords_200_response.h \
+    $${PWD}/OAIGetRecords_200_response_records_inner.h \
+    $${PWD}/OAIGetRoot_200_response.h \
+    $${PWD}/OAILink.h \
+    $${PWD}/OAIMetadata_template.h \
+    $${PWD}/OAIPage.h \
+    $${PWD}/OAIPage_title.h \
+    $${PWD}/OAIRecord.h \
+    $${PWD}/OAIReuse.h \
+    $${PWD}/OAIReuse_user.h \
+    $${PWD}/OAISendDatasetFeedback_request.h \
+    $${PWD}/OAISnapshot.h \
+# APIs
+    $${PWD}/OAIAggregationsApi.h \
+    $${PWD}/OAICatalogApi.h \
+    $${PWD}/OAIDatasetApi.h \
+    $${PWD}/OAIExportCatalogApi.h \
+    $${PWD}/OAIExportDatasetApi.h \
+    $${PWD}/OAIFacetApi.h \
+    $${PWD}/OAIMetadataApi.h \
+    $${PWD}/OAIOdsApi.h \
+    $${PWD}/OAIPageApi.h \
+    $${PWD}/OAIRootApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIAggregateDatasets_200_response.cpp \
+    $${PWD}/OAIAttachment.cpp \
+    $${PWD}/OAIDataset.cpp \
+    $${PWD}/OAIDataset_fields_inner.cpp \
+    $${PWD}/OAIFacet_enumeration.cpp \
+    $${PWD}/OAIFacet_value_enumeration.cpp \
+    $${PWD}/OAIGetDatasetAttachements_200_response.cpp \
+    $${PWD}/OAIGetDatasetReuse_200_response.cpp \
+    $${PWD}/OAIGetDatasetReuses_200_response.cpp \
+    $${PWD}/OAIGetDatasetSnapshots_200_response.cpp \
+    $${PWD}/OAIGetDatasets_200_response.cpp \
+    $${PWD}/OAIGetDatasets_200_response_datasets_inner.cpp \
+    $${PWD}/OAIGetMetadataTemplatesType_200_response.cpp \
+    $${PWD}/OAIGetMetadataTemplatesType_200_response_metadata_templates_inner.cpp \
+    $${PWD}/OAIGetPages_200_response.cpp \
+    $${PWD}/OAIGetPages_200_response_pages_inner.cpp \
+    $${PWD}/OAIGetRecordsFacets_200_response.cpp \
+    $${PWD}/OAIGetRecords_200_response.cpp \
+    $${PWD}/OAIGetRecords_200_response_records_inner.cpp \
+    $${PWD}/OAIGetRoot_200_response.cpp \
+    $${PWD}/OAILink.cpp \
+    $${PWD}/OAIMetadata_template.cpp \
+    $${PWD}/OAIPage.cpp \
+    $${PWD}/OAIPage_title.cpp \
+    $${PWD}/OAIRecord.cpp \
+    $${PWD}/OAIReuse.cpp \
+    $${PWD}/OAIReuse_user.cpp \
+    $${PWD}/OAISendDatasetFeedback_request.cpp \
+    $${PWD}/OAISnapshot.cpp \
+# APIs
+    $${PWD}/OAIAggregationsApi.cpp \
+    $${PWD}/OAICatalogApi.cpp \
+    $${PWD}/OAIDatasetApi.cpp \
+    $${PWD}/OAIExportCatalogApi.cpp \
+    $${PWD}/OAIExportDatasetApi.cpp \
+    $${PWD}/OAIFacetApi.cpp \
+    $${PWD}/OAIMetadataApi.cpp \
+    $${PWD}/OAIOdsApi.cpp \
+    $${PWD}/OAIPageApi.cpp \
+    $${PWD}/OAIRootApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

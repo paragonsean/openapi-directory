@@ -1,0 +1,85 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIBatchData_inner.h \
+    $${PWD}/OAIComponent.h \
+    $${PWD}/OAICreateTemplate_200_response.h \
+    $${PWD}/OAIData.h \
+    $${PWD}/OAIDeleteTemplate_200_response.h \
+    $${PWD}/OAIDeleteTemplate_200_response_response.h \
+    $${PWD}/OAIGetEditorUrl_200_response.h \
+    $${PWD}/OAIGetTemplates_200_response.h \
+    $${PWD}/OAIGetTemplates_401_response.h \
+    $${PWD}/OAIGetTemplates_403_response.h \
+    $${PWD}/OAIGetTemplates_404_response.h \
+    $${PWD}/OAIGetTemplates_422_response.h \
+    $${PWD}/OAIGetTemplates_500_response.h \
+    $${PWD}/OAIGetWorkspace_200_response.h \
+    $${PWD}/OAIMergeTemplates_200_response.h \
+    $${PWD}/OAIMergeTemplates_200_response_meta.h \
+    $${PWD}/OAITemplate.h \
+    $${PWD}/OAITemplateDefinition.h \
+    $${PWD}/OAITemplateDefinitionNew.h \
+    $${PWD}/OAITemplateDefinitionNew_layout.h \
+    $${PWD}/OAITemplateDefinition_dataSettings.h \
+    $${PWD}/OAITemplateDefinition_editor.h \
+    $${PWD}/OAITemplateDefinition_layout.h \
+    $${PWD}/OAITemplateDefinition_layout_margins.h \
+    $${PWD}/OAITemplateDefinition_layout_repeatLayout.h \
+    $${PWD}/OAITemplateDefinition_pages_inner.h \
+    $${PWD}/OAITemplateDefinition_pages_inner_margins.h \
+    $${PWD}/OAIWorkspace.h \
+# APIs
+    $${PWD}/OAIDocumentsApi.h \
+    $${PWD}/OAITemplatesApi.h \
+    $${PWD}/OAIWorkspacesApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIBatchData_inner.cpp \
+    $${PWD}/OAIComponent.cpp \
+    $${PWD}/OAICreateTemplate_200_response.cpp \
+    $${PWD}/OAIData.cpp \
+    $${PWD}/OAIDeleteTemplate_200_response.cpp \
+    $${PWD}/OAIDeleteTemplate_200_response_response.cpp \
+    $${PWD}/OAIGetEditorUrl_200_response.cpp \
+    $${PWD}/OAIGetTemplates_200_response.cpp \
+    $${PWD}/OAIGetTemplates_401_response.cpp \
+    $${PWD}/OAIGetTemplates_403_response.cpp \
+    $${PWD}/OAIGetTemplates_404_response.cpp \
+    $${PWD}/OAIGetTemplates_422_response.cpp \
+    $${PWD}/OAIGetTemplates_500_response.cpp \
+    $${PWD}/OAIGetWorkspace_200_response.cpp \
+    $${PWD}/OAIMergeTemplates_200_response.cpp \
+    $${PWD}/OAIMergeTemplates_200_response_meta.cpp \
+    $${PWD}/OAITemplate.cpp \
+    $${PWD}/OAITemplateDefinition.cpp \
+    $${PWD}/OAITemplateDefinitionNew.cpp \
+    $${PWD}/OAITemplateDefinitionNew_layout.cpp \
+    $${PWD}/OAITemplateDefinition_dataSettings.cpp \
+    $${PWD}/OAITemplateDefinition_editor.cpp \
+    $${PWD}/OAITemplateDefinition_layout.cpp \
+    $${PWD}/OAITemplateDefinition_layout_margins.cpp \
+    $${PWD}/OAITemplateDefinition_layout_repeatLayout.cpp \
+    $${PWD}/OAITemplateDefinition_pages_inner.cpp \
+    $${PWD}/OAITemplateDefinition_pages_inner_margins.cpp \
+    $${PWD}/OAIWorkspace.cpp \
+# APIs
+    $${PWD}/OAIDocumentsApi.cpp \
+    $${PWD}/OAITemplatesApi.cpp \
+    $${PWD}/OAIWorkspacesApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

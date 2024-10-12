@@ -1,0 +1,97 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIListDocumentPermissionResponse.h \
+    $${PWD}/OAIListDocumentResponse.h \
+    $${PWD}/OAIListServiceResponse.h \
+    $${PWD}/OAIListServiceResponse_meta.h \
+    $${PWD}/OAIListSyncListItemResponse.h \
+    $${PWD}/OAIListSyncListPermissionResponse.h \
+    $${PWD}/OAIListSyncListResponse.h \
+    $${PWD}/OAIListSyncMapItemResponse.h \
+    $${PWD}/OAIListSyncMapPermissionResponse.h \
+    $${PWD}/OAIListSyncMapResponse.h \
+    $${PWD}/OAIListSyncStreamResponse.h \
+    $${PWD}/OAISync_list_item_enum_query_from_bound_type.h \
+    $${PWD}/OAISync_list_item_enum_query_result_order.h \
+    $${PWD}/OAISync_map_item_enum_query_from_bound_type.h \
+    $${PWD}/OAISync_map_item_enum_query_result_order.h \
+    $${PWD}/OAISync_v1_service.h \
+    $${PWD}/OAISync_v1_service_document.h \
+    $${PWD}/OAISync_v1_service_document_document_permission.h \
+    $${PWD}/OAISync_v1_service_sync_list.h \
+    $${PWD}/OAISync_v1_service_sync_list_sync_list_item.h \
+    $${PWD}/OAISync_v1_service_sync_list_sync_list_permission.h \
+    $${PWD}/OAISync_v1_service_sync_map.h \
+    $${PWD}/OAISync_v1_service_sync_map_sync_map_item.h \
+    $${PWD}/OAISync_v1_service_sync_map_sync_map_permission.h \
+    $${PWD}/OAISync_v1_service_sync_stream.h \
+    $${PWD}/OAISync_v1_service_sync_stream_stream_message.h \
+# APIs
+    $${PWD}/OAISyncV1DocumentApi.h \
+    $${PWD}/OAISyncV1DocumentPermissionApi.h \
+    $${PWD}/OAISyncV1ServiceApi.h \
+    $${PWD}/OAISyncV1StreamMessageApi.h \
+    $${PWD}/OAISyncV1SyncListApi.h \
+    $${PWD}/OAISyncV1SyncListItemApi.h \
+    $${PWD}/OAISyncV1SyncListPermissionApi.h \
+    $${PWD}/OAISyncV1SyncMapApi.h \
+    $${PWD}/OAISyncV1SyncMapItemApi.h \
+    $${PWD}/OAISyncV1SyncMapPermissionApi.h \
+    $${PWD}/OAISyncV1SyncStreamApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIListDocumentPermissionResponse.cpp \
+    $${PWD}/OAIListDocumentResponse.cpp \
+    $${PWD}/OAIListServiceResponse.cpp \
+    $${PWD}/OAIListServiceResponse_meta.cpp \
+    $${PWD}/OAIListSyncListItemResponse.cpp \
+    $${PWD}/OAIListSyncListPermissionResponse.cpp \
+    $${PWD}/OAIListSyncListResponse.cpp \
+    $${PWD}/OAIListSyncMapItemResponse.cpp \
+    $${PWD}/OAIListSyncMapPermissionResponse.cpp \
+    $${PWD}/OAIListSyncMapResponse.cpp \
+    $${PWD}/OAIListSyncStreamResponse.cpp \
+    $${PWD}/OAISync_list_item_enum_query_from_bound_type.cpp \
+    $${PWD}/OAISync_list_item_enum_query_result_order.cpp \
+    $${PWD}/OAISync_map_item_enum_query_from_bound_type.cpp \
+    $${PWD}/OAISync_map_item_enum_query_result_order.cpp \
+    $${PWD}/OAISync_v1_service.cpp \
+    $${PWD}/OAISync_v1_service_document.cpp \
+    $${PWD}/OAISync_v1_service_document_document_permission.cpp \
+    $${PWD}/OAISync_v1_service_sync_list.cpp \
+    $${PWD}/OAISync_v1_service_sync_list_sync_list_item.cpp \
+    $${PWD}/OAISync_v1_service_sync_list_sync_list_permission.cpp \
+    $${PWD}/OAISync_v1_service_sync_map.cpp \
+    $${PWD}/OAISync_v1_service_sync_map_sync_map_item.cpp \
+    $${PWD}/OAISync_v1_service_sync_map_sync_map_permission.cpp \
+    $${PWD}/OAISync_v1_service_sync_stream.cpp \
+    $${PWD}/OAISync_v1_service_sync_stream_stream_message.cpp \
+# APIs
+    $${PWD}/OAISyncV1DocumentApi.cpp \
+    $${PWD}/OAISyncV1DocumentPermissionApi.cpp \
+    $${PWD}/OAISyncV1ServiceApi.cpp \
+    $${PWD}/OAISyncV1StreamMessageApi.cpp \
+    $${PWD}/OAISyncV1SyncListApi.cpp \
+    $${PWD}/OAISyncV1SyncListItemApi.cpp \
+    $${PWD}/OAISyncV1SyncListPermissionApi.cpp \
+    $${PWD}/OAISyncV1SyncMapApi.cpp \
+    $${PWD}/OAISyncV1SyncMapItemApi.cpp \
+    $${PWD}/OAISyncV1SyncMapPermissionApi.cpp \
+    $${PWD}/OAISyncV1SyncStreamApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

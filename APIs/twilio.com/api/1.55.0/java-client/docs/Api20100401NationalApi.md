@@ -1,0 +1,121 @@
+# Api20100401NationalApi
+
+All URIs are relative to *https://api.twilio.com*
+
+| Method | HTTP request | Description |
+|------------- | ------------- | -------------|
+| [**listAvailablePhoneNumberNational**](Api20100401NationalApi.md#listAvailablePhoneNumberNational) | **GET** /2010-04-01/Accounts/{AccountSid}/AvailablePhoneNumbers/{CountryCode}/National.json |  |
+
+
+<a id="listAvailablePhoneNumberNational"></a>
+# **listAvailablePhoneNumberNational**
+> ListAvailablePhoneNumberNationalResponse listAvailablePhoneNumberNational(accountSid, countryCode, areaCode, contains, smsEnabled, mmsEnabled, voiceEnabled, excludeAllAddressRequired, excludeLocalAddressRequired, excludeForeignAddressRequired, beta, nearNumber, nearLatLong, distance, inPostalCode, inRegion, inRateCenter, inLata, inLocality, faxEnabled, pageSize, page, pageToken)
+
+
+
+
+
+### Example
+```java
+// Import classes:
+import org.openapitools.client.ApiClient;
+import org.openapitools.client.ApiException;
+import org.openapitools.client.Configuration;
+import org.openapitools.client.auth.*;
+import org.openapitools.client.models.*;
+import org.openapitools.client.api.Api20100401NationalApi;
+
+public class Example {
+  public static void main(String[] args) {
+    ApiClient defaultClient = Configuration.getDefaultApiClient();
+    defaultClient.setBasePath("https://api.twilio.com");
+    
+    // Configure HTTP basic authorization: accountSid_authToken
+    HttpBasicAuth accountSid_authToken = (HttpBasicAuth) defaultClient.getAuthentication("accountSid_authToken");
+    accountSid_authToken.setUsername("YOUR USERNAME");
+    accountSid_authToken.setPassword("YOUR PASSWORD");
+
+    Api20100401NationalApi apiInstance = new Api20100401NationalApi(defaultClient);
+    String accountSid = "accountSid_example"; // String | The SID of the [Account](https://www.twilio.com/docs/iam/api/account) requesting the AvailablePhoneNumber resources.
+    String countryCode = "countryCode_example"; // String | The [ISO-3166-1](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) country code of the country from which to read phone numbers.
+    Integer areaCode = 56; // Integer | The area code of the phone numbers to read. Applies to only phone numbers in the US and Canada.
+    String contains = "contains_example"; // String | The pattern on which to match phone numbers. Valid characters are `*`, `0-9`, `a-z`, and `A-Z`. The `*` character matches any single digit. For examples, see [Example 2](https://www.twilio.com/docs/phone-numbers/api/availablephonenumber-resource#local-get-basic-example-2) and [Example 3](https://www.twilio.com/docs/phone-numbers/api/availablephonenumber-resource#local-get-basic-example-3). If specified, this value must have at least two characters.
+    Boolean smsEnabled = true; // Boolean | Whether the phone numbers can receive text messages. Can be: `true` or `false`.
+    Boolean mmsEnabled = true; // Boolean | Whether the phone numbers can receive MMS messages. Can be: `true` or `false`.
+    Boolean voiceEnabled = true; // Boolean | Whether the phone numbers can receive calls. Can be: `true` or `false`.
+    Boolean excludeAllAddressRequired = true; // Boolean | Whether to exclude phone numbers that require an [Address](https://www.twilio.com/docs/usage/api/address). Can be: `true` or `false` and the default is `false`.
+    Boolean excludeLocalAddressRequired = true; // Boolean | Whether to exclude phone numbers that require a local [Address](https://www.twilio.com/docs/usage/api/address). Can be: `true` or `false` and the default is `false`.
+    Boolean excludeForeignAddressRequired = true; // Boolean | Whether to exclude phone numbers that require a foreign [Address](https://www.twilio.com/docs/usage/api/address). Can be: `true` or `false` and the default is `false`.
+    Boolean beta = true; // Boolean | Whether to read phone numbers that are new to the Twilio platform. Can be: `true` or `false` and the default is `true`.
+    String nearNumber = "nearNumber_example"; // String | Given a phone number, find a geographically close number within `distance` miles. Distance defaults to 25 miles. Applies to only phone numbers in the US and Canada.
+    String nearLatLong = "nearLatLong_example"; // String | Given a latitude/longitude pair `lat,long` find geographically close numbers within `distance` miles. Applies to only phone numbers in the US and Canada.
+    Integer distance = 56; // Integer | The search radius, in miles, for a `near_` query.  Can be up to `500` and the default is `25`. Applies to only phone numbers in the US and Canada.
+    String inPostalCode = "inPostalCode_example"; // String | Limit results to a particular postal code. Given a phone number, search within the same postal code as that number. Applies to only phone numbers in the US and Canada.
+    String inRegion = "inRegion_example"; // String | Limit results to a particular region, state, or province. Given a phone number, search within the same region as that number. Applies to only phone numbers in the US and Canada.
+    String inRateCenter = "inRateCenter_example"; // String | Limit results to a specific rate center, or given a phone number search within the same rate center as that number. Requires `in_lata` to be set as well. Applies to only phone numbers in the US and Canada.
+    String inLata = "inLata_example"; // String | Limit results to a specific local access and transport area ([LATA](https://en.wikipedia.org/wiki/Local_access_and_transport_area)). Given a phone number, search within the same [LATA](https://en.wikipedia.org/wiki/Local_access_and_transport_area) as that number. Applies to only phone numbers in the US and Canada.
+    String inLocality = "inLocality_example"; // String | Limit results to a particular locality or city. Given a phone number, search within the same Locality as that number.
+    Boolean faxEnabled = true; // Boolean | Whether the phone numbers can receive faxes. Can be: `true` or `false`.
+    Integer pageSize = 56; // Integer | How many resources to return in each list page. The default is 50, and the maximum is 1000.
+    Integer page = 56; // Integer | The page index. This value is simply for client state.
+    String pageToken = "pageToken_example"; // String | The page token. This is provided by the API.
+    try {
+      ListAvailablePhoneNumberNationalResponse result = apiInstance.listAvailablePhoneNumberNational(accountSid, countryCode, areaCode, contains, smsEnabled, mmsEnabled, voiceEnabled, excludeAllAddressRequired, excludeLocalAddressRequired, excludeForeignAddressRequired, beta, nearNumber, nearLatLong, distance, inPostalCode, inRegion, inRateCenter, inLata, inLocality, faxEnabled, pageSize, page, pageToken);
+      System.out.println(result);
+    } catch (ApiException e) {
+      System.err.println("Exception when calling Api20100401NationalApi#listAvailablePhoneNumberNational");
+      System.err.println("Status code: " + e.getCode());
+      System.err.println("Reason: " + e.getResponseBody());
+      System.err.println("Response headers: " + e.getResponseHeaders());
+      e.printStackTrace();
+    }
+  }
+}
+```
+
+### Parameters
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **accountSid** | **String**| The SID of the [Account](https://www.twilio.com/docs/iam/api/account) requesting the AvailablePhoneNumber resources. | |
+| **countryCode** | **String**| The [ISO-3166-1](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) country code of the country from which to read phone numbers. | |
+| **areaCode** | **Integer**| The area code of the phone numbers to read. Applies to only phone numbers in the US and Canada. | [optional] |
+| **contains** | **String**| The pattern on which to match phone numbers. Valid characters are &#x60;*&#x60;, &#x60;0-9&#x60;, &#x60;a-z&#x60;, and &#x60;A-Z&#x60;. The &#x60;*&#x60; character matches any single digit. For examples, see [Example 2](https://www.twilio.com/docs/phone-numbers/api/availablephonenumber-resource#local-get-basic-example-2) and [Example 3](https://www.twilio.com/docs/phone-numbers/api/availablephonenumber-resource#local-get-basic-example-3). If specified, this value must have at least two characters. | [optional] |
+| **smsEnabled** | **Boolean**| Whether the phone numbers can receive text messages. Can be: &#x60;true&#x60; or &#x60;false&#x60;. | [optional] |
+| **mmsEnabled** | **Boolean**| Whether the phone numbers can receive MMS messages. Can be: &#x60;true&#x60; or &#x60;false&#x60;. | [optional] |
+| **voiceEnabled** | **Boolean**| Whether the phone numbers can receive calls. Can be: &#x60;true&#x60; or &#x60;false&#x60;. | [optional] |
+| **excludeAllAddressRequired** | **Boolean**| Whether to exclude phone numbers that require an [Address](https://www.twilio.com/docs/usage/api/address). Can be: &#x60;true&#x60; or &#x60;false&#x60; and the default is &#x60;false&#x60;. | [optional] |
+| **excludeLocalAddressRequired** | **Boolean**| Whether to exclude phone numbers that require a local [Address](https://www.twilio.com/docs/usage/api/address). Can be: &#x60;true&#x60; or &#x60;false&#x60; and the default is &#x60;false&#x60;. | [optional] |
+| **excludeForeignAddressRequired** | **Boolean**| Whether to exclude phone numbers that require a foreign [Address](https://www.twilio.com/docs/usage/api/address). Can be: &#x60;true&#x60; or &#x60;false&#x60; and the default is &#x60;false&#x60;. | [optional] |
+| **beta** | **Boolean**| Whether to read phone numbers that are new to the Twilio platform. Can be: &#x60;true&#x60; or &#x60;false&#x60; and the default is &#x60;true&#x60;. | [optional] |
+| **nearNumber** | **String**| Given a phone number, find a geographically close number within &#x60;distance&#x60; miles. Distance defaults to 25 miles. Applies to only phone numbers in the US and Canada. | [optional] |
+| **nearLatLong** | **String**| Given a latitude/longitude pair &#x60;lat,long&#x60; find geographically close numbers within &#x60;distance&#x60; miles. Applies to only phone numbers in the US and Canada. | [optional] |
+| **distance** | **Integer**| The search radius, in miles, for a &#x60;near_&#x60; query.  Can be up to &#x60;500&#x60; and the default is &#x60;25&#x60;. Applies to only phone numbers in the US and Canada. | [optional] |
+| **inPostalCode** | **String**| Limit results to a particular postal code. Given a phone number, search within the same postal code as that number. Applies to only phone numbers in the US and Canada. | [optional] |
+| **inRegion** | **String**| Limit results to a particular region, state, or province. Given a phone number, search within the same region as that number. Applies to only phone numbers in the US and Canada. | [optional] |
+| **inRateCenter** | **String**| Limit results to a specific rate center, or given a phone number search within the same rate center as that number. Requires &#x60;in_lata&#x60; to be set as well. Applies to only phone numbers in the US and Canada. | [optional] |
+| **inLata** | **String**| Limit results to a specific local access and transport area ([LATA](https://en.wikipedia.org/wiki/Local_access_and_transport_area)). Given a phone number, search within the same [LATA](https://en.wikipedia.org/wiki/Local_access_and_transport_area) as that number. Applies to only phone numbers in the US and Canada. | [optional] |
+| **inLocality** | **String**| Limit results to a particular locality or city. Given a phone number, search within the same Locality as that number. | [optional] |
+| **faxEnabled** | **Boolean**| Whether the phone numbers can receive faxes. Can be: &#x60;true&#x60; or &#x60;false&#x60;. | [optional] |
+| **pageSize** | **Integer**| How many resources to return in each list page. The default is 50, and the maximum is 1000. | [optional] |
+| **page** | **Integer**| The page index. This value is simply for client state. | [optional] |
+| **pageToken** | **String**| The page token. This is provided by the API. | [optional] |
+
+### Return type
+
+[**ListAvailablePhoneNumberNationalResponse**](ListAvailablePhoneNumberNationalResponse.md)
+
+### Authorization
+
+[accountSid_authToken](../README.md#accountSid_authToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | OK |  -  |
+

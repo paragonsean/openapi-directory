@@ -1,0 +1,5213 @@
+openapi: 3.0.1
+info:
+  contact: {}
+  title: opendatasoft
+  version: 2.1.0
+  x-apisguru-categories:
+  - open_data
+  x-logo:
+    url: https://twitter.com/opendatasoft/profile_image?size=original
+  x-origin:
+  - format: swagger
+    url: http://public.opendatasoft.com/api/v2/swagger.json
+    version: "2.0"
+  - format: swagger
+    url: http://public.opendatasoft.com/api/v2/swagger.json
+    version: "2.0"
+  x-providerName: opendatasoft.com
+servers:
+- url: https://public.opendatasoft.com/api/v2
+security:
+- api_key: []
+- basic: []
+tags:
+- name: root
+- name: metadata
+- name: catalog
+- name: export catalog
+- name: dataset
+- name: export dataset
+paths:
+  /:
+    get:
+      description: |
+        API entry point
+
+        Provides links for:
+        * catalog, your domain's list of datasets
+        * opendatasoft, all datasets on the Opendatasoft network
+      operationId: getRoot
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/getRoot_200_response'
+          description: Provide a set of links to the most basic entry points in the
+            API (sources)
+      tags:
+      - root
+      - ods
+      x-accepts:
+      - application/json
+  /pages:
+    get:
+      description: |
+        List of all pages from this portal.
+      operationId: getPages
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/getPages_200_response'
+          description: "List of all pages, each with their endpoint."
+      tags:
+      - page
+      - ods
+      x-accepts:
+      - application/json
+  /pages/{slug}:
+    get:
+      description: |
+        A single page's metadata from this portal
+      operationId: getPage
+      parameters:
+      - description: |
+          Page slug.
+        in: path
+        name: slug
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/getPages_200_response_pages_inner'
+          description: A single page's metadata.
+      tags:
+      - page
+      - ods
+      x-accepts:
+      - application/json
+  /{source}:
+    get:
+      description: |
+        Source entry points
+
+        Provides links for the source's datasets and metadata.
+      operationId: getSource
+      parameters:
+      - description: |
+          Each source represents a different catalog of datasets you'll be able to query.
+
+          There are 2 sources available:
+
+          * catalog: the catalog of datasets on your portal
+          * opendatasoft: Opendatasoft's repository of public datasets, also available at
+            [data.opendatasoft.com](https://data.opendatasoft.com/page/home/)
+        in: path
+        name: source
+        required: true
+        schema:
+          default: catalog
+          enum:
+          - catalog
+          - opendatasoft
+          - monitoring
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/getRoot_200_response'
+          description: Provide a set of links to the basic entry points for the given
+            source.
+      tags:
+      - catalog
+      - ods
+      x-accepts:
+      - application/json
+  /{source}/aggregates:
+    get:
+      description: |
+        **Deprecated, use `/datasets` instead.**
+      operationId: aggregateDatasets
+      parameters:
+      - description: |
+          Each source represents a different catalog of datasets you'll be able to query.
+
+          There are 2 sources available:
+
+          * catalog: the catalog of datasets on your portal
+          * opendatasoft: Opendatasoft's repository of public datasets, also available at
+            [data.opendatasoft.com](https://data.opendatasoft.com/page/home/)
+        in: path
+        name: source
+        required: true
+        schema:
+          default: catalog
+          enum:
+          - catalog
+          - opendatasoft
+          - monitoring
+          type: string
+      - description: |
+          A select expression can be used to add, remove or change fields to return.
+          An expression can be:
+            - a wildcard ('*'): return all fields
+            - a field name: return only this field
+            - an include/exclude function. Include (resp exclude) all field matching include/exclude expression. This expression can contain wildcard. For example: include(spa*) will return all fields begining with 'spa'
+            - a complex expression: return the result of this expression. A label can be set for this expression, in that case, field will be named with this label. For instance: 'size * 2 as bigger_size' will return a new field named bigger_size and containing the double of size field value.
+        in: query
+        name: select
+        schema:
+          type: string
+      - description: |
+          An array of filters.
+
+          A filter is a text expression performing a simple full-text search that can also include logical operations
+          (NOT, AND, OR...) as well as lots of other functions, thus performing more complex and more precise searches.
+
+          Read [the query language reference](https://docs.opendatasoft.com/api/explore/v2.html#where-clause) for more details.
+        explode: true
+        in: query
+        name: where
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: |
+          A group by expression defines a grouping function for an aggregation.
+          It can be:
+           - a field name: group result by each value of this field
+           - a range function: group result by range
+           - a date function: group result by date
+          It is possible to specify a custom name with the 'as name' notation. For instance: group_by='city_field as city'.
+        in: query
+        name: group_by
+        schema:
+          type: string
+      - description: |
+          A comma-separated list of field names or aggregations to sort on, followed by an order (`asc` or `desc`).
+
+          Sorts results according to the specified fields' values in ascending order by default.
+          To sort results in descending order, use the `desc` keyword.
+
+          Example: `sum(age) desc, name asc`
+        explode: false
+        in: query
+        name: order_by
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: |
+          Number of items to return.
+
+          To use in conjonction with offset to implement pagination.
+
+          Limit maximum value is 100. To retrive more data use export entry points.
+          The default value is 10.
+        in: query
+        name: limit
+        schema:
+          default: 10
+          maximum: 100
+          minimum: -1
+          type: integer
+      - description: |
+          Index of the first item to return (starting at 0).
+
+          To use in conjonction with limit to implement pagination.
+        in: query
+        name: offset
+        schema:
+          default: 0
+          minimum: 0
+          type: integer
+      - description: |
+          A facet is a field used for simple filtering (through the parameters refine and exclude) or exploration (with the endpoint `/facets`).
+
+          Facets can be configured in the back-office or with this parameter.
+
+          Read [the facets documentation](https://help.opendatasoft.com/apis/ods-search-v2/#facets) for more details.
+        explode: true
+        in: query
+        name: facet
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: |
+          An array of facet filters. For example **city:Paris** or **modified:2019/12**.
+          The request will only include the selected facet value.
+
+          Read [filtering with facets value](https://help.opendatasoft.com/apis/ods-search-v2/#filtering-with-facets-values) for more details.
+
+          *Not to be confused with a where filter. Refining with a facet is equivalent to selecting an entry in the left navigation panel.*
+
+          *refine is not available for monitoring sources*
+        explode: true
+        in: query
+        name: refine
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: |
+          An array of facet filters. For example **city:Paris** or **modified:2019/12**.
+          The request will exclude the defined facet value.
+
+          Read [filtering with facets value](https://help.opendatasoft.com/apis/ods-search-v2/#filtering-with-facets-values) for more details.
+
+          *Not to be confused with a where filter. Excluding a facet value is equivalent to removing an entry in the left navigation panel.*
+
+          *exclude is not available for monitoring sources*
+        explode: true
+        in: query
+        name: exclude
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/aggregateDatasets_200_response'
+          description: Aggregation result
+      tags:
+      - catalog
+      - aggregations
+      - ods
+      x-accepts:
+      - application/json
+  /{source}/datasets:
+    get:
+      description: |
+        List of available datasets, each with their endpoints, paginated.
+
+        Links provided:
+        * previous page
+        * next page
+        * last page
+        * first page
+      operationId: getDatasets
+      parameters:
+      - description: |
+          Each source represents a different catalog of datasets you'll be able to query.
+
+          There are 2 sources available:
+
+          * catalog: the catalog of datasets on your portal
+          * opendatasoft: Opendatasoft's repository of public datasets, also available at
+            [data.opendatasoft.com](https://data.opendatasoft.com/page/home/)
+        in: path
+        name: source
+        required: true
+        schema:
+          default: catalog
+          enum:
+          - catalog
+          - opendatasoft
+          - monitoring
+          type: string
+      - description: |
+          A select expression can be used to add, remove or change fields to return.
+          An expression can be:
+            - a wildcard ('*'): return all fields
+            - a field name: return only this field
+            - an include/exclude function. Include (resp exclude) all field matching include/exclude expression. This expression can contain wildcard. For example: include(spa*) will return all fields begining with 'spa'
+            - a complex expression: return the result of this expression. A label can be set for this expression, in that case, field will be named with this label. For instance: 'size * 2 as bigger_size' will return a new field named bigger_size and containing the double of size field value.
+        in: query
+        name: select
+        schema:
+          type: string
+      - description: |
+          An array of filters.
+
+          A filter is a text expression performing a simple full-text search that can also include logical operations
+          (NOT, AND, OR...) as well as lots of other functions, thus performing more complex and more precise searches.
+
+          Read [the query language reference](https://docs.opendatasoft.com/api/explore/v2.html#where-clause) for more details.
+        explode: true
+        in: query
+        name: where
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: |
+          A group by expression defines a grouping function for an aggregation.
+          It can be:
+           - a field name: group result by each value of this field
+           - a range function: group result by range
+           - a date function: group result by date
+          It is possible to specify a custom name with the 'as name' notation. For instance: group_by='city_field as city'.
+        in: query
+        name: group_by
+        schema:
+          type: string
+      - description: |
+          **Deprecated, use `order_by` instead.**
+
+          A list of field names, each possibly prefixed with a minus (-).
+
+          Sorts results according to the specified fields' values. By default, the sort is ascending (from the smallest
+          value to the biggest value). A minus sign (‘-‘) may be used to perform a descending sort. Sorting is only
+          available on numeric fields (int, double, date and datetime) and on text fields which have the sortable
+          annotation.
+        explode: false
+        in: query
+        name: sort
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: |
+          A comma-separated list of field names or aggregations to sort on, followed by an order (`asc` or `desc`).
+
+          Sorts results according to the specified fields' values in ascending order by default.
+          To sort results in descending order, use the `desc` keyword.
+
+          Example: `sum(age) desc, name asc`
+        explode: false
+        in: query
+        name: order_by
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: |
+          Number of items to return.
+
+          To use in conjonction with offset to implement pagination.
+
+          Limit maximum value is 100. To retrive more data use export entry points.
+          The default value is 10.
+        in: query
+        name: limit
+        schema:
+          default: 10
+          maximum: 100
+          minimum: -1
+          type: integer
+      - description: |
+          Index of the first item to return (starting at 0).
+
+          To use in conjonction with limit to implement pagination.
+        in: query
+        name: offset
+        schema:
+          default: 0
+          minimum: 0
+          type: integer
+      - description: |
+          An array of full text search.
+
+          A full text search performs a prefixed text search for each provided terms in all visible fields of a catalog/dataset.
+        explode: true
+        in: query
+        name: search
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: |
+          A facet is a field used for simple filtering (through the parameters refine and exclude) or exploration (with the endpoint `/facets`).
+
+          Facets can be configured in the back-office or with this parameter.
+
+          Read [the facets documentation](https://help.opendatasoft.com/apis/ods-search-v2/#facets) for more details.
+        explode: true
+        in: query
+        name: facet
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: |
+          An array of facet filters. For example **city:Paris** or **modified:2019/12**.
+          The request will only include the selected facet value.
+
+          Read [filtering with facets value](https://help.opendatasoft.com/apis/ods-search-v2/#filtering-with-facets-values) for more details.
+
+          *Not to be confused with a where filter. Refining with a facet is equivalent to selecting an entry in the left navigation panel.*
+
+          *refine is not available for monitoring sources*
+        explode: true
+        in: query
+        name: refine
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: |
+          An array of facet filters. For example **city:Paris** or **modified:2019/12**.
+          The request will exclude the defined facet value.
+
+          Read [filtering with facets value](https://help.opendatasoft.com/apis/ods-search-v2/#filtering-with-facets-values) for more details.
+
+          *Not to be confused with a where filter. Excluding a facet value is equivalent to removing an entry in the left navigation panel.*
+
+          *exclude is not available for monitoring sources*
+        explode: true
+        in: query
+        name: exclude
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: Activate pretty print
+        in: query
+        name: pretty
+        schema:
+          default: false
+          type: boolean
+      - description: Set timezone for datetime fields
+        in: query
+        name: timezone
+        schema:
+          default: UTC
+          type: string
+      - description: |
+          Explicitely request application metas for each datasets.
+        in: query
+        name: include_app_metas
+        schema:
+          default: false
+          type: boolean
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/getDatasets_200_response'
+          description: List of available datasets
+      tags:
+      - catalog
+      - ods
+      x-accepts:
+      - application/json
+  /{source}/datasets/{dataset_id}:
+    get:
+      description: |
+        List of available endpoints for the specified dataset, with metadata and endpoints.
+
+        Will provide links for:
+        * the attachments endpoint
+        * the files endpoint
+        * the records endpoint
+        * the catalog endpoint
+      operationId: getDataset
+      parameters:
+      - description: |
+          Each source represents a different catalog of datasets you'll be able to query.
+
+          There are 2 sources available:
+
+          * catalog: the catalog of datasets on your portal
+          * opendatasoft: Opendatasoft's repository of public datasets, also available at
+            [data.opendatasoft.com](https://data.opendatasoft.com/page/home/)
+        in: path
+        name: source
+        required: true
+        schema:
+          default: catalog
+          enum:
+          - catalog
+          - opendatasoft
+          - monitoring
+          type: string
+      - description: |
+          Dataset identifier.
+
+          Can be found in the "information" tab of the dataset page.
+        in: path
+        name: dataset_id
+        required: true
+        schema:
+          type: string
+      - description: |
+          A select expression can be used to add, remove or change fields to return.
+          An expression can be:
+            - a wildcard ('*'): return all fields
+            - a field name: return only this field
+            - an include/exclude function. Include (resp exclude) all field matching include/exclude expression. This expression can contain wildcard. For example: include(spa*) will return all fields begining with 'spa'
+            - a complex expression: return the result of this expression. A label can be set for this expression, in that case, field will be named with this label. For instance: 'size * 2 as bigger_size' will return a new field named bigger_size and containing the double of size field value.
+        in: query
+        name: select
+        schema:
+          type: string
+      - description: Activate pretty print
+        in: query
+        name: pretty
+        schema:
+          default: false
+          type: boolean
+      - description: Set timezone for datetime fields
+        in: query
+        name: timezone
+        schema:
+          default: UTC
+          type: string
+      - description: |
+          Explicitely request application metas for each datasets.
+        in: query
+        name: include_app_metas
+        schema:
+          default: false
+          type: boolean
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/getDatasets_200_response_datasets_inner'
+          description: The dataset
+      tags:
+      - dataset
+      - ods
+      x-accepts:
+      - application/json
+  /{source}/datasets/{dataset_id}/aggregates:
+    get:
+      description: |
+        **Deprecated, use `/records` instead.**
+      operationId: aggregateRecords
+      parameters:
+      - description: |
+          Each source represents a different catalog of datasets you'll be able to query.
+
+          There are 2 sources available:
+
+          * catalog: the catalog of datasets on your portal
+          * opendatasoft: Opendatasoft's repository of public datasets, also available at
+            [data.opendatasoft.com](https://data.opendatasoft.com/page/home/)
+        in: path
+        name: source
+        required: true
+        schema:
+          default: catalog
+          enum:
+          - catalog
+          - opendatasoft
+          - monitoring
+          type: string
+      - description: |
+          Dataset identifier.
+
+          Can be found in the "information" tab of the dataset page.
+        in: path
+        name: dataset_id
+        required: true
+        schema:
+          type: string
+      - description: |
+          A select expression can be used to add, remove or change fields to return.
+          An expression can be:
+            - a wildcard ('*'): return all fields
+            - a field name: return only this field
+            - an include/exclude function. Include (resp exclude) all field matching include/exclude expression. This expression can contain wildcard. For example: include(spa*) will return all fields begining with 'spa'
+            - a complex expression: return the result of this expression. A label can be set for this expression, in that case, field will be named with this label. For instance: 'size * 2 as bigger_size' will return a new field named bigger_size and containing the double of size field value.
+        in: query
+        name: select
+        schema:
+          type: string
+      - description: |
+          An array of filters.
+
+          A filter is a text expression performing a simple full-text search that can also include logical operations
+          (NOT, AND, OR...) as well as lots of other functions, thus performing more complex and more precise searches.
+
+          Read [the query language reference](https://docs.opendatasoft.com/api/explore/v2.html#where-clause) for more details.
+        explode: true
+        in: query
+        name: where
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: |
+          A group by expression defines a grouping function for an aggregation.
+          It can be:
+           - a field name: group result by each value of this field
+           - a range function: group result by range
+           - a date function: group result by date
+          It is possible to specify a custom name with the 'as name' notation. For instance: group_by='city_field as city'.
+        in: query
+        name: group_by
+        schema:
+          type: string
+      - description: |
+          A comma-separated list of field names or aggregations to sort on, followed by an order (`asc` or `desc`).
+
+          Sorts results according to the specified fields' values in ascending order by default.
+          To sort results in descending order, use the `desc` keyword.
+
+          Example: `sum(age) desc, name asc`
+        explode: false
+        in: query
+        name: order_by
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: |
+          Number of items to return.
+
+          To use in conjonction with offset to implement pagination.
+
+          Limit maximum value is 100. To retrive more data use export entry points.
+          The default value is 10.
+        in: query
+        name: limit
+        schema:
+          default: 10
+          maximum: 100
+          minimum: -1
+          type: integer
+      - description: |
+          Index of the first item to return (starting at 0).
+
+          To use in conjonction with limit to implement pagination.
+        in: query
+        name: offset
+        schema:
+          default: 0
+          minimum: 0
+          type: integer
+      - description: |
+          A facet is a field used for simple filtering (through the parameters refine and exclude) or exploration (with the endpoint `/facets`).
+
+          Facets can be configured in the back-office or with this parameter.
+
+          Read [the facets documentation](https://help.opendatasoft.com/apis/ods-search-v2/#facets) for more details.
+        explode: true
+        in: query
+        name: facet
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: |
+          An array of facet filters. For example **city:Paris** or **modified:2019/12**.
+          The request will only include the selected facet value.
+
+          Read [filtering with facets value](https://help.opendatasoft.com/apis/ods-search-v2/#filtering-with-facets-values) for more details.
+
+          *Not to be confused with a where filter. Refining with a facet is equivalent to selecting an entry in the left navigation panel.*
+
+          *refine is not available for monitoring sources*
+        explode: true
+        in: query
+        name: refine
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: |
+          An array of facet filters. For example **city:Paris** or **modified:2019/12**.
+          The request will exclude the defined facet value.
+
+          Read [filtering with facets value](https://help.opendatasoft.com/apis/ods-search-v2/#filtering-with-facets-values) for more details.
+
+          *Not to be confused with a where filter. Excluding a facet value is equivalent to removing an entry in the left navigation panel.*
+
+          *exclude is not available for monitoring sources*
+        explode: true
+        in: query
+        name: exclude
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/aggregateDatasets_200_response'
+          description: Aggregation result
+      tags:
+      - dataset
+      - aggregations
+      - ods
+      x-accepts:
+      - application/json
+  /{source}/datasets/{dataset_id}/attachments:
+    get:
+      description: |
+        Get list of all available attachments
+      operationId: getDatasetAttachements
+      parameters:
+      - description: |
+          Each source represents a different catalog of datasets you'll be able to query.
+
+          There are 2 sources available:
+
+          * catalog: the catalog of datasets on your portal
+          * opendatasoft: Opendatasoft's repository of public datasets, also available at
+            [data.opendatasoft.com](https://data.opendatasoft.com/page/home/)
+        in: path
+        name: source
+        required: true
+        schema:
+          default: catalog
+          enum:
+          - catalog
+          - opendatasoft
+          - monitoring
+          type: string
+      - description: |
+          Dataset identifier.
+
+          Can be found in the "information" tab of the dataset page.
+        in: path
+        name: dataset_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/getDatasetAttachements_200_response'
+          description: List of all available attachments
+      tags:
+      - dataset
+      - ods
+      x-accepts:
+      - application/json
+  /{source}/datasets/{dataset_id}/attachments/{attachment_id}:
+    get:
+      description: |
+        Download attachment
+      operationId: downloadDatasetAttachement
+      parameters:
+      - description: |
+          Each source represents a different catalog of datasets you'll be able to query.
+
+          There are 2 sources available:
+
+          * catalog: the catalog of datasets on your portal
+          * opendatasoft: Opendatasoft's repository of public datasets, also available at
+            [data.opendatasoft.com](https://data.opendatasoft.com/page/home/)
+        in: path
+        name: source
+        required: true
+        schema:
+          default: catalog
+          enum:
+          - catalog
+          - opendatasoft
+          - monitoring
+          type: string
+      - description: |
+          Dataset identifier.
+
+          Can be found in the "information" tab of the dataset page.
+        in: path
+        name: dataset_id
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: attachment_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content: {}
+          description: The requested attachment
+      tags:
+      - dataset
+      - ods
+      x-accepts:
+      - application/json
+  /{source}/datasets/{dataset_id}/exports/csv:
+    get:
+      description: |
+        Export dataset in CSV format
+      operationId: exportRecordsCSV
+      parameters:
+      - description: |
+          Each source represents a different catalog of datasets you'll be able to query.
+
+          There are 2 sources available:
+
+          * catalog: the catalog of datasets on your portal
+          * opendatasoft: Opendatasoft's repository of public datasets, also available at
+            [data.opendatasoft.com](https://data.opendatasoft.com/page/home/)
+        in: path
+        name: source
+        required: true
+        schema:
+          default: catalog
+          enum:
+          - catalog
+          - opendatasoft
+          - monitoring
+          type: string
+      - description: |
+          Dataset identifier.
+
+          Can be found in the "information" tab of the dataset page.
+        in: path
+        name: dataset_id
+        required: true
+        schema:
+          type: string
+      - description: |
+          A select expression can be used to add, remove or change fields to return.
+          An expression can be:
+            - a wildcard ('*'): return all fields
+            - a field name: return only this field
+            - an include/exclude function. Include (resp exclude) all field matching include/exclude expression. This expression can contain wildcard. For example: include(spa*) will return all fields begining with 'spa'
+            - a complex expression: return the result of this expression. A label can be set for this expression, in that case, field will be named with this label. For instance: 'size * 2 as bigger_size' will return a new field named bigger_size and containing the double of size field value.
+        in: query
+        name: select
+        schema:
+          type: string
+      - description: |
+          An array of filters.
+
+          A filter is a text expression performing a simple full-text search that can also include logical operations
+          (NOT, AND, OR...) as well as lots of other functions, thus performing more complex and more precise searches.
+
+          Read [the query language reference](https://docs.opendatasoft.com/api/explore/v2.html#where-clause) for more details.
+        explode: true
+        in: query
+        name: where
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: |
+          **Deprecated, use `order_by` instead.**
+
+          A list of field names, each possibly prefixed with a minus (-).
+
+          Sorts results according to the specified fields' values. By default, the sort is ascending (from the smallest
+          value to the biggest value). A minus sign (‘-‘) may be used to perform a descending sort. Sorting is only
+          available on numeric fields (int, double, date and datetime) and on text fields which have the sortable
+          annotation.
+        explode: false
+        in: query
+        name: sort
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: |
+          A comma-separated list of field names or aggregations to sort on, followed by an order (`asc` or `desc`).
+
+          Sorts results according to the specified fields' values in ascending order by default.
+          To sort results in descending order, use the `desc` keyword.
+
+          Example: `sum(age) desc, name asc`
+        explode: false
+        in: query
+        name: order_by
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: |
+          Number of items to return in export.
+
+          Use -1 (default) to retrieve all records
+        in: query
+        name: limit
+        schema:
+          default: -1
+          minimum: -1
+          type: integer
+      - description: |
+          Index of the first item to return (starting at 0).
+
+          To use in conjonction with limit to implement pagination.
+        in: query
+        name: offset
+        schema:
+          default: 0
+          minimum: 0
+          type: integer
+      - description: |
+          A facet is a field used for simple filtering (through the parameters refine and exclude) or exploration (with the endpoint `/facets`).
+
+          Facets can be configured in the back-office or with this parameter.
+
+          Read [the facets documentation](https://help.opendatasoft.com/apis/ods-search-v2/#facets) for more details.
+        explode: true
+        in: query
+        name: facet
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: |
+          An array of facet filters. For example **city:Paris** or **modified:2019/12**.
+          The request will only include the selected facet value.
+
+          Read [filtering with facets value](https://help.opendatasoft.com/apis/ods-search-v2/#filtering-with-facets-values) for more details.
+
+          *Not to be confused with a where filter. Refining with a facet is equivalent to selecting an entry in the left navigation panel.*
+
+          *refine is not available for monitoring sources*
+        explode: true
+        in: query
+        name: refine
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: |
+          An array of facet filters. For example **city:Paris** or **modified:2019/12**.
+          The request will exclude the defined facet value.
+
+          Read [filtering with facets value](https://help.opendatasoft.com/apis/ods-search-v2/#filtering-with-facets-values) for more details.
+
+          *Not to be confused with a where filter. Excluding a facet value is equivalent to removing an entry in the left navigation panel.*
+
+          *exclude is not available for monitoring sources*
+        explode: true
+        in: query
+        name: exclude
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: Set timezone for datetime fields
+        in: query
+        name: timezone
+        schema:
+          default: UTC
+          type: string
+      - description: "Provide a different delimiter (default ',')."
+        in: query
+        name: delimiter
+        schema:
+          default: ;
+          enum:
+          - ","
+          - ;
+          - '|'
+          type: string
+      responses:
+        "200":
+          content:
+            text/csv:
+              schema:
+                format: binary
+                type: string
+          description: Return a CSV file
+      tags:
+      - export dataset
+      - ods
+      x-accepts:
+      - text/csv
+  /{source}/datasets/{dataset_id}/exports/geojson:
+    get:
+      description: |
+        Export dataset in GEOJSON format
+      operationId: exportRecordsGEOJSON
+      parameters:
+      - description: |
+          Each source represents a different catalog of datasets you'll be able to query.
+
+          There are 2 sources available:
+
+          * catalog: the catalog of datasets on your portal
+          * opendatasoft: Opendatasoft's repository of public datasets, also available at
+            [data.opendatasoft.com](https://data.opendatasoft.com/page/home/)
+        in: path
+        name: source
+        required: true
+        schema:
+          default: catalog
+          enum:
+          - catalog
+          - opendatasoft
+          - monitoring
+          type: string
+      - description: |
+          Dataset identifier.
+
+          Can be found in the "information" tab of the dataset page.
+        in: path
+        name: dataset_id
+        required: true
+        schema:
+          type: string
+      - description: |
+          A select expression can be used to add, remove or change fields to return.
+          An expression can be:
+            - a wildcard ('*'): return all fields
+            - a field name: return only this field
+            - an include/exclude function. Include (resp exclude) all field matching include/exclude expression. This expression can contain wildcard. For example: include(spa*) will return all fields begining with 'spa'
+            - a complex expression: return the result of this expression. A label can be set for this expression, in that case, field will be named with this label. For instance: 'size * 2 as bigger_size' will return a new field named bigger_size and containing the double of size field value.
+        in: query
+        name: select
+        schema:
+          type: string
+      - description: |
+          An array of filters.
+
+          A filter is a text expression performing a simple full-text search that can also include logical operations
+          (NOT, AND, OR...) as well as lots of other functions, thus performing more complex and more precise searches.
+
+          Read [the query language reference](https://docs.opendatasoft.com/api/explore/v2.html#where-clause) for more details.
+        explode: true
+        in: query
+        name: where
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: |
+          **Deprecated, use `order_by` instead.**
+
+          A list of field names, each possibly prefixed with a minus (-).
+
+          Sorts results according to the specified fields' values. By default, the sort is ascending (from the smallest
+          value to the biggest value). A minus sign (‘-‘) may be used to perform a descending sort. Sorting is only
+          available on numeric fields (int, double, date and datetime) and on text fields which have the sortable
+          annotation.
+        explode: false
+        in: query
+        name: sort
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: |
+          A comma-separated list of field names or aggregations to sort on, followed by an order (`asc` or `desc`).
+
+          Sorts results according to the specified fields' values in ascending order by default.
+          To sort results in descending order, use the `desc` keyword.
+
+          Example: `sum(age) desc, name asc`
+        explode: false
+        in: query
+        name: order_by
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: |
+          Number of items to return in export.
+
+          Use -1 (default) to retrieve all records
+        in: query
+        name: limit
+        schema:
+          default: -1
+          minimum: -1
+          type: integer
+      - description: |
+          Index of the first item to return (starting at 0).
+
+          To use in conjonction with limit to implement pagination.
+        in: query
+        name: offset
+        schema:
+          default: 0
+          minimum: 0
+          type: integer
+      - description: |
+          An array of full text search.
+
+          A full text search performs a prefixed text search for each provided terms in all visible fields of a catalog/dataset.
+        explode: true
+        in: query
+        name: search
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: |
+          A facet is a field used for simple filtering (through the parameters refine and exclude) or exploration (with the endpoint `/facets`).
+
+          Facets can be configured in the back-office or with this parameter.
+
+          Read [the facets documentation](https://help.opendatasoft.com/apis/ods-search-v2/#facets) for more details.
+        explode: true
+        in: query
+        name: facet
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: |
+          An array of facet filters. For example **city:Paris** or **modified:2019/12**.
+          The request will only include the selected facet value.
+
+          Read [filtering with facets value](https://help.opendatasoft.com/apis/ods-search-v2/#filtering-with-facets-values) for more details.
+
+          *Not to be confused with a where filter. Refining with a facet is equivalent to selecting an entry in the left navigation panel.*
+
+          *refine is not available for monitoring sources*
+        explode: true
+        in: query
+        name: refine
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: |
+          An array of facet filters. For example **city:Paris** or **modified:2019/12**.
+          The request will exclude the defined facet value.
+
+          Read [filtering with facets value](https://help.opendatasoft.com/apis/ods-search-v2/#filtering-with-facets-values) for more details.
+
+          *Not to be confused with a where filter. Excluding a facet value is equivalent to removing an entry in the left navigation panel.*
+
+          *exclude is not available for monitoring sources*
+        explode: true
+        in: query
+        name: exclude
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: Set timezone for datetime fields
+        in: query
+        name: timezone
+        schema:
+          default: UTC
+          type: string
+      - description: Activate pretty print
+        in: query
+        name: pretty
+        schema:
+          default: false
+          type: boolean
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                format: binary
+                type: string
+          description: Return a GEOJSON file
+      tags:
+      - export dataset
+      - ods
+      x-accepts:
+      - application/json
+  /{source}/datasets/{dataset_id}/exports/ical:
+    get:
+      description: |
+        Export dataset in ICAL format
+      operationId: exportRecordsICAL
+      parameters:
+      - description: |
+          Each source represents a different catalog of datasets you'll be able to query.
+
+          There are 2 sources available:
+
+          * catalog: the catalog of datasets on your portal
+          * opendatasoft: Opendatasoft's repository of public datasets, also available at
+            [data.opendatasoft.com](https://data.opendatasoft.com/page/home/)
+        in: path
+        name: source
+        required: true
+        schema:
+          default: catalog
+          enum:
+          - catalog
+          - opendatasoft
+          - monitoring
+          type: string
+      - description: |
+          Dataset identifier.
+
+          Can be found in the "information" tab of the dataset page.
+        in: path
+        name: dataset_id
+        required: true
+        schema:
+          type: string
+      - description: |
+          A select expression can be used to add, remove or change fields to return.
+          An expression can be:
+            - a wildcard ('*'): return all fields
+            - a field name: return only this field
+            - an include/exclude function. Include (resp exclude) all field matching include/exclude expression. This expression can contain wildcard. For example: include(spa*) will return all fields begining with 'spa'
+            - a complex expression: return the result of this expression. A label can be set for this expression, in that case, field will be named with this label. For instance: 'size * 2 as bigger_size' will return a new field named bigger_size and containing the double of size field value.
+        in: query
+        name: select
+        schema:
+          type: string
+      - description: |
+          An array of filters.
+
+          A filter is a text expression performing a simple full-text search that can also include logical operations
+          (NOT, AND, OR...) as well as lots of other functions, thus performing more complex and more precise searches.
+
+          Read [the query language reference](https://docs.opendatasoft.com/api/explore/v2.html#where-clause) for more details.
+        explode: true
+        in: query
+        name: where
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: |
+          **Deprecated, use `order_by` instead.**
+
+          A list of field names, each possibly prefixed with a minus (-).
+
+          Sorts results according to the specified fields' values. By default, the sort is ascending (from the smallest
+          value to the biggest value). A minus sign (‘-‘) may be used to perform a descending sort. Sorting is only
+          available on numeric fields (int, double, date and datetime) and on text fields which have the sortable
+          annotation.
+        explode: false
+        in: query
+        name: sort
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: |
+          A comma-separated list of field names or aggregations to sort on, followed by an order (`asc` or `desc`).
+
+          Sorts results according to the specified fields' values in ascending order by default.
+          To sort results in descending order, use the `desc` keyword.
+
+          Example: `sum(age) desc, name asc`
+        explode: false
+        in: query
+        name: order_by
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: |
+          Number of items to return in export.
+
+          Use -1 (default) to retrieve all records
+        in: query
+        name: limit
+        schema:
+          default: -1
+          minimum: -1
+          type: integer
+      - description: |
+          Index of the first item to return (starting at 0).
+
+          To use in conjonction with limit to implement pagination.
+        in: query
+        name: offset
+        schema:
+          default: 0
+          minimum: 0
+          type: integer
+      - description: |
+          An array of full text search.
+
+          A full text search performs a prefixed text search for each provided terms in all visible fields of a catalog/dataset.
+        explode: true
+        in: query
+        name: search
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: |
+          A facet is a field used for simple filtering (through the parameters refine and exclude) or exploration (with the endpoint `/facets`).
+
+          Facets can be configured in the back-office or with this parameter.
+
+          Read [the facets documentation](https://help.opendatasoft.com/apis/ods-search-v2/#facets) for more details.
+        explode: true
+        in: query
+        name: facet
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: |
+          An array of facet filters. For example **city:Paris** or **modified:2019/12**.
+          The request will only include the selected facet value.
+
+          Read [filtering with facets value](https://help.opendatasoft.com/apis/ods-search-v2/#filtering-with-facets-values) for more details.
+
+          *Not to be confused with a where filter. Refining with a facet is equivalent to selecting an entry in the left navigation panel.*
+
+          *refine is not available for monitoring sources*
+        explode: true
+        in: query
+        name: refine
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: |
+          An array of facet filters. For example **city:Paris** or **modified:2019/12**.
+          The request will exclude the defined facet value.
+
+          Read [filtering with facets value](https://help.opendatasoft.com/apis/ods-search-v2/#filtering-with-facets-values) for more details.
+
+          *Not to be confused with a where filter. Excluding a facet value is equivalent to removing an entry in the left navigation panel.*
+
+          *exclude is not available for monitoring sources*
+        explode: true
+        in: query
+        name: exclude
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: Set timezone for datetime fields
+        in: query
+        name: timezone
+        schema:
+          default: UTC
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                format: binary
+                type: string
+          description: Return an ICAL file
+      tags:
+      - export dataset
+      - ods
+      x-accepts:
+      - application/json
+  /{source}/datasets/{dataset_id}/exports/json:
+    get:
+      description: |
+        Export dataset in JSON format
+      operationId: exportRecordsJSON
+      parameters:
+      - description: |
+          Each source represents a different catalog of datasets you'll be able to query.
+
+          There are 2 sources available:
+
+          * catalog: the catalog of datasets on your portal
+          * opendatasoft: Opendatasoft's repository of public datasets, also available at
+            [data.opendatasoft.com](https://data.opendatasoft.com/page/home/)
+        in: path
+        name: source
+        required: true
+        schema:
+          default: catalog
+          enum:
+          - catalog
+          - opendatasoft
+          - monitoring
+          type: string
+      - description: |
+          Dataset identifier.
+
+          Can be found in the "information" tab of the dataset page.
+        in: path
+        name: dataset_id
+        required: true
+        schema:
+          type: string
+      - description: |
+          A select expression can be used to add, remove or change fields to return.
+          An expression can be:
+            - a wildcard ('*'): return all fields
+            - a field name: return only this field
+            - an include/exclude function. Include (resp exclude) all field matching include/exclude expression. This expression can contain wildcard. For example: include(spa*) will return all fields begining with 'spa'
+            - a complex expression: return the result of this expression. A label can be set for this expression, in that case, field will be named with this label. For instance: 'size * 2 as bigger_size' will return a new field named bigger_size and containing the double of size field value.
+        in: query
+        name: select
+        schema:
+          type: string
+      - description: |
+          An array of filters.
+
+          A filter is a text expression performing a simple full-text search that can also include logical operations
+          (NOT, AND, OR...) as well as lots of other functions, thus performing more complex and more precise searches.
+
+          Read [the query language reference](https://docs.opendatasoft.com/api/explore/v2.html#where-clause) for more details.
+        explode: true
+        in: query
+        name: where
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: |
+          **Deprecated, use `order_by` instead.**
+
+          A list of field names, each possibly prefixed with a minus (-).
+
+          Sorts results according to the specified fields' values. By default, the sort is ascending (from the smallest
+          value to the biggest value). A minus sign (‘-‘) may be used to perform a descending sort. Sorting is only
+          available on numeric fields (int, double, date and datetime) and on text fields which have the sortable
+          annotation.
+        explode: false
+        in: query
+        name: sort
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: |
+          A comma-separated list of field names or aggregations to sort on, followed by an order (`asc` or `desc`).
+
+          Sorts results according to the specified fields' values in ascending order by default.
+          To sort results in descending order, use the `desc` keyword.
+
+          Example: `sum(age) desc, name asc`
+        explode: false
+        in: query
+        name: order_by
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: |
+          Number of items to return in export.
+
+          Use -1 (default) to retrieve all records
+        in: query
+        name: limit
+        schema:
+          default: -1
+          minimum: -1
+          type: integer
+      - description: |
+          Index of the first item to return (starting at 0).
+
+          To use in conjonction with limit to implement pagination.
+        in: query
+        name: offset
+        schema:
+          default: 0
+          minimum: 0
+          type: integer
+      - description: |
+          An array of full text search.
+
+          A full text search performs a prefixed text search for each provided terms in all visible fields of a catalog/dataset.
+        explode: true
+        in: query
+        name: search
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: |
+          A facet is a field used for simple filtering (through the parameters refine and exclude) or exploration (with the endpoint `/facets`).
+
+          Facets can be configured in the back-office or with this parameter.
+
+          Read [the facets documentation](https://help.opendatasoft.com/apis/ods-search-v2/#facets) for more details.
+        explode: true
+        in: query
+        name: facet
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: |
+          An array of facet filters. For example **city:Paris** or **modified:2019/12**.
+          The request will only include the selected facet value.
+
+          Read [filtering with facets value](https://help.opendatasoft.com/apis/ods-search-v2/#filtering-with-facets-values) for more details.
+
+          *Not to be confused with a where filter. Refining with a facet is equivalent to selecting an entry in the left navigation panel.*
+
+          *refine is not available for monitoring sources*
+        explode: true
+        in: query
+        name: refine
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: |
+          An array of facet filters. For example **city:Paris** or **modified:2019/12**.
+          The request will exclude the defined facet value.
+
+          Read [filtering with facets value](https://help.opendatasoft.com/apis/ods-search-v2/#filtering-with-facets-values) for more details.
+
+          *Not to be confused with a where filter. Excluding a facet value is equivalent to removing an entry in the left navigation panel.*
+
+          *exclude is not available for monitoring sources*
+        explode: true
+        in: query
+        name: exclude
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: Activate pretty print
+        in: query
+        name: pretty
+        schema:
+          default: false
+          type: boolean
+      - description: Set timezone for datetime fields
+        in: query
+        name: timezone
+        schema:
+          default: UTC
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                format: binary
+                type: string
+          description: Return a JSON file
+      tags:
+      - export dataset
+      - ods
+      x-accepts:
+      - application/json
+  /{source}/datasets/{dataset_id}/exports/ov2:
+    get:
+      description: |
+        Export dataset in OV2 format
+      operationId: exportRecordsOV2
+      parameters:
+      - description: |
+          Each source represents a different catalog of datasets you'll be able to query.
+
+          There are 2 sources available:
+
+          * catalog: the catalog of datasets on your portal
+          * opendatasoft: Opendatasoft's repository of public datasets, also available at
+            [data.opendatasoft.com](https://data.opendatasoft.com/page/home/)
+        in: path
+        name: source
+        required: true
+        schema:
+          default: catalog
+          enum:
+          - catalog
+          - opendatasoft
+          - monitoring
+          type: string
+      - description: |
+          Dataset identifier.
+
+          Can be found in the "information" tab of the dataset page.
+        in: path
+        name: dataset_id
+        required: true
+        schema:
+          type: string
+      - description: |
+          A select expression can be used to add, remove or change fields to return.
+          An expression can be:
+            - a wildcard ('*'): return all fields
+            - a field name: return only this field
+            - an include/exclude function. Include (resp exclude) all field matching include/exclude expression. This expression can contain wildcard. For example: include(spa*) will return all fields begining with 'spa'
+            - a complex expression: return the result of this expression. A label can be set for this expression, in that case, field will be named with this label. For instance: 'size * 2 as bigger_size' will return a new field named bigger_size and containing the double of size field value.
+        in: query
+        name: select
+        schema:
+          type: string
+      - description: |
+          An array of filters.
+
+          A filter is a text expression performing a simple full-text search that can also include logical operations
+          (NOT, AND, OR...) as well as lots of other functions, thus performing more complex and more precise searches.
+
+          Read [the query language reference](https://docs.opendatasoft.com/api/explore/v2.html#where-clause) for more details.
+        explode: true
+        in: query
+        name: where
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: |
+          **Deprecated, use `order_by` instead.**
+
+          A list of field names, each possibly prefixed with a minus (-).
+
+          Sorts results according to the specified fields' values. By default, the sort is ascending (from the smallest
+          value to the biggest value). A minus sign (‘-‘) may be used to perform a descending sort. Sorting is only
+          available on numeric fields (int, double, date and datetime) and on text fields which have the sortable
+          annotation.
+        explode: false
+        in: query
+        name: sort
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: |
+          A comma-separated list of field names or aggregations to sort on, followed by an order (`asc` or `desc`).
+
+          Sorts results according to the specified fields' values in ascending order by default.
+          To sort results in descending order, use the `desc` keyword.
+
+          Example: `sum(age) desc, name asc`
+        explode: false
+        in: query
+        name: order_by
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: |
+          Number of items to return in export.
+
+          Use -1 (default) to retrieve all records
+        in: query
+        name: limit
+        schema:
+          default: -1
+          minimum: -1
+          type: integer
+      - description: |
+          Index of the first item to return (starting at 0).
+
+          To use in conjonction with limit to implement pagination.
+        in: query
+        name: offset
+        schema:
+          default: 0
+          minimum: 0
+          type: integer
+      - description: |
+          An array of full text search.
+
+          A full text search performs a prefixed text search for each provided terms in all visible fields of a catalog/dataset.
+        explode: true
+        in: query
+        name: search
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: |
+          A facet is a field used for simple filtering (through the parameters refine and exclude) or exploration (with the endpoint `/facets`).
+
+          Facets can be configured in the back-office or with this parameter.
+
+          Read [the facets documentation](https://help.opendatasoft.com/apis/ods-search-v2/#facets) for more details.
+        explode: true
+        in: query
+        name: facet
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: |
+          An array of facet filters. For example **city:Paris** or **modified:2019/12**.
+          The request will only include the selected facet value.
+
+          Read [filtering with facets value](https://help.opendatasoft.com/apis/ods-search-v2/#filtering-with-facets-values) for more details.
+
+          *Not to be confused with a where filter. Refining with a facet is equivalent to selecting an entry in the left navigation panel.*
+
+          *refine is not available for monitoring sources*
+        explode: true
+        in: query
+        name: refine
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: |
+          An array of facet filters. For example **city:Paris** or **modified:2019/12**.
+          The request will exclude the defined facet value.
+
+          Read [filtering with facets value](https://help.opendatasoft.com/apis/ods-search-v2/#filtering-with-facets-values) for more details.
+
+          *Not to be confused with a where filter. Excluding a facet value is equivalent to removing an entry in the left navigation panel.*
+
+          *exclude is not available for monitoring sources*
+        explode: true
+        in: query
+        name: exclude
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: Set timezone for datetime fields
+        in: query
+        name: timezone
+        schema:
+          default: UTC
+          type: string
+      responses:
+        "200":
+          content:
+            text/plain:
+              schema:
+                format: binary
+                type: string
+          description: Return an ov2 file
+      tags:
+      - export dataset
+      - ods
+      x-accepts:
+      - text/plain
+  /{source}/datasets/{dataset_id}/exports/shp:
+    get:
+      description: |
+        Export dataset in Esri shapefile (shp) format
+      operationId: exportRecordsSHP
+      parameters:
+      - description: |
+          Each source represents a different catalog of datasets you'll be able to query.
+
+          There are 2 sources available:
+
+          * catalog: the catalog of datasets on your portal
+          * opendatasoft: Opendatasoft's repository of public datasets, also available at
+            [data.opendatasoft.com](https://data.opendatasoft.com/page/home/)
+        in: path
+        name: source
+        required: true
+        schema:
+          default: catalog
+          enum:
+          - catalog
+          - opendatasoft
+          - monitoring
+          type: string
+      - description: |
+          Dataset identifier.
+
+          Can be found in the "information" tab of the dataset page.
+        in: path
+        name: dataset_id
+        required: true
+        schema:
+          type: string
+      - description: |
+          A select expression can be used to add, remove or change fields to return.
+          An expression can be:
+            - a wildcard ('*'): return all fields
+            - a field name: return only this field
+            - an include/exclude function. Include (resp exclude) all field matching include/exclude expression. This expression can contain wildcard. For example: include(spa*) will return all fields begining with 'spa'
+            - a complex expression: return the result of this expression. A label can be set for this expression, in that case, field will be named with this label. For instance: 'size * 2 as bigger_size' will return a new field named bigger_size and containing the double of size field value.
+        in: query
+        name: select
+        schema:
+          type: string
+      - description: |
+          An array of filters.
+
+          A filter is a text expression performing a simple full-text search that can also include logical operations
+          (NOT, AND, OR...) as well as lots of other functions, thus performing more complex and more precise searches.
+
+          Read [the query language reference](https://docs.opendatasoft.com/api/explore/v2.html#where-clause) for more details.
+        explode: true
+        in: query
+        name: where
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: |
+          **Deprecated, use `order_by` instead.**
+
+          A list of field names, each possibly prefixed with a minus (-).
+
+          Sorts results according to the specified fields' values. By default, the sort is ascending (from the smallest
+          value to the biggest value). A minus sign (‘-‘) may be used to perform a descending sort. Sorting is only
+          available on numeric fields (int, double, date and datetime) and on text fields which have the sortable
+          annotation.
+        explode: false
+        in: query
+        name: sort
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: |
+          A comma-separated list of field names or aggregations to sort on, followed by an order (`asc` or `desc`).
+
+          Sorts results according to the specified fields' values in ascending order by default.
+          To sort results in descending order, use the `desc` keyword.
+
+          Example: `sum(age) desc, name asc`
+        explode: false
+        in: query
+        name: order_by
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: |
+          Number of items to return in export.
+
+          Use -1 (default) to retrieve all records
+        in: query
+        name: limit
+        schema:
+          default: -1
+          minimum: -1
+          type: integer
+      - description: |
+          Index of the first item to return (starting at 0).
+
+          To use in conjonction with limit to implement pagination.
+        in: query
+        name: offset
+        schema:
+          default: 0
+          minimum: 0
+          type: integer
+      - description: |
+          An array of full text search.
+
+          A full text search performs a prefixed text search for each provided terms in all visible fields of a catalog/dataset.
+        explode: true
+        in: query
+        name: search
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: |
+          A facet is a field used for simple filtering (through the parameters refine and exclude) or exploration (with the endpoint `/facets`).
+
+          Facets can be configured in the back-office or with this parameter.
+
+          Read [the facets documentation](https://help.opendatasoft.com/apis/ods-search-v2/#facets) for more details.
+        explode: true
+        in: query
+        name: facet
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: |
+          An array of facet filters. For example **city:Paris** or **modified:2019/12**.
+          The request will only include the selected facet value.
+
+          Read [filtering with facets value](https://help.opendatasoft.com/apis/ods-search-v2/#filtering-with-facets-values) for more details.
+
+          *Not to be confused with a where filter. Refining with a facet is equivalent to selecting an entry in the left navigation panel.*
+
+          *refine is not available for monitoring sources*
+        explode: true
+        in: query
+        name: refine
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: |
+          An array of facet filters. For example **city:Paris** or **modified:2019/12**.
+          The request will exclude the defined facet value.
+
+          Read [filtering with facets value](https://help.opendatasoft.com/apis/ods-search-v2/#filtering-with-facets-values) for more details.
+
+          *Not to be confused with a where filter. Excluding a facet value is equivalent to removing an entry in the left navigation panel.*
+
+          *exclude is not available for monitoring sources*
+        explode: true
+        in: query
+        name: exclude
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: Set timezone for datetime fields
+        in: query
+        name: timezone
+        schema:
+          default: UTC
+          type: string
+      responses:
+        "200":
+          content:
+            application/zip:
+              schema:
+                format: binary
+                type: string
+          description: Return a Shapefile zip
+      tags:
+      - export dataset
+      - ods
+      x-accepts:
+      - application/zip
+  /{source}/datasets/{dataset_id}/exports/xls:
+    get:
+      description: |
+        Export dataset in XLS (Excel) format
+      operationId: exportRecordsXLS
+      parameters:
+      - description: |
+          Each source represents a different catalog of datasets you'll be able to query.
+
+          There are 2 sources available:
+
+          * catalog: the catalog of datasets on your portal
+          * opendatasoft: Opendatasoft's repository of public datasets, also available at
+            [data.opendatasoft.com](https://data.opendatasoft.com/page/home/)
+        in: path
+        name: source
+        required: true
+        schema:
+          default: catalog
+          enum:
+          - catalog
+          - opendatasoft
+          - monitoring
+          type: string
+      - description: |
+          Dataset identifier.
+
+          Can be found in the "information" tab of the dataset page.
+        in: path
+        name: dataset_id
+        required: true
+        schema:
+          type: string
+      - description: |
+          A select expression can be used to add, remove or change fields to return.
+          An expression can be:
+            - a wildcard ('*'): return all fields
+            - a field name: return only this field
+            - an include/exclude function. Include (resp exclude) all field matching include/exclude expression. This expression can contain wildcard. For example: include(spa*) will return all fields begining with 'spa'
+            - a complex expression: return the result of this expression. A label can be set for this expression, in that case, field will be named with this label. For instance: 'size * 2 as bigger_size' will return a new field named bigger_size and containing the double of size field value.
+        in: query
+        name: select
+        schema:
+          type: string
+      - description: |
+          An array of filters.
+
+          A filter is a text expression performing a simple full-text search that can also include logical operations
+          (NOT, AND, OR...) as well as lots of other functions, thus performing more complex and more precise searches.
+
+          Read [the query language reference](https://docs.opendatasoft.com/api/explore/v2.html#where-clause) for more details.
+        explode: true
+        in: query
+        name: where
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: |
+          **Deprecated, use `order_by` instead.**
+
+          A list of field names, each possibly prefixed with a minus (-).
+
+          Sorts results according to the specified fields' values. By default, the sort is ascending (from the smallest
+          value to the biggest value). A minus sign (‘-‘) may be used to perform a descending sort. Sorting is only
+          available on numeric fields (int, double, date and datetime) and on text fields which have the sortable
+          annotation.
+        explode: false
+        in: query
+        name: sort
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: |
+          A comma-separated list of field names or aggregations to sort on, followed by an order (`asc` or `desc`).
+
+          Sorts results according to the specified fields' values in ascending order by default.
+          To sort results in descending order, use the `desc` keyword.
+
+          Example: `sum(age) desc, name asc`
+        explode: false
+        in: query
+        name: order_by
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: |
+          Number of items to return in export.
+
+          Use -1 (default) to retrieve all records
+        in: query
+        name: limit
+        schema:
+          default: -1
+          minimum: -1
+          type: integer
+      - description: |
+          Index of the first item to return (starting at 0).
+
+          To use in conjonction with limit to implement pagination.
+        in: query
+        name: offset
+        schema:
+          default: 0
+          minimum: 0
+          type: integer
+      - description: |
+          An array of full text search.
+
+          A full text search performs a prefixed text search for each provided terms in all visible fields of a catalog/dataset.
+        explode: true
+        in: query
+        name: search
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: |
+          A facet is a field used for simple filtering (through the parameters refine and exclude) or exploration (with the endpoint `/facets`).
+
+          Facets can be configured in the back-office or with this parameter.
+
+          Read [the facets documentation](https://help.opendatasoft.com/apis/ods-search-v2/#facets) for more details.
+        explode: true
+        in: query
+        name: facet
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: |
+          An array of facet filters. For example **city:Paris** or **modified:2019/12**.
+          The request will only include the selected facet value.
+
+          Read [filtering with facets value](https://help.opendatasoft.com/apis/ods-search-v2/#filtering-with-facets-values) for more details.
+
+          *Not to be confused with a where filter. Refining with a facet is equivalent to selecting an entry in the left navigation panel.*
+
+          *refine is not available for monitoring sources*
+        explode: true
+        in: query
+        name: refine
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: |
+          An array of facet filters. For example **city:Paris** or **modified:2019/12**.
+          The request will exclude the defined facet value.
+
+          Read [filtering with facets value](https://help.opendatasoft.com/apis/ods-search-v2/#filtering-with-facets-values) for more details.
+
+          *Not to be confused with a where filter. Excluding a facet value is equivalent to removing an entry in the left navigation panel.*
+
+          *exclude is not available for monitoring sources*
+        explode: true
+        in: query
+        name: exclude
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: Set timezone for datetime fields
+        in: query
+        name: timezone
+        schema:
+          default: UTC
+          type: string
+      responses:
+        "200":
+          content:
+            xls:
+              schema:
+                format: binary
+                type: string
+          description: Return an XLS file
+      tags:
+      - export dataset
+      - ods
+      x-accepts:
+      - xls
+  /{source}/datasets/{dataset_id}/facets:
+    get:
+      description: |
+        Enumerate facets values for records and return a list of values for each facet.
+        Can be used to implement guided navigation in large result sets.
+
+        Read [the facets documentation](https://help.opendatasoft.com/apis/ods-search-v2/#enumerating-facets-values) for more details.
+      operationId: getRecordsFacets
+      parameters:
+      - description: |
+          Each source represents a different catalog of datasets you'll be able to query.
+
+          There are 2 sources available:
+
+          * catalog: the catalog of datasets on your portal
+          * opendatasoft: Opendatasoft's repository of public datasets, also available at
+            [data.opendatasoft.com](https://data.opendatasoft.com/page/home/)
+        in: path
+        name: source
+        required: true
+        schema:
+          default: catalog
+          enum:
+          - catalog
+          - opendatasoft
+          - monitoring
+          type: string
+      - description: |
+          Dataset identifier.
+
+          Can be found in the "information" tab of the dataset page.
+        in: path
+        name: dataset_id
+        required: true
+        schema:
+          type: string
+      - description: |
+          An array of filters.
+
+          A filter is a text expression performing a simple full-text search that can also include logical operations
+          (NOT, AND, OR...) as well as lots of other functions, thus performing more complex and more precise searches.
+
+          Read [the query language reference](https://docs.opendatasoft.com/api/explore/v2.html#where-clause) for more details.
+        explode: true
+        in: query
+        name: where
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: |
+          A facet is a field used for simple filtering (through the parameters refine and exclude) or exploration (with the endpoint `/facets`).
+
+          Facets can be configured in the back-office or with this parameter.
+
+          Read [the facets documentation](https://help.opendatasoft.com/apis/ods-search-v2/#facets) for more details.
+        explode: true
+        in: query
+        name: facet
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: |
+          An array of facet filters. For example **city:Paris** or **modified:2019/12**.
+          The request will only include the selected facet value.
+
+          Read [filtering with facets value](https://help.opendatasoft.com/apis/ods-search-v2/#filtering-with-facets-values) for more details.
+
+          *Not to be confused with a where filter. Refining with a facet is equivalent to selecting an entry in the left navigation panel.*
+
+          *refine is not available for monitoring sources*
+        explode: true
+        in: query
+        name: refine
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: |
+          An array of facet filters. For example **city:Paris** or **modified:2019/12**.
+          The request will exclude the defined facet value.
+
+          Read [filtering with facets value](https://help.opendatasoft.com/apis/ods-search-v2/#filtering-with-facets-values) for more details.
+
+          *Not to be confused with a where filter. Excluding a facet value is equivalent to removing an entry in the left navigation panel.*
+
+          *exclude is not available for monitoring sources*
+        explode: true
+        in: query
+        name: exclude
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: |
+          An array of full text search.
+
+          A full text search performs a prefixed text search for each provided terms in all visible fields of a catalog/dataset.
+        explode: true
+        in: query
+        name: search
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: Set timezone for datetime fields
+        in: query
+        name: timezone
+        schema:
+          default: UTC
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/getRecordsFacets_200_response'
+          description: Facets enumeration
+      tags:
+      - dataset
+      - facet
+      - ods
+      x-accepts:
+      - application/json
+  /{source}/datasets/{dataset_id}/feedback:
+    put:
+      description: |
+        Create new feedback entry.
+      operationId: sendDatasetFeedback
+      parameters:
+      - description: |
+          Each source represents a different catalog of datasets you'll be able to query.
+
+          There are 2 sources available:
+
+          * catalog: the catalog of datasets on your portal
+          * opendatasoft: Opendatasoft's repository of public datasets, also available at
+            [data.opendatasoft.com](https://data.opendatasoft.com/page/home/)
+        in: path
+        name: source
+        required: true
+        schema:
+          default: catalog
+          enum:
+          - catalog
+          - opendatasoft
+          - monitoring
+          type: string
+      - description: |
+          Dataset identifier.
+
+          Can be found in the "information" tab of the dataset page.
+        in: path
+        name: dataset_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/sendDatasetFeedback_request'
+        description: Feedback entry
+        required: true
+      responses:
+        "201":
+          content: {}
+          description: |
+            Success message: {status: 'ok'}
+      tags:
+      - dataset
+      - ods
+      x-codegen-request-body-name: feedback
+      x-content-type: '*/*'
+      x-accepts:
+      - application/json
+  /{source}/datasets/{dataset_id}/files/{file_id}:
+    get:
+      description: |
+        Download file
+      operationId: getDatasetFile
+      parameters:
+      - description: |
+          Each source represents a different catalog of datasets you'll be able to query.
+
+          There are 2 sources available:
+
+          * catalog: the catalog of datasets on your portal
+          * opendatasoft: Opendatasoft's repository of public datasets, also available at
+            [data.opendatasoft.com](https://data.opendatasoft.com/page/home/)
+        in: path
+        name: source
+        required: true
+        schema:
+          default: catalog
+          enum:
+          - catalog
+          - opendatasoft
+          - monitoring
+          type: string
+      - description: |
+          Dataset identifier.
+
+          Can be found in the "information" tab of the dataset page.
+        in: path
+        name: dataset_id
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: file_id
+        required: true
+        schema:
+          type: string
+      - description: "Set the size of the thumbnail representing the resource (attachment,\
+          \ image or file)"
+        in: query
+        name: thumbnail_size
+        schema:
+          type: string
+      responses:
+        "200":
+          content: {}
+          description: "The requested file, or its thumbnail (if thumbnail_size is\
+            \ specified)"
+      tags:
+      - dataset
+      - ods
+      x-accepts:
+      - application/json
+  /{source}/datasets/{dataset_id}/records:
+    get:
+      description: |
+        Search dataset's records.
+      operationId: getRecords
+      parameters:
+      - description: |
+          Each source represents a different catalog of datasets you'll be able to query.
+
+          There are 2 sources available:
+
+          * catalog: the catalog of datasets on your portal
+          * opendatasoft: Opendatasoft's repository of public datasets, also available at
+            [data.opendatasoft.com](https://data.opendatasoft.com/page/home/)
+        in: path
+        name: source
+        required: true
+        schema:
+          default: catalog
+          enum:
+          - catalog
+          - opendatasoft
+          - monitoring
+          type: string
+      - description: |
+          Dataset identifier.
+
+          Can be found in the "information" tab of the dataset page.
+        in: path
+        name: dataset_id
+        required: true
+        schema:
+          type: string
+      - description: |
+          A select expression can be used to add, remove or change fields to return.
+          An expression can be:
+            - a wildcard ('*'): return all fields
+            - a field name: return only this field
+            - an include/exclude function. Include (resp exclude) all field matching include/exclude expression. This expression can contain wildcard. For example: include(spa*) will return all fields begining with 'spa'
+            - a complex expression: return the result of this expression. A label can be set for this expression, in that case, field will be named with this label. For instance: 'size * 2 as bigger_size' will return a new field named bigger_size and containing the double of size field value.
+        in: query
+        name: select
+        schema:
+          type: string
+      - description: |
+          An array of filters.
+
+          A filter is a text expression performing a simple full-text search that can also include logical operations
+          (NOT, AND, OR...) as well as lots of other functions, thus performing more complex and more precise searches.
+
+          Read [the query language reference](https://docs.opendatasoft.com/api/explore/v2.html#where-clause) for more details.
+        explode: true
+        in: query
+        name: where
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: |
+          A group by expression defines a grouping function for an aggregation.
+          It can be:
+           - a field name: group result by each value of this field
+           - a range function: group result by range
+           - a date function: group result by date
+          It is possible to specify a custom name with the 'as name' notation. For instance: group_by='city_field as city'.
+        in: query
+        name: group_by
+        schema:
+          type: string
+      - description: |
+          **Deprecated, use `order_by` instead.**
+
+          A list of field names, each possibly prefixed with a minus (-).
+
+          Sorts results according to the specified fields' values. By default, the sort is ascending (from the smallest
+          value to the biggest value). A minus sign (‘-‘) may be used to perform a descending sort. Sorting is only
+          available on numeric fields (int, double, date and datetime) and on text fields which have the sortable
+          annotation.
+        explode: false
+        in: query
+        name: sort
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: |
+          A comma-separated list of field names or aggregations to sort on, followed by an order (`asc` or `desc`).
+
+          Sorts results according to the specified fields' values in ascending order by default.
+          To sort results in descending order, use the `desc` keyword.
+
+          Example: `sum(age) desc, name asc`
+        explode: false
+        in: query
+        name: order_by
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: |
+          Number of items to return.
+
+          To use in conjonction with offset to implement pagination.
+
+          Limit maximum value is 100. To retrive more data use export entry points.
+          The default value is 10.
+        in: query
+        name: limit
+        schema:
+          default: 10
+          maximum: 100
+          minimum: -1
+          type: integer
+      - description: |
+          Index of the first item to return (starting at 0).
+
+          To use in conjonction with limit to implement pagination.
+        in: query
+        name: offset
+        schema:
+          default: 0
+          minimum: 0
+          type: integer
+      - description: |
+          An array of full text search.
+
+          A full text search performs a prefixed text search for each provided terms in all visible fields of a catalog/dataset.
+        explode: true
+        in: query
+        name: search
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: |
+          A facet is a field used for simple filtering (through the parameters refine and exclude) or exploration (with the endpoint `/facets`).
+
+          Facets can be configured in the back-office or with this parameter.
+
+          Read [the facets documentation](https://help.opendatasoft.com/apis/ods-search-v2/#facets) for more details.
+        explode: true
+        in: query
+        name: facet
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: |
+          An array of facet filters. For example **city:Paris** or **modified:2019/12**.
+          The request will only include the selected facet value.
+
+          Read [filtering with facets value](https://help.opendatasoft.com/apis/ods-search-v2/#filtering-with-facets-values) for more details.
+
+          *Not to be confused with a where filter. Refining with a facet is equivalent to selecting an entry in the left navigation panel.*
+
+          *refine is not available for monitoring sources*
+        explode: true
+        in: query
+        name: refine
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: |
+          An array of facet filters. For example **city:Paris** or **modified:2019/12**.
+          The request will exclude the defined facet value.
+
+          Read [filtering with facets value](https://help.opendatasoft.com/apis/ods-search-v2/#filtering-with-facets-values) for more details.
+
+          *Not to be confused with a where filter. Excluding a facet value is equivalent to removing an entry in the left navigation panel.*
+
+          *exclude is not available for monitoring sources*
+        explode: true
+        in: query
+        name: exclude
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: Activate pretty print
+        in: query
+        name: pretty
+        schema:
+          default: false
+          type: boolean
+      - description: Set timezone for datetime fields
+        in: query
+        name: timezone
+        schema:
+          default: UTC
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/getRecords_200_response'
+          description: Records
+      tags:
+      - dataset
+      - ods
+      x-accepts:
+      - application/json
+  /{source}/datasets/{dataset_id}/records/{record_id}:
+    get:
+      description: |
+        Retrieve a single record based on its ID.
+      operationId: getRecord
+      parameters:
+      - description: |
+          Each source represents a different catalog of datasets you'll be able to query.
+
+          There are 2 sources available:
+
+          * catalog: the catalog of datasets on your portal
+          * opendatasoft: Opendatasoft's repository of public datasets, also available at
+            [data.opendatasoft.com](https://data.opendatasoft.com/page/home/)
+        in: path
+        name: source
+        required: true
+        schema:
+          default: catalog
+          enum:
+          - catalog
+          - opendatasoft
+          - monitoring
+          type: string
+      - description: |
+          Dataset identifier.
+
+          Can be found in the "information" tab of the dataset page.
+        in: path
+        name: dataset_id
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: record_id
+        required: true
+        schema:
+          type: string
+      - description: |
+          A select expression can be used to add, remove or change fields to return.
+          An expression can be:
+            - a wildcard ('*'): return all fields
+            - a field name: return only this field
+            - an include/exclude function. Include (resp exclude) all field matching include/exclude expression. This expression can contain wildcard. For example: include(spa*) will return all fields begining with 'spa'
+            - a complex expression: return the result of this expression. A label can be set for this expression, in that case, field will be named with this label. For instance: 'size * 2 as bigger_size' will return a new field named bigger_size and containing the double of size field value.
+        in: query
+        name: select
+        schema:
+          type: string
+      - description: Activate pretty print
+        in: query
+        name: pretty
+        schema:
+          default: false
+          type: boolean
+      - description: Set timezone for datetime fields
+        in: query
+        name: timezone
+        schema:
+          default: UTC
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/getRecords_200_response_records_inner'
+          description: A single record
+      tags:
+      - dataset
+      - ods
+      x-accepts:
+      - application/json
+  /{source}/datasets/{dataset_id}/reuses:
+    get:
+      description: |
+        Get list of reuses
+      operationId: getDatasetReuses
+      parameters:
+      - description: |
+          Each source represents a different catalog of datasets you'll be able to query.
+
+          There are 2 sources available:
+
+          * catalog: the catalog of datasets on your portal
+          * opendatasoft: Opendatasoft's repository of public datasets, also available at
+            [data.opendatasoft.com](https://data.opendatasoft.com/page/home/)
+        in: path
+        name: source
+        required: true
+        schema:
+          default: catalog
+          enum:
+          - catalog
+          - opendatasoft
+          - monitoring
+          type: string
+      - description: |
+          Dataset identifier.
+
+          Can be found in the "information" tab of the dataset page.
+        in: path
+        name: dataset_id
+        required: true
+        schema:
+          type: string
+      - description: |
+          Number of items to return.
+
+          To use in conjonction with offset to implement pagination.
+
+          Limit maximum value is 100. To retrive more data use export entry points.
+          The default value is 10.
+        in: query
+        name: limit
+        schema:
+          default: 10
+          maximum: 100
+          minimum: -1
+          type: integer
+      - description: |
+          Index of the first item to return (starting at 0).
+
+          To use in conjonction with limit to implement pagination.
+        in: query
+        name: offset
+        schema:
+          default: 0
+          minimum: 0
+          type: integer
+      - description: Set timezone for datetime fields
+        in: query
+        name: timezone
+        schema:
+          default: UTC
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/getDatasetReuses_200_response'
+          description: |
+            A paginated list of reuses
+      tags:
+      - dataset
+      - ods
+      x-accepts:
+      - application/json
+  /{source}/datasets/{dataset_id}/reuses/{reuse_id}:
+    get:
+      description: |
+        Retrieve a single reuse based on its ID.
+      operationId: getDatasetReuse
+      parameters:
+      - description: |
+          Each source represents a different catalog of datasets you'll be able to query.
+
+          There are 2 sources available:
+
+          * catalog: the catalog of datasets on your portal
+          * opendatasoft: Opendatasoft's repository of public datasets, also available at
+            [data.opendatasoft.com](https://data.opendatasoft.com/page/home/)
+        in: path
+        name: source
+        required: true
+        schema:
+          default: catalog
+          enum:
+          - catalog
+          - opendatasoft
+          - monitoring
+          type: string
+      - description: |
+          Dataset identifier.
+
+          Can be found in the "information" tab of the dataset page.
+        in: path
+        name: dataset_id
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: reuse_id
+        required: true
+        schema:
+          type: string
+      - description: Set timezone for datetime fields
+        in: query
+        name: timezone
+        schema:
+          default: UTC
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/getDatasetReuse_200_response'
+          description: |
+            A paginated list of reuses
+      tags:
+      - dataset
+      - ods
+      x-accepts:
+      - application/json
+  /{source}/datasets/{dataset_id}/snapshots:
+    get:
+      description: |
+        List of all snapshots for this dataset.
+      operationId: getDatasetSnapshots
+      parameters:
+      - description: |
+          Each source represents a different catalog of datasets you'll be able to query.
+
+          There are 2 sources available:
+
+          * catalog: the catalog of datasets on your portal
+          * opendatasoft: Opendatasoft's repository of public datasets, also available at
+            [data.opendatasoft.com](https://data.opendatasoft.com/page/home/)
+        in: path
+        name: source
+        required: true
+        schema:
+          default: catalog
+          enum:
+          - catalog
+          - opendatasoft
+          - monitoring
+          type: string
+      - description: |
+          Dataset identifier.
+
+          Can be found in the "information" tab of the dataset page.
+        in: path
+        name: dataset_id
+        required: true
+        schema:
+          type: string
+      - description: Set timezone for datetime fields
+        in: query
+        name: timezone
+        schema:
+          default: UTC
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/getDatasetSnapshots_200_response'
+          description: "List of all snapshots, each with their endpoint."
+      tags:
+      - dataset
+      - ods
+      x-accepts:
+      - application/json
+  /{source}/datasets/{dataset_id}/snapshots/{snapshot_id}:
+    get:
+      description: |
+        List of all snapshots for this dataset.
+      operationId: downloadDatasetSnapshot
+      parameters:
+      - description: |
+          Each source represents a different catalog of datasets you'll be able to query.
+
+          There are 2 sources available:
+
+          * catalog: the catalog of datasets on your portal
+          * opendatasoft: Opendatasoft's repository of public datasets, also available at
+            [data.opendatasoft.com](https://data.opendatasoft.com/page/home/)
+        in: path
+        name: source
+        required: true
+        schema:
+          default: catalog
+          enum:
+          - catalog
+          - opendatasoft
+          - monitoring
+          type: string
+      - description: |
+          Dataset identifier.
+
+          Can be found in the "information" tab of the dataset page.
+        in: path
+        name: dataset_id
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: snapshot_id
+        required: true
+        schema:
+          type: string
+      - description: Set timezone for datetime fields
+        in: query
+        name: timezone
+        schema:
+          default: UTC
+          type: string
+      responses:
+        "200":
+          content: {}
+          description: "The full dataset in the state it was in when the snapshot\
+            \ was created, in CSV"
+      tags:
+      - dataset
+      - ods
+      x-accepts:
+      - application/json
+  /{source}/exports/csv:
+    get:
+      description: |
+        Export catalog (source) in CSV format
+      operationId: exportDatasetsCSV
+      parameters:
+      - description: |
+          Each source represents a different catalog of datasets you'll be able to query.
+
+          There are 2 sources available:
+
+          * catalog: the catalog of datasets on your portal
+          * opendatasoft: Opendatasoft's repository of public datasets, also available at
+            [data.opendatasoft.com](https://data.opendatasoft.com/page/home/)
+        in: path
+        name: source
+        required: true
+        schema:
+          default: catalog
+          enum:
+          - catalog
+          - opendatasoft
+          - monitoring
+          type: string
+      - description: |
+          An array of filters.
+
+          A filter is a text expression performing a simple full-text search that can also include logical operations
+          (NOT, AND, OR...) as well as lots of other functions, thus performing more complex and more precise searches.
+
+          Read [the query language reference](https://docs.opendatasoft.com/api/explore/v2.html#where-clause) for more details.
+        explode: true
+        in: query
+        name: where
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: |
+          Number of items to return.
+
+          To use in conjonction with offset to implement pagination.
+
+          Limit maximum value is 100. To retrive more data use export entry points.
+          The default value is 10.
+        in: query
+        name: limit
+        schema:
+          default: 10
+          maximum: 100
+          minimum: -1
+          type: integer
+      - description: |
+          Index of the first item to return (starting at 0).
+
+          To use in conjonction with limit to implement pagination.
+        in: query
+        name: offset
+        schema:
+          default: 0
+          minimum: 0
+          type: integer
+      - description: |
+          An array of full text search.
+
+          A full text search performs a prefixed text search for each provided terms in all visible fields of a catalog/dataset.
+        explode: true
+        in: query
+        name: search
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: |
+          A facet is a field used for simple filtering (through the parameters refine and exclude) or exploration (with the endpoint `/facets`).
+
+          Facets can be configured in the back-office or with this parameter.
+
+          Read [the facets documentation](https://help.opendatasoft.com/apis/ods-search-v2/#facets) for more details.
+        explode: true
+        in: query
+        name: facet
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: |
+          An array of facet filters. For example **city:Paris** or **modified:2019/12**.
+          The request will only include the selected facet value.
+
+          Read [filtering with facets value](https://help.opendatasoft.com/apis/ods-search-v2/#filtering-with-facets-values) for more details.
+
+          *Not to be confused with a where filter. Refining with a facet is equivalent to selecting an entry in the left navigation panel.*
+
+          *refine is not available for monitoring sources*
+        explode: true
+        in: query
+        name: refine
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: |
+          An array of facet filters. For example **city:Paris** or **modified:2019/12**.
+          The request will exclude the defined facet value.
+
+          Read [filtering with facets value](https://help.opendatasoft.com/apis/ods-search-v2/#filtering-with-facets-values) for more details.
+
+          *Not to be confused with a where filter. Excluding a facet value is equivalent to removing an entry in the left navigation panel.*
+
+          *exclude is not available for monitoring sources*
+        explode: true
+        in: query
+        name: exclude
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: Set timezone for datetime fields
+        in: query
+        name: timezone
+        schema:
+          default: UTC
+          type: string
+      - description: |
+          Explicitely request application metas for each datasets.
+        in: query
+        name: include_app_metas
+        schema:
+          default: false
+          type: boolean
+      - description: "Provide a different delimiter (default ',')."
+        in: query
+        name: delimiter
+        schema:
+          default: ;
+          enum:
+          - ","
+          - ;
+          - '|'
+          type: string
+      responses:
+        "200":
+          content:
+            text/csv:
+              schema:
+                format: binary
+                type: string
+          description: Return a CSV file
+      tags:
+      - export catalog
+      - ods
+      x-accepts:
+      - text/csv
+  /{source}/exports/json:
+    get:
+      description: |
+        Export catalog (source) in JSON format
+      operationId: exportDatasetsJson
+      parameters:
+      - description: |
+          Each source represents a different catalog of datasets you'll be able to query.
+
+          There are 2 sources available:
+
+          * catalog: the catalog of datasets on your portal
+          * opendatasoft: Opendatasoft's repository of public datasets, also available at
+            [data.opendatasoft.com](https://data.opendatasoft.com/page/home/)
+        in: path
+        name: source
+        required: true
+        schema:
+          default: catalog
+          enum:
+          - catalog
+          - opendatasoft
+          - monitoring
+          type: string
+      - description: |
+          An array of filters.
+
+          A filter is a text expression performing a simple full-text search that can also include logical operations
+          (NOT, AND, OR...) as well as lots of other functions, thus performing more complex and more precise searches.
+
+          Read [the query language reference](https://docs.opendatasoft.com/api/explore/v2.html#where-clause) for more details.
+        explode: true
+        in: query
+        name: where
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: |
+          Number of items to return.
+
+          To use in conjonction with offset to implement pagination.
+
+          Limit maximum value is 100. To retrive more data use export entry points.
+          The default value is 10.
+        in: query
+        name: limit
+        schema:
+          default: 10
+          maximum: 100
+          minimum: -1
+          type: integer
+      - description: |
+          Index of the first item to return (starting at 0).
+
+          To use in conjonction with limit to implement pagination.
+        in: query
+        name: offset
+        schema:
+          default: 0
+          minimum: 0
+          type: integer
+      - description: |
+          An array of full text search.
+
+          A full text search performs a prefixed text search for each provided terms in all visible fields of a catalog/dataset.
+        explode: true
+        in: query
+        name: search
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: |
+          A facet is a field used for simple filtering (through the parameters refine and exclude) or exploration (with the endpoint `/facets`).
+
+          Facets can be configured in the back-office or with this parameter.
+
+          Read [the facets documentation](https://help.opendatasoft.com/apis/ods-search-v2/#facets) for more details.
+        explode: true
+        in: query
+        name: facet
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: |
+          An array of facet filters. For example **city:Paris** or **modified:2019/12**.
+          The request will only include the selected facet value.
+
+          Read [filtering with facets value](https://help.opendatasoft.com/apis/ods-search-v2/#filtering-with-facets-values) for more details.
+
+          *Not to be confused with a where filter. Refining with a facet is equivalent to selecting an entry in the left navigation panel.*
+
+          *refine is not available for monitoring sources*
+        explode: true
+        in: query
+        name: refine
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: |
+          An array of facet filters. For example **city:Paris** or **modified:2019/12**.
+          The request will exclude the defined facet value.
+
+          Read [filtering with facets value](https://help.opendatasoft.com/apis/ods-search-v2/#filtering-with-facets-values) for more details.
+
+          *Not to be confused with a where filter. Excluding a facet value is equivalent to removing an entry in the left navigation panel.*
+
+          *exclude is not available for monitoring sources*
+        explode: true
+        in: query
+        name: exclude
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: Activate pretty print
+        in: query
+        name: pretty
+        schema:
+          default: false
+          type: boolean
+      - description: Set timezone for datetime fields
+        in: query
+        name: timezone
+        schema:
+          default: UTC
+          type: string
+      - description: |
+          Explicitely request application metas for each datasets.
+        in: query
+        name: include_app_metas
+        schema:
+          default: false
+          type: boolean
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                format: binary
+                type: string
+          description: Return a JSON file
+      tags:
+      - export catalog
+      - ods
+      x-accepts:
+      - application/json
+  /{source}/exports/rdf:
+    get:
+      description: |
+        Export catalog (source) in RDF/XML format
+      operationId: exportDatasetsRDF
+      parameters:
+      - description: |
+          Each source represents a different catalog of datasets you'll be able to query.
+
+          There are 2 sources available:
+
+          * catalog: the catalog of datasets on your portal
+          * opendatasoft: Opendatasoft's repository of public datasets, also available at
+            [data.opendatasoft.com](https://data.opendatasoft.com/page/home/)
+        in: path
+        name: source
+        required: true
+        schema:
+          default: catalog
+          enum:
+          - catalog
+          - opendatasoft
+          - monitoring
+          type: string
+      - description: |
+          An array of filters.
+
+          A filter is a text expression performing a simple full-text search that can also include logical operations
+          (NOT, AND, OR...) as well as lots of other functions, thus performing more complex and more precise searches.
+
+          Read [the query language reference](https://docs.opendatasoft.com/api/explore/v2.html#where-clause) for more details.
+        explode: true
+        in: query
+        name: where
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: |
+          Number of items to return.
+
+          To use in conjonction with offset to implement pagination.
+
+          Limit maximum value is 100. To retrive more data use export entry points.
+          The default value is 10.
+        in: query
+        name: limit
+        schema:
+          default: 10
+          maximum: 100
+          minimum: -1
+          type: integer
+      - description: |
+          Index of the first item to return (starting at 0).
+
+          To use in conjonction with limit to implement pagination.
+        in: query
+        name: offset
+        schema:
+          default: 0
+          minimum: 0
+          type: integer
+      - description: |
+          An array of full text search.
+
+          A full text search performs a prefixed text search for each provided terms in all visible fields of a catalog/dataset.
+        explode: true
+        in: query
+        name: search
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: |
+          A facet is a field used for simple filtering (through the parameters refine and exclude) or exploration (with the endpoint `/facets`).
+
+          Facets can be configured in the back-office or with this parameter.
+
+          Read [the facets documentation](https://help.opendatasoft.com/apis/ods-search-v2/#facets) for more details.
+        explode: true
+        in: query
+        name: facet
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: |
+          An array of facet filters. For example **city:Paris** or **modified:2019/12**.
+          The request will only include the selected facet value.
+
+          Read [filtering with facets value](https://help.opendatasoft.com/apis/ods-search-v2/#filtering-with-facets-values) for more details.
+
+          *Not to be confused with a where filter. Refining with a facet is equivalent to selecting an entry in the left navigation panel.*
+
+          *refine is not available for monitoring sources*
+        explode: true
+        in: query
+        name: refine
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: |
+          An array of facet filters. For example **city:Paris** or **modified:2019/12**.
+          The request will exclude the defined facet value.
+
+          Read [filtering with facets value](https://help.opendatasoft.com/apis/ods-search-v2/#filtering-with-facets-values) for more details.
+
+          *Not to be confused with a where filter. Excluding a facet value is equivalent to removing an entry in the left navigation panel.*
+
+          *exclude is not available for monitoring sources*
+        explode: true
+        in: query
+        name: exclude
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: Set timezone for datetime fields
+        in: query
+        name: timezone
+        schema:
+          default: UTC
+          type: string
+      - description: |
+          Explicitely request application metas for each datasets.
+        in: query
+        name: include_app_metas
+        schema:
+          default: false
+          type: boolean
+      responses:
+        "200":
+          content:
+            application/rdf+xml:
+              schema:
+                format: binary
+                type: string
+          description: Return a RDF XML file
+      tags:
+      - export catalog
+      - ods
+      x-accepts:
+      - application/rdf+xml
+  /{source}/exports/rss:
+    get:
+      description: |
+        Export catalog (source) in RSS format
+      operationId: exportDatasetsRSS
+      parameters:
+      - description: |
+          Each source represents a different catalog of datasets you'll be able to query.
+
+          There are 2 sources available:
+
+          * catalog: the catalog of datasets on your portal
+          * opendatasoft: Opendatasoft's repository of public datasets, also available at
+            [data.opendatasoft.com](https://data.opendatasoft.com/page/home/)
+        in: path
+        name: source
+        required: true
+        schema:
+          default: catalog
+          enum:
+          - catalog
+          - opendatasoft
+          - monitoring
+          type: string
+      - description: |
+          An array of filters.
+
+          A filter is a text expression performing a simple full-text search that can also include logical operations
+          (NOT, AND, OR...) as well as lots of other functions, thus performing more complex and more precise searches.
+
+          Read [the query language reference](https://docs.opendatasoft.com/api/explore/v2.html#where-clause) for more details.
+        explode: true
+        in: query
+        name: where
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: |
+          Number of items to return.
+
+          To use in conjonction with offset to implement pagination.
+
+          Limit maximum value is 100. To retrive more data use export entry points.
+          The default value is 10.
+        in: query
+        name: limit
+        schema:
+          default: 10
+          maximum: 100
+          minimum: -1
+          type: integer
+      - description: |
+          Index of the first item to return (starting at 0).
+
+          To use in conjonction with limit to implement pagination.
+        in: query
+        name: offset
+        schema:
+          default: 0
+          minimum: 0
+          type: integer
+      - description: |
+          An array of full text search.
+
+          A full text search performs a prefixed text search for each provided terms in all visible fields of a catalog/dataset.
+        explode: true
+        in: query
+        name: search
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: |
+          A facet is a field used for simple filtering (through the parameters refine and exclude) or exploration (with the endpoint `/facets`).
+
+          Facets can be configured in the back-office or with this parameter.
+
+          Read [the facets documentation](https://help.opendatasoft.com/apis/ods-search-v2/#facets) for more details.
+        explode: true
+        in: query
+        name: facet
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: |
+          An array of facet filters. For example **city:Paris** or **modified:2019/12**.
+          The request will only include the selected facet value.
+
+          Read [filtering with facets value](https://help.opendatasoft.com/apis/ods-search-v2/#filtering-with-facets-values) for more details.
+
+          *Not to be confused with a where filter. Refining with a facet is equivalent to selecting an entry in the left navigation panel.*
+
+          *refine is not available for monitoring sources*
+        explode: true
+        in: query
+        name: refine
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: |
+          An array of facet filters. For example **city:Paris** or **modified:2019/12**.
+          The request will exclude the defined facet value.
+
+          Read [filtering with facets value](https://help.opendatasoft.com/apis/ods-search-v2/#filtering-with-facets-values) for more details.
+
+          *Not to be confused with a where filter. Excluding a facet value is equivalent to removing an entry in the left navigation panel.*
+
+          *exclude is not available for monitoring sources*
+        explode: true
+        in: query
+        name: exclude
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: Set timezone for datetime fields
+        in: query
+        name: timezone
+        schema:
+          default: UTC
+          type: string
+      - description: |
+          Explicitely request application metas for each datasets.
+        in: query
+        name: include_app_metas
+        schema:
+          default: false
+          type: boolean
+      responses:
+        "200":
+          content:
+            text/xml:
+              schema:
+                format: binary
+                type: string
+          description: Return a JSON file
+      tags:
+      - export catalog
+      - ods
+      x-accepts:
+      - text/xml
+  /{source}/exports/ttl:
+    get:
+      description: |
+        Export catalog (source) in TTL (turtle/rdf) format
+      operationId: exportDatasetsTTL
+      parameters:
+      - description: |
+          Each source represents a different catalog of datasets you'll be able to query.
+
+          There are 2 sources available:
+
+          * catalog: the catalog of datasets on your portal
+          * opendatasoft: Opendatasoft's repository of public datasets, also available at
+            [data.opendatasoft.com](https://data.opendatasoft.com/page/home/)
+        in: path
+        name: source
+        required: true
+        schema:
+          default: catalog
+          enum:
+          - catalog
+          - opendatasoft
+          - monitoring
+          type: string
+      - description: |
+          An array of filters.
+
+          A filter is a text expression performing a simple full-text search that can also include logical operations
+          (NOT, AND, OR...) as well as lots of other functions, thus performing more complex and more precise searches.
+
+          Read [the query language reference](https://docs.opendatasoft.com/api/explore/v2.html#where-clause) for more details.
+        explode: true
+        in: query
+        name: where
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: |
+          Number of items to return.
+
+          To use in conjonction with offset to implement pagination.
+
+          Limit maximum value is 100. To retrive more data use export entry points.
+          The default value is 10.
+        in: query
+        name: limit
+        schema:
+          default: 10
+          maximum: 100
+          minimum: -1
+          type: integer
+      - description: |
+          Index of the first item to return (starting at 0).
+
+          To use in conjonction with limit to implement pagination.
+        in: query
+        name: offset
+        schema:
+          default: 0
+          minimum: 0
+          type: integer
+      - description: |
+          An array of full text search.
+
+          A full text search performs a prefixed text search for each provided terms in all visible fields of a catalog/dataset.
+        explode: true
+        in: query
+        name: search
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: |
+          A facet is a field used for simple filtering (through the parameters refine and exclude) or exploration (with the endpoint `/facets`).
+
+          Facets can be configured in the back-office or with this parameter.
+
+          Read [the facets documentation](https://help.opendatasoft.com/apis/ods-search-v2/#facets) for more details.
+        explode: true
+        in: query
+        name: facet
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: |
+          An array of facet filters. For example **city:Paris** or **modified:2019/12**.
+          The request will only include the selected facet value.
+
+          Read [filtering with facets value](https://help.opendatasoft.com/apis/ods-search-v2/#filtering-with-facets-values) for more details.
+
+          *Not to be confused with a where filter. Refining with a facet is equivalent to selecting an entry in the left navigation panel.*
+
+          *refine is not available for monitoring sources*
+        explode: true
+        in: query
+        name: refine
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: |
+          An array of facet filters. For example **city:Paris** or **modified:2019/12**.
+          The request will exclude the defined facet value.
+
+          Read [filtering with facets value](https://help.opendatasoft.com/apis/ods-search-v2/#filtering-with-facets-values) for more details.
+
+          *Not to be confused with a where filter. Excluding a facet value is equivalent to removing an entry in the left navigation panel.*
+
+          *exclude is not available for monitoring sources*
+        explode: true
+        in: query
+        name: exclude
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: Set timezone for datetime fields
+        in: query
+        name: timezone
+        schema:
+          default: UTC
+          type: string
+      - description: |
+          Explicitely request application metas for each datasets.
+        in: query
+        name: include_app_metas
+        schema:
+          default: false
+          type: boolean
+      responses:
+        "200":
+          content:
+            text/turtle:
+              schema:
+                format: binary
+                type: string
+          description: Return a TTL file
+      tags:
+      - export catalog
+      - ods
+      x-accepts:
+      - text/turtle
+  /{source}/exports/xls:
+    get:
+      description: |
+        Export catalog (source) in XLS (Excel) format
+      operationId: exportDatasetsXLS
+      parameters:
+      - description: |
+          Each source represents a different catalog of datasets you'll be able to query.
+
+          There are 2 sources available:
+
+          * catalog: the catalog of datasets on your portal
+          * opendatasoft: Opendatasoft's repository of public datasets, also available at
+            [data.opendatasoft.com](https://data.opendatasoft.com/page/home/)
+        in: path
+        name: source
+        required: true
+        schema:
+          default: catalog
+          enum:
+          - catalog
+          - opendatasoft
+          - monitoring
+          type: string
+      - description: |
+          An array of filters.
+
+          A filter is a text expression performing a simple full-text search that can also include logical operations
+          (NOT, AND, OR...) as well as lots of other functions, thus performing more complex and more precise searches.
+
+          Read [the query language reference](https://docs.opendatasoft.com/api/explore/v2.html#where-clause) for more details.
+        explode: true
+        in: query
+        name: where
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: |
+          Number of items to return.
+
+          To use in conjonction with offset to implement pagination.
+
+          Limit maximum value is 100. To retrive more data use export entry points.
+          The default value is 10.
+        in: query
+        name: limit
+        schema:
+          default: 10
+          maximum: 100
+          minimum: -1
+          type: integer
+      - description: |
+          Index of the first item to return (starting at 0).
+
+          To use in conjonction with limit to implement pagination.
+        in: query
+        name: offset
+        schema:
+          default: 0
+          minimum: 0
+          type: integer
+      - description: |
+          An array of full text search.
+
+          A full text search performs a prefixed text search for each provided terms in all visible fields of a catalog/dataset.
+        explode: true
+        in: query
+        name: search
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: |
+          A facet is a field used for simple filtering (through the parameters refine and exclude) or exploration (with the endpoint `/facets`).
+
+          Facets can be configured in the back-office or with this parameter.
+
+          Read [the facets documentation](https://help.opendatasoft.com/apis/ods-search-v2/#facets) for more details.
+        explode: true
+        in: query
+        name: facet
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: |
+          An array of facet filters. For example **city:Paris** or **modified:2019/12**.
+          The request will only include the selected facet value.
+
+          Read [filtering with facets value](https://help.opendatasoft.com/apis/ods-search-v2/#filtering-with-facets-values) for more details.
+
+          *Not to be confused with a where filter. Refining with a facet is equivalent to selecting an entry in the left navigation panel.*
+
+          *refine is not available for monitoring sources*
+        explode: true
+        in: query
+        name: refine
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: |
+          An array of facet filters. For example **city:Paris** or **modified:2019/12**.
+          The request will exclude the defined facet value.
+
+          Read [filtering with facets value](https://help.opendatasoft.com/apis/ods-search-v2/#filtering-with-facets-values) for more details.
+
+          *Not to be confused with a where filter. Excluding a facet value is equivalent to removing an entry in the left navigation panel.*
+
+          *exclude is not available for monitoring sources*
+        explode: true
+        in: query
+        name: exclude
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: Set timezone for datetime fields
+        in: query
+        name: timezone
+        schema:
+          default: UTC
+          type: string
+      - description: |
+          Explicitely request application metas for each datasets.
+        in: query
+        name: include_app_metas
+        schema:
+          default: false
+          type: boolean
+      responses:
+        "200":
+          content:
+            xls:
+              schema:
+                format: binary
+                type: string
+          description: Return an XLS file
+      tags:
+      - export catalog
+      - ods
+      x-accepts:
+      - xls
+  /{source}/facets:
+    get:
+      description: |
+        Enumerate facets values for datasets and return a list of values for each facet.
+        Can be used to implement guided navigation in large result sets.
+
+        Read [the facets documentation](https://help.opendatasoft.com/apis/ods-search-v2/#enumerating-facets-values) for more details.
+      operationId: getDatasetsFacets
+      parameters:
+      - description: |
+          Each source represents a different catalog of datasets you'll be able to query.
+
+          There are 2 sources available:
+
+          * catalog: the catalog of datasets on your portal
+          * opendatasoft: Opendatasoft's repository of public datasets, also available at
+            [data.opendatasoft.com](https://data.opendatasoft.com/page/home/)
+        in: path
+        name: source
+        required: true
+        schema:
+          default: catalog
+          enum:
+          - catalog
+          - opendatasoft
+          - monitoring
+          type: string
+      - description: |
+          A facet is a field used for simple filtering (through the parameters refine and exclude) or exploration (with the endpoint `/facets`).
+
+          Facets can be configured in the back-office or with this parameter.
+
+          Read [the facets documentation](https://help.opendatasoft.com/apis/ods-search-v2/#facets) for more details.
+        explode: true
+        in: query
+        name: facet
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: |
+          An array of facet filters. For example **city:Paris** or **modified:2019/12**.
+          The request will only include the selected facet value.
+
+          Read [filtering with facets value](https://help.opendatasoft.com/apis/ods-search-v2/#filtering-with-facets-values) for more details.
+
+          *Not to be confused with a where filter. Refining with a facet is equivalent to selecting an entry in the left navigation panel.*
+
+          *refine is not available for monitoring sources*
+        explode: true
+        in: query
+        name: refine
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: |
+          An array of facet filters. For example **city:Paris** or **modified:2019/12**.
+          The request will exclude the defined facet value.
+
+          Read [filtering with facets value](https://help.opendatasoft.com/apis/ods-search-v2/#filtering-with-facets-values) for more details.
+
+          *Not to be confused with a where filter. Excluding a facet value is equivalent to removing an entry in the left navigation panel.*
+
+          *exclude is not available for monitoring sources*
+        explode: true
+        in: query
+        name: exclude
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: |
+          An array of filters.
+
+          A filter is a text expression performing a simple full-text search that can also include logical operations
+          (NOT, AND, OR...) as well as lots of other functions, thus performing more complex and more precise searches.
+
+          Read [the query language reference](https://docs.opendatasoft.com/api/explore/v2.html#where-clause) for more details.
+        explode: true
+        in: query
+        name: where
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: |
+          An array of full text search.
+
+          A full text search performs a prefixed text search for each provided terms in all visible fields of a catalog/dataset.
+        explode: true
+        in: query
+        name: search
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: Set timezone for datetime fields
+        in: query
+        name: timezone
+        schema:
+          default: UTC
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/getRecordsFacets_200_response'
+          description: Facets enumeration
+      tags:
+      - catalog
+      - facet
+      - ods
+      x-accepts:
+      - application/json
+  /{source}/metadata_templates:
+    get:
+      description: |
+        List of available metadata templates types, each with their endpoints.
+      operationId: getMetadataTemplatesTypes
+      parameters:
+      - description: |
+          Each source represents a different catalog of datasets you'll be able to query.
+
+          There are 2 sources available:
+
+          * catalog: the catalog of datasets on your portal
+          * opendatasoft: Opendatasoft's repository of public datasets, also available at
+            [data.opendatasoft.com](https://data.opendatasoft.com/page/home/)
+        in: path
+        name: source
+        required: true
+        schema:
+          default: catalog
+          enum:
+          - catalog
+          - opendatasoft
+          - monitoring
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/getRoot_200_response'
+          description: List of available metadata templates types
+      tags:
+      - metadata
+      - ods
+      x-accepts:
+      - application/json
+  /{source}/metadata_templates/{metadata_template_type}:
+    get:
+      description: |
+        List of metadata templates available for this type.
+      operationId: getMetadataTemplatesType
+      parameters:
+      - description: |
+          Each source represents a different catalog of datasets you'll be able to query.
+
+          There are 2 sources available:
+
+          * catalog: the catalog of datasets on your portal
+          * opendatasoft: Opendatasoft's repository of public datasets, also available at
+            [data.opendatasoft.com](https://data.opendatasoft.com/page/home/)
+        in: path
+        name: source
+        required: true
+        schema:
+          default: catalog
+          enum:
+          - catalog
+          - opendatasoft
+          - monitoring
+          type: string
+      - in: path
+        name: metadata_template_type
+        required: true
+        schema:
+          default: basic
+          enum:
+          - basic
+          - interop
+          - extra
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/getMetadataTemplatesType_200_response'
+          description: List of metadata templates
+      tags:
+      - metadata
+      - ods
+      x-accepts:
+      - application/json
+  /{source}/metadata_templates/{metadata_template_type}/{metadata_template_name}:
+    get:
+      description: |
+        A single metadata_template
+      operationId: getMetadataTemplate
+      parameters:
+      - description: |
+          Each source represents a different catalog of datasets you'll be able to query.
+
+          There are 2 sources available:
+
+          * catalog: the catalog of datasets on your portal
+          * opendatasoft: Opendatasoft's repository of public datasets, also available at
+            [data.opendatasoft.com](https://data.opendatasoft.com/page/home/)
+        in: path
+        name: source
+        required: true
+        schema:
+          default: catalog
+          enum:
+          - catalog
+          - opendatasoft
+          - monitoring
+          type: string
+      - in: path
+        name: metadata_template_type
+        required: true
+        schema:
+          default: basic
+          enum:
+          - basic
+          - interop
+          - extra
+          type: string
+      - in: path
+        name: metadata_template_name
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/getMetadataTemplatesType_200_response_metadata_templates_inner'
+          description: A metadata template selected by ID.
+      tags:
+      - metadata
+      - ods
+      x-accepts:
+      - application/json
+components:
+  parameters:
+    attachment_id:
+      in: path
+      name: attachment_id
+      required: true
+      schema:
+        type: string
+    dataset_id:
+      description: |
+        Dataset identifier.
+
+        Can be found in the "information" tab of the dataset page.
+      in: path
+      name: dataset_id
+      required: true
+      schema:
+        type: string
+    exclude:
+      description: |
+        An array of facet filters. For example **city:Paris** or **modified:2019/12**.
+        The request will exclude the defined facet value.
+
+        Read [filtering with facets value](https://help.opendatasoft.com/apis/ods-search-v2/#filtering-with-facets-values) for more details.
+
+        *Not to be confused with a where filter. Excluding a facet value is equivalent to removing an entry in the left navigation panel.*
+
+        *exclude is not available for monitoring sources*
+      explode: true
+      in: query
+      name: exclude
+      schema:
+        items:
+          type: string
+        type: array
+      style: form
+    facet:
+      description: |
+        A facet is a field used for simple filtering (through the parameters refine and exclude) or exploration (with the endpoint `/facets`).
+
+        Facets can be configured in the back-office or with this parameter.
+
+        Read [the facets documentation](https://help.opendatasoft.com/apis/ods-search-v2/#facets) for more details.
+      explode: true
+      in: query
+      name: facet
+      schema:
+        items:
+          type: string
+        type: array
+      style: form
+    file_id:
+      in: path
+      name: file_id
+      required: true
+      schema:
+        type: string
+    group_by:
+      description: |
+        A group by expression defines a grouping function for an aggregation.
+        It can be:
+         - a field name: group result by each value of this field
+         - a range function: group result by range
+         - a date function: group result by date
+        It is possible to specify a custom name with the 'as name' notation. For instance: group_by='city_field as city'.
+      in: query
+      name: group_by
+      schema:
+        type: string
+    include_app_metas:
+      description: |
+        Explicitely request application metas for each datasets.
+      in: query
+      name: include_app_metas
+      schema:
+        default: false
+        type: boolean
+    limit:
+      description: |
+        Number of items to return.
+
+        To use in conjonction with offset to implement pagination.
+
+        Limit maximum value is 100. To retrive more data use export entry points.
+        The default value is 10.
+      in: query
+      name: limit
+      schema:
+        default: 10
+        maximum: 100
+        minimum: -1
+        type: integer
+    limit_export:
+      description: |
+        Number of items to return in export.
+
+        Use -1 (default) to retrieve all records
+      in: query
+      name: limit
+      schema:
+        default: -1
+        minimum: -1
+        type: integer
+    metadata_template_name:
+      in: path
+      name: metadata_template_name
+      required: true
+      schema:
+        type: string
+    metadata_template_type:
+      in: path
+      name: metadata_template_type
+      required: true
+      schema:
+        default: basic
+        enum:
+        - basic
+        - interop
+        - extra
+        type: string
+    mime_type:
+      description: Specify one (or many) mime type(s) and return only the files matching
+        said type(s).
+      in: query
+      name: mime_type
+      schema:
+        type: string
+    offset:
+      description: |
+        Index of the first item to return (starting at 0).
+
+        To use in conjonction with limit to implement pagination.
+      in: query
+      name: offset
+      schema:
+        default: 0
+        minimum: 0
+        type: integer
+    order_by:
+      description: |
+        A comma-separated list of field names or aggregations to sort on, followed by an order (`asc` or `desc`).
+
+        Sorts results according to the specified fields' values in ascending order by default.
+        To sort results in descending order, use the `desc` keyword.
+
+        Example: `sum(age) desc, name asc`
+      explode: false
+      in: query
+      name: order_by
+      schema:
+        items:
+          type: string
+        type: array
+      style: form
+    pretty:
+      description: Activate pretty print
+      in: query
+      name: pretty
+      schema:
+        default: false
+        type: boolean
+    record_id:
+      in: path
+      name: record_id
+      required: true
+      schema:
+        type: string
+    refine:
+      description: |
+        An array of facet filters. For example **city:Paris** or **modified:2019/12**.
+        The request will only include the selected facet value.
+
+        Read [filtering with facets value](https://help.opendatasoft.com/apis/ods-search-v2/#filtering-with-facets-values) for more details.
+
+        *Not to be confused with a where filter. Refining with a facet is equivalent to selecting an entry in the left navigation panel.*
+
+        *refine is not available for monitoring sources*
+      explode: true
+      in: query
+      name: refine
+      schema:
+        items:
+          type: string
+        type: array
+      style: form
+    reuse_id:
+      in: path
+      name: reuse_id
+      required: true
+      schema:
+        type: string
+    search:
+      description: |
+        An array of full text search.
+
+        A full text search performs a prefixed text search for each provided terms in all visible fields of a catalog/dataset.
+      explode: true
+      in: query
+      name: search
+      schema:
+        items:
+          type: string
+        type: array
+      style: form
+    select:
+      description: |
+        A select expression can be used to add, remove or change fields to return.
+        An expression can be:
+          - a wildcard ('*'): return all fields
+          - a field name: return only this field
+          - an include/exclude function. Include (resp exclude) all field matching include/exclude expression. This expression can contain wildcard. For example: include(spa*) will return all fields begining with 'spa'
+          - a complex expression: return the result of this expression. A label can be set for this expression, in that case, field will be named with this label. For instance: 'size * 2 as bigger_size' will return a new field named bigger_size and containing the double of size field value.
+      in: query
+      name: select
+      schema:
+        type: string
+    slug:
+      description: |
+        Page slug.
+      in: path
+      name: slug
+      required: true
+      schema:
+        type: string
+    snapshot_id:
+      in: path
+      name: snapshot_id
+      required: true
+      schema:
+        type: string
+    sort:
+      description: |
+        **Deprecated, use `order_by` instead.**
+
+        A list of field names, each possibly prefixed with a minus (-).
+
+        Sorts results according to the specified fields' values. By default, the sort is ascending (from the smallest
+        value to the biggest value). A minus sign (‘-‘) may be used to perform a descending sort. Sorting is only
+        available on numeric fields (int, double, date and datetime) and on text fields which have the sortable
+        annotation.
+      explode: false
+      in: query
+      name: sort
+      schema:
+        items:
+          type: string
+        type: array
+      style: form
+    source:
+      description: |
+        Each source represents a different catalog of datasets you'll be able to query.
+
+        There are 2 sources available:
+
+        * catalog: the catalog of datasets on your portal
+        * opendatasoft: Opendatasoft's repository of public datasets, also available at
+          [data.opendatasoft.com](https://data.opendatasoft.com/page/home/)
+      in: path
+      name: source
+      required: true
+      schema:
+        default: catalog
+        enum:
+        - catalog
+        - opendatasoft
+        - monitoring
+        type: string
+    thumbnail_size:
+      description: "Set the size of the thumbnail representing the resource (attachment,\
+        \ image or file)"
+      in: query
+      name: thumbnail_size
+      schema:
+        type: string
+    timezone:
+      description: Set timezone for datetime fields
+      in: query
+      name: timezone
+      schema:
+        default: UTC
+        type: string
+    where:
+      description: |
+        An array of filters.
+
+        A filter is a text expression performing a simple full-text search that can also include logical operations
+        (NOT, AND, OR...) as well as lots of other functions, thus performing more complex and more precise searches.
+
+        Read [the query language reference](https://docs.opendatasoft.com/api/explore/v2.html#where-clause) for more details.
+      explode: true
+      in: query
+      name: where
+      schema:
+        items:
+          type: string
+        type: array
+      style: form
+  schemas:
+    aggregation:
+      description: Result of an aggregation request.
+      example:
+        count(*): 86
+      type: object
+    attachment:
+      example:
+        metas: "{}"
+        href: href
+      properties:
+        href:
+          type: string
+        metas:
+          properties: {}
+          type: object
+      type: object
+    dataset:
+      example:
+        features:
+        - features
+        - features
+        metas: "{}"
+        attachments:
+        - "{}"
+        - "{}"
+        dataset_id: dataset_id
+        fields:
+        - name: name
+          annotations: "{}"
+          description: description
+          label: label
+          type: type
+        - name: name
+          annotations: "{}"
+          description: description
+          label: label
+          type: type
+        has_records: true
+        data_visible: true
+      properties:
+        attachments:
+          items:
+            properties: {}
+            type: object
+          type: array
+        data_visible:
+          type: boolean
+        dataset_id:
+          type: string
+        features:
+          description: |
+            A map of available features for a dataset, with the fields they apply to.
+          items:
+            type: string
+          type: array
+        fields:
+          items:
+            $ref: '#/components/schemas/dataset_fields_inner'
+          type: array
+        has_records:
+          type: boolean
+        metas:
+          properties: {}
+          type: object
+      type: object
+    datasets:
+      items:
+        $ref: '#/components/schemas/dataset'
+      type: array
+    facet_enumeration:
+      example:
+        name: name
+        facets:
+        - count: 0
+          name: name
+          value: value
+          facets:
+          - null
+          - null
+        - count: 0
+          name: name
+          value: value
+          facets:
+          - null
+          - null
+      properties:
+        facets:
+          items:
+            $ref: '#/components/schemas/facet_value_enumeration'
+          type: array
+        name:
+          type: string
+      type: object
+    facet_value_enumeration:
+      example:
+        count: 0
+        name: name
+        value: value
+        facets:
+        - null
+        - null
+      properties:
+        count:
+          type: integer
+        facets:
+          items:
+            $ref: '#/components/schemas/facet_value_enumeration'
+          type: array
+        name:
+          type: string
+        value:
+          type: string
+      type: object
+    link:
+      example:
+        rel: rel
+        href: href
+      properties:
+        href:
+          type: string
+        rel:
+          type: string
+      type: object
+    links:
+      items:
+        $ref: '#/components/schemas/link'
+      type: array
+    metadata_template:
+      example:
+        schema:
+        - "{}"
+        - "{}"
+        name: name
+        type: type
+      properties:
+        name:
+          type: string
+        schema:
+          items:
+            properties: {}
+            type: object
+          type: array
+        type:
+          type: string
+      type: object
+    page:
+      example:
+        description: description
+        title:
+          en: en
+          fr: fr
+        slug: slug
+      properties:
+        description:
+          type: string
+        slug:
+          type: string
+        title:
+          $ref: '#/components/schemas/page_title'
+      type: object
+    query_string:
+      description: |
+        Query string using the query language.
+        Example: (field1="value1" or field1="value2") and field2=value2 and "full text search"
+
+        Supports geo queries with the following functions:
+        * distance(myfield, center, radius): restrict entries to those where {myfield} is less than {radius} from {center} (center being defined 'lat,lon')
+        * bbox(myfield, topleft, bottomright): restrict entries to those where {myfield} is within the bounds defined by the two sets of coordinates {topleft} and {bottomright}
+        * polygon(myfield, mypolygon): restrict entries to those where {myfield} is within the bounds of {mypolygon}; {mypolygon} being a list of 'lat,lon' vertices
+        * wkt(myfield, mywkt): restrict entries to those where {myfield} is within the body of {mywkt}; {mywkt} being a Well Known Text (see 'http://en.wikipedia.org/wiki/Well-known_text' for reference)
+      type: string
+    record:
+      example:
+        size: 0
+        id: id
+        fields: "{}"
+        timestamp: timestamp
+      properties:
+        fields:
+          properties: {}
+          type: object
+        id:
+          type: string
+        size:
+          type: integer
+        timestamp:
+          format: dateTime
+          type: string
+      type: object
+    records:
+      items:
+        $ref: '#/components/schemas/record'
+      type: array
+    reuse:
+      example:
+        thumbnail: thumbnail
+        created_at: created_at
+        description: "{}"
+        id: id
+        title: title
+        user:
+          last_name: last_name
+          first_name: first_name
+          username: username
+        url: url
+      properties:
+        created_at:
+          description: Date when the reuse was submitted.
+          format: dateTime
+          type: string
+        description:
+          description: Slightly longer description of what was achieved using the
+            dataset.
+          type: object
+        id:
+          description: reuse id
+          type: string
+        thumbnail:
+          description: URL illustrating the work.
+          type: string
+        title:
+          description: Short description of the user's work.
+          type: string
+        url:
+          description: URL where the work can be accessed publicly.
+          type: string
+        user:
+          $ref: '#/components/schemas/reuse_user'
+      type: object
+    snapshot:
+      example:
+        snapshot_id: snapshot_id
+        created_at: created_at
+        description: description
+        href: href
+      properties:
+        created_at:
+          format: dateTime
+          type: string
+        description:
+          type: string
+        href:
+          type: string
+        snapshot_id:
+          type: string
+      type: object
+    timezone:
+      description: |
+        A timezone
+
+        If used as a parameter, defines the timezone the calculations will be performed in. If left empty, 'UTC' is
+        assumed.
+      example: Europe/Paris
+      type: string
+    getRoot_200_response:
+      example:
+        links:
+        - rel: rel
+          href: href
+        - rel: rel
+          href: href
+      properties:
+        links:
+          items:
+            $ref: '#/components/schemas/link'
+          type: array
+      type: object
+    getPages_200_response_pages_inner:
+      example:
+        links:
+        - rel: rel
+          href: href
+        - rel: rel
+          href: href
+        page:
+          description: description
+          title:
+            en: en
+            fr: fr
+          slug: slug
+      properties:
+        links:
+          items:
+            $ref: '#/components/schemas/link'
+          type: array
+        page:
+          $ref: '#/components/schemas/page'
+      type: object
+    getPages_200_response:
+      example:
+        pages:
+        - links:
+          - rel: rel
+            href: href
+          - rel: rel
+            href: href
+          page:
+            description: description
+            title:
+              en: en
+              fr: fr
+            slug: slug
+        - links:
+          - rel: rel
+            href: href
+          - rel: rel
+            href: href
+          page:
+            description: description
+            title:
+              en: en
+              fr: fr
+            slug: slug
+        links:
+        - rel: rel
+          href: href
+        - rel: rel
+          href: href
+      properties:
+        links:
+          items:
+            $ref: '#/components/schemas/link'
+          type: array
+        pages:
+          items:
+            $ref: '#/components/schemas/getPages_200_response_pages_inner'
+          type: array
+      type: object
+    aggregateDatasets_200_response:
+      example:
+        links:
+        - rel: rel
+          href: href
+        - rel: rel
+          href: href
+        aggregations:
+        - count(*): 86
+        - count(*): 86
+      properties:
+        aggregations:
+          items:
+            $ref: '#/components/schemas/aggregation'
+          type: array
+        links:
+          items:
+            $ref: '#/components/schemas/link'
+          type: array
+      type: object
+    getDatasets_200_response_datasets_inner:
+      example:
+        links:
+        - rel: rel
+          href: href
+        - rel: rel
+          href: href
+        dataset:
+          features:
+          - features
+          - features
+          metas: "{}"
+          attachments:
+          - "{}"
+          - "{}"
+          dataset_id: dataset_id
+          fields:
+          - name: name
+            annotations: "{}"
+            description: description
+            label: label
+            type: type
+          - name: name
+            annotations: "{}"
+            description: description
+            label: label
+            type: type
+          has_records: true
+          data_visible: true
+      properties:
+        dataset:
+          $ref: '#/components/schemas/dataset'
+        links:
+          items:
+            $ref: '#/components/schemas/link'
+          type: array
+      type: object
+    getDatasets_200_response:
+      example:
+        total_count: 0
+        links:
+        - rel: rel
+          href: href
+        - rel: rel
+          href: href
+        datasets:
+        - links:
+          - rel: rel
+            href: href
+          - rel: rel
+            href: href
+          dataset:
+            features:
+            - features
+            - features
+            metas: "{}"
+            attachments:
+            - "{}"
+            - "{}"
+            dataset_id: dataset_id
+            fields:
+            - name: name
+              annotations: "{}"
+              description: description
+              label: label
+              type: type
+            - name: name
+              annotations: "{}"
+              description: description
+              label: label
+              type: type
+            has_records: true
+            data_visible: true
+        - links:
+          - rel: rel
+            href: href
+          - rel: rel
+            href: href
+          dataset:
+            features:
+            - features
+            - features
+            metas: "{}"
+            attachments:
+            - "{}"
+            - "{}"
+            dataset_id: dataset_id
+            fields:
+            - name: name
+              annotations: "{}"
+              description: description
+              label: label
+              type: type
+            - name: name
+              annotations: "{}"
+              description: description
+              label: label
+              type: type
+            has_records: true
+            data_visible: true
+      properties:
+        datasets:
+          items:
+            $ref: '#/components/schemas/getDatasets_200_response_datasets_inner'
+          type: array
+        links:
+          items:
+            $ref: '#/components/schemas/link'
+          type: array
+        total_count:
+          type: integer
+      type: object
+    getDatasetAttachements_200_response:
+      example:
+        attachments:
+        - metas: "{}"
+          href: href
+        - metas: "{}"
+          href: href
+        links:
+        - rel: rel
+          href: href
+        - rel: rel
+          href: href
+      properties:
+        attachments:
+          items:
+            $ref: '#/components/schemas/attachment'
+          type: array
+        links:
+          items:
+            $ref: '#/components/schemas/link'
+          type: array
+      type: object
+    getRecordsFacets_200_response:
+      example:
+        facets:
+        - name: name
+          facets:
+          - count: 0
+            name: name
+            value: value
+            facets:
+            - null
+            - null
+          - count: 0
+            name: name
+            value: value
+            facets:
+            - null
+            - null
+        - name: name
+          facets:
+          - count: 0
+            name: name
+            value: value
+            facets:
+            - null
+            - null
+          - count: 0
+            name: name
+            value: value
+            facets:
+            - null
+            - null
+      properties:
+        facets:
+          items:
+            $ref: '#/components/schemas/facet_enumeration'
+          type: array
+      type: object
+    sendDatasetFeedback_request:
+      properties:
+        comment:
+          type: string
+        newValues:
+          description: New record value
+          properties: {}
+          type: object
+        recordid:
+          description: Feedback entry's recordid
+          type: string
+        schema:
+          description: Record schema
+          properties: {}
+          type: object
+      type: object
+    getRecords_200_response_records_inner:
+      example:
+        record:
+          size: 0
+          id: id
+          fields: "{}"
+          timestamp: timestamp
+        links:
+        - rel: rel
+          href: href
+        - rel: rel
+          href: href
+      properties:
+        links:
+          items:
+            $ref: '#/components/schemas/link'
+          type: array
+        record:
+          $ref: '#/components/schemas/record'
+      type: object
+    getRecords_200_response:
+      example:
+        records:
+        - record:
+            size: 0
+            id: id
+            fields: "{}"
+            timestamp: timestamp
+          links:
+          - rel: rel
+            href: href
+          - rel: rel
+            href: href
+        - record:
+            size: 0
+            id: id
+            fields: "{}"
+            timestamp: timestamp
+          links:
+          - rel: rel
+            href: href
+          - rel: rel
+            href: href
+        total_count: 6
+        links:
+        - rel: rel
+          href: href
+        - rel: rel
+          href: href
+      properties:
+        links:
+          items:
+            $ref: '#/components/schemas/link'
+          type: array
+        records:
+          items:
+            $ref: '#/components/schemas/getRecords_200_response_records_inner'
+          type: array
+        total_count:
+          type: integer
+      type: object
+    getDatasetReuses_200_response:
+      example:
+        reuses:
+        - thumbnail: thumbnail
+          created_at: created_at
+          description: "{}"
+          id: id
+          title: title
+          user:
+            last_name: last_name
+            first_name: first_name
+            username: username
+          url: url
+        - thumbnail: thumbnail
+          created_at: created_at
+          description: "{}"
+          id: id
+          title: title
+          user:
+            last_name: last_name
+            first_name: first_name
+            username: username
+          url: url
+        links:
+        - rel: rel
+          href: href
+        - rel: rel
+          href: href
+      properties:
+        links:
+          items:
+            $ref: '#/components/schemas/link'
+          type: array
+        reuses:
+          items:
+            $ref: '#/components/schemas/reuse'
+          type: array
+      type: object
+    getDatasetReuse_200_response:
+      example:
+        reuse:
+          thumbnail: thumbnail
+          created_at: created_at
+          description: "{}"
+          id: id
+          title: title
+          user:
+            last_name: last_name
+            first_name: first_name
+            username: username
+          url: url
+        links:
+        - rel: rel
+          href: href
+        - rel: rel
+          href: href
+      properties:
+        links:
+          items:
+            $ref: '#/components/schemas/link'
+          type: array
+        reuse:
+          $ref: '#/components/schemas/reuse'
+      type: object
+    getDatasetSnapshots_200_response:
+      example:
+        snapshots:
+        - snapshot_id: snapshot_id
+          created_at: created_at
+          description: description
+          href: href
+        - snapshot_id: snapshot_id
+          created_at: created_at
+          description: description
+          href: href
+        links:
+        - rel: rel
+          href: href
+        - rel: rel
+          href: href
+      properties:
+        links:
+          items:
+            $ref: '#/components/schemas/link'
+          type: array
+        snapshots:
+          items:
+            $ref: '#/components/schemas/snapshot'
+          type: array
+      type: object
+    getMetadataTemplatesType_200_response_metadata_templates_inner:
+      example:
+        metadata_template:
+          schema:
+          - "{}"
+          - "{}"
+          name: name
+          type: type
+        links:
+        - rel: rel
+          href: href
+        - rel: rel
+          href: href
+      properties:
+        links:
+          items:
+            $ref: '#/components/schemas/link'
+          type: array
+        metadata_template:
+          $ref: '#/components/schemas/metadata_template'
+      type: object
+    getMetadataTemplatesType_200_response:
+      example:
+        metadata_templates:
+        - metadata_template:
+            schema:
+            - "{}"
+            - "{}"
+            name: name
+            type: type
+          links:
+          - rel: rel
+            href: href
+          - rel: rel
+            href: href
+        - metadata_template:
+            schema:
+            - "{}"
+            - "{}"
+            name: name
+            type: type
+          links:
+          - rel: rel
+            href: href
+          - rel: rel
+            href: href
+        links:
+        - rel: rel
+          href: href
+        - rel: rel
+          href: href
+      properties:
+        links:
+          items:
+            $ref: '#/components/schemas/link'
+          type: array
+        metadata_templates:
+          items:
+            $ref: '#/components/schemas/getMetadataTemplatesType_200_response_metadata_templates_inner'
+          type: array
+      type: object
+    dataset_fields_inner:
+      example:
+        name: name
+        annotations: "{}"
+        description: description
+        label: label
+        type: type
+      properties:
+        annotations:
+          properties: {}
+          type: object
+        description:
+          type: string
+        label:
+          type: string
+        name:
+          type: string
+        type:
+          type: string
+      type: object
+    page_title:
+      description: |
+        A localized string (that is an object where the keys are language codes and the values translations of a same
+        string).
+      example:
+        en: en
+        fr: fr
+      properties:
+        en:
+          type: string
+        fr:
+          type: string
+      type: object
+    reuse_user:
+      example:
+        last_name: last_name
+        first_name: first_name
+        username: username
+      properties:
+        first_name:
+          type: string
+        last_name:
+          type: string
+        username:
+          type: string
+      type: object
+  securitySchemes:
+    api_key:
+      in: query
+      name: apikey
+      type: apiKey
+    basic:
+      scheme: basic
+      type: http
+x-original-swagger-version: "2.0"
+

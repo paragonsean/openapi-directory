@@ -1,0 +1,115 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIAppliedInventoriesParametersServicePlan.h \
+    $${PWD}/OAICollectionLinks.h \
+    $${PWD}/OAICollectionMetadata.h \
+    $${PWD}/OAIErrorNotFound.h \
+    $${PWD}/OAIErrorNotFound_errors_inner.h \
+    $${PWD}/OAIGraphQLRequest.h \
+    $${PWD}/OAIGraphQLResponse.h \
+    $${PWD}/OAIOrderParametersServiceOffering.h \
+    $${PWD}/OAIOrderParametersServicePlan.h \
+    $${PWD}/OAIOrderServiceOffering_200_response.h \
+    $${PWD}/OAIServiceCredential.h \
+    $${PWD}/OAIServiceCredentialType.h \
+    $${PWD}/OAIServiceCredentialTypesCollection.h \
+    $${PWD}/OAIServiceCredentialsCollection.h \
+    $${PWD}/OAIServiceInstance.h \
+    $${PWD}/OAIServiceInstanceNode.h \
+    $${PWD}/OAIServiceInstanceNodesCollection.h \
+    $${PWD}/OAIServiceInstancesCollection.h \
+    $${PWD}/OAIServiceInventoriesCollection.h \
+    $${PWD}/OAIServiceInventory.h \
+    $${PWD}/OAIServiceOffering.h \
+    $${PWD}/OAIServiceOfferingIcon.h \
+    $${PWD}/OAIServiceOfferingIconsCollection.h \
+    $${PWD}/OAIServiceOfferingNode.h \
+    $${PWD}/OAIServiceOfferingNodesCollection.h \
+    $${PWD}/OAIServiceOfferingsCollection.h \
+    $${PWD}/OAIServicePlan.h \
+    $${PWD}/OAIServicePlansCollection.h \
+    $${PWD}/OAISource.h \
+    $${PWD}/OAISourcesCollection.h \
+    $${PWD}/OAITag.h \
+    $${PWD}/OAITagsCollection.h \
+    $${PWD}/OAITask.h \
+    $${PWD}/OAITasksCollection.h \
+    $${PWD}/OAITenant.h \
+# APIs
+    $${PWD}/OAIDefaultApi.h \
+    $${PWD}/OAIServiceCredentialApi.h \
+    $${PWD}/OAIServiceCredentialTypeApi.h \
+    $${PWD}/OAIServiceInstanceApi.h \
+    $${PWD}/OAIServiceInventoryApi.h \
+    $${PWD}/OAIServiceOfferingApi.h \
+    $${PWD}/OAIServiceOfferingNodeApi.h \
+    $${PWD}/OAIServicePlanApi.h \
+    $${PWD}/OAISourceApi.h \
+    $${PWD}/OAITagsApi.h \
+    $${PWD}/OAITaskApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIAppliedInventoriesParametersServicePlan.cpp \
+    $${PWD}/OAICollectionLinks.cpp \
+    $${PWD}/OAICollectionMetadata.cpp \
+    $${PWD}/OAIErrorNotFound.cpp \
+    $${PWD}/OAIErrorNotFound_errors_inner.cpp \
+    $${PWD}/OAIGraphQLRequest.cpp \
+    $${PWD}/OAIGraphQLResponse.cpp \
+    $${PWD}/OAIOrderParametersServiceOffering.cpp \
+    $${PWD}/OAIOrderParametersServicePlan.cpp \
+    $${PWD}/OAIOrderServiceOffering_200_response.cpp \
+    $${PWD}/OAIServiceCredential.cpp \
+    $${PWD}/OAIServiceCredentialType.cpp \
+    $${PWD}/OAIServiceCredentialTypesCollection.cpp \
+    $${PWD}/OAIServiceCredentialsCollection.cpp \
+    $${PWD}/OAIServiceInstance.cpp \
+    $${PWD}/OAIServiceInstanceNode.cpp \
+    $${PWD}/OAIServiceInstanceNodesCollection.cpp \
+    $${PWD}/OAIServiceInstancesCollection.cpp \
+    $${PWD}/OAIServiceInventoriesCollection.cpp \
+    $${PWD}/OAIServiceInventory.cpp \
+    $${PWD}/OAIServiceOffering.cpp \
+    $${PWD}/OAIServiceOfferingIcon.cpp \
+    $${PWD}/OAIServiceOfferingIconsCollection.cpp \
+    $${PWD}/OAIServiceOfferingNode.cpp \
+    $${PWD}/OAIServiceOfferingNodesCollection.cpp \
+    $${PWD}/OAIServiceOfferingsCollection.cpp \
+    $${PWD}/OAIServicePlan.cpp \
+    $${PWD}/OAIServicePlansCollection.cpp \
+    $${PWD}/OAISource.cpp \
+    $${PWD}/OAISourcesCollection.cpp \
+    $${PWD}/OAITag.cpp \
+    $${PWD}/OAITagsCollection.cpp \
+    $${PWD}/OAITask.cpp \
+    $${PWD}/OAITasksCollection.cpp \
+    $${PWD}/OAITenant.cpp \
+# APIs
+    $${PWD}/OAIDefaultApi.cpp \
+    $${PWD}/OAIServiceCredentialApi.cpp \
+    $${PWD}/OAIServiceCredentialTypeApi.cpp \
+    $${PWD}/OAIServiceInstanceApi.cpp \
+    $${PWD}/OAIServiceInventoryApi.cpp \
+    $${PWD}/OAIServiceOfferingApi.cpp \
+    $${PWD}/OAIServiceOfferingNodeApi.cpp \
+    $${PWD}/OAIServicePlanApi.cpp \
+    $${PWD}/OAISourceApi.cpp \
+    $${PWD}/OAITagsApi.cpp \
+    $${PWD}/OAITaskApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

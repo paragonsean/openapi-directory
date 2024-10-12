@@ -1,0 +1,924 @@
+openapi: 3.0.1
+info:
+  contact:
+    email: softwareengineering@parliament.uk
+    name: UK Parliament
+    url: https://www.parliament.uk/
+  description: An API that allows querying of Commons Votes data.
+  title: Commons Votes API
+  version: v1
+  x-apisguru-categories:
+  - open_data
+  x-origin:
+  - format: swagger
+    url: https://commonsvotes-api.parliament.uk/swagger/docs/v1
+    version: "2.0"
+  x-providerName: parliament.uk
+  x-serviceName: commonsvotes
+servers:
+- url: http://commonsvotes-api.parliament.uk/
+- url: https://commonsvotes-api.parliament.uk/
+paths:
+  /data/division/{divisionId}.{format}:
+    get:
+      description: Single Division which has the specified Id
+      operationId: divisions_get_division_by_id
+      parameters:
+      - description: Id number of a Division whose records are to be returned
+        in: path
+        name: divisionId
+        required: true
+        schema:
+          format: int32
+          type: integer
+      - description: xml or json
+        in: path
+        name: format
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PublishedDivision'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/PublishedDivision'
+          description: OK
+        "400":
+          content: {}
+          description: BadRequest
+        "404":
+          content: {}
+          description: NotFound
+      summary: Return a Division
+      tags:
+      - Divisions
+      x-openapi-router-controller: openapi_server.controllers.divisions_controller
+  /data/divisions.{format}/groupedbyparty:
+    get:
+      description: Division results which meet the specified criteria grouped by parties
+      operationId: divisions_get_divisions_groups_by_party
+      parameters:
+      - description: xml or json
+        in: path
+        name: format
+        required: true
+        schema:
+          type: string
+      - description: Divisions containing search term within title or number
+        in: query
+        name: queryParameters.searchTerm
+        schema:
+          type: string
+      - description: Divisions returning Member with Member ID voting records
+        in: query
+        name: queryParameters.memberId
+        schema:
+          format: int32
+          type: integer
+      - description: Divisions where member was a teller as well as if they actually
+          voted
+        in: query
+        name: queryParameters.includeWhenMemberWasTeller
+        schema:
+          type: boolean
+      - description: Divisions where division date in one or after date provided.
+          Date format is yyyy-MM-dd
+        in: query
+        name: queryParameters.startDate
+        schema:
+          format: date-time
+          type: string
+      - description: Divisions where division date in one or before date provided.
+          Date format is yyyy-MM-dd
+        in: query
+        name: queryParameters.endDate
+        schema:
+          format: date-time
+          type: string
+      - description: "Division Number - as specified by the House, unique within a\
+          \ session. This is different to the division id which uniquely identifies\
+          \ a division in this system and is passed to the GET division endpoint"
+        in: query
+        name: queryParameters.divisionNumber
+        schema:
+          format: int32
+          type: integer
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/DivisionGroupedByParty'
+                type: array
+            text/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/DivisionGroupedByParty'
+                type: array
+          description: OK
+        "400":
+          content: {}
+          description: BadRequest
+      summary: Return Divisions results grouped by party
+      tags:
+      - Divisions
+      x-openapi-router-controller: openapi_server.controllers.divisions_controller
+  /data/divisions.{format}/membervoting:
+    get:
+      description: List of voting records for a member which meet the specified criteria.
+      operationId: divisions_get_voting_records_for_member
+      parameters:
+      - description: xml or json
+        in: path
+        name: format
+        required: true
+        schema:
+          type: string
+      - description: Id number of a Member whose voting records are to be returned
+        in: query
+        name: queryParameters.memberId
+        required: true
+        schema:
+          format: int32
+          maximum: 2147483647
+          minimum: 1
+          type: integer
+      - description: The number of records to skip. Default is 0
+        in: query
+        name: queryParameters.skip
+        schema:
+          format: int32
+          type: integer
+      - description: The number of records to return per page. Default is 25
+        in: query
+        name: queryParameters.take
+        schema:
+          format: int32
+          type: integer
+      - description: Divisions containing search term within title or number
+        in: query
+        name: queryParameters.searchTerm
+        schema:
+          type: string
+      - description: Divisions where member was a teller as well as if they actually
+          voted
+        in: query
+        name: queryParameters.includeWhenMemberWasTeller
+        schema:
+          type: boolean
+      - description: Divisions where division date in one or after date provided.
+          Date format is yyyy-MM-dd
+        in: query
+        name: queryParameters.startDate
+        schema:
+          format: date-time
+          type: string
+      - description: Divisions where division date in one or before date provided.
+          Date format is yyyy-MM-dd
+        in: query
+        name: queryParameters.endDate
+        schema:
+          format: date-time
+          type: string
+      - description: "Division Number - as specified by the House, unique within a\
+          \ session. This is different to the division id which uniquely identifies\
+          \ a division in this system and is passed to the GET division endpoint"
+        in: query
+        name: queryParameters.divisionNumber
+        schema:
+          format: int32
+          type: integer
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/MemberVotingRecord'
+                type: array
+            text/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/MemberVotingRecord'
+                type: array
+          description: OK
+        "400":
+          content: {}
+          description: BadRequest
+      summary: Return voting records for a Member
+      tags:
+      - Divisions
+      x-openapi-router-controller: openapi_server.controllers.divisions_controller
+  /data/divisions.{format}/search:
+    get:
+      description: List of Divisions which meet the specified criteria
+      operationId: divisions_search_divisions
+      parameters:
+      - description: json or xml
+        in: path
+        name: format
+        required: true
+        schema:
+          type: string
+      - description: The number of records to skip. Default is 0
+        in: query
+        name: queryParameters.skip
+        schema:
+          format: int32
+          type: integer
+      - description: The number of records to return per page. Default is 25
+        in: query
+        name: queryParameters.take
+        schema:
+          format: int32
+          type: integer
+      - description: Divisions containing search term within title or number
+        in: query
+        name: queryParameters.searchTerm
+        schema:
+          type: string
+      - description: Divisions returning Member with Member ID voting records
+        in: query
+        name: queryParameters.memberId
+        schema:
+          format: int32
+          type: integer
+      - description: Divisions where member was a teller as well as if they actually
+          voted
+        in: query
+        name: queryParameters.includeWhenMemberWasTeller
+        schema:
+          type: boolean
+      - description: Divisions where division date in one or after date provided.
+          Date format is yyyy-MM-dd
+        in: query
+        name: queryParameters.startDate
+        schema:
+          format: date-time
+          type: string
+      - description: Divisions where division date in one or before date provided.
+          Date format is yyyy-MM-dd
+        in: query
+        name: queryParameters.endDate
+        schema:
+          format: date-time
+          type: string
+      - description: "Division Number - as specified by the House, unique within a\
+          \ session. This is different to the division id which uniquely identifies\
+          \ a division in this system and is passed to the GET division endpoint"
+        in: query
+        name: queryParameters.divisionNumber
+        schema:
+          format: int32
+          type: integer
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/PublishedDivision'
+                type: array
+            text/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/PublishedDivision'
+                type: array
+          description: OK
+        "400":
+          content: {}
+          description: BadRequest
+      summary: Return a list of Divisions
+      tags:
+      - Divisions
+      x-openapi-router-controller: openapi_server.controllers.divisions_controller
+  /data/divisions.{format}/searchTotalResults:
+    get:
+      description: Total count of Divisions meeting the specified criteria
+      operationId: divisions_search_total_results
+      parameters:
+      - description: json or xml
+        in: path
+        name: format
+        required: true
+        schema:
+          type: string
+      - description: Divisions containing search term within title or number
+        in: query
+        name: queryParameters.searchTerm
+        schema:
+          type: string
+      - description: Divisions returning Member with Member ID voting records
+        in: query
+        name: queryParameters.memberId
+        schema:
+          format: int32
+          type: integer
+      - description: Divisions where member was a teller as well as if they actually
+          voted
+        in: query
+        name: queryParameters.includeWhenMemberWasTeller
+        schema:
+          type: boolean
+      - description: Divisions where division date in one or after date provided.
+          Date format is yyyy-MM-dd
+        in: query
+        name: queryParameters.startDate
+        schema:
+          format: date-time
+          type: string
+      - description: Divisions where division date in one or before date provided.
+          Date format is yyyy-MM-dd
+        in: query
+        name: queryParameters.endDate
+        schema:
+          format: date-time
+          type: string
+      - description: "Division Number - as specified by the House, unique within a\
+          \ session. This is different to the division id which uniquely identifies\
+          \ a division in this system and is passed to the GET division endpoint"
+        in: query
+        name: queryParameters.divisionNumber
+        schema:
+          format: int32
+          type: integer
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                format: int32
+                type: integer
+            text/json:
+              schema:
+                format: int32
+                type: integer
+          description: OK
+        "400":
+          content: {}
+          description: BadRequest
+      summary: Return total results count
+      tags:
+      - Divisions
+      x-openapi-router-controller: openapi_server.controllers.divisions_controller
+components:
+  schemas:
+    DivisionGroupedByParty:
+      example:
+        Number: 5
+        Ayes:
+        - VoteCount: 6
+          PartyName: PartyName
+        - VoteCount: 6
+          PartyName: PartyName
+        Title: Title
+        NoCount: 5
+        Noes:
+        - VoteCount: 6
+          PartyName: PartyName
+        - VoteCount: 6
+          PartyName: PartyName
+        DivisionId: 1
+        AyeCount: 0
+        Date: 2000-01-23T04:56:07.000+00:00
+      properties:
+        AyeCount:
+          format: int32
+          title: AyeCount
+          type: integer
+        Ayes:
+          description: "Counts of all members who voted 'Aye', grouped by party"
+          items:
+            $ref: '#/components/schemas/PartyVoteResult'
+          title: Ayes
+          type: array
+        Date:
+          format: date-time
+          title: Date
+          type: string
+        DivisionId:
+          format: int32
+          title: DivisionId
+          type: integer
+        NoCount:
+          format: int32
+          title: NoCount
+          type: integer
+        Noes:
+          description: "Counts of all members who voted 'Noe', grouped by party"
+          items:
+            $ref: '#/components/schemas/PartyVoteResult'
+          title: Noes
+          type: array
+        Number:
+          format: int32
+          title: Number
+          type: integer
+        Title:
+          title: Title
+          type: string
+      title: DivisionGroupedByParty
+      type: object
+    MemberSearchQueryParameters:
+      properties:
+        DivisionNumber:
+          description: "Division Number - as specified by the House, unique within\
+            \ a session. This is different to the division id which uniquely identifies\
+            \ a division in this system and is passed to the GET division endpoint"
+          format: int32
+          type: integer
+        EndDate:
+          description: Divisions where division date in one or before date provided.
+            Date format is yyyy-MM-dd
+          format: date-time
+          type: string
+        IncludeWhenMemberWasTeller:
+          description: Divisions where member was a teller as well as if they actually
+            voted
+          type: boolean
+        MemberId:
+          description: Id number of a Member whose voting records are to be returned
+          format: int32
+          maximum: 2147483647
+          minimum: 1
+          type: integer
+        SearchTerm:
+          description: Divisions containing search term within title or number
+          type: string
+        Skip:
+          description: The number of records to skip. Default is 0
+          format: int32
+          type: integer
+        StartDate:
+          description: Divisions where division date in one or after date provided.
+            Date format is yyyy-MM-dd
+          format: date-time
+          type: string
+        Take:
+          description: The number of records to return per page. Default is 25
+          format: int32
+          type: integer
+      required:
+      - MemberId
+      type: object
+    MemberVotingRecord:
+      example:
+        MemberId: 0
+        PublishedDivision:
+          NoVoteRecorded:
+          - MemberId: 6
+            PartyColour: PartyColour
+            Party: Party
+            ProxyName: ProxyName
+            SubParty: SubParty
+            ListAs: ListAs
+            MemberFrom: MemberFrom
+            Name: Name
+            PartyAbbreviation: PartyAbbreviation
+          - MemberId: 6
+            PartyColour: PartyColour
+            Party: Party
+            ProxyName: ProxyName
+            SubParty: SubParty
+            ListAs: ListAs
+            MemberFrom: MemberFrom
+            Name: Name
+            PartyAbbreviation: PartyAbbreviation
+          Title: Title
+          Noes:
+          - MemberId: 6
+            PartyColour: PartyColour
+            Party: Party
+            ProxyName: ProxyName
+            SubParty: SubParty
+            ListAs: ListAs
+            MemberFrom: MemberFrom
+            Name: Name
+            PartyAbbreviation: PartyAbbreviation
+          - MemberId: 6
+            PartyColour: PartyColour
+            Party: Party
+            ProxyName: ProxyName
+            SubParty: SubParty
+            ListAs: ListAs
+            MemberFrom: MemberFrom
+            Name: Name
+            PartyAbbreviation: PartyAbbreviation
+          EVELType: EVELType
+          DivisionId: 1
+          DoubleMajorityAyeCount: 5
+          FriendlyTitle: FriendlyTitle
+          Date: 2000-01-23T04:56:07.000+00:00
+          DoubleMajorityNoCount: 5
+          IsDeferred: true
+          PublicationUpdated: 2000-01-23T04:56:07.000+00:00
+          NoTellers:
+          - MemberId: 6
+            PartyColour: PartyColour
+            Party: Party
+            ProxyName: ProxyName
+            SubParty: SubParty
+            ListAs: ListAs
+            MemberFrom: MemberFrom
+            Name: Name
+            PartyAbbreviation: PartyAbbreviation
+          - MemberId: 6
+            PartyColour: PartyColour
+            Party: Party
+            ProxyName: ProxyName
+            SubParty: SubParty
+            ListAs: ListAs
+            MemberFrom: MemberFrom
+            Name: Name
+            PartyAbbreviation: PartyAbbreviation
+          Number: 7
+          EVELCountry: EVELCountry
+          AyeTellers:
+          - MemberId: 6
+            PartyColour: PartyColour
+            Party: Party
+            ProxyName: ProxyName
+            SubParty: SubParty
+            ListAs: ListAs
+            MemberFrom: MemberFrom
+            Name: Name
+            PartyAbbreviation: PartyAbbreviation
+          - MemberId: 6
+            PartyColour: PartyColour
+            Party: Party
+            ProxyName: ProxyName
+            SubParty: SubParty
+            ListAs: ListAs
+            MemberFrom: MemberFrom
+            Name: Name
+            PartyAbbreviation: PartyAbbreviation
+          RemoteVotingStart: 2000-01-23T04:56:07.000+00:00
+          Ayes:
+          - MemberId: 6
+            PartyColour: PartyColour
+            Party: Party
+            ProxyName: ProxyName
+            SubParty: SubParty
+            ListAs: ListAs
+            MemberFrom: MemberFrom
+            Name: Name
+            PartyAbbreviation: PartyAbbreviation
+          - MemberId: 6
+            PartyColour: PartyColour
+            Party: Party
+            ProxyName: ProxyName
+            SubParty: SubParty
+            ListAs: ListAs
+            MemberFrom: MemberFrom
+            Name: Name
+            PartyAbbreviation: PartyAbbreviation
+          NoCount: 2
+          FriendlyDescription: FriendlyDescription
+          AyeCount: 0
+          RemoteVotingEnd: 2000-01-23T04:56:07.000+00:00
+        MemberVotedAye: true
+        MemberWasTeller: true
+      properties:
+        MemberId:
+          format: int32
+          title: MemberId
+          type: integer
+        MemberVotedAye:
+          title: MemberVotedAye
+          type: boolean
+        MemberWasTeller:
+          title: MemberWasTeller
+          type: boolean
+        PublishedDivision:
+          $ref: '#/components/schemas/PublishedDivision'
+      title: MemberVotingRecord
+      type: object
+    PartyVoteResult:
+      example:
+        VoteCount: 6
+        PartyName: PartyName
+      properties:
+        PartyName:
+          title: PartyName
+          type: string
+        VoteCount:
+          format: int32
+          title: VoteCount
+          type: integer
+      title: PartyVoteResult
+      type: object
+    PublishedDivision:
+      example:
+        NoVoteRecorded:
+        - MemberId: 6
+          PartyColour: PartyColour
+          Party: Party
+          ProxyName: ProxyName
+          SubParty: SubParty
+          ListAs: ListAs
+          MemberFrom: MemberFrom
+          Name: Name
+          PartyAbbreviation: PartyAbbreviation
+        - MemberId: 6
+          PartyColour: PartyColour
+          Party: Party
+          ProxyName: ProxyName
+          SubParty: SubParty
+          ListAs: ListAs
+          MemberFrom: MemberFrom
+          Name: Name
+          PartyAbbreviation: PartyAbbreviation
+        Title: Title
+        Noes:
+        - MemberId: 6
+          PartyColour: PartyColour
+          Party: Party
+          ProxyName: ProxyName
+          SubParty: SubParty
+          ListAs: ListAs
+          MemberFrom: MemberFrom
+          Name: Name
+          PartyAbbreviation: PartyAbbreviation
+        - MemberId: 6
+          PartyColour: PartyColour
+          Party: Party
+          ProxyName: ProxyName
+          SubParty: SubParty
+          ListAs: ListAs
+          MemberFrom: MemberFrom
+          Name: Name
+          PartyAbbreviation: PartyAbbreviation
+        EVELType: EVELType
+        DivisionId: 1
+        DoubleMajorityAyeCount: 5
+        FriendlyTitle: FriendlyTitle
+        Date: 2000-01-23T04:56:07.000+00:00
+        DoubleMajorityNoCount: 5
+        IsDeferred: true
+        PublicationUpdated: 2000-01-23T04:56:07.000+00:00
+        NoTellers:
+        - MemberId: 6
+          PartyColour: PartyColour
+          Party: Party
+          ProxyName: ProxyName
+          SubParty: SubParty
+          ListAs: ListAs
+          MemberFrom: MemberFrom
+          Name: Name
+          PartyAbbreviation: PartyAbbreviation
+        - MemberId: 6
+          PartyColour: PartyColour
+          Party: Party
+          ProxyName: ProxyName
+          SubParty: SubParty
+          ListAs: ListAs
+          MemberFrom: MemberFrom
+          Name: Name
+          PartyAbbreviation: PartyAbbreviation
+        Number: 7
+        EVELCountry: EVELCountry
+        AyeTellers:
+        - MemberId: 6
+          PartyColour: PartyColour
+          Party: Party
+          ProxyName: ProxyName
+          SubParty: SubParty
+          ListAs: ListAs
+          MemberFrom: MemberFrom
+          Name: Name
+          PartyAbbreviation: PartyAbbreviation
+        - MemberId: 6
+          PartyColour: PartyColour
+          Party: Party
+          ProxyName: ProxyName
+          SubParty: SubParty
+          ListAs: ListAs
+          MemberFrom: MemberFrom
+          Name: Name
+          PartyAbbreviation: PartyAbbreviation
+        RemoteVotingStart: 2000-01-23T04:56:07.000+00:00
+        Ayes:
+        - MemberId: 6
+          PartyColour: PartyColour
+          Party: Party
+          ProxyName: ProxyName
+          SubParty: SubParty
+          ListAs: ListAs
+          MemberFrom: MemberFrom
+          Name: Name
+          PartyAbbreviation: PartyAbbreviation
+        - MemberId: 6
+          PartyColour: PartyColour
+          Party: Party
+          ProxyName: ProxyName
+          SubParty: SubParty
+          ListAs: ListAs
+          MemberFrom: MemberFrom
+          Name: Name
+          PartyAbbreviation: PartyAbbreviation
+        NoCount: 2
+        FriendlyDescription: FriendlyDescription
+        AyeCount: 0
+        RemoteVotingEnd: 2000-01-23T04:56:07.000+00:00
+      properties:
+        AyeCount:
+          format: int32
+          title: AyeCount
+          type: integer
+        AyeTellers:
+          items:
+            $ref: '#/components/schemas/RecordedMember'
+          title: AyeTellers
+          type: array
+        Ayes:
+          items:
+            $ref: '#/components/schemas/RecordedMember'
+          title: Ayes
+          type: array
+        Date:
+          format: date-time
+          title: Date
+          type: string
+        DivisionId:
+          format: int32
+          title: DivisionId
+          type: integer
+        DoubleMajorityAyeCount:
+          format: int32
+          title: DoubleMajorityAyeCount
+          type: integer
+        DoubleMajorityNoCount:
+          format: int32
+          title: DoubleMajorityNoCount
+          type: integer
+        EVELCountry:
+          title: EVELCountry
+          type: string
+        EVELType:
+          title: EVELType
+          type: string
+        FriendlyDescription:
+          title: FriendlyDescription
+          type: string
+        FriendlyTitle:
+          title: FriendlyTitle
+          type: string
+        IsDeferred:
+          title: IsDeferred
+          type: boolean
+        NoCount:
+          format: int32
+          title: NoCount
+          type: integer
+        NoTellers:
+          items:
+            $ref: '#/components/schemas/RecordedMember'
+          title: NoTellers
+          type: array
+        NoVoteRecorded:
+          items:
+            $ref: '#/components/schemas/RecordedMember'
+          title: NoVoteRecorded
+          type: array
+        Noes:
+          items:
+            $ref: '#/components/schemas/RecordedMember'
+          title: Noes
+          type: array
+        Number:
+          format: int32
+          title: Number
+          type: integer
+        PublicationUpdated:
+          format: date-time
+          title: PublicationUpdated
+          type: string
+        RemoteVotingEnd:
+          format: date-time
+          title: RemoteVotingEnd
+          type: string
+        RemoteVotingStart:
+          format: date-time
+          title: RemoteVotingStart
+          type: string
+        Title:
+          title: Title
+          type: string
+      title: PublishedDivision
+      type: object
+    QueryParameters:
+      properties:
+        DivisionNumber:
+          description: "Division Number - as specified by the House, unique within\
+            \ a session. This is different to the division id which uniquely identifies\
+            \ a division in this system and is passed to the GET division endpoint"
+          format: int32
+          type: integer
+        EndDate:
+          description: Divisions where division date in one or before date provided.
+            Date format is yyyy-MM-dd
+          format: date-time
+          type: string
+        IncludeWhenMemberWasTeller:
+          description: Divisions where member was a teller as well as if they actually
+            voted
+          type: boolean
+        MemberId:
+          description: Divisions returning Member with Member ID voting records
+          format: int32
+          type: integer
+        SearchTerm:
+          description: Divisions containing search term within title or number
+          type: string
+        StartDate:
+          description: Divisions where division date in one or after date provided.
+            Date format is yyyy-MM-dd
+          format: date-time
+          type: string
+      type: object
+    RecordedMember:
+      example:
+        MemberId: 6
+        PartyColour: PartyColour
+        Party: Party
+        ProxyName: ProxyName
+        SubParty: SubParty
+        ListAs: ListAs
+        MemberFrom: MemberFrom
+        Name: Name
+        PartyAbbreviation: PartyAbbreviation
+      properties:
+        ListAs:
+          title: ListAs
+          type: string
+        MemberFrom:
+          title: MemberFrom
+          type: string
+        MemberId:
+          format: int32
+          title: MemberId
+          type: integer
+        Name:
+          title: Name
+          type: string
+        Party:
+          title: Party
+          type: string
+        PartyAbbreviation:
+          title: PartyAbbreviation
+          type: string
+        PartyColour:
+          title: PartyColour
+          type: string
+        ProxyName:
+          title: ProxyName
+          type: string
+        SubParty:
+          title: SubParty
+          type: string
+      title: RecordedMember
+      type: object
+    SearchQueryParameters:
+      properties:
+        DivisionNumber:
+          description: "Division Number - as specified by the House, unique within\
+            \ a session. This is different to the division id which uniquely identifies\
+            \ a division in this system and is passed to the GET division endpoint"
+          format: int32
+          type: integer
+        EndDate:
+          description: Divisions where division date in one or before date provided.
+            Date format is yyyy-MM-dd
+          format: date-time
+          type: string
+        IncludeWhenMemberWasTeller:
+          description: Divisions where member was a teller as well as if they actually
+            voted
+          type: boolean
+        MemberId:
+          description: Divisions returning Member with Member ID voting records
+          format: int32
+          type: integer
+        SearchTerm:
+          description: Divisions containing search term within title or number
+          type: string
+        Skip:
+          description: The number of records to skip. Default is 0
+          format: int32
+          type: integer
+        StartDate:
+          description: Divisions where division date in one or after date provided.
+            Date format is yyyy-MM-dd
+          format: date-time
+          type: string
+        Take:
+          description: The number of records to return per page. Default is 25
+          format: int32
+          type: integer
+      type: object
+x-original-swagger-version: "2.0"

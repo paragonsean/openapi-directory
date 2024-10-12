@@ -1,0 +1,4063 @@
+openapi: 3.0.0
+info:
+  contact:
+    x-twitter: GameSparksltd
+  description: The API to manage the GameSparks game details
+  license:
+    name: ' '
+  termsOfService: http://www.gamesparks.com/gamesparks-terms-of-use
+  title: GameSparks Game Details API
+  version: v2
+  x-apisguru-categories:
+  - developer_tools
+  x-logo:
+    url: https://twitter.com/GameSparksltd/profile_image?size=original
+  x-origin:
+  - format: openapi
+    url: https://config2.gamesparks.net/restv2/admin/api/schema
+    version: "3.0"
+  x-providerName: gamesparks.net
+  x-serviceName: game-details
+servers:
+- url: //config2.gamesparks.net
+tags:
+- description: Scripts Restv 2 Controller
+  name: scripts
+- description: Experiment Rest Controller
+  name: experiments
+- description: Billing Details Rest V 2 Controller
+  name: billingDetails
+- description: Manage Restv 2 Controller
+  name: manage
+- description: Analytics Restv 2 Controller
+  name: analytics
+- description: Push Notification Test Controller
+  name: pushNotificationTest
+- description: Game Credentials Rest V 2 Controller
+  name: credentials
+- name: snapshots
+- description: Games Admin Restv 2 Controller
+  name: gamesAdmin
+- description: Region Restv 2 Controller
+  name: region
+- description: Test Harness Restv 2 Controller
+  name: testHarness
+- description: Segment Query Filter Restv 2 Controller
+  name: segmentQueryFilters
+- description: Log Summary Restv 2 Controller
+  name: notifications
+paths:
+  /restv2/game/regions:
+    get:
+      operationId: get_region_options_using_get
+      responses:
+        "200":
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/GameRegionOptionsDTO'
+          description: OK
+        "400":
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/MessageModel'
+          description: json error
+        "403":
+          description: not allowed
+        "404":
+          description: not found
+      summary: getRegionOptions
+      tags:
+      - region
+      x-openapi-router-controller: openapi_server.controllers.region_controller
+  /restv2/game/{apiKey}/admin/analytics:
+    get:
+      operationId: get_analytics_data_using_get
+      parameters:
+      - description: apiKey
+        explode: false
+        in: path
+        name: apiKey
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: stage
+        explode: true
+        in: query
+        name: stage
+        required: true
+        schema:
+          enum:
+          - LIVE
+          - PREVIEW
+          type: string
+        style: form
+      - description: dataType
+        explode: true
+        in: query
+        name: dataType
+        required: true
+        schema:
+          enum:
+          - activeDevices
+          - activeLocations
+          - activeUsers
+          - averageBandwidthPerUser
+          - averageDauOverMau
+          - averageJsExecutionTime
+          - averageRequestsPerUser
+          - averageResponseTime
+          - averageResponseTimePerType
+          - scriptLogLevelsCount
+          - sessionAnalytic
+          - storagePerUser
+          - customAnalyticTotal
+          - customAnalyticUser
+          - timedAnalyticTotal
+          - sessionAnalyticTotal
+          - connectedUsers
+          type: string
+        style: form
+      - description: precision
+        explode: true
+        in: query
+        name: precision
+        required: true
+        schema:
+          enum:
+          - HOURLY
+          - DAILY
+          - MONTHLY
+          type: string
+        style: form
+      - description: yyyy-MM-dd
+        explode: true
+        in: query
+        name: startDate
+        required: true
+        schema:
+          format: date
+          type: string
+        style: form
+      - description: yyyy-MM-dd
+        explode: true
+        in: query
+        name: endDate
+        required: true
+        schema:
+          format: date
+          type: string
+        style: form
+      - description: "the keys to select. For example \"ReturningUsers\", \"NewUsers\"\
+          , etc"
+        explode: true
+        in: query
+        name: keys
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                items:
+                  $ref: '#/components/schemas/AnalyticsDataSwaggerModel'
+                type: array
+          description: OK
+        "400":
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/MessageModel'
+          description: json error
+        "403":
+          description: not allowed
+        "404":
+          description: not found
+      summary: Returns the results of executed query defined by the parameters passed
+        in
+      tags:
+      - analytics
+      x-openapi-router-controller: openapi_server.controllers.analytics_controller
+  /restv2/game/{apiKey}/admin/analytics/count:
+    get:
+      operationId: get_data_count_using_get
+      parameters:
+      - description: apiKey
+        explode: false
+        in: path
+        name: apiKey
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: stage
+        explode: true
+        in: query
+        name: stage
+        required: true
+        schema:
+          enum:
+          - LIVE
+          - PREVIEW
+          type: string
+        style: form
+      - description: queryName
+        explode: true
+        in: query
+        name: queryName
+        required: true
+        schema:
+          enum:
+          - activeUsersNow
+          - dailyActiveUsers
+          - averageDailyActiveUsers
+          - lastMonthlyActiveUsers
+          - monthlyActiveUsers
+          - averageSessionDuration
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/AnalyticsDataCountSwaggerModel'
+          description: OK
+        "400":
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/MessageModel'
+          description: json error
+        "403":
+          description: not allowed
+        "404":
+          description: not found
+      summary: Returns the count of executed query
+      tags:
+      - analytics
+      x-openapi-router-controller: openapi_server.controllers.analytics_controller
+  /restv2/game/{apiKey}/admin/analytics/rollingRetention:
+    get:
+      operationId: get_retention_using_get
+      parameters:
+      - description: apiKey
+        explode: false
+        in: path
+        name: apiKey
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: stage
+        explode: true
+        in: query
+        name: stage
+        required: true
+        schema:
+          enum:
+          - LIVE
+          - PREVIEW
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/AnalyticsDataCountSwaggerModel'
+          description: OK
+        "400":
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/MessageModel'
+          description: json error
+        "403":
+          description: not allowed
+        "404":
+          description: not found
+      summary: Returns the percentage of user retention over the last 30 days
+      tags:
+      - analytics
+      x-openapi-router-controller: openapi_server.controllers.analytics_controller
+  /restv2/game/{apiKey}/admin/billingDetails:
+    get:
+      description: Retrieves the Billing Details.
+      operationId: get_billing_details
+      parameters:
+      - description: apiKey
+        explode: false
+        in: path
+        name: apiKey
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/BillingDetailsModel'
+          description: OK
+        "400":
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/MessageModel'
+          description: json error
+        "403":
+          description: not allowed
+        "404":
+          description: not found
+      summary: Retrieves the Billing Details
+      tags:
+      - billingDetails
+      x-openapi-router-controller: openapi_server.controllers.billing_details_controller
+    put:
+      description: Updates the Billing Details.
+      operationId: put_billing_details
+      parameters:
+      - description: apiKey
+        explode: false
+        in: path
+        name: apiKey
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BillingDetailsModel'
+        description: billingDetails
+        required: true
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/BillingDetailsModel'
+          description: OK
+        "400":
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/MessageModel'
+          description: json error
+        "403":
+          description: not allowed
+        "404":
+          description: not found
+      summary: Updates the Billing Details
+      tags:
+      - billingDetails
+      x-openapi-router-controller: openapi_server.controllers.billing_details_controller
+      x-codegen-request-body-name: body
+  /restv2/game/{apiKey}/admin/notifications/summary:
+    get:
+      operationId: get_game_summary_using_get
+      parameters:
+      - description: apiKey
+        explode: false
+        in: path
+        name: apiKey
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: stage
+        explode: true
+        in: query
+        name: stage
+        required: true
+        schema:
+          enum:
+          - LIVE
+          - PREVIEW
+          type: string
+        style: form
+      - description: yyyy-MM-dd
+        explode: true
+        in: query
+        name: startDate
+        required: true
+        schema:
+          format: date
+          type: string
+        style: form
+      - description: yyyy-MM-dd
+        explode: true
+        in: query
+        name: endDate
+        required: true
+        schema:
+          format: date
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/GameSummaryModel'
+          description: OK
+        "400":
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/MessageModel'
+          description: json error
+        "403":
+          description: not allowed
+        "404":
+          description: not found
+      summary: getGameSummary
+      tags:
+      - notifications
+      x-openapi-router-controller: openapi_server.controllers.notifications_controller
+  /restv2/game/{apiKey}/admin/pushNotifications/test/amazon:
+    post:
+      operationId: test_push_amazon_notifications_using_post
+      parameters:
+      - description: apiKey
+        explode: false
+        in: path
+        name: apiKey
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        $ref: '#/components/requestBodies/PushNotificationTestModel'
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/PushNotificationTestSummaryListModel'
+          description: OK
+        "400":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/MessageModel'
+          description: json error
+        "403":
+          description: not allowed
+        "404":
+          description: not found
+      summary: testPushAmazonNotifications
+      tags:
+      - pushNotificationTest
+      x-openapi-router-controller: openapi_server.controllers.push_notification_test_controller
+      x-codegen-request-body-name: body
+  /restv2/game/{apiKey}/admin/pushNotifications/test/apple/development:
+    post:
+      operationId: test_push_apple_dev_notifications_using_post
+      parameters:
+      - description: apiKey
+        explode: false
+        in: path
+        name: apiKey
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        $ref: '#/components/requestBodies/PushNotificationTestModel'
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/PushNotificationTestSummaryListModel'
+          description: OK
+        "400":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/MessageModel'
+          description: json error
+        "403":
+          description: not allowed
+        "404":
+          description: not found
+      summary: testPushAppleDevNotifications
+      tags:
+      - pushNotificationTest
+      x-openapi-router-controller: openapi_server.controllers.push_notification_test_controller
+      x-codegen-request-body-name: body
+  /restv2/game/{apiKey}/admin/pushNotifications/test/apple/production:
+    post:
+      operationId: test_push_apple_prod_notifications_using_post
+      parameters:
+      - description: apiKey
+        explode: false
+        in: path
+        name: apiKey
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        $ref: '#/components/requestBodies/PushNotificationTestModel'
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/PushNotificationTestSummaryListModel'
+          description: OK
+        "400":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/MessageModel'
+          description: json error
+        "403":
+          description: not allowed
+        "404":
+          description: not found
+      summary: testPushAppleProdNotifications
+      tags:
+      - pushNotificationTest
+      x-openapi-router-controller: openapi_server.controllers.push_notification_test_controller
+      x-codegen-request-body-name: body
+  /restv2/game/{apiKey}/admin/pushNotifications/test/google:
+    post:
+      operationId: test_push_google_notifications_using_post
+      parameters:
+      - description: apiKey
+        explode: false
+        in: path
+        name: apiKey
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        $ref: '#/components/requestBodies/PushNotificationTestModel'
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/PushNotificationTestSummaryListModel'
+          description: OK
+        "400":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/MessageModel'
+          description: json error
+        "403":
+          description: not allowed
+        "404":
+          description: not found
+      summary: testPushGoogleNotifications
+      tags:
+      - pushNotificationTest
+      x-openapi-router-controller: openapi_server.controllers.push_notification_test_controller
+      x-codegen-request-body-name: body
+  /restv2/game/{apiKey}/admin/pushNotifications/test/microsoft/windows8:
+    post:
+      operationId: test_windows8_notifications_using_post
+      parameters:
+      - description: apiKey
+        explode: false
+        in: path
+        name: apiKey
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        $ref: '#/components/requestBodies/PushNotificationTestModel'
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/PushNotificationTestSummaryListModel'
+          description: OK
+        "400":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/MessageModel'
+          description: json error
+        "403":
+          description: not allowed
+        "404":
+          description: not found
+      summary: testWindows8Notifications
+      tags:
+      - pushNotificationTest
+      x-openapi-router-controller: openapi_server.controllers.push_notification_test_controller
+      x-codegen-request-body-name: body
+  /restv2/game/{apiKey}/admin/pushNotifications/test/microsoft/windowsPhone8:
+    post:
+      operationId: test_windows_phone8_notifications_using_post
+      parameters:
+      - description: apiKey
+        explode: false
+        in: path
+        name: apiKey
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        $ref: '#/components/requestBodies/PushNotificationTestModel'
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/PushNotificationTestSummaryListModel'
+          description: OK
+        "400":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/MessageModel'
+          description: json error
+        "403":
+          description: not allowed
+        "404":
+          description: not found
+      summary: testWindowsPhone8Notifications
+      tags:
+      - pushNotificationTest
+      x-openapi-router-controller: openapi_server.controllers.push_notification_test_controller
+      x-codegen-request-body-name: body
+  /restv2/game/{apiKey}/admin/pushNotifications/test/viber/integration:
+    post:
+      operationId: test_viber_integration_notifications_using_post
+      parameters:
+      - description: apiKey
+        explode: false
+        in: path
+        name: apiKey
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        $ref: '#/components/requestBodies/PushNotificationTestModel'
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/PushNotificationTestSummaryListModel'
+          description: OK
+        "400":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/MessageModel'
+          description: json error
+        "403":
+          description: not allowed
+        "404":
+          description: not found
+      summary: testViberIntegrationNotifications
+      tags:
+      - pushNotificationTest
+      x-openapi-router-controller: openapi_server.controllers.push_notification_test_controller
+      x-codegen-request-body-name: body
+  /restv2/game/{apiKey}/admin/pushNotifications/test/viber/production:
+    post:
+      operationId: test_viber_production_notifications_using_post
+      parameters:
+      - description: apiKey
+        explode: false
+        in: path
+        name: apiKey
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        $ref: '#/components/requestBodies/PushNotificationTestModel'
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/PushNotificationTestSummaryListModel'
+          description: OK
+        "400":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/MessageModel'
+          description: json error
+        "403":
+          description: not allowed
+        "404":
+          description: not found
+      summary: testViberProductionNotifications
+      tags:
+      - pushNotificationTest
+      x-openapi-router-controller: openapi_server.controllers.push_notification_test_controller
+      x-codegen-request-body-name: body
+  /restv2/game/{apiKey}/admin/scripts/differences/{snapshotId1}/{snapshotId2}:
+    get:
+      operationId: get_script_differences_using_get
+      parameters:
+      - description: apiKey
+        explode: false
+        in: path
+        name: apiKey
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: snapshotId1
+        explode: false
+        in: path
+        name: snapshotId1
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: snapshotId2
+        explode: false
+        in: path
+        name: snapshotId2
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ScriptsDifferenceListModel'
+          description: OK
+        "400":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/MessageModel'
+          description: json error
+        "403":
+          description: not allowed
+        "404":
+          description: not found
+      summary: getScriptDifferences
+      tags:
+      - scripts
+      x-openapi-router-controller: openapi_server.controllers.scripts_controller
+  /restv2/game/{apiKey}/admin/scripts/export:
+    get:
+      operationId: export_zip_using_get
+      parameters:
+      - description: apiKey
+        explode: false
+        in: path
+        name: apiKey
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          description: OK
+        "400":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/MessageModel'
+          description: json error
+        "403":
+          description: not allowed
+        "404":
+          description: not found
+      summary: exportZip
+      tags:
+      - scripts
+      x-openapi-router-controller: openapi_server.controllers.scripts_controller
+  /restv2/game/{apiKey}/admin/scripts/import/accept:
+    post:
+      operationId: import_accept_using_post
+      parameters:
+      - description: apiKey
+        explode: false
+        in: path
+        name: apiKey
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: body
+        explode: true
+        in: query
+        name: body
+        required: true
+        schema:
+          type: string
+        style: form
+      requestBody:
+        $ref: '#/components/requestBodies/importAcceptUsingPOST'
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/MessageModel'
+          description: OK
+        "400":
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/MessageModel'
+          description: json error
+        "403":
+          description: not allowed
+        "404":
+          description: not found
+      summary: importAccept
+      tags:
+      - scripts
+      x-openapi-router-controller: openapi_server.controllers.scripts_controller
+      x-codegen-request-body-name: body
+  /restv2/game/{apiKey}/admin/scripts/import/preview:
+    post:
+      operationId: import_zip_using_post
+      parameters:
+      - description: apiKey
+        explode: false
+        in: path
+        name: apiKey
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        $ref: '#/components/requestBodies/importAcceptUsingPOST'
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/ScriptsDifferenceListModel'
+          description: OK
+        "400":
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/MessageModel'
+          description: json error
+        "403":
+          description: not allowed
+        "404":
+          description: not found
+      summary: importZip
+      tags:
+      - scripts
+      x-openapi-router-controller: openapi_server.controllers.scripts_controller
+      x-codegen-request-body-name: body
+  /restv2/game/{apiKey}/admin/scripts/versions:
+    get:
+      operationId: get_script_versions_using_get1
+      parameters:
+      - description: apiKey
+        explode: false
+        in: path
+        name: apiKey
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: pageSize
+        explode: true
+        in: query
+        name: pageSize
+        required: false
+        schema:
+          default: 100
+          format: int32
+          type: integer
+        style: form
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/SnapshotScriptVersionListModel'
+          description: OK
+        "400":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/MessageModel'
+          description: json error
+        "403":
+          description: not allowed
+        "404":
+          description: not found
+      summary: getScriptVersions
+      tags:
+      - scripts
+      x-openapi-router-controller: openapi_server.controllers.scripts_controller
+  /restv2/game/{apiKey}/admin/scripts/versions/{page}:
+    get:
+      operationId: get_script_versions_using_get
+      parameters:
+      - description: apiKey
+        explode: false
+        in: path
+        name: apiKey
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: page
+        explode: false
+        in: path
+        name: page
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      - description: pageSize
+        explode: true
+        in: query
+        name: pageSize
+        required: false
+        schema:
+          default: 100
+          format: int32
+          type: integer
+        style: form
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/SnapshotScriptVersionListModel'
+          description: OK
+        "400":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/MessageModel'
+          description: json error
+        "403":
+          description: not allowed
+        "404":
+          description: not found
+      summary: getScriptVersions
+      tags:
+      - scripts
+      x-openapi-router-controller: openapi_server.controllers.scripts_controller
+  /restv2/game/{apiKey}/admin/segmentQueryFilters:
+    get:
+      operationId: get_segment_query_filters_using_get
+      parameters:
+      - description: apiKey
+        explode: false
+        in: path
+        name: apiKey
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/SegmentQueryFilterListModel'
+          description: OK
+        "400":
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/MessageModel'
+          description: json error
+        "403":
+          description: not allowed
+        "404":
+          description: not found
+      summary: getSegmentQueryFilters
+      tags:
+      - segmentQueryFilters
+      x-openapi-router-controller: openapi_server.controllers.segment_query_filters_controller
+  /restv2/game/{apiKey}/admin/segmentQueryFilters/config:
+    get:
+      operationId: get_segment_query_filters_config_using_get
+      parameters:
+      - description: apiKey
+        explode: false
+        in: path
+        name: apiKey
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/SegmentQueryFilterConfigModel'
+          description: OK
+        "400":
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/MessageModel'
+          description: json error
+        "403":
+          description: not allowed
+        "404":
+          description: not found
+      summary: getSegmentQueryFiltersConfig
+      tags:
+      - segmentQueryFilters
+      x-openapi-router-controller: openapi_server.controllers.segment_query_filters_controller
+    put:
+      operationId: update_segment_query_filters_config_using_put
+      parameters:
+      - description: apiKey
+        explode: false
+        in: path
+        name: apiKey
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SegmentQueryFilterConfigModel'
+        description: segmentQueryConfig
+        required: true
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/SegmentQueryFilterConfigModel'
+          description: OK
+        "400":
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/MessageModel'
+          description: json error
+        "403":
+          description: not allowed
+        "404":
+          description: not found
+      summary: updateSegmentQueryFiltersConfig
+      tags:
+      - segmentQueryFilters
+      x-openapi-router-controller: openapi_server.controllers.segment_query_filters_controller
+      x-codegen-request-body-name: body
+  /restv2/game/{apiKey}/admin/segmentQueryFilters/standardFilters:
+    get:
+      operationId: get_segment_query_standard_filters_using_get
+      parameters:
+      - description: apiKey
+        explode: false
+        in: path
+        name: apiKey
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/SegmentQueryFilterListModel'
+          description: OK
+        "400":
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/MessageModel'
+          description: json error
+        "403":
+          description: not allowed
+        "404":
+          description: not found
+      summary: getSegmentQueryStandardFilters
+      tags:
+      - segmentQueryFilters
+      x-openapi-router-controller: openapi_server.controllers.segment_query_filters_controller
+  /restv2/game/{apiKey}/admin/snapshots:
+    get:
+      operationId: get_snapshots_using_get1
+      parameters:
+      - description: apiKey
+        explode: false
+        in: path
+        name: apiKey
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: pageSize
+        explode: true
+        in: query
+        name: pageSize
+        required: false
+        schema:
+          default: 20
+          format: int32
+          type: integer
+        style: form
+      responses:
+        "200":
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                items:
+                  $ref: '#/components/schemas/SnapshotModel'
+                type: array
+          description: OK
+        "400":
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/MessageModel'
+          description: json error
+        "403":
+          description: not allowed
+        "404":
+          description: not found
+      summary: getSnapshots
+      tags:
+      - snapshots
+      x-openapi-router-controller: openapi_server.controllers.snapshots_controller
+    post:
+      operationId: create_snapshots_using_post
+      parameters:
+      - description: apiKey
+        explode: false
+        in: path
+        name: apiKey
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SnapshotCreationModel'
+        description: description
+        required: true
+        x-body-name: body
+      responses:
+        "201":
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/SnapshotModel'
+          description: Created
+        "400":
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/MessageModel'
+          description: json error
+        "403":
+          description: not allowed
+        "404":
+          description: not found
+      summary: createSnapshots
+      tags:
+      - snapshots
+      x-openapi-router-controller: openapi_server.controllers.snapshots_controller
+      x-codegen-request-body-name: body
+  /restv2/game/{apiKey}/admin/snapshots/liveSnapshotId:
+    get:
+      operationId: get_live_snapshot_id_using_get
+      parameters:
+      - description: apiKey
+        explode: false
+        in: path
+        name: apiKey
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/MessageModel'
+          description: OK
+        "400":
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/MessageModel'
+          description: json error
+        "403":
+          description: not allowed
+        "404":
+          description: not found
+      summary: getLiveSnapshotId
+      tags:
+      - snapshots
+      x-openapi-router-controller: openapi_server.controllers.snapshots_controller
+  /restv2/game/{apiKey}/admin/snapshots/page/{page}:
+    get:
+      operationId: get_snapshots_using_get
+      parameters:
+      - description: apiKey
+        explode: false
+        in: path
+        name: apiKey
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: page
+        explode: false
+        in: path
+        name: page
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      - description: pageSize
+        explode: true
+        in: query
+        name: pageSize
+        required: false
+        schema:
+          default: 20
+          format: int32
+          type: integer
+        style: form
+      responses:
+        "200":
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                items:
+                  $ref: '#/components/schemas/SnapshotModel'
+                type: array
+          description: OK
+        "400":
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/MessageModel'
+          description: json error
+        "403":
+          description: not allowed
+        "404":
+          description: not found
+      summary: getSnapshots
+      tags:
+      - snapshots
+      x-openapi-router-controller: openapi_server.controllers.snapshots_controller
+  /restv2/game/{apiKey}/admin/snapshots/revert/to/{snapshotId}:
+    post:
+      operationId: revert_to_snapshot_using_post
+      parameters:
+      - description: apiKey
+        explode: false
+        in: path
+        name: apiKey
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: snapshotId
+        explode: false
+        in: path
+        name: snapshotId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/MessageModel'
+          description: OK
+        "400":
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/MessageModel'
+          description: json error
+        "403":
+          description: not allowed
+        "404":
+          description: not found
+      summary: revertToSnapshot
+      tags:
+      - snapshots
+      x-openapi-router-controller: openapi_server.controllers.snapshots_controller
+  /restv2/game/{apiKey}/admin/snapshots/{snapshotId}:
+    delete:
+      operationId: delete_snapshot_using_delete1
+      parameters:
+      - description: apiKey
+        explode: false
+        in: path
+        name: apiKey
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: snapshotId
+        explode: false
+        in: path
+        name: snapshotId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/MessageModel'
+          description: OK
+        "400":
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/MessageModel'
+          description: json error
+        "403":
+          description: not allowed
+        "404":
+          description: not found
+      summary: deleteSnapshot
+      tags:
+      - snapshots
+      x-openapi-router-controller: openapi_server.controllers.snapshots_controller
+    get:
+      operationId: get_snapshot_using_get
+      parameters:
+      - description: apiKey
+        explode: false
+        in: path
+        name: apiKey
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: snapshotId
+        explode: false
+        in: path
+        name: snapshotId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/SnapshotModel'
+          description: OK
+        "400":
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/MessageModel'
+          description: json error
+        "403":
+          description: not allowed
+        "404":
+          description: not found
+      summary: getSnapshot
+      tags:
+      - snapshots
+      x-openapi-router-controller: openapi_server.controllers.snapshots_controller
+  /restv2/game/{apiKey}/admin/snapshots/{snapshotId}/copy:
+    post:
+      operationId: copy_snapshot_to_new_game_using_post
+      parameters:
+      - description: apiKey
+        explode: false
+        in: path
+        name: apiKey
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: snapshotId
+        explode: false
+        in: path
+        name: snapshotId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: includeGameConfig
+        explode: true
+        in: query
+        name: includeGameConfig
+        required: false
+        schema:
+          default: true
+          type: boolean
+        style: form
+      - description: includeMetadata
+        explode: true
+        in: query
+        name: includeMetadata
+        required: false
+        schema:
+          default: true
+          type: boolean
+        style: form
+      - description: includeBinaries
+        explode: true
+        in: query
+        name: includeBinaries
+        required: false
+        schema:
+          default: true
+          type: boolean
+        style: form
+      - description: includeCollaborators
+        explode: true
+        in: query
+        name: includeCollaborators
+        required: false
+        schema:
+          default: true
+          type: boolean
+        style: form
+      responses:
+        "200":
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/SnapshotCreationSuccessModel'
+          description: OK
+        "400":
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/MessageModel'
+          description: json error
+        "403":
+          description: not allowed
+        "404":
+          description: not found
+      summary: copySnapshotToNewGame
+      tags:
+      - snapshots
+      x-openapi-router-controller: openapi_server.controllers.snapshots_controller
+  /restv2/game/{apiKey}/admin/snapshots/{snapshotId}/copy/to/{targetApiKey}:
+    post:
+      operationId: copy_snapshot_to_existing_game_using_post1
+      parameters:
+      - description: apiKey
+        explode: false
+        in: path
+        name: apiKey
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: snapshotId
+        explode: false
+        in: path
+        name: snapshotId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: targetApiKey
+        explode: false
+        in: path
+        name: targetApiKey
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: includeGameConfig
+        explode: true
+        in: query
+        name: includeGameConfig
+        required: false
+        schema:
+          default: true
+          type: boolean
+        style: form
+      - description: includeMetadata
+        explode: true
+        in: query
+        name: includeMetadata
+        required: false
+        schema:
+          default: true
+          type: boolean
+        style: form
+      - description: includeBinaries
+        explode: true
+        in: query
+        name: includeBinaries
+        required: false
+        schema:
+          default: true
+          type: boolean
+        style: form
+      - description: includeCollaborators
+        explode: true
+        in: query
+        name: includeCollaborators
+        required: false
+        schema:
+          default: true
+          type: boolean
+        style: form
+      responses:
+        "200":
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/SnapshotCreationSuccessModel'
+          description: OK
+        "400":
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/MessageModel'
+          description: json error
+        "403":
+          description: not allowed
+        "404":
+          description: not found
+      summary: copySnapshotToExistingGame
+      tags:
+      - snapshots
+      x-openapi-router-controller: openapi_server.controllers.snapshots_controller
+  /restv2/game/{apiKey}/admin/snapshots/{snapshotId}/publish:
+    post:
+      operationId: publish_snapshot_using_post1
+      parameters:
+      - description: apiKey
+        explode: false
+        in: path
+        name: apiKey
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: snapshotId
+        explode: false
+        in: path
+        name: snapshotId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          description: OK
+        "400":
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/MessageModel'
+          description: json error
+        "403":
+          description: not allowed
+        "404":
+          description: not found
+      summary: publishSnapshot
+      tags:
+      - snapshots
+      x-openapi-router-controller: openapi_server.controllers.snapshots_controller
+  /restv2/game/{apiKey}/admin/snapshots/{snapshotId}/unpublish:
+    post:
+      operationId: unpublish_snapshot_using_post
+      parameters:
+      - description: apiKey
+        explode: false
+        in: path
+        name: apiKey
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: snapshotId
+        explode: false
+        in: path
+        name: snapshotId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/MessageModel'
+          description: OK
+        "400":
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/MessageModel'
+          description: json error
+        "403":
+          description: not allowed
+        "404":
+          description: not found
+      summary: unpublishSnapshot
+      tags:
+      - snapshots
+      x-openapi-router-controller: openapi_server.controllers.snapshots_controller
+  /restv2/game/{apiKey}/admin/testHarness/scenarios:
+    get:
+      operationId: get_test_harness_scenarios_using_get
+      parameters:
+      - description: apiKey
+        explode: false
+        in: path
+        name: apiKey
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                items:
+                  $ref: '#/components/schemas/TestHarnessScenarioModel'
+                type: array
+          description: OK
+        "400":
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/MessageModel'
+          description: json error
+        "403":
+          description: not allowed
+        "404":
+          description: not found
+      summary: getTestHarnessScenarios
+      tags:
+      - testHarness
+      x-openapi-router-controller: openapi_server.controllers.test_harness_controller
+    post:
+      operationId: create_test_harness_scenario_using_post
+      parameters:
+      - description: apiKey
+        explode: false
+        in: path
+        name: apiKey
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        $ref: '#/components/requestBodies/TestHarnessScenarioModel'
+        x-body-name: body
+      responses:
+        "201":
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/TestHarnessScenarioModel'
+          description: Created
+        "400":
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/MessageModel'
+          description: json error
+        "403":
+          description: not allowed
+        "404":
+          description: not found
+      summary: createTestHarnessScenario
+      tags:
+      - testHarness
+      x-openapi-router-controller: openapi_server.controllers.test_harness_controller
+      x-codegen-request-body-name: body
+  /restv2/game/{apiKey}/admin/testHarness/scenarios/{scenarioName}:
+    delete:
+      operationId: delete_test_harness_scenario_using_delete
+      parameters:
+      - description: apiKey
+        explode: false
+        in: path
+        name: apiKey
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: scenarioName
+        explode: false
+        in: path
+        name: scenarioName
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/MessageModel'
+          description: OK
+        "400":
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/MessageModel'
+          description: json error
+        "403":
+          description: not allowed
+        "404":
+          description: not found
+      summary: deleteTestHarnessScenario
+      tags:
+      - testHarness
+      x-openapi-router-controller: openapi_server.controllers.test_harness_controller
+    get:
+      operationId: get_test_harness_scenario_using_get
+      parameters:
+      - description: apiKey
+        explode: false
+        in: path
+        name: apiKey
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: scenarioName
+        explode: false
+        in: path
+        name: scenarioName
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/TestHarnessScenarioModel'
+          description: OK
+        "400":
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/MessageModel'
+          description: json error
+        "403":
+          description: not allowed
+        "404":
+          description: not found
+      summary: getTestHarnessScenario
+      tags:
+      - testHarness
+      x-openapi-router-controller: openapi_server.controllers.test_harness_controller
+    put:
+      operationId: update_test_harness_scenario_using_put
+      parameters:
+      - description: apiKey
+        explode: false
+        in: path
+        name: apiKey
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: scenarioName
+        explode: false
+        in: path
+        name: scenarioName
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        $ref: '#/components/requestBodies/TestHarnessScenarioModel'
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/TestHarnessScenarioModel'
+          description: OK
+        "400":
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/MessageModel'
+          description: json error
+        "403":
+          description: not allowed
+        "404":
+          description: not found
+      summary: updateTestHarnessScenario
+      tags:
+      - testHarness
+      x-openapi-router-controller: openapi_server.controllers.test_harness_controller
+      x-codegen-request-body-name: body
+  /restv2/game/{apiKey}/config/~credentials/{credentialName}/resetSecret:
+    post:
+      operationId: update_credential_secret_using_post
+      parameters:
+      - description: apiKey
+        explode: false
+        in: path
+        name: apiKey
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: credentialName
+        explode: false
+        in: path
+        name: credentialName
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          description: OK
+        "400":
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/MessageModel'
+          description: json error
+        "403":
+          description: not allowed
+        "404":
+          description: not found
+      summary: Resets the secret of a credential
+      tags:
+      - credentials
+      x-openapi-router-controller: openapi_server.controllers.credentials_controller
+  /restv2/game/{apiKey}/endpoints:
+    get:
+      operationId: get_games_endpoints_using_get
+      parameters:
+      - description: apiKey
+        explode: false
+        in: path
+        name: apiKey
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/GameEndpointsModel'
+          description: OK
+        "400":
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/MessageModel'
+          description: json error
+        "403":
+          description: not allowed
+        "404":
+          description: not found
+      summary: getGamesEndpoints
+      tags:
+      - gamesAdmin
+      x-openapi-router-controller: openapi_server.controllers.games_admin_controller
+  /restv2/game/{apiKey}/manage/experiments:
+    get:
+      operationId: get_experiments_using_get
+      parameters:
+      - description: apiKey
+        explode: false
+        in: path
+        name: apiKey
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                items:
+                  $ref: '#/components/schemas/ExperimentModel'
+                type: array
+          description: OK
+        "400":
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/MessageModel'
+          description: json error
+        "403":
+          description: not allowed
+        "404":
+          description: not found
+      summary: getExperiments
+      tags:
+      - experiments
+      x-openapi-router-controller: openapi_server.controllers.experiments_controller
+    post:
+      operationId: create_experiment_using_post
+      parameters:
+      - description: apiKey
+        explode: false
+        in: path
+        name: apiKey
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        $ref: '#/components/requestBodies/ExperimentModel'
+        x-body-name: body
+      responses:
+        "201":
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/ExperimentModel'
+          description: Created
+        "400":
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/MessageModel'
+          description: json error
+        "403":
+          description: not allowed
+        "404":
+          description: not found
+      summary: createExperiment
+      tags:
+      - experiments
+      x-openapi-router-controller: openapi_server.controllers.experiments_controller
+      x-codegen-request-body-name: body
+  /restv2/game/{apiKey}/manage/experiments/{id}:
+    delete:
+      operationId: delete_experiment_using_delete
+      parameters:
+      - description: apiKey
+        explode: false
+        in: path
+        name: apiKey
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: id
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int64
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/MessageModel'
+          description: OK
+        "400":
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/MessageModel'
+          description: json error
+        "403":
+          description: not allowed
+        "404":
+          description: not found
+      summary: deleteExperiment
+      tags:
+      - experiments
+      x-openapi-router-controller: openapi_server.controllers.experiments_controller
+    get:
+      operationId: get_experiment_using_get
+      parameters:
+      - description: apiKey
+        explode: false
+        in: path
+        name: apiKey
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: id
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int64
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/ExperimentModel'
+          description: OK
+        "400":
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/MessageModel'
+          description: json error
+        "403":
+          description: not allowed
+        "404":
+          description: not found
+      summary: getExperiment
+      tags:
+      - experiments
+      x-openapi-router-controller: openapi_server.controllers.experiments_controller
+    put:
+      operationId: update_experiment_using_put
+      parameters:
+      - description: apiKey
+        explode: false
+        in: path
+        name: apiKey
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: id
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int64
+          type: integer
+        style: simple
+      requestBody:
+        $ref: '#/components/requestBodies/ExperimentModel'
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/ExperimentModel'
+          description: OK
+        "400":
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/MessageModel'
+          description: json error
+        "403":
+          description: not allowed
+        "404":
+          description: not found
+      summary: updateExperiment
+      tags:
+      - experiments
+      x-openapi-router-controller: openapi_server.controllers.experiments_controller
+      x-codegen-request-body-name: body
+  /restv2/game/{apiKey}/manage/experiments/{id}/{action}:
+    post:
+      operationId: do_action_experiment_using_post
+      parameters:
+      - description: apiKey
+        explode: false
+        in: path
+        name: apiKey
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: id
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int64
+          type: integer
+        style: simple
+      - description: action
+        explode: false
+        in: path
+        name: action
+        required: true
+        schema:
+          enum:
+          - start
+          - stop
+          - publish
+          - unpublish
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/ExperimentModel'
+          description: OK
+        "400":
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/MessageModel'
+          description: json error
+        "403":
+          description: not allowed
+        "404":
+          description: not found
+      summary: doActionExperiment
+      tags:
+      - experiments
+      x-openapi-router-controller: openapi_server.controllers.experiments_controller
+  /restv2/game/{apiKey}/manage/queries:
+    get:
+      operationId: list_queries_using_get
+      parameters:
+      - description: apiKey
+        explode: false
+        in: path
+        name: apiKey
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                items:
+                  $ref: '#/components/schemas/ManageItemSummary'
+                type: array
+          description: OK
+        "400":
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/MessageModel'
+          description: json error
+        "403":
+          description: not allowed
+        "404":
+          description: not found
+      summary: listQueries
+      tags:
+      - manage
+      x-openapi-router-controller: openapi_server.controllers.manage_controller
+    post:
+      operationId: create_query_using_post
+      parameters:
+      - description: apiKey
+        explode: false
+        in: path
+        name: apiKey
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        $ref: '#/components/requestBodies/ManageQuery'
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/ManageQuery'
+          description: OK
+        "400":
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/MessageModel'
+          description: json error
+        "403":
+          description: not allowed
+        "404":
+          description: not found
+      summary: createQuery
+      tags:
+      - manage
+      x-openapi-router-controller: openapi_server.controllers.manage_controller
+      x-codegen-request-body-name: body
+  /restv2/game/{apiKey}/manage/queries/{shortCode}:
+    delete:
+      operationId: delete_query_using_delete
+      parameters:
+      - description: apiKey
+        explode: false
+        in: path
+        name: apiKey
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: shortCode
+        explode: false
+        in: path
+        name: shortCode
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/ManageResult'
+          description: OK
+        "400":
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/MessageModel'
+          description: json error
+        "403":
+          description: not allowed
+        "404":
+          description: not found
+      summary: deleteQuery
+      tags:
+      - manage
+      x-openapi-router-controller: openapi_server.controllers.manage_controller
+    get:
+      operationId: get_query_using_get
+      parameters:
+      - description: apiKey
+        explode: false
+        in: path
+        name: apiKey
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: shortCode
+        explode: false
+        in: path
+        name: shortCode
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/ManageQuery'
+          description: OK
+        "400":
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/MessageModel'
+          description: json error
+        "403":
+          description: not allowed
+        "404":
+          description: not found
+      summary: getQuery
+      tags:
+      - manage
+      x-openapi-router-controller: openapi_server.controllers.manage_controller
+    put:
+      operationId: update_query_using_put
+      parameters:
+      - description: apiKey
+        explode: false
+        in: path
+        name: apiKey
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: shortCode
+        explode: false
+        in: path
+        name: shortCode
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        $ref: '#/components/requestBodies/ManageQuery'
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/ManageQuery'
+          description: OK
+        "400":
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/MessageModel'
+          description: json error
+        "403":
+          description: not allowed
+        "404":
+          description: not found
+      summary: updateQuery
+      tags:
+      - manage
+      x-openapi-router-controller: openapi_server.controllers.manage_controller
+      x-codegen-request-body-name: body
+  /restv2/game/{apiKey}/manage/screens:
+    get:
+      operationId: list_screens_using_get
+      parameters:
+      - description: apiKey
+        explode: false
+        in: path
+        name: apiKey
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                items:
+                  $ref: '#/components/schemas/ManageItemSummary'
+                type: array
+          description: OK
+        "400":
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/MessageModel'
+          description: json error
+        "403":
+          description: not allowed
+        "404":
+          description: not found
+      summary: listScreens
+      tags:
+      - manage
+      x-openapi-router-controller: openapi_server.controllers.manage_controller
+    post:
+      operationId: create_screen_using_post
+      parameters:
+      - description: apiKey
+        explode: false
+        in: path
+        name: apiKey
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        $ref: '#/components/requestBodies/ManageScreen'
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/ManageScreen'
+          description: OK
+        "400":
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/MessageModel'
+          description: json error
+        "403":
+          description: not allowed
+        "404":
+          description: not found
+      summary: createScreen
+      tags:
+      - manage
+      x-openapi-router-controller: openapi_server.controllers.manage_controller
+      x-codegen-request-body-name: body
+  /restv2/game/{apiKey}/manage/screens/executable:
+    get:
+      operationId: list_executable_screens_using_get
+      parameters:
+      - description: apiKey
+        explode: false
+        in: path
+        name: apiKey
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                items:
+                  $ref: '#/components/schemas/ManageItemSummary'
+                type: array
+          description: OK
+        "400":
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/MessageModel'
+          description: json error
+        "403":
+          description: not allowed
+        "404":
+          description: not found
+      summary: listExecutableScreens
+      tags:
+      - manage
+      x-openapi-router-controller: openapi_server.controllers.manage_controller
+  /restv2/game/{apiKey}/manage/screens/{shortCode}:
+    delete:
+      operationId: delete_screen_using_delete
+      parameters:
+      - description: apiKey
+        explode: false
+        in: path
+        name: apiKey
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: shortCode
+        explode: false
+        in: path
+        name: shortCode
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/ManageResult'
+          description: OK
+        "400":
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/MessageModel'
+          description: json error
+        "403":
+          description: not allowed
+        "404":
+          description: not found
+      summary: deleteScreen
+      tags:
+      - manage
+      x-openapi-router-controller: openapi_server.controllers.manage_controller
+    get:
+      operationId: get_screen_using_get
+      parameters:
+      - description: apiKey
+        explode: false
+        in: path
+        name: apiKey
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: shortCode
+        explode: false
+        in: path
+        name: shortCode
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/ManageScreen'
+          description: OK
+        "400":
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/MessageModel'
+          description: json error
+        "403":
+          description: not allowed
+        "404":
+          description: not found
+      summary: getScreen
+      tags:
+      - manage
+      x-openapi-router-controller: openapi_server.controllers.manage_controller
+    put:
+      operationId: update_screen_using_put
+      parameters:
+      - description: apiKey
+        explode: false
+        in: path
+        name: apiKey
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: shortCode
+        explode: false
+        in: path
+        name: shortCode
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        $ref: '#/components/requestBodies/ManageScreen'
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/ManageScreen'
+          description: OK
+        "400":
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/MessageModel'
+          description: json error
+        "403":
+          description: not allowed
+        "404":
+          description: not found
+      summary: updateScreen
+      tags:
+      - manage
+      x-openapi-router-controller: openapi_server.controllers.manage_controller
+      x-codegen-request-body-name: body
+  /restv2/game/{apiKey}/manage/snapshots:
+    get:
+      operationId: list_snapshots_using_get
+      parameters:
+      - description: apiKey
+        explode: false
+        in: path
+        name: apiKey
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                items:
+                  $ref: '#/components/schemas/ManageSnapshot'
+                type: array
+          description: OK
+        "400":
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/MessageModel'
+          description: json error
+        "403":
+          description: not allowed
+        "404":
+          description: not found
+      summary: listSnapshots
+      tags:
+      - manage
+      x-openapi-router-controller: openapi_server.controllers.manage_controller
+    post:
+      operationId: create_snapshot_using_post
+      parameters:
+      - description: apiKey
+        explode: false
+        in: path
+        name: apiKey
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SnapshotCreationModel'
+        description: model
+        required: true
+        x-body-name: body
+      responses:
+        "201":
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/ManageSnapshot'
+          description: Created
+        "400":
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/MessageModel'
+          description: json error
+        "403":
+          description: not allowed
+        "404":
+          description: not found
+      summary: createSnapshot
+      tags:
+      - manage
+      x-openapi-router-controller: openapi_server.controllers.manage_controller
+      x-codegen-request-body-name: body
+  /restv2/game/{apiKey}/manage/snapshots/{snapshotId}:
+    delete:
+      operationId: delete_snapshot_using_delete
+      parameters:
+      - description: apiKey
+        explode: false
+        in: path
+        name: apiKey
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: snapshotId
+        explode: false
+        in: path
+        name: snapshotId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          description: success
+        "201":
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/ManageResult'
+          description: Created
+        "400":
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/MessageModel'
+          description: json error
+        "403":
+          description: not allowed
+        "404":
+          description: not found
+      summary: deleteSnapshot
+      tags:
+      - manage
+      x-openapi-router-controller: openapi_server.controllers.manage_controller
+  /restv2/game/{apiKey}/manage/snapshots/{snapshotId}/copy/to/{targetApiKey}:
+    post:
+      operationId: copy_snapshot_to_existing_game_using_post
+      parameters:
+      - description: apiKey
+        explode: false
+        in: path
+        name: apiKey
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: snapshotId
+        explode: false
+        in: path
+        name: snapshotId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: targetApiKey
+        explode: false
+        in: path
+        name: targetApiKey
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/ManageResult'
+          description: OK
+        "400":
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/MessageModel'
+          description: json error
+        "403":
+          description: not allowed
+        "404":
+          description: not found
+      summary: copySnapshotToExistingGame
+      tags:
+      - manage
+      x-openapi-router-controller: openapi_server.controllers.manage_controller
+  /restv2/game/{apiKey}/manage/snapshots/{snapshotId}/publish:
+    post:
+      operationId: publish_snapshot_using_post
+      parameters:
+      - description: apiKey
+        explode: false
+        in: path
+        name: apiKey
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: snapshotId
+        explode: false
+        in: path
+        name: snapshotId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "201":
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/ManageResult'
+          description: Created
+        "400":
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/MessageModel'
+          description: json error
+        "403":
+          description: not allowed
+        "404":
+          description: not found
+      summary: publishSnapshot
+      tags:
+      - manage
+      x-openapi-router-controller: openapi_server.controllers.manage_controller
+  /restv2/game/{apiKey}/manage/snapshots/{snapshotId}/revert:
+    post:
+      operationId: revert_snapshot_using_post
+      parameters:
+      - description: apiKey
+        explode: false
+        in: path
+        name: apiKey
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: snapshotId
+        explode: false
+        in: path
+        name: snapshotId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "201":
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/ManageResult'
+          description: Created
+        "400":
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/MessageModel'
+          description: json error
+        "403":
+          description: not allowed
+        "404":
+          description: not found
+      summary: revertSnapshot
+      tags:
+      - manage
+      x-openapi-router-controller: openapi_server.controllers.manage_controller
+  /restv2/game/{apiKey}/manage/snippets:
+    get:
+      operationId: list_snippets_using_get
+      parameters:
+      - description: apiKey
+        explode: false
+        in: path
+        name: apiKey
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                items:
+                  $ref: '#/components/schemas/ManageItemSummary'
+                type: array
+          description: OK
+        "400":
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/MessageModel'
+          description: json error
+        "403":
+          description: not allowed
+        "404":
+          description: not found
+      summary: listSnippets
+      tags:
+      - manage
+      x-openapi-router-controller: openapi_server.controllers.manage_controller
+    post:
+      operationId: create_snippet_using_post
+      parameters:
+      - description: apiKey
+        explode: false
+        in: path
+        name: apiKey
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        $ref: '#/components/requestBodies/ManageSnippet'
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/ManageSnippet'
+          description: OK
+        "400":
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/MessageModel'
+          description: json error
+        "403":
+          description: not allowed
+        "404":
+          description: not found
+      summary: createSnippet
+      tags:
+      - manage
+      x-openapi-router-controller: openapi_server.controllers.manage_controller
+      x-codegen-request-body-name: body
+  /restv2/game/{apiKey}/manage/snippets/{shortCode}:
+    delete:
+      operationId: delete_snippet_using_delete
+      parameters:
+      - description: apiKey
+        explode: false
+        in: path
+        name: apiKey
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: shortCode
+        explode: false
+        in: path
+        name: shortCode
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/ManageResult'
+          description: OK
+        "400":
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/MessageModel'
+          description: json error
+        "403":
+          description: not allowed
+        "404":
+          description: not found
+      summary: deleteSnippet
+      tags:
+      - manage
+      x-openapi-router-controller: openapi_server.controllers.manage_controller
+    get:
+      operationId: get_snippet_using_get
+      parameters:
+      - description: apiKey
+        explode: false
+        in: path
+        name: apiKey
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: shortCode
+        explode: false
+        in: path
+        name: shortCode
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/ManageSnippet'
+          description: OK
+        "400":
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/MessageModel'
+          description: json error
+        "403":
+          description: not allowed
+        "404":
+          description: not found
+      summary: getSnippet
+      tags:
+      - manage
+      x-openapi-router-controller: openapi_server.controllers.manage_controller
+    put:
+      operationId: update_snippet_using_put
+      parameters:
+      - description: apiKey
+        explode: false
+        in: path
+        name: apiKey
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: shortCode
+        explode: false
+        in: path
+        name: shortCode
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        $ref: '#/components/requestBodies/ManageSnippet'
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/ManageSnippet'
+          description: OK
+        "400":
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/MessageModel'
+          description: json error
+        "403":
+          description: not allowed
+        "404":
+          description: not found
+      summary: updateSnippet
+      tags:
+      - manage
+      x-openapi-router-controller: openapi_server.controllers.manage_controller
+      x-codegen-request-body-name: body
+  /restv2/game/{apiKey}/restore:
+    post:
+      operationId: restore_deleted_game_using_post
+      parameters:
+      - description: apiKey
+        explode: false
+        in: path
+        name: apiKey
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/MessageModel'
+          description: OK
+        "400":
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/MessageModel'
+          description: json error
+        "403":
+          description: not allowed
+        "404":
+          description: not found
+      summary: restoreDeletedGame
+      tags:
+      - gamesAdmin
+      x-openapi-router-controller: openapi_server.controllers.games_admin_controller
+  /restv2/game/{gameApiKey}/region/{regionCode}:
+    post:
+      operationId: set_game_region_using_post
+      parameters:
+      - description: gameApiKey
+        explode: false
+        in: path
+        name: gameApiKey
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: regionCode
+        explode: false
+        in: path
+        name: regionCode
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/RegionResult'
+          description: OK
+        "400":
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/MessageModel'
+          description: json error
+        "403":
+          description: not allowed
+        "404":
+          description: not found
+      summary: setGameRegion
+      tags:
+      - region
+      x-openapi-router-controller: openapi_server.controllers.region_controller
+  /restv2/game/{gameApiKey}/regions:
+    get:
+      operationId: get_game_region_options_using_get
+      parameters:
+      - description: gameApiKey
+        explode: false
+        in: path
+        name: gameApiKey
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/GameRegionOptionsDTO'
+          description: OK
+        "400":
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/MessageModel'
+          description: json error
+        "403":
+          description: not allowed
+        "404":
+          description: not found
+      summary: getGameRegionOptions
+      tags:
+      - region
+      x-openapi-router-controller: openapi_server.controllers.region_controller
+  /restv2/games:
+    get:
+      operationId: list_using_get
+      responses:
+        "200":
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                items:
+                  $ref: '#/components/schemas/GameModel'
+                type: array
+          description: OK
+        "400":
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/MessageModel'
+          description: json error
+        "403":
+          description: not allowed
+        "404":
+          description: not found
+      summary: list
+      tags:
+      - gamesAdmin
+      x-openapi-router-controller: openapi_server.controllers.games_admin_controller
+  /restv2/games/deleted:
+    get:
+      operationId: list_deleted_using_get
+      responses:
+        "200":
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                items:
+                  $ref: '#/components/schemas/DeletedGameModel'
+                type: array
+          description: OK
+        "400":
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/MessageModel'
+          description: json error
+        "403":
+          description: not allowed
+        "404":
+          description: not found
+      summary: listDeleted
+      tags:
+      - gamesAdmin
+      x-openapi-router-controller: openapi_server.controllers.games_admin_controller
+components:
+  requestBodies:
+    ExperimentModel:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ExperimentModel'
+      description: input
+      required: true
+    ManageQuery:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ManageQuery'
+      description: query
+      required: true
+    ManageScreen:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ManageScreen'
+      description: screen
+      required: true
+    ManageSnippet:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ManageSnippet'
+      description: snippet
+      required: true
+    PushNotificationTestModel:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PushNotificationTestModel'
+      description: messageDetails
+      required: true
+    TestHarnessScenarioModel:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/TestHarnessScenarioModel'
+      description: testHarnessScenarioDTO
+      required: true
+    importAcceptUsingPOST:
+      content:
+        multipart/form-data:
+          schema:
+            $ref: '#/components/schemas/importAcceptUsingPOST_request'
+      required: true
+  schemas:
+    AnalyticsDataCountSwaggerModel:
+      example:
+        result: result
+      properties:
+        result:
+          title: result
+          type: string
+      title: AnalyticsDataCountSwaggerModel
+      type: object
+    AnalyticsDataSwaggerModel:
+      example:
+        _id: _id
+      properties:
+        _id:
+          title: _id
+          type: string
+      title: AnalyticsDataSwaggerModel
+      type: object
+    BillingDetailsModel:
+      example:
+        country: country
+        firstName1: firstName1
+        city: city
+        firstName2: firstName2
+        companyName: companyName
+        postcode: postcode
+        taxNumber: taxNumber
+        firstName3: firstName3
+        building: building
+        email3: email3
+        email2: email2
+        email1: email1
+        street: street
+        lastName1: lastName1
+        lastName2: lastName2
+        lastName3: lastName3
+        state: state
+      properties:
+        building:
+          title: building
+          type: string
+        city:
+          title: city
+          type: string
+        companyName:
+          title: companyName
+          type: string
+        country:
+          title: country
+          type: string
+        email1:
+          title: email1
+          type: string
+        email2:
+          title: email2
+          type: string
+        email3:
+          title: email3
+          type: string
+        firstName1:
+          title: firstName1
+          type: string
+        firstName2:
+          title: firstName2
+          type: string
+        firstName3:
+          title: firstName3
+          type: string
+        lastName1:
+          title: lastName1
+          type: string
+        lastName2:
+          title: lastName2
+          type: string
+        lastName3:
+          title: lastName3
+          type: string
+        postcode:
+          title: postcode
+          type: string
+        state:
+          title: state
+          type: string
+        street:
+          title: street
+          type: string
+        taxNumber:
+          title: taxNumber
+          type: string
+      required:
+      - building
+      - city
+      - companyName
+      - country
+      - email1
+      - firstName1
+      - lastName1
+      - postcode
+      - street
+      title: BillingDetailsModel
+      type: object
+    DeletedGameModel:
+      example:
+        apiKey: apiKey
+        name: name
+      properties:
+        apiKey:
+          title: apiKey
+          type: string
+        name:
+          title: name
+          type: string
+      title: DeletedGameModel
+      type: object
+    ExperimentConfigModel:
+      example:
+        playerMongoQuery: playerMongoQuery
+        playerQuery: playerQuery
+        variants: variants
+      properties:
+        playerMongoQuery:
+          title: playerMongoQuery
+          type: string
+        playerQuery:
+          title: playerQuery
+          type: string
+        variants:
+          title: variants
+          type: string
+      title: ExperimentConfigModel
+      type: object
+    ExperimentModel:
+      example:
+        measurementsEsQuery: measurementsEsQuery
+        endDate: 2000-01-23T04:56:07.000+00:00
+        publishedStages:
+        - publishedStages
+        - publishedStages
+        percentHash: percentHash
+        name: name
+        active: true
+        id: 0
+        complete: true
+        config:
+          playerMongoQuery: playerMongoQuery
+          playerQuery: playerQuery
+          variants: variants
+        changedFieldsAndInitialValues: "{}"
+        startDate: 2000-01-23T04:56:07.000+00:00
+        measurements: measurements
+      properties:
+        active:
+          title: active
+          type: boolean
+        changedFieldsAndInitialValues:
+          title: changedFieldsAndInitialValues
+          type: object
+        complete:
+          title: complete
+          type: boolean
+        config:
+          $ref: '#/components/schemas/ExperimentConfigModel'
+        endDate:
+          format: date-time
+          title: endDate
+          type: string
+        id:
+          format: int64
+          title: id
+          type: integer
+        measurements:
+          title: measurements
+          type: string
+        measurementsEsQuery:
+          title: measurementsEsQuery
+          type: string
+        name:
+          title: name
+          type: string
+        percentHash:
+          title: percentHash
+          type: string
+        publishedStages:
+          items:
+            type: string
+          title: publishedStages
+          type: array
+        startDate:
+          format: date-time
+          title: startDate
+          type: string
+      title: ExperimentModel
+      type: object
+    GameEndpointsModel:
+      example:
+        previewNosql: previewNosql
+        liveNosql: liveNosql
+        previewElasticSearch: previewElasticSearch
+        liveElasticSearch: liveElasticSearch
+      properties:
+        liveElasticSearch:
+          title: liveElasticSearch
+          type: string
+        liveNosql:
+          title: liveNosql
+          type: string
+        previewElasticSearch:
+          title: previewElasticSearch
+          type: string
+        previewNosql:
+          title: previewNosql
+          type: string
+      title: GameEndpointsModel
+      type: object
+    GameModel:
+      example:
+        name: name
+        '@id': '@id'
+      properties:
+        '@id':
+          title: '@id'
+          type: string
+        name:
+          title: name
+          type: string
+      title: GameModel
+      type: object
+    GameRegionOptionDTO:
+      example:
+        regionCode: regionCode
+        regionName: regionName
+        selected: true
+      properties:
+        regionCode:
+          title: regionCode
+          type: string
+        regionName:
+          title: regionName
+          type: string
+        selected:
+          title: selected
+          type: boolean
+      title: GameRegionOptionDTO
+      type: object
+    GameRegionOptionsDTO:
+      example:
+        options:
+        - regionCode: regionCode
+          regionName: regionName
+          selected: true
+        - regionCode: regionCode
+          regionName: regionName
+          selected: true
+        locked: true
+      properties:
+        locked:
+          title: locked
+          type: boolean
+        options:
+          items:
+            $ref: '#/components/schemas/GameRegionOptionDTO'
+          title: options
+          type: array
+      title: GameRegionOptionsDTO
+      type: object
+    GameSummaryModel:
+      example:
+        logLevelData:
+        - "{}"
+        - "{}"
+        logLevelSummary:
+        - level: level
+          count: 0
+        - level: level
+          count: 0
+        message: message
+      properties:
+        logLevelData:
+          items:
+            type: object
+          title: logLevelData
+          type: array
+        logLevelSummary:
+          items:
+            $ref: '#/components/schemas/LogLevelSummaryModel'
+          title: logLevelSummary
+          type: array
+        message:
+          title: message
+          type: string
+      title: GameSummaryModel
+      type: object
+    LogLevelSummaryModel:
+      example:
+        level: level
+        count: 0
+      properties:
+        count:
+          format: int64
+          title: count
+          type: integer
+        level:
+          title: level
+          type: string
+      title: LogLevelSummaryModel
+      type: object
+    ManageItemSummary:
+      example:
+        name: name
+        shortCode: shortCode
+      properties:
+        name:
+          title: name
+          type: string
+        shortCode:
+          title: shortCode
+          type: string
+      title: ManageItemSummary
+      type: object
+    ManageQuery:
+      example:
+        qbRules: qbRules
+        esRules: esRules
+        name: name
+        shortCode: shortCode
+      properties:
+        esRules:
+          title: esRules
+          type: string
+        name:
+          title: name
+          type: string
+        qbRules:
+          title: qbRules
+          type: string
+        shortCode:
+          title: shortCode
+          type: string
+      title: ManageQuery
+      type: object
+    ManageResult:
+      example:
+        message: message
+      properties:
+        message:
+          title: message
+          type: string
+      title: ManageResult
+      type: object
+    ManageScreen:
+      example:
+        template: template
+        name: name
+        groups:
+        - groups
+        - groups
+        shortCode: shortCode
+      properties:
+        groups:
+          items:
+            type: string
+          title: groups
+          type: array
+        name:
+          title: name
+          type: string
+        shortCode:
+          title: shortCode
+          type: string
+        template:
+          title: template
+          type: string
+      title: ManageScreen
+      type: object
+    ManageSnapshot:
+      example:
+        date: 2000-01-23T04:56:07.000+00:00
+        description: description
+        id: id
+        published: true
+      properties:
+        date:
+          format: date-time
+          title: date
+          type: string
+        description:
+          title: description
+          type: string
+        id:
+          title: id
+          type: string
+        published:
+          title: published
+          type: boolean
+      title: ManageSnapshot
+      type: object
+    ManageSnippet:
+      example:
+        template: template
+        name: name
+        groups:
+        - groups
+        - groups
+        script: script
+        shortCode: shortCode
+        scriptData: scriptData
+      properties:
+        groups:
+          items:
+            type: string
+          title: groups
+          type: array
+        name:
+          title: name
+          type: string
+        script:
+          title: script
+          type: string
+        scriptData:
+          title: scriptData
+          type: string
+        shortCode:
+          title: shortCode
+          type: string
+        template:
+          title: template
+          type: string
+      title: ManageSnippet
+      type: object
+    MessageModel:
+      example:
+        message: message
+      properties:
+        message:
+          title: message
+          type: string
+      title: MessageModel
+      type: object
+    Number:
+      type: object
+    PushNotificationTestModel:
+      example:
+        pushId: pushId
+        summary: summary
+        subtitle: subtitle
+        messageId: messageId
+        title: title
+        customJson: customJson
+      properties:
+        customJson:
+          title: customJson
+          type: string
+        messageId:
+          title: messageId
+          type: string
+        pushId:
+          title: pushId
+          type: string
+        subtitle:
+          title: subtitle
+          type: string
+        summary:
+          title: summary
+          type: string
+        title:
+          title: title
+          type: string
+      title: PushNotificationTestModel
+      type: object
+    PushNotificationTestSummaryListModel:
+      example:
+        summaries:
+        - outgoingMessageParts:
+            key: outgoingMessageParts
+          resultParts:
+            key: resultParts
+          error: true
+          title: title
+        - outgoingMessageParts:
+            key: outgoingMessageParts
+          resultParts:
+            key: resultParts
+          error: true
+          title: title
+      properties:
+        summaries:
+          items:
+            $ref: '#/components/schemas/PushNotificationTestSummaryModel'
+          title: summaries
+          type: array
+      title: PushNotificationTestSummaryListModel
+      type: object
+    PushNotificationTestSummaryModel:
+      example:
+        outgoingMessageParts:
+          key: outgoingMessageParts
+        resultParts:
+          key: resultParts
+        error: true
+        title: title
+      properties:
+        error:
+          title: error
+          type: boolean
+        outgoingMessageParts:
+          additionalProperties:
+            type: string
+          title: outgoingMessageParts
+          type: object
+        resultParts:
+          additionalProperties:
+            type: string
+          title: resultParts
+          type: object
+        title:
+          title: title
+          type: string
+      title: PushNotificationTestSummaryModel
+      type: object
+    RegionResult:
+      example:
+        message: message
+      properties:
+        message:
+          title: message
+          type: string
+      title: RegionResult
+      type: object
+    ScriptsDifferenceListModel:
+      example:
+        differences:
+        - fileName: fileName
+          script1: script1
+          bind: bind
+          script2: script2
+          changeType: NOCHANGE
+          type: type
+        - fileName: fileName
+          script1: script1
+          bind: bind
+          script2: script2
+          changeType: NOCHANGE
+          type: type
+      properties:
+        differences:
+          items:
+            $ref: '#/components/schemas/ScriptsDifferenceModel'
+          title: differences
+          type: array
+      title: ScriptsDifferenceListModel
+      type: object
+    ScriptsDifferenceModel:
+      example:
+        fileName: fileName
+        script1: script1
+        bind: bind
+        script2: script2
+        changeType: NOCHANGE
+        type: type
+      properties:
+        bind:
+          title: bind
+          type: string
+        changeType:
+          enum:
+          - NOCHANGE
+          - ADDED
+          - CHANGED
+          - DELETED
+          - IGNORED
+          - CHANGED_CODE_INVALID
+          - CHANGED_NAME_INVALID
+          title: changeType
+          type: string
+        fileName:
+          title: fileName
+          type: string
+        script1:
+          title: script1
+          type: string
+        script2:
+          title: script2
+          type: string
+        type:
+          title: type
+          type: string
+      title: ScriptsDifferenceModel
+      type: object
+    SegmentQueryFilterConfigModel:
+      example:
+        hiddenFilters:
+        - hiddenFilters
+        - hiddenFilters
+        customFilters:
+        - name: name
+          options:
+          - "{}"
+          - "{}"
+          type: type
+          key: key
+        - name: name
+          options:
+          - "{}"
+          - "{}"
+          type: type
+          key: key
+      properties:
+        customFilters:
+          items:
+            $ref: '#/components/schemas/SegmentQueryFilterModel'
+          title: customFilters
+          type: array
+        hiddenFilters:
+          items:
+            type: string
+          title: hiddenFilters
+          type: array
+      title: SegmentQueryFilterConfigModel
+      type: object
+    SegmentQueryFilterListModel:
+      example:
+        filters:
+        - name: name
+          options:
+          - "{}"
+          - "{}"
+          type: type
+          key: key
+        - name: name
+          options:
+          - "{}"
+          - "{}"
+          type: type
+          key: key
+      properties:
+        filters:
+          items:
+            $ref: '#/components/schemas/SegmentQueryFilterModel'
+          title: filters
+          type: array
+      title: SegmentQueryFilterListModel
+      type: object
+    SegmentQueryFilterModel:
+      example:
+        name: name
+        options:
+        - "{}"
+        - "{}"
+        type: type
+        key: key
+      properties:
+        key:
+          title: key
+          type: string
+        name:
+          title: name
+          type: string
+        options:
+          items:
+            type: object
+          title: options
+          type: array
+        type:
+          title: type
+          type: string
+      title: SegmentQueryFilterModel
+      type: object
+    SnapshotCreationModel:
+      example:
+        description: description
+      properties:
+        description:
+          title: description
+          type: string
+      title: SnapshotCreationModel
+      type: object
+    SnapshotCreationSuccessModel:
+      example:
+        targetGameApiKey: targetGameApiKey
+      properties:
+        targetGameApiKey:
+          title: targetGameApiKey
+          type: string
+      title: SnapshotCreationSuccessModel
+      type: object
+    SnapshotModel:
+      example:
+        createdBy: createdBy
+        created: 2000-01-23T04:56:07.000+00:00
+        description: description
+        indexProgress:
+          key: 0
+        id: id
+        published: true
+        status: status
+      properties:
+        created:
+          format: date-time
+          title: created
+          type: string
+        createdBy:
+          title: createdBy
+          type: string
+        description:
+          title: description
+          type: string
+        id:
+          title: id
+          type: string
+        indexProgress:
+          additionalProperties:
+            format: int64
+            type: integer
+          title: indexProgress
+          type: object
+        published:
+          title: published
+          type: boolean
+        status:
+          title: status
+          type: string
+      title: SnapshotModel
+      type: object
+    SnapshotScriptVersionListModel:
+      example:
+        scriptVersions:
+        - createdDate: 2000-01-23T04:56:07.000+00:00
+          description: description
+          cloudCodeVersion: 0
+          id: id
+          live: true
+        - createdDate: 2000-01-23T04:56:07.000+00:00
+          description: description
+          cloudCodeVersion: 0
+          id: id
+          live: true
+      properties:
+        scriptVersions:
+          items:
+            $ref: '#/components/schemas/SnapshotScriptVersionModel'
+          title: scriptVersions
+          type: array
+      title: SnapshotScriptVersionListModel
+      type: object
+    SnapshotScriptVersionModel:
+      example:
+        createdDate: 2000-01-23T04:56:07.000+00:00
+        description: description
+        cloudCodeVersion: 0
+        id: id
+        live: true
+      properties:
+        cloudCodeVersion:
+          format: int64
+          title: cloudCodeVersion
+          type: integer
+        createdDate:
+          format: date-time
+          title: createdDate
+          type: string
+        description:
+          title: description
+          type: string
+        id:
+          title: id
+          type: string
+        live:
+          title: live
+          type: boolean
+      title: SnapshotScriptVersionModel
+      type: object
+    TestHarnessScenarioModel:
+      example:
+        scenarioJson: "{}"
+        scenarioName: scenarioName
+      properties:
+        scenarioJson:
+          title: scenarioJson
+          type: object
+        scenarioName:
+          title: scenarioName
+          type: string
+      title: TestHarnessScenarioModel
+      type: object
+    importAcceptUsingPOST_request:
+      properties:
+        file:
+          description: file
+          format: binary
+          type: string
+      required:
+      - file
+      type: object
+  securitySchemes:
+    accessToken:
+      in: header
+      name: accessToken
+      type: apiKey
+      x-apikeyInfoFunc: openapi_server.controllers.security_controller.info_from_accessToken
+    basic:
+      scheme: basic
+      type: http
+      x-basicInfoFunc: openapi_server.controllers.security_controller.info_from_basic
+    jwt:
+      in: header
+      name: jwt
+      type: apiKey
+      x-apikeyInfoFunc: openapi_server.controllers.security_controller.info_from_jwt

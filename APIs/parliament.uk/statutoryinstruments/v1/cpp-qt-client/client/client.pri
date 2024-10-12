@@ -1,0 +1,85 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIBusinessItem.h \
+    $${PWD}/OAIBusinessItemHouse.h \
+    $${PWD}/OAIBusinessItemResource.h \
+    $${PWD}/OAIBusinessItemResourceCollection.h \
+    $${PWD}/OAIDepartment.h \
+    $${PWD}/OAIHouse.h \
+    $${PWD}/OAILaidPaperSummary.h \
+    $${PWD}/OAILaidPaperType.h \
+    $${PWD}/OAILayingBody.h \
+    $${PWD}/OAILayingBodyResource.h \
+    $${PWD}/OAILayingBodyResourceCollection.h \
+    $${PWD}/OAILink.h \
+    $${PWD}/OAIParliamentaryProcess.h \
+    $${PWD}/OAIProblemDetails.h \
+    $${PWD}/OAIProcedure.h \
+    $${PWD}/OAIProcedureDetails.h \
+    $${PWD}/OAIProcedureDetailsResource.h \
+    $${PWD}/OAIProcedureResource.h \
+    $${PWD}/OAIProcedureResourceCollection.h \
+    $${PWD}/OAIProposedNegativeStatutoryInstrument.h \
+    $${PWD}/OAIProposedNegativeStatutoryInstrumentResource.h \
+    $${PWD}/OAIProposedNegativeStatutoryInstrumentResourceCollection.h \
+    $${PWD}/OAIStatutoryInstrument.h \
+    $${PWD}/OAIStatutoryInstrumentResource.h \
+    $${PWD}/OAIStatutoryInstrumentResourceCollection.h \
+    $${PWD}/OAIStatutoryInstrumentType.h \
+# APIs
+    $${PWD}/OAIBusinessItemApi.h \
+    $${PWD}/OAILayingBodyApi.h \
+    $${PWD}/OAIProcedureApi.h \
+    $${PWD}/OAIProposedNegativeStatutoryInstrumentApi.h \
+    $${PWD}/OAIStatutoryInstrumentApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIBusinessItem.cpp \
+    $${PWD}/OAIBusinessItemHouse.cpp \
+    $${PWD}/OAIBusinessItemResource.cpp \
+    $${PWD}/OAIBusinessItemResourceCollection.cpp \
+    $${PWD}/OAIDepartment.cpp \
+    $${PWD}/OAIHouse.cpp \
+    $${PWD}/OAILaidPaperSummary.cpp \
+    $${PWD}/OAILaidPaperType.cpp \
+    $${PWD}/OAILayingBody.cpp \
+    $${PWD}/OAILayingBodyResource.cpp \
+    $${PWD}/OAILayingBodyResourceCollection.cpp \
+    $${PWD}/OAILink.cpp \
+    $${PWD}/OAIParliamentaryProcess.cpp \
+    $${PWD}/OAIProblemDetails.cpp \
+    $${PWD}/OAIProcedure.cpp \
+    $${PWD}/OAIProcedureDetails.cpp \
+    $${PWD}/OAIProcedureDetailsResource.cpp \
+    $${PWD}/OAIProcedureResource.cpp \
+    $${PWD}/OAIProcedureResourceCollection.cpp \
+    $${PWD}/OAIProposedNegativeStatutoryInstrument.cpp \
+    $${PWD}/OAIProposedNegativeStatutoryInstrumentResource.cpp \
+    $${PWD}/OAIProposedNegativeStatutoryInstrumentResourceCollection.cpp \
+    $${PWD}/OAIStatutoryInstrument.cpp \
+    $${PWD}/OAIStatutoryInstrumentResource.cpp \
+    $${PWD}/OAIStatutoryInstrumentResourceCollection.cpp \
+    $${PWD}/OAIStatutoryInstrumentType.cpp \
+# APIs
+    $${PWD}/OAIBusinessItemApi.cpp \
+    $${PWD}/OAILayingBodyApi.cpp \
+    $${PWD}/OAIProcedureApi.cpp \
+    $${PWD}/OAIProposedNegativeStatutoryInstrumentApi.cpp \
+    $${PWD}/OAIStatutoryInstrumentApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

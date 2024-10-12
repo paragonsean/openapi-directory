@@ -1,0 +1,2532 @@
+openapi: 3.0.1
+info:
+  contact:
+    name: davidmasclet@gisgraphy.com
+  description: |
+    Since 2006, [Gisgraphy](http://www.gisgraphy.com) is a free, open source framework that offers the possibility to do geolocalisation and geocoding via Java APIs or REST webservices. Because geocoding is nothing without data, it provides an easy to use importer that will automatically download and import the necessary (free) data to your local database ([OpenStreetMap](http://www.openstreetmap.org/), [Geonames](http://www.geonames.org/) and [Quattroshapes](http://www.quattroshapes.com/): more than 100 million entries). You can also add your own data with the Web interface or the importer connectors provided. Gisgraphy is production ready, and has been designed to be scalable(load balanced), performant and used in other languages than just java : results can be output in XML, JSON, PHP, Python, Ruby, YAML, GeoRSS, and Atom. One of the most popular GPS tracking System (OpenGTS) also includes a Gisgraphy client...Gisgraphy is a framework. As a result it's flexible and powerful enough to be used in a lot of different use cases. [read more](http://www.gisgraphy.com)
+
+
+    if you use the premium servers, you can use the api key to test the webservices
+  license:
+    name: LGPL license V3.
+    url: http://www.gisgraphy.com/license.html
+  termsOfService: http://www.gisgraphy.com/free-access.htm | https://premium.gisgraphy.com/terms
+  title: Gisgraphy webservices
+  version: 4.0.0
+  x-apisguru-categories:
+  - location
+  x-logo:
+    backgroundColor: '#FFFFFF'
+    url: https://twitter.com/gisgraphy/profile_image?size=original
+  x-origin:
+  - format: swagger
+    url: http://www.gisgraphy.com/documentation/gisgraphy-swagger.json
+    version: "2.0"
+  x-providerName: gisgraphy.com
+servers:
+- url: http://free.gisgraphy.com/
+- url: https://free.gisgraphy.com/
+paths:
+  /addressparser/parse:
+    get:
+      description: "The address parser and address standardizer, are part of the Gisgraphy\
+        \ project (free open source worldwide geocoder). Address parsing is the process\
+        \ of dividing a single address string into its individual component parts.\
+        \ Please visit [http://www.address-parser.net](http://www.address-parser.net)\
+        \ for more details "
+      operationId: addressparsing
+      parameters:
+      - description: A postal address.
+        in: query
+        name: address
+        required: true
+        schema:
+          type: string
+      - description: The ISO 3166 Alpha 2 code of the country.
+        in: query
+        name: country
+        schema:
+          type: string
+      - description: The output format.
+        in: query
+        name: format
+        schema:
+          default: XML
+          enum:
+          - XML
+          - JSON
+          - PHP
+          - RUBY
+          - PYTHON
+          - YAML
+          type: string
+      - description: "The callback method name (optional), use to wrap the content\
+          \ into a (alphanumeric) Javascript method. Works only for script output\
+          \ formats (JSON, PHP, Ruby, Python)"
+        in: query
+        name: callback
+        schema:
+          type: string
+      - description: "indents the results.Default to false. Possible values are true\
+          \ or false (or on when used with the rest service. If you use a checkbox\
+          \ in a web form, to indent the results, the value will be 'on' or 'off',\
+          \ so for a simple use : the value of indent can be 'true' or 'on'"
+        in: query
+        name: indent
+        schema:
+          default: false
+          type: boolean
+      - description: "Whether the address should be standardized after parsing, the\
+          \ value will be 'on' or 'off', so for a simple use : the value of indent\
+          \ can be 'true' or 'on'"
+        in: query
+        name: standardize
+        schema:
+          default: false
+          type: boolean
+      - description: "UNUSED YET. Whether the address should be geocoded after parsing,\
+          \ the value will be 'on' or 'off', so for a simple use : the value of indent\
+          \ can be 'true' or 'on'"
+        in: query
+        name: geocode
+        schema:
+          default: false
+          type: boolean
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AddressResultsDto'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/AddressResultsDto'
+            application/php:
+              schema:
+                $ref: '#/components/schemas/AddressResultsDto'
+            application/ruby:
+              schema:
+                $ref: '#/components/schemas/AddressResultsDto'
+            application/yaml:
+              schema:
+                $ref: '#/components/schemas/AddressResultsDto'
+            application/python:
+              schema:
+                $ref: '#/components/schemas/AddressResultsDto'
+          description: Sucessfully processed
+        "401":
+          content: {}
+          description: "Need auth. The API key parameter is missing or wrong, or doesn't\
+            \ correspond to any subscriptions"
+        "403":
+          content: {}
+          description: Unhauthorize (auth will change nothing).Your IP is not allowed.
+        "412":
+          content: {}
+          description: "Missing parameter. Some parameters required for the webservices\
+            \ ar missing, please consult documentation"
+        "429":
+          content: {}
+          description: Too many requests. You exceed the authorized rate
+        "500":
+          content: {}
+          description: Internal error
+      security:
+      - api_key: []
+      summary: split a raw address into several parts
+      tags:
+      - addressparser - standardizer
+      x-openapi-router-controller: openapi_server.controllers.addressparser__standardizer_controller
+  /fulltext/search:
+    get:
+      description: "The full text service allows you to search for features / places\
+        \ / street and do autocompletion . you can : Specify one or more words search\
+        \ on part of the name (auto completion / suggestion) Search for text or zip\
+        \ code Specify a GPS restriction (promote nearest, not sorted but has an impact\
+        \ on the score), Limit the results to a specific Language, Country, place\
+        \ type, Paginate the results, Specify the output verbosity, Tells if you want\
+        \ the output to be indented, Tells that all words are required or not, The\
+        \ search is case insensitive, use synonyms (Saint/st, ..), separator characters\
+        \ stripping, ..."
+      operationId: fulltxtsearch
+      parameters:
+      - description: "The searched text : The text for the query can be a zip code,\
+          \ a string or one or more strings"
+        in: query
+        name: q
+        required: true
+        schema:
+          type: string
+      - description: Whether the fulltext engine should considers all the words specified
+          as required. Defaults to false (since v 4.0). possible values are true|false
+          (or 'on' when used with the rest service)
+        in: query
+        name: allwordsrequired
+        required: true
+        schema:
+          default: false
+          type: boolean
+      - description: "The spellchecking (optional) : whether some suggestions should\
+          \ be provided if no results are found"
+        in: query
+        name: spellchecking
+        schema:
+          type: string
+      - description: "The latitude (north-south) for the location point to search\
+          \ around. The value is a floating number, between -90 and +90. It uses GPS\
+          \ coordinates"
+        in: query
+        name: lat
+        schema:
+          format: double
+          type: number
+      - description: TThe longitude (east-West) for the location point to search around.
+          The value is a floating number between -180 and +180. It uses GPS coordinates.
+        in: query
+        name: lng
+        schema:
+          format: double
+          type: number
+      - description: distance from the location point in meters we'd like to search
+          around. The value is a number > 0 if it is not specify or incorrect.
+        in: query
+        name: radius
+        schema:
+          default: 10000.0
+          format: double
+          type: number
+      - description: "If this parameter is set then it will search in part of the\
+          \ names of the street, place,.... It allow you to do auto completion auto\
+          \ suggestion. See the Gisgraphy leaflet plugin for more details. The JSON\
+          \ format will be forced if this parameter is true. See auto completion /\
+          \ suggestions engine for more details"
+        in: query
+        name: suggest
+        schema:
+          default: false
+          type: boolean
+      - description: "The output style verbosity (optional) : Determines the output\
+          \ verbosity. 4 styles are available"
+        in: query
+        name: style
+        schema:
+          default: MEDIUM
+          enum:
+          - SHORT
+          - MEDIUM
+          - LONG
+          - FULL
+          type: string
+      - description: "limit the search to the specified ISO 3166 country code. Default\
+          \ : search in all countries"
+        in: query
+        name: country
+        schema:
+          type: string
+      - description: "The language code (optional) : The iso 639 Alpha2 or alpha3\
+          \ Language Code. Some properties such as the AlternateName AdmNames and\
+          \ countryname belong to a certain language code. The language parameter\
+          \ can limit the output of those fields to a certain language (it only apply\
+          \ when style parameter='style') : If the language code does not exists or\
+          \ is not specified, properties with all the languages are retrieved If it\
+          \ exists, the properties with the specified language code, are retrieved"
+        in: query
+        name: lang
+        schema:
+          type: string
+      - description: The output format.
+        in: query
+        name: format
+        schema:
+          default: XML
+          enum:
+          - XML
+          - JSON
+          - PHP
+          - RUBY
+          - PYTHON
+          - YAML
+          - ATOM
+          - GEORSS
+          type: string
+      - description: "The first pagination index. Numbered from 1. If the number is\
+          \ < 1 or not specified, it will be set to the default value : 1"
+        in: query
+        name: from
+        schema:
+          default: 1
+          format: int32
+          type: integer
+      - description: "The last pagination index. if < 1 or not specified, it will\
+          \ be set to startindex + 10. Max = 10 (can be changed)"
+        in: query
+        name: to
+        schema:
+          default: 10
+          format: int32
+          type: integer
+      - description: "The callback method name (optional), use to wrap the content\
+          \ into a (alphanumeric) Javascript method. Works only for script output\
+          \ formats (JSON, PHP, Ruby, Python)"
+        in: query
+        name: callback
+        schema:
+          type: string
+      - description: "indents the results.Default to false. Possible values are true\
+          \ or false (or on when used with the rest service. If you use a checkbox\
+          \ in a web form, to indent the results, the value will be 'on' or 'off',\
+          \ so for a simple use : the value of indent can be 'true' or 'on'"
+        in: query
+        name: indent
+        schema:
+          default: false
+          type: boolean
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FulltextResultsDto'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/FulltextResultsDto'
+            application/php:
+              schema:
+                $ref: '#/components/schemas/FulltextResultsDto'
+            application/ruby:
+              schema:
+                $ref: '#/components/schemas/FulltextResultsDto'
+            application/yaml:
+              schema:
+                $ref: '#/components/schemas/FulltextResultsDto'
+            application/python:
+              schema:
+                $ref: '#/components/schemas/FulltextResultsDto'
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/FulltextResultsDto'
+          description: Sucessfully processed
+        "401":
+          content: {}
+          description: "Need auth. The API key parameter is missing or wrong, or doesn't\
+            \ correspond to any subscriptions"
+        "403":
+          content: {}
+          description: Unhauthorize (auth will change nothing).Your IP is not allowed.
+        "412":
+          content: {}
+          description: "Missing parameter. Some parameters required for the webservices\
+            \ ar missing, please consult documentation"
+        "429":
+          content: {}
+          description: Too many requests. You exceed the authorized rate
+        "500":
+          content: {}
+          description: Internal error
+      security:
+      - api_key: []
+      summary: search for places by text around a GPS point
+      tags:
+      - fulltext - autocomplete
+      x-openapi-router-controller: openapi_server.controllers.fulltext__autocomplete_controller
+  /geocoding/geocode:
+    get:
+      description: "The Gisgraphy geocoding service allows you to transform postal\
+        \ addresses or other descriptions (a street, a city, a postal code, a country,\
+        \ or a combination) of a location into a (latitude, longitude) coordinate."
+      operationId: geocode
+      parameters:
+      - description: "A postal address, structured or not, a street, a city, a postal\
+          \ code, a country, or a combination."
+        in: query
+        name: address
+        required: true
+        schema:
+          type: string
+      - description: The country where the place/address is. It is used to determine
+          the postal address format and to improve performance. It will probably be
+          optional in next version to ease the usability. The value must be the ISO
+          3166 Alpha 2 code of the country.
+        in: query
+        name: country
+        schema:
+          type: string
+      - description: "Whether the given address is a postal address. default to false.\
+          \ In other words, if the address follow the specification or if it is a\
+          \ well-formed address as it was written on an envelope. This parameter will\
+          \ enable the parsing of the address by the address parser before geocoding,\
+          \ this way, the relevance will be better because because if parsing is successful,\
+          \ we will know the meaning of each word. Note that you can also specify\
+          \ each field if you already know them."
+        in: query
+        name: postal
+        schema:
+          type: string
+      - description: The output format.
+        in: query
+        name: format
+        schema:
+          default: XML
+          enum:
+          - XML
+          - JSON
+          - PHP
+          - RUBY
+          - PYTHON
+          - YAML
+          type: string
+      - description: "The first pagination index. Numbered from 1. If the number is\
+          \ < 1 or not specified, it will be set to the default value : 1"
+        in: query
+        name: from
+        schema:
+          default: 1
+          format: int32
+          type: integer
+      - description: "The last pagination index. if < 1 or not specified, it will\
+          \ be set to startindex + 10. Max = 10 (can be changed)"
+        in: query
+        name: to
+        schema:
+          default: 10
+          format: int32
+          type: integer
+      - description: "The callback method name (optional), use to wrap the content\
+          \ into a (alphanumeric) Javascript method. Works only for script output\
+          \ formats (JSON, PHP, Ruby, Python)"
+        in: query
+        name: callback
+        schema:
+          type: string
+      - description: "indents the results. Possible values are true or false (or on\
+          \ when used with the rest service. If you use a checkbox in a web form,\
+          \ to indent the results, the value will be 'on' or 'off', so for a simple\
+          \ use : the value of indent can be 'true' or 'on'"
+        in: query
+        name: indent
+        schema:
+          default: false
+          type: boolean
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AddressResultsDto'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/AddressResultsDto'
+            application/php:
+              schema:
+                $ref: '#/components/schemas/AddressResultsDto'
+            application/ruby:
+              schema:
+                $ref: '#/components/schemas/AddressResultsDto'
+            application/yaml:
+              schema:
+                $ref: '#/components/schemas/AddressResultsDto'
+            application/python:
+              schema:
+                $ref: '#/components/schemas/AddressResultsDto'
+          description: Sucessfully processed
+        "401":
+          content: {}
+          description: "Need auth. The API key parameter is missing or wrong, or doesn't\
+            \ correspond to any subscriptions"
+        "403":
+          content: {}
+          description: Unhauthorize (auth will change nothing).Your IP is not allowed.
+        "412":
+          content: {}
+          description: "Missing parameter. Some parameters required for the webservices\
+            \ ar missing, please consult documentation"
+        "429":
+          content: {}
+          description: Too many requests. You exceed the authorized rate
+        "500":
+          content: {}
+          description: Internal error
+      security:
+      - api_key: []
+      summary: Geocode an address
+      tags:
+      - geocoding
+      x-openapi-router-controller: openapi_server.controllers.geocoding_controller
+  /geoloc/search:
+    get:
+      description: "The geolocalisation service allows to search for features around\
+        \ a earth location. you can Specify GPS position, Limit the results to a specific\
+        \ place type (e.g : search all monuments around a point), Limit the results\
+        \ to a specified radius, Paginate the results, Tells if you want the output\
+        \ to be indented (currently, applies only for XML, not JSON for performance\
+        \ reasons. May change in next version)"
+      operationId: geoloc
+      parameters:
+      - description: "The latitude (north-south) for the location point to search\
+          \ around. The value is a floating number, between -90 and +90. It uses GPS\
+          \ coordinates"
+        in: query
+        name: lat
+        required: true
+        schema:
+          format: double
+          type: number
+      - description: TThe longitude (east-West) for the location point to search around.
+          The value is a floating number between -180 and +180. It uses GPS coordinates.
+        in: query
+        name: lng
+        required: true
+        schema:
+          format: double
+          type: number
+      - description: distance from the location point in meters we'd like to search
+          around. The value is a number > 0 if it is not specify or incorrect.
+        in: query
+        name: radius
+        schema:
+          default: 10000.0
+          format: double
+          type: number
+      - description: "Whether (or not) we want the distance field to be output. This\
+          \ option is useful to improve the performance if we don't care about the\
+          \ distance (e.g : we search for name). Of course, the results won't be sorted\
+          \ by distance. If you use a checkbox in a form to indent the results, the\
+          \ value will be 'on' or 'off', so to simplify the use : the value for the\
+          \ web service can be 'true' or 'on'"
+        in: query
+        name: distance
+        schema:
+          default: true
+          type: boolean
+      - description: filter search for a given placetype
+        in: query
+        name: placetype
+        schema:
+          type: string
+      - description: The output format.
+        in: query
+        name: format
+        schema:
+          default: XML
+          enum:
+          - XML
+          - JSON
+          - PHP
+          - RUBY
+          - PYTHON
+          - YAML
+          type: string
+      - description: "The first pagination index. Numbered from 1. If the number is\
+          \ < 1 or not specified, it will be set to the default value : 1"
+        in: query
+        name: from
+        schema:
+          default: 1
+          format: int32
+          type: integer
+      - description: "The last pagination index. if < 1 or not specified, it will\
+          \ be set to startindex + 10. Max = 10 (can be changed)"
+        in: query
+        name: to
+        schema:
+          default: 10
+          format: int32
+          type: integer
+      - description: "The callback method name (optional), use to wrap the content\
+          \ into a (alphanumeric) Javascript method. Works only for script output\
+          \ formats (JSON, PHP, Ruby, Python)"
+        in: query
+        name: callback
+        schema:
+          type: string
+      - description: "indents the results.Default to false. Possible values are true\
+          \ or false (or on when used with the rest service. If you use a checkbox\
+          \ in a web form, to indent the results, the value will be 'on' or 'off',\
+          \ so for a simple use : the value of indent can be 'true' or 'on'"
+        in: query
+        name: indent
+        schema:
+          default: false
+          type: boolean
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GeolocResultsDto'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/GeolocResultsDto'
+            application/php:
+              schema:
+                $ref: '#/components/schemas/GeolocResultsDto'
+            application/ruby:
+              schema:
+                $ref: '#/components/schemas/GeolocResultsDto'
+            application/yaml:
+              schema:
+                $ref: '#/components/schemas/GeolocResultsDto'
+            application/python:
+              schema:
+                $ref: '#/components/schemas/GeolocResultsDto'
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/GeolocResultsDto'
+          description: Sucessfully processed
+        "401":
+          content: {}
+          description: "Need auth. The API key parameter is missing or wrong, or doesn't\
+            \ correspond to any subscriptions"
+        "403":
+          content: {}
+          description: Unhauthorize (auth will change nothing).Your IP is not allowed.
+        "412":
+          content: {}
+          description: "Missing parameter. Some parameters required for the webservices\
+            \ ar missing, please consult documentation"
+        "429":
+          content: {}
+          description: Too many requests. You exceed the authorized rate
+        "500":
+          content: {}
+          description: Internal error
+      security:
+      - api_key: []
+      summary: Geocode an address
+      tags:
+      - geolocalisation
+      x-openapi-router-controller: openapi_server.controllers.geolocalisation_controller
+  /reversegeocoding/reversegeocode:
+    get:
+      description: The Reverse geocoding service allows to search for an address for
+        a given GPS position.
+      operationId: reversegeocode
+      parameters:
+      - description: "The latitude (north-south) for the location point to search\
+          \ around. The value is a floating number, between -90 and +90. It uses GPS\
+          \ coordinates"
+        in: query
+        name: lat
+        required: true
+        schema:
+          format: double
+          type: number
+      - description: TThe longitude (east-West) for the location point to search around.
+          The value is a floating number between -180 and +180. It uses GPS coordinates.
+        in: query
+        name: lng
+        required: true
+        schema:
+          format: double
+          type: number
+      - description: The output format.
+        in: query
+        name: format
+        schema:
+          default: XML
+          enum:
+          - XML
+          - JSON
+          - PHP
+          - RUBY
+          - PYTHON
+          - YAML
+          type: string
+      - description: "The first pagination index. Numbered from 1. If the number is\
+          \ < 1 or not specified, it will be set to the default value : 1"
+        in: query
+        name: from
+        schema:
+          default: 1
+          format: int32
+          type: integer
+      - description: "The last pagination index. if < 1 or not specified, it will\
+          \ be set to startindex + 10. Max = 10 (can be changed)"
+        in: query
+        name: to
+        schema:
+          default: 10
+          format: int32
+          type: integer
+      - description: "The callback method name (optional), use to wrap the content\
+          \ into a (alphanumeric) Javascript method. Works only for script output\
+          \ formats (JSON, PHP, Ruby, Python)"
+        in: query
+        name: callback
+        schema:
+          type: string
+      - description: "indents the results. Possible values are true or false (or on\
+          \ when used with the rest service. If you use a checkbox in a web form,\
+          \ to indent the results, the value will be 'on' or 'off', so for a simple\
+          \ use : the value of indent can be 'true' or 'on'"
+        in: query
+        name: indent
+        schema:
+          default: false
+          type: boolean
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AddressResultsDto'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/AddressResultsDto'
+            application/php:
+              schema:
+                $ref: '#/components/schemas/AddressResultsDto'
+            application/ruby:
+              schema:
+                $ref: '#/components/schemas/AddressResultsDto'
+            application/yaml:
+              schema:
+                $ref: '#/components/schemas/AddressResultsDto'
+            application/python:
+              schema:
+                $ref: '#/components/schemas/AddressResultsDto'
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/AddressResultsDto'
+          description: Sucessfully processed
+        "401":
+          content: {}
+          description: "Need auth. The API key parameter is missing or wrong, or doesn't\
+            \ correspond to any subscriptions"
+        "403":
+          content: {}
+          description: Unhauthorize (auth will change nothing).Your IP is not allowed.
+        "412":
+          content: {}
+          description: "Missing parameter. Some parameters required for the webservices\
+            \ ar missing, please consult documentation"
+        "429":
+          content: {}
+          description: Too many requests. You exceed the authorized rate
+        "500":
+          content: {}
+          description: Internal error
+      security:
+      - api_key: []
+      summary: Reverse geocode an address
+      tags:
+      - reversegeocoding
+      x-openapi-router-controller: openapi_server.controllers.reversegeocoding_controller
+  /street/find:
+    get:
+      description: "The street service allows you to search for street by GPS position.\
+        \ You can : Specify GPS position, Give the beginning or a part of the name\
+        \ of the street (useful for autocompletion), Limit search to a specific type\
+        \ (e.g : Pedestrian, highway, residential, ... 25 types available), Limit\
+        \ search to a specified radius, Limit search to one way streets,"
+      operationId: streetsearch
+      parameters:
+      - description: "The latitude (north-south) for the location point to search\
+          \ around. The value is a floating number, between -90 and +90. It uses GPS\
+          \ coordinates"
+        in: query
+        name: lat
+        required: true
+        schema:
+          format: double
+          type: number
+      - description: TThe longitude (east-West) for the location point to search around.
+          The value is a floating number between -180 and +180. It uses GPS coordinates.
+        in: query
+        name: lng
+        required: true
+        schema:
+          format: double
+          type: number
+      - description: distance from the location point in meters we'd like to search
+          around. The value is a number > 0 if it is not specify or incorrect.
+        in: query
+        name: radius
+        schema:
+          default: 10000.0
+          format: double
+          type: number
+      - description: "whether the street should be a oneWay street (optional) : limit\
+          \ the search to the street that are one way street. If you use a checkbox\
+          \ in a form to indent the results, the value will be 'on' or 'off', so to\
+          \ simplify the use : the value for the web service can be 'true' or 'on'"
+        in: query
+        name: oneway
+        schema:
+          default: false
+          type: boolean
+      - description: "Whether (or not) we want the distance field to be output. This\
+          \ option is useful to improve the performance if we don't care about the\
+          \ distance (e.g : we search for name). Of course, the results won't be sorted\
+          \ by distance. If you use a checkbox in a form to indent the results, the\
+          \ value will be 'on' or 'off', so to simplify the use : the value for the\
+          \ web service can be 'true' or 'on'"
+        in: query
+        name: distance
+        schema:
+          default: true
+          type: boolean
+      - description: filter search with a stret type
+        in: query
+        name: streettype
+        schema:
+          type: string
+      - description: The output format.
+        in: query
+        name: format
+        schema:
+          default: XML
+          enum:
+          - XML
+          - JSON
+          - PHP
+          - RUBY
+          - PYTHON
+          - YAML
+          type: string
+      - description: "The first pagination index. Numbered from 1. If the number is\
+          \ < 1 or not specified, it will be set to the default value : 1"
+        in: query
+        name: from
+        schema:
+          default: 1
+          format: int32
+          type: integer
+      - description: "The last pagination index. if < 1 or not specified, it will\
+          \ be set to startindex + 10. Max = 10 (can be changed)"
+        in: query
+        name: to
+        schema:
+          default: 10
+          format: int32
+          type: integer
+      - description: "The callback method name (optional), use to wrap the content\
+          \ into a (alphanumeric) Javascript method. Works only for script output\
+          \ formats (JSON, PHP, Ruby, Python)"
+        in: query
+        name: callback
+        schema:
+          type: string
+      - description: "indents the results. Possible values are true or false (or on\
+          \ when used with the rest service. If you use a checkbox in a web form,\
+          \ to indent the results, the value will be 'on' or 'off', so for a simple\
+          \ use : the value of indent can be 'true' or 'on'"
+        in: query
+        name: indent
+        schema:
+          default: false
+          type: boolean
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StreetSearchResultsDto'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/StreetSearchResultsDto'
+            application/php:
+              schema:
+                $ref: '#/components/schemas/StreetSearchResultsDto'
+            application/ruby:
+              schema:
+                $ref: '#/components/schemas/StreetSearchResultsDto'
+            application/yaml:
+              schema:
+                $ref: '#/components/schemas/StreetSearchResultsDto'
+            application/python:
+              schema:
+                $ref: '#/components/schemas/StreetSearchResultsDto'
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/StreetSearchResultsDto'
+          description: Sucessfully processed
+        "401":
+          content: {}
+          description: "Need auth. The API key parameter is missing or wrong, or doesn't\
+            \ correspond to any subscriptions"
+        "403":
+          content: {}
+          description: Unhauthorize (auth will change nothing).Your IP is not allowed.
+        "412":
+          content: {}
+          description: "Missing parameter. Some parameters required for the webservices\
+            \ ar missing, please consult documentation"
+        "429":
+          content: {}
+          description: Too many requests. You exceed the authorized rate
+        "500":
+          content: {}
+          description: Internal error
+      security:
+      - api_key: []
+      summary: Geocode an address
+      tags:
+      - streetservice
+      x-openapi-router-controller: openapi_server.controllers.streetservice_controller
+components:
+  schemas:
+    Address:
+      example:
+        POBox: POBox
+        country: country
+        zipCode: zipCode
+        distance: 1.4658129805029452
+        city: city
+        prefecture: prefecture
+        lote: lote
+        streetNameIntersection: streetNameIntersection
+        countrycode: countrycode
+        preDirection: preDirection
+        houseNumber: houseNumber
+        dependentLocality: dependentLocality
+        ward: ward
+        citySubdivision: citySubdivision
+        civicNumberSuffix: civicNumberSuffix
+        postTown: postTown
+        geocodinglevel: NONE
+        postDirection: postDirection
+        streetName: streetName
+        recipientName: recipientName
+        block: block
+        preDirectionIntersection: preDirectionIntersection
+        adm2NameAlternatesLocalized:
+          key:
+          - adm2NameAlternatesLocalized
+          - adm2NameAlternatesLocalized
+        countryNameAlternatesLocalized:
+          key:
+          - countryNameAlternatesLocalized
+          - countryNameAlternatesLocalized
+        id: 5
+        state: state
+        suiteNumber: suiteNumber
+        floor: floor
+        sector: sector
+        lat: 5.637376656633329
+        streetType: streetType
+        adm1NameAlternatesLocalized:
+          key:
+          - adm1NameAlternatesLocalized
+          - adm1NameAlternatesLocalized
+        lng: 2.3021358869347655
+        quadrant: quadrant
+        confidence: confidence
+        POBoxAgency: POBoxAgency
+        suiteType: suiteType
+        streetTypeIntersection: streetTypeIntersection
+        postDirectionIntersection: postDirectionIntersection
+        houseNumberInfo: houseNumberInfo
+        district: district
+        POBoxInfo: POBoxInfo
+        name: name
+        nameAlternatesLocalized:
+          key:
+          - nameAlternatesLocalized
+          - nameAlternatesLocalized
+        extraInfo: extraInfo
+        quarter: quarter
+      properties:
+        POBox:
+          description: "Post office box, Boite postale, Casilla de Correo,..."
+          title: POBox
+          type: string
+        POBoxAgency:
+          description: "Agency where the office box, Boite postale, Casilla de Correo\
+            \ is"
+          title: POBoxAgency
+          type: string
+        POBoxInfo:
+          description: "extra info on post office box, Boite postale, Casilla de Correo,.."
+          title: POBoxInfo
+          type: string
+        adm1NameAlternatesLocalized:
+          additionalProperties:
+            items:
+              type: string
+            type: array
+          title: adm1NameAlternatesLocalized
+          type: object
+        adm2NameAlternatesLocalized:
+          additionalProperties:
+            items:
+              type: string
+            type: array
+          title: adm2NameAlternatesLocalized
+          type: object
+        block:
+          description: "The block in an address (Brasilia only) the block in austria,\
+            \ singapore,... address"
+          title: block
+          type: string
+        city:
+          description: "The city or locality, a small town or village name sometimes\
+            \ is included in an address when the Delivery Point is outside the boundary\
+            \ of the main Post Town that serves it."
+          title: city
+          type: string
+        citySubdivision:
+          description: A sub division of a city
+          title: citySubdivision
+          type: string
+        civicNumberSuffix:
+          description: The number that follows the house number (Canada only)
+          title: civicNumberSuffix
+          type: string
+        confidence:
+          description: An indicator that mesure how the parser is confident for the
+            result
+          title: confidence
+          type: string
+        country:
+          description: The country name
+          title: country
+          type: string
+        countryNameAlternatesLocalized:
+          additionalProperties:
+            items:
+              type: string
+            type: array
+          title: countryNameAlternatesLocalized
+          type: object
+        countrycode:
+          description: The countrycode given in the request
+          title: countrycode
+          type: string
+        dependentLocality:
+          description: '''Sub'' city atached to a big city'
+          title: dependentLocality
+          type: string
+        distance:
+          description: The distance of the address for the given parameter location
+            in the query
+          format: double
+          title: distance
+          type: number
+        district:
+          description: "The district, mainly use for Russia"
+          title: district
+          type: string
+        extraInfo:
+          description: "Informations on floor, unit, and sometimes POBOX,..."
+          title: extraInfo
+          type: string
+        floor:
+          description: "The floor in an address, not a floor number in a unit (Brasilia\
+            \ only)"
+          title: floor
+          type: string
+        geocodinglevel:
+          enum:
+          - NONE
+          - HOUSE_NUMBER
+          - STREET
+          - CITY
+          - STATE
+          - COUNTRY
+          title: geocodinglevel
+          type: string
+        houseNumber:
+          description: "Official number assigned to an address by the municipality,\
+            \ several languages supported"
+          title: houseNumber
+          type: string
+        houseNumberInfo:
+          description: All information that give extra information on the house number
+          title: houseNumberInfo
+          type: string
+        id:
+          description: An internal ID to identify the address
+          format: int64
+          title: id
+          type: integer
+        lat:
+          description: The latitude of the address
+          format: double
+          title: lat
+          type: number
+        lng:
+          description: The longitude of the address
+          format: double
+          title: lng
+          type: number
+        lote:
+          description: Lote in Brazilian address
+          title: lote
+          type: string
+        name:
+          description: "Name of the place, it is null in case of address but filled\
+            \ if common place. Name is different than recipient name"
+          title: name
+          type: string
+        nameAlternatesLocalized:
+          additionalProperties:
+            items:
+              type: string
+            type: array
+          title: nameAlternatesLocalized
+          type: object
+        postDirection:
+          description: The cardinal direction after the name of the street
+          title: postDirection
+          type: string
+        postDirectionIntersection:
+          description: The cardinal direction after the name of the intersection street
+          title: postDirectionIntersection
+          type: string
+        postTown:
+          description: a city is a required part of all postal addresses in the United
+            Kingdom
+          title: postTown
+          type: string
+        preDirection:
+          description: The cardinal direction before the name of the street
+          title: preDirection
+          type: string
+        preDirectionIntersection:
+          description: The cardinal direction before the name of the intersection
+            street
+          title: preDirectionIntersection
+          type: string
+        prefecture:
+          description: prefecture of China
+          title: prefecture
+          type: string
+        quadrant:
+          description: The quadrant in an address (Brasilia only)
+          title: quadrant
+          type: string
+        quarter:
+          description: A section of an urban settlement
+          title: quarter
+          type: string
+        recipientName:
+          description: Name of the organisation or person at the given address
+          title: recipientName
+          type: string
+        sector:
+          description: The sector in an address (Brasilia only)
+          title: sector
+          type: string
+        state:
+          description: "The state or county when applicable, can be fullname or abbreviation"
+          title: state
+          type: string
+        streetName:
+          description: The official name of the street or the ordinal number
+          title: streetName
+          type: string
+        streetNameIntersection:
+          description: The official name of the intersection street
+          title: streetNameIntersection
+          type: string
+        streetType:
+          description: The type of the street
+          title: streetType
+          type: string
+        streetTypeIntersection:
+          description: The type of the intersection street
+          title: streetTypeIntersection
+          type: string
+        suiteNumber:
+          description: "Informations on the unit, mainly used and filled by standardizer"
+          title: suiteNumber
+          type: string
+        suiteType:
+          description: "Informations on the unit, mainly used and filled by standardizer"
+          title: suiteType
+          type: string
+        ward:
+          description: Ward in japanese address
+          title: ward
+          type: string
+        zipCode:
+          description: The zip or post code
+          title: zipCode
+          type: string
+      title: Address
+      type: object
+    AddressResultsDto:
+      example:
+        result:
+        - POBox: POBox
+          country: country
+          zipCode: zipCode
+          distance: 1.4658129805029452
+          city: city
+          prefecture: prefecture
+          lote: lote
+          streetNameIntersection: streetNameIntersection
+          countrycode: countrycode
+          preDirection: preDirection
+          houseNumber: houseNumber
+          dependentLocality: dependentLocality
+          ward: ward
+          citySubdivision: citySubdivision
+          civicNumberSuffix: civicNumberSuffix
+          postTown: postTown
+          geocodinglevel: NONE
+          postDirection: postDirection
+          streetName: streetName
+          recipientName: recipientName
+          block: block
+          preDirectionIntersection: preDirectionIntersection
+          adm2NameAlternatesLocalized:
+            key:
+            - adm2NameAlternatesLocalized
+            - adm2NameAlternatesLocalized
+          countryNameAlternatesLocalized:
+            key:
+            - countryNameAlternatesLocalized
+            - countryNameAlternatesLocalized
+          id: 5
+          state: state
+          suiteNumber: suiteNumber
+          floor: floor
+          sector: sector
+          lat: 5.637376656633329
+          streetType: streetType
+          adm1NameAlternatesLocalized:
+            key:
+            - adm1NameAlternatesLocalized
+            - adm1NameAlternatesLocalized
+          lng: 2.3021358869347655
+          quadrant: quadrant
+          confidence: confidence
+          POBoxAgency: POBoxAgency
+          suiteType: suiteType
+          streetTypeIntersection: streetTypeIntersection
+          postDirectionIntersection: postDirectionIntersection
+          houseNumberInfo: houseNumberInfo
+          district: district
+          POBoxInfo: POBoxInfo
+          name: name
+          nameAlternatesLocalized:
+            key:
+            - nameAlternatesLocalized
+            - nameAlternatesLocalized
+          extraInfo: extraInfo
+          quarter: quarter
+        - POBox: POBox
+          country: country
+          zipCode: zipCode
+          distance: 1.4658129805029452
+          city: city
+          prefecture: prefecture
+          lote: lote
+          streetNameIntersection: streetNameIntersection
+          countrycode: countrycode
+          preDirection: preDirection
+          houseNumber: houseNumber
+          dependentLocality: dependentLocality
+          ward: ward
+          citySubdivision: citySubdivision
+          civicNumberSuffix: civicNumberSuffix
+          postTown: postTown
+          geocodinglevel: NONE
+          postDirection: postDirection
+          streetName: streetName
+          recipientName: recipientName
+          block: block
+          preDirectionIntersection: preDirectionIntersection
+          adm2NameAlternatesLocalized:
+            key:
+            - adm2NameAlternatesLocalized
+            - adm2NameAlternatesLocalized
+          countryNameAlternatesLocalized:
+            key:
+            - countryNameAlternatesLocalized
+            - countryNameAlternatesLocalized
+          id: 5
+          state: state
+          suiteNumber: suiteNumber
+          floor: floor
+          sector: sector
+          lat: 5.637376656633329
+          streetType: streetType
+          adm1NameAlternatesLocalized:
+            key:
+            - adm1NameAlternatesLocalized
+            - adm1NameAlternatesLocalized
+          lng: 2.3021358869347655
+          quadrant: quadrant
+          confidence: confidence
+          POBoxAgency: POBoxAgency
+          suiteType: suiteType
+          streetTypeIntersection: streetTypeIntersection
+          postDirectionIntersection: postDirectionIntersection
+          houseNumberInfo: houseNumberInfo
+          district: district
+          POBoxInfo: POBoxInfo
+          name: name
+          nameAlternatesLocalized:
+            key:
+            - nameAlternatesLocalized
+            - nameAlternatesLocalized
+          extraInfo: extraInfo
+          quarter: quarter
+        QTime: 0
+        numFound: 6
+        message: message
+        parsedAddress:
+          POBox: POBox
+          country: country
+          zipCode: zipCode
+          distance: 1.4658129805029452
+          city: city
+          prefecture: prefecture
+          lote: lote
+          streetNameIntersection: streetNameIntersection
+          countrycode: countrycode
+          preDirection: preDirection
+          houseNumber: houseNumber
+          dependentLocality: dependentLocality
+          ward: ward
+          citySubdivision: citySubdivision
+          civicNumberSuffix: civicNumberSuffix
+          postTown: postTown
+          geocodinglevel: NONE
+          postDirection: postDirection
+          streetName: streetName
+          recipientName: recipientName
+          block: block
+          preDirectionIntersection: preDirectionIntersection
+          adm2NameAlternatesLocalized:
+            key:
+            - adm2NameAlternatesLocalized
+            - adm2NameAlternatesLocalized
+          countryNameAlternatesLocalized:
+            key:
+            - countryNameAlternatesLocalized
+            - countryNameAlternatesLocalized
+          id: 5
+          state: state
+          suiteNumber: suiteNumber
+          floor: floor
+          sector: sector
+          lat: 5.637376656633329
+          streetType: streetType
+          adm1NameAlternatesLocalized:
+            key:
+            - adm1NameAlternatesLocalized
+            - adm1NameAlternatesLocalized
+          lng: 2.3021358869347655
+          quadrant: quadrant
+          confidence: confidence
+          POBoxAgency: POBoxAgency
+          suiteType: suiteType
+          streetTypeIntersection: streetTypeIntersection
+          postDirectionIntersection: postDirectionIntersection
+          houseNumberInfo: houseNumberInfo
+          district: district
+          POBoxInfo: POBoxInfo
+          name: name
+          nameAlternatesLocalized:
+            key:
+            - nameAlternatesLocalized
+            - nameAlternatesLocalized
+          extraInfo: extraInfo
+          quarter: quarter
+      properties:
+        QTime:
+          description: how long the query took
+          format: int64
+          title: QTime
+          type: integer
+        message:
+          description: a message
+          title: message
+          type: string
+        numFound:
+          description: how many result found
+          format: int32
+          title: numFound
+          type: integer
+        parsedAddress:
+          $ref: '#/components/schemas/Address'
+        result:
+          items:
+            $ref: '#/components/schemas/Address'
+          title: result
+          type: array
+      title: AddressResultsDto
+      type: object
+    FulltextResultsDto:
+      example:
+        result:
+        - feature_id: 2
+          google_map_url: google_map_url
+          fips_code: fips_code
+          municipality: true
+          adm2_name: adm2_name
+          name_alternates:
+          - name_alternates
+          - name_alternates
+          openstreetmap_id: 7
+          capital_name: capital_name
+          is_in_place: is_in_place
+          score: 1.0246457
+          yahoo_map_url: yahoo_map_url
+          adm1_code: adm1_code
+          isoalpha3_country_code: isoalpha3_country_code
+          feature_code: feature_code
+          lat: 9.301444243932576
+          area: 5.962133916683182
+          placetype: placetype
+          adm3_name: adm3_name
+          adm2_code: adm2_code
+          lng: 4.145608029883936
+          level: 2
+          zipcodes:
+          - zipcodes
+          - zipcodes
+          is_in: is_in
+          is_in_zip:
+          - is_in_zip
+          - is_in_zip
+          adm1_names_alternate:
+          - adm1_names_alternate
+          - adm1_names_alternate
+          population: 1
+          country_code: country_code
+          feature_class: feature_class
+          name: name
+          house_numbers:
+          - number: number
+            location: location
+          - number: number
+            location: location
+          phone_prefix: phone_prefix
+          continent: continent
+          adm2_names_alternate:
+          - adm2_names_alternate
+          - adm2_names_alternate
+          fully_qualified_name: fully_qualified_name
+          amenity: amenity
+          name_ascii: name_ascii
+          timezone: timezone
+          currency_code: currency_code
+          adm4_code: adm4_code
+          openstreetmap_map_url: openstreetmap_map_url
+          one_way: true
+          is_in_adm: is_in_adm
+          country_name: country_name
+          isoalpha2_country_code: isoalpha2_country_code
+          gtopo30: 7
+          postal_code_mask: postal_code_mask
+          elevation: 5
+          currency_name: currency_name
+          length: 3.616076749251911
+          tld: tld
+          country_names_alternate:
+          - country_names_alternate
+          - country_names_alternate
+          postal_code_regex: postal_code_regex
+          spoken_languages:
+          - spoken_languages
+          - spoken_languages
+          adm1_name: adm1_name
+          adm4_name: adm4_name
+          adm3_code: adm3_code
+          country_flag_url: country_flag_url
+          street_type: street_type
+          fully_qualified_address: fully_qualified_address
+        - feature_id: 2
+          google_map_url: google_map_url
+          fips_code: fips_code
+          municipality: true
+          adm2_name: adm2_name
+          name_alternates:
+          - name_alternates
+          - name_alternates
+          openstreetmap_id: 7
+          capital_name: capital_name
+          is_in_place: is_in_place
+          score: 1.0246457
+          yahoo_map_url: yahoo_map_url
+          adm1_code: adm1_code
+          isoalpha3_country_code: isoalpha3_country_code
+          feature_code: feature_code
+          lat: 9.301444243932576
+          area: 5.962133916683182
+          placetype: placetype
+          adm3_name: adm3_name
+          adm2_code: adm2_code
+          lng: 4.145608029883936
+          level: 2
+          zipcodes:
+          - zipcodes
+          - zipcodes
+          is_in: is_in
+          is_in_zip:
+          - is_in_zip
+          - is_in_zip
+          adm1_names_alternate:
+          - adm1_names_alternate
+          - adm1_names_alternate
+          population: 1
+          country_code: country_code
+          feature_class: feature_class
+          name: name
+          house_numbers:
+          - number: number
+            location: location
+          - number: number
+            location: location
+          phone_prefix: phone_prefix
+          continent: continent
+          adm2_names_alternate:
+          - adm2_names_alternate
+          - adm2_names_alternate
+          fully_qualified_name: fully_qualified_name
+          amenity: amenity
+          name_ascii: name_ascii
+          timezone: timezone
+          currency_code: currency_code
+          adm4_code: adm4_code
+          openstreetmap_map_url: openstreetmap_map_url
+          one_way: true
+          is_in_adm: is_in_adm
+          country_name: country_name
+          isoalpha2_country_code: isoalpha2_country_code
+          gtopo30: 7
+          postal_code_mask: postal_code_mask
+          elevation: 5
+          currency_name: currency_name
+          length: 3.616076749251911
+          tld: tld
+          country_names_alternate:
+          - country_names_alternate
+          - country_names_alternate
+          postal_code_regex: postal_code_regex
+          spoken_languages:
+          - spoken_languages
+          - spoken_languages
+          adm1_name: adm1_name
+          adm4_name: adm4_name
+          adm3_code: adm3_code
+          country_flag_url: country_flag_url
+          street_type: street_type
+          fully_qualified_address: fully_qualified_address
+        resultsSize: 1
+        QTime: 0
+        numFound: 1
+        maxScore: 6.0274563
+        message: message
+      properties:
+        QTime:
+          description: how long the query took
+          format: int64
+          title: QTime
+          type: integer
+        maxScore:
+          description: the max score value accross all the results found
+          format: float
+          title: maxScore
+          type: number
+        message:
+          description: a message
+          title: message
+          type: string
+        numFound:
+          description: how many results were found whatever the pagination
+          format: int32
+          title: numFound
+          type: integer
+        result:
+          items:
+            $ref: '#/components/schemas/SolrResponseDto'
+          title: result
+          type: array
+        resultsSize:
+          description: how many results are return
+          format: int32
+          title: resultsSize
+          type: integer
+      title: FulltextResultsDto
+      type: object
+    GeolocResultsDto:
+      example:
+        result:
+        - google_map_url: google_map_url
+          phonePrefix: phonePrefix
+          featureCode: featureCode
+          oneWay: true
+          openstreetmapId: 7
+          capitalName: capitalName
+          yahoo_map_url: yahoo_map_url
+          adm5Code: adm5Code
+          fullyQualifiedAddress: fullyQualifiedAddress
+          lat: 9.301444243932576
+          area: 1.4658129805029452
+          streetType: streetType
+          lng: 4.145608029883936
+          level: 2
+          featureClass: featureClass
+          adm5Name: adm5Name
+          fipsCode: fipsCode
+          population: 1
+          placeType: placeType
+          adm4Name: adm4Name
+          name: name
+          adm1Code: adm1Code
+          adm3Name: adm3Name
+          continent: continent
+          distance: 5.962133916683182
+          zipCodes:
+          - zipCodes
+          - zipCodes
+          amenity: amenity
+          timezone: timezone
+          asciiName: asciiName
+          isInZip: isInZip
+          openstreetmap_map_url: openstreetmap_map_url
+          currencyName: currencyName
+          adm2Name: adm2Name
+          countryCode: countryCode
+          isInAdm: isInAdm
+          gtopo30: 7
+          featureId: 2
+          isIn: isIn
+          iso3166NumericCode: iso3166NumericCode
+          elevation: 5
+          postalCodeRegex: postalCodeRegex
+          iso3166Alpha2Code: iso3166Alpha2Code
+          adm3Code: adm3Code
+          length: 3.616076749251911
+          adm4Code: adm4Code
+          adm1Name: adm1Name
+          tld: tld
+          iso3166Alpha3Code: iso3166Alpha3Code
+          isInPlace: isInPlace
+          adm2Code: adm2Code
+          postalCodeMask: postalCodeMask
+          country_flag_url: country_flag_url
+          currencyCode: currencyCode
+          equivalentFipsCode: equivalentFipsCode
+        - google_map_url: google_map_url
+          phonePrefix: phonePrefix
+          featureCode: featureCode
+          oneWay: true
+          openstreetmapId: 7
+          capitalName: capitalName
+          yahoo_map_url: yahoo_map_url
+          adm5Code: adm5Code
+          fullyQualifiedAddress: fullyQualifiedAddress
+          lat: 9.301444243932576
+          area: 1.4658129805029452
+          streetType: streetType
+          lng: 4.145608029883936
+          level: 2
+          featureClass: featureClass
+          adm5Name: adm5Name
+          fipsCode: fipsCode
+          population: 1
+          placeType: placeType
+          adm4Name: adm4Name
+          name: name
+          adm1Code: adm1Code
+          adm3Name: adm3Name
+          continent: continent
+          distance: 5.962133916683182
+          zipCodes:
+          - zipCodes
+          - zipCodes
+          amenity: amenity
+          timezone: timezone
+          asciiName: asciiName
+          isInZip: isInZip
+          openstreetmap_map_url: openstreetmap_map_url
+          currencyName: currencyName
+          adm2Name: adm2Name
+          countryCode: countryCode
+          isInAdm: isInAdm
+          gtopo30: 7
+          featureId: 2
+          isIn: isIn
+          iso3166NumericCode: iso3166NumericCode
+          elevation: 5
+          postalCodeRegex: postalCodeRegex
+          iso3166Alpha2Code: iso3166Alpha2Code
+          adm3Code: adm3Code
+          length: 3.616076749251911
+          adm4Code: adm4Code
+          adm1Name: adm1Name
+          tld: tld
+          iso3166Alpha3Code: iso3166Alpha3Code
+          isInPlace: isInPlace
+          adm2Code: adm2Code
+          postalCodeMask: postalCodeMask
+          country_flag_url: country_flag_url
+          currencyCode: currencyCode
+          equivalentFipsCode: equivalentFipsCode
+        QTime: 0
+        numFound: 6
+        error: error
+      properties:
+        QTime:
+          description: The execution time of the query in ms
+          format: int64
+          title: QTime
+          type: integer
+        error:
+          description: "A String only present if an error occured (e.g : empty Latitude\
+            \ or longitude)"
+          title: error
+          type: string
+        numFound:
+          description: The number of results display with this query (it takes the
+            pagination into account)
+          format: int32
+          title: numFound
+          type: integer
+        result:
+          items:
+            $ref: '#/components/schemas/GisFeatureDistance'
+          title: result
+          type: array
+      title: GeolocResultsDto
+      type: object
+    GisFeatureDistance:
+      example:
+        google_map_url: google_map_url
+        phonePrefix: phonePrefix
+        featureCode: featureCode
+        oneWay: true
+        openstreetmapId: 7
+        capitalName: capitalName
+        yahoo_map_url: yahoo_map_url
+        adm5Code: adm5Code
+        fullyQualifiedAddress: fullyQualifiedAddress
+        lat: 9.301444243932576
+        area: 1.4658129805029452
+        streetType: streetType
+        lng: 4.145608029883936
+        level: 2
+        featureClass: featureClass
+        adm5Name: adm5Name
+        fipsCode: fipsCode
+        population: 1
+        placeType: placeType
+        adm4Name: adm4Name
+        name: name
+        adm1Code: adm1Code
+        adm3Name: adm3Name
+        continent: continent
+        distance: 5.962133916683182
+        zipCodes:
+        - zipCodes
+        - zipCodes
+        amenity: amenity
+        timezone: timezone
+        asciiName: asciiName
+        isInZip: isInZip
+        openstreetmap_map_url: openstreetmap_map_url
+        currencyName: currencyName
+        adm2Name: adm2Name
+        countryCode: countryCode
+        isInAdm: isInAdm
+        gtopo30: 7
+        featureId: 2
+        isIn: isIn
+        iso3166NumericCode: iso3166NumericCode
+        elevation: 5
+        postalCodeRegex: postalCodeRegex
+        iso3166Alpha2Code: iso3166Alpha2Code
+        adm3Code: adm3Code
+        length: 3.616076749251911
+        adm4Code: adm4Code
+        adm1Name: adm1Name
+        tld: tld
+        iso3166Alpha3Code: iso3166Alpha3Code
+        isInPlace: isInPlace
+        adm2Code: adm2Code
+        postalCodeMask: postalCodeMask
+        country_flag_url: country_flag_url
+        currencyCode: currencyCode
+        equivalentFipsCode: equivalentFipsCode
+      properties:
+        adm1Code:
+          description: The internal code for the administrative division of level
+            1
+          title: adm1Code
+          type: string
+        adm1Name:
+          description: The name of the administrative division of level 1
+          title: adm1Name
+          type: string
+        adm2Code:
+          description: The internal code for the administrative division of level
+            2
+          title: adm2Code
+          type: string
+        adm2Name:
+          description: The name of the administrative division of level 2
+          title: adm2Name
+          type: string
+        adm3Code:
+          description: The internal code for the administrative division of level
+            3
+          title: adm3Code
+          type: string
+        adm3Name:
+          description: The name of the administrative division of level 3
+          title: adm3Name
+          type: string
+        adm4Code:
+          description: The internal code for the administrative division of level
+            4
+          title: adm4Code
+          type: string
+        adm4Name:
+          description: The name of the administrative division of level 4
+          title: adm4Name
+          type: string
+        adm5Code:
+          description: The internal code for the administrative division of level
+            5
+          title: adm5Code
+          type: string
+        adm5Name:
+          description: The name of the administrative division of level 5
+          title: adm5Name
+          type: string
+        amenity:
+          description: Informations on category of OpenStreetMap POIs
+          title: amenity
+          type: string
+        area:
+          description: The area of the feature
+          format: double
+          title: area
+          type: number
+        asciiName:
+          description: The ASCII name of the feature
+          title: asciiName
+          type: string
+        capitalName:
+          description: The Capital of the country
+          title: capitalName
+          type: string
+        continent:
+          description: The continent the country belongs
+          title: continent
+          type: string
+        countryCode:
+          description: The ISO 3166 country code
+          title: countryCode
+          type: string
+        country_flag_url:
+          description: The relative URL to get the country flag image
+          title: country_flag_url
+          type: string
+        currencyCode:
+          description: The Currency code (ISO_4217) of the country
+          title: currencyCode
+          type: string
+        currencyName:
+          description: The Currency name of the country
+          title: currencyName
+          type: string
+        distance:
+          description: The distance beetween the point and the gisFeature in meters
+          format: double
+          title: distance
+          type: number
+        elevation:
+          description: The elevation in meters
+          format: int32
+          title: elevation
+          type: integer
+        equivalentFipsCode:
+          description: The fips Code of the country when no code are available
+          title: equivalentFipsCode
+          type: string
+        featureClass:
+          description: The feature Class.
+          title: featureClass
+          type: string
+        featureCode:
+          description: The feature Code.
+          title: featureCode
+          type: string
+        featureId:
+          description: A unique id that identify the feature
+          format: int64
+          title: featureId
+          type: integer
+        fipsCode:
+          description: The fips Code of the country
+          title: fipsCode
+          type: string
+        fullyQualifiedAddress:
+          description: NOT USED YET
+          title: fullyQualifiedAddress
+          type: string
+        google_map_url:
+          description: The URL to get the location on Google Map
+          title: google_map_url
+          type: string
+        gtopo30:
+          description: Average elevation of 30'x30' (ca 900mx900m) area in meters
+          format: int32
+          title: gtopo30
+          type: integer
+        isIn:
+          description: "Information of the city where the street / POI is (depends\
+            \ on openstreetmap 'is_in' field), the city in general (only for placetype\
+            \ street)"
+          title: isIn
+          type: string
+        isInAdm:
+          description: 'Information of the administration division where the street
+            / POI is. '
+          title: isInAdm
+          type: string
+        isInPlace:
+          description: "Information of the place where the street / POI is (quarter,\
+            \ common place). Generally a place at a lower level than city"
+          title: isInPlace
+          type: string
+        isInZip:
+          description: Information of the zipcode where the street / POI is"
+          title: isInZip
+          type: string
+        iso3166Alpha2Code:
+          description: The iso 3166 Alpha 2 code of the country
+          title: iso3166Alpha2Code
+          type: string
+        iso3166Alpha3Code:
+          description: The iso 3166 Alpha 3 code of the country
+          title: iso3166Alpha3Code
+          type: string
+        iso3166NumericCode:
+          description: The iso 3166 numeric code of the country
+          title: iso3166NumericCode
+          type: string
+        lat:
+          description: The latitude (north-south)
+          format: double
+          title: lat
+          type: number
+        length:
+          description: length of the street
+          format: double
+          title: length
+          type: number
+        level:
+          description: The level of the Administrative division (1-5)
+          format: int32
+          title: level
+          type: integer
+        lng:
+          description: The longitude (east-West)
+          format: double
+          title: lng
+          type: number
+        name:
+          description: The name of the feature
+          title: name
+          type: string
+        oneWay:
+          description: Wether the street is oneway or not
+          title: oneWay
+          type: boolean
+        openstreetmapId:
+          description: the id of the openstreetmap element
+          format: int64
+          title: openstreetmapId
+          type: integer
+        openstreetmap_map_url:
+          description: The URL to get the location on Openstreetmap Map
+          title: openstreetmap_map_url
+          type: string
+        phonePrefix:
+          description: The phone prefix of the country
+          title: phonePrefix
+          type: string
+        placeType:
+          description: The Type of Feature see faq
+          title: placeType
+          type: string
+        population:
+          description: How many people lives in this feature
+          format: int32
+          title: population
+          type: integer
+        postalCodeMask:
+          description: The mask that all postal code of the country matches
+          title: postalCodeMask
+          type: string
+        postalCodeRegex:
+          description: The regexp that all zipcode/postalcode of the country matches
+          title: postalCodeRegex
+          type: string
+        streetType:
+          description: the type of the street
+          title: streetType
+          type: string
+        timezone:
+          description: "The time zone (e.g : Europe/Paris)"
+          title: timezone
+          type: string
+        tld:
+          description: "top-level domain name, (last part of an Internet domain name)\
+            \ of the country"
+          title: tld
+          type: string
+        yahoo_map_url:
+          description: The URL to get the location on Yahoo Map
+          title: yahoo_map_url
+          type: string
+        zipCodes:
+          description: "The zipcodes (only for city and city subdivision), one node\
+            \ by zipcode"
+          items:
+            type: string
+          title: zipCodes
+          type: array
+      title: GisFeatureDistance
+      type: object
+    HouseNumberDto:
+      example:
+        number: number
+        location: location
+      properties:
+        location:
+          description: The lat / long coordinate
+          title: location
+          type: string
+        number:
+          description: the house number value
+          title: number
+          type: string
+      title: HouseNumberDto
+      type: object
+    SolrResponseDto:
+      example:
+        feature_id: 2
+        google_map_url: google_map_url
+        fips_code: fips_code
+        municipality: true
+        adm2_name: adm2_name
+        name_alternates:
+        - name_alternates
+        - name_alternates
+        openstreetmap_id: 7
+        capital_name: capital_name
+        is_in_place: is_in_place
+        score: 1.0246457
+        yahoo_map_url: yahoo_map_url
+        adm1_code: adm1_code
+        isoalpha3_country_code: isoalpha3_country_code
+        feature_code: feature_code
+        lat: 9.301444243932576
+        area: 5.962133916683182
+        placetype: placetype
+        adm3_name: adm3_name
+        adm2_code: adm2_code
+        lng: 4.145608029883936
+        level: 2
+        zipcodes:
+        - zipcodes
+        - zipcodes
+        is_in: is_in
+        is_in_zip:
+        - is_in_zip
+        - is_in_zip
+        adm1_names_alternate:
+        - adm1_names_alternate
+        - adm1_names_alternate
+        population: 1
+        country_code: country_code
+        feature_class: feature_class
+        name: name
+        house_numbers:
+        - number: number
+          location: location
+        - number: number
+          location: location
+        phone_prefix: phone_prefix
+        continent: continent
+        adm2_names_alternate:
+        - adm2_names_alternate
+        - adm2_names_alternate
+        fully_qualified_name: fully_qualified_name
+        amenity: amenity
+        name_ascii: name_ascii
+        timezone: timezone
+        currency_code: currency_code
+        adm4_code: adm4_code
+        openstreetmap_map_url: openstreetmap_map_url
+        one_way: true
+        is_in_adm: is_in_adm
+        country_name: country_name
+        isoalpha2_country_code: isoalpha2_country_code
+        gtopo30: 7
+        postal_code_mask: postal_code_mask
+        elevation: 5
+        currency_name: currency_name
+        length: 3.616076749251911
+        tld: tld
+        country_names_alternate:
+        - country_names_alternate
+        - country_names_alternate
+        postal_code_regex: postal_code_regex
+        spoken_languages:
+        - spoken_languages
+        - spoken_languages
+        adm1_name: adm1_name
+        adm4_name: adm4_name
+        adm3_code: adm3_code
+        country_flag_url: country_flag_url
+        street_type: street_type
+        fully_qualified_address: fully_qualified_address
+      properties:
+        adm1_code:
+          description: The internal code for the administrative division of level
+            1
+          title: adm1_code
+          type: string
+        adm1_name:
+          description: The name of the administrative division of level 1
+          title: adm1_name
+          type: string
+        adm1_names_alternate:
+          description: The alternate names of the administrative division of level
+            1 without specific language code
+          items:
+            type: string
+          title: adm1_names_alternate
+          type: array
+        adm2_code:
+          description: The internal code for the administrative division of level
+            2
+          title: adm2_code
+          type: string
+        adm2_name:
+          description: The name of the administrative division of level 2
+          title: adm2_name
+          type: string
+        adm2_names_alternate:
+          description: The alternate names of the administrative division of level
+            2 without specific language code
+          items:
+            type: string
+          title: adm2_names_alternate
+          type: array
+        adm3_code:
+          description: The internal code for the administrative division of level
+            3
+          title: adm3_code
+          type: string
+        adm3_name:
+          description: The name of the administrative division of level 3
+          title: adm3_name
+          type: string
+        adm4_code:
+          description: The internal code for the administrative division of level
+            4
+          title: adm4_code
+          type: string
+        adm4_name:
+          description: The name of the administrative division of level 4
+          title: adm4_name
+          type: string
+        amenity:
+          description: Informations on category of OpenStreetMap POIs
+          title: amenity
+          type: string
+        area:
+          description: Area of the country in m² (only for country placetype)
+          format: double
+          title: area
+          type: number
+        capital_name:
+          description: Name of the capital of the country(only for country placetype)
+          title: capital_name
+          type: string
+        continent:
+          description: The continent the country belongs (only for country placetype)
+          title: continent
+          type: string
+        country_code:
+          description: The ISO 3166 country code
+          title: country_code
+          type: string
+        country_flag_url:
+          description: The relative URL to get the country flag image
+          title: country_flag_url
+          type: string
+        country_name:
+          description: The name of the country the features belongs to
+          title: country_name
+          type: string
+        country_names_alternate:
+          description: The alternate names of the country without specific language
+            code
+          items:
+            type: string
+          title: country_names_alternate
+          type: array
+        currency_code:
+          description: The ISO 4217 Currency from the curencycode (only for country
+            placetype)
+          title: currency_code
+          type: string
+        currency_name:
+          description: The name of the currency of the country (only for country placetype)
+          title: currency_name
+          type: string
+        elevation:
+          description: Elevation in meters
+          format: int32
+          title: elevation
+          type: integer
+        feature_class:
+          description: The feature Class.
+          title: feature_class
+          type: string
+        feature_code:
+          description: The feature Code.
+          title: feature_code
+          type: string
+        feature_id:
+          description: A unique id that identify the feature
+          format: int64
+          title: feature_id
+          type: integer
+        fips_code:
+          description: The FIPS Code of the country (only for country placetype)
+          title: fips_code
+          type: string
+        fully_qualified_address:
+          description: NOT USED YET
+          title: fully_qualified_address
+          type: string
+        fully_qualified_name:
+          description: "A name of the form : (adm1Name et adm2Name are printed) Paris,\
+            \ Département de Ville-De-Paris, Ile-De-France, (FR)"
+          title: fully_qualified_name
+          type: string
+        google_map_url:
+          description: The URL to get the location on Google Map
+          title: google_map_url
+          type: string
+        gtopo30:
+          description: Average elevation of 30'x30' (ca 900mx900m) area in meters
+          format: int32
+          title: gtopo30
+          type: integer
+        house_numbers:
+          description: a list of all the house numbers sorted and their coordinates
+            (only for placetype street)
+          items:
+            $ref: '#/components/schemas/HouseNumberDto'
+          title: house_numbers
+          type: array
+        is_in:
+          description: "Information on the city where the street / POI is (depends\
+            \ on OpenStreetMap 'is_in' field), the city in general (only for placetype\
+            \ street)"
+          title: is_in
+          type: string
+        is_in_adm:
+          description: Information of the administration division where the street
+            / POI is.
+          title: is_in_adm
+          type: string
+        is_in_place:
+          description: "Information on the place where the street / POI is (quater,\
+            \ common place). Generally a place at a lower level than city"
+          title: is_in_place
+          type: string
+        is_in_zip:
+          description: Information of the zipcode where the street / POI is (often
+            fill for placetype street)
+          items:
+            type: string
+          title: is_in_zip
+          type: array
+        isoalpha2_country_code:
+          description: The ISO 3166 alpha 2 code of the country (only for country
+            placetype)
+          title: isoalpha2_country_code
+          type: string
+        isoalpha3_country_code:
+          description: The ISO 3166 alpha 3 code of the country (only for country
+            placetype)
+          title: isoalpha3_country_code
+          type: string
+        lat:
+          description: The latitude (north-south)
+          format: double
+          title: lat
+          type: number
+        length:
+          description: The length of the street (only for placetype street)
+          format: double
+          title: length
+          type: number
+        level:
+          description: "Level of the Adm 1 , 2, 3, or 4(only for Adm placetype)"
+          format: int32
+          title: level
+          type: integer
+        lng:
+          description: The longitude (east-West)
+          format: double
+          title: lng
+          type: number
+        municipality:
+          description: if the place is a municipality. it is usefull for geonames
+            feature that don't have concept of 'city' but a populated place (that
+            can be a quarter)
+          title: municipality
+          type: boolean
+        name:
+          description: The name of the feature
+          title: name
+          type: string
+        name_alternates:
+          description: The alternate names of the feature that without specific language
+            code
+          items:
+            type: string
+          title: name_alternates
+          type: array
+        name_ascii:
+          description: The ASCII name
+          title: name_ascii
+          type: string
+        one_way:
+          description: whether the street is one way or not (only for placetype street)
+          title: one_way
+          type: boolean
+        openstreetmap_id:
+          description: The OpenStreetMap unique id of the street (only for placetype
+            street)
+          format: int64
+          title: openstreetmap_id
+          type: integer
+        openstreetmap_map_url:
+          description: The URL to get the location on OpenStreetMap.org
+          title: openstreetmap_map_url
+          type: string
+        phone_prefix:
+          description: "The phone prefix of the country. e.g : +33 .(only for country\
+            \ placetype)"
+          title: phone_prefix
+          type: string
+        placetype:
+          description: The place Type of the Feature
+          title: placetype
+          type: string
+        population:
+          description: How many people live in this feature
+          format: int32
+          title: population
+          type: integer
+        postal_code_mask:
+          description: "The mask that postal codes should verify. e.g : ##### (only\
+            \ for country placetype)"
+          title: postal_code_mask
+          type: string
+        postal_code_regex:
+          description: The regular expression that postal codes should verify (only
+            for country placetype)
+          title: postal_code_regex
+          type: string
+        score:
+          description: a number that indicates the relevance of the result
+          format: float
+          title: score
+          type: number
+        spoken_languages:
+          description: List of languages spoken in the country (only for country placetype)
+          items:
+            type: string
+          title: spoken_languages
+          type: array
+        street_type:
+          description: The type of the street (only for placetype street)
+          title: street_type
+          type: string
+        timezone:
+          description: The timezone (e.g :Europe/Paris).
+          title: timezone
+          type: string
+        tld:
+          description: Top level domain of the country (only for country placetype)
+          title: tld
+          type: string
+        yahoo_map_url:
+          description: The URL to get the location on Yahoo Map
+          title: yahoo_map_url
+          type: string
+        zipcodes:
+          description: The zipcodes
+          items:
+            type: string
+          title: zipcodes
+          type: array
+      title: SolrResponseDto
+      type: object
+    StreetDistance:
+      example:
+        streetType: streetType
+        gid: 5
+        distance: 1.4658129805029452
+        lng: 7.061401241503109
+        length: 2.3021358869347655
+        oneWay: true
+        openstreetmapId: 9
+        isInZip: isInZip
+        countryCode: countryCode
+        isInPlace: isInPlace
+        isInAdm: isInAdm
+        name: name
+        fullyQualifiedAddress: fullyQualifiedAddress
+        isIn: isIn
+        lat: 5.637376656633329
+      properties:
+        countryCode:
+          description: The ISO 3166 country code
+          title: countryCode
+          type: string
+        distance:
+          description: The distance between the point and the nearest point to the
+            street in meters
+          title: distance
+          type: number
+        fullyQualifiedAddress:
+          description: NOT USED YET
+          title: fullyQualifiedAddress
+          type: string
+        gid:
+          description: "Unique id of the street, it is unique between GeoNames and\
+            \ OpenStreetMap"
+          format: int64
+          title: gid
+          type: integer
+        isIn:
+          description: "Information on the city where the street is (depends on OpenStreetMap\
+            \ 'is_in' field), the city in general"
+          title: isIn
+          type: string
+        isInAdm:
+          description: Information of the administration division where the street
+            is.
+          title: isInAdm
+          type: string
+        isInPlace:
+          description: "Information on the place where the street is (quater, common\
+            \ place). Generally a place at a lower level than city"
+          title: isInPlace
+          type: string
+        isInZip:
+          description: Information of the zipcode where the street / POI is (often
+            fill for placetype street)
+          title: isInZip
+          type: string
+        lat:
+          description: The latitude of the middle of the street(north-south)
+          format: double
+          title: lat
+          type: number
+        length:
+          description: length of the street in meters
+          format: double
+          title: length
+          type: number
+        lng:
+          description: The longitude of the middle of the street(east-west)
+          format: double
+          title: lng
+          type: number
+        name:
+          description: The name of the street
+          title: name
+          type: string
+        oneWay:
+          description: Whether the street is a one way street or not
+          title: oneWay
+          type: boolean
+        openstreetmapId:
+          description: OpenStreetMap unique id of the street
+          format: int64
+          title: openstreetmapId
+          type: integer
+        streetType:
+          description: The type of the street (see street type list)
+          title: streetType
+          type: string
+      title: StreetDistance
+      type: object
+    StreetSearchResultsDto:
+      example:
+        result:
+        - streetType: streetType
+          gid: 5
+          distance: 1.4658129805029452
+          lng: 7.061401241503109
+          length: 2.3021358869347655
+          oneWay: true
+          openstreetmapId: 9
+          isInZip: isInZip
+          countryCode: countryCode
+          isInPlace: isInPlace
+          isInAdm: isInAdm
+          name: name
+          fullyQualifiedAddress: fullyQualifiedAddress
+          isIn: isIn
+          lat: 5.637376656633329
+        - streetType: streetType
+          gid: 5
+          distance: 1.4658129805029452
+          lng: 7.061401241503109
+          length: 2.3021358869347655
+          oneWay: true
+          openstreetmapId: 9
+          isInZip: isInZip
+          countryCode: countryCode
+          isInPlace: isInPlace
+          isInAdm: isInAdm
+          name: name
+          fullyQualifiedAddress: fullyQualifiedAddress
+          isIn: isIn
+          lat: 5.637376656633329
+        QTime: 0
+        numFound: 6
+        error: error
+      properties:
+        QTime:
+          description: The execution time of the query in ms
+          format: int64
+          title: QTime
+          type: integer
+        error:
+          description: "A String only present if an error occured (e.g : empty Latitude\
+            \ or longitude)"
+          title: error
+          type: string
+        numFound:
+          description: The number of results display with this query (it takes the
+            pagination into account)
+          format: int32
+          title: numFound
+          type: integer
+        result:
+          items:
+            $ref: '#/components/schemas/StreetDistance'
+          title: result
+          type: array
+      title: StreetSearchResultsDto
+      type: object
+  securitySchemes:
+    api_key:
+      in: query
+      name: api_key
+      type: apiKey
+      x-apikeyInfoFunc: openapi_server.controllers.security_controller.info_from_api_key
+x-original-swagger-version: "2.0"

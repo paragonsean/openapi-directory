@@ -1,0 +1,16 @@
+
+
+# GetCorporationsCorporationIdFwStatsVictoryPoints
+
+Summary of victory points gained by the given corporation for the enlisted faction
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**lastWeek** | **Integer** | Last week&#39;s victory points gained by members of the given corporation |  |
+|**total** | **Integer** | Total victory points gained since the given corporation enlisted |  |
+|**yesterday** | **Integer** | Yesterday&#39;s victory points gained by members of the given corporation |  |
+
+
+

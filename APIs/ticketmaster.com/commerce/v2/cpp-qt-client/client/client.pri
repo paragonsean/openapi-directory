@@ -1,0 +1,107 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIArea.h \
+    $${PWD}/OAIAreaAttributes.h \
+    $${PWD}/OAIAreaRelationships.h \
+    $${PWD}/OAIAttributeRef.h \
+    $${PWD}/OAIAttributeRefAttributes.h \
+    $${PWD}/OAIEventMappingView.h \
+    $${PWD}/OAIHoldRef.h \
+    $${PWD}/OAIHrefLinkValue.h \
+    $${PWD}/OAILimit.h \
+    $${PWD}/OAIOffer.h \
+    $${PWD}/OAIOfferAttributes.h \
+    $${PWD}/OAIOfferDetails.h \
+    $${PWD}/OAIOfferPrice.h \
+    $${PWD}/OAIOfferPriceFee.h \
+    $${PWD}/OAIOfferPriceTax.h \
+    $${PWD}/OAIOfferRelationships.h \
+    $${PWD}/OAIOfferedPrice.h \
+    $${PWD}/OAIOfferedPriceAttributes.h \
+    $${PWD}/OAIOfferedPriceRelationships.h \
+    $${PWD}/OAIOfferingResponse.h \
+    $${PWD}/OAIOfferingResponseEmbeddedData.h \
+    $${PWD}/OAIOfferingResponseMetadata.h \
+    $${PWD}/OAIPassword.h \
+    $${PWD}/OAIPasswordAttributes.h \
+    $${PWD}/OAIPasswordMetadata.h \
+    $${PWD}/OAIPasswordRelationships.h \
+    $${PWD}/OAIPriceZone.h \
+    $${PWD}/OAIPriceZoneAttributes.h \
+    $${PWD}/OAIPriceZoneRelationships.h \
+    $${PWD}/OAIPrompt.h \
+    $${PWD}/OAIResponseObjectListAreaSimpleLinks.h \
+    $${PWD}/OAIResponseObjectListAttributeRefSimpleLinks.h \
+    $${PWD}/OAIResponseObjectListHoldRefSimpleLinks.h \
+    $${PWD}/OAIResponseObjectListOfferedPriceSimpleLinks.h \
+    $${PWD}/OAIResponseObjectListPasswordSimpleLinks.h \
+    $${PWD}/OAIResponseObjectListPriceZoneSimpleLinks.h \
+    $${PWD}/OAIResponseObjectRef.h \
+    $${PWD}/OAIResponseObjectRefList.h \
+    $${PWD}/OAIResponseObjectRefListSimpleLinks.h \
+    $${PWD}/OAISimpleLinks.h \
+    $${PWD}/OAISource.h \
+# APIs
+    $${PWD}/OAIDefaultApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIArea.cpp \
+    $${PWD}/OAIAreaAttributes.cpp \
+    $${PWD}/OAIAreaRelationships.cpp \
+    $${PWD}/OAIAttributeRef.cpp \
+    $${PWD}/OAIAttributeRefAttributes.cpp \
+    $${PWD}/OAIEventMappingView.cpp \
+    $${PWD}/OAIHoldRef.cpp \
+    $${PWD}/OAIHrefLinkValue.cpp \
+    $${PWD}/OAILimit.cpp \
+    $${PWD}/OAIOffer.cpp \
+    $${PWD}/OAIOfferAttributes.cpp \
+    $${PWD}/OAIOfferDetails.cpp \
+    $${PWD}/OAIOfferPrice.cpp \
+    $${PWD}/OAIOfferPriceFee.cpp \
+    $${PWD}/OAIOfferPriceTax.cpp \
+    $${PWD}/OAIOfferRelationships.cpp \
+    $${PWD}/OAIOfferedPrice.cpp \
+    $${PWD}/OAIOfferedPriceAttributes.cpp \
+    $${PWD}/OAIOfferedPriceRelationships.cpp \
+    $${PWD}/OAIOfferingResponse.cpp \
+    $${PWD}/OAIOfferingResponseEmbeddedData.cpp \
+    $${PWD}/OAIOfferingResponseMetadata.cpp \
+    $${PWD}/OAIPassword.cpp \
+    $${PWD}/OAIPasswordAttributes.cpp \
+    $${PWD}/OAIPasswordMetadata.cpp \
+    $${PWD}/OAIPasswordRelationships.cpp \
+    $${PWD}/OAIPriceZone.cpp \
+    $${PWD}/OAIPriceZoneAttributes.cpp \
+    $${PWD}/OAIPriceZoneRelationships.cpp \
+    $${PWD}/OAIPrompt.cpp \
+    $${PWD}/OAIResponseObjectListAreaSimpleLinks.cpp \
+    $${PWD}/OAIResponseObjectListAttributeRefSimpleLinks.cpp \
+    $${PWD}/OAIResponseObjectListHoldRefSimpleLinks.cpp \
+    $${PWD}/OAIResponseObjectListOfferedPriceSimpleLinks.cpp \
+    $${PWD}/OAIResponseObjectListPasswordSimpleLinks.cpp \
+    $${PWD}/OAIResponseObjectListPriceZoneSimpleLinks.cpp \
+    $${PWD}/OAIResponseObjectRef.cpp \
+    $${PWD}/OAIResponseObjectRefList.cpp \
+    $${PWD}/OAIResponseObjectRefListSimpleLinks.cpp \
+    $${PWD}/OAISimpleLinks.cpp \
+    $${PWD}/OAISource.cpp \
+# APIs
+    $${PWD}/OAIDefaultApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

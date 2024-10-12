@@ -1,0 +1,291 @@
+# TwilioStudio.StudioV1ExecutionApi
+
+All URIs are relative to *https://studio.twilio.com*
+
+Method | HTTP request | Description
+------------- | ------------- | -------------
+[**createExecution**](StudioV1ExecutionApi.md#createExecution) | **POST** /v1/Flows/{FlowSid}/Executions | 
+[**deleteExecution**](StudioV1ExecutionApi.md#deleteExecution) | **DELETE** /v1/Flows/{FlowSid}/Executions/{Sid} | 
+[**fetchExecution**](StudioV1ExecutionApi.md#fetchExecution) | **GET** /v1/Flows/{FlowSid}/Executions/{Sid} | 
+[**listExecution**](StudioV1ExecutionApi.md#listExecution) | **GET** /v1/Flows/{FlowSid}/Executions | 
+[**updateExecution**](StudioV1ExecutionApi.md#updateExecution) | **POST** /v1/Flows/{FlowSid}/Executions/{Sid} | 
+
+
+
+## createExecution
+
+> StudioV1FlowExecution createExecution(flowSid, from, to, opts)
+
+
+
+Triggers a new Execution for the Flow
+
+### Example
+
+```javascript
+import TwilioStudio from 'twilio_studio';
+let defaultClient = TwilioStudio.ApiClient.instance;
+// Configure HTTP basic authorization: accountSid_authToken
+let accountSid_authToken = defaultClient.authentications['accountSid_authToken'];
+accountSid_authToken.username = 'YOUR USERNAME';
+accountSid_authToken.password = 'YOUR PASSWORD';
+
+let apiInstance = new TwilioStudio.StudioV1ExecutionApi();
+let flowSid = "flowSid_example"; // String | The SID of the Excecution's Flow.
+let from = "from_example"; // String | The Twilio phone number to send messages or initiate calls from during the Flow's Execution. Available as variable `{{flow.channel.address}}`. For SMS, this can also be a Messaging Service SID.
+let to = "to_example"; // String | The Contact phone number to start a Studio Flow Execution, available as variable `{{contact.channel.address}}`.
+let opts = {
+  'parameters': null // Object | JSON data that will be added to the Flow's context and that can be accessed as variables inside your Flow. For example, if you pass in `Parameters={\\\"name\\\":\\\"Zeke\\\"}`, a widget in your Flow can reference the variable `{{flow.data.name}}`, which returns \\\"Zeke\\\". Note: the JSON value must explicitly be passed as a string, not as a hash object. Depending on your particular HTTP library, you may need to add quotes or URL encode the JSON string.
+};
+apiInstance.createExecution(flowSid, from, to, opts, (error, data, response) => {
+  if (error) {
+    console.error(error);
+  } else {
+    console.log('API called successfully. Returned data: ' + data);
+  }
+});
+```
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **flowSid** | **String**| The SID of the Excecution&#39;s Flow. | 
+ **from** | **String**| The Twilio phone number to send messages or initiate calls from during the Flow&#39;s Execution. Available as variable &#x60;{{flow.channel.address}}&#x60;. For SMS, this can also be a Messaging Service SID. | 
+ **to** | **String**| The Contact phone number to start a Studio Flow Execution, available as variable &#x60;{{contact.channel.address}}&#x60;. | 
+ **parameters** | [**Object**](Object.md)| JSON data that will be added to the Flow&#39;s context and that can be accessed as variables inside your Flow. For example, if you pass in &#x60;Parameters&#x3D;{\\\&quot;name\\\&quot;:\\\&quot;Zeke\\\&quot;}&#x60;, a widget in your Flow can reference the variable &#x60;{{flow.data.name}}&#x60;, which returns \\\&quot;Zeke\\\&quot;. Note: the JSON value must explicitly be passed as a string, not as a hash object. Depending on your particular HTTP library, you may need to add quotes or URL encode the JSON string. | [optional] 
+
+### Return type
+
+[**StudioV1FlowExecution**](StudioV1FlowExecution.md)
+
+### Authorization
+
+[accountSid_authToken](../README.md#accountSid_authToken)
+
+### HTTP request headers
+
+- **Content-Type**: application/x-www-form-urlencoded
+- **Accept**: application/json
+
+
+## deleteExecution
+
+> deleteExecution(flowSid, sid)
+
+
+
+Delete the Execution and all Steps relating to it.
+
+### Example
+
+```javascript
+import TwilioStudio from 'twilio_studio';
+let defaultClient = TwilioStudio.ApiClient.instance;
+// Configure HTTP basic authorization: accountSid_authToken
+let accountSid_authToken = defaultClient.authentications['accountSid_authToken'];
+accountSid_authToken.username = 'YOUR USERNAME';
+accountSid_authToken.password = 'YOUR PASSWORD';
+
+let apiInstance = new TwilioStudio.StudioV1ExecutionApi();
+let flowSid = "flowSid_example"; // String | The SID of the Flow with the Execution resources to delete.
+let sid = "sid_example"; // String | The SID of the Execution resource to delete.
+apiInstance.deleteExecution(flowSid, sid, (error, data, response) => {
+  if (error) {
+    console.error(error);
+  } else {
+    console.log('API called successfully.');
+  }
+});
+```
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **flowSid** | **String**| The SID of the Flow with the Execution resources to delete. | 
+ **sid** | **String**| The SID of the Execution resource to delete. | 
+
+### Return type
+
+null (empty response body)
+
+### Authorization
+
+[accountSid_authToken](../README.md#accountSid_authToken)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: Not defined
+
+
+## fetchExecution
+
+> StudioV1FlowExecution fetchExecution(flowSid, sid)
+
+
+
+Retrieve an Execution
+
+### Example
+
+```javascript
+import TwilioStudio from 'twilio_studio';
+let defaultClient = TwilioStudio.ApiClient.instance;
+// Configure HTTP basic authorization: accountSid_authToken
+let accountSid_authToken = defaultClient.authentications['accountSid_authToken'];
+accountSid_authToken.username = 'YOUR USERNAME';
+accountSid_authToken.password = 'YOUR PASSWORD';
+
+let apiInstance = new TwilioStudio.StudioV1ExecutionApi();
+let flowSid = "flowSid_example"; // String | The SID of the Flow with the Execution resource to fetch
+let sid = "sid_example"; // String | The SID of the Execution resource to fetch.
+apiInstance.fetchExecution(flowSid, sid, (error, data, response) => {
+  if (error) {
+    console.error(error);
+  } else {
+    console.log('API called successfully. Returned data: ' + data);
+  }
+});
+```
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **flowSid** | **String**| The SID of the Flow with the Execution resource to fetch | 
+ **sid** | **String**| The SID of the Execution resource to fetch. | 
+
+### Return type
+
+[**StudioV1FlowExecution**](StudioV1FlowExecution.md)
+
+### Authorization
+
+[accountSid_authToken](../README.md#accountSid_authToken)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+
+## listExecution
+
+> ListExecutionResponse listExecution(flowSid, opts)
+
+
+
+Retrieve a list of all Executions for the Flow.
+
+### Example
+
+```javascript
+import TwilioStudio from 'twilio_studio';
+let defaultClient = TwilioStudio.ApiClient.instance;
+// Configure HTTP basic authorization: accountSid_authToken
+let accountSid_authToken = defaultClient.authentications['accountSid_authToken'];
+accountSid_authToken.username = 'YOUR USERNAME';
+accountSid_authToken.password = 'YOUR PASSWORD';
+
+let apiInstance = new TwilioStudio.StudioV1ExecutionApi();
+let flowSid = "flowSid_example"; // String | The SID of the Flow with the Execution resources to read.
+let opts = {
+  'dateCreatedFrom': new Date("2013-10-20T19:20:30+01:00"), // Date | Only show Execution resources starting on or after this [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) date-time, given as `YYYY-MM-DDThh:mm:ss-hh:mm`.
+  'dateCreatedTo': new Date("2013-10-20T19:20:30+01:00"), // Date | Only show Execution resources starting before this [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) date-time, given as `YYYY-MM-DDThh:mm:ss-hh:mm`.
+  'pageSize': 56, // Number | How many resources to return in each list page. The default is 50, and the maximum is 1000.
+  'page': 56, // Number | The page index. This value is simply for client state.
+  'pageToken': "pageToken_example" // String | The page token. This is provided by the API.
+};
+apiInstance.listExecution(flowSid, opts, (error, data, response) => {
+  if (error) {
+    console.error(error);
+  } else {
+    console.log('API called successfully. Returned data: ' + data);
+  }
+});
+```
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **flowSid** | **String**| The SID of the Flow with the Execution resources to read. | 
+ **dateCreatedFrom** | **Date**| Only show Execution resources starting on or after this [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) date-time, given as &#x60;YYYY-MM-DDThh:mm:ss-hh:mm&#x60;. | [optional] 
+ **dateCreatedTo** | **Date**| Only show Execution resources starting before this [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) date-time, given as &#x60;YYYY-MM-DDThh:mm:ss-hh:mm&#x60;. | [optional] 
+ **pageSize** | **Number**| How many resources to return in each list page. The default is 50, and the maximum is 1000. | [optional] 
+ **page** | **Number**| The page index. This value is simply for client state. | [optional] 
+ **pageToken** | **String**| The page token. This is provided by the API. | [optional] 
+
+### Return type
+
+[**ListExecutionResponse**](ListExecutionResponse.md)
+
+### Authorization
+
+[accountSid_authToken](../README.md#accountSid_authToken)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+
+## updateExecution
+
+> StudioV1FlowExecution updateExecution(flowSid, sid, status)
+
+
+
+Update the status of an Execution to &#x60;ended&#x60;.
+
+### Example
+
+```javascript
+import TwilioStudio from 'twilio_studio';
+let defaultClient = TwilioStudio.ApiClient.instance;
+// Configure HTTP basic authorization: accountSid_authToken
+let accountSid_authToken = defaultClient.authentications['accountSid_authToken'];
+accountSid_authToken.username = 'YOUR USERNAME';
+accountSid_authToken.password = 'YOUR PASSWORD';
+
+let apiInstance = new TwilioStudio.StudioV1ExecutionApi();
+let flowSid = "flowSid_example"; // String | The SID of the Flow with the Execution resources to update.
+let sid = "sid_example"; // String | The SID of the Execution resource to update.
+let status = "status_example"; // ExecutionEnumStatus | 
+apiInstance.updateExecution(flowSid, sid, status, (error, data, response) => {
+  if (error) {
+    console.error(error);
+  } else {
+    console.log('API called successfully. Returned data: ' + data);
+  }
+});
+```
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **flowSid** | **String**| The SID of the Flow with the Execution resources to update. | 
+ **sid** | **String**| The SID of the Execution resource to update. | 
+ **status** | **ExecutionEnumStatus**|  | 
+
+### Return type
+
+[**StudioV1FlowExecution**](StudioV1FlowExecution.md)
+
+### Authorization
+
+[accountSid_authToken](../README.md#accountSid_authToken)
+
+### HTTP request headers
+
+- **Content-Type**: application/x-www-form-urlencoded
+- **Accept**: application/json
+

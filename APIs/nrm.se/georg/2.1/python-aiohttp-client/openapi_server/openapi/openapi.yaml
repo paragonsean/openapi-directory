@@ -1,0 +1,226 @@
+openapi: 3.0.1
+info:
+  title: Georg API
+  version: "2.1"
+  x-apisguru-categories:
+  - location
+  x-origin:
+  - format: swagger
+    url: https://georg.nrm.se/api/swagger.json
+    version: "2.0"
+  x-providerName: nrm.se
+  x-serviceName: georg
+servers:
+- url: /api/
+tags:
+- description: Georeference tool
+  name: georg
+paths:
+  /autocomplete:
+    get:
+      description: Return search results in json
+      operationId: auto_complete
+      parameters:
+      - in: query
+        name: text
+        schema:
+          type: string
+      - in: query
+        name: sources
+        schema:
+          type: string
+      - in: query
+        name: layers
+        schema:
+          type: string
+      - in: query
+        name: countryCode
+        schema:
+          type: string
+      - in: query
+        name: size
+        schema:
+          format: int32
+          type: integer
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: string
+          description: successful operation
+      summary: Search
+      tags:
+      - georg
+      x-openapi-router-controller: openapi_server.controllers.georg_controller
+  /coordinates:
+    get:
+      description: Return search results in json
+      operationId: search_coordinates
+      parameters:
+      - in: query
+        name: coordinates
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: string
+          description: successful operation
+      summary: Search coordinates in different formate
+      tags:
+      - georg
+      x-openapi-router-controller: openapi_server.controllers.georg_controller
+  /reverse:
+    get:
+      description: Return search results in json
+      operationId: get_reverse_geo_code
+      parameters:
+      - in: query
+        name: lat
+        schema:
+          format: double
+          type: number
+      - in: query
+        name: lng
+        schema:
+          format: double
+          type: number
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: string
+          description: successful operation
+      summary: Get reverse geocoding
+      tags:
+      - georg
+      x-openapi-router-controller: openapi_server.controllers.georg_controller
+  /search:
+    get:
+      description: Return search results in json
+      operationId: search
+      parameters:
+      - in: query
+        name: text
+        schema:
+          type: string
+      - in: query
+        name: sources
+        schema:
+          type: string
+      - in: query
+        name: layers
+        schema:
+          type: string
+      - in: query
+        name: countryCode
+        schema:
+          type: string
+      - in: query
+        name: size
+        schema:
+          format: int32
+          type: integer
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: string
+          description: successful operation
+      summary: Get geocoding
+      tags:
+      - georg
+      x-openapi-router-controller: openapi_server.controllers.georg_controller
+  /upload:
+    post:
+      description: "Upload csv file with minimum two columns (Id, SourceLocality).\
+        \ Return search results in json"
+      operationId: upload_file
+      parameters:
+      - in: query
+        name: type
+        schema:
+          type: string
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/MultipartFormDataInput'
+        required: false
+        x-body-name: body
+      responses:
+        "200":
+          content: {}
+          description: File uploaded
+      summary: Batch upload
+      tags:
+      - georg
+      x-codegen-request-body-name: body
+      x-openapi-router-controller: openapi_server.controllers.georg_controller
+components:
+  schemas:
+    InputPart:
+      properties:
+        bodyAsString:
+          title: bodyAsString
+          type: string
+        contentTypeFromMessage:
+          title: contentTypeFromMessage
+          type: boolean
+        headers:
+          additionalProperties:
+            items:
+              type: string
+            type: array
+          title: headers
+          type: object
+        mediaType:
+          $ref: '#/components/schemas/MediaType'
+      title: InputPart
+      type: object
+    MediaType:
+      properties:
+        parameters:
+          additionalProperties:
+            type: string
+          title: parameters
+          type: object
+        subtype:
+          title: subtype
+          type: string
+        type:
+          title: type
+          type: string
+        wildcardSubtype:
+          title: wildcardSubtype
+          type: boolean
+        wildcardType:
+          title: wildcardType
+          type: boolean
+      title: MediaType
+      type: object
+    MultipartFormDataInput:
+      properties:
+        formData:
+          additionalProperties:
+            $ref: '#/components/schemas/InputPart'
+          type: object
+        formDataMap:
+          additionalProperties:
+            items:
+              $ref: '#/components/schemas/InputPart'
+            type: array
+          type: object
+        parts:
+          items:
+            $ref: '#/components/schemas/InputPart'
+          type: array
+        preamble:
+          type: string
+      type: object
+x-original-swagger-version: "2.0"

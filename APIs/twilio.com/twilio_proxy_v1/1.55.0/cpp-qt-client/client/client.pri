@@ -1,0 +1,87 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIInteraction_enum_resource_status.h \
+    $${PWD}/OAIInteraction_enum_type.h \
+    $${PWD}/OAIListInteractionResponse.h \
+    $${PWD}/OAIListMessageInteractionResponse.h \
+    $${PWD}/OAIListParticipantResponse.h \
+    $${PWD}/OAIListPhoneNumberResponse.h \
+    $${PWD}/OAIListServiceResponse.h \
+    $${PWD}/OAIListServiceResponse_meta.h \
+    $${PWD}/OAIListSessionResponse.h \
+    $${PWD}/OAIListShortCodeResponse.h \
+    $${PWD}/OAIMessage_interaction_enum_resource_status.h \
+    $${PWD}/OAIMessage_interaction_enum_type.h \
+    $${PWD}/OAIProxy_v1_service.h \
+    $${PWD}/OAIProxy_v1_service_phone_number.h \
+    $${PWD}/OAIProxy_v1_service_phone_number_capabilities.h \
+    $${PWD}/OAIProxy_v1_service_session.h \
+    $${PWD}/OAIProxy_v1_service_session_interaction.h \
+    $${PWD}/OAIProxy_v1_service_session_participant.h \
+    $${PWD}/OAIProxy_v1_service_session_participant_message_interaction.h \
+    $${PWD}/OAIProxy_v1_service_short_code.h \
+    $${PWD}/OAIProxy_v1_service_short_code_capabilities.h \
+    $${PWD}/OAIService_enum_geo_match_level.h \
+    $${PWD}/OAIService_enum_number_selection_behavior.h \
+    $${PWD}/OAISession_enum_mode.h \
+    $${PWD}/OAISession_enum_status.h \
+# APIs
+    $${PWD}/OAIProxyV1InteractionApi.h \
+    $${PWD}/OAIProxyV1MessageInteractionApi.h \
+    $${PWD}/OAIProxyV1ParticipantApi.h \
+    $${PWD}/OAIProxyV1PhoneNumberApi.h \
+    $${PWD}/OAIProxyV1ServiceApi.h \
+    $${PWD}/OAIProxyV1SessionApi.h \
+    $${PWD}/OAIProxyV1ShortCodeApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIInteraction_enum_resource_status.cpp \
+    $${PWD}/OAIInteraction_enum_type.cpp \
+    $${PWD}/OAIListInteractionResponse.cpp \
+    $${PWD}/OAIListMessageInteractionResponse.cpp \
+    $${PWD}/OAIListParticipantResponse.cpp \
+    $${PWD}/OAIListPhoneNumberResponse.cpp \
+    $${PWD}/OAIListServiceResponse.cpp \
+    $${PWD}/OAIListServiceResponse_meta.cpp \
+    $${PWD}/OAIListSessionResponse.cpp \
+    $${PWD}/OAIListShortCodeResponse.cpp \
+    $${PWD}/OAIMessage_interaction_enum_resource_status.cpp \
+    $${PWD}/OAIMessage_interaction_enum_type.cpp \
+    $${PWD}/OAIProxy_v1_service.cpp \
+    $${PWD}/OAIProxy_v1_service_phone_number.cpp \
+    $${PWD}/OAIProxy_v1_service_phone_number_capabilities.cpp \
+    $${PWD}/OAIProxy_v1_service_session.cpp \
+    $${PWD}/OAIProxy_v1_service_session_interaction.cpp \
+    $${PWD}/OAIProxy_v1_service_session_participant.cpp \
+    $${PWD}/OAIProxy_v1_service_session_participant_message_interaction.cpp \
+    $${PWD}/OAIProxy_v1_service_short_code.cpp \
+    $${PWD}/OAIProxy_v1_service_short_code_capabilities.cpp \
+    $${PWD}/OAIService_enum_geo_match_level.cpp \
+    $${PWD}/OAIService_enum_number_selection_behavior.cpp \
+    $${PWD}/OAISession_enum_mode.cpp \
+    $${PWD}/OAISession_enum_status.cpp \
+# APIs
+    $${PWD}/OAIProxyV1InteractionApi.cpp \
+    $${PWD}/OAIProxyV1MessageInteractionApi.cpp \
+    $${PWD}/OAIProxyV1ParticipantApi.cpp \
+    $${PWD}/OAIProxyV1PhoneNumberApi.cpp \
+    $${PWD}/OAIProxyV1ServiceApi.cpp \
+    $${PWD}/OAIProxyV1SessionApi.cpp \
+    $${PWD}/OAIProxyV1ShortCodeApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

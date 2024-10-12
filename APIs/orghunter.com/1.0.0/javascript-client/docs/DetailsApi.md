@@ -1,0 +1,62 @@
+# OrgHunter.DetailsApi
+
+All URIs are relative to *http://data.orghunter.com*
+
+Method | HTTP request | Description
+------------- | ------------- | -------------
+[**v1CharitybasicPost**](DetailsApi.md#v1CharitybasicPost) | **POST** /v1/charitybasic | Get details!
+
+
+
+## v1CharitybasicPost
+
+> v1CharitybasicPost(opts)
+
+Get details!
+
+&lt;p&gt;This operation detail data.&lt;/p&gt;
+
+### Example
+
+```javascript
+import OrgHunter from 'org_hunter';
+let defaultClient = OrgHunter.ApiClient.instance;
+// Configure API key authorization: user_key
+let user_key = defaultClient.authentications['user_key'];
+user_key.apiKey = 'YOUR API KEY';
+// Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+//user_key.apiKeyPrefix = 'Token';
+
+let apiInstance = new OrgHunter.DetailsApi();
+let opts = {
+  'ein': "ein_example" // String | ein (Employer Identification Number)
+};
+apiInstance.v1CharitybasicPost(opts, (error, data, response) => {
+  if (error) {
+    console.error(error);
+  } else {
+    console.log('API called successfully.');
+  }
+});
+```
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **ein** | **String**| ein (Employer Identification Number) | [optional] 
+
+### Return type
+
+null (empty response body)
+
+### Authorization
+
+[user_key](../README.md#user_key)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: Not defined
+

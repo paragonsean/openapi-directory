@@ -1,0 +1,66 @@
+
+
+# GisFeatureDistance
+
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**adm1Code** | **String** | The internal code for the administrative division of level 1 |  [optional] |
+|**adm1Name** | **String** | The name of the administrative division of level 1 |  [optional] |
+|**adm2Code** | **String** | The internal code for the administrative division of level 2 |  [optional] |
+|**adm2Name** | **String** | The name of the administrative division of level 2 |  [optional] |
+|**adm3Code** | **String** | The internal code for the administrative division of level 3 |  [optional] |
+|**adm3Name** | **String** | The name of the administrative division of level 3 |  [optional] |
+|**adm4Code** | **String** | The internal code for the administrative division of level 4 |  [optional] |
+|**adm4Name** | **String** | The name of the administrative division of level 4 |  [optional] |
+|**adm5Code** | **String** | The internal code for the administrative division of level 5 |  [optional] |
+|**adm5Name** | **String** | The name of the administrative division of level 5 |  [optional] |
+|**amenity** | **String** | Informations on category of OpenStreetMap POIs |  [optional] |
+|**area** | **Double** | The area of the feature |  [optional] |
+|**asciiName** | **String** | The ASCII name of the feature |  [optional] |
+|**capitalName** | **String** | The Capital of the country |  [optional] |
+|**continent** | **String** | The continent the country belongs |  [optional] |
+|**countryCode** | **String** | The ISO 3166 country code |  [optional] |
+|**countryFlagUrl** | **String** | The relative URL to get the country flag image |  [optional] |
+|**currencyCode** | **String** | The Currency code (ISO_4217) of the country |  [optional] |
+|**currencyName** | **String** | The Currency name of the country |  [optional] |
+|**distance** | **Double** | The distance beetween the point and the gisFeature in meters |  [optional] |
+|**elevation** | **Integer** | The elevation in meters |  [optional] |
+|**equivalentFipsCode** | **String** | The fips Code of the country when no code are available |  [optional] |
+|**featureClass** | **String** | The feature Class. |  [optional] |
+|**featureCode** | **String** | The feature Code. |  [optional] |
+|**featureId** | **Long** | A unique id that identify the feature |  [optional] |
+|**fipsCode** | **String** | The fips Code of the country |  [optional] |
+|**fullyQualifiedAddress** | **String** | NOT USED YET |  [optional] |
+|**googleMapUrl** | **String** | The URL to get the location on Google Map |  [optional] |
+|**gtopo30** | **Integer** | Average elevation of 30&#39;x30&#39; (ca 900mx900m) area in meters |  [optional] |
+|**isIn** | **String** | Information of the city where the street / POI is (depends on openstreetmap &#39;is_in&#39; field), the city in general (only for placetype street) |  [optional] |
+|**isInAdm** | **String** | Information of the administration division where the street / POI is.  |  [optional] |
+|**isInPlace** | **String** | Information of the place where the street / POI is (quarter, common place). Generally a place at a lower level than city |  [optional] |
+|**isInZip** | **String** | Information of the zipcode where the street / POI is\&quot; |  [optional] |
+|**iso3166Alpha2Code** | **String** | The iso 3166 Alpha 2 code of the country |  [optional] |
+|**iso3166Alpha3Code** | **String** | The iso 3166 Alpha 3 code of the country |  [optional] |
+|**iso3166NumericCode** | **String** | The iso 3166 numeric code of the country |  [optional] |
+|**lat** | **Double** | The latitude (north-south) |  [optional] |
+|**length** | **Double** | length of the street |  [optional] |
+|**level** | **Integer** | The level of the Administrative division (1-5) |  [optional] |
+|**lng** | **Double** | The longitude (east-West) |  [optional] |
+|**name** | **String** | The name of the feature |  [optional] |
+|**oneWay** | **Boolean** | Wether the street is oneway or not |  [optional] |
+|**openstreetmapId** | **Long** | the id of the openstreetmap element |  [optional] |
+|**openstreetmapMapUrl** | **String** | The URL to get the location on Openstreetmap Map |  [optional] |
+|**phonePrefix** | **String** | The phone prefix of the country |  [optional] |
+|**placeType** | **String** | The Type of Feature see faq |  [optional] |
+|**population** | **Integer** | How many people lives in this feature |  [optional] |
+|**postalCodeMask** | **String** | The mask that all postal code of the country matches |  [optional] |
+|**postalCodeRegex** | **String** | The regexp that all zipcode/postalcode of the country matches |  [optional] |
+|**streetType** | **String** | the type of the street |  [optional] |
+|**timezone** | **String** | The time zone (e.g : Europe/Paris) |  [optional] |
+|**tld** | **String** | top-level domain name, (last part of an Internet domain name) of the country |  [optional] |
+|**yahooMapUrl** | **String** | The URL to get the location on Yahoo Map |  [optional] |
+|**zipCodes** | **List&lt;String&gt;** | The zipcodes (only for city and city subdivision), one node by zipcode |  [optional] |
+
+
+

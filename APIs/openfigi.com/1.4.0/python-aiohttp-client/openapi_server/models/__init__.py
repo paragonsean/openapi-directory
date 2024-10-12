@@ -1,0 +1,10 @@
+# coding: utf-8
+
+# import models into model package
+from openapi_server.models.figi_result import FigiResult
+from openapi_server.models.mapping_job import MappingJob
+from openapi_server.models.mapping_job_id_value import MappingJobIdValue
+from openapi_server.models.mapping_job_result import MappingJobResult
+from openapi_server.models.mapping_job_result_figi_list import MappingJobResultFigiList
+from openapi_server.models.mapping_job_result_figi_not_found import MappingJobResultFigiNotFound
+from openapi_server.models.mapping_values_key_get200_response import MappingValuesKeyGet200Response

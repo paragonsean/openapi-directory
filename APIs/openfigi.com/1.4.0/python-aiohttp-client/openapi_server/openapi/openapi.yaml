@@ -1,0 +1,603 @@
+openapi: 3.0.0
+info:
+  contact:
+    email: support@openfigi.com
+    name: OpenFIGI API Support
+    url: https://openfigi.com/api
+  description: A free & open API for FIGI discovery.
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: https://openfigi.com/docs/terms-of-service
+  title: OpenFIGI API
+  version: 1.4.0
+  x-apisguru-categories:
+  - open_data
+  x-origin:
+  - format: openapi
+    url: https://api.openfigi.com/schema
+    version: "3.0"
+  x-providerName: openfigi.com
+servers:
+- description: Production Tier
+  url: "https://api.openfigi.com/{basePath}"
+  variables:
+    basePath:
+      default: v1
+      enum:
+      - v1
+      - v2
+      - v3
+security:
+- {}
+- ApiKeyAuth: []
+paths:
+  /mapping:
+    post:
+      description: Allows mapping from third-party identifiers to FIGIs.
+      operationId: mapping_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BulkMappingJob'
+        description: A list of third-party identifiers and extra filters.
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BulkMappingJobResult'
+          description: A list of FIGIs and their metadata.
+        "400":
+          content:
+            '*/*':
+              schema:
+                type: string
+          description: Invalid request (body).
+        "401":
+          content:
+            '*/*':
+              schema:
+                type: string
+          description: API Key is invalid.
+        "406":
+          content:
+            '*/*':
+              schema:
+                type: string
+          description: Unsupported 'Accept' type.
+        "413":
+          content:
+            '*/*':
+              schema:
+                type: string
+          description: Too many mapping jobs in request.
+        "500":
+          content:
+            '*/*':
+              schema:
+                type: string
+          description: Internal server error.
+      x-openapi-router-controller: openapi_server.controllers.default_controller
+      x-codegen-request-body-name: body
+  /mapping/values/{key}:
+    get:
+      description: Get values for enum-like fields.
+      operationId: mapping_values_key_get
+      parameters:
+      - description: Key of MappingJob for which to get possible values.
+        explode: false
+        in: path
+        name: key
+        required: true
+        schema:
+          enum:
+          - idType
+          - exchCode
+          - micCode
+          - currency
+          - marketSecDes
+          - securityType
+          - securityType2
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/_mapping_values__key__get_200_response'
+          description: The list of values.
+        "400":
+          content:
+            '*/*':
+              schema:
+                type: string
+          description: Invalid request (key).
+        "500":
+          content:
+            '*/*':
+              schema:
+                type: string
+          description: Internal server error.
+      x-openapi-router-controller: openapi_server.controllers.default_controller
+components:
+  schemas:
+    BulkMappingJob:
+      items:
+        $ref: '#/components/schemas/MappingJob'
+      type: array
+    BulkMappingJobResult:
+      items:
+        $ref: '#/components/schemas/MappingJobResult'
+      type: array
+    FigiResult:
+      example:
+        marketSector: marketSector
+        metadata: metadata
+        ticker: ticker
+        securityType: securityType
+        securityType2: securityType2
+        name: name
+        securityDescription: securityDescription
+        figi: figi
+        shareClassFIGI: shareClassFIGI
+        compositeFIGI: compositeFIGI
+        exchCode: exchCode
+      properties:
+        compositeFIGI:
+          nullable: true
+          title: compositeFIGI
+          type: string
+        exchCode:
+          nullable: true
+          title: exchCode
+          type: string
+        figi:
+          title: figi
+          type: string
+        marketSector:
+          nullable: true
+          title: marketSector
+          type: string
+        metadata:
+          description: Exists when API is unable to show non-FIGI fields.
+          nullable: true
+          title: metadata
+          type: string
+        name:
+          nullable: true
+          title: name
+          type: string
+        securityDescription:
+          nullable: true
+          title: securityDescription
+          type: string
+        securityType:
+          nullable: true
+          title: securityType
+          type: string
+        securityType2:
+          nullable: true
+          title: securityType2
+          type: string
+        shareClassFIGI:
+          nullable: true
+          title: shareClassFIGI
+          type: string
+        ticker:
+          nullable: true
+          title: ticker
+          type: string
+      title: FigiResult
+      type: object
+    MappingJob:
+      description: "For V3: securityType2 is required when idType is BASE_TICKER or\
+        \ ID_EXCH_SYMBOL.  expiration is required when securityType2 is Option or\
+        \ Warrant.  maturity is required when securityType2 is Pool."
+      example:
+        idType: ID_ISIN
+        coupon:
+        - 6.027456183070403
+        - 6.027456183070403
+        maturity:
+        - 2000-01-23
+        - 2000-01-23
+        strike:
+        - 1.4658129805029452
+        - 1.4658129805029452
+        idValue: MappingJob_idValue
+        exchCode: exchCode
+        optionType: Put
+        micCode: micCode
+        securityType: securityType
+        securityType2: securityType2
+        includeUnlistedEquities: true
+        contractSize:
+        - 0.8008281904610115
+        - 0.8008281904610115
+        currency: currency
+        expiration:
+        - 2000-01-23
+        - 2000-01-23
+        stateCode: AB
+        marketSecDes: marketSecDes
+      properties:
+        contractSize:
+          description: At least one entry should be non-null.
+          items:
+            nullable: true
+            type: number
+          maxItems: 2
+          minItems: 2
+          nullable: true
+          title: contractSize
+          type: array
+        coupon:
+          description: At least one entry should be non-null.
+          items:
+            nullable: true
+            type: number
+          maxItems: 2
+          minItems: 2
+          nullable: true
+          title: contractSize
+          type: array
+        currency:
+          nullable: true
+          title: currency
+          type: string
+        exchCode:
+          nullable: true
+          title: exchCode
+          type: string
+        expiration:
+          description: At least one entry should be non-null.
+          items:
+            format: date
+            nullable: true
+            type: string
+          maxItems: 2
+          minItems: 2
+          nullable: true
+          title: expiration
+          type: array
+        idType:
+          enum:
+          - ID_ISIN
+          - ID_BB_UNIQUE
+          - ID_SEDOL
+          - ID_COMMON
+          - ID_WERTPAPIER
+          - ID_CUSIP
+          - ID_BB
+          - ID_ITALY
+          - ID_EXCH_SYMBOL
+          - ID_FULL_EXCHANGE_SYMBOL
+          - COMPOSITE_ID_BB_GLOBAL
+          - ID_BB_GLOBAL_SHARE_CLASS_LEVEL
+          - ID_BB_SEC_NUM_DES
+          - ID_BB_GLOBAL
+          - TICKER
+          - ID_CUSIP_8_CHR
+          - OCC_SYMBOL
+          - UNIQUE_ID_FUT_OPT
+          - OPRA_SYMBOL
+          - TRADING_SYSTEM_IDENTIFIER
+          - ID_CINS
+          - ID_SHORT_CODE
+          - BASE_TICKER
+          - VENDOR_INDEX_CODE
+          title: idType
+          type: string
+        idValue:
+          $ref: '#/components/schemas/MappingJob_idValue'
+        includeUnlistedEquities:
+          nullable: true
+          title: includeUnlistedEquities
+          type: boolean
+        marketSecDes:
+          nullable: true
+          title: marketSecDes
+          type: string
+        maturity:
+          description: At least one entry should be non-null.
+          items:
+            format: date
+            nullable: true
+            type: string
+          maxItems: 2
+          minItems: 2
+          nullable: true
+          title: expiration
+          type: array
+        micCode:
+          nullable: true
+          title: micCode
+          type: string
+        optionType:
+          enum:
+          - Put
+          - Call
+          nullable: true
+          title: optionType
+          type: string
+        securityType:
+          nullable: true
+          title: securityType
+          type: string
+        securityType2:
+          nullable: true
+          title: securityType2
+          type: string
+        stateCode:
+          enum:
+          - AB
+          - AC
+          - AC
+          - AH
+          - AK
+          - AL
+          - AM
+          - AR
+          - AS
+          - AT
+          - AZ
+          - BC
+          - BJ
+          - CA
+          - CB
+          - CO
+          - CQ
+          - CT
+          - CZ
+          - DC
+          - DE
+          - EH
+          - FH
+          - FI
+          - FJ
+          - FL
+          - FO
+          - FS
+          - GA
+          - GD
+          - GF
+          - GM
+          - GS
+          - GU
+          - GX
+          - GZ
+          - HA
+          - HB
+          - HE
+          - HG
+          - HI
+          - HI
+          - HL
+          - HN
+          - HO
+          - HS
+          - IA
+          - ID
+          - IG
+          - IK
+          - IL
+          - IN
+          - IT
+          - JL
+          - JS
+          - JX
+          - KA
+          - KC
+          - KN
+          - KO
+          - KS
+          - KT
+          - KU
+          - KY
+          - LA
+          - LN
+          - MA
+          - MB
+          - MD
+          - ME
+          - ME
+          - MG
+          - MI
+          - MN
+          - MO
+          - MS
+          - MT
+          - MZ
+          - NB
+          - NC
+          - ND
+          - NE
+          - NG
+          - NH
+          - NJ
+          - NL
+          - NM
+          - NM
+          - NN
+          - NR
+          - NS
+          - NS
+          - NS
+          - NT
+          - NU
+          - NV
+          - NW
+          - NX
+          - NY
+          - OH
+          - OK
+          - "true"
+          - "true"
+          - OR
+          - OS
+          - OT
+          - OT
+          - OY
+          - PA
+          - PE
+          - PR
+          - QC
+          - QH
+          - QL
+          - RI
+          - SA
+          - SA
+          - SC
+          - SC
+          - SD
+          - SD
+          - SH
+          - SI
+          - SK
+          - SN
+          - SN
+          - ST
+          - SX
+          - SZ
+          - TA
+          - TG
+          - TJ
+          - TK
+          - TN
+          - TS
+          - TT
+          - TT
+          - TX
+          - TY
+          - UT
+          - VA
+          - VI
+          - VI
+          - VT
+          - WA
+          - WA
+          - WI
+          - WK
+          - WV
+          - WY
+          - XJ
+          - XZ
+          - YA
+          - YN
+          - YN
+          - YT
+          - YU
+          - ZJ
+          nullable: true
+          title: stateCode
+          type: string
+        strike:
+          description: At least one entry should be non-null.
+          items:
+            nullable: true
+            type: number
+          maxItems: 2
+          minItems: 2
+          nullable: true
+          title: contractSize
+          type: array
+      required:
+      - idType
+      - idValue
+      title: MappingJob
+      type: object
+    MappingJobResult:
+      oneOf:
+      - $ref: '#/components/schemas/MappingJobResultFigiList'
+      - $ref: '#/components/schemas/MappingJobResultFigiNotFound'
+      title: MappingJobResult
+    MappingJobResultFigiList:
+      example:
+        data:
+        - marketSector: marketSector
+          metadata: metadata
+          ticker: ticker
+          securityType: securityType
+          securityType2: securityType2
+          name: name
+          securityDescription: securityDescription
+          figi: figi
+          shareClassFIGI: shareClassFIGI
+          compositeFIGI: compositeFIGI
+          exchCode: exchCode
+        - marketSector: marketSector
+          metadata: metadata
+          ticker: ticker
+          securityType: securityType
+          securityType2: securityType2
+          name: name
+          securityDescription: securityDescription
+          figi: figi
+          shareClassFIGI: shareClassFIGI
+          compositeFIGI: compositeFIGI
+          exchCode: exchCode
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/FigiResult'
+          title: data
+          type: array
+      title: MappingJobResultFigiList
+      type: object
+    MappingJobResultFigiNotFound:
+      properties:
+        warning:
+          title: warning
+          type: string
+      title: MappingJobResultFigiNotFound
+      type: object
+    NullableDateInterval:
+      description: At least one entry should be non-null.
+      items:
+        format: date
+        nullable: true
+        type: string
+      maxItems: 2
+      minItems: 2
+      nullable: true
+      title: expiration
+      type: array
+    NullableNumberInterval:
+      description: At least one entry should be non-null.
+      items:
+        nullable: true
+        type: number
+      maxItems: 2
+      minItems: 2
+      nullable: true
+      title: contractSize
+      type: array
+    _mapping_values__key__get_200_response:
+      example:
+        values:
+        - values
+        - values
+      properties:
+        values:
+          items:
+            type: string
+          title: values
+          type: array
+      title: _mapping_values__key__get_200_response
+      type: object
+    MappingJob_idValue:
+      default: string
+      oneOf:
+      - type: string
+      - type: integer
+      title: MappingJob_idValue
+  securitySchemes:
+    ApiKeyAuth:
+      in: header
+      name: X-OPENFIGI-APIKEY
+      type: apiKey
+      x-apikeyInfoFunc: openapi_server.controllers.security_controller.info_from_ApiKeyAuth

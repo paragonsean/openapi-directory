@@ -1,0 +1,103 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIGet_almaws_v1_task_lists_printouts_200_response.h \
+    $${PWD}/OAIGet_almaws_v1_task_lists_printouts_200_response_printout_inner.h \
+    $${PWD}/OAIGet_almaws_v1_task_lists_printouts_200_response_printout_inner_printer.h \
+    $${PWD}/OAIGet_almaws_v1_task_lists_printouts_200_response_printout_inner_status.h \
+    $${PWD}/OAIGet_almaws_v1_task_lists_requested_resources_200_response.h \
+    $${PWD}/OAIGet_almaws_v1_task_lists_requested_resources_200_response_requested_resource_inner.h \
+    $${PWD}/OAIGet_almaws_v1_task_lists_requested_resources_200_response_requested_resource_inner_location.h \
+    $${PWD}/OAIGet_almaws_v1_task_lists_requested_resources_200_response_requested_resource_inner_location_copy_inner.h \
+    $${PWD}/OAIGet_almaws_v1_task_lists_requested_resources_200_response_requested_resource_inner_location_copy_inner_base_status.h \
+    $${PWD}/OAIGet_almaws_v1_task_lists_requested_resources_200_response_requested_resource_inner_location_holding_id.h \
+    $${PWD}/OAIGet_almaws_v1_task_lists_requested_resources_200_response_requested_resource_inner_location_library.h \
+    $${PWD}/OAIGet_almaws_v1_task_lists_requested_resources_200_response_requested_resource_inner_request_inner.h \
+    $${PWD}/OAIGet_almaws_v1_task_lists_requested_resources_200_response_requested_resource_inner_request_inner_destination.h \
+    $${PWD}/OAIGet_almaws_v1_task_lists_requested_resources_200_response_requested_resource_inner_request_inner_request_sub_type.h \
+    $${PWD}/OAIGet_almaws_v1_task_lists_requested_resources_200_response_requested_resource_inner_request_inner_requester.h \
+    $${PWD}/OAIGet_almaws_v1_task_lists_requested_resources_200_response_requested_resource_inner_resource_metadata.h \
+    $${PWD}/OAIGet_almaws_v1_task_lists_requested_resources_200_response_requested_resource_inner_resource_metadata_mms_id.h \
+    $${PWD}/OAIGet_almaws_v1_task_lists_rs_lending_requests_200_response.h \
+    $${PWD}/OAIGet_almaws_v1_task_lists_rs_lending_requests_200_response_user_resource_sharing_request_inner.h \
+    $${PWD}/OAIGet_almaws_v1_task_lists_rs_lending_requests_200_response_user_resource_sharing_request_inner_citation_type.h \
+    $${PWD}/OAIGet_almaws_v1_task_lists_rs_lending_requests_200_response_user_resource_sharing_request_inner_copyright_status.h \
+    $${PWD}/OAIGet_almaws_v1_task_lists_rs_lending_requests_200_response_user_resource_sharing_request_inner_format.h \
+    $${PWD}/OAIGet_almaws_v1_task_lists_rs_lending_requests_200_response_user_resource_sharing_request_inner_fund.h \
+    $${PWD}/OAIGet_almaws_v1_task_lists_rs_lending_requests_200_response_user_resource_sharing_request_inner_level_of_service.h \
+    $${PWD}/OAIGet_almaws_v1_task_lists_rs_lending_requests_200_response_user_resource_sharing_request_inner_partner.h \
+    $${PWD}/OAIGet_almaws_v1_task_lists_rs_lending_requests_200_response_user_resource_sharing_request_inner_pickup_location.h \
+    $${PWD}/OAIGet_almaws_v1_task_lists_rs_lending_requests_200_response_user_resource_sharing_request_inner_preferred_send_method.h \
+    $${PWD}/OAIGet_almaws_v1_task_lists_rs_lending_requests_200_response_user_resource_sharing_request_inner_reading_room.h \
+    $${PWD}/OAIGet_almaws_v1_task_lists_rs_lending_requests_200_response_user_resource_sharing_request_inner_requested_language.h \
+    $${PWD}/OAIGet_almaws_v1_task_lists_rs_lending_requests_200_response_user_resource_sharing_request_inner_requester.h \
+    $${PWD}/OAIGet_almaws_v1_task_lists_rs_lending_requests_200_response_user_resource_sharing_request_inner_rs_note_inner.h \
+    $${PWD}/OAIGet_almaws_v1_task_lists_rs_lending_requests_200_response_user_resource_sharing_request_inner_shipping_cost.h \
+    $${PWD}/OAIGet_almaws_v1_task_lists_rs_lending_requests_200_response_user_resource_sharing_request_inner_shipping_cost_currency.h \
+    $${PWD}/OAIGet_almaws_v1_task_lists_rs_lending_requests_200_response_user_resource_sharing_request_inner_status.h \
+    $${PWD}/OAIGet_almaws_v1_task_lists_rs_lending_requests_200_response_user_resource_sharing_request_inner_supplied_format.h \
+    $${PWD}/OAIGet_almaws_v1_task_lists_rs_lending_requests_200_response_user_resource_sharing_request_inner_user_request.h \
+# APIs
+    $${PWD}/OAILendingRequestsApi.h \
+    $${PWD}/OAIPrintoutsApi.h \
+    $${PWD}/OAIRequestedResourcesApi.h \
+    $${PWD}/OAITestApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIGet_almaws_v1_task_lists_printouts_200_response.cpp \
+    $${PWD}/OAIGet_almaws_v1_task_lists_printouts_200_response_printout_inner.cpp \
+    $${PWD}/OAIGet_almaws_v1_task_lists_printouts_200_response_printout_inner_printer.cpp \
+    $${PWD}/OAIGet_almaws_v1_task_lists_printouts_200_response_printout_inner_status.cpp \
+    $${PWD}/OAIGet_almaws_v1_task_lists_requested_resources_200_response.cpp \
+    $${PWD}/OAIGet_almaws_v1_task_lists_requested_resources_200_response_requested_resource_inner.cpp \
+    $${PWD}/OAIGet_almaws_v1_task_lists_requested_resources_200_response_requested_resource_inner_location.cpp \
+    $${PWD}/OAIGet_almaws_v1_task_lists_requested_resources_200_response_requested_resource_inner_location_copy_inner.cpp \
+    $${PWD}/OAIGet_almaws_v1_task_lists_requested_resources_200_response_requested_resource_inner_location_copy_inner_base_status.cpp \
+    $${PWD}/OAIGet_almaws_v1_task_lists_requested_resources_200_response_requested_resource_inner_location_holding_id.cpp \
+    $${PWD}/OAIGet_almaws_v1_task_lists_requested_resources_200_response_requested_resource_inner_location_library.cpp \
+    $${PWD}/OAIGet_almaws_v1_task_lists_requested_resources_200_response_requested_resource_inner_request_inner.cpp \
+    $${PWD}/OAIGet_almaws_v1_task_lists_requested_resources_200_response_requested_resource_inner_request_inner_destination.cpp \
+    $${PWD}/OAIGet_almaws_v1_task_lists_requested_resources_200_response_requested_resource_inner_request_inner_request_sub_type.cpp \
+    $${PWD}/OAIGet_almaws_v1_task_lists_requested_resources_200_response_requested_resource_inner_request_inner_requester.cpp \
+    $${PWD}/OAIGet_almaws_v1_task_lists_requested_resources_200_response_requested_resource_inner_resource_metadata.cpp \
+    $${PWD}/OAIGet_almaws_v1_task_lists_requested_resources_200_response_requested_resource_inner_resource_metadata_mms_id.cpp \
+    $${PWD}/OAIGet_almaws_v1_task_lists_rs_lending_requests_200_response.cpp \
+    $${PWD}/OAIGet_almaws_v1_task_lists_rs_lending_requests_200_response_user_resource_sharing_request_inner.cpp \
+    $${PWD}/OAIGet_almaws_v1_task_lists_rs_lending_requests_200_response_user_resource_sharing_request_inner_citation_type.cpp \
+    $${PWD}/OAIGet_almaws_v1_task_lists_rs_lending_requests_200_response_user_resource_sharing_request_inner_copyright_status.cpp \
+    $${PWD}/OAIGet_almaws_v1_task_lists_rs_lending_requests_200_response_user_resource_sharing_request_inner_format.cpp \
+    $${PWD}/OAIGet_almaws_v1_task_lists_rs_lending_requests_200_response_user_resource_sharing_request_inner_fund.cpp \
+    $${PWD}/OAIGet_almaws_v1_task_lists_rs_lending_requests_200_response_user_resource_sharing_request_inner_level_of_service.cpp \
+    $${PWD}/OAIGet_almaws_v1_task_lists_rs_lending_requests_200_response_user_resource_sharing_request_inner_partner.cpp \
+    $${PWD}/OAIGet_almaws_v1_task_lists_rs_lending_requests_200_response_user_resource_sharing_request_inner_pickup_location.cpp \
+    $${PWD}/OAIGet_almaws_v1_task_lists_rs_lending_requests_200_response_user_resource_sharing_request_inner_preferred_send_method.cpp \
+    $${PWD}/OAIGet_almaws_v1_task_lists_rs_lending_requests_200_response_user_resource_sharing_request_inner_reading_room.cpp \
+    $${PWD}/OAIGet_almaws_v1_task_lists_rs_lending_requests_200_response_user_resource_sharing_request_inner_requested_language.cpp \
+    $${PWD}/OAIGet_almaws_v1_task_lists_rs_lending_requests_200_response_user_resource_sharing_request_inner_requester.cpp \
+    $${PWD}/OAIGet_almaws_v1_task_lists_rs_lending_requests_200_response_user_resource_sharing_request_inner_rs_note_inner.cpp \
+    $${PWD}/OAIGet_almaws_v1_task_lists_rs_lending_requests_200_response_user_resource_sharing_request_inner_shipping_cost.cpp \
+    $${PWD}/OAIGet_almaws_v1_task_lists_rs_lending_requests_200_response_user_resource_sharing_request_inner_shipping_cost_currency.cpp \
+    $${PWD}/OAIGet_almaws_v1_task_lists_rs_lending_requests_200_response_user_resource_sharing_request_inner_status.cpp \
+    $${PWD}/OAIGet_almaws_v1_task_lists_rs_lending_requests_200_response_user_resource_sharing_request_inner_supplied_format.cpp \
+    $${PWD}/OAIGet_almaws_v1_task_lists_rs_lending_requests_200_response_user_resource_sharing_request_inner_user_request.cpp \
+# APIs
+    $${PWD}/OAILendingRequestsApi.cpp \
+    $${PWD}/OAIPrintoutsApi.cpp \
+    $${PWD}/OAIRequestedResourcesApi.cpp \
+    $${PWD}/OAITestApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

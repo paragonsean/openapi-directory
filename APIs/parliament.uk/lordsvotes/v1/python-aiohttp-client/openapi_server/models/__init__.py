@@ -1,0 +1,9 @@
+# coding: utf-8
+
+# import models into model package
+from openapi_server.models.comparators import Comparators
+from openapi_server.models.division_group_by_party_view_model import DivisionGroupByPartyViewModel
+from openapi_server.models.division_view_model import DivisionViewModel
+from openapi_server.models.member_view_model import MemberViewModel
+from openapi_server.models.member_voting_record_view_model import MemberVotingRecordViewModel
+from openapi_server.models.party_vote_result_view_model import PartyVoteResultViewModel

@@ -1,0 +1,4821 @@
+openapi: 3.0.1
+info:
+  contact:
+    email: api@pocketsmith.com
+    name: API Support
+  description: The PocketSmith API
+  title: PocketSmith
+  version: "2.0"
+  x-apisguru-categories:
+  - financial
+  x-origin:
+  - format: openapi
+    url: https://raw.githubusercontent.com/pocketsmith/api/master/openapi.json
+    version: "3.0"
+  x-providerName: pocketsmith.com
+servers:
+- description: Production
+  url: https://api.pocketsmith.com/v2
+security:
+- developerKey: []
+paths:
+  /accounts/{id}:
+    delete:
+      description: "Deletes an account and all its data by ID, optionally merge scenarios\
+        \ into another account."
+      parameters:
+      - description: The unique identifier of the account.
+        example: 42
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: integer
+        style: simple
+      responses:
+        "204":
+          description: Success
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Allowed
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Found
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Validation Error
+      summary: Delete account
+      tags:
+      - Accounts
+      x-accepts:
+      - application/json
+    get:
+      description: Gets an account by its ID.
+      parameters:
+      - description: The unique identifier of the account.
+        example: 42
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Account'
+          description: Success
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Allowed
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Found
+      summary: Get account
+      tags:
+      - Accounts
+      x-accepts:
+      - application/json
+    put:
+      description: Updates and returns an account by its ID.
+      parameters:
+      - description: The unique identifier of the account.
+        example: 42
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: integer
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/_accounts__id__put_request'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Account'
+          description: Success
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Allowed
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Found
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Validation Error
+      summary: Update account
+      tags:
+      - Accounts
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+  /accounts/{id}/transactions:
+    get:
+      description: Lists transactions belonging to an account by its ID.
+      parameters:
+      - description: The unique identifier of the account.
+        example: 42
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: integer
+        style: simple
+      - description: "Limit to transactions on or after this date. Required if end_date\
+          \ is provided. If not provided, defaults to the furtherest date allowed\
+          \ by the user's subscription."
+        example: 2016-11-01
+        explode: true
+        in: query
+        name: start_date
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: "Limit to transactions on or before this date. Required if start_date\
+          \ is provided. If not provided, defaults to today's date."
+        example: 2016-11-30
+        explode: true
+        in: query
+        name: end_date
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Limit to transactions updated since an ISO 8601 timestamp.
+        example: 2020-10-14T09:20:33+13:00
+        explode: true
+        in: query
+        name: updated_since
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Limit to uncategorised transactions.
+        example: 1
+        explode: true
+        in: query
+        name: uncategorised
+        required: false
+        schema:
+          type: integer
+        style: form
+      - description: Limit to transactions of this type.
+        example: debit
+        explode: true
+        in: query
+        name: type
+        required: false
+        schema:
+          enum:
+          - debit
+          - credit
+          type: string
+        style: form
+      - description: Limit to transactions that need to be reviewed.
+        example: 1
+        explode: true
+        in: query
+        name: needs_review
+        required: false
+        schema:
+          type: integer
+        style: form
+      - description: "Limit to transactions matching a keyword search string. The\
+          \ provided string is matched against the transaction amount, account name,\
+          \ payee, category title, note, labels, and the date in ISO 8601 format."
+        example: Paypal
+        explode: true
+        in: query
+        name: search
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Choose a particular page of the results.
+        example: 3
+        explode: true
+        in: query
+        name: page
+        required: false
+        schema:
+          type: integer
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/Transaction'
+                type: array
+          description: Success
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Bad Request
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Allowed
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Found
+      summary: List transactions in account
+      tags:
+      - Transactions
+      x-accepts:
+      - application/json
+  /attachments/{id}:
+    delete:
+      description: Deletes a particular attachment by its ID.
+      parameters:
+      - description: The unique identifier of the attachment.
+        example: 42
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: integer
+        style: simple
+      responses:
+        "204":
+          description: Success
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Allowed
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Found
+      summary: Delete attachment
+      tags:
+      - Attachments
+      x-accepts:
+      - application/json
+    get:
+      description: Gets a particular attachment by its ID.
+      parameters:
+      - description: The unique identifier of the attachment.
+        example: 42
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Attachment'
+          description: Success
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Allowed
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Found
+      summary: Get attachment
+      tags:
+      - Attachments
+      x-accepts:
+      - application/json
+    put:
+      description: Updates the title of the attachment.
+      parameters:
+      - description: The unique identifier of the attachment.
+        example: 42
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: integer
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/_attachments__id__put_request'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Attachment'
+          description: Success
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Allowed
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Found
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Validation Error
+      summary: Update attachment
+      tags:
+      - Attachments
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+  /categories/{id}:
+    delete:
+      description: "Deletes a particular category by its ID. This will delete all\
+        \ budgets within the category, and uncategorize all transactions assigned\
+        \ to the category."
+      parameters:
+      - description: The unique identifier of the category.
+        example: 42
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: integer
+        style: simple
+      responses:
+        "204":
+          description: Success
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Allowed
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Found
+      summary: Delete category
+      tags:
+      - Categories
+      x-accepts:
+      - application/json
+    get:
+      description: Gets a particular category by its ID.
+      parameters:
+      - description: The unique identifier of the category.
+        example: 42
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Category'
+          description: Success
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Allowed
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Found
+      summary: Get category
+      tags:
+      - Categories
+      x-accepts:
+      - application/json
+    put:
+      description: Updates a category by its ID.
+      parameters:
+      - description: The unique identifier of the category.
+        example: 42
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: integer
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/_categories__id__put_request'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Category'
+          description: Success
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Allowed
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Found
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Validation Error
+      summary: Update category
+      tags:
+      - Categories
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+  /categories/{id}/category_rules:
+    post:
+      description: Creates a rule to allocate a category to transactions.
+      parameters:
+      - description: The unique identifier of the category.
+        example: 42
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: integer
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/_categories__id__category_rules_post_request'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CategoryRule'
+          description: Success
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Allowed
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Found
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Validation Error
+      summary: Create category rule in category
+      tags:
+      - Category Rules
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+  /categories/{id}/transactions:
+    get:
+      description: Lists transactions belonging to one or more categories by their
+        IDs.
+      parameters:
+      - description: A comma-separated list of category IDs.
+        example: "42,43"
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: "Limit to transactions on or after this date. Required if end_date\
+          \ is provided. If not provided, defaults to the furtherest date allowed\
+          \ by the user's subscription."
+        example: 2016-11-01
+        explode: true
+        in: query
+        name: start_date
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: "Limit to transactions on or before this date. Required if start_date\
+          \ is provided. If not provided, defaults to today's date."
+        example: 2016-11-30
+        explode: true
+        in: query
+        name: end_date
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Limit to transactions updated since an ISO 8601 timestamp.
+        example: 2020-10-14T09:20:33+13:00
+        explode: true
+        in: query
+        name: updated_since
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Limit to uncategorised transactions.
+        example: 1
+        explode: true
+        in: query
+        name: uncategorised
+        required: false
+        schema:
+          type: integer
+        style: form
+      - description: Limit to transactions of this type.
+        example: debit
+        explode: true
+        in: query
+        name: type
+        required: false
+        schema:
+          enum:
+          - debit
+          - credit
+          type: string
+        style: form
+      - description: Limit to transactions that need to be reviewed.
+        example: 1
+        explode: true
+        in: query
+        name: needs_review
+        required: false
+        schema:
+          type: integer
+        style: form
+      - description: "Limit to transactions matching a keyword search string. The\
+          \ provided string is matched against the transaction amount, account name,\
+          \ payee, category title, note, labels, and the date in ISO 8601 format."
+        example: Paypal
+        explode: true
+        in: query
+        name: search
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Choose a particular page of the results.
+        example: 3
+        explode: true
+        in: query
+        name: page
+        required: false
+        schema:
+          type: integer
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/Transaction'
+                type: array
+          description: Success
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Bad Request
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Allowed
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Found
+      summary: List transactions in categories
+      tags:
+      - Transactions
+      x-accepts:
+      - application/json
+  /currencies:
+    get:
+      description: Lists currencies supported by PocketSmith.
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/Currency'
+                type: array
+          description: Success
+      summary: List currencies
+      tags:
+      - Currencies
+      x-accepts:
+      - application/json
+  /currencies/{id}:
+    get:
+      description: Gets a particular currency by its ID.
+      parameters:
+      - description: The unique identifier of the currency.
+        example: nzd
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Currency'
+          description: Success
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Found
+      summary: Get currency
+      tags:
+      - Currencies
+      x-accepts:
+      - application/json
+  /events/{id}:
+    delete:
+      description: Deletes an event by its ID.
+      parameters:
+      - description: The unique identifier of the event.
+        example: 42-1601942400
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: "Whether the delete applies only to this event, to all events\
+          \ within the series from this event or to all events within the series."
+        explode: true
+        in: query
+        name: behaviour
+        required: true
+        schema:
+          enum:
+          - one
+          - forward
+          - all
+          type: string
+        style: form
+      responses:
+        "204":
+          description: Success
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Bad Request
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Allowed
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Found
+        "409":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Conflict
+      summary: Delete event
+      tags:
+      - Events
+      x-accepts:
+      - application/json
+    get:
+      description: Gets a particular event by its ID.
+      parameters:
+      - description: The unique identifier of the event.
+        example: 42-1601942400
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Event'
+          description: Success
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Allowed
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Found
+      summary: Get event
+      tags:
+      - Events
+      x-accepts:
+      - application/json
+    put:
+      description: Updates an event by its ID.
+      parameters:
+      - description: The unique identifier of the event.
+        example: 42-1601942400
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/_events__id__put_request'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Event'
+          description: Success
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Bad Request
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Allowed
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Found
+        "409":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Conflict
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Validation Error
+      summary: Update event
+      tags:
+      - Events
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+  /institutions/{id}:
+    delete:
+      description: "Deletes an institution and all data within. Alternatively, another\
+        \ institution can be provided to merge the data into to avoid losing it."
+      parameters:
+      - description: The unique identifier of the institution.
+        example: 42
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: integer
+        style: simple
+      - description: The unique identifier of the institution to merge into.
+        example: 44
+        explode: true
+        in: query
+        name: merge_into_institution_id
+        required: false
+        schema:
+          type: integer
+        style: form
+      responses:
+        "204":
+          description: Success
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Allowed
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Found
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Validation Error
+      summary: Delete institution
+      tags:
+      - Institutions
+      x-accepts:
+      - application/json
+    get:
+      description: Gets an institution by its ID.
+      parameters:
+      - description: The unique identifier of the institution.
+        example: 42
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Institution'
+          description: Success
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Allowed
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Found
+      summary: Get institution
+      tags:
+      - Institutions
+      x-accepts:
+      - application/json
+    put:
+      description: Updates the title and currency code for an institution.
+      parameters:
+      - description: The unique identifier of the institution.
+        example: 42
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: integer
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/_institutions__id__put_request'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Institution'
+          description: Success
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Allowed
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Found
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Validation Error
+      summary: Update institution
+      tags:
+      - Institutions
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+  /institutions/{id}/accounts:
+    get:
+      description: Lists accounts belonging to an institution by its ID.
+      parameters:
+      - description: The unique identifier of the institution.
+        example: 42
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/Account'
+                type: array
+          description: Success
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Allowed
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Found
+      summary: List accounts in institution
+      tags:
+      - Accounts
+      x-accepts:
+      - application/json
+  /me:
+    get:
+      description: Gets the user that corresponds to the access token used in the
+        request.
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: Success
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Allowed
+      summary: Get the authorised user
+      tags:
+      - Users
+      x-accepts:
+      - application/json
+  /scenarios/{id}/events:
+    get:
+      description: Lists events belonging to a scenario by their ID.
+      parameters:
+      - description: The unique identifier of the scenario.
+        example: 42
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: integer
+        style: simple
+      - description: Return the events from and including this date.
+        example: 2020-10-01
+        explode: true
+        in: query
+        name: start_date
+        required: true
+        schema:
+          type: string
+        style: form
+      - description: Return the events until and including this date.
+        example: 2020-10-30
+        explode: true
+        in: query
+        name: end_date
+        required: true
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/Event'
+                type: array
+          description: Success
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Allowed
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Found
+      summary: List events in scenario.
+      tags:
+      - Events
+      x-accepts:
+      - application/json
+    post:
+      description: Creates an event in a scenario by its ID.
+      parameters:
+      - description: The unique identifier of the scenario.
+        example: 42
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: integer
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/_scenarios__id__events_post_request'
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Event'
+          description: Success
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Allowed
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Found
+        "409":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Conflict
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Validation Error
+      summary: Create event in scenario
+      tags:
+      - Events
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+  /time_zones:
+    get:
+      description: Lists time zones.
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/TimeZone'
+                type: array
+          description: Success
+      summary: List time zones
+      tags:
+      - Time Zones
+      x-accepts:
+      - application/json
+  /transaction_accounts/{id}:
+    get:
+      description: Gets a transaction account by its ID.
+      parameters:
+      - description: The unique identifier of the transaction account.
+        example: 42
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransactionAccount'
+          description: Success
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Allowed
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Found
+      summary: Get transaction account
+      tags:
+      - Transaction Accounts
+      x-accepts:
+      - application/json
+    put:
+      description: Updates the transaction account by its ID.
+      parameters:
+      - description: The unique identifier of the transaction account.
+        example: 42
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: integer
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/_transaction_accounts__id__put_request'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransactionAccount'
+          description: Success
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Allowed
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Found
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Validation Error
+      summary: Update transaction account
+      tags:
+      - Transaction Accounts
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+  /transaction_accounts/{id}/transactions:
+    get:
+      description: Lists transactions belonging to a transaction account by its ID.
+      parameters:
+      - description: The unique identifier of the transaction account.
+        example: 42
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: integer
+        style: simple
+      - description: "Limit to transactions on or after this date. Required if end_date\
+          \ is provided. If not provided, defaults to the furtherest date allowed\
+          \ by the user's subscription."
+        example: 2016-11-01
+        explode: true
+        in: query
+        name: start_date
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: "Limit to transactions on or before this date. Required if start_date\
+          \ is provided. If not provided, defaults to today's date."
+        example: 2016-11-30
+        explode: true
+        in: query
+        name: end_date
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Limit to transactions updated since an ISO 8601 timestamp.
+        example: 2020-10-14T09:20:33+13:00
+        explode: true
+        in: query
+        name: updated_since
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Limit to uncategorised transactions.
+        example: 1
+        explode: true
+        in: query
+        name: uncategorised
+        required: false
+        schema:
+          type: integer
+        style: form
+      - description: Limit to transactions of this type.
+        example: debit
+        explode: true
+        in: query
+        name: type
+        required: false
+        schema:
+          enum:
+          - debit
+          - credit
+          type: string
+        style: form
+      - description: Limit to transactions that need to be reviewed.
+        example: 1
+        explode: true
+        in: query
+        name: needs_review
+        required: false
+        schema:
+          type: integer
+        style: form
+      - description: "Limit to transactions matching a keyword search string. The\
+          \ provided string is matched against the transaction amount, account name,\
+          \ payee, category title, note, labels, and the date in ISO 8601 format."
+        example: Paypal
+        explode: true
+        in: query
+        name: search
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Choose a particular page of the results.
+        example: 3
+        explode: true
+        in: query
+        name: page
+        required: false
+        schema:
+          type: integer
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/Transaction'
+                type: array
+          description: Success
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Bad Request
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Allowed
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Found
+      summary: List transactions in transaction account
+      tags:
+      - Transactions
+      x-accepts:
+      - application/json
+    post:
+      description: Creates a transaction in a transaction account by its ID.
+      parameters:
+      - description: The unique identifier of the transaction account.
+        example: 42
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: integer
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/_transaction_accounts__id__transactions_post_request'
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Transaction'
+          description: Success
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Allowed
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Found
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Validation Error
+      summary: Create a transaction in transaction account
+      tags:
+      - Transactions
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+  /transactions/{id}:
+    delete:
+      description: Deletes a transaction and all its data by ID.
+      parameters:
+      - description: The unique identifier of the transaction.
+        example: 42
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: integer
+        style: simple
+      responses:
+        "204":
+          description: Success
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Allowed
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Found
+      summary: Delete transaction
+      tags:
+      - Transactions
+      x-accepts:
+      - application/json
+    get:
+      description: Gets a transaction by its ID.
+      parameters:
+      - description: The unique identifier of the transaction.
+        example: 42
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Transaction'
+          description: Success
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Allowed
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Found
+      summary: Get a transaction
+      tags:
+      - Transactions
+      x-accepts:
+      - application/json
+    put:
+      description: Updates a transaction by its ID.
+      parameters:
+      - description: The unique identifier of the transaction.
+        example: 42
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: integer
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/_transactions__id__put_request'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Transaction'
+          description: Success
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Allowed
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Found
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Validation Error
+      summary: Update a transaction
+      tags:
+      - Transactions
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+  /transactions/{id}/attachments:
+    get:
+      description: Lists attachments belonging to a transaction by their ID.
+      parameters:
+      - description: The unique identifier of the transaction.
+        example: 42
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/Attachment'
+                type: array
+          description: Success
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Allowed
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Found
+      summary: List attachments in transaction
+      tags:
+      - Attachments
+      x-accepts:
+      - application/json
+    post:
+      description: Assigns an attachment to the transaction by their ID.
+      parameters:
+      - description: The unique identifier of the transaction.
+        example: 42
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: integer
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/_transactions__id__attachments_post_request'
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Attachment'
+          description: Success
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Allowed
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Found
+      summary: Assigns attachment to transaction
+      tags:
+      - Attachments
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+  /transactions/{transaction_id}/attachments/{attachment_id}:
+    delete:
+      description: "Unassigns a particular attachment by its ID from the transaction\
+        \ ID. This does not delete the attachment, it only removes its association\
+        \ from the transaction."
+      parameters:
+      - description: The unique identifier of the transaction.
+        example: 42
+        explode: false
+        in: path
+        name: transaction_id
+        required: true
+        schema:
+          type: integer
+        style: simple
+      - description: The unique identifier of the attachment.
+        example: 1438154
+        explode: false
+        in: path
+        name: attachment_id
+        required: true
+        schema:
+          type: integer
+        style: simple
+      responses:
+        "204":
+          description: Success
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Allowed
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Found
+      summary: Unassigns attachment in transaction
+      tags:
+      - Attachments
+      x-accepts:
+      - application/json
+  /users/{id}:
+    get:
+      description: Gets a user by ID. You must be authorised as the target user in
+        order to make this request.
+      parameters:
+      - description: The unique identifier of the user.
+        example: 42
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: Success
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Allowed
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Found
+      summary: Get user
+      tags:
+      - Users
+      x-accepts:
+      - application/json
+    put:
+      description: Updates the user by their ID. You must be authorised as the target
+        user in order to make this request.
+      parameters:
+      - description: The unique identifier of the user.
+        example: 42
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: integer
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/_users__id__put_request'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: Success
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Allowed
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Found
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Validation Error
+      summary: Update user
+      tags:
+      - Users
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+  /users/{id}/accounts:
+    get:
+      description: Lists all accounts belonging to the user by their ID.
+      parameters:
+      - description: The unique identifier of the user.
+        example: 42
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/Account'
+                type: array
+          description: Success
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Allowed
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Found
+      summary: List accounts in user
+      tags:
+      - Accounts
+      x-accepts:
+      - application/json
+    post:
+      description: Creates and returns an account belonging to the user by their ID.
+      parameters:
+      - description: The unique identifier of the user.
+        example: 42
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: integer
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/_users__id__accounts_post_request'
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Account'
+          description: Success
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Allowed
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Found
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Validation Error
+      summary: Create an account in user
+      tags:
+      - Accounts
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+    put:
+      description: "Updates the display order of accounts belonging to the user, by\
+        \ accepting an array of accounts in their new display order."
+      parameters:
+      - description: The unique identifier of the user.
+        example: 42
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: integer
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/_users__id__accounts_put_request'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/Account'
+                type: array
+          description: Success
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Bad Request
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Allowed
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Found
+      summary: Update the display order of accounts in user
+      tags:
+      - Accounts
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+  /users/{id}/attachments:
+    get:
+      description: Lists attachments belonging to a user by their ID.
+      parameters:
+      - description: The unique identifier of the user.
+        example: 42
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: integer
+        style: simple
+      - description: "If set, returns unassigned attachments, that are available for\
+          \ assigning to a transaction."
+        example: 1
+        explode: true
+        in: query
+        name: unassigned
+        required: false
+        schema:
+          type: integer
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/Attachment'
+                type: array
+          description: Success
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Allowed
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Found
+      summary: Lists attachments in user
+      tags:
+      - Attachments
+      x-accepts:
+      - application/json
+    post:
+      description: Creates an attachment belonging to the user by their ID.
+      parameters:
+      - description: The unique identifier of the user.
+        example: 42
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: integer
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/_users__id__attachments_post_request'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Attachment'
+          description: Success
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Allowed
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Found
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Validation Error
+      summary: Create attachment in user
+      tags:
+      - Attachments
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+  /users/{id}/budget:
+    get:
+      description: "Lists the user's budget, consisting of one or more budget analysis\
+        \ packages, one per category. Akin to the list on the Budget page in PocketSmith."
+      parameters:
+      - description: The unique identifier of the account.
+        example: 42
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: integer
+        style: simple
+      - description: "Whether parent categories should have their children rolled\
+          \ up into them. When used, the children will still appear in the collection\
+          \ on their own, but their actual and forecast figures will be rolled up\
+          \ to the root parent."
+        example: true
+        explode: true
+        in: query
+        name: roll_up
+        required: false
+        schema:
+          type: boolean
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/BudgetAnalysisPackage'
+                type: array
+          description: Success
+      summary: List budget for user
+      tags:
+      - Budgeting
+      x-accepts:
+      - application/json
+  /users/{id}/budget_summary:
+    get:
+      description: "Get the user's budget summary, containing an expense and income\
+        \ analysis for all categories (excluding transfer categories) for the given\
+        \ period and date range. Akin to the overall budget shown on the Budget page\
+        \ in PocketSmith."
+      parameters:
+      - description: The unique identifier of the user.
+        example: 42
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: integer
+        style: simple
+      - description: "The period to analyse in, one of `weeks`, `months` or `years`.\
+          \ Also supported is `event`, although event period analysis is only possible\
+          \ when the budget events gathered align, so in this case where all categories\
+          \ are analysed together, it's highly unlikely that event period analysis\
+          \ will be possible."
+        example: weeks
+        explode: true
+        in: query
+        name: period
+        required: true
+        schema:
+          enum:
+          - weeks
+          - months
+          - years
+          - event
+          type: string
+        style: form
+      - description: "The period interval, e.g. if the interval is 2 and the period\
+          \ is weeks, the budget will be analysed fortnightly."
+        example: 2
+        explode: true
+        in: query
+        name: interval
+        required: true
+        schema:
+          type: integer
+        style: form
+      - description: The date to start analysing the budget from. This will be bumped
+          out to make full periods as necessary.
+        example: 2016-11-01
+        explode: true
+        in: query
+        name: start_date
+        required: true
+        schema:
+          type: string
+        style: form
+      - description: The date to stop analysing the budget from. This will be bumped
+          out to make full periods as necessary.
+        example: 2016-11-30
+        explode: true
+        in: query
+        name: end_date
+        required: true
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/BudgetAnalysisPackage'
+                type: array
+          description: Success
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Bad Request
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Allowed
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Found
+      summary: Get budget summary for user
+      tags:
+      - Budgeting
+      x-accepts:
+      - application/json
+  /users/{id}/categories:
+    get:
+      description: Lists all categories belonging to a user by their ID.
+      parameters:
+      - description: The unique identifier of the user.
+        example: 42
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/Category'
+                type: array
+          description: Success
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Allowed
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Found
+      summary: List categories in user
+      tags:
+      - Categories
+      x-accepts:
+      - application/json
+    post:
+      description: Creates a category belonging to the user by their ID.
+      parameters:
+      - description: The unique identifier of the user.
+        example: 42
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: integer
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/_users__id__categories_post_request'
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Category'
+          description: Success
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Allowed
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Found
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Validation Error
+      summary: Create category in user
+      tags:
+      - Categories
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+  /users/{id}/category_rules:
+    get:
+      description: Lists all category rules belonging to a user by their ID.
+      parameters:
+      - description: The unique identifier of the user.
+        example: 42
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/CategoryRule'
+                type: array
+          description: Success
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Allowed
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Found
+      summary: List category rules in user
+      tags:
+      - Category Rules
+      x-accepts:
+      - application/json
+  /users/{id}/events:
+    get:
+      description: Lists events belonging to a user by their ID.
+      parameters:
+      - description: The unique identifier of the user.
+        example: 42
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: integer
+        style: simple
+      - description: Return the events from and including this date.
+        example: 2020-10-01
+        explode: true
+        in: query
+        name: start_date
+        required: true
+        schema:
+          type: string
+        style: form
+      - description: Return the events until and including this date.
+        example: 2020-10-30
+        explode: true
+        in: query
+        name: end_date
+        required: true
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/Event'
+                type: array
+          description: Success
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Allowed
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Found
+      summary: List events in user.
+      tags:
+      - Events
+      x-accepts:
+      - application/json
+  /users/{id}/forecast_cache:
+    delete:
+      description: Delete the user's cached forecast by recalculating the forecast.
+      parameters:
+      - description: The unique identifier of the user.
+        example: 42
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: integer
+        style: simple
+      responses:
+        "204":
+          description: Success
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Allowed
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Found
+      summary: Delete forecast cache for user
+      tags:
+      - Budgeting
+      x-accepts:
+      - application/json
+  /users/{id}/institutions:
+    get:
+      description: Lists all the institutions belonging to the user.
+      parameters:
+      - description: The unique identifier of the user
+        example: 42
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/Institution'
+                type: array
+          description: Success
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Allowed
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Found
+      summary: List institutions in user
+      tags:
+      - Institutions
+      x-accepts:
+      - application/json
+    post:
+      description: Creates an institution belonging to a user.
+      parameters:
+      - description: The unique identifier of the user
+        example: 42
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: integer
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/_users__id__institutions_post_request'
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Institution'
+          description: Success
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Allowed
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Found
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Validation Error
+      summary: Create institution in user
+      tags:
+      - Institutions
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+  /users/{id}/labels:
+    get:
+      description: Lists labels belonging to a user by their ID.
+      parameters:
+      - description: The unique identifier of the user.
+        example: 42
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              example:
+              - craftbeer
+              - bargains
+              - gaming
+              - Trip to Auckland
+              schema:
+                items:
+                  type: string
+                type: array
+          description: Success
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Allowed
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Found
+      summary: List labels in user
+      tags:
+      - Labels
+      x-accepts:
+      - application/json
+  /users/{id}/saved_searches:
+    get:
+      description: Lists saved searches belonging to a user by their ID.
+      parameters:
+      - description: The unique identifier of the user.
+        example: 42
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/SavedSearch'
+                type: array
+          description: Success
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Allowed
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Found
+      summary: List saved searches in user
+      tags:
+      - Saved Searches
+      x-accepts:
+      - application/json
+  /users/{id}/transaction_accounts:
+    get:
+      description: List all transaction accounts belonging to a user.
+      parameters:
+      - description: The unique identifier of the user.
+        example: 42
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/TransactionAccount'
+                type: array
+          description: Success
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Allowed
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Found
+      summary: List transaction accounts in user
+      tags:
+      - Transaction Accounts
+      x-accepts:
+      - application/json
+  /users/{id}/transactions:
+    get:
+      description: Lists transactions belonging to a user by their ID.
+      parameters:
+      - description: The unique identifier of the account.
+        example: 42
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: integer
+        style: simple
+      - description: "Limit to transactions on or after this date. Required if end_date\
+          \ is provided. If not provided, defaults to the furtherest date allowed\
+          \ by the user's subscription."
+        example: 2016-11-01
+        explode: true
+        in: query
+        name: start_date
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: "Limit to transactions on or before this date. Required if start_date\
+          \ is provided. If not provided, defaults to today's date."
+        example: 2016-11-30
+        explode: true
+        in: query
+        name: end_date
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Limit to transactions updated since an ISO 8601 timestamp.
+        example: 2020-10-14T09:20:33+13:00
+        explode: true
+        in: query
+        name: updated_since
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Limit to uncategorised transactions.
+        example: 1
+        explode: true
+        in: query
+        name: uncategorised
+        required: false
+        schema:
+          type: integer
+        style: form
+      - description: Limit to transactions of this type.
+        example: debit
+        explode: true
+        in: query
+        name: type
+        required: false
+        schema:
+          enum:
+          - debit
+          - credit
+          type: string
+        style: form
+      - description: Limit to transactions that need to be reviewed.
+        example: 1
+        explode: true
+        in: query
+        name: needs_review
+        required: false
+        schema:
+          type: integer
+        style: form
+      - description: "Limit to transactions matching a keyword search string. The\
+          \ provided string is matched against the transaction amount, account name,\
+          \ payee, category title, note, labels, and the date in ISO 8601 format."
+        example: Paypal
+        explode: true
+        in: query
+        name: search
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Choose a particular page of the results.
+        example: 3
+        explode: true
+        in: query
+        name: page
+        required: false
+        schema:
+          type: integer
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/Transaction'
+                type: array
+          description: Success
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Bad Request
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Allowed
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Found
+      summary: List transactions in user
+      tags:
+      - Transactions
+      x-accepts:
+      - application/json
+  /users/{id}/trend_analysis:
+    get:
+      description: Get an income and/or expense budget analysis for the given date
+        range and period across any number of categories and scenarios. Akin to the
+        Trends page in PocketSmith.
+      parameters:
+      - description: The unique identifier of the user.
+        example: 42
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: integer
+        style: simple
+      - description: "The period to analyse in, one of `weeks`, `months` or `years`.\
+          \ Also supported is `event`, although event period analysis is only possible\
+          \ when the budget events gathered align, so in this case where all categories\
+          \ are analysed together, it's highly unlikely that event period analysis\
+          \ will be possible."
+        example: weeks
+        explode: true
+        in: query
+        name: period
+        required: true
+        schema:
+          enum:
+          - weeks
+          - months
+          - years
+          - event
+          type: string
+        style: form
+      - description: "The period interval, e.g. if the interval is 2 and the period\
+          \ is weeks, the budget will be analysed fortnightly."
+        example: true
+        explode: true
+        in: query
+        name: interval
+        required: true
+        schema:
+          type: integer
+        style: form
+      - description: The date to start analysing the budget from. This will be bumped
+          out to make full periods as necessary.
+        example: 2016-11-01
+        explode: true
+        in: query
+        name: start_date
+        required: true
+        schema:
+          type: string
+        style: form
+      - description: The date to stop analysing the budget from. This will be bumped
+          out to make full periods as necessary.
+        example: 2016-11-30
+        explode: true
+        in: query
+        name: end_date
+        required: true
+        schema:
+          type: string
+        style: form
+      - description: A comma-separated list of category IDs to analyse.
+        example: "42,49"
+        explode: true
+        in: query
+        name: categories
+        required: true
+        schema:
+          type: string
+        style: form
+      - description: "A comma-separated list of scenario IDs to analyse. You're likely\
+          \ going to want to include all a user's scenarios here, unless you have\
+          \ reason to only analyse for a subset of scenarios. Regardless of what scenarios\
+          \ are analysed, all actuals (transactions) across all accounts will be included."
+        example: "11,29"
+        explode: true
+        in: query
+        name: scenarios
+        required: true
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/BudgetAnalysisPackage'
+                type: array
+          description: Success
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Bad Request
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Allowed
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Found
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Validation Error
+      summary: Get trend analysis for user
+      tags:
+      - Budgeting
+      x-accepts:
+      - application/json
+components:
+  parameters:
+    eventId:
+      description: The unique identifier of the event.
+      example: 42-1601942400
+      explode: false
+      in: path
+      name: id
+      required: true
+      schema:
+        type: string
+      style: simple
+    scenarioId:
+      description: The unique identifier of the scenario.
+      example: 42
+      explode: false
+      in: path
+      name: id
+      required: true
+      schema:
+        type: integer
+      style: simple
+    userId:
+      description: The unique identifier of the user.
+      example: 42
+      explode: false
+      in: path
+      name: id
+      required: true
+      schema:
+        type: integer
+      style: simple
+  responses:
+    "400":
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+      description: Bad Request
+    "403":
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+      description: Not Allowed
+    "404":
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+      description: Not Found
+    "409":
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+      description: Conflict
+    "422":
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+      description: Validation Error
+  schemas:
+    Account:
+      example:
+        safe_balance: 2694.39
+        current_balance_in_base_currency: 4041.59
+        created_at: 2018-02-27
+        scenarios:
+        - closing_balance_date: 2018-02-27
+          safe_balance: 5431.2
+          current_balance_in_base_currency: 8146.8
+          minimum-value: 4000
+          created_at: 2015-04-21T22:42:22Z
+          description: description
+          title: Wedding
+          type: no-interest
+          starting_balance: 2450
+          starting_balance_date: 2018-02-27
+          maximum-value: 42
+          current_balance_date: 2018-02-27
+          current_balance_exchange_rate: 1.5
+          updated_at: 2015-04-21T22:42:22Z
+          closing_balance: 5431.2
+          current_balance: 5431.2
+          interest_rate: 2.4
+          interest_rate_repeat_id: 4
+          safe_balance_in_base_currency: 8146.8
+          id: 42
+          achieve_date: achieve_date
+        - closing_balance_date: 2018-02-27
+          safe_balance: 5431.2
+          current_balance_in_base_currency: 8146.8
+          minimum-value: 4000
+          created_at: 2015-04-21T22:42:22Z
+          description: description
+          title: Wedding
+          type: no-interest
+          starting_balance: 2450
+          starting_balance_date: 2018-02-27
+          maximum-value: 42
+          current_balance_date: 2018-02-27
+          current_balance_exchange_rate: 1.5
+          updated_at: 2015-04-21T22:42:22Z
+          closing_balance: 5431.2
+          current_balance: 5431.2
+          interest_rate: 2.4
+          interest_rate_repeat_id: 4
+          safe_balance_in_base_currency: 8146.8
+          id: 42
+          achieve_date: achieve_date
+        title: Bank of Foo
+        type: bank
+        currency_code: NZD
+        current_balance_date: 2018-02-27
+        current_balance_exchange_rate: 1.5
+        updated_at: 2018-02-27
+        current_balance: 2694.39
+        transaction_accounts:
+        - safe_balance: 2694.39
+          current_balance_in_base_currency: 4041.59
+          created_at: 2015-03-17T02:42:10Z
+          type: bank
+          starting_balance: 3547.45
+          currency_code: NZD
+          institution:
+            updated_at: 2015-04-21T22:42:22Z
+            created_at: 2015-04-21T22:42:22Z
+            id: 57
+            title: Bank of Foo
+            currency_code: NZD
+          number: ASBCRD44554
+          starting_balance_date: 2015-03-15
+          current_balance_date: 2015-07-03
+          current_balance_exchange_rate: 1.5
+          updated_at: 2015-07-02T22:14:49Z
+          name: Sample Credit
+          current_balance: 2694.39
+          safe_balance_in_base_currency: 4041.59
+          id: 96027
+        - safe_balance: 2694.39
+          current_balance_in_base_currency: 4041.59
+          created_at: 2015-03-17T02:42:10Z
+          type: bank
+          starting_balance: 3547.45
+          currency_code: NZD
+          institution:
+            updated_at: 2015-04-21T22:42:22Z
+            created_at: 2015-04-21T22:42:22Z
+            id: 57
+            title: Bank of Foo
+            currency_code: NZD
+          number: ASBCRD44554
+          starting_balance_date: 2015-03-15
+          current_balance_date: 2015-07-03
+          current_balance_exchange_rate: 1.5
+          updated_at: 2015-07-02T22:14:49Z
+          name: Sample Credit
+          current_balance: 2694.39
+          safe_balance_in_base_currency: 4041.59
+          id: 96027
+        safe_balance_in_base_currency: 4041.59
+        id: 42
+        primary_transaction_account:
+          safe_balance: 2694.39
+          current_balance_in_base_currency: 4041.59
+          created_at: 2015-03-17T02:42:10Z
+          type: bank
+          starting_balance: 3547.45
+          currency_code: NZD
+          institution:
+            updated_at: 2015-04-21T22:42:22Z
+            created_at: 2015-04-21T22:42:22Z
+            id: 57
+            title: Bank of Foo
+            currency_code: NZD
+          number: ASBCRD44554
+          starting_balance_date: 2015-03-15
+          current_balance_date: 2015-07-03
+          current_balance_exchange_rate: 1.5
+          updated_at: 2015-07-02T22:14:49Z
+          name: Sample Credit
+          current_balance: 2694.39
+          safe_balance_in_base_currency: 4041.59
+          id: 96027
+        primary_scenario:
+          closing_balance_date: 2018-02-27
+          safe_balance: 5431.2
+          current_balance_in_base_currency: 8146.8
+          minimum-value: 4000
+          created_at: 2015-04-21T22:42:22Z
+          description: description
+          title: Wedding
+          type: no-interest
+          starting_balance: 2450
+          starting_balance_date: 2018-02-27
+          maximum-value: 42
+          current_balance_date: 2018-02-27
+          current_balance_exchange_rate: 1.5
+          updated_at: 2015-04-21T22:42:22Z
+          closing_balance: 5431.2
+          current_balance: 5431.2
+          interest_rate: 2.4
+          interest_rate_repeat_id: 4
+          safe_balance_in_base_currency: 8146.8
+          id: 42
+          achieve_date: achieve_date
+        is_net_worth: false
+      properties:
+        created_at:
+          description: When the account was created.
+          example: 2018-02-27
+          type: string
+        currency_code:
+          description: The currency code for the account.
+          example: NZD
+          type: string
+        current_balance:
+          description: The current balance of the account.
+          example: 2694.39
+          type: number
+        current_balance_date:
+          description: The date of the current balance.
+          example: 2018-02-27
+          type: string
+        current_balance_exchange_rate:
+          description: "The exchange rate between the account's currency and the user's\
+            \ base currency, when different. If the currencies are the same, null\
+            \ is returned."
+          example: 1.5
+          type: number
+        current_balance_in_base_currency:
+          description: The current balance of the account in the user's base currency.
+          example: 4041.59
+          type: number
+        id:
+          description: The unique identifier of the account.
+          example: 42
+          type: integer
+        is_net_worth:
+          description: Whether the account is a net worth asset.
+          example: false
+          type: boolean
+        primary_scenario:
+          $ref: '#/components/schemas/Scenario'
+        primary_transaction_account:
+          $ref: '#/components/schemas/TransactionAccount'
+        safe_balance:
+          description: "The current safe balance, if safe balance is activated on\
+            \ the account. If safe balance is not activated, then null is returned."
+          example: 2694.39
+          type: number
+        safe_balance_in_base_currency:
+          description: "The current safe balance in the user's base currency, if safe\
+            \ balance is activated on the account. If safe balance is not activated,\
+            \ then null is returned."
+          example: 4041.59
+          type: number
+        scenarios:
+          description: "All scenarios that compose the account, including the primary."
+          items:
+            $ref: '#/components/schemas/Scenario'
+          type: array
+        title:
+          description: The title of the account.
+          example: Bank of Foo
+          type: string
+        transaction_accounts:
+          description: "All transaction accounts that compose the account, including\
+            \ the primary."
+          items:
+            $ref: '#/components/schemas/TransactionAccount'
+          type: array
+        type:
+          description: The type of the account.
+          enum:
+          - bank
+          - credits
+          - cash
+          - stocks
+          - mortgage
+          - loans
+          - vehicle
+          - property
+          - insurance
+          - other_asset
+          - other_liability
+          example: bank
+          type: string
+        updated_at:
+          description: When the account was last updated.
+          example: 2018-02-27
+          type: string
+      type: object
+    Attachment:
+      example:
+        content_type: image/png
+        updated_at: 2015-08-16T02:17:02Z
+        content_type_meta:
+          extension: png
+          description: PNG image
+          title: PNG
+        original_url: https://image.com/image.png
+        file_name: taxi.png
+        created_at: 2015-08-16T02:17:02Z
+        id: 42
+        variants:
+          thumb_url: https://image.com/image.png
+          large_url: https://image.com/image.png
+        title: Invoice for taxi
+        type: image
+      properties:
+        content_type:
+          description: The content type of the attachment.
+          example: image/png
+          type: string
+        content_type_meta:
+          $ref: '#/components/schemas/Attachment_content_type_meta'
+        created_at:
+          description: When the attachment was created.
+          example: 2015-08-16T02:17:02Z
+          format: ISO 8601 timestamp
+          type: string
+        file_name:
+          description: The file name of the attachment.
+          example: taxi.png
+          type: string
+        id:
+          description: The unique identifier of the attachment
+          example: 42
+          type: integer
+        original_url:
+          description: The url of the attachment.
+          example: https://image.com/image.png
+          type: string
+        title:
+          description: "The title of the attachment. If blank or not provided, the\
+            \ title will be derived from the file name."
+          example: Invoice for taxi
+          type: string
+        type:
+          description: The type of attachment.
+          example: image
+          type: string
+        updated_at:
+          description: When the attachment was last updated.
+          example: 2015-08-16T02:17:02Z
+          format: ISO 8601 timestamp
+          type: string
+        variants:
+          $ref: '#/components/schemas/Attachment_variants'
+      type: object
+    BudgetAnalysis:
+      example:
+        end_date: 2016-11-30
+        average_forecast_amount: -60
+        periods:
+        - end_date: 2016-11-30
+          current: true
+          over_budget: false
+          over_by: 0
+          forecast_amount: -60
+          percentage_used: 70.5
+          actual_amount: -42.3
+          refund_amount: 5.6
+          under_budget: true
+          currency_code: nzd
+          under_by: 17.7
+          start_date: 2016-11-01
+        - end_date: 2016-11-30
+          current: true
+          over_budget: false
+          over_by: 0
+          forecast_amount: -60
+          percentage_used: 70.5
+          actual_amount: -42.3
+          refund_amount: 5.6
+          under_budget: true
+          currency_code: nzd
+          under_by: 17.7
+          start_date: 2016-11-01
+        total_over_by: 0
+        average_actual_amount: -42.3
+        total_actual_amount: -42.3
+        total_forecast_amount: -60
+        currency_code: nzd
+        start_date: 2016-11-01
+        total_under_by: 17.7
+      properties:
+        average_actual_amount:
+          description: The average actual (transactions) amount across all periods.
+          example: -42.3
+          type: number
+        average_forecast_amount:
+          description: The average budgeted amount across all periods.
+          example: -60
+          type: number
+        currency_code:
+          description: The currency of the budget analysis.
+          example: nzd
+          type: string
+        end_date:
+          description: The end date of the budget analysis.
+          example: 2016-11-30
+          type: string
+        periods:
+          description: The period analyses that this budget analysis comprises.
+          items:
+            $ref: '#/components/schemas/Period'
+          type: array
+        start_date:
+          description: The start date of the budget analysis.
+          example: 2016-11-01
+          type: string
+        total_actual_amount:
+          description: The total actual (transactions) amount across all periods.
+          example: -42.3
+          type: number
+        total_forecast_amount:
+          description: The total budgeted amount across all periods.
+          example: -60
+          type: number
+        total_over_by:
+          description: The total amount the budget was exceeded across all periods.
+          example: 0
+          type: number
+        total_under_by:
+          description: The total amount the budget was under by across all periods.
+          example: 17.7
+          type: number
+      type: object
+    BudgetAnalysisPackage:
+      example:
+        income:
+          end_date: 2016-11-30
+          average_forecast_amount: -60
+          periods:
+          - end_date: 2016-11-30
+            current: true
+            over_budget: false
+            over_by: 0
+            forecast_amount: -60
+            percentage_used: 70.5
+            actual_amount: -42.3
+            refund_amount: 5.6
+            under_budget: true
+            currency_code: nzd
+            under_by: 17.7
+            start_date: 2016-11-01
+          - end_date: 2016-11-30
+            current: true
+            over_budget: false
+            over_by: 0
+            forecast_amount: -60
+            percentage_used: 70.5
+            actual_amount: -42.3
+            refund_amount: 5.6
+            under_budget: true
+            currency_code: nzd
+            under_by: 17.7
+            start_date: 2016-11-01
+          total_over_by: 0
+          average_actual_amount: -42.3
+          total_actual_amount: -42.3
+          total_forecast_amount: -60
+          currency_code: nzd
+          start_date: 2016-11-01
+          total_under_by: 17.7
+        is_transfer: false
+        category:
+          colour: '#00ff00'
+          updated_at: 2015-08-16T02:17:02Z
+          children:
+          - null
+          - null
+          parent_id: 42
+          is_bill: true
+          created_at: 2015-08-16T02:17:02Z
+          is_transfer: false
+          roll_up: false
+          id: 1438154
+          title: Beer
+          refund_behaviour: credits_are_refunds
+        expense:
+          end_date: 2016-11-30
+          average_forecast_amount: -60
+          periods:
+          - end_date: 2016-11-30
+            current: true
+            over_budget: false
+            over_by: 0
+            forecast_amount: -60
+            percentage_used: 70.5
+            actual_amount: -42.3
+            refund_amount: 5.6
+            under_budget: true
+            currency_code: nzd
+            under_by: 17.7
+            start_date: 2016-11-01
+          - end_date: 2016-11-30
+            current: true
+            over_budget: false
+            over_by: 0
+            forecast_amount: -60
+            percentage_used: 70.5
+            actual_amount: -42.3
+            refund_amount: 5.6
+            under_budget: true
+            currency_code: nzd
+            under_by: 17.7
+            start_date: 2016-11-01
+          total_over_by: 0
+          average_actual_amount: -42.3
+          total_actual_amount: -42.3
+          total_forecast_amount: -60
+          currency_code: nzd
+          start_date: 2016-11-01
+          total_under_by: 17.7
+      properties:
+        category:
+          $ref: '#/components/schemas/Category'
+        expense:
+          $ref: '#/components/schemas/BudgetAnalysis'
+        income:
+          $ref: '#/components/schemas/BudgetAnalysis'
+        is_transfer:
+          description: "Whether the expense budget analysis looks like a transfer\
+            \ to the income budget analysis, based on a number of heuristics."
+          example: false
+          type: boolean
+      type: object
+    Category:
+      example:
+        colour: '#00ff00'
+        updated_at: 2015-08-16T02:17:02Z
+        children:
+        - null
+        - null
+        parent_id: 42
+        is_bill: true
+        created_at: 2015-08-16T02:17:02Z
+        is_transfer: false
+        roll_up: false
+        id: 1438154
+        title: Beer
+        refund_behaviour: credits_are_refunds
+      properties:
+        children:
+          description: The category's child categories.
+          items:
+            $ref: '#/components/schemas/Category'
+          type: array
+        colour:
+          description: The colour for the category.
+          example: '#00ff00'
+          format: CSS-style hex triplet
+          type: string
+        created_at:
+          description: When the category was created.
+          example: 2015-08-16T02:17:02Z
+          format: ISO 8601 timestamp
+          type: string
+        id:
+          description: The unique identifier of the category.
+          example: 1438154
+          type: integer
+        is_bill:
+          description: "Whether the category is a bill category. A bill category is\
+            \ when budgeted amounts are normally spent at once, instead of spread\
+            \ across a budgeting period. This category will be included in the bill\
+            \ reminder email when set to true."
+          example: true
+          type: boolean
+        is_transfer:
+          description: Whether this category has been marked as a transfer category.
+          example: false
+          type: boolean
+        parent_id:
+          description: "The unique identifier of the parent category of this category,\
+            \ or null if this category has no parent (i.e. is a top-level category)"
+          example: 42
+          type: integer
+        refund_behaviour:
+          description: How the category's refunds or deductions should be reported
+            on.
+          enum:
+          - debits_are_deductions
+          - credits_are_refunds
+          - null
+          example: credits_are_refunds
+          nullable: true
+          type: string
+        roll_up:
+          description: "Whether the category's budget is rolled up into its parent\
+            \ category, if a parent category is present."
+          example: false
+          type: boolean
+        title:
+          description: The title of the category.
+          example: Beer
+          type: string
+        updated_at:
+          description: When the category was last updated.
+          example: 2015-08-16T02:17:02Z
+          format: ISO 8601 timestamp
+          type: string
+      type: object
+    CategoryRule:
+      example:
+        updated_at: 2019-07-09T10:06:02Z
+        created_at: 2019-07-09T10:06:02Z
+        id: 1438154
+        category:
+          colour: '#00ff00'
+          updated_at: 2015-08-16T02:17:02Z
+          children:
+          - null
+          - null
+          parent_id: 42
+          is_bill: true
+          created_at: 2015-08-16T02:17:02Z
+          is_transfer: false
+          roll_up: false
+          id: 1438154
+          title: Beer
+          refund_behaviour: credits_are_refunds
+        payee_matches: Countdown
+      properties:
+        category:
+          $ref: '#/components/schemas/Category'
+        created_at:
+          description: When the category rule was created.
+          example: 2019-07-09T10:06:02Z
+          format: ISO 8601 timestamp
+          type: string
+        id:
+          description: The unique identifier of the category rule.
+          example: 1438154
+          type: integer
+        payee_matches:
+          description: The keyword/s to match the transactions payees.
+          example: Countdown
+          type: string
+        updated_at:
+          description: When the category rule was last updated.
+          example: 2019-07-09T10:06:02Z
+          format: ISO 8601 timestamp
+          type: string
+      type: object
+    Currency:
+      example:
+        symbol: $
+        name: New Zealand Dollar
+        id: nzd
+        minor_unit: 2
+        separators:
+          major: ","
+          minor: "."
+      properties:
+        id:
+          description: The ISO 4217 or unofficial currency code.
+          example: nzd
+          type: string
+        minor_unit:
+          description: The number of digits after the minor unit separator.
+          example: 2
+          type: integer
+        name:
+          description: The name of the currency.
+          example: New Zealand Dollar
+          type: string
+        separators:
+          $ref: '#/components/schemas/CurrencySeparators'
+        symbol:
+          description: The symbol of the currency.
+          example: $
+          type: string
+      type: object
+    CurrencySeparators:
+      example:
+        major: ","
+        minor: "."
+      properties:
+        major:
+          description: The separator used in the major unit.
+          example: ","
+          type: string
+        minor:
+          description: The seperator used for the minor unit.
+          example: "."
+          type: string
+      type: object
+    Error:
+      example:
+        error: A message describing the error that occurred.
+      properties:
+        error:
+          description: A message describing the error that occurred.
+          example: A message describing the error that occurred.
+          type: string
+      type: object
+    Event:
+      example:
+        date: 2020-10-27
+        note: Buy more beer every Friday from the local brewery.
+        series_start_id: 42-1593993600
+        amount: 250.5
+        repeat_type: weekly
+        infinite_series: true
+        amount_in_base_currency: 375.75
+        currency_code: nzd
+        series_id: 42
+        colour: '#F63737'
+        scenario:
+          closing_balance_date: 2018-02-27
+          safe_balance: 5431.2
+          current_balance_in_base_currency: 8146.8
+          minimum-value: 4000
+          created_at: 2015-04-21T22:42:22Z
+          description: description
+          title: Wedding
+          type: no-interest
+          starting_balance: 2450
+          starting_balance_date: 2018-02-27
+          maximum-value: 42
+          current_balance_date: 2018-02-27
+          current_balance_exchange_rate: 1.5
+          updated_at: 2015-04-21T22:42:22Z
+          closing_balance: 5431.2
+          current_balance: 5431.2
+          interest_rate: 2.4
+          interest_rate_repeat_id: 4
+          safe_balance_in_base_currency: 8146.8
+          id: 42
+          achieve_date: achieve_date
+        repeat_interval: 1
+        id: 42-1601942400
+        category:
+          colour: '#00ff00'
+          updated_at: 2015-08-16T02:17:02Z
+          children:
+          - null
+          - null
+          parent_id: 42
+          is_bill: true
+          created_at: 2015-08-16T02:17:02Z
+          is_transfer: false
+          roll_up: false
+          id: 1438154
+          title: Beer
+          refund_behaviour: credits_are_refunds
+      properties:
+        amount:
+          description: The amount of the event.
+          example: 250.5
+          type: number
+        amount_in_base_currency:
+          description: The amount of the event in the user's base currency.
+          example: 375.75
+          type: number
+        category:
+          $ref: '#/components/schemas/Category'
+        colour:
+          description: The CSS hex-style colour of the event.
+          example: '#F63737'
+          type: string
+        currency_code:
+          description: The currency code of the event.
+          example: nzd
+          type: string
+        date:
+          description: The date of the event.
+          example: 2020-10-27
+          type: string
+        id:
+          description: The unique identifier of the event.
+          example: 42-1601942400
+          type: string
+        infinite_series:
+          description: Whether the event repeats and does not have an end date.
+          example: true
+          type: boolean
+        note:
+          description: The note of the event.
+          example: Buy more beer every Friday from the local brewery.
+          type: string
+        repeat_interval:
+          description: The repeat interval of how often the event takes place.
+          example: 1
+          type: integer
+        repeat_type:
+          description: The repeat type of the event.
+          enum:
+          - once
+          - daily
+          - weekly
+          - fortnightly
+          - monthly
+          - yearly
+          - each weekday
+          example: weekly
+          type: string
+        scenario:
+          $ref: '#/components/schemas/Scenario'
+        series_id:
+          description: The unique identifier of the series that the event belongs
+            to.
+          example: 42
+          type: integer
+        series_start_id:
+          description: The unique identifier of the series followed by the series's
+            start date.
+          example: 42-1593993600
+          type: string
+      type: object
+    Institution:
+      example:
+        updated_at: 2015-04-21T22:42:22Z
+        created_at: 2015-04-21T22:42:22Z
+        id: 57
+        title: Bank of Foo
+        currency_code: NZD
+      properties:
+        created_at:
+          description: When the institution was created.
+          example: 2015-04-21T22:42:22Z
+          type: string
+        currency_code:
+          description: The currency code of the institution.
+          example: NZD
+          type: string
+        id:
+          description: The unique identifier of the institution.
+          example: 57
+          type: integer
+        title:
+          description: The title of the institution.
+          example: Bank of Foo
+          type: string
+        updated_at:
+          description: When the institution was last updated.
+          example: 2015-04-21T22:42:22Z
+          type: string
+      type: object
+    Period:
+      example:
+        end_date: 2016-11-30
+        current: true
+        over_budget: false
+        over_by: 0
+        forecast_amount: -60
+        percentage_used: 70.5
+        actual_amount: -42.3
+        refund_amount: 5.6
+        under_budget: true
+        currency_code: nzd
+        under_by: 17.7
+        start_date: 2016-11-01
+      properties:
+        actual_amount:
+          description: The sum of all actuals (transactions) in the period.
+          example: -42.3
+          type: number
+        currency_code:
+          description: The currency of the period.
+          example: nzd
+          type: string
+        current:
+          description: "Whether this period is current, such that the current date\
+            \ (in the user's time zone) falls within the date range."
+          example: true
+          type: boolean
+        end_date:
+          description: The end date of the period.
+          example: 2016-11-30
+          type: string
+        forecast_amount:
+          description: "The sum of all forecast sources (budget events) in the period,\
+            \ for comparison against the actual amount."
+          example: -60
+          type: number
+        over_budget:
+          description: Whether the budget has been exceeded in the period.
+          example: false
+          type: boolean
+        over_by:
+          description: How much the budget has been exceeded by in the period.
+          example: 0
+          type: number
+        percentage_used:
+          description: The percentage of the budget that has been used in the period.
+          example: 70.5
+          type: number
+        refund_amount:
+          description: "This attribute tracks the amount that has been refunded or\
+            \ deducted to the actual amount. When a category is set to \"always expense\"\
+            , any credit transactions are treated as refunds and when set to \"always\
+            \ income\", any debit transactions are treated as deductions."
+          example: 5.6
+          type: number
+        start_date:
+          description: The start date of the period.
+          example: 2016-11-01
+          type: string
+        under_budget:
+          description: Whether the budget has not been exceeded in the period.
+          example: true
+          type: boolean
+        under_by:
+          description: How much there is left in the budget for the period.
+          example: 17.7
+          type: number
+      type: object
+    SavedSearch:
+      example:
+        updated_at: 2015-08-16T02:17:02Z
+        created_at: 2015-08-16T02:17:02Z
+        id: 42
+        title: Craft beer
+      properties:
+        created_at:
+          description: When the saved search was created.
+          example: 2015-08-16T02:17:02Z
+          format: ISO 8601 timestamp
+          type: string
+        id:
+          description: The unique identifier of the saved search.
+          example: 42
+          type: integer
+        title:
+          description: The title of the saved search.
+          example: Craft beer
+          type: string
+        updated_at:
+          description: When the saved search was last updated.
+          example: 2015-08-16T02:17:02Z
+          format: ISO 8601 timestamp
+          type: string
+      type: object
+    Scenario:
+      example:
+        closing_balance_date: 2018-02-27
+        safe_balance: 5431.2
+        current_balance_in_base_currency: 8146.8
+        minimum-value: 4000
+        created_at: 2015-04-21T22:42:22Z
+        description: description
+        title: Wedding
+        type: no-interest
+        starting_balance: 2450
+        starting_balance_date: 2018-02-27
+        maximum-value: 42
+        current_balance_date: 2018-02-27
+        current_balance_exchange_rate: 1.5
+        updated_at: 2015-04-21T22:42:22Z
+        closing_balance: 5431.2
+        current_balance: 5431.2
+        interest_rate: 2.4
+        interest_rate_repeat_id: 4
+        safe_balance_in_base_currency: 8146.8
+        id: 42
+        achieve_date: achieve_date
+      properties:
+        achieve_date:
+          description: "For goals, the date that they should be achieved by."
+          type: string
+        closing_balance:
+          description: The closing balance of the scenario.
+          example: 5431.2
+          type: number
+        closing_balance_date:
+          description: The date of the closing balance.
+          example: 2018-02-27
+          type: string
+        created_at:
+          description: When the scenario was created.
+          example: 2015-04-21T22:42:22Z
+          type: string
+        current_balance:
+          description: The current balance of the scenario.
+          example: 5431.2
+          type: number
+        current_balance_date:
+          description: The date of the current balance.
+          example: 2018-02-27
+          type: string
+        current_balance_exchange_rate:
+          description: "The exchange rate between the scenario's currency and the\
+            \ user's base currency, when different. If the currencies are the same,\
+            \ null is returned."
+          example: 1.5
+          type: number
+        current_balance_in_base_currency:
+          description: The current balance of the scenario in the user's base currency.
+          example: 8146.8
+          type: number
+        description:
+          description: A short description of what the scenario is modelling.
+          type: string
+        id:
+          description: The unique identifier of the scenario.
+          example: 42
+          type: integer
+        interest_rate:
+          description: The amount of interest to apply to the balance. Will apply
+            periodically depending on what `interest_rate_repeat_id` is set to.
+          example: 2.4
+          type: number
+        interest_rate_repeat_id:
+          description: "A number representing how often the interest should be applied.\
+            \ 0 is used for no interest, 2 is weekly, 3 is fortnightly, 4 is monthly,\
+            \ 5 is yearly and 7 for quarterly."
+          example: 4
+          type: integer
+        maximum-value:
+          example: 42
+          type: number
+        minimum-value:
+          example: 4000
+          type: number
+        safe_balance:
+          description: "The current safe balance in the user's base currency, if safe\
+            \ balance is activated on the account associated with the scenario. If\
+            \ safe balance is not activated, then null is returned."
+          example: 5431.2
+          type: number
+        safe_balance_in_base_currency:
+          description: "The current safe balance in the user's base currency, if safe\
+            \ balance is activated on the account associated with the scenario. If\
+            \ safe balance is not available, then null is returned."
+          example: 8146.8
+          type: number
+        starting_balance:
+          description: The starting balance of the scenario.
+          example: 2450
+          type: number
+        starting_balance_date:
+          description: The date of the starting balance.
+          example: 2018-02-27
+          type: string
+        title:
+          description: The title of the scenario.
+          example: Wedding
+          type: string
+        type:
+          description: The type of the scenario.
+          enum:
+          - no-interest
+          - savings
+          - debt
+          example: no-interest
+          type: string
+        updated_at:
+          description: When the scenario was last updated.
+          example: 2015-04-21T22:42:22Z
+          type: string
+      type: object
+    TimeZone:
+      example:
+        utc_offset: 46800
+        identifier: Pacific/Auckland
+        formatted_offset: "780"
+        name: Auckland
+        abbreviation: NZDT
+        formatted_name: (GMT+13:00) Auckland
+      properties:
+        abbreviation:
+          description: The abbreviation of the time zone.
+          example: NZDT
+          type: string
+        formatted_name:
+          description: The formatted name of the time zone.
+          example: (GMT+13:00) Auckland
+          type: string
+        formatted_offset:
+          description: The formatted offset of the time zone.
+          example: "780"
+          type: string
+        identifier:
+          description: The tz database name of the time zone.
+          example: Pacific/Auckland
+          type: string
+        name:
+          description: The name of the time zone.
+          example: Auckland
+          type: string
+        utc_offset:
+          description: The time zone's UTC offset in seconds.
+          example: 46800
+          type: integer
+      type: object
+    Transaction:
+      example:
+        date: 2018-02-27
+        note: I spent way too much on cheese here
+        amount: 34.6
+        cheque_number: "503113643691"
+        transaction_account:
+          safe_balance: 2694.39
+          current_balance_in_base_currency: 4041.59
+          created_at: 2015-03-17T02:42:10Z
+          type: bank
+          starting_balance: 3547.45
+          currency_code: NZD
+          institution:
+            updated_at: 2015-04-21T22:42:22Z
+            created_at: 2015-04-21T22:42:22Z
+            id: 57
+            title: Bank of Foo
+            currency_code: NZD
+          number: ASBCRD44554
+          starting_balance_date: 2015-03-15
+          current_balance_date: 2015-07-03
+          current_balance_exchange_rate: 1.5
+          updated_at: 2015-07-02T22:14:49Z
+          name: Sample Credit
+          current_balance: 2694.39
+          safe_balance_in_base_currency: 4041.59
+          id: 96027
+        original_payee: CARD4083ST MARTINS NEW WORLD CHRISTCHURCH
+        upload_source: file
+        created_at: 2018-02-27T22:42:22Z
+        is_transfer: false
+        memo: An example memo
+        amount_in_base_currency: 51.9
+        type: credit
+        labels:
+        - foo
+        - bar
+        - baz
+        needs_review: true
+        payee: St Martins New World
+        updated_at: 2018-02-27T22:42:22Z
+        closing_balance: 4312.32
+        id: 42
+        category:
+          colour: '#00ff00'
+          updated_at: 2015-08-16T02:17:02Z
+          children:
+          - null
+          - null
+          parent_id: 42
+          is_bill: true
+          created_at: 2015-08-16T02:17:02Z
+          is_transfer: false
+          roll_up: false
+          id: 1438154
+          title: Beer
+          refund_behaviour: credits_are_refunds
+        status: pending
+      properties:
+        amount:
+          example: 34.6
+          type: number
+        amount_in_base_currency:
+          description: The amount of the transaction in the user's base currency.
+          example: 51.9
+          type: number
+        category:
+          $ref: '#/components/schemas/Category'
+        cheque_number:
+          example: "503113643691"
+          type: string
+        closing_balance:
+          description: The closing balance of the account at the transaction.
+          example: 4312.32
+          type: number
+        created_at:
+          description: When the transaction was created.
+          example: 2018-02-27T22:42:22Z
+          type: string
+        date:
+          description: The date the transaction took place.
+          example: 2018-02-27
+          type: string
+        id:
+          description: The unique identifier of the transaction.
+          example: 42
+          type: integer
+        is_transfer:
+          description: Whether the transaction is a transfer.
+          example: false
+          type: boolean
+        labels:
+          example:
+          - foo
+          - bar
+          - baz
+          items:
+            type: string
+          type: array
+        memo:
+          example: An example memo
+          type: string
+        needs_review:
+          description: Whether the transaction needs to be reviewed.
+          example: true
+          type: boolean
+        note:
+          example: I spent way too much on cheese here
+          type: string
+        original_payee:
+          description: The payee the transaction was created with.
+          example: CARD4083ST MARTINS NEW WORLD CHRISTCHURCH
+          type: string
+        payee:
+          description: The payee/merchant of the transaction.
+          example: St Martins New World
+          type: string
+        status:
+          description: "The status of the transaction. Pending transactions are temporary\
+            \ and may be superseded later by their posted counterparts, which are\
+            \ permanent."
+          enum:
+          - pending
+          - posted
+          type: string
+        transaction_account:
+          $ref: '#/components/schemas/TransactionAccount'
+        type:
+          description: Whether the transaction is a debit or a credit
+          enum:
+          - debit
+          - credit
+          example: credit
+          type: string
+        updated_at:
+          description: When the transaction was last updated.
+          example: 2018-02-27T22:42:22Z
+          type: string
+        upload_source:
+          description: Where the transaction came from.
+          example: file
+          type: string
+      type: object
+    TransactionAccount:
+      example:
+        safe_balance: 2694.39
+        current_balance_in_base_currency: 4041.59
+        created_at: 2015-03-17T02:42:10Z
+        type: bank
+        starting_balance: 3547.45
+        currency_code: NZD
+        institution:
+          updated_at: 2015-04-21T22:42:22Z
+          created_at: 2015-04-21T22:42:22Z
+          id: 57
+          title: Bank of Foo
+          currency_code: NZD
+        number: ASBCRD44554
+        starting_balance_date: 2015-03-15
+        current_balance_date: 2015-07-03
+        current_balance_exchange_rate: 1.5
+        updated_at: 2015-07-02T22:14:49Z
+        name: Sample Credit
+        current_balance: 2694.39
+        safe_balance_in_base_currency: 4041.59
+        id: 96027
+      properties:
+        created_at:
+          example: 2015-03-17T02:42:10Z
+          type: string
+        currency_code:
+          description: The currency that the account is in. This is determined by
+            the account that the transaction account belongs to.
+          example: NZD
+          type: string
+        current_balance:
+          example: 2694.39
+          type: number
+        current_balance_date:
+          example: 2015-07-03
+          type: string
+        current_balance_exchange_rate:
+          description: "The exchange rate between the transaction account's currency\
+            \ and the user's base currency, when different. If the currencies are\
+            \ the same, null is returned."
+          example: 1.5
+          type: number
+        current_balance_in_base_currency:
+          description: The current balance of the transaction account in the user's
+            base currency.
+          example: 4041.59
+          type: number
+        id:
+          example: 96027
+          type: integer
+        institution:
+          $ref: '#/components/schemas/Institution'
+        name:
+          example: Sample Credit
+          type: string
+        number:
+          example: ASBCRD44554
+          type: string
+        safe_balance:
+          description: "The current safe balance, if safe balance is activated and\
+            \ available for the transaction account. If safe balance is not available,\
+            \ then null is returned."
+          example: 2694.39
+          type: number
+        safe_balance_in_base_currency:
+          description: "The current safe balance in the user's base currency, if safe\
+            \ balance is activated and available for the transaction account. If safe\
+            \ balance is not available, then null is returned."
+          example: 4041.59
+          type: number
+        starting_balance:
+          example: 3547.45
+          type: number
+        starting_balance_date:
+          example: 2015-03-15
+          type: string
+        type:
+          description: The type of the transaction account.
+          enum:
+          - bank
+          - credits
+          - cash
+          - stocks
+          - mortgage
+          - loans
+          - vehicle
+          - property
+          - insurance
+          - other_asset
+          - other_liability
+          example: bank
+          type: string
+        updated_at:
+          example: 2015-07-02T22:14:49Z
+          type: string
+      type: object
+    User:
+      example:
+        forecast_last_accessed_at: 2015-07-02T22:14:49Z
+        available_budgets: 3
+        week_start_day: 1
+        beta_user: true
+        created_at: 2015-07-02T22:14:49Z
+        forecast_start_date: 2015-07-01
+        forecast_defer_recalculate: false
+        login: sampleuser69
+        time_zone: Auckland
+        forecast_end_date: 2015-07-15
+        last_logged_in_at: 2015-07-02T22:14:49Z
+        always_show_base_currency: false
+        avatar_url: https://image.com/image.png
+        updated_at: 2015-07-02T22:14:49Z
+        last_activity_at: 2015-07-02T22:14:49Z
+        forecast_last_updated_at: 2015-07-02T22:14:49Z
+        name: Foo Barrington
+        using_multiple_currencies: true
+        available_accounts: 3
+        forecast_needs_recalculate: true
+        id: 42
+        base_currency_code: NZD
+        email: user69@sample.com
+        is_reviewing_transactions: true
+      properties:
+        always_show_base_currency:
+          description: Whether the user wants to see all accounts in their base currency
+            instead of the native account currency.
+          example: false
+          type: boolean
+        available_accounts:
+          description: The user's total number of available accounts.
+          example: 3
+          type: integer
+        available_budgets:
+          description: The user's total number of available budgets.
+          example: 3
+          type: integer
+        avatar_url:
+          description: The URL to the user's avatar.
+          example: https://image.com/image.png
+          type: string
+        base_currency_code:
+          description: The user's base currency.
+          example: NZD
+          type: string
+        beta_user:
+          description: Whether the user has opted in to beta features.
+          example: true
+          type: boolean
+        created_at:
+          description: When the user signed up.
+          example: 2015-07-02T22:14:49Z
+          type: string
+        email:
+          description: The user's email address.
+          example: user69@sample.com
+          type: string
+        forecast_defer_recalculate:
+          description: Whether the user's forecast recalculation should be deferred.
+          example: false
+          type: boolean
+        forecast_end_date:
+          description: The date that the user's forecast ends.
+          example: 2015-07-15
+          type: string
+        forecast_last_accessed_at:
+          description: When the user's forecast was last accessed.
+          example: 2015-07-02T22:14:49Z
+          type: string
+        forecast_last_updated_at:
+          description: When the user's forecast was last updated.
+          example: 2015-07-02T22:14:49Z
+          type: string
+        forecast_needs_recalculate:
+          description: Whether the user's forecast needs to be recalculated.
+          example: true
+          type: boolean
+        forecast_start_date:
+          description: The date that the user's forecast starts.
+          example: 2015-07-01
+          type: string
+        id:
+          description: The unique identifier of the user.
+          example: 42
+          type: integer
+        is_reviewing_transactions:
+          description: "Whether the user wants to review new transactions, transfer\
+            \ transactions or categorisation."
+          example: true
+          type: boolean
+        last_activity_at:
+          description: "When the user last interacted with PocketSmith, via any application\
+            \ or the API."
+          example: 2015-07-02T22:14:49Z
+          type: string
+        last_logged_in_at:
+          description: When the user last logged into PocketSmith.
+          example: 2015-07-02T22:14:49Z
+          type: string
+        login:
+          description: The user's username.
+          example: sampleuser69
+          type: string
+        name:
+          description: "The full name of the user, although not all users will have\
+            \ a name set."
+          example: Foo Barrington
+          type: string
+        time_zone:
+          description: The user's time zone.
+          example: Auckland
+          type: string
+        updated_at:
+          description: When the user was last updated.
+          example: 2015-07-02T22:14:49Z
+          type: string
+        using_multiple_currencies:
+          description: Whether the user has multiple currencies in use across their
+            account.
+          example: true
+          type: boolean
+        week_start_day:
+          description: "The day of the week the user wishes their calendars to start\
+            \ on. A number between 0 and 6, where 0 is Sunday and 6 is Saturday."
+          example: 1
+          type: integer
+      type: object
+    _accounts__id__put_request:
+      properties:
+        currency_code:
+          description: A new currency code for the account.
+          example: NZD
+          type: string
+        is_net_worth:
+          description: Whether the account is a net worth account.
+          example: false
+          type: boolean
+        title:
+          description: A new title for the account.
+          example: Savings
+          type: string
+        type:
+          description: The type of the account.
+          enum:
+          - bank
+          - credits
+          - cash
+          - loans
+          - mortgage
+          - stocks
+          - vehicle
+          - property
+          - insurance
+          - other_asset
+          - other_liability
+          example: bank
+          type: string
+      type: object
+    _attachments__id__put_request:
+      properties:
+        title:
+          description: "The new title of the attachment. If the title is blank or\
+            \ not provided, the server will derive a title from the file name."
+          example: Invoice for taxi
+          type: string
+      type: object
+    _categories__id__put_request:
+      properties:
+        colour:
+          description: A new CSS-style hex colour for the category.
+          example: '#e0e7ff'
+          type: string
+        is_bill:
+          description: Set the category as a bill category.
+          example: true
+          type: boolean
+        is_transfer:
+          description: Set the category as a transfer category.
+          example: false
+          type: boolean
+        parent_id:
+          description: "The unique identifier of a parent category for the category,\
+            \ making this category a child of that category."
+          example: 42
+          type: integer
+        refund_behaviour:
+          description: Set the refund behaviour of the category.
+          enum:
+          - debits_are_deductions
+          - credits_are_refunds
+          - null
+          example: credits_are_refunds
+          nullable: true
+          type: string
+        roll_up:
+          description: Set the category to be rolled up into its parent category.
+          example: false
+          type: boolean
+        title:
+          description: A new title for the category.
+          example: Food
+          type: string
+      type: object
+    _categories__id__category_rules_post_request:
+      properties:
+        apply_to_all:
+          description: Apply the created category rule to all transactions.
+          example: false
+          type: boolean
+        apply_to_uncategorised:
+          description: Apply the created category rule to all uncategorised transactions.
+          example: true
+          type: boolean
+        payee_matches:
+          description: The keyword/s to match the transaction payees.
+          example: Countdown
+          type: string
+      required:
+      - category_id
+      - payee_matches
+      type: object
+    _events__id__put_request:
+      properties:
+        amount:
+          description: "The amount of the event. A positive amount is a credit, and\
+            \ a negative amount is a debit."
+          example: 11.5
+          type: number
+        behaviour:
+          description: "Whether the update applies only to this event, to all events\
+            \ within the series from this event or to all events within the series."
+          enum:
+          - one
+          - forward
+          - all
+          example: all
+          type: string
+        note:
+          description: A note for the event.
+          example: Need more beer.
+          type: string
+        repeat_interval:
+          description: The repeat interval of the event.
+          example: 1
+          type: integer
+        repeat_type:
+          description: The repeat type of the event.
+          enum:
+          - once
+          - daily
+          - weekly
+          - fortnightly
+          - monthly
+          - yearly
+          - each weekday
+          example: weekly
+          type: string
+      required:
+      - behaviour
+      type: object
+    _institutions__id__put_request:
+      properties:
+        currency_code:
+          description: A new currency code for the institution.
+          example: NZD
+          type: string
+        title:
+          description: A new title for the institution.
+          example: Bank of Foo
+          type: string
+      type: object
+    _scenarios__id__events_post_request:
+      properties:
+        amount:
+          description: "The amount of the event. A positive amount is a credit, and\
+            \ a negative amount is a debit."
+          example: 11.5
+          type: number
+        category_id:
+          description: The unique identifier of the category for the event.
+          example: 42
+          type: integer
+        date:
+          description: The starting date of the event.
+          example: 2020-10-27
+          type: string
+        note:
+          description: A note for the event.
+          example: New beers for sampling over the weekends.
+          type: string
+        repeat_interval:
+          default: 1
+          description: The repeat interval of the event.
+          example: 1
+          type: integer
+        repeat_type:
+          description: The repeat type of the event.
+          enum:
+          - once
+          - daily
+          - weekly
+          - fortnightly
+          - monthly
+          - yearly
+          - each weekday
+          example: weekly
+          type: string
+      required:
+      - amount
+      - category_id
+      - date
+      - repeat_type
+      type: object
+    _transaction_accounts__id__put_request:
+      properties:
+        institution_id:
+          description: The unique identifier of a new institution for the transaction
+            account.
+          example: 42
+          type: integer
+        starting_balance:
+          description: The starting balance amount of the transaction account.
+          example: 3547.45
+          type: number
+        starting_balance_date:
+          description: The starting balance date of the transaction account.
+          example: 2015-03-15
+          type: string
+      type: object
+    _transaction_accounts__id__transactions_post_request:
+      properties:
+        amount:
+          description: "The amount of the transaction. A positive amount is a credit,\
+            \ and a negative amount is a debit."
+          example: 11.5
+          type: number
+        category_id:
+          description: The unique identifier of a category for the transaction.
+          example: 42
+          type: integer
+        cheque_number:
+          description: A cheque number for the transaction.
+          type: string
+        date:
+          description: The date when the transaction occurred.
+          example: 2018-02-27
+          type: string
+        is_transfer:
+          description: Whether the transaction should be indicated as a transfer.
+          example: false
+          type: boolean
+        labels:
+          description: A set of comma-separated labels for the transaction.
+          example: "lunch,mexican"
+          type: string
+        memo:
+          description: A memo for the transaction.
+          type: string
+        needs_review:
+          description: Whether the transaction needs to be reviewed or not.
+          example: false
+          type: boolean
+        note:
+          description: A note for the transaction.
+          example: I really enjoyed the loaded corn chips
+          type: string
+        payee:
+          description: The payee/merchant of the transaction.
+          example: Tex Otago
+          type: string
+      required:
+      - amount
+      - date
+      - payee
+      type: object
+    _transactions__id__put_request:
+      properties:
+        amount:
+          description: A new amount for the transaction.
+          example: 225
+          type: number
+        category_id:
+          description: The unique identifier of a new category for the transaction.
+          example: 42
+          type: integer
+        cheque_number:
+          description: A new cheque number for the transaction.
+          example: "503113643691"
+          type: string
+        date:
+          description: A new date for the transaction.
+          example: 2018-02-27
+          type: string
+        is_transfer:
+          description: Whether the transaction is a transfer or not.
+          example: false
+          type: boolean
+        labels:
+          description: A new comma-separated set of labels for the transaction.
+          example: "foo,bar,baz"
+          type: string
+        memo:
+          description: A new memo for the transaction.
+          example: Rent
+          type: string
+        needs_review:
+          description: Whether the transaction needs to be reviewed or not.
+          example: false
+          type: boolean
+        note:
+          description: A new note for the transaction.
+          type: string
+        payee:
+          description: A new payee for the transaction.
+          example: Bill
+          type: string
+      type: object
+    _transactions__id__attachments_post_request:
+      properties:
+        attachment_id:
+          description: The unique identifier of the attachment.
+          example: 1438154
+          type: integer
+      type: object
+    _users__id__put_request:
+      properties:
+        always_show_base_currency:
+          description: Whether the user wishes to have all monetary values converted
+            to their base currency.
+          example: true
+          type: boolean
+        base_currency_code:
+          description: A new base currency code for the user.
+          example: nzd
+          type: string
+        beta_user:
+          description: "Whether the user is a beta user, and wishes to try out new\
+            \ features."
+          example: true
+          type: boolean
+        email:
+          description: A new email address for the user.
+          example: foo@bar.com
+          type: string
+        name:
+          description: A new name for the user.
+          example: John Appleseed
+          type: string
+        time_zone:
+          description: A new time zone for the user.
+          example: Auckland
+          type: string
+        week_start_day:
+          description: "The day of the week the user wishes their calendars to start\
+            \ on. A number between 0 and 6, where 0 is Sunday and 6 is Saturday."
+          example: 1
+          type: integer
+      type: object
+    _users__id__accounts_put_request:
+      properties:
+        accounts:
+          description: List the account objects in their new display order.
+          items:
+            $ref: '#/components/schemas/Account'
+          type: array
+      required:
+      - accounts
+      type: object
+    _users__id__accounts_post_request:
+      properties:
+        currency_code:
+          description: A currency code for the account.
+          example: NZD
+          type: string
+        institution_id:
+          description: The ID of the institution to create this account in.
+          example: 42
+          type: integer
+        title:
+          description: A title for the account.
+          example: Foo
+          type: string
+        type:
+          description: The type of the account.
+          enum:
+          - bank
+          - credits
+          - cash
+          - loans
+          - mortgage
+          - stocks
+          - vehicle
+          - property
+          - insurance
+          - other_asset
+          - other_liability
+          example: bank
+          type: string
+      required:
+      - currency_code
+      - institution_id
+      - title
+      - type
+      type: object
+    _users__id__attachments_post_request:
+      properties:
+        file_data:
+          description: "The base64-encoded contents of the source file. The supported\
+            \ file types are png, jpg, pdf, xls, xlsx, doc, docx."
+          format: base64
+          type: string
+        file_name:
+          description: The file name of the attachment.
+          example: taxi.png
+          type: string
+        title:
+          description: "The title of the attachment. If the title is blank or not\
+            \ provided, the title will derived from the file name."
+          example: Invoice for taxi
+          type: string
+      type: object
+    _users__id__categories_post_request:
+      properties:
+        colour:
+          description: A CSS-style hex colour for the category.
+          example: '#e0e7ff'
+          type: string
+        is_bill:
+          description: Set the category as a bill category.
+          example: true
+          type: boolean
+        is_transfer:
+          description: Set the category as a transfer category.
+          example: false
+          type: boolean
+        parent_id:
+          description: The unique identifier of a category to be the parent of this
+            category.
+          example: 42
+          type: integer
+        refund_behaviour:
+          description: Set the refund behaviour of the category.
+          enum:
+          - debits_are_deductions
+          - credits_are_refunds
+          - null
+          example: credits_are_refunds
+          nullable: true
+          type: string
+        roll_up:
+          description: Set the category to be rolled up into its parent category.
+          example: false
+          type: boolean
+        title:
+          description: A title for the category.
+          example: Food
+          type: string
+      required:
+      - title
+      type: object
+    _users__id__institutions_post_request:
+      properties:
+        currency_code:
+          description: A currency code for the institution.
+          example: NZD
+          type: string
+        title:
+          description: A title for the institution.
+          example: Bank of Foo
+          type: string
+      required:
+      - currency_code
+      - title
+      type: object
+    Attachment_content_type_meta:
+      example:
+        extension: png
+        description: PNG image
+        title: PNG
+      properties:
+        description:
+          description: The content type description of the attachment.
+          example: PNG image
+          type: string
+        extension:
+          description: The extension type of the attachment.
+          example: png
+          type: string
+        title:
+          description: The content type title of the attachment.
+          example: PNG
+          type: string
+      type: object
+    Attachment_variants:
+      example:
+        thumb_url: https://image.com/image.png
+        large_url: https://image.com/image.png
+      properties:
+        large_url:
+          description: The url of the large version of the attachment.
+          example: https://image.com/image.png
+          type: string
+        thumb_url:
+          description: The url of the thumb version of the attachment.
+          example: https://image.com/image.png
+          type: string
+      type: object
+  securitySchemes:
+    developerKey:
+      description: "If you want to build a tool just for yourself, be it a desktop\
+        \ widget to display your balances or a tool to import transactions from a\
+        \ bank without a bank feed, you can use our developer keys feature. You can\
+        \ issue yourself a key which will give you persistent API access to just your\
+        \ account. You should rotate your keys regularly."
+      in: header
+      name: X-Developer-Key
+      type: apiKey
+    oauth2:
+      description: "If you want to a create an app for PocketSmith that other PocketSmith\
+        \ users can use, you'll be using OAuth 2. To register an app with PocketSmith,\
+        \ please email us on api@pocketsmith.com. Let us know a bit about yourself\
+        \ and what you plan on building. When approved, you will be provided with\
+        \ your client_id and client_secret to start using OAuth. Then, check out our\
+        \ guide for integrating OAuth to get started."
+      flows:
+        authorizationCode:
+          authorizationUrl: https://my.pocketsmith.com/oauth/authorize
+          scopes:
+            accounts.read: Access to list and view transaction accounts
+            accounts.write: Access to update and delete transaction accounts
+            attachments.read: Access to view attachments
+            attachments.write: "Ability to create, update and delete attachments"
+            categories.read: Access to view categories
+            categories.write: Ability to edit and delete categories
+            events.read: Access to view events
+            events.write: "Ability to create, update and delete events"
+            transactions.read: Access to list and view accounts and transactions
+            transactions.write: "Access to create, update and delete transactions"
+            user.read: Access the user's details and preferences
+            user.write: Access to change the user's details and preferences
+          tokenUrl: https://api.pocketsmith.com/v2/oauth/access_token
+      type: oauth2
+x-samples-languages:
+- curl
+- node
+- javascript
+- php
+- python
+

@@ -1,0 +1,9 @@
+# Superset.DashboardIdOrSlugGet200Response
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**result** | [**DashboardGetResponseSchema**](DashboardGetResponseSchema.md) |  | [optional] 
+
+

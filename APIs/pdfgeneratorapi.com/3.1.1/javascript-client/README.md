@@ -1,0 +1,373 @@
+# pdf_generator_api
+
+PdfGeneratorApi - JavaScript client for pdf_generator_api
+# Introduction
+PDF Generator API allows you easily generate transactional PDF documents and reduce the development and support costs by enabling your users to create and manage their document templates using a browser-based drag-and-drop document editor.
+
+The PDF Generator API features a web API architecture, allowing you to code in the language of your choice. This API supports the JSON media type, and uses UTF-8 character encoding.
+
+You can find our previous API documentation page with references to Simple and Signature authentication [here](https://docs.pdfgeneratorapi.com/legacy).
+
+## Base URL
+The base URL for all the API endpoints is `https://us1.pdfgeneratorapi.com/api/v3`
+
+For example
+* `https://us1.pdfgeneratorapi.com/api/v3/templates`
+* `https://us1.pdfgeneratorapi.com/api/v3/workspaces`
+* `https://us1.pdfgeneratorapi.com/api/v3/templates/123123`
+
+## Editor
+PDF Generator API comes with a powerful drag & drop editor that allows to create any kind of document templates, from barcode labels to invoices, quotes and reports. You can find tutorials and videos from our [Support Portal](https://support.pdfgeneratorapi.com).
+* [Component specification](https://support.pdfgeneratorapi.com/en/category/components-1ffseaj/)
+* [Expression Language documentation](https://support.pdfgeneratorapi.com/en/category/expression-language-q203pa/)
+* [Frequently asked questions and answers](https://support.pdfgeneratorapi.com/en/category/qanda-1ov519d/)
+
+## Definitions
+
+### Organization
+Organization is a group of workspaces owned by your account.
+
+### Workspace
+Workspace contains templates. Each workspace has access to their own templates and organization default templates.
+
+### Master Workspace
+Master Workspace is the main/default workspace of your Organization. The Master Workspace identifier is the email you signed up with.
+
+### Default Template
+Default template is a template that is available for all workspaces by default. You can set the template access type under Page Setup. If template has \"Organization\" access then your users can use them from the \"New\" menu in the Editor.
+
+### Data Field
+Data Field is a placeholder for the specific data in your JSON data set. In this example JSON you can access the buyer name using Data Field `{paymentDetails::buyerName}`. The separator between depth levels is :: (two colons). When designing the template you don’t have to know every Data Field, our editor automatically extracts all the available fields from your data set and provides an easy way to insert them into the template.
+```
+{
+    \"documentNumber\": 1,
+    \"paymentDetails\": {
+        \"method\": \"Credit Card\",
+        \"buyerName\": \"John Smith\"
+    },
+    \"items\": [
+        {
+            \"id\": 1,
+            \"name\": \"Item one\"
+        }
+    ]
+}
+```
+
+*  *  *  *  *
+# Authentication
+The PDF Generator API uses __JSON Web Tokens (JWT)__ to authenticate all API requests. These tokens offer a method to establish secure server-to-server authentication by transferring a compact JSON object with a signed payload of your account’s API Key and Secret.
+When authenticating to the PDF Generator API, a JWT should be generated uniquely by a __server-side application__ and included as a __Bearer Token__ in the header of each request.
+
+## Legacy Simple and Signature authentication
+You can find our legacy documentation for Simple and Signature authentication [here](https://docs.pdfgeneratorapi.com/legacy).
+
+<SecurityDefinitions />
+
+## Accessing your API Key and Secret
+You can find your __API Key__ and __API Secret__ from the __Account Settings__ page after you login to PDF Generator API [here](https://pdfgeneratorapi.com/login).
+
+## Creating a JWT
+JSON Web Tokens are composed of three sections: a header, a payload (containing a claim set), and a signature. The header and payload are JSON objects, which are serialized to UTF-8 bytes, then encoded using base64url encoding.
+
+The JWT's header, payload, and signature are concatenated with periods (.). As a result, a JWT typically takes the following form:
+```
+{Base64url encoded header}.{Base64url encoded payload}.{Base64url encoded signature}
+```
+
+We recommend and support libraries provided on [jwt.io](https://jwt.io/). While other libraries can create JWT, these recommended libraries are the most robust.
+
+### Header
+Property `alg` defines which signing algorithm is being used. PDF Generator API users HS256.
+Property `typ` defines the type of token and it is always JWT.
+```
+{
+  \"alg\": \"HS256\",
+  \"typ\": \"JWT\"
+}
+```
+
+### Payload
+The second part of the token is the payload, which contains the claims  or the pieces of information being passed about the user and any metadata required.
+It is mandatory to specify the following claims:
+* issuer (`iss`): Your API key
+* subject (`sub`): Workspace identifier
+* expiration time (`exp`): Timestamp (unix epoch time) until the token is valid. It is highly recommended to set the exp timestamp for a short period, i.e. a matter of seconds. This way, if a token is intercepted or shared, the token will only be valid for a short period of time.
+
+```
+{
+  \"iss\": \"ad54aaff89ffdfeff178bb8a8f359b29fcb20edb56250b9f584aa2cb0162ed4a\",
+  \"sub\": \"demo.example@actualreports.com\",
+  \"exp\": 1586112639
+}
+```
+
+### Signature
+To create the signature part you have to take the encoded header, the encoded payload, a secret, the algorithm specified in the header, and sign that. The signature is used to verify the message wasn't changed along the way, and, in the case of tokens signed with a private key, it can also verify that the sender of the JWT is who it says it is.
+```
+HMACSHA256(
+    base64UrlEncode(header) + \".\" +
+    base64UrlEncode(payload),
+    API_SECRET)
+```
+
+### Putting all together
+The output is three Base64-URL strings separated by dots. The following shows a JWT that has the previous header and payload encoded, and it is signed with a secret.
+```
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhZDU0YWFmZjg5ZmZkZmVmZjE3OGJiOGE4ZjM1OWIyOWZjYjIwZWRiNTYyNTBiOWY1ODRhYTJjYjAxNjJlZDRhIiwic3ViIjoiZGVtby5leGFtcGxlQGFjdHVhbHJlcG9ydHMuY29tIn0.SxO-H7UYYYsclS8RGWO1qf0z1cB1m73wF9FLl9RCc1Q
+
+// Base64 encoded header: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
+// Base64 encoded payload: eyJpc3MiOiJhZDU0YWFmZjg5ZmZkZmVmZjE3OGJiOGE4ZjM1OWIyOWZjYjIwZWRiNTYyNTBiOWY1ODRhYTJjYjAxNjJlZDRhIiwic3ViIjoiZGVtby5leGFtcGxlQGFjdHVhbHJlcG9ydHMuY29tIn0
+// Signature: SxO-H7UYYYsclS8RGWO1qf0z1cB1m73wF9FLl9RCc1Q
+```
+
+## Testing with JWTs
+You can create a temporary token in [Account Settings](https://pdfgeneratorapi.com/account/organization) page after you login to PDF Generator API. The generated token uses your email address as the subject (`sub`) value and is valid for __5 minutes__.
+You can also use [jwt.io](https://jwt.io/) to generate test tokens for your API calls. These test tokens should never be used in production applications.
+*  *  *  *  *
+
+# Libraries and SDKs
+## Postman Collection
+We have created a [Postman](https://www.postman.com) Collection so you can easily test all the API endpoints wihtout developing and code. You can download the collection [here](https://app.getpostman.com/run-collection/329f09618ec8a957dbc4) or just click the button below.
+
+[![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/329f09618ec8a957dbc4)
+
+## Client Libraries
+All our Client Libraries are auto-generated using [OpenAPI Generator](https://openapi-generator.tech/) which uses the OpenAPI v3 specification to automatically generate a client library in specific programming language.
+
+* [PHP Client](https://github.com/pdfgeneratorapi/php-client)
+* [Java Client](https://github.com/pdfgeneratorapi/java-client)
+* [Ruby Client](https://github.com/pdfgeneratorapi/ruby-client)
+* [Python Client](https://github.com/pdfgeneratorapi/python-client)
+* [Javascript Client](https://github.com/pdfgeneratorapi/javascript-client)
+
+We have validated the generated libraries, but let us know if you find any anomalies in the client code.
+*  *  *  *  *
+
+# Error codes
+
+| Code   | Description                    |
+|--------|--------------------------------|
+| 401    | Unauthorized                   |
+| 403    | Forbidden                      |
+| 404    | Not Found                      |
+| 422    | Unprocessable Entity           |
+| 500    | Internal Server Error          |
+
+## 401 - Unauthorized
+| Description                                                             |
+|-------------------------------------------------------------------------|
+| Authentication failed: request expired                                  |
+| Authentication failed: workspace missing                                |
+| Authentication failed: key missing                                      |
+| Authentication failed: property 'iss' (issuer) missing in JWT           |
+| Authentication failed: property 'sub' (subject) missing in JWT          |
+| Authentication failed: property 'exp' (expiration time) missing in JWT  |
+| Authentication failed: incorrect signature                              |
+
+## 403 - Forbidden
+| Description                                                             |
+|-------------------------------------------------------------------------|
+| Your account has exceeded the monthly document generation limit.        |
+| Access not granted: You cannot delete master workspace via API          |
+| Access not granted: Template is not accessible by this organization     |
+| Your session has expired, please close and reopen the editor.           |
+
+## 404 Entity not found
+| Description                                                             |
+|-------------------------------------------------------------------------|
+| Entity not found                                                        |
+| Resource not found                                                      |
+| None of the templates is available for the workspace.                   |
+
+## 422 Unprocessable Entity
+| Description                                                             |
+|-------------------------------------------------------------------------|
+| Unable to parse JSON, please check formatting                           |
+| Required parameter missing                                              |
+| Required parameter missing: template definition not defined             |
+| Required parameter missing: template not defined                        |
+
+This SDK is automatically generated by the [OpenAPI Generator](https://openapi-generator.tech) project:
+
+- API version: 3.1.1
+- Package version: 3.1.1
+- Generator version: 7.9.0
+- Build package: org.openapitools.codegen.languages.JavascriptClientCodegen
+For more information, please visit [https://support.pdfgeneratorapi.com](https://support.pdfgeneratorapi.com)
+
+## Installation
+
+### For [Node.js](https://nodejs.org/)
+
+#### npm
+
+To publish the library as a [npm](https://www.npmjs.com/), please follow the procedure in ["Publishing npm packages"](https://docs.npmjs.com/getting-started/publishing-npm-packages).
+
+Then install it via:
+
+```shell
+npm install pdf_generator_api --save
+```
+
+Finally, you need to build the module:
+
+```shell
+npm run build
+```
+
+##### Local development
+
+To use the library locally without publishing to a remote npm registry, first install the dependencies by changing into the directory containing `package.json` (and this README). Let's call this `JAVASCRIPT_CLIENT_DIR`. Then run:
+
+```shell
+npm install
+```
+
+Next, [link](https://docs.npmjs.com/cli/link) it globally in npm with the following, also from `JAVASCRIPT_CLIENT_DIR`:
+
+```shell
+npm link
+```
+
+To use the link you just defined in your project, switch to the directory you want to use your pdf_generator_api from, and run:
+
+```shell
+npm link /path/to/<JAVASCRIPT_CLIENT_DIR>
+```
+
+Finally, you need to build the module:
+
+```shell
+npm run build
+```
+
+#### git
+
+If the library is hosted at a git repository, e.g.https://github.com/GIT_USER_ID/GIT_REPO_ID
+then install it via:
+
+```shell
+    npm install GIT_USER_ID/GIT_REPO_ID --save
+```
+
+### For browser
+
+The library also works in the browser environment via npm and [browserify](http://browserify.org/). After following
+the above steps with Node.js and installing browserify with `npm install -g browserify`,
+perform the following (assuming *main.js* is your entry file):
+
+```shell
+browserify main.js > bundle.js
+```
+
+Then include *bundle.js* in the HTML pages.
+
+### Webpack Configuration
+
+Using Webpack you may encounter the following error: "Module not found: Error:
+Cannot resolve module", most certainly you should disable AMD loader. Add/merge
+the following section to your webpack config:
+
+```javascript
+module: {
+  rules: [
+    {
+      parser: {
+        amd: false
+      }
+    }
+  ]
+}
+```
+
+## Getting Started
+
+Please follow the [installation](#installation) instruction and execute the following JS code:
+
+```javascript
+var PdfGeneratorApi = require('pdf_generator_api');
+
+var defaultClient = PdfGeneratorApi.ApiClient.instance;
+// Configure Bearer (JWT) access token for authorization: JSONWebTokenAuth
+var JSONWebTokenAuth = defaultClient.authentications['JSONWebTokenAuth'];
+JSONWebTokenAuth.accessToken = "YOUR ACCESS TOKEN"
+
+var api = new PdfGeneratorApi.DocumentsApi()
+var templateId = 19375; // {Number} Template unique identifier
+var data = new PdfGeneratorApi.Data(); // {Data} Data used to generate the PDF. This can be JSON encoded string or a public URL to your JSON file.
+var opts = {
+  'name': "My document", // {String} Document name, returned in the meta data.
+  'format': "pdf", // {String} Document format. The zip option will return a ZIP file with PDF files.
+  'output': "base64" // {String} Response format. With the url option, the document is stored for 30 days and automatically deleted.
+};
+var callback = function(error, data, response) {
+  if (error) {
+    console.error(error);
+  } else {
+    console.log('API called successfully. Returned data: ' + data);
+  }
+};
+api.mergeTemplate(templateId, data, opts, callback);
+
+```
+
+## Documentation for API Endpoints
+
+All URIs are relative to *https://us1.pdfgeneratorapi.com/api/v3*
+
+Class | Method | HTTP request | Description
+------------ | ------------- | ------------- | -------------
+*PdfGeneratorApi.DocumentsApi* | [**mergeTemplate**](docs/DocumentsApi.md#mergeTemplate) | **POST** /templates/templateId/output | Generate document
+*PdfGeneratorApi.DocumentsApi* | [**mergeTemplates**](docs/DocumentsApi.md#mergeTemplates) | **POST** /templates/output | Generate document (multiple templates)
+*PdfGeneratorApi.TemplatesApi* | [**copyTemplate**](docs/TemplatesApi.md#copyTemplate) | **POST** /templates/templateId/copy | Copy template
+*PdfGeneratorApi.TemplatesApi* | [**createTemplate**](docs/TemplatesApi.md#createTemplate) | **POST** /templates | Create template
+*PdfGeneratorApi.TemplatesApi* | [**deleteTemplate**](docs/TemplatesApi.md#deleteTemplate) | **DELETE** /templates/templateId | Delete template
+*PdfGeneratorApi.TemplatesApi* | [**getEditorUrl**](docs/TemplatesApi.md#getEditorUrl) | **POST** /templates/templateId/editor | Open editor
+*PdfGeneratorApi.TemplatesApi* | [**getTemplate**](docs/TemplatesApi.md#getTemplate) | **GET** /templates/templateId | Get template
+*PdfGeneratorApi.TemplatesApi* | [**getTemplates**](docs/TemplatesApi.md#getTemplates) | **GET** /templates | Get templates
+*PdfGeneratorApi.TemplatesApi* | [**updateTemplate**](docs/TemplatesApi.md#updateTemplate) | **PUT** /templates/templateId | Update template
+*PdfGeneratorApi.WorkspacesApi* | [**deleteWorkspace**](docs/WorkspacesApi.md#deleteWorkspace) | **DELETE** /workspaces/workspaceId | Delete workspace
+*PdfGeneratorApi.WorkspacesApi* | [**getWorkspace**](docs/WorkspacesApi.md#getWorkspace) | **GET** /workspaces/workspaceId | Get workspace
+
+
+## Documentation for Models
+
+ - [PdfGeneratorApi.BatchDataInner](docs/BatchDataInner.md)
+ - [PdfGeneratorApi.Component](docs/Component.md)
+ - [PdfGeneratorApi.CreateTemplate200Response](docs/CreateTemplate200Response.md)
+ - [PdfGeneratorApi.Data](docs/Data.md)
+ - [PdfGeneratorApi.DeleteTemplate200Response](docs/DeleteTemplate200Response.md)
+ - [PdfGeneratorApi.DeleteTemplate200ResponseResponse](docs/DeleteTemplate200ResponseResponse.md)
+ - [PdfGeneratorApi.GetEditorUrl200Response](docs/GetEditorUrl200Response.md)
+ - [PdfGeneratorApi.GetTemplates200Response](docs/GetTemplates200Response.md)
+ - [PdfGeneratorApi.GetTemplates401Response](docs/GetTemplates401Response.md)
+ - [PdfGeneratorApi.GetTemplates403Response](docs/GetTemplates403Response.md)
+ - [PdfGeneratorApi.GetTemplates404Response](docs/GetTemplates404Response.md)
+ - [PdfGeneratorApi.GetTemplates422Response](docs/GetTemplates422Response.md)
+ - [PdfGeneratorApi.GetTemplates500Response](docs/GetTemplates500Response.md)
+ - [PdfGeneratorApi.GetWorkspace200Response](docs/GetWorkspace200Response.md)
+ - [PdfGeneratorApi.MergeTemplates200Response](docs/MergeTemplates200Response.md)
+ - [PdfGeneratorApi.MergeTemplates200ResponseMeta](docs/MergeTemplates200ResponseMeta.md)
+ - [PdfGeneratorApi.Template](docs/Template.md)
+ - [PdfGeneratorApi.TemplateDefinition](docs/TemplateDefinition.md)
+ - [PdfGeneratorApi.TemplateDefinitionDataSettings](docs/TemplateDefinitionDataSettings.md)
+ - [PdfGeneratorApi.TemplateDefinitionEditor](docs/TemplateDefinitionEditor.md)
+ - [PdfGeneratorApi.TemplateDefinitionLayout](docs/TemplateDefinitionLayout.md)
+ - [PdfGeneratorApi.TemplateDefinitionLayoutMargins](docs/TemplateDefinitionLayoutMargins.md)
+ - [PdfGeneratorApi.TemplateDefinitionLayoutRepeatLayout](docs/TemplateDefinitionLayoutRepeatLayout.md)
+ - [PdfGeneratorApi.TemplateDefinitionNew](docs/TemplateDefinitionNew.md)
+ - [PdfGeneratorApi.TemplateDefinitionNewLayout](docs/TemplateDefinitionNewLayout.md)
+ - [PdfGeneratorApi.TemplateDefinitionPagesInner](docs/TemplateDefinitionPagesInner.md)
+ - [PdfGeneratorApi.TemplateDefinitionPagesInnerMargins](docs/TemplateDefinitionPagesInnerMargins.md)
+ - [PdfGeneratorApi.Workspace](docs/Workspace.md)
+
+
+## Documentation for Authorization
+
+
+Authentication schemes defined for the API:
+### JSONWebTokenAuth
+
+- **Type**: Bearer authentication (JWT)
+

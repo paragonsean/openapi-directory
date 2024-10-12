@@ -1,0 +1,89 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIChannel_enum_channel_type.h \
+    $${PWD}/OAIChat_v1_credential.h \
+    $${PWD}/OAIChat_v1_service.h \
+    $${PWD}/OAIChat_v1_service_channel.h \
+    $${PWD}/OAIChat_v1_service_channel_invite.h \
+    $${PWD}/OAIChat_v1_service_channel_member.h \
+    $${PWD}/OAIChat_v1_service_channel_message.h \
+    $${PWD}/OAIChat_v1_service_role.h \
+    $${PWD}/OAIChat_v1_service_user.h \
+    $${PWD}/OAIChat_v1_service_user_user_channel.h \
+    $${PWD}/OAICredential_enum_push_service.h \
+    $${PWD}/OAIListChannelResponse.h \
+    $${PWD}/OAIListCredentialResponse.h \
+    $${PWD}/OAIListCredentialResponse_meta.h \
+    $${PWD}/OAIListInviteResponse.h \
+    $${PWD}/OAIListMemberResponse.h \
+    $${PWD}/OAIListMessageResponse.h \
+    $${PWD}/OAIListRoleResponse.h \
+    $${PWD}/OAIListServiceResponse.h \
+    $${PWD}/OAIListUserChannelResponse.h \
+    $${PWD}/OAIListUserResponse.h \
+    $${PWD}/OAIMessage_enum_order_type.h \
+    $${PWD}/OAIRole_enum_role_type.h \
+    $${PWD}/OAIUser_channel_enum_channel_status.h \
+# APIs
+    $${PWD}/OAIChatV1ChannelApi.h \
+    $${PWD}/OAIChatV1CredentialApi.h \
+    $${PWD}/OAIChatV1InviteApi.h \
+    $${PWD}/OAIChatV1MemberApi.h \
+    $${PWD}/OAIChatV1MessageApi.h \
+    $${PWD}/OAIChatV1RoleApi.h \
+    $${PWD}/OAIChatV1ServiceApi.h \
+    $${PWD}/OAIChatV1UserApi.h \
+    $${PWD}/OAIChatV1UserChannelApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIChannel_enum_channel_type.cpp \
+    $${PWD}/OAIChat_v1_credential.cpp \
+    $${PWD}/OAIChat_v1_service.cpp \
+    $${PWD}/OAIChat_v1_service_channel.cpp \
+    $${PWD}/OAIChat_v1_service_channel_invite.cpp \
+    $${PWD}/OAIChat_v1_service_channel_member.cpp \
+    $${PWD}/OAIChat_v1_service_channel_message.cpp \
+    $${PWD}/OAIChat_v1_service_role.cpp \
+    $${PWD}/OAIChat_v1_service_user.cpp \
+    $${PWD}/OAIChat_v1_service_user_user_channel.cpp \
+    $${PWD}/OAICredential_enum_push_service.cpp \
+    $${PWD}/OAIListChannelResponse.cpp \
+    $${PWD}/OAIListCredentialResponse.cpp \
+    $${PWD}/OAIListCredentialResponse_meta.cpp \
+    $${PWD}/OAIListInviteResponse.cpp \
+    $${PWD}/OAIListMemberResponse.cpp \
+    $${PWD}/OAIListMessageResponse.cpp \
+    $${PWD}/OAIListRoleResponse.cpp \
+    $${PWD}/OAIListServiceResponse.cpp \
+    $${PWD}/OAIListUserChannelResponse.cpp \
+    $${PWD}/OAIListUserResponse.cpp \
+    $${PWD}/OAIMessage_enum_order_type.cpp \
+    $${PWD}/OAIRole_enum_role_type.cpp \
+    $${PWD}/OAIUser_channel_enum_channel_status.cpp \
+# APIs
+    $${PWD}/OAIChatV1ChannelApi.cpp \
+    $${PWD}/OAIChatV1CredentialApi.cpp \
+    $${PWD}/OAIChatV1InviteApi.cpp \
+    $${PWD}/OAIChatV1MemberApi.cpp \
+    $${PWD}/OAIChatV1MessageApi.cpp \
+    $${PWD}/OAIChatV1RoleApi.cpp \
+    $${PWD}/OAIChatV1ServiceApi.cpp \
+    $${PWD}/OAIChatV1UserApi.cpp \
+    $${PWD}/OAIChatV1UserChannelApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

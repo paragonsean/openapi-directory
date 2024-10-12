@@ -1,0 +1,105 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIAsset_version_enum_visibility.h \
+    $${PWD}/OAIBuild_enum_runtime.h \
+    $${PWD}/OAIBuild_enum_status.h \
+    $${PWD}/OAIBuild_status_enum_status.h \
+    $${PWD}/OAIFunction_version_enum_visibility.h \
+    $${PWD}/OAIListAssetResponse.h \
+    $${PWD}/OAIListAssetVersionResponse.h \
+    $${PWD}/OAIListBuildResponse.h \
+    $${PWD}/OAIListDeploymentResponse.h \
+    $${PWD}/OAIListEnvironmentResponse.h \
+    $${PWD}/OAIListFunctionResponse.h \
+    $${PWD}/OAIListFunctionVersionResponse.h \
+    $${PWD}/OAIListLogResponse.h \
+    $${PWD}/OAIListServiceResponse.h \
+    $${PWD}/OAIListServiceResponse_meta.h \
+    $${PWD}/OAIListVariableResponse.h \
+    $${PWD}/OAILog_enum_level.h \
+    $${PWD}/OAIServerless_v1_service.h \
+    $${PWD}/OAIServerless_v1_service_asset.h \
+    $${PWD}/OAIServerless_v1_service_asset_asset_version.h \
+    $${PWD}/OAIServerless_v1_service_build.h \
+    $${PWD}/OAIServerless_v1_service_build_build_status.h \
+    $${PWD}/OAIServerless_v1_service_environment.h \
+    $${PWD}/OAIServerless_v1_service_environment_deployment.h \
+    $${PWD}/OAIServerless_v1_service_environment_log.h \
+    $${PWD}/OAIServerless_v1_service_environment_variable.h \
+    $${PWD}/OAIServerless_v1_service_function.h \
+    $${PWD}/OAIServerless_v1_service_function_function_version.h \
+    $${PWD}/OAIServerless_v1_service_function_function_version_function_version_content.h \
+# APIs
+    $${PWD}/OAIServerlessV1AssetApi.h \
+    $${PWD}/OAIServerlessV1AssetVersionApi.h \
+    $${PWD}/OAIServerlessV1BuildApi.h \
+    $${PWD}/OAIServerlessV1BuildStatusApi.h \
+    $${PWD}/OAIServerlessV1DeploymentApi.h \
+    $${PWD}/OAIServerlessV1EnvironmentApi.h \
+    $${PWD}/OAIServerlessV1FunctionApi.h \
+    $${PWD}/OAIServerlessV1FunctionVersionApi.h \
+    $${PWD}/OAIServerlessV1FunctionVersionContentApi.h \
+    $${PWD}/OAIServerlessV1LogApi.h \
+    $${PWD}/OAIServerlessV1ServiceApi.h \
+    $${PWD}/OAIServerlessV1VariableApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIAsset_version_enum_visibility.cpp \
+    $${PWD}/OAIBuild_enum_runtime.cpp \
+    $${PWD}/OAIBuild_enum_status.cpp \
+    $${PWD}/OAIBuild_status_enum_status.cpp \
+    $${PWD}/OAIFunction_version_enum_visibility.cpp \
+    $${PWD}/OAIListAssetResponse.cpp \
+    $${PWD}/OAIListAssetVersionResponse.cpp \
+    $${PWD}/OAIListBuildResponse.cpp \
+    $${PWD}/OAIListDeploymentResponse.cpp \
+    $${PWD}/OAIListEnvironmentResponse.cpp \
+    $${PWD}/OAIListFunctionResponse.cpp \
+    $${PWD}/OAIListFunctionVersionResponse.cpp \
+    $${PWD}/OAIListLogResponse.cpp \
+    $${PWD}/OAIListServiceResponse.cpp \
+    $${PWD}/OAIListServiceResponse_meta.cpp \
+    $${PWD}/OAIListVariableResponse.cpp \
+    $${PWD}/OAILog_enum_level.cpp \
+    $${PWD}/OAIServerless_v1_service.cpp \
+    $${PWD}/OAIServerless_v1_service_asset.cpp \
+    $${PWD}/OAIServerless_v1_service_asset_asset_version.cpp \
+    $${PWD}/OAIServerless_v1_service_build.cpp \
+    $${PWD}/OAIServerless_v1_service_build_build_status.cpp \
+    $${PWD}/OAIServerless_v1_service_environment.cpp \
+    $${PWD}/OAIServerless_v1_service_environment_deployment.cpp \
+    $${PWD}/OAIServerless_v1_service_environment_log.cpp \
+    $${PWD}/OAIServerless_v1_service_environment_variable.cpp \
+    $${PWD}/OAIServerless_v1_service_function.cpp \
+    $${PWD}/OAIServerless_v1_service_function_function_version.cpp \
+    $${PWD}/OAIServerless_v1_service_function_function_version_function_version_content.cpp \
+# APIs
+    $${PWD}/OAIServerlessV1AssetApi.cpp \
+    $${PWD}/OAIServerlessV1AssetVersionApi.cpp \
+    $${PWD}/OAIServerlessV1BuildApi.cpp \
+    $${PWD}/OAIServerlessV1BuildStatusApi.cpp \
+    $${PWD}/OAIServerlessV1DeploymentApi.cpp \
+    $${PWD}/OAIServerlessV1EnvironmentApi.cpp \
+    $${PWD}/OAIServerlessV1FunctionApi.cpp \
+    $${PWD}/OAIServerlessV1FunctionVersionApi.cpp \
+    $${PWD}/OAIServerlessV1FunctionVersionContentApi.cpp \
+    $${PWD}/OAIServerlessV1LogApi.cpp \
+    $${PWD}/OAIServerlessV1ServiceApi.cpp \
+    $${PWD}/OAIServerlessV1VariableApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

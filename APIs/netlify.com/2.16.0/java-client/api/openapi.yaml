@@ -1,0 +1,5858 @@
+openapi: 3.0.1
+info:
+  contact: {}
+  description: |-
+    Netlify is a hosting service for the programmable web. It understands your documents and provides an API to handle atomic deploys of websites, manage form submissions, inject JavaScript snippets, and much more. This is a REST-style API that uses JSON for serialization and OAuth 2 for authentication.
+
+    This document is an OpenAPI reference for the Netlify API that you can explore. For more detailed instructions for common uses, please visit the [online documentation](https://www.netlify.com/docs/api/). Visit our Community forum to join the conversation about [understanding and using Netlify’s API](https://community.netlify.com/t/common-issue-understanding-and-using-netlifys-api/160).
+
+    Additionally, we have two API clients for your convenience:
+    - [Go Client](https://github.com/netlify/open-api#go-client)
+    - [JS Client](https://github.com/netlify/build/tree/main/packages/js-client)
+  termsOfService: https://www.netlify.com/legal/terms-of-use/
+  title: Netlify's API documentation
+  version: 2.16.0
+  x-apisguru-categories:
+  - cloud
+  x-logo:
+    altText: Netlify
+    href: https://www.netlify.com/docs/
+    url: https://twitter.com/Netlify/profile_image?size=original
+  x-origin:
+  - format: swagger
+    url: https://raw.githubusercontent.com/netlify/open-api/master/swagger.yml
+    version: "2.0"
+  x-providerName: netlify.com
+externalDocs:
+  description: Online documentation
+  url: https://www.netlify.com/docs/api/
+servers:
+- url: https://api.netlify.com/api/v1
+security:
+- netlifyAuth: []
+tags:
+- name: ticket
+  x-displayName: Ticket
+- name: accessToken
+  x-displayName: Access token
+- name: user
+  x-displayName: User
+- name: accountMembership
+  x-displayName: Accounts
+- name: member
+  x-displayName: Member
+- name: accountType
+  x-displayName: Access type
+- name: paymentMethod
+  x-displayName: Payment method
+- name: auditLog
+  x-displayName: Audit log
+- name: site
+  x-displayName: Site
+- name: environmentVariables
+  x-displayName: Environment variables
+- name: file
+  x-displayName: File
+- name: metadata
+  x-displayName: Metadata
+- name: snippet
+  x-displayName: Snippet
+- name: dnsZone
+  x-displayName: DNS zone
+- name: sniCertificate
+  x-displayName: SNI certificate
+- name: deploy
+  x-displayName: Deploy
+- name: deployedBranch
+  x-displayName: Deployed branch
+- name: deployKey
+  x-displayName: Deploy key
+- name: build
+  x-displayName: Build
+- name: buildLogMsg
+  x-displayName: Build log message
+- name: hook
+  x-displayName: Hook
+- name: hookType
+  x-displayName: Hook type
+- name: buildHook
+  x-displayName: Build hook
+- name: service
+  x-displayName: Service
+- name: serviceInstance
+  x-displayName: Service instance
+- name: function
+  x-displayName: Function
+- name: form
+  x-displayName: Form
+- name: submission
+  x-displayName: Form submission
+- name: splitTest
+  x-displayName: Split test
+- name: asset
+  x-displayName: Asset
+- name: assetPublicSignature
+  x-displayName: Asset public signature
+paths:
+  /accounts:
+    get:
+      operationId: listAccountsForUser
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/accountMembership'
+                type: array
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - accountMembership
+      x-accepts:
+      - application/json
+    post:
+      operationId: createAccount
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/accountSetup'
+        required: true
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/accountMembership'
+          description: Created
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - accountMembership
+      x-codegen-request-body-name: accountSetup
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+  /accounts/types:
+    get:
+      operationId: listAccountTypesForUser
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/accountType'
+                type: array
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - accountType
+      x-accepts:
+      - application/json
+  /accounts/{account_id}:
+    delete:
+      operationId: cancelAccount
+      parameters:
+      - in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "204":
+          content: {}
+          description: Not Content
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - accountMembership
+      x-accepts:
+      - application/json
+    get:
+      operationId: getAccount
+      parameters:
+      - in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/accountMembership'
+                type: array
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - accountMembership
+      x-accepts:
+      - application/json
+    put:
+      operationId: updateAccount
+      parameters:
+      - in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/accountUpdateSetup'
+        required: false
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/accountMembership'
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - accountMembership
+      x-codegen-request-body-name: accountUpdateSetup
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+  /accounts/{account_id}/audit:
+    get:
+      operationId: listAccountAuditEvents
+      parameters:
+      - in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      - in: query
+        name: query
+        schema:
+          type: string
+      - in: query
+        name: log_type
+        schema:
+          type: string
+      - in: query
+        name: page
+        schema:
+          format: int32
+          type: integer
+      - in: query
+        name: per_page
+        schema:
+          format: int32
+          type: integer
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/auditLog'
+                type: array
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - auditLog
+      x-accepts:
+      - application/json
+  /accounts/{account_id}/env:
+    get:
+      description: "Returns all environment variables for an account or site. An account\
+        \ corresponds to a team in the Netlify UI. To use this endpoint, your site\
+        \ must no longer be using the <a href=\"https://docs.netlify.com/environment-variables/classic-experience/\"\
+        >classic environment variables experience</a>.  Migrate now with the Netlify\
+        \ UI."
+      operationId: getEnvVars
+      parameters:
+      - description: Scope response to account_id
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      - description: Filter by deploy context
+        in: query
+        name: context_name
+        schema:
+          enum:
+          - all
+          - dev
+          - branch-deploy
+          - deploy-preview
+          - production
+          type: string
+      - description: Filter by scope
+        in: query
+        name: scope
+        schema:
+          enum:
+          - builds
+          - functions
+          - runtime
+          - post-processing
+          type: string
+      - description: "If specified, only return environment variables set on this\
+          \ site"
+        in: query
+        name: site_id
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/envVar'
+                type: array
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - environmentVariables
+      x-accepts:
+      - application/json
+    post:
+      description: "Creates new environment variables. Granular scopes are available\
+        \ on Pro plans and above.  To use this endpoint, your site must no longer\
+        \ be using the <a href=\"https://docs.netlify.com/environment-variables/classic-experience/\"\
+        >classic environment variables experience</a>.  Migrate now with the Netlify\
+        \ UI."
+      operationId: createEnvVars
+      parameters:
+      - description: Scope response to account_id
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      - description: "If provided, create an environment variable on the site level,\
+          \ not the account level"
+        in: query
+        name: site_id
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              items:
+                $ref: '#/components/schemas/createEnvVars_request_inner'
+              type: array
+        required: false
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/envVar'
+                type: array
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - environmentVariables
+      x-codegen-request-body-name: env_vars
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+  /accounts/{account_id}/env/{key}:
+    delete:
+      description: "Deletes an environment variable. To use this endpoint, your site\
+        \ must no longer be using the <a href=\"https://docs.netlify.com/environment-variables/classic-experience/\"\
+        >classic environment variables experience</a>.  Migrate now with the Netlify\
+        \ UI."
+      operationId: deleteEnvVar
+      parameters:
+      - description: Scope response to account_id
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      - description: The environment variable key (case-sensitive)
+        in: path
+        name: key
+        required: true
+        schema:
+          type: string
+      - description: "If provided, delete the environment variable from this site"
+        in: query
+        name: site_id
+        schema:
+          type: string
+      responses:
+        "204":
+          content: {}
+          description: No Content (success)
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - environmentVariables
+      x-accepts:
+      - application/json
+    get:
+      description: "Returns an individual environment variable. To use this endpoint,\
+        \ your site must no longer be using the <a href=\"https://docs.netlify.com/environment-variables/classic-experience/\"\
+        >classic environment variables experience</a>.  Migrate now with the Netlify\
+        \ UI."
+      operationId: getEnvVar
+      parameters:
+      - description: Scope response to account_id
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      - description: The environment variable key (case-sensitive)
+        in: path
+        name: key
+        required: true
+        schema:
+          type: string
+      - description: "If provided, return the environment variable for a specific\
+          \ site (no merging is performed)"
+        in: query
+        name: site_id
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/envVar'
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - environmentVariables
+      x-accepts:
+      - application/json
+    patch:
+      description: "Updates or creates a new value for an existing environment variable.\
+        \ To use this endpoint, your site must no longer be using the <a href=\"https://docs.netlify.com/environment-variables/classic-experience/\"\
+        >classic environment variables experience</a>.  Migrate now with the Netlify\
+        \ UI."
+      operationId: setEnvVarValue
+      parameters:
+      - description: Scope response to account_id
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      - description: The existing environment variable key name (case-sensitive)
+        in: path
+        name: key
+        required: true
+        schema:
+          type: string
+      - description: "If provided, update an environment variable set on this site"
+        in: query
+        name: site_id
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/setEnvVarValue_request'
+        required: false
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/envVar'
+          description: Created (success)
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - environmentVariables
+      x-codegen-request-body-name: env_var
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+    put:
+      description: "Updates an existing environment variable and all of its values.\
+        \ Existing values will be replaced by values provided. To use this endpoint,\
+        \ your site must no longer be using the <a href=\"https://docs.netlify.com/environment-variables/classic-experience/\"\
+        >classic environment variables experience</a>.  Migrate now with the Netlify\
+        \ UI."
+      operationId: updateEnvVar
+      parameters:
+      - description: Scope response to account_id
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      - description: The existing environment variable key name (case-sensitive)
+        in: path
+        name: key
+        required: true
+        schema:
+          type: string
+      - description: "If provided, update an environment variable set on this site"
+        in: query
+        name: site_id
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/createEnvVars_request_inner'
+        required: false
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/envVar'
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - environmentVariables
+      x-codegen-request-body-name: env_var
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+  /accounts/{account_id}/env/{key}/value/{id}:
+    delete:
+      description: "Deletes a specific environment variable value. To use this endpoint,\
+        \ your site must no longer be using the <a href=\"https://docs.netlify.com/environment-variables/classic-experience/\"\
+        >classic environment variables experience</a>.  Migrate now with the Netlify\
+        \ UI."
+      operationId: deleteEnvVarValue
+      parameters:
+      - description: Scope response to account_id
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      - description: The environment variable value's ID
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: The environment variable key name (case-sensitive)
+        in: path
+        name: key
+        required: true
+        schema:
+          type: string
+      - description: "If provided, delete the value from an environment variable on\
+          \ this site"
+        in: query
+        name: site_id
+        schema:
+          type: string
+      responses:
+        "204":
+          content: {}
+          description: No Content (success)
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - environmentVariables
+      x-accepts:
+      - application/json
+  /billing/payment_methods:
+    get:
+      operationId: listPaymentMethodsForUser
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/paymentMethod'
+                type: array
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - paymentMethod
+      x-accepts:
+      - application/json
+  /builds/{build_id}:
+    get:
+      operationId: getSiteBuild
+      parameters:
+      - in: path
+        name: build_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/build'
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - build
+      x-accepts:
+      - application/json
+  /builds/{build_id}/log:
+    post:
+      operationId: updateSiteBuildLog
+      parameters:
+      - in: path
+        name: build_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/buildLogMsg'
+        required: true
+      responses:
+        "204":
+          content: {}
+          description: No content
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - buildLogMsg
+      x-codegen-request-body-name: msg
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+  /builds/{build_id}/start:
+    post:
+      operationId: notifyBuildStart
+      parameters:
+      - in: path
+        name: build_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "204":
+          content: {}
+          description: No content
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - build
+      x-accepts:
+      - application/json
+  /deploy_keys:
+    get:
+      operationId: listDeployKeys
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/deployKey'
+                type: array
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - deployKey
+      x-accepts:
+      - application/json
+    post:
+      operationId: createDeployKey
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/deployKey'
+          description: Created
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - deployKey
+      x-accepts:
+      - application/json
+  /deploy_keys/{key_id}:
+    delete:
+      operationId: deleteDeployKey
+      parameters:
+      - in: path
+        name: key_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "204":
+          content: {}
+          description: Not Content
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - deployKey
+      x-accepts:
+      - application/json
+    get:
+      operationId: getDeployKey
+      parameters:
+      - in: path
+        name: key_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/deployKey'
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - deployKey
+      x-accepts:
+      - application/json
+  /deploys/{deploy_id}:
+    delete:
+      operationId: deleteDeploy
+      parameters:
+      - in: path
+        name: deploy_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "204":
+          content: {}
+          description: No content
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - deploy
+      x-accepts:
+      - application/json
+    get:
+      operationId: getDeploy
+      parameters:
+      - in: path
+        name: deploy_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/deploy'
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - deploy
+      x-accepts:
+      - application/json
+  /deploys/{deploy_id}/cancel:
+    post:
+      operationId: cancelSiteDeploy
+      parameters:
+      - in: path
+        name: deploy_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/deploy'
+          description: Cancelled
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - deploy
+      x-accepts:
+      - application/json
+  /deploys/{deploy_id}/files/{path}:
+    put:
+      operationId: uploadDeployFile
+      parameters:
+      - in: path
+        name: deploy_id
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: path
+        required: true
+        schema:
+          type: string
+      - in: query
+        name: size
+        schema:
+          type: integer
+      requestBody:
+        content:
+          application/octet-stream:
+            schema:
+              format: binary
+              type: string
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/file'
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - file
+      x-codegen-request-body-name: file_body
+      x-content-type: application/octet-stream
+      x-accepts:
+      - application/json
+  /deploys/{deploy_id}/functions/{name}:
+    put:
+      operationId: uploadDeployFunction
+      parameters:
+      - in: path
+        name: deploy_id
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: name
+        required: true
+        schema:
+          type: string
+      - in: query
+        name: runtime
+        schema:
+          type: string
+      - in: query
+        name: size
+        schema:
+          type: integer
+      - in: header
+        name: X-Nf-Retry-Count
+        schema:
+          type: integer
+      requestBody:
+        content:
+          application/octet-stream:
+            schema:
+              format: binary
+              type: string
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/function'
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - function
+      x-codegen-request-body-name: file_body
+      x-content-type: application/octet-stream
+      x-accepts:
+      - application/json
+  /deploys/{deploy_id}/lock:
+    post:
+      operationId: lockDeploy
+      parameters:
+      - in: path
+        name: deploy_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/deploy'
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - deploy
+      x-accepts:
+      - application/json
+  /deploys/{deploy_id}/plugin_runs:
+    post:
+      description: This is an internal-only endpoint.
+      operationId: createPluginRun
+      parameters:
+      - in: path
+        name: deploy_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/pluginRunData'
+        required: false
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/pluginRun'
+          description: CREATED
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - x-internal
+      x-codegen-request-body-name: plugin_run
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+  /deploys/{deploy_id}/unlock:
+    post:
+      operationId: unlockDeploy
+      parameters:
+      - in: path
+        name: deploy_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/deploy'
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - deploy
+      x-accepts:
+      - application/json
+  /dns_zones:
+    get:
+      operationId: getDnsZones
+      parameters:
+      - in: query
+        name: account_slug
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dnsZones'
+          description: get all DNS zones the user has access to
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - dnsZone
+      x-accepts:
+      - application/json
+    post:
+      operationId: createDnsZone
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/dnsZoneSetup'
+        required: true
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dnsZone'
+          description: Created
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - dnsZone
+      x-codegen-request-body-name: DnsZoneParams
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+  /dns_zones/{zone_id}:
+    delete:
+      operationId: deleteDnsZone
+      parameters:
+      - in: path
+        name: zone_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "204":
+          content: {}
+          description: delete a single DNS zone
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - dnsZone
+      x-accepts:
+      - application/json
+    get:
+      operationId: getDnsZone
+      parameters:
+      - in: path
+        name: zone_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dnsZone'
+          description: get a single DNS zone
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - dnsZone
+      x-accepts:
+      - application/json
+  /dns_zones/{zone_id}/dns_records:
+    get:
+      operationId: getDnsRecords
+      parameters:
+      - in: path
+        name: zone_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dnsRecords'
+          description: get all DNS records for a single DNS zone
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - dnsZone
+      x-accepts:
+      - application/json
+    post:
+      operationId: createDnsRecord
+      parameters:
+      - in: path
+        name: zone_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/dnsRecordCreate'
+        required: true
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dnsRecord'
+          description: Created
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - dnsZone
+      x-codegen-request-body-name: dns_record
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+  /dns_zones/{zone_id}/dns_records/{dns_record_id}:
+    delete:
+      operationId: deleteDnsRecord
+      parameters:
+      - in: path
+        name: zone_id
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: dns_record_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "204":
+          content: {}
+          description: record deleted
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - dnsZone
+      x-accepts:
+      - application/json
+    get:
+      operationId: getIndividualDnsRecord
+      parameters:
+      - in: path
+        name: zone_id
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: dns_record_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dnsRecord'
+          description: get a single DNS record
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - dnsZone
+      x-accepts:
+      - application/json
+  /dns_zones/{zone_id}/transfer:
+    put:
+      operationId: transferDnsZone
+      parameters:
+      - in: path
+        name: zone_id
+        required: true
+        schema:
+          type: string
+      - description: the account of the dns zone
+        in: query
+        name: account_id
+        required: true
+        schema:
+          type: string
+      - description: the account you want to transfer the dns zone to
+        in: query
+        name: transfer_account_id
+        required: true
+        schema:
+          type: string
+      - description: the user you want to transfer the dns zone to
+        in: query
+        name: transfer_user_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dnsZone'
+          description: transfer a DNS zone to another account
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - dnsZone
+      x-accepts:
+      - application/json
+  /forms/{form_id}/submissions:
+    get:
+      operationId: listFormSubmissions
+      parameters:
+      - in: path
+        name: form_id
+        required: true
+        schema:
+          type: string
+      - in: query
+        name: page
+        schema:
+          format: int32
+          type: integer
+      - in: query
+        name: per_page
+        schema:
+          format: int32
+          type: integer
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/submission'
+                type: array
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - submission
+      x-accepts:
+      - application/json
+  /hooks:
+    get:
+      operationId: listHooksBySiteId
+      parameters:
+      - in: query
+        name: site_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/hook'
+                type: array
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - hook
+      x-accepts:
+      - application/json
+    post:
+      operationId: createHookBySiteId
+      parameters:
+      - in: query
+        name: site_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/hook'
+        required: true
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/hook'
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - hook
+      x-codegen-request-body-name: hook
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+  /hooks/types:
+    get:
+      operationId: listHookTypes
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/hookType'
+                type: array
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - hookType
+      x-accepts:
+      - application/json
+  /hooks/{hook_id}:
+    delete:
+      operationId: deleteHook
+      parameters:
+      - in: path
+        name: hook_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "204":
+          content: {}
+          description: No content
+      tags:
+      - hook
+      x-accepts:
+      - application/json
+    get:
+      operationId: getHook
+      parameters:
+      - in: path
+        name: hook_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/hook'
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - hook
+      x-accepts:
+      - application/json
+    put:
+      operationId: updateHook
+      parameters:
+      - in: path
+        name: hook_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/hook'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/hook'
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - hook
+      x-codegen-request-body-name: hook
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+  /hooks/{hook_id}/enable:
+    post:
+      operationId: enableHook
+      parameters:
+      - in: path
+        name: hook_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/hook'
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - hook
+      x-accepts:
+      - application/json
+  /oauth/tickets:
+    post:
+      operationId: createTicket
+      parameters:
+      - in: query
+        name: client_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ticket'
+          description: ok
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - ticket
+      x-accepts:
+      - application/json
+  /oauth/tickets/{ticket_id}:
+    get:
+      operationId: showTicket
+      parameters:
+      - in: path
+        name: ticket_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ticket'
+          description: ok
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - ticket
+      x-accepts:
+      - application/json
+  /oauth/tickets/{ticket_id}/exchange:
+    post:
+      operationId: exchangeTicket
+      parameters:
+      - in: path
+        name: ticket_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/accessToken'
+          description: ok
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - accessToken
+      x-accepts:
+      - application/json
+  /services/:
+    get:
+      operationId: getServices
+      parameters:
+      - in: query
+        name: search
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/service'
+                type: array
+          description: services
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - service
+      x-accepts:
+      - application/json
+  /services/{addonName}:
+    get:
+      operationId: showService
+      parameters:
+      - in: path
+        name: addonName
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/service'
+          description: services
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - service
+      x-accepts:
+      - application/json
+  /services/{addonName}/manifest:
+    get:
+      operationId: showServiceManifest
+      parameters:
+      - in: path
+        name: addonName
+        required: true
+        schema:
+          type: string
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                type: object
+          description: retrieving from provider
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - service
+      x-accepts:
+      - application/json
+  /sites:
+    get:
+      description: "**Note:** Environment variable keys and values will soon be moved\
+        \ from `build_settings.env` and `repo.env` to a new endpoint. Please use [getEnvVars](#tag/environmentVariables/operation/getEnvVars)\
+        \ to retrieve site environment variables."
+      operationId: listSites
+      parameters:
+      - in: query
+        name: name
+        schema:
+          type: string
+      - in: query
+        name: filter
+        schema:
+          enum:
+          - all
+          - owner
+          - guest
+          type: string
+      - in: query
+        name: page
+        schema:
+          format: int32
+          type: integer
+      - in: query
+        name: per_page
+        schema:
+          format: int32
+          type: integer
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/site'
+                type: array
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - site
+      x-accepts:
+      - application/json
+    post:
+      description: "**Note:** Environment variable keys and values will soon be moved\
+        \ from `build_settings.env` and `repo.env` to a new endpoint. Please use [createEnvVars](#tag/environmentVariables/operation/createEnvVars)\
+        \ to create environment variables for a site."
+      operationId: createSite
+      parameters:
+      - in: query
+        name: configure_dns
+        schema:
+          type: boolean
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/siteSetup'
+        required: true
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/site'
+          description: Created
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - site
+      x-codegen-request-body-name: site
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+  /sites/{site_id}:
+    delete:
+      operationId: deleteSite
+      parameters:
+      - in: path
+        name: site_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "204":
+          content: {}
+          description: Deleted
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - site
+      x-accepts:
+      - application/json
+    get:
+      description: "**Note:** Environment variable keys and values will soon be moved\
+        \ from `build_settings.env` and `repo.env` to a new endpoint. Please use [getEnvVars](#tag/environmentVariables/operation/getEnvVars)\
+        \ to retrieve site environment variables."
+      operationId: getSite
+      parameters:
+      - in: path
+        name: site_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/site'
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - site
+      x-accepts:
+      - application/json
+    patch:
+      description: "**Note:** Environment variable keys and values will soon be moved\
+        \ from `build_settings.env` and `repo.env` to a new endpoint. Please use [updateEnvVar](#tag/environmentVariables/operation/updateEnvVar)\
+        \ to update a site's environment variables."
+      operationId: updateSite
+      parameters:
+      - in: path
+        name: site_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/siteSetup'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/site'
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - site
+      x-codegen-request-body-name: site
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+  /sites/{site_id}/assets:
+    get:
+      operationId: listSiteAssets
+      parameters:
+      - in: path
+        name: site_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/asset'
+                type: array
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - asset
+      x-accepts:
+      - application/json
+    post:
+      operationId: createSiteAsset
+      parameters:
+      - in: path
+        name: site_id
+        required: true
+        schema:
+          type: string
+      - in: query
+        name: name
+        required: true
+        schema:
+          type: string
+      - in: query
+        name: size
+        required: true
+        schema:
+          format: int64
+          type: integer
+      - in: query
+        name: content_type
+        required: true
+        schema:
+          type: string
+      - in: query
+        name: visibility
+        schema:
+          type: string
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/assetSignature'
+          description: Created
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - asset
+      x-accepts:
+      - application/json
+  /sites/{site_id}/assets/{asset_id}:
+    delete:
+      operationId: deleteSiteAsset
+      parameters:
+      - in: path
+        name: site_id
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: asset_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "204":
+          content: {}
+          description: Deleted
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - asset
+      x-accepts:
+      - application/json
+    get:
+      operationId: getSiteAssetInfo
+      parameters:
+      - in: path
+        name: site_id
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: asset_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/asset'
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - asset
+      x-accepts:
+      - application/json
+    put:
+      operationId: updateSiteAsset
+      parameters:
+      - in: path
+        name: site_id
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: asset_id
+        required: true
+        schema:
+          type: string
+      - in: query
+        name: state
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/asset'
+          description: Updated
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - asset
+      x-accepts:
+      - application/json
+  /sites/{site_id}/assets/{asset_id}/public_signature:
+    get:
+      operationId: getSiteAssetPublicSignature
+      parameters:
+      - in: path
+        name: site_id
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: asset_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/assetPublicSignature'
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - assetPublicSignature
+      x-accepts:
+      - application/json
+  /sites/{site_id}/build_hooks:
+    get:
+      operationId: listSiteBuildHooks
+      parameters:
+      - in: path
+        name: site_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/buildHook'
+                type: array
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - buildHook
+      x-accepts:
+      - application/json
+    post:
+      operationId: createSiteBuildHook
+      parameters:
+      - in: path
+        name: site_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/buildHookSetup'
+        required: true
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/buildHook'
+          description: Created
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - buildHook
+      x-codegen-request-body-name: buildHook
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+  /sites/{site_id}/build_hooks/{id}:
+    delete:
+      operationId: deleteSiteBuildHook
+      parameters:
+      - in: path
+        name: site_id
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        "204":
+          content: {}
+          description: No content
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - buildHook
+      x-accepts:
+      - application/json
+    get:
+      operationId: getSiteBuildHook
+      parameters:
+      - in: path
+        name: site_id
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/buildHook'
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - buildHook
+      x-accepts:
+      - application/json
+    put:
+      operationId: updateSiteBuildHook
+      parameters:
+      - in: path
+        name: site_id
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/buildHookSetup'
+        required: true
+      responses:
+        "204":
+          content: {}
+          description: No content
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - buildHook
+      x-codegen-request-body-name: buildHook
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+  /sites/{site_id}/builds:
+    get:
+      operationId: listSiteBuilds
+      parameters:
+      - in: path
+        name: site_id
+        required: true
+        schema:
+          type: string
+      - in: query
+        name: page
+        schema:
+          format: int32
+          type: integer
+      - in: query
+        name: per_page
+        schema:
+          format: int32
+          type: integer
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/build'
+                type: array
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - build
+      x-accepts:
+      - application/json
+    post:
+      operationId: createSiteBuild
+      parameters:
+      - in: path
+        name: site_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/buildSetup'
+        required: false
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/build'
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - build
+      x-codegen-request-body-name: build
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+  /sites/{site_id}/deployed-branches:
+    get:
+      operationId: listSiteDeployedBranches
+      parameters:
+      - in: path
+        name: site_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/deployedBranch'
+                type: array
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - deployedBranch
+      x-accepts:
+      - application/json
+  /sites/{site_id}/deploys:
+    get:
+      operationId: listSiteDeploys
+      parameters:
+      - in: path
+        name: site_id
+        required: true
+        schema:
+          type: string
+      - in: query
+        name: deploy-previews
+        schema:
+          type: boolean
+      - in: query
+        name: production
+        schema:
+          type: boolean
+      - in: query
+        name: state
+        schema:
+          enum:
+          - new
+          - pending_review
+          - accepted
+          - rejected
+          - enqueued
+          - building
+          - uploading
+          - uploaded
+          - preparing
+          - prepared
+          - processing
+          - ready
+          - error
+          - retrying
+          type: string
+      - in: query
+        name: branch
+        schema:
+          type: string
+      - in: query
+        name: latest-published
+        schema:
+          type: boolean
+      - in: query
+        name: page
+        schema:
+          format: int32
+          type: integer
+      - in: query
+        name: per_page
+        schema:
+          format: int32
+          type: integer
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/deploy'
+                type: array
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - deploy
+      x-accepts:
+      - application/json
+    post:
+      operationId: createSiteDeploy
+      parameters:
+      - in: path
+        name: site_id
+        required: true
+        schema:
+          type: string
+      - in: query
+        name: deploy-previews
+        schema:
+          type: boolean
+      - in: query
+        name: production
+        schema:
+          type: boolean
+      - in: query
+        name: state
+        schema:
+          enum:
+          - new
+          - pending_review
+          - accepted
+          - rejected
+          - enqueued
+          - building
+          - uploading
+          - uploaded
+          - preparing
+          - prepared
+          - processing
+          - ready
+          - error
+          - retrying
+          type: string
+      - in: query
+        name: branch
+        schema:
+          type: string
+      - in: query
+        name: latest-published
+        schema:
+          type: boolean
+      - in: query
+        name: title
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/deployFiles'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/deploy'
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - deploy
+      x-codegen-request-body-name: deploy
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+  /sites/{site_id}/deploys/{deploy_id}:
+    delete:
+      operationId: deleteSiteDeploy
+      parameters:
+      - in: path
+        name: deploy_id
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: site_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "204":
+          content: {}
+          description: No content
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - deploy
+      x-accepts:
+      - application/json
+    get:
+      operationId: getSiteDeploy
+      parameters:
+      - in: path
+        name: site_id
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: deploy_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/deploy'
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - deploy
+      x-accepts:
+      - application/json
+    put:
+      operationId: updateSiteDeploy
+      parameters:
+      - in: path
+        name: site_id
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: deploy_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/deployFiles'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/deploy'
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - deploy
+      x-codegen-request-body-name: deploy
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+  /sites/{site_id}/deploys/{deploy_id}/restore:
+    post:
+      operationId: restoreSiteDeploy
+      parameters:
+      - in: path
+        name: site_id
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: deploy_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/deploy'
+          description: Created
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - deploy
+      x-accepts:
+      - application/json
+  /sites/{site_id}/dns:
+    get:
+      operationId: getDNSForSite
+      parameters:
+      - in: path
+        name: site_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/dnsZone'
+                type: array
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - dnsZone
+      x-accepts:
+      - application/json
+    put:
+      operationId: configureDNSForSite
+      parameters:
+      - in: path
+        name: site_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/dnsZone'
+                type: array
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - dnsZone
+      x-accepts:
+      - application/json
+  /sites/{site_id}/files:
+    get:
+      operationId: listSiteFiles
+      parameters:
+      - in: path
+        name: site_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/file'
+                type: array
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - file
+      x-accepts:
+      - application/json
+  /sites/{site_id}/files/{file_path}:
+    get:
+      operationId: getSiteFileByPathName
+      parameters:
+      - in: path
+        name: site_id
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: file_path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/file'
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - file
+      x-accepts:
+      - application/json
+  /sites/{site_id}/forms:
+    get:
+      operationId: listSiteForms
+      parameters:
+      - in: path
+        name: site_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/form'
+                type: array
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - form
+      x-accepts:
+      - application/json
+  /sites/{site_id}/forms/{form_id}:
+    delete:
+      operationId: deleteSiteForm
+      parameters:
+      - in: path
+        name: site_id
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: form_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "204":
+          content: {}
+          description: Deleted
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - form
+      x-accepts:
+      - application/json
+  /sites/{site_id}/metadata:
+    get:
+      operationId: getSiteMetadata
+      parameters:
+      - in: path
+        name: site_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/metadata'
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - metadata
+      x-accepts:
+      - application/json
+    put:
+      operationId: updateSiteMetadata
+      parameters:
+      - in: path
+        name: site_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/metadata'
+        required: true
+      responses:
+        "204":
+          content: {}
+          description: No content
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - metadata
+      x-codegen-request-body-name: metadata
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+  /sites/{site_id}/plugin_runs/latest:
+    get:
+      description: This is an internal-only endpoint.
+      operationId: getLatestPluginRuns
+      parameters:
+      - in: path
+        name: site_id
+        required: true
+        schema:
+          type: string
+      - explode: false
+        in: query
+        name: packages
+        required: true
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - in: query
+        name: state
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/pluginRun'
+                type: array
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - x-internal
+      x-accepts:
+      - application/json
+  /sites/{site_id}/plugins/{package}:
+    put:
+      description: This is an internal-only endpoint.
+      operationId: updatePlugin
+      parameters:
+      - in: path
+        name: site_id
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: package
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/pluginParams'
+        required: false
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/plugin'
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - x-internal
+      x-codegen-request-body-name: plugin_params
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+  /sites/{site_id}/rollback:
+    put:
+      operationId: rollbackSiteDeploy
+      parameters:
+      - in: path
+        name: site_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "204":
+          content: {}
+          description: No content
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - deploy
+      x-accepts:
+      - application/json
+  /sites/{site_id}/service-instances:
+    get:
+      operationId: listServiceInstancesForSite
+      parameters:
+      - in: path
+        name: site_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/serviceInstance'
+                type: array
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - serviceInstance
+      x-accepts:
+      - application/json
+  /sites/{site_id}/services/{addon}/instances:
+    post:
+      operationId: createServiceInstance
+      parameters:
+      - in: path
+        name: site_id
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: addon
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+        required: true
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/serviceInstance'
+          description: Created
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - serviceInstance
+      x-codegen-request-body-name: config
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+  /sites/{site_id}/services/{addon}/instances/{instance_id}:
+    delete:
+      operationId: deleteServiceInstance
+      parameters:
+      - in: path
+        name: site_id
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: addon
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: instance_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "204":
+          content: {}
+          description: Deleted
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - serviceInstance
+      x-accepts:
+      - application/json
+    get:
+      operationId: showServiceInstance
+      parameters:
+      - in: path
+        name: site_id
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: addon
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: instance_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/serviceInstance'
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - serviceInstance
+      x-accepts:
+      - application/json
+    put:
+      operationId: updateServiceInstance
+      parameters:
+      - in: path
+        name: site_id
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: addon
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: instance_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+        required: true
+      responses:
+        "204":
+          content: {}
+          description: No Content
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - serviceInstance
+      x-codegen-request-body-name: config
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+  /sites/{site_id}/snippets:
+    get:
+      operationId: listSiteSnippets
+      parameters:
+      - in: path
+        name: site_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/snippet'
+                type: array
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - snippet
+      x-accepts:
+      - application/json
+    post:
+      operationId: createSiteSnippet
+      parameters:
+      - in: path
+        name: site_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/snippet'
+        required: true
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/snippet'
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - snippet
+      x-codegen-request-body-name: snippet
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+  /sites/{site_id}/snippets/{snippet_id}:
+    delete:
+      operationId: deleteSiteSnippet
+      parameters:
+      - in: path
+        name: site_id
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: snippet_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "204":
+          content: {}
+          description: No content
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - snippet
+      x-accepts:
+      - application/json
+    get:
+      operationId: getSiteSnippet
+      parameters:
+      - in: path
+        name: site_id
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: snippet_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/snippet'
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - snippet
+      x-accepts:
+      - application/json
+    put:
+      operationId: updateSiteSnippet
+      parameters:
+      - in: path
+        name: site_id
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: snippet_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/snippet'
+        required: true
+      responses:
+        "204":
+          content: {}
+          description: No content
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - snippet
+      x-codegen-request-body-name: snippet
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+  /sites/{site_id}/ssl:
+    get:
+      operationId: showSiteTLSCertificate
+      parameters:
+      - in: path
+        name: site_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/sniCertificate'
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - sniCertificate
+      x-accepts:
+      - application/json
+    post:
+      operationId: provisionSiteTLSCertificate
+      parameters:
+      - in: path
+        name: site_id
+        required: true
+        schema:
+          type: string
+      - in: query
+        name: certificate
+        schema:
+          type: string
+      - in: query
+        name: key
+        schema:
+          type: string
+      - in: query
+        name: ca_certificates
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/sniCertificate'
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - sniCertificate
+      x-accepts:
+      - application/json
+  /sites/{site_id}/submissions:
+    get:
+      operationId: listSiteSubmissions
+      parameters:
+      - in: path
+        name: site_id
+        required: true
+        schema:
+          type: string
+      - in: query
+        name: page
+        schema:
+          format: int32
+          type: integer
+      - in: query
+        name: per_page
+        schema:
+          format: int32
+          type: integer
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/submission'
+                type: array
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - submission
+      x-accepts:
+      - application/json
+  /sites/{site_id}/traffic_splits:
+    get:
+      operationId: getSplitTests
+      parameters:
+      - in: path
+        name: site_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/splitTests'
+          description: split_tests
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - splitTest
+      x-accepts:
+      - application/json
+    post:
+      operationId: createSplitTest
+      parameters:
+      - in: path
+        name: site_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/splitTestSetup'
+        required: true
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/splitTest'
+          description: Created
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - splitTest
+      x-codegen-request-body-name: branch_tests
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+  /sites/{site_id}/traffic_splits/{split_test_id}:
+    get:
+      operationId: getSplitTest
+      parameters:
+      - in: path
+        name: site_id
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: split_test_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/splitTest'
+          description: split_test
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - splitTest
+      x-accepts:
+      - application/json
+    put:
+      operationId: updateSplitTest
+      parameters:
+      - in: path
+        name: site_id
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: split_test_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/splitTestSetup'
+        required: true
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/splitTest'
+          description: Created
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - splitTest
+      x-codegen-request-body-name: branch_tests
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+  /sites/{site_id}/traffic_splits/{split_test_id}/publish:
+    post:
+      operationId: enableSplitTest
+      parameters:
+      - in: path
+        name: site_id
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: split_test_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "204":
+          content: {}
+          description: enable
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - splitTest
+      x-accepts:
+      - application/json
+  /sites/{site_id}/traffic_splits/{split_test_id}/unpublish:
+    post:
+      operationId: disableSplitTest
+      parameters:
+      - in: path
+        name: site_id
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: split_test_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "204":
+          content: {}
+          description: disabled
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - splitTest
+      x-accepts:
+      - application/json
+  /sites/{site_id}/unlink_repo:
+    put:
+      description: |-
+        [Beta] Unlinks the repo from the site.
+
+        This action will also:
+        - Delete associated deploy keys
+        - Delete outgoing webhooks for the repo
+        - Delete the site's build hooks
+      operationId: unlinkSiteRepo
+      parameters:
+      - in: path
+        name: site_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/site'
+          description: OK
+        "404":
+          content: {}
+          description: Site not found
+      tags:
+      - site
+      x-accepts:
+      - application/json
+  /submissions/{submission_id}:
+    delete:
+      operationId: deleteSubmission
+      parameters:
+      - in: path
+        name: submission_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "204":
+          content: {}
+          description: Deleted
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - submission
+      x-accepts:
+      - application/json
+    get:
+      operationId: listFormSubmission
+      parameters:
+      - in: path
+        name: submission_id
+        required: true
+        schema:
+          type: string
+      - in: query
+        name: query
+        schema:
+          type: string
+      - in: query
+        name: page
+        schema:
+          format: int32
+          type: integer
+      - in: query
+        name: per_page
+        schema:
+          format: int32
+          type: integer
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/submission'
+                type: array
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - submission
+      x-accepts:
+      - application/json
+  /user:
+    get:
+      operationId: getCurrentUser
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/user'
+                type: array
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - user
+      x-accepts:
+      - application/json
+  /{account_id}/builds/status:
+    get:
+      operationId: getAccountBuildStatus
+      parameters:
+      - in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/buildStatus'
+                type: array
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - build
+      x-accepts:
+      - application/json
+  /{account_slug}/members:
+    get:
+      operationId: listMembersForAccount
+      parameters:
+      - in: path
+        name: account_slug
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/member'
+                type: array
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - member
+      x-accepts:
+      - application/json
+    post:
+      operationId: addMemberToAccount
+      parameters:
+      - in: path
+        name: account_slug
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/accountAddMemberSetup'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/member'
+                type: array
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - member
+      x-codegen-request-body-name: accountAddMemberSetup
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+  /{account_slug}/members/{member_id}:
+    delete:
+      operationId: removeAccountMember
+      parameters:
+      - in: path
+        name: account_slug
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: member_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "204":
+          content: {}
+          description: Not Content
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - member
+      x-accepts:
+      - application/json
+    get:
+      operationId: getAccountMember
+      parameters:
+      - in: path
+        name: account_slug
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: member_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/member'
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - member
+      x-accepts:
+      - application/json
+    put:
+      operationId: updateAccountMember
+      parameters:
+      - in: path
+        name: account_slug
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: member_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/accountUpdateMemberSetup'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/member'
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - member
+      x-codegen-request-body-name: accountUpdateMemberSetup
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+  /{account_slug}/sites:
+    get:
+      description: "**Note:** Environment variable keys and values will soon be moved\
+        \ from `build_settings.env` and `repo.env` to a new endpoint. Please use [getEnvVars](#tag/environmentVariables/operation/getEnvVars)\
+        \ to retrieve site environment variables."
+      operationId: listSitesForAccount
+      parameters:
+      - in: query
+        name: name
+        schema:
+          type: string
+      - in: path
+        name: account_slug
+        required: true
+        schema:
+          type: string
+      - in: query
+        name: page
+        schema:
+          format: int32
+          type: integer
+      - in: query
+        name: per_page
+        schema:
+          format: int32
+          type: integer
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/site'
+                type: array
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - site
+      x-accepts:
+      - application/json
+    post:
+      description: "**Note:** Environment variable keys and values will soon be moved\
+        \ from `build_settings.env` and `repo.env` to a new endpoint. Please use [createEnvVars](#tag/environmentVariables/operation/createEnvVars)\
+        \ to create environment variables for a site."
+      operationId: createSiteInTeam
+      parameters:
+      - in: query
+        name: configure_dns
+        schema:
+          type: boolean
+      - in: path
+        name: account_slug
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/siteSetup'
+        required: false
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/site'
+          description: Created
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - site
+      x-codegen-request-body-name: site
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+components:
+  parameters:
+    page:
+      in: query
+      name: page
+      schema:
+        format: int32
+        type: integer
+    perPage:
+      in: query
+      name: per_page
+      schema:
+        format: int32
+        type: integer
+    retryCount:
+      in: header
+      name: X-Nf-Retry-Count
+      schema:
+        type: integer
+  responses:
+    error:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error'
+      description: error
+  schemas:
+    accessToken:
+      example:
+        access_token: access_token
+        user_email: user_email
+        user_id: user_id
+        created_at: created_at
+        id: id
+      properties:
+        access_token:
+          type: string
+        created_at:
+          format: dateTime
+          type: string
+        id:
+          type: string
+        user_email:
+          type: string
+        user_id:
+          type: string
+      type: object
+    accountAddMemberSetup:
+      properties:
+        email:
+          type: string
+        role:
+          enum:
+          - Owner
+          - Collaborator
+          - Controller
+          type: string
+      type: object
+    accountMembership:
+      example:
+        billing_period: billing_period
+        billing_details: billing_details
+        type_name: type_name
+        capabilities:
+          collaborators:
+            used: 6
+            included: 0
+          sites:
+            used: 6
+            included: 0
+        type_id: type_id
+        created_at: created_at
+        billing_name: billing_name
+        type: type
+        payment_method_id: payment_method_id
+        updated_at: updated_at
+        roles_allowed:
+        - roles_allowed
+        - roles_allowed
+        billing_email: billing_email
+        name: name
+        id: id
+        owner_ids:
+        - owner_ids
+        - owner_ids
+        slug: slug
+      properties:
+        billing_details:
+          type: string
+        billing_email:
+          type: string
+        billing_name:
+          type: string
+        billing_period:
+          type: string
+        capabilities:
+          $ref: '#/components/schemas/accountMembership_capabilities'
+        created_at:
+          format: dateTime
+          type: string
+        id:
+          type: string
+        name:
+          type: string
+        owner_ids:
+          items:
+            type: string
+          type: array
+        payment_method_id:
+          type: string
+        roles_allowed:
+          items:
+            type: string
+          type: array
+        slug:
+          type: string
+        type:
+          type: string
+        type_id:
+          type: string
+        type_name:
+          type: string
+        updated_at:
+          format: dateTime
+          type: string
+      type: object
+    accountSetup:
+      properties:
+        extra_seats_block:
+          type: integer
+        name:
+          type: string
+        payment_method_id:
+          type: string
+        period:
+          enum:
+          - monthly
+          - yearly
+          type: string
+        type_id:
+          type: string
+      required:
+      - name
+      - type_id
+      type: object
+    accountType:
+      example:
+        yearly_dollar_price: 1
+        capabilities: "{}"
+        yearly_seats_addon_dollar_price: 5
+        name: name
+        description: description
+        id: id
+        monthly_dollar_price: 0
+        monthly_seats_addon_dollar_price: 6
+      properties:
+        capabilities:
+          properties: {}
+          type: object
+        description:
+          type: string
+        id:
+          type: string
+        monthly_dollar_price:
+          type: integer
+        monthly_seats_addon_dollar_price:
+          type: integer
+        name:
+          type: string
+        yearly_dollar_price:
+          type: integer
+        yearly_seats_addon_dollar_price:
+          type: integer
+      type: object
+    accountUpdateMemberSetup:
+      properties:
+        role:
+          enum:
+          - Owner
+          - Collaborator
+          - Controller
+          type: string
+        site_access:
+          enum:
+          - all
+          - none
+          - selected
+          type: string
+        site_ids:
+          items:
+            type: string
+          type: array
+      type: object
+    accountUpdateSetup:
+      properties:
+        billing_details:
+          type: string
+        billing_email:
+          type: string
+        billing_name:
+          type: string
+        extra_seats_block:
+          type: integer
+        name:
+          type: string
+        slug:
+          type: string
+        type_id:
+          type: string
+      type: object
+    accountUsageCapability:
+      example:
+        used: 6
+        included: 0
+      properties:
+        included:
+          type: integer
+        used:
+          type: integer
+      type: object
+    asset:
+      example:
+        content_type: content_type
+        size: 0
+        updated_at: updated_at
+        visibility: visibility
+        creator_id: creator_id
+        name: name
+        site_id: site_id
+        created_at: created_at
+        id: id
+        state: state
+        key: key
+        url: url
+      properties:
+        content_type:
+          type: string
+        created_at:
+          format: dateTime
+          type: string
+        creator_id:
+          type: string
+        id:
+          type: string
+        key:
+          type: string
+        name:
+          type: string
+        site_id:
+          type: string
+        size:
+          format: int64
+          type: integer
+        state:
+          type: string
+        updated_at:
+          format: dateTime
+          type: string
+        url:
+          type: string
+        visibility:
+          type: string
+      type: object
+    assetForm:
+      example:
+        fields:
+          key: fields
+        url: url
+      properties:
+        fields:
+          additionalProperties:
+            type: string
+          type: object
+        url:
+          type: string
+      type: object
+    assetPublicSignature:
+      example:
+        url: url
+      properties:
+        url:
+          type: string
+      type: object
+    assetSignature:
+      example:
+        form:
+          fields:
+            key: fields
+          url: url
+        asset:
+          content_type: content_type
+          size: 0
+          updated_at: updated_at
+          visibility: visibility
+          creator_id: creator_id
+          name: name
+          site_id: site_id
+          created_at: created_at
+          id: id
+          state: state
+          key: key
+          url: url
+      properties:
+        asset:
+          $ref: '#/components/schemas/asset'
+        form:
+          $ref: '#/components/schemas/assetForm'
+      type: object
+    auditLog:
+      example:
+        account_id: account_id
+        payload:
+          key: "{}"
+        id: id
+      properties:
+        account_id:
+          type: string
+        id:
+          type: string
+        payload:
+          additionalProperties:
+            properties: {}
+            type: object
+          type: object
+      type: object
+    build:
+      example:
+        created_at: created_at
+        id: id
+        error: error
+        done: true
+        sha: sha
+        deploy_id: deploy_id
+      properties:
+        created_at:
+          format: dateTime
+          type: string
+        deploy_id:
+          type: string
+        done:
+          type: boolean
+        error:
+          type: string
+        id:
+          type: string
+        sha:
+          type: string
+      type: object
+    buildHook:
+      example:
+        site_id: site_id
+        created_at: created_at
+        id: id
+        title: title
+        branch: branch
+        url: url
+      properties:
+        branch:
+          type: string
+        created_at:
+          format: dateTime
+          type: string
+        id:
+          type: string
+        site_id:
+          type: string
+        title:
+          type: string
+        url:
+          type: string
+      type: object
+    buildHookSetup:
+      properties:
+        branch:
+          type: string
+        title:
+          type: string
+      type: object
+    buildLogMsg:
+      properties:
+        error:
+          type: boolean
+        message:
+          type: string
+        section:
+          enum:
+          - initializing
+          - building
+          - deploying
+          - cleanup
+          - postprocessing
+          type: string
+      type: object
+    buildSetup:
+      properties:
+        clear_cache:
+          type: boolean
+        image:
+          type: string
+      type: object
+    buildStatus:
+      example:
+        enqueued: 1
+        minutes:
+          current: 5
+          previous: 2
+          last_updated_at: last_updated_at
+          period_end_date: period_end_date
+          included_minutes: included_minutes
+          period_start_date: period_start_date
+          included_minutes_with_packs: included_minutes_with_packs
+          current_average_sec: 5
+        pending_concurrency: 7
+        active: 0
+        build_count: 6
+      properties:
+        active:
+          type: integer
+        build_count:
+          type: integer
+        enqueued:
+          type: integer
+        minutes:
+          $ref: '#/components/schemas/buildStatus_minutes'
+        pending_concurrency:
+          type: integer
+      type: object
+    deploy:
+      example:
+        review_id: 0.8008281904610115
+        deploy_url: deploy_url
+        review_url: review_url
+        created_at: created_at
+        title: title
+        branch: branch
+        required:
+        - required
+        - required
+        skipped: true
+        commit_url: commit_url
+        updated_at: updated_at
+        draft: true
+        context: context
+        id: id
+        state: state
+        locked: true
+        published_at: published_at
+        error_message: error_message
+        function_schedules:
+        - cron: cron
+          name: name
+        - cron: cron
+          name: name
+        admin_url: admin_url
+        site_capabilities:
+          large_media_enabled: true
+        url: url
+        framework: framework
+        ssl_url: ssl_url
+        build_id: build_id
+        deploy_ssl_url: deploy_ssl_url
+        user_id: user_id
+        name: name
+        site_id: site_id
+        required_functions:
+        - required_functions
+        - required_functions
+        screenshot_url: screenshot_url
+        commit_ref: commit_ref
+      properties:
+        admin_url:
+          type: string
+        branch:
+          type: string
+        build_id:
+          type: string
+        commit_ref:
+          type: string
+        commit_url:
+          type: string
+        context:
+          type: string
+        created_at:
+          format: dateTime
+          type: string
+        deploy_ssl_url:
+          type: string
+        deploy_url:
+          type: string
+        draft:
+          type: boolean
+        error_message:
+          type: string
+        framework:
+          type: string
+        function_schedules:
+          items:
+            $ref: '#/components/schemas/functionSchedule'
+          type: array
+        id:
+          type: string
+        locked:
+          type: boolean
+        name:
+          type: string
+        published_at:
+          format: dateTime
+          type: string
+        required:
+          items:
+            type: string
+          type: array
+        required_functions:
+          items:
+            type: string
+          type: array
+        review_id:
+          type: number
+        review_url:
+          type: string
+        screenshot_url:
+          type: string
+        site_capabilities:
+          $ref: '#/components/schemas/deploy_site_capabilities'
+        site_id:
+          type: string
+        skipped:
+          type: boolean
+        ssl_url:
+          type: string
+        state:
+          type: string
+        title:
+          type: string
+        updated_at:
+          format: dateTime
+          type: string
+        url:
+          type: string
+        user_id:
+          type: string
+      type: object
+    deployFiles:
+      properties:
+        async:
+          type: boolean
+        branch:
+          type: string
+        draft:
+          type: boolean
+        files:
+          properties: {}
+          type: object
+        framework:
+          type: string
+        function_schedules:
+          items:
+            $ref: '#/components/schemas/functionSchedule'
+          type: array
+        functions:
+          properties: {}
+          type: object
+        functions_config:
+          additionalProperties:
+            $ref: '#/components/schemas/functionConfig'
+          type: object
+      type: object
+    deployKey:
+      example:
+        public_key: public_key
+        created_at: created_at
+        id: id
+      properties:
+        created_at:
+          format: dateTime
+          type: string
+        id:
+          type: string
+        public_key:
+          type: string
+      type: object
+    deployedBranch:
+      example:
+        ssl_url: ssl_url
+        name: name
+        id: id
+        slug: slug
+        url: url
+        deploy_id: deploy_id
+      properties:
+        deploy_id:
+          type: string
+        id:
+          type: string
+        name:
+          type: string
+        slug:
+          type: string
+        ssl_url:
+          type: string
+        url:
+          type: string
+      type: object
+    dnsRecord:
+      example:
+        hostname: hostname
+        flag: 0
+        managed: true
+        site_id: site_id
+        dns_zone_id: dns_zone_id
+        id: id
+        tag: tag
+        priority: 6
+        type: type
+        ttl: 1
+        value: value
+      properties:
+        dns_zone_id:
+          type: string
+        flag:
+          type: integer
+        hostname:
+          type: string
+        id:
+          type: string
+        managed:
+          type: boolean
+        priority:
+          format: int64
+          type: integer
+        site_id:
+          type: string
+        tag:
+          type: string
+        ttl:
+          format: int64
+          type: integer
+        type:
+          type: string
+        value:
+          type: string
+      type: object
+    dnsRecordCreate:
+      properties:
+        flag:
+          format: int64
+          type: integer
+        hostname:
+          type: string
+        port:
+          format: int64
+          type: integer
+        priority:
+          format: int64
+          type: integer
+        tag:
+          type: string
+        ttl:
+          format: int64
+          type: integer
+        type:
+          type: string
+        value:
+          type: string
+        weight:
+          format: int64
+          type: integer
+      type: object
+    dnsRecords:
+      items:
+        $ref: '#/components/schemas/dnsRecord'
+      type: array
+    dnsZone:
+      example:
+        dedicated: true
+        records:
+        - hostname: hostname
+          flag: 0
+          managed: true
+          site_id: site_id
+          dns_zone_id: dns_zone_id
+          id: id
+          tag: tag
+          priority: 6
+          type: type
+          ttl: 1
+          value: value
+        - hostname: hostname
+          flag: 0
+          managed: true
+          site_id: site_id
+          dns_zone_id: dns_zone_id
+          id: id
+          tag: tag
+          priority: 6
+          type: type
+          ttl: 1
+          value: value
+        supported_record_types:
+        - supported_record_types
+        - supported_record_types
+        created_at: created_at
+        dns_servers:
+        - dns_servers
+        - dns_servers
+        account_slug: account_slug
+        account_id: account_id
+        updated_at: updated_at
+        user_id: user_id
+        account_name: account_name
+        domain: domain
+        name: name
+        site_id: site_id
+        ipv6_enabled: true
+        id: id
+        errors:
+        - errors
+        - errors
+      properties:
+        account_id:
+          type: string
+        account_name:
+          type: string
+        account_slug:
+          type: string
+        created_at:
+          format: dateTime
+          type: string
+        dedicated:
+          type: boolean
+        dns_servers:
+          items:
+            type: string
+          type: array
+        domain:
+          type: string
+        errors:
+          items:
+            type: string
+          type: array
+        id:
+          type: string
+        ipv6_enabled:
+          type: boolean
+        name:
+          type: string
+        records:
+          items:
+            $ref: '#/components/schemas/dnsRecord'
+          type: array
+        site_id:
+          type: string
+        supported_record_types:
+          items:
+            type: string
+          type: array
+        updated_at:
+          format: dateTime
+          type: string
+        user_id:
+          type: string
+      type: object
+    dnsZoneSetup:
+      properties:
+        account_slug:
+          type: string
+        name:
+          type: string
+        site_id:
+          type: string
+      type: object
+    dnsZones:
+      items:
+        $ref: '#/components/schemas/dnsZone'
+      type: array
+    envVar:
+      description: Environment variable model definition
+      example:
+        updated_at: 2000-01-23T04:56:07.000+00:00
+        values:
+        - context: all
+          id: id
+          value: value
+        - context: all
+          id: id
+          value: value
+        updated_by:
+          full_name: full_name
+          avatar_url: avatar_url
+          id: id
+          email: email
+        scopes:
+        - builds
+        - builds
+        key: key
+      properties:
+        key:
+          description: "The environment variable key, like ALGOLIA_ID (case-sensitive)"
+          type: string
+          x-faker: commerce.productName
+        scopes:
+          description: The scopes that this environment variable is set to
+          items:
+            enum:
+            - builds
+            - functions
+            - runtime
+            - post-processing
+            type: string
+          type: array
+        updated_at:
+          description: The timestamp of when the value was last updated
+          format: date-time
+          type: string
+          x-faker: date.past
+        updated_by:
+          $ref: '#/components/schemas/envVarUser'
+        values:
+          description: An array of Value objects containing values and metadata
+          items:
+            $ref: '#/components/schemas/envVarValue'
+          type: array
+          x-faker: internet.password
+      type: object
+    envVarUser:
+      example:
+        full_name: full_name
+        avatar_url: avatar_url
+        id: id
+        email: email
+      properties:
+        avatar_url:
+          description: A URL pointing to the user's avatar
+          type: string
+          x-faker: internet.avatar
+        email:
+          description: The user's email address
+          type: string
+          x-faker: internet.email
+        full_name:
+          description: The user's full name (first and last)
+          type: string
+          x-faker: name.findName
+        id:
+          description: The user's unique identifier
+          type: string
+          x-faker: datatype.number
+      type: object
+    envVarValue:
+      description: Environment variable value model definition
+      example:
+        context: all
+        id: id
+        value: value
+      properties:
+        context:
+          description: The deploy context in which this value will be used. `dev`
+            refers to local development when running `netlify dev`.
+          enum:
+          - all
+          - dev
+          - branch-deploy
+          - deploy-preview
+          - production
+          type: string
+        id:
+          description: The environment variable value's universally unique ID
+          type: string
+          x-faker: datatype.uuid
+        value:
+          description: The environment variable's unencrypted value
+          type: string
+          x-faker: internet.password
+      type: object
+    error:
+      example:
+        code: 1
+        message: message
+      properties:
+        code:
+          format: int64
+          type: integer
+        message:
+          nullable: false
+          type: string
+      required:
+      - message
+      type: object
+    file:
+      example:
+        path: path
+        size: 0
+        mime_type: mime_type
+        id: id
+        sha: sha
+      properties:
+        id:
+          type: string
+        mime_type:
+          type: string
+        path:
+          type: string
+        sha:
+          type: string
+        size:
+          format: int64
+          type: integer
+      type: object
+    form:
+      example:
+        paths:
+        - paths
+        - paths
+        submission_count: 0
+        name: name
+        site_id: site_id
+        created_at: created_at
+        id: id
+        fields:
+        - "{}"
+        - "{}"
+      properties:
+        created_at:
+          format: dateTime
+          type: string
+        fields:
+          items:
+            properties: {}
+            type: object
+          type: array
+        id:
+          type: string
+        name:
+          type: string
+        paths:
+          items:
+            type: string
+          type: array
+        site_id:
+          type: string
+        submission_count:
+          format: int32
+          type: integer
+      type: object
+    function:
+      example:
+        name: name
+        id: id
+        sha: sha
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        sha:
+          type: string
+      type: object
+    functionConfig:
+      properties:
+        display_name:
+          type: string
+        generator:
+          type: string
+      type: object
+    functionSchedule:
+      example:
+        cron: cron
+        name: name
+      properties:
+        cron:
+          type: string
+        name:
+          type: string
+      type: object
+    hook:
+      example:
+        data: "{}"
+        updated_at: updated_at
+        site_id: site_id
+        created_at: created_at
+        disabled: true
+        id: id
+        event: event
+        type: type
+      properties:
+        created_at:
+          format: dateTime
+          type: string
+        data:
+          properties: {}
+          type: object
+        disabled:
+          type: boolean
+        event:
+          type: string
+        id:
+          type: string
+        site_id:
+          type: string
+        type:
+          type: string
+        updated_at:
+          format: dateTime
+          type: string
+      type: object
+    hookType:
+      example:
+        name: name
+        fields:
+        - "{}"
+        - "{}"
+        events:
+        - events
+        - events
+      properties:
+        events:
+          items:
+            type: string
+          type: array
+        fields:
+          items:
+            properties: {}
+            type: object
+          type: array
+        name:
+          type: string
+      type: object
+    member:
+      example:
+        full_name: full_name
+        role: role
+        avatar: avatar
+        id: id
+        email: email
+      properties:
+        avatar:
+          type: string
+        email:
+          type: string
+        full_name:
+          type: string
+        id:
+          type: string
+        role:
+          type: string
+      type: object
+    metadata:
+      type: object
+    minifyOptions:
+      example:
+        minify: true
+        bundle: true
+      properties:
+        bundle:
+          type: boolean
+        minify:
+          type: boolean
+      type: object
+    paymentMethod:
+      example:
+        data:
+          last4: last4
+          card_type: card_type
+          email: email
+        updated_at: updated_at
+        method_name: method_name
+        created_at: created_at
+        id: id
+        state: state
+        type: type
+      properties:
+        created_at:
+          format: dateTime
+          type: string
+        data:
+          $ref: '#/components/schemas/paymentMethod_data'
+        id:
+          type: string
+        method_name:
+          type: string
+        state:
+          type: string
+        type:
+          type: string
+        updated_at:
+          format: dateTime
+          type: string
+      type: object
+    plugin:
+      example:
+        package: package
+        pinned_version: pinned_version
+      properties:
+        package:
+          type: string
+        pinned_version:
+          type: string
+      type: object
+    pluginParams:
+      properties:
+        pinned_version:
+          type: string
+      type: object
+    pluginRun:
+      allOf:
+      - $ref: '#/components/schemas/pluginRunData'
+      - properties:
+          deploy_id:
+            type: string
+        type: object
+      example:
+        summary: summary
+        package: package
+        state: state
+        text: text
+        reporting_event: reporting_event
+        title: title
+        version: version
+        deploy_id: deploy_id
+    pluginRunData:
+      properties:
+        package:
+          type: string
+        reporting_event:
+          type: string
+        state:
+          type: string
+        summary:
+          type: string
+        text:
+          type: string
+        title:
+          type: string
+        version:
+          type: string
+      type: object
+    repoInfo:
+      example:
+        repo_url: repo_url
+        stop_builds: true
+        deploy_key_id: deploy_key_id
+        installation_id: 6
+        dir: dir
+        env:
+          key: env
+        repo_branch: repo_branch
+        private_logs: true
+        allowed_branches:
+        - allowed_branches
+        - allowed_branches
+        functions_dir: functions_dir
+        repo_path: repo_path
+        provider: provider
+        public_repo: true
+        cmd: cmd
+        id: 0
+      properties:
+        allowed_branches:
+          items:
+            type: string
+          type: array
+        cmd:
+          type: string
+        deploy_key_id:
+          type: string
+        dir:
+          type: string
+        env:
+          additionalProperties:
+            type: string
+          type: object
+        functions_dir:
+          type: string
+        id:
+          type: integer
+        installation_id:
+          type: integer
+        private_logs:
+          type: boolean
+        provider:
+          type: string
+        public_repo:
+          type: boolean
+        repo_branch:
+          type: string
+        repo_path:
+          type: string
+        repo_url:
+          type: string
+        stop_builds:
+          type: boolean
+      type: object
+    service:
+      example:
+        environments:
+        - environments
+        - environments
+        icon: icon
+        created_at: created_at
+        description: description
+        long_description: long_description
+        tags:
+        - tags
+        - tags
+        updated_at: updated_at
+        name: name
+        manifest_url: manifest_url
+        id: id
+        service_path: service_path
+        events:
+        - "{}"
+        - "{}"
+        slug: slug
+      properties:
+        created_at:
+          format: dateTime
+          type: string
+        description:
+          type: string
+        environments:
+          items:
+            type: string
+          type: array
+        events:
+          items:
+            properties: {}
+            type: object
+          type: array
+        icon:
+          type: string
+        id:
+          type: string
+        long_description:
+          type: string
+        manifest_url:
+          type: string
+        name:
+          type: string
+        service_path:
+          type: string
+        slug:
+          type: string
+        tags:
+          items:
+            type: string
+          type: array
+        updated_at:
+          format: dateTime
+          type: string
+      type: object
+    serviceInstance:
+      example:
+        service_slug: service_slug
+        updated_at: updated_at
+        service_name: service_name
+        snippets:
+        - "{}"
+        - "{}"
+        created_at: created_at
+        auth_url: auth_url
+        id: id
+        service_path: service_path
+        env: "{}"
+        config: "{}"
+        url: url
+        external_attributes: "{}"
+      properties:
+        auth_url:
+          type: string
+        config:
+          properties: {}
+          type: object
+        created_at:
+          format: dateTime
+          type: string
+        env:
+          properties: {}
+          type: object
+        external_attributes:
+          properties: {}
+          type: object
+        id:
+          type: string
+        service_name:
+          type: string
+        service_path:
+          type: string
+        service_slug:
+          type: string
+        snippets:
+          items:
+            properties: {}
+            type: object
+          type: array
+        updated_at:
+          format: dateTime
+          type: string
+        url:
+          type: string
+      type: object
+    site:
+      example:
+        id_domain: id_domain
+        deploy_hook: deploy_hook
+        deploy_url: deploy_url
+        created_at: created_at
+        ssl: true
+        domain_aliases:
+        - domain_aliases
+        - domain_aliases
+        password: password
+        updated_at: updated_at
+        account_name: account_name
+        id: id
+        published_deploy:
+          review_id: 0.8008281904610115
+          deploy_url: deploy_url
+          review_url: review_url
+          created_at: created_at
+          title: title
+          branch: branch
+          required:
+          - required
+          - required
+          skipped: true
+          commit_url: commit_url
+          updated_at: updated_at
+          draft: true
+          context: context
+          id: id
+          state: state
+          locked: true
+          published_at: published_at
+          error_message: error_message
+          function_schedules:
+          - cron: cron
+            name: name
+          - cron: cron
+            name: name
+          admin_url: admin_url
+          site_capabilities:
+            large_media_enabled: true
+          url: url
+          framework: framework
+          ssl_url: ssl_url
+          build_id: build_id
+          deploy_ssl_url: deploy_ssl_url
+          user_id: user_id
+          name: name
+          site_id: site_id
+          required_functions:
+          - required_functions
+          - required_functions
+          screenshot_url: screenshot_url
+          commit_ref: commit_ref
+        state: state
+        custom_domain: custom_domain
+        default_hooks_data:
+          access_token: access_token
+        plan: plan
+        managed_dns: true
+        force_ssl: true
+        capabilities:
+          key: "{}"
+        notification_email: notification_email
+        git_provider: git_provider
+        session_id: session_id
+        admin_url: admin_url
+        build_settings:
+          repo_url: repo_url
+          stop_builds: true
+          deploy_key_id: deploy_key_id
+          installation_id: 6
+          dir: dir
+          env:
+            key: env
+          repo_branch: repo_branch
+          private_logs: true
+          allowed_branches:
+          - allowed_branches
+          - allowed_branches
+          functions_dir: functions_dir
+          repo_path: repo_path
+          provider: provider
+          public_repo: true
+          cmd: cmd
+          id: 0
+        prerender: prerender
+        url: url
+        account_slug: account_slug
+        ssl_url: ssl_url
+        user_id: user_id
+        name: name
+        build_image: build_image
+        processing_settings:
+          css:
+            minify: true
+            bundle: true
+          images:
+            optimize: true
+          js:
+            minify: true
+            bundle: true
+          html:
+            pretty_urls: true
+          skip: true
+        screenshot_url: screenshot_url
+      properties:
+        account_name:
+          type: string
+        account_slug:
+          type: string
+        admin_url:
+          type: string
+        build_image:
+          type: string
+        build_settings:
+          $ref: '#/components/schemas/repoInfo'
+        capabilities:
+          additionalProperties:
+            properties: {}
+            type: object
+          type: object
+        created_at:
+          format: dateTime
+          type: string
+        custom_domain:
+          type: string
+        default_hooks_data:
+          $ref: '#/components/schemas/site_default_hooks_data'
+        deploy_hook:
+          type: string
+        deploy_url:
+          type: string
+        domain_aliases:
+          items:
+            type: string
+          type: array
+        force_ssl:
+          type: boolean
+        git_provider:
+          type: string
+        id:
+          type: string
+        id_domain:
+          type: string
+        managed_dns:
+          type: boolean
+        name:
+          type: string
+        notification_email:
+          type: string
+        password:
+          type: string
+        plan:
+          type: string
+        prerender:
+          type: string
+        processing_settings:
+          $ref: '#/components/schemas/site_processing_settings'
+        published_deploy:
+          $ref: '#/components/schemas/deploy'
+        screenshot_url:
+          type: string
+        session_id:
+          type: string
+        ssl:
+          type: boolean
+        ssl_url:
+          type: string
+        state:
+          type: string
+        updated_at:
+          format: dateTime
+          type: string
+        url:
+          type: string
+        user_id:
+          type: string
+      type: object
+    siteSetup:
+      allOf:
+      - $ref: '#/components/schemas/site'
+      - properties:
+          repo:
+            $ref: '#/components/schemas/repoInfo'
+        type: object
+    sniCertificate:
+      example:
+        expires_at: expires_at
+        updated_at: updated_at
+        created_at: created_at
+        domains:
+        - domains
+        - domains
+        state: state
+      properties:
+        created_at:
+          format: dateTime
+          type: string
+        domains:
+          items:
+            type: string
+          type: array
+        expires_at:
+          format: dateTime
+          type: string
+        state:
+          type: string
+        updated_at:
+          format: dateTime
+          type: string
+      type: object
+    snippet:
+      example:
+        general: general
+        goal: goal
+        general_position: general_position
+        site_id: site_id
+        id: 0
+        goal_position: goal_position
+        title: title
+      properties:
+        general:
+          type: string
+        general_position:
+          type: string
+        goal:
+          type: string
+        goal_position:
+          type: string
+        id:
+          format: int32
+          type: integer
+        site_id:
+          type: string
+        title:
+          type: string
+      type: object
+    splitTest:
+      example:
+        path: path
+        updated_at: updated_at
+        name: name
+        site_id: site_id
+        active: true
+        created_at: created_at
+        id: id
+        branches:
+        - "{}"
+        - "{}"
+        unpublished_at: unpublished_at
+      properties:
+        active:
+          type: boolean
+        branches:
+          items:
+            properties: {}
+            type: object
+          type: array
+        created_at:
+          format: dateTime
+          type: string
+        id:
+          type: string
+        name:
+          type: string
+        path:
+          type: string
+        site_id:
+          type: string
+        unpublished_at:
+          format: dateTime
+          type: string
+        updated_at:
+          format: dateTime
+          type: string
+      type: object
+    splitTestSetup:
+      properties:
+        branch_tests:
+          properties: {}
+          type: object
+      type: object
+    splitTests:
+      items:
+        $ref: '#/components/schemas/splitTest'
+      type: array
+    submission:
+      example:
+        summary: summary
+        number: 0
+        data: "{}"
+        site_url: site_url
+        name: name
+        created_at: created_at
+        last_name: last_name
+        company: company
+        id: id
+        body: body
+        first_name: first_name
+        email: email
+      properties:
+        body:
+          type: string
+        company:
+          type: string
+        created_at:
+          format: dateTime
+          type: string
+        data:
+          properties: {}
+          type: object
+        email:
+          type: string
+        first_name:
+          type: string
+        id:
+          type: string
+        last_name:
+          type: string
+        name:
+          type: string
+        number:
+          format: int32
+          type: integer
+        site_url:
+          type: string
+        summary:
+          type: string
+      type: object
+    ticket:
+      example:
+        authorized: true
+        created_at: created_at
+        id: id
+        client_id: client_id
+      properties:
+        authorized:
+          type: boolean
+        client_id:
+          type: string
+        created_at:
+          format: dateTime
+          type: string
+        id:
+          type: string
+      type: object
+    user:
+      example:
+        uid: uid
+        onboarding_progress:
+          slides: slides
+        full_name: full_name
+        avatar_url: avatar_url
+        affiliate_id: affiliate_id
+        last_login: last_login
+        site_count: 0
+        created_at: created_at
+        id: id
+        email: email
+        login_providers:
+        - login_providers
+        - login_providers
+      properties:
+        affiliate_id:
+          type: string
+        avatar_url:
+          type: string
+        created_at:
+          format: dateTime
+          type: string
+        email:
+          type: string
+        full_name:
+          type: string
+        id:
+          type: string
+        last_login:
+          format: dateTime
+          type: string
+        login_providers:
+          items:
+            type: string
+          type: array
+        onboarding_progress:
+          $ref: '#/components/schemas/user_onboarding_progress'
+        site_count:
+          format: int64
+          type: integer
+        uid:
+          type: string
+      type: object
+    createEnvVars_request_inner:
+      properties:
+        key:
+          description: "The existing or new name of the key, if you wish to rename\
+            \ it (case-sensitive)"
+          type: string
+        scopes:
+          description: The scopes that this environment variable is set to (Pro plans
+            and above)
+          items:
+            enum:
+            - builds
+            - functions
+            - runtime
+            - post-processing
+            type: string
+          type: array
+        values:
+          items:
+            $ref: '#/components/schemas/envVarValue'
+          type: array
+      type: object
+    setEnvVarValue_request:
+      properties:
+        context:
+          description: The deploy context in which this value will be used. `dev`
+            refers to local development when running `netlify dev`.
+          enum:
+          - dev
+          - branch-deploy
+          - deploy-preview
+          - production
+          type: string
+        value:
+          description: The environment variable's unencrypted value
+          type: string
+      type: object
+    accountMembership_capabilities:
+      example:
+        collaborators:
+          used: 6
+          included: 0
+        sites:
+          used: 6
+          included: 0
+      properties:
+        collaborators:
+          $ref: '#/components/schemas/accountUsageCapability'
+        sites:
+          $ref: '#/components/schemas/accountUsageCapability'
+      type: object
+    buildStatus_minutes:
+      example:
+        current: 5
+        previous: 2
+        last_updated_at: last_updated_at
+        period_end_date: period_end_date
+        included_minutes: included_minutes
+        period_start_date: period_start_date
+        included_minutes_with_packs: included_minutes_with_packs
+        current_average_sec: 5
+      properties:
+        current:
+          type: integer
+        current_average_sec:
+          type: integer
+        included_minutes:
+          type: string
+        included_minutes_with_packs:
+          type: string
+        last_updated_at:
+          format: dateTime
+          type: string
+        period_end_date:
+          format: dateTime
+          type: string
+        period_start_date:
+          format: dateTime
+          type: string
+        previous:
+          type: integer
+      type: object
+    deploy_site_capabilities:
+      example:
+        large_media_enabled: true
+      properties:
+        large_media_enabled:
+          type: boolean
+      type: object
+    paymentMethod_data:
+      example:
+        last4: last4
+        card_type: card_type
+        email: email
+      properties:
+        card_type:
+          type: string
+        email:
+          type: string
+        last4:
+          type: string
+      type: object
+    site_default_hooks_data:
+      example:
+        access_token: access_token
+      properties:
+        access_token:
+          type: string
+      type: object
+    site_processing_settings_html:
+      example:
+        pretty_urls: true
+      properties:
+        pretty_urls:
+          type: boolean
+      type: object
+    site_processing_settings_images:
+      example:
+        optimize: true
+      properties:
+        optimize:
+          type: boolean
+      type: object
+    site_processing_settings:
+      example:
+        css:
+          minify: true
+          bundle: true
+        images:
+          optimize: true
+        js:
+          minify: true
+          bundle: true
+        html:
+          pretty_urls: true
+        skip: true
+      properties:
+        css:
+          $ref: '#/components/schemas/minifyOptions'
+        html:
+          $ref: '#/components/schemas/site_processing_settings_html'
+        images:
+          $ref: '#/components/schemas/site_processing_settings_images'
+        js:
+          $ref: '#/components/schemas/minifyOptions'
+        skip:
+          type: boolean
+      type: object
+    user_onboarding_progress:
+      example:
+        slides: slides
+      properties:
+        slides:
+          type: string
+      type: object
+  securitySchemes:
+    netlifyAuth:
+      flows:
+        implicit:
+          authorizationUrl: https://app.netlify.com/authorize
+          scopes: {}
+      type: oauth2
+x-tagGroups:
+- name: OAuth
+  tags:
+  - ticket
+  - accessToken
+- name: User accounts
+  tags:
+  - user
+  - accountMembership
+  - member
+  - accountType
+  - paymentMethod
+  - auditLog
+- name: Site
+  tags:
+  - site
+  - environmentVariables
+  - file
+  - metadata
+  - snippet
+- name: Domain names
+  tags:
+  - dnsZone
+  - sniCertificate
+- name: Deploys
+  tags:
+  - deploy
+  - deployedBranch
+  - deployKey
+- name: Builds
+  tags:
+  - build
+  - buildLogMsg
+- name: Webhooks and notifications
+  tags:
+  - hook
+  - hookType
+  - buildHook
+- name: Services
+  tags:
+  - service
+  - serviceInstance
+- name: Functions
+  tags:
+  - function
+- name: Forms
+  tags:
+  - form
+  - submission
+- name: Split tests
+  tags:
+  - splitTest
+- name: Large media
+  tags:
+  - asset
+  - assetPublicSignature
+x-original-swagger-version: "2.0"
+

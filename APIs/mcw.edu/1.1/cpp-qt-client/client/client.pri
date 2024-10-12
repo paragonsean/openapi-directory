@@ -1,0 +1,99 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIAnnotatedGeneRequest.h \
+    $${PWD}/OAIAnnotation.h \
+    $${PWD}/OAIAnnotationRequest.h \
+    $${PWD}/OAIChromosome.h \
+    $${PWD}/OAIEnrichmentGeneRequest.h \
+    $${PWD}/OAIEnrichmentRequest.h \
+    $${PWD}/OAIGene.h \
+    $${PWD}/OAIMap.h \
+    $${PWD}/OAIMapPair.h \
+    $${PWD}/OAIMappedGene.h \
+    $${PWD}/OAIMappedGenePosition.h \
+    $${PWD}/OAIMappedQTL.h \
+    $${PWD}/OAIMappedSSLP.h \
+    $${PWD}/OAIOrthologRequest.h \
+    $${PWD}/OAIPathway.h \
+    $${PWD}/OAIPathwayObject.h \
+    $${PWD}/OAIQTL.h \
+    $${PWD}/OAIRGDIDListRequest.h \
+    $${PWD}/OAIReference.h \
+    $${PWD}/OAISSLP.h \
+    $${PWD}/OAIStatus.h \
+    $${PWD}/OAIStrain.h \
+    $${PWD}/OAITerm.h \
+    $${PWD}/OAITermXRef.h \
+# APIs
+    $${PWD}/OAIAGRApi.h \
+    $${PWD}/OAIAnnotationApi.h \
+    $${PWD}/OAIChromosomeApi.h \
+    $${PWD}/OAIEnrichmentWebServiceApi.h \
+    $${PWD}/OAIGeneApi.h \
+    $${PWD}/OAILookupApi.h \
+    $${PWD}/OAIMapApi.h \
+    $${PWD}/OAIOntologyApi.h \
+    $${PWD}/OAIPathwayApi.h \
+    $${PWD}/OAIQTLApi.h \
+    $${PWD}/OAIQuantitativePhenotypeApi.h \
+    $${PWD}/OAIRatStrainApi.h \
+    $${PWD}/OAISSLPApi.h \
+    $${PWD}/OAIStatisticsApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIAnnotatedGeneRequest.cpp \
+    $${PWD}/OAIAnnotation.cpp \
+    $${PWD}/OAIAnnotationRequest.cpp \
+    $${PWD}/OAIChromosome.cpp \
+    $${PWD}/OAIEnrichmentGeneRequest.cpp \
+    $${PWD}/OAIEnrichmentRequest.cpp \
+    $${PWD}/OAIGene.cpp \
+    $${PWD}/OAIMap.cpp \
+    $${PWD}/OAIMapPair.cpp \
+    $${PWD}/OAIMappedGene.cpp \
+    $${PWD}/OAIMappedGenePosition.cpp \
+    $${PWD}/OAIMappedQTL.cpp \
+    $${PWD}/OAIMappedSSLP.cpp \
+    $${PWD}/OAIOrthologRequest.cpp \
+    $${PWD}/OAIPathway.cpp \
+    $${PWD}/OAIPathwayObject.cpp \
+    $${PWD}/OAIQTL.cpp \
+    $${PWD}/OAIRGDIDListRequest.cpp \
+    $${PWD}/OAIReference.cpp \
+    $${PWD}/OAISSLP.cpp \
+    $${PWD}/OAIStatus.cpp \
+    $${PWD}/OAIStrain.cpp \
+    $${PWD}/OAITerm.cpp \
+    $${PWD}/OAITermXRef.cpp \
+# APIs
+    $${PWD}/OAIAGRApi.cpp \
+    $${PWD}/OAIAnnotationApi.cpp \
+    $${PWD}/OAIChromosomeApi.cpp \
+    $${PWD}/OAIEnrichmentWebServiceApi.cpp \
+    $${PWD}/OAIGeneApi.cpp \
+    $${PWD}/OAILookupApi.cpp \
+    $${PWD}/OAIMapApi.cpp \
+    $${PWD}/OAIOntologyApi.cpp \
+    $${PWD}/OAIPathwayApi.cpp \
+    $${PWD}/OAIQTLApi.cpp \
+    $${PWD}/OAIQuantitativePhenotypeApi.cpp \
+    $${PWD}/OAIRatStrainApi.cpp \
+    $${PWD}/OAISSLPApi.cpp \
+    $${PWD}/OAIStatisticsApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

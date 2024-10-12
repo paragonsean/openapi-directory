@@ -1,0 +1,12 @@
+# PdfGeneratorApi.Workspace
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**createdAt** | **String** |  | [optional] 
+**id** | **Number** | Internal workspace id | [optional] 
+**identifier** | **String** | The unique workspace idenfitifer specified by your application | [optional] 
+**isMasterWorkspace** | **Boolean** | True if a master workspace | [optional] 
+
+

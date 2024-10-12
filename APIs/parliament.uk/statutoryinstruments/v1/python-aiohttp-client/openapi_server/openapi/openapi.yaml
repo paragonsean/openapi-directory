@@ -1,0 +1,1795 @@
+openapi: 3.0.1
+info:
+  contact:
+    email: softwareengineering@parliament.uk
+    name: UK Parliament
+    url: https://www.parliament.uk/
+  description: An API exposing details of the various types of Statutory Instruments
+    laid before Parliament.
+  title: Statutory Instruments API
+  version: v1
+  x-apisguru-categories:
+  - open_data
+  x-origin:
+  - format: openapi
+    url: https://statutoryinstruments-api.parliament.uk/swagger/v1/swagger.json
+    version: "3.0"
+  x-providerName: parliament.uk
+  x-serviceName: statutoryinstruments
+servers:
+- url: /
+paths:
+  /api/v1/BusinessItem/{id}:
+    get:
+      operationId: get_business_item_by_id
+      parameters:
+      - description: Business item with the ID specified
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: Business item by laid paper type
+        explode: true
+        in: query
+        name: LaidPaper
+        required: false
+        schema:
+          $ref: '#/components/schemas/LaidPaperType'
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BusinessItemResource'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/BusinessItemResource'
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/BusinessItemResource'
+          description: The requested business item
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Bad Request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: If the item doesn't exist
+      summary: Returns business item by ID.
+      tags:
+      - BusinessItem
+      x-openapi-router-controller: openapi_server.controllers.business_item_controller
+  /api/v1/LayingBody:
+    get:
+      operationId: get_laying_bodies
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LayingBodyResourceCollection'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/LayingBodyResourceCollection'
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/LayingBodyResourceCollection'
+          description: Success
+      summary: Returns all laying bodies.
+      tags:
+      - LayingBody
+      x-openapi-router-controller: openapi_server.controllers.laying_body_controller
+  /api/v1/Procedure:
+    get:
+      operationId: get_procedures_v1
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProcedureResourceCollection'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ProcedureResourceCollection'
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ProcedureResourceCollection'
+          description: Success
+      summary: Returns all procedures.
+      tags:
+      - Procedure
+      x-openapi-router-controller: openapi_server.controllers.procedure_controller
+  /api/v1/Procedure/{id}:
+    get:
+      operationId: get_procedures_by_id_v1
+      parameters:
+      - description: Procedure with the ID specified
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProcedureDetailsResource'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ProcedureDetailsResource'
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ProcedureDetailsResource'
+          description: Success
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Bad Request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+      summary: Returns procedure by ID.
+      tags:
+      - Procedure
+      x-openapi-router-controller: openapi_server.controllers.procedure_controller
+  /api/v1/ProposedNegativeStatutoryInstrument:
+    get:
+      operationId: get_proposed_negative_statutory_instruments
+      parameters:
+      - description: Proposed negative statutory instruments with the name provided
+        explode: true
+        in: query
+        name: Name
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Proposed negative statutory instruments recommended for procedure
+          change
+        explode: true
+        in: query
+        name: RecommendedForProcedureChange
+        required: false
+        schema:
+          type: boolean
+        style: form
+      - description: Proposed negative statutory instruments with the department ID
+          specified
+        explode: true
+        in: query
+        name: DepartmentId
+        required: false
+        schema:
+          format: int32
+          maximum: 2147483647
+          minimum: 1
+          type: integer
+        style: form
+      - description: Proposed negative statutory instruments with the laying body
+          ID specified
+        explode: true
+        in: query
+        name: LayingBodyId
+        required: false
+        schema:
+          pattern: "^[a-zA-Z0-9]{8}$"
+          type: string
+        style: form
+      - description: "The number of records to skip from the first, default is 0"
+        explode: true
+        in: query
+        name: Skip
+        required: false
+        schema:
+          format: int32
+          maximum: 2147483647
+          minimum: 0
+          type: integer
+        style: form
+      - description: "The number of records to return, default is 20"
+        explode: true
+        in: query
+        name: Take
+        required: false
+        schema:
+          format: int32
+          maximum: 2147483647
+          minimum: 0
+          type: integer
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProposedNegativeStatutoryInstrumentResourceCollection'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ProposedNegativeStatutoryInstrumentResourceCollection'
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ProposedNegativeStatutoryInstrumentResourceCollection'
+          description: Success
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Bad Request
+      summary: Returns a list of proposed negative statutory instruments.
+      tags:
+      - ProposedNegativeStatutoryInstrument
+      x-openapi-router-controller: openapi_server.controllers.proposed_negative_statutory_instrument_controller
+  /api/v1/ProposedNegativeStatutoryInstrument/{id}:
+    get:
+      operationId: get_proposed_negative_statutory_instrument_by_id
+      parameters:
+      - description: Proposed negative statutory instrument with the ID specified
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProposedNegativeStatutoryInstrumentResource'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ProposedNegativeStatutoryInstrumentResource'
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ProposedNegativeStatutoryInstrumentResource'
+          description: Success
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Bad Request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+      summary: Returns proposed negative statutory instrument by ID.
+      tags:
+      - ProposedNegativeStatutoryInstrument
+      x-openapi-router-controller: openapi_server.controllers.proposed_negative_statutory_instrument_controller
+  /api/v1/ProposedNegativeStatutoryInstrument/{id}/BusinessItems:
+    get:
+      operationId: get_business_items_by_proposed_negative_statutory_instrument_id
+      parameters:
+      - description: Business items belonging to proposed negative statutory instrument
+          with the ID specified
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BusinessItemResourceCollection'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/BusinessItemResourceCollection'
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/BusinessItemResourceCollection'
+          description: Success
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Bad Request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+      summary: Returns business items belonging to a proposed negative statutory instrument.
+      tags:
+      - ProposedNegativeStatutoryInstrument
+      x-openapi-router-controller: openapi_server.controllers.proposed_negative_statutory_instrument_controller
+  /api/v1/StatutoryInstrument:
+    get:
+      operationId: get_statutory_instruments
+      parameters:
+      - description: Statutory instruments with the name specified
+        explode: true
+        in: query
+        name: Name
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Statutory instruments where the statutory instrument type is
+          the type provided
+        explode: true
+        in: query
+        name: StatutoryInstrumentType
+        required: false
+        schema:
+          $ref: '#/components/schemas/StatutoryInstrumentType'
+        style: form
+      - description: Statutory instrument which contains a scheduled debate
+        explode: true
+        in: query
+        name: ScheduledDebate
+        required: false
+        schema:
+          type: boolean
+        style: form
+      - description: Statutory instruments which contains a motion to stop
+        explode: true
+        in: query
+        name: MotionToStop
+        required: false
+        schema:
+          type: boolean
+        style: form
+      - description: Statutory instruments which contains concerns raised by committee
+        explode: true
+        in: query
+        name: ConcernsRaisedByCommittee
+        required: false
+        schema:
+          type: boolean
+        style: form
+      - description: Statutory instruments where the parliamentary process is concluded
+          or notconcluded
+        explode: true
+        in: query
+        name: ParliamentaryProcessConcluded
+        required: false
+        schema:
+          $ref: '#/components/schemas/ParliamentaryProcess'
+        style: form
+      - description: Statutory instruments with the department ID specified
+        explode: true
+        in: query
+        name: DepartmentId
+        required: false
+        schema:
+          format: int32
+          maximum: 2147483647
+          minimum: 1
+          type: integer
+        style: form
+      - description: Statutory instruments with the laying body ID specified
+        explode: true
+        in: query
+        name: LayingBodyId
+        required: false
+        schema:
+          pattern: "^[a-zA-Z0-9]{8}$"
+          type: string
+        style: form
+      - description: Statutory instruments laid in the house specified
+        explode: true
+        in: query
+        name: House
+        required: false
+        schema:
+          $ref: '#/components/schemas/House'
+        style: form
+      - description: "The number of records to skip from the first, default is 0"
+        explode: true
+        in: query
+        name: Skip
+        required: false
+        schema:
+          format: int32
+          maximum: 2147483647
+          minimum: 0
+          type: integer
+        style: form
+      - description: "The number of records to return, default is 20"
+        explode: true
+        in: query
+        name: Take
+        required: false
+        schema:
+          format: int32
+          maximum: 2147483647
+          minimum: 0
+          type: integer
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatutoryInstrumentResourceCollection'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/StatutoryInstrumentResourceCollection'
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/StatutoryInstrumentResourceCollection'
+          description: Success
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Bad Request
+      summary: Returns a list of statutory instruments.
+      tags:
+      - StatutoryInstrument
+      x-openapi-router-controller: openapi_server.controllers.statutory_instrument_controller
+  /api/v1/StatutoryInstrument/{id}:
+    get:
+      operationId: get_statutory_instrument_by_id
+      parameters:
+      - description: Statutory instrument with the ID specified
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatutoryInstrumentResource'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/StatutoryInstrumentResource'
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/StatutoryInstrumentResource'
+          description: Success
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Bad Request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+      summary: Returns a statutory instrument by ID.
+      tags:
+      - StatutoryInstrument
+      x-openapi-router-controller: openapi_server.controllers.statutory_instrument_controller
+  /api/v1/StatutoryInstrument/{id}/BusinessItems:
+    get:
+      operationId: get_business_items_by_statutory_instrument_id
+      parameters:
+      - description: Business items belonging to statutory instrument with the ID
+          specified
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BusinessItemResourceCollection'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/BusinessItemResourceCollection'
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/BusinessItemResourceCollection'
+          description: Success
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Bad Request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+      summary: Returns business items belonging to statutory instrument with ID.
+      tags:
+      - StatutoryInstrument
+      x-openapi-router-controller: openapi_server.controllers.statutory_instrument_controller
+components:
+  schemas:
+    BusinessItem:
+      additionalProperties: false
+      example:
+        houseId: houseId
+        link: link
+        itemDate: 2000-01-23T04:56:07.000+00:00
+        procedureStepUri: https://openapi-generator.tech
+        businessItemUri: https://openapi-generator.tech
+        workpackageProcedureUri: https://openapi-generator.tech
+        houseName: houseName
+        sequence: 0
+        statutoryInstrumentId: statutoryInstrumentId
+        statutoryInstrumentUri: https://openapi-generator.tech
+        houseUri: https://openapi-generator.tech
+        stepName: stepName
+        houses:
+        - name: name
+          house: Commons
+        - name: name
+          house: Commons
+        id: id
+        laidPaperType: StatutoryInstrument
+        procedureStepId: procedureStepId
+      properties:
+        businessItemUri:
+          format: uri
+          nullable: true
+          title: businessItemUri
+          type: string
+        houseId:
+          nullable: true
+          title: houseId
+          type: string
+        houseName:
+          nullable: true
+          title: houseName
+          type: string
+        houseUri:
+          format: uri
+          nullable: true
+          title: houseUri
+          type: string
+        houses:
+          items:
+            $ref: '#/components/schemas/BusinessItemHouse'
+          nullable: true
+          title: houses
+          type: array
+        id:
+          nullable: true
+          title: id
+          type: string
+        itemDate:
+          format: date-time
+          nullable: true
+          title: itemDate
+          type: string
+        laidPaperType:
+          $ref: '#/components/schemas/LaidPaperType'
+        link:
+          nullable: true
+          title: link
+          type: string
+        procedureStepId:
+          nullable: true
+          title: procedureStepId
+          type: string
+        procedureStepUri:
+          format: uri
+          nullable: true
+          title: procedureStepUri
+          type: string
+        sequence:
+          format: int32
+          title: sequence
+          type: integer
+        statutoryInstrumentId:
+          nullable: true
+          title: statutoryInstrumentId
+          type: string
+        statutoryInstrumentUri:
+          format: uri
+          nullable: true
+          title: statutoryInstrumentUri
+          type: string
+        stepName:
+          nullable: true
+          title: stepName
+          type: string
+        workpackageProcedureUri:
+          format: uri
+          nullable: true
+          title: workpackageProcedureUri
+          type: string
+      title: BusinessItem
+      type: object
+    BusinessItemHouse:
+      additionalProperties: false
+      example:
+        name: name
+        house: Commons
+      properties:
+        house:
+          $ref: '#/components/schemas/House'
+        name:
+          nullable: true
+          title: name
+          type: string
+      title: BusinessItemHouse
+      type: object
+    BusinessItemResource:
+      additionalProperties: false
+      example:
+        links:
+        - method: method
+          rel: rel
+          href: href
+        - method: method
+          rel: rel
+          href: href
+        value:
+          houseId: houseId
+          link: link
+          itemDate: 2000-01-23T04:56:07.000+00:00
+          procedureStepUri: https://openapi-generator.tech
+          businessItemUri: https://openapi-generator.tech
+          workpackageProcedureUri: https://openapi-generator.tech
+          houseName: houseName
+          sequence: 0
+          statutoryInstrumentId: statutoryInstrumentId
+          statutoryInstrumentUri: https://openapi-generator.tech
+          houseUri: https://openapi-generator.tech
+          stepName: stepName
+          houses:
+          - name: name
+            house: Commons
+          - name: name
+            house: Commons
+          id: id
+          laidPaperType: StatutoryInstrument
+          procedureStepId: procedureStepId
+      properties:
+        links:
+          items:
+            $ref: '#/components/schemas/Link'
+          nullable: true
+          title: links
+          type: array
+        value:
+          $ref: '#/components/schemas/BusinessItem'
+      title: BusinessItemResource
+      type: object
+    BusinessItemResourceCollection:
+      additionalProperties: false
+      example:
+        totalResults: 6
+        itemsPerPage: 0
+        links:
+        - method: method
+          rel: rel
+          href: href
+        - method: method
+          rel: rel
+          href: href
+        items:
+        - links:
+          - method: method
+            rel: rel
+            href: href
+          - method: method
+            rel: rel
+            href: href
+          value:
+            houseId: houseId
+            link: link
+            itemDate: 2000-01-23T04:56:07.000+00:00
+            procedureStepUri: https://openapi-generator.tech
+            businessItemUri: https://openapi-generator.tech
+            workpackageProcedureUri: https://openapi-generator.tech
+            houseName: houseName
+            sequence: 0
+            statutoryInstrumentId: statutoryInstrumentId
+            statutoryInstrumentUri: https://openapi-generator.tech
+            houseUri: https://openapi-generator.tech
+            stepName: stepName
+            houses:
+            - name: name
+              house: Commons
+            - name: name
+              house: Commons
+            id: id
+            laidPaperType: StatutoryInstrument
+            procedureStepId: procedureStepId
+        - links:
+          - method: method
+            rel: rel
+            href: href
+          - method: method
+            rel: rel
+            href: href
+          value:
+            houseId: houseId
+            link: link
+            itemDate: 2000-01-23T04:56:07.000+00:00
+            procedureStepUri: https://openapi-generator.tech
+            businessItemUri: https://openapi-generator.tech
+            workpackageProcedureUri: https://openapi-generator.tech
+            houseName: houseName
+            sequence: 0
+            statutoryInstrumentId: statutoryInstrumentId
+            statutoryInstrumentUri: https://openapi-generator.tech
+            houseUri: https://openapi-generator.tech
+            stepName: stepName
+            houses:
+            - name: name
+              house: Commons
+            - name: name
+              house: Commons
+            id: id
+            laidPaperType: StatutoryInstrument
+            procedureStepId: procedureStepId
+      properties:
+        items:
+          items:
+            $ref: '#/components/schemas/BusinessItemResource'
+          nullable: true
+          title: items
+          type: array
+        itemsPerPage:
+          format: int32
+          title: itemsPerPage
+          type: integer
+        links:
+          items:
+            $ref: '#/components/schemas/Link'
+          nullable: true
+          title: links
+          type: array
+        totalResults:
+          format: int32
+          title: totalResults
+          type: integer
+      title: BusinessItemResourceCollection
+      type: object
+    Department:
+      additionalProperties: false
+      example:
+        departmentId: 6
+        name: name
+        id: id
+      properties:
+        departmentId:
+          format: int32
+          nullable: true
+          title: departmentId
+          type: integer
+        id:
+          nullable: true
+          title: id
+          type: string
+        name:
+          nullable: true
+          title: name
+          type: string
+      title: Department
+      type: object
+    House:
+      enum:
+      - Commons
+      - Lords
+      title: House
+      type: string
+    LaidPaperSummary:
+      additionalProperties: false
+      example:
+        name: name
+        id: id
+      properties:
+        id:
+          nullable: true
+          title: id
+          type: string
+        name:
+          nullable: true
+          title: name
+          type: string
+      title: LaidPaperSummary
+      type: object
+    LaidPaperType:
+      enum:
+      - StatutoryInstrument
+      - ProposedNegative
+      title: LaidPaperType
+      type: string
+    LayingBody:
+      additionalProperties: false
+      example:
+        departmentId: 0
+        name: name
+        id: id
+      properties:
+        departmentId:
+          format: int32
+          nullable: true
+          title: departmentId
+          type: integer
+        id:
+          nullable: true
+          title: id
+          type: string
+        name:
+          nullable: true
+          title: name
+          type: string
+      title: LayingBody
+      type: object
+    LayingBodyResource:
+      additionalProperties: false
+      example:
+        links:
+        - method: method
+          rel: rel
+          href: href
+        - method: method
+          rel: rel
+          href: href
+        value:
+          departmentId: 0
+          name: name
+          id: id
+      properties:
+        links:
+          items:
+            $ref: '#/components/schemas/Link'
+          nullable: true
+          title: links
+          type: array
+        value:
+          $ref: '#/components/schemas/LayingBody'
+      title: LayingBodyResource
+      type: object
+    LayingBodyResourceCollection:
+      additionalProperties: false
+      example:
+        totalResults: 1
+        itemsPerPage: 6
+        links:
+        - method: method
+          rel: rel
+          href: href
+        - method: method
+          rel: rel
+          href: href
+        items:
+        - links:
+          - method: method
+            rel: rel
+            href: href
+          - method: method
+            rel: rel
+            href: href
+          value:
+            departmentId: 0
+            name: name
+            id: id
+        - links:
+          - method: method
+            rel: rel
+            href: href
+          - method: method
+            rel: rel
+            href: href
+          value:
+            departmentId: 0
+            name: name
+            id: id
+      properties:
+        items:
+          items:
+            $ref: '#/components/schemas/LayingBodyResource'
+          nullable: true
+          title: items
+          type: array
+        itemsPerPage:
+          format: int32
+          title: itemsPerPage
+          type: integer
+        links:
+          items:
+            $ref: '#/components/schemas/Link'
+          nullable: true
+          title: links
+          type: array
+        totalResults:
+          format: int32
+          title: totalResults
+          type: integer
+      title: LayingBodyResourceCollection
+      type: object
+    Link:
+      additionalProperties: false
+      example:
+        method: method
+        rel: rel
+        href: href
+      properties:
+        href:
+          nullable: true
+          title: href
+          type: string
+        method:
+          nullable: true
+          title: method
+          type: string
+        rel:
+          nullable: true
+          title: rel
+          type: string
+      title: Link
+      type: object
+    ParliamentaryProcess:
+      enum:
+      - NotConcluded
+      - Concluded
+      title: ParliamentaryProcess
+      type: string
+    ProblemDetails:
+      additionalProperties: {}
+      example:
+        instance: instance
+        detail: detail
+        title: title
+        type: type
+        status: 6
+      properties:
+        detail:
+          nullable: true
+          type: string
+        instance:
+          nullable: true
+          type: string
+        status:
+          format: int32
+          nullable: true
+          type: integer
+        title:
+          nullable: true
+          type: string
+        type:
+          nullable: true
+          type: string
+      title: ProblemDetails
+      type: object
+    Procedure:
+      additionalProperties: false
+      example:
+        name: name
+        id: id
+        uri: uri
+      properties:
+        id:
+          nullable: true
+          title: id
+          type: string
+        name:
+          nullable: true
+          title: name
+          type: string
+        uri:
+          nullable: true
+          title: uri
+          type: string
+      title: Procedure
+      type: object
+    ProcedureDetails:
+      additionalProperties: false
+      example:
+        name: name
+        description: description
+        id: id
+        uri: uri
+      properties:
+        description:
+          nullable: true
+          title: description
+          type: string
+        id:
+          nullable: true
+          title: id
+          type: string
+        name:
+          nullable: true
+          title: name
+          type: string
+        uri:
+          nullable: true
+          title: uri
+          type: string
+      title: ProcedureDetails
+      type: object
+    ProcedureDetailsResource:
+      additionalProperties: false
+      example:
+        links:
+        - method: method
+          rel: rel
+          href: href
+        - method: method
+          rel: rel
+          href: href
+        value:
+          name: name
+          description: description
+          id: id
+          uri: uri
+      properties:
+        links:
+          items:
+            $ref: '#/components/schemas/Link'
+          nullable: true
+          title: links
+          type: array
+        value:
+          $ref: '#/components/schemas/ProcedureDetails'
+      title: ProcedureDetailsResource
+      type: object
+    ProcedureResource:
+      additionalProperties: false
+      example:
+        links:
+        - method: method
+          rel: rel
+          href: href
+        - method: method
+          rel: rel
+          href: href
+        value:
+          name: name
+          id: id
+          uri: uri
+      properties:
+        links:
+          items:
+            $ref: '#/components/schemas/Link'
+          nullable: true
+          title: links
+          type: array
+        value:
+          $ref: '#/components/schemas/Procedure'
+      title: ProcedureResource
+      type: object
+    ProcedureResourceCollection:
+      additionalProperties: false
+      example:
+        totalResults: 6
+        itemsPerPage: 0
+        links:
+        - method: method
+          rel: rel
+          href: href
+        - method: method
+          rel: rel
+          href: href
+        items:
+        - links:
+          - method: method
+            rel: rel
+            href: href
+          - method: method
+            rel: rel
+            href: href
+          value:
+            name: name
+            id: id
+            uri: uri
+        - links:
+          - method: method
+            rel: rel
+            href: href
+          - method: method
+            rel: rel
+            href: href
+          value:
+            name: name
+            id: id
+            uri: uri
+      properties:
+        items:
+          items:
+            $ref: '#/components/schemas/ProcedureResource'
+          nullable: true
+          title: items
+          type: array
+        itemsPerPage:
+          format: int32
+          title: itemsPerPage
+          type: integer
+        links:
+          items:
+            $ref: '#/components/schemas/Link'
+          nullable: true
+          title: links
+          type: array
+        totalResults:
+          format: int32
+          title: totalResults
+          type: integer
+      title: ProcedureResourceCollection
+      type: object
+    ProposedNegativeStatutoryInstrument:
+      additionalProperties: false
+      example:
+        commonsPublishedDate: 2000-01-23T04:56:07.000+00:00
+        lordsLayingDate: 2000-01-23T04:56:07.000+00:00
+        departmentId: 0
+        link: link
+        statutoryInstrumentPaperId: statutoryInstrumentPaperId
+        procedure:
+          name: name
+          id: id
+          uri: uri
+        layingBodyName: layingBodyName
+        uri: uri
+        statutoryInstrument:
+          name: name
+          id: id
+        statutoryInstrumentPaperName: statutoryInstrumentPaperName
+        commonsLayingDate: 2000-01-23T04:56:07.000+00:00
+        layingBodyId: layingBodyId
+        layingBodyDepartment:
+          departmentId: 6
+          name: name
+          id: id
+        procedureName: procedureName
+        name: name
+        procedureUri: procedureUri
+        id: id
+        lordsPublishedDate: 2000-01-23T04:56:07.000+00:00
+      properties:
+        commonsLayingDate:
+          format: date-time
+          nullable: true
+          title: commonsLayingDate
+          type: string
+        commonsPublishedDate:
+          format: date-time
+          nullable: true
+          title: commonsPublishedDate
+          type: string
+        departmentId:
+          format: int32
+          nullable: true
+          title: departmentId
+          type: integer
+        id:
+          nullable: true
+          title: id
+          type: string
+        layingBodyDepartment:
+          $ref: '#/components/schemas/Department'
+        layingBodyId:
+          nullable: true
+          title: layingBodyId
+          type: string
+        layingBodyName:
+          nullable: true
+          title: layingBodyName
+          type: string
+        link:
+          nullable: true
+          title: link
+          type: string
+        lordsLayingDate:
+          format: date-time
+          nullable: true
+          title: lordsLayingDate
+          type: string
+        lordsPublishedDate:
+          format: date-time
+          nullable: true
+          title: lordsPublishedDate
+          type: string
+        name:
+          nullable: true
+          title: name
+          type: string
+        procedure:
+          $ref: '#/components/schemas/Procedure'
+        procedureName:
+          nullable: true
+          title: procedureName
+          type: string
+        procedureUri:
+          nullable: true
+          title: procedureUri
+          type: string
+        statutoryInstrument:
+          $ref: '#/components/schemas/LaidPaperSummary'
+        statutoryInstrumentPaperId:
+          nullable: true
+          title: statutoryInstrumentPaperId
+          type: string
+        statutoryInstrumentPaperName:
+          nullable: true
+          title: statutoryInstrumentPaperName
+          type: string
+        uri:
+          nullable: true
+          title: uri
+          type: string
+      title: ProposedNegativeStatutoryInstrument
+      type: object
+    ProposedNegativeStatutoryInstrumentResource:
+      additionalProperties: false
+      example:
+        links:
+        - method: method
+          rel: rel
+          href: href
+        - method: method
+          rel: rel
+          href: href
+        value:
+          commonsPublishedDate: 2000-01-23T04:56:07.000+00:00
+          lordsLayingDate: 2000-01-23T04:56:07.000+00:00
+          departmentId: 0
+          link: link
+          statutoryInstrumentPaperId: statutoryInstrumentPaperId
+          procedure:
+            name: name
+            id: id
+            uri: uri
+          layingBodyName: layingBodyName
+          uri: uri
+          statutoryInstrument:
+            name: name
+            id: id
+          statutoryInstrumentPaperName: statutoryInstrumentPaperName
+          commonsLayingDate: 2000-01-23T04:56:07.000+00:00
+          layingBodyId: layingBodyId
+          layingBodyDepartment:
+            departmentId: 6
+            name: name
+            id: id
+          procedureName: procedureName
+          name: name
+          procedureUri: procedureUri
+          id: id
+          lordsPublishedDate: 2000-01-23T04:56:07.000+00:00
+      properties:
+        links:
+          items:
+            $ref: '#/components/schemas/Link'
+          nullable: true
+          title: links
+          type: array
+        value:
+          $ref: '#/components/schemas/ProposedNegativeStatutoryInstrument'
+      title: ProposedNegativeStatutoryInstrumentResource
+      type: object
+    ProposedNegativeStatutoryInstrumentResourceCollection:
+      additionalProperties: false
+      example:
+        totalResults: 5
+        itemsPerPage: 1
+        links:
+        - method: method
+          rel: rel
+          href: href
+        - method: method
+          rel: rel
+          href: href
+        items:
+        - links:
+          - method: method
+            rel: rel
+            href: href
+          - method: method
+            rel: rel
+            href: href
+          value:
+            commonsPublishedDate: 2000-01-23T04:56:07.000+00:00
+            lordsLayingDate: 2000-01-23T04:56:07.000+00:00
+            departmentId: 0
+            link: link
+            statutoryInstrumentPaperId: statutoryInstrumentPaperId
+            procedure:
+              name: name
+              id: id
+              uri: uri
+            layingBodyName: layingBodyName
+            uri: uri
+            statutoryInstrument:
+              name: name
+              id: id
+            statutoryInstrumentPaperName: statutoryInstrumentPaperName
+            commonsLayingDate: 2000-01-23T04:56:07.000+00:00
+            layingBodyId: layingBodyId
+            layingBodyDepartment:
+              departmentId: 6
+              name: name
+              id: id
+            procedureName: procedureName
+            name: name
+            procedureUri: procedureUri
+            id: id
+            lordsPublishedDate: 2000-01-23T04:56:07.000+00:00
+        - links:
+          - method: method
+            rel: rel
+            href: href
+          - method: method
+            rel: rel
+            href: href
+          value:
+            commonsPublishedDate: 2000-01-23T04:56:07.000+00:00
+            lordsLayingDate: 2000-01-23T04:56:07.000+00:00
+            departmentId: 0
+            link: link
+            statutoryInstrumentPaperId: statutoryInstrumentPaperId
+            procedure:
+              name: name
+              id: id
+              uri: uri
+            layingBodyName: layingBodyName
+            uri: uri
+            statutoryInstrument:
+              name: name
+              id: id
+            statutoryInstrumentPaperName: statutoryInstrumentPaperName
+            commonsLayingDate: 2000-01-23T04:56:07.000+00:00
+            layingBodyId: layingBodyId
+            layingBodyDepartment:
+              departmentId: 6
+              name: name
+              id: id
+            procedureName: procedureName
+            name: name
+            procedureUri: procedureUri
+            id: id
+            lordsPublishedDate: 2000-01-23T04:56:07.000+00:00
+      properties:
+        items:
+          items:
+            $ref: '#/components/schemas/ProposedNegativeStatutoryInstrumentResource'
+          nullable: true
+          title: items
+          type: array
+        itemsPerPage:
+          format: int32
+          title: itemsPerPage
+          type: integer
+        links:
+          items:
+            $ref: '#/components/schemas/Link'
+          nullable: true
+          title: links
+          type: array
+        totalResults:
+          format: int32
+          title: totalResults
+          type: integer
+      title: ProposedNegativeStatutoryInstrumentResourceCollection
+      type: object
+    StatutoryInstrument:
+      additionalProperties: false
+      example:
+        paperMadeDate: 2000-01-23T04:56:07.000+00:00
+        commonsPublishedDate: 2000-01-23T04:56:07.000+00:00
+        lordsLayingDate: 2000-01-23T04:56:07.000+00:00
+        proposedNegativeStatutoryInstrumentPaperId: proposedNegativeStatutoryInstrumentPaperId
+        departmentId: 0
+        paperComingIntoForceNote: paperComingIntoForceNote
+        proposedNegativeStatutoryInstrument:
+          name: name
+          id: id
+        link: link
+        procedure:
+          name: name
+          id: id
+          uri: uri
+        layingBodyName: layingBodyName
+        uri: uri
+        paperYear: paperYear
+        commonsLayingDate: 2000-01-23T04:56:07.000+00:00
+        proposedNegativeStatutoryInstrumentPaperName: proposedNegativeStatutoryInstrumentPaperName
+        layingBodyId: layingBodyId
+        layingBodyDepartment:
+          departmentId: 6
+          name: name
+          id: id
+        paperPrefix: paperPrefix
+        procedureName: procedureName
+        name: name
+        paperNumber: 6
+        procedureUri: procedureUri
+        id: id
+        lordsPublishedDate: 2000-01-23T04:56:07.000+00:00
+        paperComingIntoForceDate: 2000-01-23T04:56:07.000+00:00
+      properties:
+        commonsLayingDate:
+          format: date-time
+          nullable: true
+          title: commonsLayingDate
+          type: string
+        commonsPublishedDate:
+          format: date-time
+          nullable: true
+          title: commonsPublishedDate
+          type: string
+        departmentId:
+          format: int32
+          nullable: true
+          title: departmentId
+          type: integer
+        id:
+          nullable: true
+          title: id
+          type: string
+        layingBodyDepartment:
+          $ref: '#/components/schemas/Department'
+        layingBodyId:
+          nullable: true
+          title: layingBodyId
+          type: string
+        layingBodyName:
+          nullable: true
+          title: layingBodyName
+          type: string
+        link:
+          nullable: true
+          title: link
+          type: string
+        lordsLayingDate:
+          format: date-time
+          nullable: true
+          title: lordsLayingDate
+          type: string
+        lordsPublishedDate:
+          format: date-time
+          nullable: true
+          title: lordsPublishedDate
+          type: string
+        name:
+          nullable: true
+          title: name
+          type: string
+        paperComingIntoForceDate:
+          format: date-time
+          nullable: true
+          title: paperComingIntoForceDate
+          type: string
+        paperComingIntoForceNote:
+          nullable: true
+          title: paperComingIntoForceNote
+          type: string
+        paperMadeDate:
+          format: date-time
+          title: paperMadeDate
+          type: string
+        paperNumber:
+          format: int32
+          nullable: true
+          title: paperNumber
+          type: integer
+        paperPrefix:
+          nullable: true
+          title: paperPrefix
+          type: string
+        paperYear:
+          nullable: true
+          title: paperYear
+          type: string
+        procedure:
+          $ref: '#/components/schemas/Procedure'
+        procedureName:
+          nullable: true
+          title: procedureName
+          type: string
+        procedureUri:
+          nullable: true
+          title: procedureUri
+          type: string
+        proposedNegativeStatutoryInstrument:
+          $ref: '#/components/schemas/LaidPaperSummary'
+        proposedNegativeStatutoryInstrumentPaperId:
+          nullable: true
+          title: proposedNegativeStatutoryInstrumentPaperId
+          type: string
+        proposedNegativeStatutoryInstrumentPaperName:
+          nullable: true
+          title: proposedNegativeStatutoryInstrumentPaperName
+          type: string
+        uri:
+          nullable: true
+          title: uri
+          type: string
+      title: StatutoryInstrument
+      type: object
+    StatutoryInstrumentResource:
+      additionalProperties: false
+      example:
+        links:
+        - method: method
+          rel: rel
+          href: href
+        - method: method
+          rel: rel
+          href: href
+        value:
+          paperMadeDate: 2000-01-23T04:56:07.000+00:00
+          commonsPublishedDate: 2000-01-23T04:56:07.000+00:00
+          lordsLayingDate: 2000-01-23T04:56:07.000+00:00
+          proposedNegativeStatutoryInstrumentPaperId: proposedNegativeStatutoryInstrumentPaperId
+          departmentId: 0
+          paperComingIntoForceNote: paperComingIntoForceNote
+          proposedNegativeStatutoryInstrument:
+            name: name
+            id: id
+          link: link
+          procedure:
+            name: name
+            id: id
+            uri: uri
+          layingBodyName: layingBodyName
+          uri: uri
+          paperYear: paperYear
+          commonsLayingDate: 2000-01-23T04:56:07.000+00:00
+          proposedNegativeStatutoryInstrumentPaperName: proposedNegativeStatutoryInstrumentPaperName
+          layingBodyId: layingBodyId
+          layingBodyDepartment:
+            departmentId: 6
+            name: name
+            id: id
+          paperPrefix: paperPrefix
+          procedureName: procedureName
+          name: name
+          paperNumber: 6
+          procedureUri: procedureUri
+          id: id
+          lordsPublishedDate: 2000-01-23T04:56:07.000+00:00
+          paperComingIntoForceDate: 2000-01-23T04:56:07.000+00:00
+      properties:
+        links:
+          items:
+            $ref: '#/components/schemas/Link'
+          nullable: true
+          title: links
+          type: array
+        value:
+          $ref: '#/components/schemas/StatutoryInstrument'
+      title: StatutoryInstrumentResource
+      type: object
+    StatutoryInstrumentResourceCollection:
+      additionalProperties: false
+      example:
+        totalResults: 5
+        itemsPerPage: 1
+        links:
+        - method: method
+          rel: rel
+          href: href
+        - method: method
+          rel: rel
+          href: href
+        items:
+        - links:
+          - method: method
+            rel: rel
+            href: href
+          - method: method
+            rel: rel
+            href: href
+          value:
+            paperMadeDate: 2000-01-23T04:56:07.000+00:00
+            commonsPublishedDate: 2000-01-23T04:56:07.000+00:00
+            lordsLayingDate: 2000-01-23T04:56:07.000+00:00
+            proposedNegativeStatutoryInstrumentPaperId: proposedNegativeStatutoryInstrumentPaperId
+            departmentId: 0
+            paperComingIntoForceNote: paperComingIntoForceNote
+            proposedNegativeStatutoryInstrument:
+              name: name
+              id: id
+            link: link
+            procedure:
+              name: name
+              id: id
+              uri: uri
+            layingBodyName: layingBodyName
+            uri: uri
+            paperYear: paperYear
+            commonsLayingDate: 2000-01-23T04:56:07.000+00:00
+            proposedNegativeStatutoryInstrumentPaperName: proposedNegativeStatutoryInstrumentPaperName
+            layingBodyId: layingBodyId
+            layingBodyDepartment:
+              departmentId: 6
+              name: name
+              id: id
+            paperPrefix: paperPrefix
+            procedureName: procedureName
+            name: name
+            paperNumber: 6
+            procedureUri: procedureUri
+            id: id
+            lordsPublishedDate: 2000-01-23T04:56:07.000+00:00
+            paperComingIntoForceDate: 2000-01-23T04:56:07.000+00:00
+        - links:
+          - method: method
+            rel: rel
+            href: href
+          - method: method
+            rel: rel
+            href: href
+          value:
+            paperMadeDate: 2000-01-23T04:56:07.000+00:00
+            commonsPublishedDate: 2000-01-23T04:56:07.000+00:00
+            lordsLayingDate: 2000-01-23T04:56:07.000+00:00
+            proposedNegativeStatutoryInstrumentPaperId: proposedNegativeStatutoryInstrumentPaperId
+            departmentId: 0
+            paperComingIntoForceNote: paperComingIntoForceNote
+            proposedNegativeStatutoryInstrument:
+              name: name
+              id: id
+            link: link
+            procedure:
+              name: name
+              id: id
+              uri: uri
+            layingBodyName: layingBodyName
+            uri: uri
+            paperYear: paperYear
+            commonsLayingDate: 2000-01-23T04:56:07.000+00:00
+            proposedNegativeStatutoryInstrumentPaperName: proposedNegativeStatutoryInstrumentPaperName
+            layingBodyId: layingBodyId
+            layingBodyDepartment:
+              departmentId: 6
+              name: name
+              id: id
+            paperPrefix: paperPrefix
+            procedureName: procedureName
+            name: name
+            paperNumber: 6
+            procedureUri: procedureUri
+            id: id
+            lordsPublishedDate: 2000-01-23T04:56:07.000+00:00
+            paperComingIntoForceDate: 2000-01-23T04:56:07.000+00:00
+      properties:
+        items:
+          items:
+            $ref: '#/components/schemas/StatutoryInstrumentResource'
+          nullable: true
+          title: items
+          type: array
+        itemsPerPage:
+          format: int32
+          title: itemsPerPage
+          type: integer
+        links:
+          items:
+            $ref: '#/components/schemas/Link'
+          nullable: true
+          title: links
+          type: array
+        totalResults:
+          format: int32
+          title: totalResults
+          type: integer
+      title: StatutoryInstrumentResourceCollection
+      type: object
+    StatutoryInstrumentType:
+      enum:
+      - DraftAffirmative
+      - DraftNegative
+      - MadeAffirmative
+      - MadeNegative
+      title: StatutoryInstrumentType
+      type: string

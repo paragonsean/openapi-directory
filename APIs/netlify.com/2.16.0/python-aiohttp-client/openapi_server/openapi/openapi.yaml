@@ -1,0 +1,6185 @@
+openapi: 3.0.1
+info:
+  contact: {}
+  description: |-
+    Netlify is a hosting service for the programmable web. It understands your documents and provides an API to handle atomic deploys of websites, manage form submissions, inject JavaScript snippets, and much more. This is a REST-style API that uses JSON for serialization and OAuth 2 for authentication.
+
+    This document is an OpenAPI reference for the Netlify API that you can explore. For more detailed instructions for common uses, please visit the [online documentation](https://www.netlify.com/docs/api/). Visit our Community forum to join the conversation about [understanding and using Netlify’s API](https://community.netlify.com/t/common-issue-understanding-and-using-netlifys-api/160).
+
+    Additionally, we have two API clients for your convenience:
+    - [Go Client](https://github.com/netlify/open-api#go-client)
+    - [JS Client](https://github.com/netlify/build/tree/main/packages/js-client)
+  termsOfService: https://www.netlify.com/legal/terms-of-use/
+  title: Netlify's API documentation
+  version: 2.16.0
+  x-apisguru-categories:
+  - cloud
+  x-logo:
+    altText: Netlify
+    href: https://www.netlify.com/docs/
+    url: https://twitter.com/Netlify/profile_image?size=original
+  x-origin:
+  - format: swagger
+    url: https://raw.githubusercontent.com/netlify/open-api/master/swagger.yml
+    version: "2.0"
+  x-providerName: netlify.com
+externalDocs:
+  description: Online documentation
+  url: https://www.netlify.com/docs/api/
+servers:
+- url: https://api.netlify.com/api/v1
+security:
+- netlifyAuth: []
+tags:
+- name: ticket
+  x-displayName: Ticket
+- name: accessToken
+  x-displayName: Access token
+- name: user
+  x-displayName: User
+- name: accountMembership
+  x-displayName: Accounts
+- name: member
+  x-displayName: Member
+- name: accountType
+  x-displayName: Access type
+- name: paymentMethod
+  x-displayName: Payment method
+- name: auditLog
+  x-displayName: Audit log
+- name: site
+  x-displayName: Site
+- name: environmentVariables
+  x-displayName: Environment variables
+- name: file
+  x-displayName: File
+- name: metadata
+  x-displayName: Metadata
+- name: snippet
+  x-displayName: Snippet
+- name: dnsZone
+  x-displayName: DNS zone
+- name: sniCertificate
+  x-displayName: SNI certificate
+- name: deploy
+  x-displayName: Deploy
+- name: deployedBranch
+  x-displayName: Deployed branch
+- name: deployKey
+  x-displayName: Deploy key
+- name: build
+  x-displayName: Build
+- name: buildLogMsg
+  x-displayName: Build log message
+- name: hook
+  x-displayName: Hook
+- name: hookType
+  x-displayName: Hook type
+- name: buildHook
+  x-displayName: Build hook
+- name: service
+  x-displayName: Service
+- name: serviceInstance
+  x-displayName: Service instance
+- name: function
+  x-displayName: Function
+- name: form
+  x-displayName: Form
+- name: submission
+  x-displayName: Form submission
+- name: splitTest
+  x-displayName: Split test
+- name: asset
+  x-displayName: Asset
+- name: assetPublicSignature
+  x-displayName: Asset public signature
+paths:
+  /accounts:
+    get:
+      operationId: list_accounts_for_user
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/accountMembership'
+                type: array
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - accountMembership
+      x-openapi-router-controller: openapi_server.controllers.account_membership_controller
+    post:
+      operationId: create_account
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/accountSetup'
+        required: true
+        x-body-name: accountSetup
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/accountMembership'
+          description: Created
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - accountMembership
+      x-codegen-request-body-name: accountSetup
+      x-openapi-router-controller: openapi_server.controllers.account_membership_controller
+  /accounts/types:
+    get:
+      operationId: list_account_types_for_user
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/accountType'
+                type: array
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - accountType
+      x-openapi-router-controller: openapi_server.controllers.account_type_controller
+  /accounts/{account_id}:
+    delete:
+      operationId: cancel_account
+      parameters:
+      - in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "204":
+          content: {}
+          description: Not Content
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - accountMembership
+      x-openapi-router-controller: openapi_server.controllers.account_membership_controller
+    get:
+      operationId: get_account
+      parameters:
+      - in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/accountMembership'
+                type: array
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - accountMembership
+      x-openapi-router-controller: openapi_server.controllers.account_membership_controller
+    put:
+      operationId: update_account
+      parameters:
+      - in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/accountUpdateSetup'
+        required: false
+        x-body-name: accountUpdateSetup
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/accountMembership'
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - accountMembership
+      x-codegen-request-body-name: accountUpdateSetup
+      x-openapi-router-controller: openapi_server.controllers.account_membership_controller
+  /accounts/{account_id}/audit:
+    get:
+      operationId: list_account_audit_events
+      parameters:
+      - in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      - in: query
+        name: query
+        schema:
+          type: string
+      - in: query
+        name: log_type
+        schema:
+          type: string
+      - in: query
+        name: page
+        schema:
+          format: int32
+          type: integer
+      - in: query
+        name: per_page
+        schema:
+          format: int32
+          type: integer
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/auditLog'
+                type: array
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - auditLog
+      x-openapi-router-controller: openapi_server.controllers.audit_log_controller
+  /accounts/{account_id}/env:
+    get:
+      description: "Returns all environment variables for an account or site. An account\
+        \ corresponds to a team in the Netlify UI. To use this endpoint, your site\
+        \ must no longer be using the <a href=\"https://docs.netlify.com/environment-variables/classic-experience/\"\
+        >classic environment variables experience</a>.  Migrate now with the Netlify\
+        \ UI."
+      operationId: get_env_vars
+      parameters:
+      - description: Scope response to account_id
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      - description: Filter by deploy context
+        in: query
+        name: context_name
+        schema:
+          enum:
+          - all
+          - dev
+          - branch-deploy
+          - deploy-preview
+          - production
+          type: string
+      - description: Filter by scope
+        in: query
+        name: scope
+        schema:
+          enum:
+          - builds
+          - functions
+          - runtime
+          - post-processing
+          type: string
+      - description: "If specified, only return environment variables set on this\
+          \ site"
+        in: query
+        name: site_id
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/envVar'
+                type: array
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - environmentVariables
+      x-openapi-router-controller: openapi_server.controllers.environment_variables_controller
+    post:
+      description: "Creates new environment variables. Granular scopes are available\
+        \ on Pro plans and above.  To use this endpoint, your site must no longer\
+        \ be using the <a href=\"https://docs.netlify.com/environment-variables/classic-experience/\"\
+        >classic environment variables experience</a>.  Migrate now with the Netlify\
+        \ UI."
+      operationId: create_env_vars
+      parameters:
+      - description: Scope response to account_id
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      - description: "If provided, create an environment variable on the site level,\
+          \ not the account level"
+        in: query
+        name: site_id
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              items:
+                $ref: '#/components/schemas/createEnvVars_request_inner'
+              type: array
+        required: false
+        x-body-name: env_vars
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/envVar'
+                type: array
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - environmentVariables
+      x-codegen-request-body-name: env_vars
+      x-openapi-router-controller: openapi_server.controllers.environment_variables_controller
+  /accounts/{account_id}/env/{key}:
+    delete:
+      description: "Deletes an environment variable. To use this endpoint, your site\
+        \ must no longer be using the <a href=\"https://docs.netlify.com/environment-variables/classic-experience/\"\
+        >classic environment variables experience</a>.  Migrate now with the Netlify\
+        \ UI."
+      operationId: delete_env_var
+      parameters:
+      - description: Scope response to account_id
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      - description: The environment variable key (case-sensitive)
+        in: path
+        name: key
+        required: true
+        schema:
+          type: string
+      - description: "If provided, delete the environment variable from this site"
+        in: query
+        name: site_id
+        schema:
+          type: string
+      responses:
+        "204":
+          content: {}
+          description: No Content (success)
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - environmentVariables
+      x-openapi-router-controller: openapi_server.controllers.environment_variables_controller
+    get:
+      description: "Returns an individual environment variable. To use this endpoint,\
+        \ your site must no longer be using the <a href=\"https://docs.netlify.com/environment-variables/classic-experience/\"\
+        >classic environment variables experience</a>.  Migrate now with the Netlify\
+        \ UI."
+      operationId: get_env_var
+      parameters:
+      - description: Scope response to account_id
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      - description: The environment variable key (case-sensitive)
+        in: path
+        name: key
+        required: true
+        schema:
+          type: string
+      - description: "If provided, return the environment variable for a specific\
+          \ site (no merging is performed)"
+        in: query
+        name: site_id
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/envVar'
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - environmentVariables
+      x-openapi-router-controller: openapi_server.controllers.environment_variables_controller
+    patch:
+      description: "Updates or creates a new value for an existing environment variable.\
+        \ To use this endpoint, your site must no longer be using the <a href=\"https://docs.netlify.com/environment-variables/classic-experience/\"\
+        >classic environment variables experience</a>.  Migrate now with the Netlify\
+        \ UI."
+      operationId: set_env_var_value
+      parameters:
+      - description: Scope response to account_id
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      - description: The existing environment variable key name (case-sensitive)
+        in: path
+        name: key
+        required: true
+        schema:
+          type: string
+      - description: "If provided, update an environment variable set on this site"
+        in: query
+        name: site_id
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/setEnvVarValue_request'
+        required: false
+        x-body-name: env_var
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/envVar'
+          description: Created (success)
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - environmentVariables
+      x-codegen-request-body-name: env_var
+      x-openapi-router-controller: openapi_server.controllers.environment_variables_controller
+    put:
+      description: "Updates an existing environment variable and all of its values.\
+        \ Existing values will be replaced by values provided. To use this endpoint,\
+        \ your site must no longer be using the <a href=\"https://docs.netlify.com/environment-variables/classic-experience/\"\
+        >classic environment variables experience</a>.  Migrate now with the Netlify\
+        \ UI."
+      operationId: update_env_var
+      parameters:
+      - description: Scope response to account_id
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      - description: The existing environment variable key name (case-sensitive)
+        in: path
+        name: key
+        required: true
+        schema:
+          type: string
+      - description: "If provided, update an environment variable set on this site"
+        in: query
+        name: site_id
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/createEnvVars_request_inner'
+        required: false
+        x-body-name: env_var
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/envVar'
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - environmentVariables
+      x-codegen-request-body-name: env_var
+      x-openapi-router-controller: openapi_server.controllers.environment_variables_controller
+  /accounts/{account_id}/env/{key}/value/{id}:
+    delete:
+      description: "Deletes a specific environment variable value. To use this endpoint,\
+        \ your site must no longer be using the <a href=\"https://docs.netlify.com/environment-variables/classic-experience/\"\
+        >classic environment variables experience</a>.  Migrate now with the Netlify\
+        \ UI."
+      operationId: delete_env_var_value
+      parameters:
+      - description: Scope response to account_id
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      - description: The environment variable value's ID
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: The environment variable key name (case-sensitive)
+        in: path
+        name: key
+        required: true
+        schema:
+          type: string
+      - description: "If provided, delete the value from an environment variable on\
+          \ this site"
+        in: query
+        name: site_id
+        schema:
+          type: string
+      responses:
+        "204":
+          content: {}
+          description: No Content (success)
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - environmentVariables
+      x-openapi-router-controller: openapi_server.controllers.environment_variables_controller
+  /billing/payment_methods:
+    get:
+      operationId: list_payment_methods_for_user
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/paymentMethod'
+                type: array
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - paymentMethod
+      x-openapi-router-controller: openapi_server.controllers.payment_method_controller
+  /builds/{build_id}:
+    get:
+      operationId: get_site_build
+      parameters:
+      - in: path
+        name: build_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/build'
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - build
+      x-openapi-router-controller: openapi_server.controllers.build_controller
+  /builds/{build_id}/log:
+    post:
+      operationId: update_site_build_log
+      parameters:
+      - in: path
+        name: build_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/buildLogMsg'
+        required: true
+        x-body-name: msg
+      responses:
+        "204":
+          content: {}
+          description: No content
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - buildLogMsg
+      x-codegen-request-body-name: msg
+      x-openapi-router-controller: openapi_server.controllers.build_log_msg_controller
+  /builds/{build_id}/start:
+    post:
+      operationId: notify_build_start
+      parameters:
+      - in: path
+        name: build_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "204":
+          content: {}
+          description: No content
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - build
+      x-openapi-router-controller: openapi_server.controllers.build_controller
+  /deploy_keys:
+    get:
+      operationId: list_deploy_keys
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/deployKey'
+                type: array
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - deployKey
+      x-openapi-router-controller: openapi_server.controllers.deploy_key_controller
+    post:
+      operationId: create_deploy_key
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/deployKey'
+          description: Created
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - deployKey
+      x-openapi-router-controller: openapi_server.controllers.deploy_key_controller
+  /deploy_keys/{key_id}:
+    delete:
+      operationId: delete_deploy_key
+      parameters:
+      - in: path
+        name: key_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "204":
+          content: {}
+          description: Not Content
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - deployKey
+      x-openapi-router-controller: openapi_server.controllers.deploy_key_controller
+    get:
+      operationId: get_deploy_key
+      parameters:
+      - in: path
+        name: key_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/deployKey'
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - deployKey
+      x-openapi-router-controller: openapi_server.controllers.deploy_key_controller
+  /deploys/{deploy_id}:
+    delete:
+      operationId: delete_deploy
+      parameters:
+      - in: path
+        name: deploy_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "204":
+          content: {}
+          description: No content
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - deploy
+      x-openapi-router-controller: openapi_server.controllers.deploy_controller
+    get:
+      operationId: get_deploy
+      parameters:
+      - in: path
+        name: deploy_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/deploy'
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - deploy
+      x-openapi-router-controller: openapi_server.controllers.deploy_controller
+  /deploys/{deploy_id}/cancel:
+    post:
+      operationId: cancel_site_deploy
+      parameters:
+      - in: path
+        name: deploy_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/deploy'
+          description: Cancelled
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - deploy
+      x-openapi-router-controller: openapi_server.controllers.deploy_controller
+  /deploys/{deploy_id}/files/{path}:
+    put:
+      operationId: upload_deploy_file
+      parameters:
+      - in: path
+        name: deploy_id
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: path
+        required: true
+        schema:
+          type: string
+      - in: query
+        name: size
+        schema:
+          type: integer
+      requestBody:
+        content:
+          application/octet-stream:
+            schema:
+              format: binary
+              type: string
+        required: true
+        x-body-name: file_body
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/file'
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - file
+      x-codegen-request-body-name: file_body
+      x-openapi-router-controller: openapi_server.controllers.file_controller
+  /deploys/{deploy_id}/functions/{name}:
+    put:
+      operationId: upload_deploy_function
+      parameters:
+      - in: path
+        name: deploy_id
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: name
+        required: true
+        schema:
+          type: string
+      - in: query
+        name: runtime
+        schema:
+          type: string
+      - in: query
+        name: size
+        schema:
+          type: integer
+      - in: header
+        name: X-Nf-Retry-Count
+        schema:
+          type: integer
+      requestBody:
+        content:
+          application/octet-stream:
+            schema:
+              format: binary
+              type: string
+        required: true
+        x-body-name: file_body
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/function'
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - function
+      x-codegen-request-body-name: file_body
+      x-openapi-router-controller: openapi_server.controllers.function_controller
+  /deploys/{deploy_id}/lock:
+    post:
+      operationId: lock_deploy
+      parameters:
+      - in: path
+        name: deploy_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/deploy'
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - deploy
+      x-openapi-router-controller: openapi_server.controllers.deploy_controller
+  /deploys/{deploy_id}/plugin_runs:
+    post:
+      description: This is an internal-only endpoint.
+      operationId: create_plugin_run
+      parameters:
+      - in: path
+        name: deploy_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/pluginRunData'
+        required: false
+        x-body-name: plugin_run
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/pluginRun'
+          description: CREATED
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - x-internal
+      x-codegen-request-body-name: plugin_run
+      x-openapi-router-controller: openapi_server.controllers.x_internal_controller
+  /deploys/{deploy_id}/unlock:
+    post:
+      operationId: unlock_deploy
+      parameters:
+      - in: path
+        name: deploy_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/deploy'
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - deploy
+      x-openapi-router-controller: openapi_server.controllers.deploy_controller
+  /dns_zones:
+    get:
+      operationId: get_dns_zones
+      parameters:
+      - in: query
+        name: account_slug
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dnsZones'
+          description: get all DNS zones the user has access to
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - dnsZone
+      x-openapi-router-controller: openapi_server.controllers.dns_zone_controller
+    post:
+      operationId: create_dns_zone
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/dnsZoneSetup'
+        required: true
+        x-body-name: DnsZoneParams
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dnsZone'
+          description: Created
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - dnsZone
+      x-codegen-request-body-name: DnsZoneParams
+      x-openapi-router-controller: openapi_server.controllers.dns_zone_controller
+  /dns_zones/{zone_id}:
+    delete:
+      operationId: delete_dns_zone
+      parameters:
+      - in: path
+        name: zone_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "204":
+          content: {}
+          description: delete a single DNS zone
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - dnsZone
+      x-openapi-router-controller: openapi_server.controllers.dns_zone_controller
+    get:
+      operationId: get_dns_zone
+      parameters:
+      - in: path
+        name: zone_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dnsZone'
+          description: get a single DNS zone
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - dnsZone
+      x-openapi-router-controller: openapi_server.controllers.dns_zone_controller
+  /dns_zones/{zone_id}/dns_records:
+    get:
+      operationId: get_dns_records
+      parameters:
+      - in: path
+        name: zone_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dnsRecords'
+          description: get all DNS records for a single DNS zone
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - dnsZone
+      x-openapi-router-controller: openapi_server.controllers.dns_zone_controller
+    post:
+      operationId: create_dns_record
+      parameters:
+      - in: path
+        name: zone_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/dnsRecordCreate'
+        required: true
+        x-body-name: dns_record
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dnsRecord'
+          description: Created
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - dnsZone
+      x-codegen-request-body-name: dns_record
+      x-openapi-router-controller: openapi_server.controllers.dns_zone_controller
+  /dns_zones/{zone_id}/dns_records/{dns_record_id}:
+    delete:
+      operationId: delete_dns_record
+      parameters:
+      - in: path
+        name: zone_id
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: dns_record_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "204":
+          content: {}
+          description: record deleted
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - dnsZone
+      x-openapi-router-controller: openapi_server.controllers.dns_zone_controller
+    get:
+      operationId: get_individual_dns_record
+      parameters:
+      - in: path
+        name: zone_id
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: dns_record_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dnsRecord'
+          description: get a single DNS record
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - dnsZone
+      x-openapi-router-controller: openapi_server.controllers.dns_zone_controller
+  /dns_zones/{zone_id}/transfer:
+    put:
+      operationId: transfer_dns_zone
+      parameters:
+      - in: path
+        name: zone_id
+        required: true
+        schema:
+          type: string
+      - description: the account of the dns zone
+        in: query
+        name: account_id
+        required: true
+        schema:
+          type: string
+      - description: the account you want to transfer the dns zone to
+        in: query
+        name: transfer_account_id
+        required: true
+        schema:
+          type: string
+      - description: the user you want to transfer the dns zone to
+        in: query
+        name: transfer_user_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dnsZone'
+          description: transfer a DNS zone to another account
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - dnsZone
+      x-openapi-router-controller: openapi_server.controllers.dns_zone_controller
+  /forms/{form_id}/submissions:
+    get:
+      operationId: list_form_submissions
+      parameters:
+      - in: path
+        name: form_id
+        required: true
+        schema:
+          type: string
+      - in: query
+        name: page
+        schema:
+          format: int32
+          type: integer
+      - in: query
+        name: per_page
+        schema:
+          format: int32
+          type: integer
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/submission'
+                type: array
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - submission
+      x-openapi-router-controller: openapi_server.controllers.submission_controller
+  /hooks:
+    get:
+      operationId: list_hooks_by_site_id
+      parameters:
+      - in: query
+        name: site_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/hook'
+                type: array
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - hook
+      x-openapi-router-controller: openapi_server.controllers.hook_controller
+    post:
+      operationId: create_hook_by_site_id
+      parameters:
+      - in: query
+        name: site_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/hook'
+        required: true
+        x-body-name: hook
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/hook'
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - hook
+      x-codegen-request-body-name: hook
+      x-openapi-router-controller: openapi_server.controllers.hook_controller
+  /hooks/types:
+    get:
+      operationId: list_hook_types
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/hookType'
+                type: array
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - hookType
+      x-openapi-router-controller: openapi_server.controllers.hook_type_controller
+  /hooks/{hook_id}:
+    delete:
+      operationId: delete_hook
+      parameters:
+      - in: path
+        name: hook_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "204":
+          content: {}
+          description: No content
+      tags:
+      - hook
+      x-openapi-router-controller: openapi_server.controllers.hook_controller
+    get:
+      operationId: get_hook
+      parameters:
+      - in: path
+        name: hook_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/hook'
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - hook
+      x-openapi-router-controller: openapi_server.controllers.hook_controller
+    put:
+      operationId: update_hook
+      parameters:
+      - in: path
+        name: hook_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/hook'
+        required: true
+        x-body-name: hook
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/hook'
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - hook
+      x-codegen-request-body-name: hook
+      x-openapi-router-controller: openapi_server.controllers.hook_controller
+  /hooks/{hook_id}/enable:
+    post:
+      operationId: enable_hook
+      parameters:
+      - in: path
+        name: hook_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/hook'
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - hook
+      x-openapi-router-controller: openapi_server.controllers.hook_controller
+  /oauth/tickets:
+    post:
+      operationId: create_ticket
+      parameters:
+      - in: query
+        name: client_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ticket'
+          description: ok
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - ticket
+      x-openapi-router-controller: openapi_server.controllers.ticket_controller
+  /oauth/tickets/{ticket_id}:
+    get:
+      operationId: show_ticket
+      parameters:
+      - in: path
+        name: ticket_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ticket'
+          description: ok
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - ticket
+      x-openapi-router-controller: openapi_server.controllers.ticket_controller
+  /oauth/tickets/{ticket_id}/exchange:
+    post:
+      operationId: exchange_ticket
+      parameters:
+      - in: path
+        name: ticket_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/accessToken'
+          description: ok
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - accessToken
+      x-openapi-router-controller: openapi_server.controllers.access_token_controller
+  /services/:
+    get:
+      operationId: get_services
+      parameters:
+      - in: query
+        name: search
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/service'
+                type: array
+          description: services
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - service
+      x-openapi-router-controller: openapi_server.controllers.service_controller
+  /services/{addonName}:
+    get:
+      operationId: show_service
+      parameters:
+      - in: path
+        name: addonName
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/service'
+          description: services
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - service
+      x-openapi-router-controller: openapi_server.controllers.service_controller
+  /services/{addonName}/manifest:
+    get:
+      operationId: show_service_manifest
+      parameters:
+      - in: path
+        name: addonName
+        required: true
+        schema:
+          type: string
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                type: object
+          description: retrieving from provider
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - service
+      x-openapi-router-controller: openapi_server.controllers.service_controller
+  /sites:
+    get:
+      description: "**Note:** Environment variable keys and values will soon be moved\
+        \ from `build_settings.env` and `repo.env` to a new endpoint. Please use [getEnvVars](#tag/environmentVariables/operation/getEnvVars)\
+        \ to retrieve site environment variables."
+      operationId: list_sites
+      parameters:
+      - in: query
+        name: name
+        schema:
+          type: string
+      - in: query
+        name: filter
+        schema:
+          enum:
+          - all
+          - owner
+          - guest
+          type: string
+      - in: query
+        name: page
+        schema:
+          format: int32
+          type: integer
+      - in: query
+        name: per_page
+        schema:
+          format: int32
+          type: integer
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/site'
+                type: array
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - site
+      x-openapi-router-controller: openapi_server.controllers.site_controller
+    post:
+      description: "**Note:** Environment variable keys and values will soon be moved\
+        \ from `build_settings.env` and `repo.env` to a new endpoint. Please use [createEnvVars](#tag/environmentVariables/operation/createEnvVars)\
+        \ to create environment variables for a site."
+      operationId: create_site
+      parameters:
+      - in: query
+        name: configure_dns
+        schema:
+          type: boolean
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/siteSetup'
+        required: true
+        x-body-name: site
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/site'
+          description: Created
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - site
+      x-codegen-request-body-name: site
+      x-openapi-router-controller: openapi_server.controllers.site_controller
+  /sites/{site_id}:
+    delete:
+      operationId: delete_site
+      parameters:
+      - in: path
+        name: site_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "204":
+          content: {}
+          description: Deleted
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - site
+      x-openapi-router-controller: openapi_server.controllers.site_controller
+    get:
+      description: "**Note:** Environment variable keys and values will soon be moved\
+        \ from `build_settings.env` and `repo.env` to a new endpoint. Please use [getEnvVars](#tag/environmentVariables/operation/getEnvVars)\
+        \ to retrieve site environment variables."
+      operationId: get_site
+      parameters:
+      - in: path
+        name: site_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/site'
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - site
+      x-openapi-router-controller: openapi_server.controllers.site_controller
+    patch:
+      description: "**Note:** Environment variable keys and values will soon be moved\
+        \ from `build_settings.env` and `repo.env` to a new endpoint. Please use [updateEnvVar](#tag/environmentVariables/operation/updateEnvVar)\
+        \ to update a site's environment variables."
+      operationId: update_site
+      parameters:
+      - in: path
+        name: site_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/siteSetup'
+        required: true
+        x-body-name: site
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/site'
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - site
+      x-codegen-request-body-name: site
+      x-openapi-router-controller: openapi_server.controllers.site_controller
+  /sites/{site_id}/assets:
+    get:
+      operationId: list_site_assets
+      parameters:
+      - in: path
+        name: site_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/asset'
+                type: array
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - asset
+      x-openapi-router-controller: openapi_server.controllers.asset_controller
+    post:
+      operationId: create_site_asset
+      parameters:
+      - in: path
+        name: site_id
+        required: true
+        schema:
+          type: string
+      - in: query
+        name: name
+        required: true
+        schema:
+          type: string
+      - in: query
+        name: size
+        required: true
+        schema:
+          format: int64
+          type: integer
+      - in: query
+        name: content_type
+        required: true
+        schema:
+          type: string
+      - in: query
+        name: visibility
+        schema:
+          type: string
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/assetSignature'
+          description: Created
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - asset
+      x-openapi-router-controller: openapi_server.controllers.asset_controller
+  /sites/{site_id}/assets/{asset_id}:
+    delete:
+      operationId: delete_site_asset
+      parameters:
+      - in: path
+        name: site_id
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: asset_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "204":
+          content: {}
+          description: Deleted
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - asset
+      x-openapi-router-controller: openapi_server.controllers.asset_controller
+    get:
+      operationId: get_site_asset_info
+      parameters:
+      - in: path
+        name: site_id
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: asset_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/asset'
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - asset
+      x-openapi-router-controller: openapi_server.controllers.asset_controller
+    put:
+      operationId: update_site_asset
+      parameters:
+      - in: path
+        name: site_id
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: asset_id
+        required: true
+        schema:
+          type: string
+      - in: query
+        name: state
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/asset'
+          description: Updated
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - asset
+      x-openapi-router-controller: openapi_server.controllers.asset_controller
+  /sites/{site_id}/assets/{asset_id}/public_signature:
+    get:
+      operationId: get_site_asset_public_signature
+      parameters:
+      - in: path
+        name: site_id
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: asset_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/assetPublicSignature'
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - assetPublicSignature
+      x-openapi-router-controller: openapi_server.controllers.asset_public_signature_controller
+  /sites/{site_id}/build_hooks:
+    get:
+      operationId: list_site_build_hooks
+      parameters:
+      - in: path
+        name: site_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/buildHook'
+                type: array
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - buildHook
+      x-openapi-router-controller: openapi_server.controllers.build_hook_controller
+    post:
+      operationId: create_site_build_hook
+      parameters:
+      - in: path
+        name: site_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/buildHookSetup'
+        required: true
+        x-body-name: buildHook
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/buildHook'
+          description: Created
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - buildHook
+      x-codegen-request-body-name: buildHook
+      x-openapi-router-controller: openapi_server.controllers.build_hook_controller
+  /sites/{site_id}/build_hooks/{id}:
+    delete:
+      operationId: delete_site_build_hook
+      parameters:
+      - in: path
+        name: site_id
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        "204":
+          content: {}
+          description: No content
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - buildHook
+      x-openapi-router-controller: openapi_server.controllers.build_hook_controller
+    get:
+      operationId: get_site_build_hook
+      parameters:
+      - in: path
+        name: site_id
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/buildHook'
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - buildHook
+      x-openapi-router-controller: openapi_server.controllers.build_hook_controller
+    put:
+      operationId: update_site_build_hook
+      parameters:
+      - in: path
+        name: site_id
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/buildHookSetup'
+        required: true
+        x-body-name: buildHook
+      responses:
+        "204":
+          content: {}
+          description: No content
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - buildHook
+      x-codegen-request-body-name: buildHook
+      x-openapi-router-controller: openapi_server.controllers.build_hook_controller
+  /sites/{site_id}/builds:
+    get:
+      operationId: list_site_builds
+      parameters:
+      - in: path
+        name: site_id
+        required: true
+        schema:
+          type: string
+      - in: query
+        name: page
+        schema:
+          format: int32
+          type: integer
+      - in: query
+        name: per_page
+        schema:
+          format: int32
+          type: integer
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/build'
+                type: array
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - build
+      x-openapi-router-controller: openapi_server.controllers.build_controller
+    post:
+      operationId: create_site_build
+      parameters:
+      - in: path
+        name: site_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/buildSetup'
+        required: false
+        x-body-name: build
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/build'
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - build
+      x-codegen-request-body-name: build
+      x-openapi-router-controller: openapi_server.controllers.build_controller
+  /sites/{site_id}/deployed-branches:
+    get:
+      operationId: list_site_deployed_branches
+      parameters:
+      - in: path
+        name: site_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/deployedBranch'
+                type: array
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - deployedBranch
+      x-openapi-router-controller: openapi_server.controllers.deployed_branch_controller
+  /sites/{site_id}/deploys:
+    get:
+      operationId: list_site_deploys
+      parameters:
+      - in: path
+        name: site_id
+        required: true
+        schema:
+          type: string
+      - in: query
+        name: deploy-previews
+        schema:
+          type: boolean
+      - in: query
+        name: production
+        schema:
+          type: boolean
+      - in: query
+        name: state
+        schema:
+          enum:
+          - new
+          - pending_review
+          - accepted
+          - rejected
+          - enqueued
+          - building
+          - uploading
+          - uploaded
+          - preparing
+          - prepared
+          - processing
+          - ready
+          - error
+          - retrying
+          type: string
+      - in: query
+        name: branch
+        schema:
+          type: string
+      - in: query
+        name: latest-published
+        schema:
+          type: boolean
+      - in: query
+        name: page
+        schema:
+          format: int32
+          type: integer
+      - in: query
+        name: per_page
+        schema:
+          format: int32
+          type: integer
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/deploy'
+                type: array
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - deploy
+      x-openapi-router-controller: openapi_server.controllers.deploy_controller
+    post:
+      operationId: create_site_deploy
+      parameters:
+      - in: path
+        name: site_id
+        required: true
+        schema:
+          type: string
+      - in: query
+        name: deploy_previews
+        schema:
+          type: boolean
+      - in: query
+        name: production
+        schema:
+          type: boolean
+      - in: query
+        name: state
+        schema:
+          enum:
+          - new
+          - pending_review
+          - accepted
+          - rejected
+          - enqueued
+          - building
+          - uploading
+          - uploaded
+          - preparing
+          - prepared
+          - processing
+          - ready
+          - error
+          - retrying
+          type: string
+      - in: query
+        name: branch
+        schema:
+          type: string
+      - in: query
+        name: latest_published
+        schema:
+          type: boolean
+      - in: query
+        name: title
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/deployFiles'
+        required: true
+        x-body-name: deploy
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/deploy'
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - deploy
+      x-codegen-request-body-name: deploy
+      x-openapi-router-controller: openapi_server.controllers.deploy_controller
+  /sites/{site_id}/deploys/{deploy_id}:
+    delete:
+      operationId: delete_site_deploy
+      parameters:
+      - in: path
+        name: deploy_id
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: site_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "204":
+          content: {}
+          description: No content
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - deploy
+      x-openapi-router-controller: openapi_server.controllers.deploy_controller
+    get:
+      operationId: get_site_deploy
+      parameters:
+      - in: path
+        name: site_id
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: deploy_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/deploy'
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - deploy
+      x-openapi-router-controller: openapi_server.controllers.deploy_controller
+    put:
+      operationId: update_site_deploy
+      parameters:
+      - in: path
+        name: site_id
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: deploy_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/deployFiles'
+        required: true
+        x-body-name: deploy
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/deploy'
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - deploy
+      x-codegen-request-body-name: deploy
+      x-openapi-router-controller: openapi_server.controllers.deploy_controller
+  /sites/{site_id}/deploys/{deploy_id}/restore:
+    post:
+      operationId: restore_site_deploy
+      parameters:
+      - in: path
+        name: site_id
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: deploy_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/deploy'
+          description: Created
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - deploy
+      x-openapi-router-controller: openapi_server.controllers.deploy_controller
+  /sites/{site_id}/dns:
+    get:
+      operationId: get_dns_for_site
+      parameters:
+      - in: path
+        name: site_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/dnsZone'
+                type: array
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - dnsZone
+      x-openapi-router-controller: openapi_server.controllers.dns_zone_controller
+    put:
+      operationId: configure_dns_for_site
+      parameters:
+      - in: path
+        name: site_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/dnsZone'
+                type: array
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - dnsZone
+      x-openapi-router-controller: openapi_server.controllers.dns_zone_controller
+  /sites/{site_id}/files:
+    get:
+      operationId: list_site_files
+      parameters:
+      - in: path
+        name: site_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/file'
+                type: array
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - file
+      x-openapi-router-controller: openapi_server.controllers.file_controller
+  /sites/{site_id}/files/{file_path}:
+    get:
+      operationId: get_site_file_by_path_name
+      parameters:
+      - in: path
+        name: site_id
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: file_path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/file'
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - file
+      x-openapi-router-controller: openapi_server.controllers.file_controller
+  /sites/{site_id}/forms:
+    get:
+      operationId: list_site_forms
+      parameters:
+      - in: path
+        name: site_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/form'
+                type: array
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - form
+      x-openapi-router-controller: openapi_server.controllers.form_controller
+  /sites/{site_id}/forms/{form_id}:
+    delete:
+      operationId: delete_site_form
+      parameters:
+      - in: path
+        name: site_id
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: form_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "204":
+          content: {}
+          description: Deleted
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - form
+      x-openapi-router-controller: openapi_server.controllers.form_controller
+  /sites/{site_id}/metadata:
+    get:
+      operationId: get_site_metadata
+      parameters:
+      - in: path
+        name: site_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/metadata'
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - metadata
+      x-openapi-router-controller: openapi_server.controllers.metadata_controller
+    put:
+      operationId: update_site_metadata
+      parameters:
+      - in: path
+        name: site_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/metadata'
+        required: true
+        x-body-name: metadata
+      responses:
+        "204":
+          content: {}
+          description: No content
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - metadata
+      x-codegen-request-body-name: metadata
+      x-openapi-router-controller: openapi_server.controllers.metadata_controller
+  /sites/{site_id}/plugin_runs/latest:
+    get:
+      description: This is an internal-only endpoint.
+      operationId: get_latest_plugin_runs
+      parameters:
+      - in: path
+        name: site_id
+        required: true
+        schema:
+          type: string
+      - explode: false
+        in: query
+        name: packages
+        required: true
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - in: query
+        name: state
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/pluginRun'
+                type: array
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - x-internal
+      x-openapi-router-controller: openapi_server.controllers.x_internal_controller
+  /sites/{site_id}/plugins/{package}:
+    put:
+      description: This is an internal-only endpoint.
+      operationId: update_plugin
+      parameters:
+      - in: path
+        name: site_id
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: package
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/pluginParams'
+        required: false
+        x-body-name: plugin_params
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/plugin'
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - x-internal
+      x-codegen-request-body-name: plugin_params
+      x-openapi-router-controller: openapi_server.controllers.x_internal_controller
+  /sites/{site_id}/rollback:
+    put:
+      operationId: rollback_site_deploy
+      parameters:
+      - in: path
+        name: site_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "204":
+          content: {}
+          description: No content
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - deploy
+      x-openapi-router-controller: openapi_server.controllers.deploy_controller
+  /sites/{site_id}/service-instances:
+    get:
+      operationId: list_service_instances_for_site
+      parameters:
+      - in: path
+        name: site_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/serviceInstance'
+                type: array
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - serviceInstance
+      x-openapi-router-controller: openapi_server.controllers.service_instance_controller
+  /sites/{site_id}/services/{addon}/instances:
+    post:
+      operationId: create_service_instance
+      parameters:
+      - in: path
+        name: site_id
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: addon
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+        required: true
+        x-body-name: config
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/serviceInstance'
+          description: Created
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - serviceInstance
+      x-codegen-request-body-name: config
+      x-openapi-router-controller: openapi_server.controllers.service_instance_controller
+  /sites/{site_id}/services/{addon}/instances/{instance_id}:
+    delete:
+      operationId: delete_service_instance
+      parameters:
+      - in: path
+        name: site_id
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: addon
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: instance_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "204":
+          content: {}
+          description: Deleted
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - serviceInstance
+      x-openapi-router-controller: openapi_server.controllers.service_instance_controller
+    get:
+      operationId: show_service_instance
+      parameters:
+      - in: path
+        name: site_id
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: addon
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: instance_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/serviceInstance'
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - serviceInstance
+      x-openapi-router-controller: openapi_server.controllers.service_instance_controller
+    put:
+      operationId: update_service_instance
+      parameters:
+      - in: path
+        name: site_id
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: addon
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: instance_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+        required: true
+        x-body-name: config
+      responses:
+        "204":
+          content: {}
+          description: No Content
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - serviceInstance
+      x-codegen-request-body-name: config
+      x-openapi-router-controller: openapi_server.controllers.service_instance_controller
+  /sites/{site_id}/snippets:
+    get:
+      operationId: list_site_snippets
+      parameters:
+      - in: path
+        name: site_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/snippet'
+                type: array
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - snippet
+      x-openapi-router-controller: openapi_server.controllers.snippet_controller
+    post:
+      operationId: create_site_snippet
+      parameters:
+      - in: path
+        name: site_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/snippet'
+        required: true
+        x-body-name: snippet
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/snippet'
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - snippet
+      x-codegen-request-body-name: snippet
+      x-openapi-router-controller: openapi_server.controllers.snippet_controller
+  /sites/{site_id}/snippets/{snippet_id}:
+    delete:
+      operationId: delete_site_snippet
+      parameters:
+      - in: path
+        name: site_id
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: snippet_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "204":
+          content: {}
+          description: No content
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - snippet
+      x-openapi-router-controller: openapi_server.controllers.snippet_controller
+    get:
+      operationId: get_site_snippet
+      parameters:
+      - in: path
+        name: site_id
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: snippet_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/snippet'
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - snippet
+      x-openapi-router-controller: openapi_server.controllers.snippet_controller
+    put:
+      operationId: update_site_snippet
+      parameters:
+      - in: path
+        name: site_id
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: snippet_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/snippet'
+        required: true
+        x-body-name: snippet
+      responses:
+        "204":
+          content: {}
+          description: No content
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - snippet
+      x-codegen-request-body-name: snippet
+      x-openapi-router-controller: openapi_server.controllers.snippet_controller
+  /sites/{site_id}/ssl:
+    get:
+      operationId: show_site_tls_certificate
+      parameters:
+      - in: path
+        name: site_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/sniCertificate'
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - sniCertificate
+      x-openapi-router-controller: openapi_server.controllers.sni_certificate_controller
+    post:
+      operationId: provision_site_tls_certificate
+      parameters:
+      - in: path
+        name: site_id
+        required: true
+        schema:
+          type: string
+      - in: query
+        name: certificate
+        schema:
+          type: string
+      - in: query
+        name: key
+        schema:
+          type: string
+      - in: query
+        name: ca_certificates
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/sniCertificate'
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - sniCertificate
+      x-openapi-router-controller: openapi_server.controllers.sni_certificate_controller
+  /sites/{site_id}/submissions:
+    get:
+      operationId: list_site_submissions
+      parameters:
+      - in: path
+        name: site_id
+        required: true
+        schema:
+          type: string
+      - in: query
+        name: page
+        schema:
+          format: int32
+          type: integer
+      - in: query
+        name: per_page
+        schema:
+          format: int32
+          type: integer
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/submission'
+                type: array
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - submission
+      x-openapi-router-controller: openapi_server.controllers.submission_controller
+  /sites/{site_id}/traffic_splits:
+    get:
+      operationId: get_split_tests
+      parameters:
+      - in: path
+        name: site_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/splitTests'
+          description: split_tests
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - splitTest
+      x-openapi-router-controller: openapi_server.controllers.split_test_controller
+    post:
+      operationId: create_split_test
+      parameters:
+      - in: path
+        name: site_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/splitTestSetup'
+        required: true
+        x-body-name: branch_tests
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/splitTest'
+          description: Created
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - splitTest
+      x-codegen-request-body-name: branch_tests
+      x-openapi-router-controller: openapi_server.controllers.split_test_controller
+  /sites/{site_id}/traffic_splits/{split_test_id}:
+    get:
+      operationId: get_split_test
+      parameters:
+      - in: path
+        name: site_id
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: split_test_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/splitTest'
+          description: split_test
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - splitTest
+      x-openapi-router-controller: openapi_server.controllers.split_test_controller
+    put:
+      operationId: update_split_test
+      parameters:
+      - in: path
+        name: site_id
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: split_test_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/splitTestSetup'
+        required: true
+        x-body-name: branch_tests
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/splitTest'
+          description: Created
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - splitTest
+      x-codegen-request-body-name: branch_tests
+      x-openapi-router-controller: openapi_server.controllers.split_test_controller
+  /sites/{site_id}/traffic_splits/{split_test_id}/publish:
+    post:
+      operationId: enable_split_test
+      parameters:
+      - in: path
+        name: site_id
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: split_test_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "204":
+          content: {}
+          description: enable
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - splitTest
+      x-openapi-router-controller: openapi_server.controllers.split_test_controller
+  /sites/{site_id}/traffic_splits/{split_test_id}/unpublish:
+    post:
+      operationId: disable_split_test
+      parameters:
+      - in: path
+        name: site_id
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: split_test_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "204":
+          content: {}
+          description: disabled
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - splitTest
+      x-openapi-router-controller: openapi_server.controllers.split_test_controller
+  /sites/{site_id}/unlink_repo:
+    put:
+      description: |-
+        [Beta] Unlinks the repo from the site.
+
+        This action will also:
+        - Delete associated deploy keys
+        - Delete outgoing webhooks for the repo
+        - Delete the site's build hooks
+      operationId: unlink_site_repo
+      parameters:
+      - in: path
+        name: site_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/site'
+          description: OK
+        "404":
+          content: {}
+          description: Site not found
+      tags:
+      - site
+      x-openapi-router-controller: openapi_server.controllers.site_controller
+  /submissions/{submission_id}:
+    delete:
+      operationId: delete_submission
+      parameters:
+      - in: path
+        name: submission_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "204":
+          content: {}
+          description: Deleted
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - submission
+      x-openapi-router-controller: openapi_server.controllers.submission_controller
+    get:
+      operationId: list_form_submission
+      parameters:
+      - in: path
+        name: submission_id
+        required: true
+        schema:
+          type: string
+      - in: query
+        name: query
+        schema:
+          type: string
+      - in: query
+        name: page
+        schema:
+          format: int32
+          type: integer
+      - in: query
+        name: per_page
+        schema:
+          format: int32
+          type: integer
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/submission'
+                type: array
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - submission
+      x-openapi-router-controller: openapi_server.controllers.submission_controller
+  /user:
+    get:
+      operationId: get_current_user
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/user'
+                type: array
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - user
+      x-openapi-router-controller: openapi_server.controllers.user_controller
+  /{account_id}/builds/status:
+    get:
+      operationId: get_account_build_status
+      parameters:
+      - in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/buildStatus'
+                type: array
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - build
+      x-openapi-router-controller: openapi_server.controllers.build_controller
+  /{account_slug}/members:
+    get:
+      operationId: list_members_for_account
+      parameters:
+      - in: path
+        name: account_slug
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/member'
+                type: array
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - member
+      x-openapi-router-controller: openapi_server.controllers.member_controller
+    post:
+      operationId: add_member_to_account
+      parameters:
+      - in: path
+        name: account_slug
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/accountAddMemberSetup'
+        required: true
+        x-body-name: accountAddMemberSetup
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/member'
+                type: array
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - member
+      x-codegen-request-body-name: accountAddMemberSetup
+      x-openapi-router-controller: openapi_server.controllers.member_controller
+  /{account_slug}/members/{member_id}:
+    delete:
+      operationId: remove_account_member
+      parameters:
+      - in: path
+        name: account_slug
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: member_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "204":
+          content: {}
+          description: Not Content
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - member
+      x-openapi-router-controller: openapi_server.controllers.member_controller
+    get:
+      operationId: get_account_member
+      parameters:
+      - in: path
+        name: account_slug
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: member_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/member'
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - member
+      x-openapi-router-controller: openapi_server.controllers.member_controller
+    put:
+      operationId: update_account_member
+      parameters:
+      - in: path
+        name: account_slug
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: member_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/accountUpdateMemberSetup'
+        required: true
+        x-body-name: accountUpdateMemberSetup
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/member'
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - member
+      x-codegen-request-body-name: accountUpdateMemberSetup
+      x-openapi-router-controller: openapi_server.controllers.member_controller
+  /{account_slug}/sites:
+    get:
+      description: "**Note:** Environment variable keys and values will soon be moved\
+        \ from `build_settings.env` and `repo.env` to a new endpoint. Please use [getEnvVars](#tag/environmentVariables/operation/getEnvVars)\
+        \ to retrieve site environment variables."
+      operationId: list_sites_for_account
+      parameters:
+      - in: query
+        name: name
+        schema:
+          type: string
+      - in: path
+        name: account_slug
+        required: true
+        schema:
+          type: string
+      - in: query
+        name: page
+        schema:
+          format: int32
+          type: integer
+      - in: query
+        name: per_page
+        schema:
+          format: int32
+          type: integer
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/site'
+                type: array
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - site
+      x-openapi-router-controller: openapi_server.controllers.site_controller
+    post:
+      description: "**Note:** Environment variable keys and values will soon be moved\
+        \ from `build_settings.env` and `repo.env` to a new endpoint. Please use [createEnvVars](#tag/environmentVariables/operation/createEnvVars)\
+        \ to create environment variables for a site."
+      operationId: create_site_in_team
+      parameters:
+      - in: query
+        name: configure_dns
+        schema:
+          type: boolean
+      - in: path
+        name: account_slug
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/siteSetup'
+        required: false
+        x-body-name: site
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/site'
+          description: Created
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: error
+      tags:
+      - site
+      x-codegen-request-body-name: site
+      x-openapi-router-controller: openapi_server.controllers.site_controller
+components:
+  parameters:
+    page:
+      in: query
+      name: page
+      schema:
+        format: int32
+        type: integer
+    perPage:
+      in: query
+      name: per_page
+      schema:
+        format: int32
+        type: integer
+    retryCount:
+      in: header
+      name: X-Nf-Retry-Count
+      schema:
+        type: integer
+  responses:
+    error:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error'
+      description: error
+  schemas:
+    accessToken:
+      example:
+        access_token: access_token
+        user_email: user_email
+        user_id: user_id
+        created_at: created_at
+        id: id
+      properties:
+        access_token:
+          title: access_token
+          type: string
+        created_at:
+          format: dateTime
+          title: created_at
+          type: string
+        id:
+          title: id
+          type: string
+        user_email:
+          title: user_email
+          type: string
+        user_id:
+          title: user_id
+          type: string
+      title: accessToken
+      type: object
+    accountAddMemberSetup:
+      properties:
+        email:
+          title: email
+          type: string
+        role:
+          enum:
+          - Owner
+          - Collaborator
+          - Controller
+          title: role
+          type: string
+      title: accountAddMemberSetup
+      type: object
+    accountMembership:
+      example:
+        billing_period: billing_period
+        billing_details: billing_details
+        type_name: type_name
+        capabilities:
+          collaborators:
+            used: 6
+            included: 0
+          sites:
+            used: 6
+            included: 0
+        type_id: type_id
+        created_at: created_at
+        billing_name: billing_name
+        type: type
+        payment_method_id: payment_method_id
+        updated_at: updated_at
+        roles_allowed:
+        - roles_allowed
+        - roles_allowed
+        billing_email: billing_email
+        name: name
+        id: id
+        owner_ids:
+        - owner_ids
+        - owner_ids
+        slug: slug
+      properties:
+        billing_details:
+          title: billing_details
+          type: string
+        billing_email:
+          title: billing_email
+          type: string
+        billing_name:
+          title: billing_name
+          type: string
+        billing_period:
+          title: billing_period
+          type: string
+        capabilities:
+          $ref: '#/components/schemas/accountMembership_capabilities'
+        created_at:
+          format: dateTime
+          title: created_at
+          type: string
+        id:
+          title: id
+          type: string
+        name:
+          title: name
+          type: string
+        owner_ids:
+          items:
+            type: string
+          title: owner_ids
+          type: array
+        payment_method_id:
+          title: payment_method_id
+          type: string
+        roles_allowed:
+          items:
+            type: string
+          title: roles_allowed
+          type: array
+        slug:
+          title: slug
+          type: string
+        type:
+          title: type
+          type: string
+        type_id:
+          title: type_id
+          type: string
+        type_name:
+          title: type_name
+          type: string
+        updated_at:
+          format: dateTime
+          title: updated_at
+          type: string
+      title: accountMembership
+      type: object
+    accountSetup:
+      properties:
+        extra_seats_block:
+          title: extra_seats_block
+          type: integer
+        name:
+          title: name
+          type: string
+        payment_method_id:
+          title: payment_method_id
+          type: string
+        period:
+          enum:
+          - monthly
+          - yearly
+          title: period
+          type: string
+        type_id:
+          title: type_id
+          type: string
+      required:
+      - name
+      - type_id
+      title: accountSetup
+      type: object
+    accountType:
+      example:
+        yearly_dollar_price: 1
+        capabilities: "{}"
+        yearly_seats_addon_dollar_price: 5
+        name: name
+        description: description
+        id: id
+        monthly_dollar_price: 0
+        monthly_seats_addon_dollar_price: 6
+      properties:
+        capabilities:
+          properties: {}
+          title: capabilities
+          type: object
+        description:
+          title: description
+          type: string
+        id:
+          title: id
+          type: string
+        monthly_dollar_price:
+          title: monthly_dollar_price
+          type: integer
+        monthly_seats_addon_dollar_price:
+          title: monthly_seats_addon_dollar_price
+          type: integer
+        name:
+          title: name
+          type: string
+        yearly_dollar_price:
+          title: yearly_dollar_price
+          type: integer
+        yearly_seats_addon_dollar_price:
+          title: yearly_seats_addon_dollar_price
+          type: integer
+      title: accountType
+      type: object
+    accountUpdateMemberSetup:
+      properties:
+        role:
+          enum:
+          - Owner
+          - Collaborator
+          - Controller
+          title: role
+          type: string
+        site_access:
+          enum:
+          - all
+          - none
+          - selected
+          title: site_access
+          type: string
+        site_ids:
+          items:
+            type: string
+          title: site_ids
+          type: array
+      title: accountUpdateMemberSetup
+      type: object
+    accountUpdateSetup:
+      properties:
+        billing_details:
+          title: billing_details
+          type: string
+        billing_email:
+          title: billing_email
+          type: string
+        billing_name:
+          title: billing_name
+          type: string
+        extra_seats_block:
+          title: extra_seats_block
+          type: integer
+        name:
+          title: name
+          type: string
+        slug:
+          title: slug
+          type: string
+        type_id:
+          title: type_id
+          type: string
+      title: accountUpdateSetup
+      type: object
+    accountUsageCapability:
+      example:
+        used: 6
+        included: 0
+      properties:
+        included:
+          title: included
+          type: integer
+        used:
+          title: used
+          type: integer
+      title: accountUsageCapability
+      type: object
+    asset:
+      example:
+        content_type: content_type
+        size: 0
+        updated_at: updated_at
+        visibility: visibility
+        creator_id: creator_id
+        name: name
+        site_id: site_id
+        created_at: created_at
+        id: id
+        state: state
+        key: key
+        url: url
+      properties:
+        content_type:
+          title: content_type
+          type: string
+        created_at:
+          format: dateTime
+          title: created_at
+          type: string
+        creator_id:
+          title: creator_id
+          type: string
+        id:
+          title: id
+          type: string
+        key:
+          title: key
+          type: string
+        name:
+          title: name
+          type: string
+        site_id:
+          title: site_id
+          type: string
+        size:
+          format: int64
+          title: size
+          type: integer
+        state:
+          title: state
+          type: string
+        updated_at:
+          format: dateTime
+          title: updated_at
+          type: string
+        url:
+          title: url
+          type: string
+        visibility:
+          title: visibility
+          type: string
+      title: asset
+      type: object
+    assetForm:
+      example:
+        fields:
+          key: fields
+        url: url
+      properties:
+        fields:
+          additionalProperties:
+            type: string
+          title: fields
+          type: object
+        url:
+          title: url
+          type: string
+      title: assetForm
+      type: object
+    assetPublicSignature:
+      example:
+        url: url
+      properties:
+        url:
+          title: url
+          type: string
+      title: assetPublicSignature
+      type: object
+    assetSignature:
+      example:
+        form:
+          fields:
+            key: fields
+          url: url
+        asset:
+          content_type: content_type
+          size: 0
+          updated_at: updated_at
+          visibility: visibility
+          creator_id: creator_id
+          name: name
+          site_id: site_id
+          created_at: created_at
+          id: id
+          state: state
+          key: key
+          url: url
+      properties:
+        asset:
+          $ref: '#/components/schemas/asset'
+        form:
+          $ref: '#/components/schemas/assetForm'
+      title: assetSignature
+      type: object
+    auditLog:
+      example:
+        account_id: account_id
+        payload:
+          key: "{}"
+        id: id
+      properties:
+        account_id:
+          title: account_id
+          type: string
+        id:
+          title: id
+          type: string
+        payload:
+          additionalProperties:
+            properties: {}
+            type: object
+          title: payload
+          type: object
+      title: auditLog
+      type: object
+    build:
+      example:
+        created_at: created_at
+        id: id
+        error: error
+        done: true
+        sha: sha
+        deploy_id: deploy_id
+      properties:
+        created_at:
+          format: dateTime
+          title: created_at
+          type: string
+        deploy_id:
+          title: deploy_id
+          type: string
+        done:
+          title: done
+          type: boolean
+        error:
+          title: error
+          type: string
+        id:
+          title: id
+          type: string
+        sha:
+          title: sha
+          type: string
+      title: build
+      type: object
+    buildHook:
+      example:
+        site_id: site_id
+        created_at: created_at
+        id: id
+        title: title
+        branch: branch
+        url: url
+      properties:
+        branch:
+          title: branch
+          type: string
+        created_at:
+          format: dateTime
+          title: created_at
+          type: string
+        id:
+          title: id
+          type: string
+        site_id:
+          title: site_id
+          type: string
+        title:
+          title: title
+          type: string
+        url:
+          title: url
+          type: string
+      title: buildHook
+      type: object
+    buildHookSetup:
+      properties:
+        branch:
+          title: branch
+          type: string
+        title:
+          title: title
+          type: string
+      title: buildHookSetup
+      type: object
+    buildLogMsg:
+      properties:
+        error:
+          title: error
+          type: boolean
+        message:
+          title: message
+          type: string
+        section:
+          enum:
+          - initializing
+          - building
+          - deploying
+          - cleanup
+          - postprocessing
+          title: section
+          type: string
+      title: buildLogMsg
+      type: object
+    buildSetup:
+      properties:
+        clear_cache:
+          title: clear_cache
+          type: boolean
+        image:
+          title: image
+          type: string
+      title: buildSetup
+      type: object
+    buildStatus:
+      example:
+        enqueued: 1
+        minutes:
+          current: 5
+          previous: 2
+          last_updated_at: last_updated_at
+          period_end_date: period_end_date
+          included_minutes: included_minutes
+          period_start_date: period_start_date
+          included_minutes_with_packs: included_minutes_with_packs
+          current_average_sec: 5
+        pending_concurrency: 7
+        active: 0
+        build_count: 6
+      properties:
+        active:
+          title: active
+          type: integer
+        build_count:
+          title: build_count
+          type: integer
+        enqueued:
+          title: enqueued
+          type: integer
+        minutes:
+          $ref: '#/components/schemas/buildStatus_minutes'
+        pending_concurrency:
+          title: pending_concurrency
+          type: integer
+      title: buildStatus
+      type: object
+    deploy:
+      example:
+        review_id: 0.8008281904610115
+        deploy_url: deploy_url
+        review_url: review_url
+        created_at: created_at
+        title: title
+        branch: branch
+        required:
+        - required
+        - required
+        skipped: true
+        commit_url: commit_url
+        updated_at: updated_at
+        draft: true
+        context: context
+        id: id
+        state: state
+        locked: true
+        published_at: published_at
+        error_message: error_message
+        function_schedules:
+        - cron: cron
+          name: name
+        - cron: cron
+          name: name
+        admin_url: admin_url
+        site_capabilities:
+          large_media_enabled: true
+        url: url
+        framework: framework
+        ssl_url: ssl_url
+        build_id: build_id
+        deploy_ssl_url: deploy_ssl_url
+        user_id: user_id
+        name: name
+        site_id: site_id
+        required_functions:
+        - required_functions
+        - required_functions
+        screenshot_url: screenshot_url
+        commit_ref: commit_ref
+      properties:
+        admin_url:
+          title: admin_url
+          type: string
+        branch:
+          title: branch
+          type: string
+        build_id:
+          title: build_id
+          type: string
+        commit_ref:
+          title: commit_ref
+          type: string
+        commit_url:
+          title: commit_url
+          type: string
+        context:
+          title: context
+          type: string
+        created_at:
+          format: dateTime
+          title: created_at
+          type: string
+        deploy_ssl_url:
+          title: deploy_ssl_url
+          type: string
+        deploy_url:
+          title: deploy_url
+          type: string
+        draft:
+          title: draft
+          type: boolean
+        error_message:
+          title: error_message
+          type: string
+        framework:
+          title: framework
+          type: string
+        function_schedules:
+          items:
+            $ref: '#/components/schemas/functionSchedule'
+          title: function_schedules
+          type: array
+        id:
+          title: id
+          type: string
+        locked:
+          title: locked
+          type: boolean
+        name:
+          title: name
+          type: string
+        published_at:
+          format: dateTime
+          title: published_at
+          type: string
+        required:
+          items:
+            type: string
+          title: required
+          type: array
+        required_functions:
+          items:
+            type: string
+          title: required_functions
+          type: array
+        review_id:
+          title: review_id
+          type: number
+        review_url:
+          title: review_url
+          type: string
+        screenshot_url:
+          title: screenshot_url
+          type: string
+        site_capabilities:
+          $ref: '#/components/schemas/deploy_site_capabilities'
+        site_id:
+          title: site_id
+          type: string
+        skipped:
+          title: skipped
+          type: boolean
+        ssl_url:
+          title: ssl_url
+          type: string
+        state:
+          title: state
+          type: string
+        title:
+          title: title
+          type: string
+        updated_at:
+          format: dateTime
+          title: updated_at
+          type: string
+        url:
+          title: url
+          type: string
+        user_id:
+          title: user_id
+          type: string
+      title: deploy
+      type: object
+    deployFiles:
+      properties:
+        async:
+          title: async
+          type: boolean
+        branch:
+          title: branch
+          type: string
+        draft:
+          title: draft
+          type: boolean
+        files:
+          properties: {}
+          title: files
+          type: object
+        framework:
+          title: framework
+          type: string
+        function_schedules:
+          items:
+            $ref: '#/components/schemas/functionSchedule'
+          title: function_schedules
+          type: array
+        functions:
+          properties: {}
+          title: functions
+          type: object
+        functions_config:
+          additionalProperties:
+            $ref: '#/components/schemas/functionConfig'
+          title: functions_config
+          type: object
+      title: deployFiles
+      type: object
+    deployKey:
+      example:
+        public_key: public_key
+        created_at: created_at
+        id: id
+      properties:
+        created_at:
+          format: dateTime
+          title: created_at
+          type: string
+        id:
+          title: id
+          type: string
+        public_key:
+          title: public_key
+          type: string
+      title: deployKey
+      type: object
+    deployedBranch:
+      example:
+        ssl_url: ssl_url
+        name: name
+        id: id
+        slug: slug
+        url: url
+        deploy_id: deploy_id
+      properties:
+        deploy_id:
+          title: deploy_id
+          type: string
+        id:
+          title: id
+          type: string
+        name:
+          title: name
+          type: string
+        slug:
+          title: slug
+          type: string
+        ssl_url:
+          title: ssl_url
+          type: string
+        url:
+          title: url
+          type: string
+      title: deployedBranch
+      type: object
+    dnsRecord:
+      example:
+        hostname: hostname
+        flag: 0
+        managed: true
+        site_id: site_id
+        dns_zone_id: dns_zone_id
+        id: id
+        tag: tag
+        priority: 6
+        type: type
+        ttl: 1
+        value: value
+      properties:
+        dns_zone_id:
+          title: dns_zone_id
+          type: string
+        flag:
+          title: flag
+          type: integer
+        hostname:
+          title: hostname
+          type: string
+        id:
+          title: id
+          type: string
+        managed:
+          title: managed
+          type: boolean
+        priority:
+          format: int64
+          title: priority
+          type: integer
+        site_id:
+          title: site_id
+          type: string
+        tag:
+          title: tag
+          type: string
+        ttl:
+          format: int64
+          title: ttl
+          type: integer
+        type:
+          title: type
+          type: string
+        value:
+          title: value
+          type: string
+      title: dnsRecord
+      type: object
+    dnsRecordCreate:
+      properties:
+        flag:
+          format: int64
+          title: flag
+          type: integer
+        hostname:
+          title: hostname
+          type: string
+        port:
+          format: int64
+          title: port
+          type: integer
+        priority:
+          format: int64
+          title: priority
+          type: integer
+        tag:
+          title: tag
+          type: string
+        ttl:
+          format: int64
+          title: ttl
+          type: integer
+        type:
+          title: type
+          type: string
+        value:
+          title: value
+          type: string
+        weight:
+          format: int64
+          title: weight
+          type: integer
+      title: dnsRecordCreate
+      type: object
+    dnsRecords:
+      items:
+        $ref: '#/components/schemas/dnsRecord'
+      type: array
+    dnsZone:
+      example:
+        dedicated: true
+        records:
+        - hostname: hostname
+          flag: 0
+          managed: true
+          site_id: site_id
+          dns_zone_id: dns_zone_id
+          id: id
+          tag: tag
+          priority: 6
+          type: type
+          ttl: 1
+          value: value
+        - hostname: hostname
+          flag: 0
+          managed: true
+          site_id: site_id
+          dns_zone_id: dns_zone_id
+          id: id
+          tag: tag
+          priority: 6
+          type: type
+          ttl: 1
+          value: value
+        supported_record_types:
+        - supported_record_types
+        - supported_record_types
+        created_at: created_at
+        dns_servers:
+        - dns_servers
+        - dns_servers
+        account_slug: account_slug
+        account_id: account_id
+        updated_at: updated_at
+        user_id: user_id
+        account_name: account_name
+        domain: domain
+        name: name
+        site_id: site_id
+        ipv6_enabled: true
+        id: id
+        errors:
+        - errors
+        - errors
+      properties:
+        account_id:
+          title: account_id
+          type: string
+        account_name:
+          title: account_name
+          type: string
+        account_slug:
+          title: account_slug
+          type: string
+        created_at:
+          format: dateTime
+          title: created_at
+          type: string
+        dedicated:
+          title: dedicated
+          type: boolean
+        dns_servers:
+          items:
+            type: string
+          title: dns_servers
+          type: array
+        domain:
+          title: domain
+          type: string
+        errors:
+          items:
+            type: string
+          title: errors
+          type: array
+        id:
+          title: id
+          type: string
+        ipv6_enabled:
+          title: ipv6_enabled
+          type: boolean
+        name:
+          title: name
+          type: string
+        records:
+          items:
+            $ref: '#/components/schemas/dnsRecord'
+          title: records
+          type: array
+        site_id:
+          title: site_id
+          type: string
+        supported_record_types:
+          items:
+            type: string
+          title: supported_record_types
+          type: array
+        updated_at:
+          format: dateTime
+          title: updated_at
+          type: string
+        user_id:
+          title: user_id
+          type: string
+      title: dnsZone
+      type: object
+    dnsZoneSetup:
+      properties:
+        account_slug:
+          title: account_slug
+          type: string
+        name:
+          title: name
+          type: string
+        site_id:
+          title: site_id
+          type: string
+      title: dnsZoneSetup
+      type: object
+    dnsZones:
+      items:
+        $ref: '#/components/schemas/dnsZone'
+      type: array
+    envVar:
+      description: Environment variable model definition
+      example:
+        updated_at: 2000-01-23T04:56:07.000+00:00
+        values:
+        - context: all
+          id: id
+          value: value
+        - context: all
+          id: id
+          value: value
+        updated_by:
+          full_name: full_name
+          avatar_url: avatar_url
+          id: id
+          email: email
+        scopes:
+        - builds
+        - builds
+        key: key
+      properties:
+        key:
+          description: "The environment variable key, like ALGOLIA_ID (case-sensitive)"
+          title: key
+          type: string
+          x-faker: commerce.productName
+        scopes:
+          description: The scopes that this environment variable is set to
+          items:
+            enum:
+            - builds
+            - functions
+            - runtime
+            - post-processing
+            type: string
+          title: scopes
+          type: array
+        updated_at:
+          description: The timestamp of when the value was last updated
+          format: date-time
+          title: updated_at
+          type: string
+          x-faker: date.past
+        updated_by:
+          $ref: '#/components/schemas/envVarUser'
+        values:
+          description: An array of Value objects containing values and metadata
+          items:
+            $ref: '#/components/schemas/envVarValue'
+          title: values
+          type: array
+          x-faker: internet.password
+      title: envVar
+      type: object
+    envVarUser:
+      example:
+        full_name: full_name
+        avatar_url: avatar_url
+        id: id
+        email: email
+      properties:
+        avatar_url:
+          description: A URL pointing to the user's avatar
+          title: avatar_url
+          type: string
+          x-faker: internet.avatar
+        email:
+          description: The user's email address
+          title: email
+          type: string
+          x-faker: internet.email
+        full_name:
+          description: The user's full name (first and last)
+          title: full_name
+          type: string
+          x-faker: name.findName
+        id:
+          description: The user's unique identifier
+          title: id
+          type: string
+          x-faker: datatype.number
+      title: envVarUser
+      type: object
+    envVarValue:
+      description: Environment variable value model definition
+      example:
+        context: all
+        id: id
+        value: value
+      properties:
+        context:
+          description: The deploy context in which this value will be used. `dev`
+            refers to local development when running `netlify dev`.
+          enum:
+          - all
+          - dev
+          - branch-deploy
+          - deploy-preview
+          - production
+          title: context
+          type: string
+        id:
+          description: The environment variable value's universally unique ID
+          title: id
+          type: string
+          x-faker: datatype.uuid
+        value:
+          description: The environment variable's unencrypted value
+          title: value
+          type: string
+          x-faker: internet.password
+      title: envVarValue
+      type: object
+    error:
+      example:
+        code: 1
+        message: message
+      properties:
+        code:
+          format: int64
+          title: code
+          type: integer
+        message:
+          nullable: false
+          title: message
+          type: string
+      required:
+      - message
+      title: error
+      type: object
+    file:
+      example:
+        path: path
+        size: 0
+        mime_type: mime_type
+        id: id
+        sha: sha
+      properties:
+        id:
+          title: id
+          type: string
+        mime_type:
+          title: mime_type
+          type: string
+        path:
+          title: path
+          type: string
+        sha:
+          title: sha
+          type: string
+        size:
+          format: int64
+          title: size
+          type: integer
+      title: file
+      type: object
+    form:
+      example:
+        paths:
+        - paths
+        - paths
+        submission_count: 0
+        name: name
+        site_id: site_id
+        created_at: created_at
+        id: id
+        fields:
+        - "{}"
+        - "{}"
+      properties:
+        created_at:
+          format: dateTime
+          title: created_at
+          type: string
+        fields:
+          items:
+            properties: {}
+            type: object
+          title: fields
+          type: array
+        id:
+          title: id
+          type: string
+        name:
+          title: name
+          type: string
+        paths:
+          items:
+            type: string
+          title: paths
+          type: array
+        site_id:
+          title: site_id
+          type: string
+        submission_count:
+          format: int32
+          title: submission_count
+          type: integer
+      title: form
+      type: object
+    function:
+      example:
+        name: name
+        id: id
+        sha: sha
+      properties:
+        id:
+          title: id
+          type: string
+        name:
+          title: name
+          type: string
+        sha:
+          title: sha
+          type: string
+      title: function
+      type: object
+    functionConfig:
+      properties:
+        display_name:
+          title: display_name
+          type: string
+        generator:
+          title: generator
+          type: string
+      title: functionConfig
+      type: object
+    functionSchedule:
+      example:
+        cron: cron
+        name: name
+      properties:
+        cron:
+          title: cron
+          type: string
+        name:
+          title: name
+          type: string
+      title: functionSchedule
+      type: object
+    hook:
+      example:
+        data: "{}"
+        updated_at: updated_at
+        site_id: site_id
+        created_at: created_at
+        disabled: true
+        id: id
+        event: event
+        type: type
+      properties:
+        created_at:
+          format: dateTime
+          title: created_at
+          type: string
+        data:
+          properties: {}
+          title: data
+          type: object
+        disabled:
+          title: disabled
+          type: boolean
+        event:
+          title: event
+          type: string
+        id:
+          title: id
+          type: string
+        site_id:
+          title: site_id
+          type: string
+        type:
+          title: type
+          type: string
+        updated_at:
+          format: dateTime
+          title: updated_at
+          type: string
+      title: hook
+      type: object
+    hookType:
+      example:
+        name: name
+        fields:
+        - "{}"
+        - "{}"
+        events:
+        - events
+        - events
+      properties:
+        events:
+          items:
+            type: string
+          title: events
+          type: array
+        fields:
+          items:
+            properties: {}
+            type: object
+          title: fields
+          type: array
+        name:
+          title: name
+          type: string
+      title: hookType
+      type: object
+    member:
+      example:
+        full_name: full_name
+        role: role
+        avatar: avatar
+        id: id
+        email: email
+      properties:
+        avatar:
+          title: avatar
+          type: string
+        email:
+          title: email
+          type: string
+        full_name:
+          title: full_name
+          type: string
+        id:
+          title: id
+          type: string
+        role:
+          title: role
+          type: string
+      title: member
+      type: object
+    metadata:
+      type: object
+    minifyOptions:
+      example:
+        minify: true
+        bundle: true
+      properties:
+        bundle:
+          title: bundle
+          type: boolean
+        minify:
+          title: minify
+          type: boolean
+      title: minifyOptions
+      type: object
+    paymentMethod:
+      example:
+        data:
+          last4: last4
+          card_type: card_type
+          email: email
+        updated_at: updated_at
+        method_name: method_name
+        created_at: created_at
+        id: id
+        state: state
+        type: type
+      properties:
+        created_at:
+          format: dateTime
+          title: created_at
+          type: string
+        data:
+          $ref: '#/components/schemas/paymentMethod_data'
+        id:
+          title: id
+          type: string
+        method_name:
+          title: method_name
+          type: string
+        state:
+          title: state
+          type: string
+        type:
+          title: type
+          type: string
+        updated_at:
+          format: dateTime
+          title: updated_at
+          type: string
+      title: paymentMethod
+      type: object
+    plugin:
+      example:
+        package: package
+        pinned_version: pinned_version
+      properties:
+        package:
+          title: package
+          type: string
+        pinned_version:
+          title: pinned_version
+          type: string
+      title: plugin
+      type: object
+    pluginParams:
+      properties:
+        pinned_version:
+          title: pinned_version
+          type: string
+      title: pluginParams
+      type: object
+    pluginRun:
+      allOf:
+      - $ref: '#/components/schemas/pluginRunData'
+      - properties:
+          deploy_id:
+            type: string
+        type: object
+      example:
+        summary: summary
+        package: package
+        state: state
+        text: text
+        reporting_event: reporting_event
+        title: title
+        version: version
+        deploy_id: deploy_id
+      title: pluginRun
+    pluginRunData:
+      properties:
+        package:
+          title: package
+          type: string
+        reporting_event:
+          title: reporting_event
+          type: string
+        state:
+          title: state
+          type: string
+        summary:
+          title: summary
+          type: string
+        text:
+          title: text
+          type: string
+        title:
+          title: title
+          type: string
+        version:
+          title: version
+          type: string
+      title: pluginRunData
+      type: object
+    repoInfo:
+      example:
+        repo_url: repo_url
+        stop_builds: true
+        deploy_key_id: deploy_key_id
+        installation_id: 6
+        dir: dir
+        env:
+          key: env
+        repo_branch: repo_branch
+        private_logs: true
+        allowed_branches:
+        - allowed_branches
+        - allowed_branches
+        functions_dir: functions_dir
+        repo_path: repo_path
+        provider: provider
+        public_repo: true
+        cmd: cmd
+        id: 0
+      properties:
+        allowed_branches:
+          items:
+            type: string
+          title: allowed_branches
+          type: array
+        cmd:
+          title: cmd
+          type: string
+        deploy_key_id:
+          title: deploy_key_id
+          type: string
+        dir:
+          title: dir
+          type: string
+        env:
+          additionalProperties:
+            type: string
+          title: env
+          type: object
+        functions_dir:
+          title: functions_dir
+          type: string
+        id:
+          title: id
+          type: integer
+        installation_id:
+          title: installation_id
+          type: integer
+        private_logs:
+          title: private_logs
+          type: boolean
+        provider:
+          title: provider
+          type: string
+        public_repo:
+          title: public_repo
+          type: boolean
+        repo_branch:
+          title: repo_branch
+          type: string
+        repo_path:
+          title: repo_path
+          type: string
+        repo_url:
+          title: repo_url
+          type: string
+        stop_builds:
+          title: stop_builds
+          type: boolean
+      title: repoInfo
+      type: object
+    service:
+      example:
+        environments:
+        - environments
+        - environments
+        icon: icon
+        created_at: created_at
+        description: description
+        long_description: long_description
+        tags:
+        - tags
+        - tags
+        updated_at: updated_at
+        name: name
+        manifest_url: manifest_url
+        id: id
+        service_path: service_path
+        events:
+        - "{}"
+        - "{}"
+        slug: slug
+      properties:
+        created_at:
+          format: dateTime
+          title: created_at
+          type: string
+        description:
+          title: description
+          type: string
+        environments:
+          items:
+            type: string
+          title: environments
+          type: array
+        events:
+          items:
+            properties: {}
+            type: object
+          title: events
+          type: array
+        icon:
+          title: icon
+          type: string
+        id:
+          title: id
+          type: string
+        long_description:
+          title: long_description
+          type: string
+        manifest_url:
+          title: manifest_url
+          type: string
+        name:
+          title: name
+          type: string
+        service_path:
+          title: service_path
+          type: string
+        slug:
+          title: slug
+          type: string
+        tags:
+          items:
+            type: string
+          title: tags
+          type: array
+        updated_at:
+          format: dateTime
+          title: updated_at
+          type: string
+      title: service
+      type: object
+    serviceInstance:
+      example:
+        service_slug: service_slug
+        updated_at: updated_at
+        service_name: service_name
+        snippets:
+        - "{}"
+        - "{}"
+        created_at: created_at
+        auth_url: auth_url
+        id: id
+        service_path: service_path
+        env: "{}"
+        config: "{}"
+        url: url
+        external_attributes: "{}"
+      properties:
+        auth_url:
+          title: auth_url
+          type: string
+        config:
+          properties: {}
+          title: config
+          type: object
+        created_at:
+          format: dateTime
+          title: created_at
+          type: string
+        env:
+          properties: {}
+          title: env
+          type: object
+        external_attributes:
+          properties: {}
+          title: external_attributes
+          type: object
+        id:
+          title: id
+          type: string
+        service_name:
+          title: service_name
+          type: string
+        service_path:
+          title: service_path
+          type: string
+        service_slug:
+          title: service_slug
+          type: string
+        snippets:
+          items:
+            properties: {}
+            type: object
+          title: snippets
+          type: array
+        updated_at:
+          format: dateTime
+          title: updated_at
+          type: string
+        url:
+          title: url
+          type: string
+      title: serviceInstance
+      type: object
+    site:
+      example:
+        id_domain: id_domain
+        deploy_hook: deploy_hook
+        deploy_url: deploy_url
+        created_at: created_at
+        ssl: true
+        domain_aliases:
+        - domain_aliases
+        - domain_aliases
+        password: password
+        updated_at: updated_at
+        account_name: account_name
+        id: id
+        published_deploy:
+          review_id: 0.8008281904610115
+          deploy_url: deploy_url
+          review_url: review_url
+          created_at: created_at
+          title: title
+          branch: branch
+          required:
+          - required
+          - required
+          skipped: true
+          commit_url: commit_url
+          updated_at: updated_at
+          draft: true
+          context: context
+          id: id
+          state: state
+          locked: true
+          published_at: published_at
+          error_message: error_message
+          function_schedules:
+          - cron: cron
+            name: name
+          - cron: cron
+            name: name
+          admin_url: admin_url
+          site_capabilities:
+            large_media_enabled: true
+          url: url
+          framework: framework
+          ssl_url: ssl_url
+          build_id: build_id
+          deploy_ssl_url: deploy_ssl_url
+          user_id: user_id
+          name: name
+          site_id: site_id
+          required_functions:
+          - required_functions
+          - required_functions
+          screenshot_url: screenshot_url
+          commit_ref: commit_ref
+        state: state
+        custom_domain: custom_domain
+        default_hooks_data:
+          access_token: access_token
+        plan: plan
+        managed_dns: true
+        force_ssl: true
+        capabilities:
+          key: "{}"
+        notification_email: notification_email
+        git_provider: git_provider
+        session_id: session_id
+        admin_url: admin_url
+        build_settings:
+          repo_url: repo_url
+          stop_builds: true
+          deploy_key_id: deploy_key_id
+          installation_id: 6
+          dir: dir
+          env:
+            key: env
+          repo_branch: repo_branch
+          private_logs: true
+          allowed_branches:
+          - allowed_branches
+          - allowed_branches
+          functions_dir: functions_dir
+          repo_path: repo_path
+          provider: provider
+          public_repo: true
+          cmd: cmd
+          id: 0
+        prerender: prerender
+        url: url
+        account_slug: account_slug
+        ssl_url: ssl_url
+        user_id: user_id
+        name: name
+        build_image: build_image
+        processing_settings:
+          css:
+            minify: true
+            bundle: true
+          images:
+            optimize: true
+          js:
+            minify: true
+            bundle: true
+          html:
+            pretty_urls: true
+          skip: true
+        screenshot_url: screenshot_url
+      properties:
+        account_name:
+          title: account_name
+          type: string
+        account_slug:
+          title: account_slug
+          type: string
+        admin_url:
+          title: admin_url
+          type: string
+        build_image:
+          title: build_image
+          type: string
+        build_settings:
+          $ref: '#/components/schemas/repoInfo'
+        capabilities:
+          additionalProperties:
+            properties: {}
+            type: object
+          title: capabilities
+          type: object
+        created_at:
+          format: dateTime
+          title: created_at
+          type: string
+        custom_domain:
+          title: custom_domain
+          type: string
+        default_hooks_data:
+          $ref: '#/components/schemas/site_default_hooks_data'
+        deploy_hook:
+          title: deploy_hook
+          type: string
+        deploy_url:
+          title: deploy_url
+          type: string
+        domain_aliases:
+          items:
+            type: string
+          title: domain_aliases
+          type: array
+        force_ssl:
+          title: force_ssl
+          type: boolean
+        git_provider:
+          title: git_provider
+          type: string
+        id:
+          title: id
+          type: string
+        id_domain:
+          title: id_domain
+          type: string
+        managed_dns:
+          title: managed_dns
+          type: boolean
+        name:
+          title: name
+          type: string
+        notification_email:
+          title: notification_email
+          type: string
+        password:
+          title: password
+          type: string
+        plan:
+          title: plan
+          type: string
+        prerender:
+          title: prerender
+          type: string
+        processing_settings:
+          $ref: '#/components/schemas/site_processing_settings'
+        published_deploy:
+          $ref: '#/components/schemas/deploy'
+        screenshot_url:
+          title: screenshot_url
+          type: string
+        session_id:
+          title: session_id
+          type: string
+        ssl:
+          title: ssl
+          type: boolean
+        ssl_url:
+          title: ssl_url
+          type: string
+        state:
+          title: state
+          type: string
+        updated_at:
+          format: dateTime
+          title: updated_at
+          type: string
+        url:
+          title: url
+          type: string
+        user_id:
+          title: user_id
+          type: string
+      title: site
+      type: object
+    siteSetup:
+      allOf:
+      - $ref: '#/components/schemas/site'
+      - properties:
+          repo:
+            $ref: '#/components/schemas/repoInfo'
+        type: object
+      title: siteSetup
+    sniCertificate:
+      example:
+        expires_at: expires_at
+        updated_at: updated_at
+        created_at: created_at
+        domains:
+        - domains
+        - domains
+        state: state
+      properties:
+        created_at:
+          format: dateTime
+          title: created_at
+          type: string
+        domains:
+          items:
+            type: string
+          title: domains
+          type: array
+        expires_at:
+          format: dateTime
+          title: expires_at
+          type: string
+        state:
+          title: state
+          type: string
+        updated_at:
+          format: dateTime
+          title: updated_at
+          type: string
+      title: sniCertificate
+      type: object
+    snippet:
+      example:
+        general: general
+        goal: goal
+        general_position: general_position
+        site_id: site_id
+        id: 0
+        goal_position: goal_position
+        title: title
+      properties:
+        general:
+          title: general
+          type: string
+        general_position:
+          title: general_position
+          type: string
+        goal:
+          title: goal
+          type: string
+        goal_position:
+          title: goal_position
+          type: string
+        id:
+          format: int32
+          title: id
+          type: integer
+        site_id:
+          title: site_id
+          type: string
+        title:
+          title: title
+          type: string
+      title: snippet
+      type: object
+    splitTest:
+      example:
+        path: path
+        updated_at: updated_at
+        name: name
+        site_id: site_id
+        active: true
+        created_at: created_at
+        id: id
+        branches:
+        - "{}"
+        - "{}"
+        unpublished_at: unpublished_at
+      properties:
+        active:
+          title: active
+          type: boolean
+        branches:
+          items:
+            properties: {}
+            type: object
+          title: branches
+          type: array
+        created_at:
+          format: dateTime
+          title: created_at
+          type: string
+        id:
+          title: id
+          type: string
+        name:
+          title: name
+          type: string
+        path:
+          title: path
+          type: string
+        site_id:
+          title: site_id
+          type: string
+        unpublished_at:
+          format: dateTime
+          title: unpublished_at
+          type: string
+        updated_at:
+          format: dateTime
+          title: updated_at
+          type: string
+      title: splitTest
+      type: object
+    splitTestSetup:
+      properties:
+        branch_tests:
+          properties: {}
+          title: branch_tests
+          type: object
+      title: splitTestSetup
+      type: object
+    splitTests:
+      items:
+        $ref: '#/components/schemas/splitTest'
+      type: array
+    submission:
+      example:
+        summary: summary
+        number: 0
+        data: "{}"
+        site_url: site_url
+        name: name
+        created_at: created_at
+        last_name: last_name
+        company: company
+        id: id
+        body: body
+        first_name: first_name
+        email: email
+      properties:
+        body:
+          title: body
+          type: string
+        company:
+          title: company
+          type: string
+        created_at:
+          format: dateTime
+          title: created_at
+          type: string
+        data:
+          properties: {}
+          title: data
+          type: object
+        email:
+          title: email
+          type: string
+        first_name:
+          title: first_name
+          type: string
+        id:
+          title: id
+          type: string
+        last_name:
+          title: last_name
+          type: string
+        name:
+          title: name
+          type: string
+        number:
+          format: int32
+          title: number
+          type: integer
+        site_url:
+          title: site_url
+          type: string
+        summary:
+          title: summary
+          type: string
+      title: submission
+      type: object
+    ticket:
+      example:
+        authorized: true
+        created_at: created_at
+        id: id
+        client_id: client_id
+      properties:
+        authorized:
+          title: authorized
+          type: boolean
+        client_id:
+          title: client_id
+          type: string
+        created_at:
+          format: dateTime
+          title: created_at
+          type: string
+        id:
+          title: id
+          type: string
+      title: ticket
+      type: object
+    user:
+      example:
+        uid: uid
+        onboarding_progress:
+          slides: slides
+        full_name: full_name
+        avatar_url: avatar_url
+        affiliate_id: affiliate_id
+        last_login: last_login
+        site_count: 0
+        created_at: created_at
+        id: id
+        email: email
+        login_providers:
+        - login_providers
+        - login_providers
+      properties:
+        affiliate_id:
+          title: affiliate_id
+          type: string
+        avatar_url:
+          title: avatar_url
+          type: string
+        created_at:
+          format: dateTime
+          title: created_at
+          type: string
+        email:
+          title: email
+          type: string
+        full_name:
+          title: full_name
+          type: string
+        id:
+          title: id
+          type: string
+        last_login:
+          format: dateTime
+          title: last_login
+          type: string
+        login_providers:
+          items:
+            type: string
+          title: login_providers
+          type: array
+        onboarding_progress:
+          $ref: '#/components/schemas/user_onboarding_progress'
+        site_count:
+          format: int64
+          title: site_count
+          type: integer
+        uid:
+          title: uid
+          type: string
+      title: user
+      type: object
+    createEnvVars_request_inner:
+      properties:
+        key:
+          description: "The existing or new name of the key, if you wish to rename\
+            \ it (case-sensitive)"
+          title: key
+          type: string
+        scopes:
+          description: The scopes that this environment variable is set to (Pro plans
+            and above)
+          items:
+            enum:
+            - builds
+            - functions
+            - runtime
+            - post-processing
+            type: string
+          title: scopes
+          type: array
+        values:
+          items:
+            $ref: '#/components/schemas/envVarValue'
+          title: values
+          type: array
+      title: createEnvVars_request_inner
+      type: object
+    setEnvVarValue_request:
+      properties:
+        context:
+          description: The deploy context in which this value will be used. `dev`
+            refers to local development when running `netlify dev`.
+          enum:
+          - dev
+          - branch-deploy
+          - deploy-preview
+          - production
+          title: context
+          type: string
+        value:
+          description: The environment variable's unencrypted value
+          title: value
+          type: string
+      title: setEnvVarValue_request
+      type: object
+    accountMembership_capabilities:
+      example:
+        collaborators:
+          used: 6
+          included: 0
+        sites:
+          used: 6
+          included: 0
+      properties:
+        collaborators:
+          $ref: '#/components/schemas/accountUsageCapability'
+        sites:
+          $ref: '#/components/schemas/accountUsageCapability'
+      title: accountMembership_capabilities
+      type: object
+    buildStatus_minutes:
+      example:
+        current: 5
+        previous: 2
+        last_updated_at: last_updated_at
+        period_end_date: period_end_date
+        included_minutes: included_minutes
+        period_start_date: period_start_date
+        included_minutes_with_packs: included_minutes_with_packs
+        current_average_sec: 5
+      properties:
+        current:
+          title: current
+          type: integer
+        current_average_sec:
+          title: current_average_sec
+          type: integer
+        included_minutes:
+          title: included_minutes
+          type: string
+        included_minutes_with_packs:
+          title: included_minutes_with_packs
+          type: string
+        last_updated_at:
+          format: dateTime
+          title: last_updated_at
+          type: string
+        period_end_date:
+          format: dateTime
+          title: period_end_date
+          type: string
+        period_start_date:
+          format: dateTime
+          title: period_start_date
+          type: string
+        previous:
+          title: previous
+          type: integer
+      title: buildStatus_minutes
+      type: object
+    deploy_site_capabilities:
+      example:
+        large_media_enabled: true
+      properties:
+        large_media_enabled:
+          title: large_media_enabled
+          type: boolean
+      title: deploy_site_capabilities
+      type: object
+    paymentMethod_data:
+      example:
+        last4: last4
+        card_type: card_type
+        email: email
+      properties:
+        card_type:
+          title: card_type
+          type: string
+        email:
+          title: email
+          type: string
+        last4:
+          title: last4
+          type: string
+      title: paymentMethod_data
+      type: object
+    site_default_hooks_data:
+      example:
+        access_token: access_token
+      properties:
+        access_token:
+          title: access_token
+          type: string
+      title: site_default_hooks_data
+      type: object
+    site_processing_settings_html:
+      example:
+        pretty_urls: true
+      properties:
+        pretty_urls:
+          title: pretty_urls
+          type: boolean
+      title: site_processing_settings_html
+      type: object
+    site_processing_settings_images:
+      example:
+        optimize: true
+      properties:
+        optimize:
+          title: optimize
+          type: boolean
+      title: site_processing_settings_images
+      type: object
+    site_processing_settings:
+      example:
+        css:
+          minify: true
+          bundle: true
+        images:
+          optimize: true
+        js:
+          minify: true
+          bundle: true
+        html:
+          pretty_urls: true
+        skip: true
+      properties:
+        css:
+          $ref: '#/components/schemas/minifyOptions'
+        html:
+          $ref: '#/components/schemas/site_processing_settings_html'
+        images:
+          $ref: '#/components/schemas/site_processing_settings_images'
+        js:
+          $ref: '#/components/schemas/minifyOptions'
+        skip:
+          title: skip
+          type: boolean
+      title: site_processing_settings
+      type: object
+    user_onboarding_progress:
+      example:
+        slides: slides
+      properties:
+        slides:
+          title: slides
+          type: string
+      title: user_onboarding_progress
+      type: object
+  securitySchemes:
+    netlifyAuth:
+      flows:
+        implicit:
+          authorizationUrl: https://app.netlify.com/authorize
+          scopes: {}
+      type: oauth2
+      x-tokenInfoFunc: openapi_server.controllers.security_controller.info_from_netlifyAuth
+      x-scopeValidateFunc: openapi_server.controllers.security_controller.validate_scope_netlifyAuth
+x-tagGroups:
+- name: OAuth
+  tags:
+  - ticket
+  - accessToken
+- name: User accounts
+  tags:
+  - user
+  - accountMembership
+  - member
+  - accountType
+  - paymentMethod
+  - auditLog
+- name: Site
+  tags:
+  - site
+  - environmentVariables
+  - file
+  - metadata
+  - snippet
+- name: Domain names
+  tags:
+  - dnsZone
+  - sniCertificate
+- name: Deploys
+  tags:
+  - deploy
+  - deployedBranch
+  - deployKey
+- name: Builds
+  tags:
+  - build
+  - buildLogMsg
+- name: Webhooks and notifications
+  tags:
+  - hook
+  - hookType
+  - buildHook
+- name: Services
+  tags:
+  - service
+  - serviceInstance
+- name: Functions
+  tags:
+  - function
+- name: Forms
+  tags:
+  - form
+  - submission
+- name: Split tests
+  tags:
+  - splitTest
+- name: Large media
+  tags:
+  - asset
+  - assetPublicSignature
+x-original-swagger-version: "2.0"

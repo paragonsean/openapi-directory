@@ -1,0 +1,117 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIAnalyticsDataCountSwaggerModel.h \
+    $${PWD}/OAIAnalyticsDataSwaggerModel.h \
+    $${PWD}/OAIBillingDetailsModel.h \
+    $${PWD}/OAIDeletedGameModel.h \
+    $${PWD}/OAIExperimentConfigModel.h \
+    $${PWD}/OAIExperimentModel.h \
+    $${PWD}/OAIGameEndpointsModel.h \
+    $${PWD}/OAIGameModel.h \
+    $${PWD}/OAIGameRegionOptionDTO.h \
+    $${PWD}/OAIGameRegionOptionsDTO.h \
+    $${PWD}/OAIGameSummaryModel.h \
+    $${PWD}/OAILogLevelSummaryModel.h \
+    $${PWD}/OAIManageItemSummary.h \
+    $${PWD}/OAIManageQuery.h \
+    $${PWD}/OAIManageResult.h \
+    $${PWD}/OAIManageScreen.h \
+    $${PWD}/OAIManageSnapshot.h \
+    $${PWD}/OAIManageSnippet.h \
+    $${PWD}/OAIMessageModel.h \
+    $${PWD}/OAIPushNotificationTestModel.h \
+    $${PWD}/OAIPushNotificationTestSummaryListModel.h \
+    $${PWD}/OAIPushNotificationTestSummaryModel.h \
+    $${PWD}/OAIRegionResult.h \
+    $${PWD}/OAIScriptsDifferenceListModel.h \
+    $${PWD}/OAIScriptsDifferenceModel.h \
+    $${PWD}/OAISegmentQueryFilterConfigModel.h \
+    $${PWD}/OAISegmentQueryFilterListModel.h \
+    $${PWD}/OAISegmentQueryFilterModel.h \
+    $${PWD}/OAISnapshotCreationModel.h \
+    $${PWD}/OAISnapshotCreationSuccessModel.h \
+    $${PWD}/OAISnapshotModel.h \
+    $${PWD}/OAISnapshotScriptVersionListModel.h \
+    $${PWD}/OAISnapshotScriptVersionModel.h \
+    $${PWD}/OAITestHarnessScenarioModel.h \
+# APIs
+    $${PWD}/OAIAnalyticsApi.h \
+    $${PWD}/OAIBillingDetailsApi.h \
+    $${PWD}/OAICredentialsApi.h \
+    $${PWD}/OAIExperimentsApi.h \
+    $${PWD}/OAIGamesAdminApi.h \
+    $${PWD}/OAIManageApi.h \
+    $${PWD}/OAINotificationsApi.h \
+    $${PWD}/OAIPushNotificationTestApi.h \
+    $${PWD}/OAIRegionApi.h \
+    $${PWD}/OAIScriptsApi.h \
+    $${PWD}/OAISegmentQueryFiltersApi.h \
+    $${PWD}/OAISnapshotsApi.h \
+    $${PWD}/OAITestHarnessApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIAnalyticsDataCountSwaggerModel.cpp \
+    $${PWD}/OAIAnalyticsDataSwaggerModel.cpp \
+    $${PWD}/OAIBillingDetailsModel.cpp \
+    $${PWD}/OAIDeletedGameModel.cpp \
+    $${PWD}/OAIExperimentConfigModel.cpp \
+    $${PWD}/OAIExperimentModel.cpp \
+    $${PWD}/OAIGameEndpointsModel.cpp \
+    $${PWD}/OAIGameModel.cpp \
+    $${PWD}/OAIGameRegionOptionDTO.cpp \
+    $${PWD}/OAIGameRegionOptionsDTO.cpp \
+    $${PWD}/OAIGameSummaryModel.cpp \
+    $${PWD}/OAILogLevelSummaryModel.cpp \
+    $${PWD}/OAIManageItemSummary.cpp \
+    $${PWD}/OAIManageQuery.cpp \
+    $${PWD}/OAIManageResult.cpp \
+    $${PWD}/OAIManageScreen.cpp \
+    $${PWD}/OAIManageSnapshot.cpp \
+    $${PWD}/OAIManageSnippet.cpp \
+    $${PWD}/OAIMessageModel.cpp \
+    $${PWD}/OAIPushNotificationTestModel.cpp \
+    $${PWD}/OAIPushNotificationTestSummaryListModel.cpp \
+    $${PWD}/OAIPushNotificationTestSummaryModel.cpp \
+    $${PWD}/OAIRegionResult.cpp \
+    $${PWD}/OAIScriptsDifferenceListModel.cpp \
+    $${PWD}/OAIScriptsDifferenceModel.cpp \
+    $${PWD}/OAISegmentQueryFilterConfigModel.cpp \
+    $${PWD}/OAISegmentQueryFilterListModel.cpp \
+    $${PWD}/OAISegmentQueryFilterModel.cpp \
+    $${PWD}/OAISnapshotCreationModel.cpp \
+    $${PWD}/OAISnapshotCreationSuccessModel.cpp \
+    $${PWD}/OAISnapshotModel.cpp \
+    $${PWD}/OAISnapshotScriptVersionListModel.cpp \
+    $${PWD}/OAISnapshotScriptVersionModel.cpp \
+    $${PWD}/OAITestHarnessScenarioModel.cpp \
+# APIs
+    $${PWD}/OAIAnalyticsApi.cpp \
+    $${PWD}/OAIBillingDetailsApi.cpp \
+    $${PWD}/OAICredentialsApi.cpp \
+    $${PWD}/OAIExperimentsApi.cpp \
+    $${PWD}/OAIGamesAdminApi.cpp \
+    $${PWD}/OAIManageApi.cpp \
+    $${PWD}/OAINotificationsApi.cpp \
+    $${PWD}/OAIPushNotificationTestApi.cpp \
+    $${PWD}/OAIRegionApi.cpp \
+    $${PWD}/OAIScriptsApi.cpp \
+    $${PWD}/OAISegmentQueryFiltersApi.cpp \
+    $${PWD}/OAISnapshotsApi.cpp \
+    $${PWD}/OAITestHarnessApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

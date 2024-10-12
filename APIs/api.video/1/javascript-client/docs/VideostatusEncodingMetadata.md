@@ -1,0 +1,17 @@
+# ApiVideo.VideostatusEncodingMetadata
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**aspectRatio** | **String** |  | [optional] 
+**audioCodec** | **String** | The method used to compress and decompress digital audio for your video. | [optional] 
+**bitrate** | **Number** | The number of bits processed per second. | [optional] 
+**duration** | **Number** | The length of the video. | [optional] 
+**framerate** | **Number** | The frequency with which consecutive images or frames appear on a display. Shown in this API as frames per second (fps). | [optional] 
+**height** | **Number** | The height of the video in pixels. | [optional] 
+**samplerate** | **Number** | How many samples per second a digital audio system uses to record an audio signal. The higher the rate, the higher the frequencies that can be recorded. They are presented in this API using hertz. | [optional] 
+**videoCodec** | **String** | The method used to compress and decompress digital video. API Video supports all codecs in the libavcodec library.  | [optional] 
+**width** | **Number** | The width of the video in pixels. | [optional] 
+
+

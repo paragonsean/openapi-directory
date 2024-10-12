@@ -1,0 +1,20 @@
+# TwilioTaskrouter.TaskrouterV1WorkspaceWorkerWorkersCumulativeStatistics
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**accountSid** | **String** | The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that created the Worker resource. | [optional] 
+**activityDurations** | **[Object]** | The minimum, average, maximum, and total time (in seconds) that Workers spent in each Activity. | [optional] 
+**endTime** | **Date** | The end of the interval during which these statistics were calculated, in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format. | [optional] 
+**reservationsAccepted** | **Number** | The total number of Reservations that were accepted. | [optional] 
+**reservationsCanceled** | **Number** | The total number of Reservations that were canceled. | [optional] 
+**reservationsCreated** | **Number** | The total number of Reservations that were created. | [optional] 
+**reservationsRejected** | **Number** | The total number of Reservations that were rejected. | [optional] 
+**reservationsRescinded** | **Number** | The total number of Reservations that were rescinded. | [optional] 
+**reservationsTimedOut** | **Number** | The total number of Reservations that were timed out. | [optional] 
+**startTime** | **Date** | The beginning of the interval during which these statistics were calculated, in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format. | [optional] 
+**url** | **String** | The absolute URL of the Workers statistics resource. | [optional] 
+**workspaceSid** | **String** | The SID of the Workspace that contains the Workers. | [optional] 
+
+

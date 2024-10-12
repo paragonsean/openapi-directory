@@ -1,0 +1,105 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIAutopilot_v1_assistant.h \
+    $${PWD}/OAIAutopilot_v1_assistant_defaults.h \
+    $${PWD}/OAIAutopilot_v1_assistant_dialogue.h \
+    $${PWD}/OAIAutopilot_v1_assistant_field_type.h \
+    $${PWD}/OAIAutopilot_v1_assistant_field_type_field_value.h \
+    $${PWD}/OAIAutopilot_v1_assistant_model_build.h \
+    $${PWD}/OAIAutopilot_v1_assistant_query.h \
+    $${PWD}/OAIAutopilot_v1_assistant_style_sheet.h \
+    $${PWD}/OAIAutopilot_v1_assistant_task.h \
+    $${PWD}/OAIAutopilot_v1_assistant_task_field.h \
+    $${PWD}/OAIAutopilot_v1_assistant_task_sample.h \
+    $${PWD}/OAIAutopilot_v1_assistant_task_task_actions.h \
+    $${PWD}/OAIAutopilot_v1_assistant_task_task_statistics.h \
+    $${PWD}/OAIAutopilot_v1_assistant_webhook.h \
+    $${PWD}/OAIAutopilot_v1_restore_assistant.h \
+    $${PWD}/OAIListAssistantResponse.h \
+    $${PWD}/OAIListAssistantResponse_meta.h \
+    $${PWD}/OAIListFieldResponse.h \
+    $${PWD}/OAIListFieldTypeResponse.h \
+    $${PWD}/OAIListFieldValueResponse.h \
+    $${PWD}/OAIListModelBuildResponse.h \
+    $${PWD}/OAIListQueryResponse.h \
+    $${PWD}/OAIListSampleResponse.h \
+    $${PWD}/OAIListTaskResponse.h \
+    $${PWD}/OAIListWebhookResponse.h \
+    $${PWD}/OAIModel_build_enum_status.h \
+# APIs
+    $${PWD}/OAIAutopilotV1AssistantApi.h \
+    $${PWD}/OAIAutopilotV1DefaultsApi.h \
+    $${PWD}/OAIAutopilotV1DialogueApi.h \
+    $${PWD}/OAIAutopilotV1FieldApi.h \
+    $${PWD}/OAIAutopilotV1FieldTypeApi.h \
+    $${PWD}/OAIAutopilotV1FieldValueApi.h \
+    $${PWD}/OAIAutopilotV1ModelBuildApi.h \
+    $${PWD}/OAIAutopilotV1QueryApi.h \
+    $${PWD}/OAIAutopilotV1RestoreAssistantApi.h \
+    $${PWD}/OAIAutopilotV1SampleApi.h \
+    $${PWD}/OAIAutopilotV1StyleSheetApi.h \
+    $${PWD}/OAIAutopilotV1TaskApi.h \
+    $${PWD}/OAIAutopilotV1TaskActionsApi.h \
+    $${PWD}/OAIAutopilotV1TaskStatisticsApi.h \
+    $${PWD}/OAIAutopilotV1WebhookApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIAutopilot_v1_assistant.cpp \
+    $${PWD}/OAIAutopilot_v1_assistant_defaults.cpp \
+    $${PWD}/OAIAutopilot_v1_assistant_dialogue.cpp \
+    $${PWD}/OAIAutopilot_v1_assistant_field_type.cpp \
+    $${PWD}/OAIAutopilot_v1_assistant_field_type_field_value.cpp \
+    $${PWD}/OAIAutopilot_v1_assistant_model_build.cpp \
+    $${PWD}/OAIAutopilot_v1_assistant_query.cpp \
+    $${PWD}/OAIAutopilot_v1_assistant_style_sheet.cpp \
+    $${PWD}/OAIAutopilot_v1_assistant_task.cpp \
+    $${PWD}/OAIAutopilot_v1_assistant_task_field.cpp \
+    $${PWD}/OAIAutopilot_v1_assistant_task_sample.cpp \
+    $${PWD}/OAIAutopilot_v1_assistant_task_task_actions.cpp \
+    $${PWD}/OAIAutopilot_v1_assistant_task_task_statistics.cpp \
+    $${PWD}/OAIAutopilot_v1_assistant_webhook.cpp \
+    $${PWD}/OAIAutopilot_v1_restore_assistant.cpp \
+    $${PWD}/OAIListAssistantResponse.cpp \
+    $${PWD}/OAIListAssistantResponse_meta.cpp \
+    $${PWD}/OAIListFieldResponse.cpp \
+    $${PWD}/OAIListFieldTypeResponse.cpp \
+    $${PWD}/OAIListFieldValueResponse.cpp \
+    $${PWD}/OAIListModelBuildResponse.cpp \
+    $${PWD}/OAIListQueryResponse.cpp \
+    $${PWD}/OAIListSampleResponse.cpp \
+    $${PWD}/OAIListTaskResponse.cpp \
+    $${PWD}/OAIListWebhookResponse.cpp \
+    $${PWD}/OAIModel_build_enum_status.cpp \
+# APIs
+    $${PWD}/OAIAutopilotV1AssistantApi.cpp \
+    $${PWD}/OAIAutopilotV1DefaultsApi.cpp \
+    $${PWD}/OAIAutopilotV1DialogueApi.cpp \
+    $${PWD}/OAIAutopilotV1FieldApi.cpp \
+    $${PWD}/OAIAutopilotV1FieldTypeApi.cpp \
+    $${PWD}/OAIAutopilotV1FieldValueApi.cpp \
+    $${PWD}/OAIAutopilotV1ModelBuildApi.cpp \
+    $${PWD}/OAIAutopilotV1QueryApi.cpp \
+    $${PWD}/OAIAutopilotV1RestoreAssistantApi.cpp \
+    $${PWD}/OAIAutopilotV1SampleApi.cpp \
+    $${PWD}/OAIAutopilotV1StyleSheetApi.cpp \
+    $${PWD}/OAIAutopilotV1TaskApi.cpp \
+    $${PWD}/OAIAutopilotV1TaskActionsApi.cpp \
+    $${PWD}/OAIAutopilotV1TaskStatisticsApi.cpp \
+    $${PWD}/OAIAutopilotV1WebhookApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp
