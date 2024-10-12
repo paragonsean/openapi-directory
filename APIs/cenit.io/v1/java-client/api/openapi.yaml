@@ -1,0 +1,1521 @@
+openapi: 3.0.1
+info:
+  contact:
+    email: support@cenit.io
+    name: Cenit IO Support
+    url: https://cenit.io
+  description: |
+    Cenit IO is an Open Platform for Data and Business Integration (iPaaS)
+  termsOfService: https://cenit-portal.herokuapp.com/terms_of_service
+  title: Cenit IO - REST API Specification
+  version: v1
+  x-logo:
+    url: https://cenit.io/images/logo.png
+  x-origin:
+  - format: swagger
+    url: https://cenit-io.github.io/openapi/swagger.json
+    version: "2.0"
+  x-providerName: cenit.io
+externalDocs:
+  url: https://github.com/cenit-io/openapi
+servers:
+- url: https://cenit.io/api/v1
+security:
+- X-User-Access-Key: []
+  X-User-Access-Token: []
+tags:
+- description: "The Cenit IO API is organized around REST. Cenit IO is an Open Platform\
+    \ for Data \nand Business Integration (iPaaS) to process, storage and move data\
+    \ in connection \nwith Cloud or On-Premise services. \n\nIt has been designed\
+    \ to orchestrate data flows that may involve several kind of \nendpoints (APIs,\
+    \ Datasets, EDI). It makes possible the automation of all operational \nprocesses\
+    \ in a company, connecting between organization's on-premises infrastructure \n\
+    and cloud provider services.\n"
+  name: Introduction
+- description: "When you sign up for an account, you are given your first API key.\n\
+    You can generate additional API keys, and delete API keys (as you may\nneed to\
+    \ rotate your keys in the future). You authenticate to Cenit IO API \nby providing\
+    \ your endpoint API keys and token in the header parameters into \nrequest. You\
+    \ can have multiple API keys and token active at one time for \nany endpoint.\n"
+  name: Authentication
+- description: "Connection are the representation of endpoint. \n"
+  name: Connection
+- description: "Define a group of webhooks that can apply to several connections.\
+    \       \n"
+  name: Connection Role
+- description: "Allow that objects flow through the hub. The creation of new objects\
+    \ \nand/or changes in existing objects will result in events. These events \n\
+    ultimately result in calls being made to various Flows in your endpoints.\n"
+  name: Data Event
+- description: |
+    Schedulers are events triggered on a certain moment and can be optionally recurrent.
+  name: Scheduler
+- description: |
+    Define an HTTP Method and params.
+  name: Webhook
+- description: |
+    A translator defines a logic for data manipulation. Data manipulation can occurs in the following scenarios:
+      - Importing outside data into Cenit
+      - Updating data already stored in Cenit
+      - Converting data already stored in Cenit
+      - Exporting data outside Cenit
+  name: Translator
+- description: "A flow defines how data is processed by the execution of one or more\
+    \ actions, if \nthe data is coming in to Cenit or going out of Cenit. Data processing\
+    \ involve:\n\n  ₋ An execution trigger to start the data processing\n  \n  ₋ Data\
+    \ types\n  \n  ₋ Translators\n  \n  ₋ Connections & Webhooks\n"
+  name: Flow
+- description: |
+    Define a data type is as simple as a JSON Schema http://json-schema.org
+  name: Data Type
+- description: "Define space of names to use across all the tenants    \n \n"
+  name: Namespace
+paths:
+  /setup/connection:
+    get:
+      description: "Returns a list of connections you've previously created. The connections\
+        \ are returned in sorted order, with the most recent connection appearing\
+        \ first."
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/connection'
+                type: array
+          description: OK
+      summary: Returns a list of connections
+      tags:
+      - Connection
+      x-accepts:
+      - application/json
+    post:
+      description: Creates or updates the specified connection by setting the values
+        of the parameters passed. Any parameters not provided will be left unchanged.
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connection'
+          description: OK
+      summary: Create or update a connection
+      tags:
+      - Connection
+      x-accepts:
+      - application/json
+  /setup/connection/{id}:
+    delete:
+      description: Permanently deletes a connection. It cannot be undone.
+      parameters:
+      - description: Connection ID
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content: {}
+          description: OK
+        "404":
+          content: {}
+          description: Item not found
+      summary: Delete a connection
+      tags:
+      - Connection
+      x-accepts:
+      - application/json
+    get:
+      description: Retrieves the details of an existing connection. You need only
+        supply the unique connection identifier that was returned upon connection
+        creation.
+      parameters:
+      - description: Connection ID
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connection'
+          description: OK
+        "404":
+          content: {}
+          description: Item not found
+      summary: Retrieve an existing connection
+      tags:
+      - Connection
+      x-accepts:
+      - application/json
+  /setup/connection_role:
+    get:
+      description: "Returns a list of connection roles you've previously created.\
+        \ The connection roles are returned in sorted order, with the most recent\
+        \ connection role appearing first."
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/connection_role'
+                type: array
+          description: OK
+      summary: Returns a list of connection roles
+      tags:
+      - Connection Role
+      x-accepts:
+      - application/json
+    post:
+      description: Creates or updates the specified connection role by setting the
+        values of the parameters passed. Any parameters not provided will be left
+        unchanged.
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connection_role'
+          description: OK
+      summary: Create or update a connection role
+      tags:
+      - Connection Role
+      x-accepts:
+      - application/json
+  /setup/connection_role/{id}:
+    delete:
+      description: Deletes the specified connection role.
+      parameters:
+      - description: Connection role ID
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content: {}
+          description: OK
+        "404":
+          content: {}
+          description: Item not found
+      summary: Delete a connection role.
+      tags:
+      - Connection Role
+      x-accepts:
+      - application/json
+    get:
+      description: Returns a connection role
+      parameters:
+      - description: Connection role ID
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connection_role'
+          description: OK
+        "404":
+          content: {}
+          description: Item not found
+      summary: Return a connection role
+      tags:
+      - Connection Role
+      x-accepts:
+      - application/json
+  /setup/data_type/:
+    get:
+      description: "Returns a list of data types you've previously created. The data\
+        \ types are returned in sorted order, with the most recent DataType appearing\
+        \ first."
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/data_type'
+                type: array
+          description: OK
+      summary: Returns a list of data types
+      tags:
+      - Data Type
+      x-accepts:
+      - application/json
+    post:
+      description: Creates or updates the specified data type by setting the values
+        of the parameters passed. Any parameters not provided will be left unchanged.
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/data_type'
+          description: OK
+      summary: Create or update a data type
+      tags:
+      - Data Type
+      x-accepts:
+      - application/json
+  /setup/data_type/{id}:
+    delete:
+      description: Deletes the specified data type.
+      parameters:
+      - description: data type ID
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content: {}
+          description: OK
+        "404":
+          content: {}
+          description: Item not found
+      summary: Delete a data type
+      tags:
+      - Data Type
+      x-accepts:
+      - application/json
+    get:
+      description: Retrieves the details of an existing data type. You need only supply
+        the unique data  type identifier that was returned upon DataType creation.
+      parameters:
+      - description: data type ID
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/data_type'
+          description: OK
+        "404":
+          content: {}
+          description: Item not found.
+      summary: Retrieve a data type
+      tags:
+      - Data Type
+      x-accepts:
+      - application/json
+  /setup/flow/:
+    get:
+      description: "Returns a list of flows you've previously created. The flows are\
+        \ returned in sorted order, with the most recent flow appearing first."
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/flow'
+                type: array
+          description: OK
+      summary: Returns a list of flows
+      tags:
+      - Flow
+      x-accepts:
+      - application/json
+    post:
+      description: Creates or updates the specified flow. Any parameters not provided
+        will be left unchanged.
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/flow'
+          description: OK
+      summary: Create or update a flow
+      tags:
+      - Flow
+      x-accepts:
+      - application/json
+  /setup/flow/{id}:
+    delete:
+      description: Deletes the specified flow.
+      parameters:
+      - description: Flow ID
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content: {}
+          description: OK
+        "404":
+          content: {}
+          description: Item not found
+      summary: Delete a flow.
+      tags:
+      - Flow
+      x-accepts:
+      - application/json
+    get:
+      description: Retrieves the details of an existing flow. You need only supply
+        the unique flow identifier that was returned upon flow creation.
+      parameters:
+      - description: Flow ID
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/flow'
+          description: OK
+        "404":
+          content: {}
+          description: Item not found.
+      summary: Retrieve an existing flow
+      tags:
+      - Flow
+      x-accepts:
+      - application/json
+  /setup/namespace/:
+    get:
+      description: "Returns a list of namespaces you've previously created. The namespaces\
+        \ are returned in sorted order, with the most recent namespace appearing first."
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/namespace'
+                type: array
+          description: OK
+      summary: Returns a list of namespaces
+      tags:
+      - Namespace
+      x-accepts:
+      - application/json
+    post:
+      description: Creates or updates the specified namespace. Any parameters not
+        provided will be left unchanged.
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/namespace'
+          description: OK
+      summary: Create or update a namespace
+      tags:
+      - Namespace
+      x-accepts:
+      - application/json
+  /setup/namespace/{id}:
+    delete:
+      description: Deletes the specified namespace.
+      parameters:
+      - description: Namespace ID.
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content: {}
+          description: OK
+        "404":
+          content: {}
+          description: Item not found
+      summary: Delete a namespace
+      tags:
+      - Namespace
+      x-accepts:
+      - application/json
+    get:
+      description: Retrieves the details of an existing namespace. You need only supply
+        the unique webhook namespace that was returned upon namespace creation.
+      parameters:
+      - description: Namespace ID.
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/namespace'
+          description: OK
+        "404":
+          content: {}
+          description: Item not found.
+      summary: Retrieve an existing namespace
+      tags:
+      - Namespace
+      x-accepts:
+      - application/json
+  /setup/observer/:
+    get:
+      description: "Returns a list of events you've previously created. The events\
+        \ are returned in sorted order, with the most recent event appearing first."
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/observer'
+                type: array
+          description: OK
+      summary: Returns a list of events
+      tags:
+      - Data Event
+      x-accepts:
+      - application/json
+    post:
+      description: Creates or updates the specified event observer. Any parameters
+        not provided will be left unchanged.
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/observer'
+          description: OK
+      summary: Create or update an event
+      tags:
+      - Data Event
+      x-accepts:
+      - application/json
+  /setup/observer/{id}:
+    delete:
+      description: Deletes the specified event observer.
+      parameters:
+      - description: Observer ID
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content: {}
+          description: OK
+        "404":
+          content: {}
+          description: Item not found
+      summary: Delete an event
+      tags:
+      - Data Event
+      x-accepts:
+      - application/json
+    get:
+      description: Retrieves the details of an existing event. You need only supply
+        the unique event identifier that was returned upon event creation.
+      parameters:
+      - description: Observer ID
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/observer'
+          description: OK
+        "404":
+          content: {}
+          description: Item not found.
+      summary: Retrieve an existing event
+      tags:
+      - Data Event
+      x-accepts:
+      - application/json
+  /setup/scheduler/:
+    get:
+      description: "Returns a list of schedulers you've previously created. The schedulers\
+        \ are returned in sorted order, with the most recent scheduler appearing first."
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/scheduler'
+                type: array
+          description: OK
+      summary: Returns a list of schedulers
+      tags:
+      - Scheduler
+      x-accepts:
+      - application/json
+    post:
+      description: Creates or updates the specified scheduler. Any parameters not
+        provided will be left unchanged.
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scheduler'
+          description: OK
+      summary: Create or update an scheduler
+      tags:
+      - Scheduler
+      x-accepts:
+      - application/json
+  /setup/scheduler/{id}:
+    delete:
+      description: Deletes the specified scheduler.
+      parameters:
+      - description: Scheduler ID
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content: {}
+          description: OK
+        "404":
+          content: {}
+          description: Item not found
+      summary: Delete an schedule
+      tags:
+      - Scheduler
+      x-accepts:
+      - application/json
+    get:
+      description: Retrieves the details of an existing scheduler. You need only supply
+        the unique scheduler identifier that was returned upon scheduler creation.
+      parameters:
+      - description: Scheduler ID
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scheduler'
+          description: OK
+        "404":
+          content: {}
+          description: Item not found.
+      summary: Retrieve an existing schedule
+      tags:
+      - Scheduler
+      x-accepts:
+      - application/json
+  /setup/schema/:
+    get:
+      description: "Returns a list of schemas you've previously created. The schemas\
+        \ are returned in sorted order, with the most recent schema appearing first."
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/schema'
+                type: array
+          description: OK
+      summary: Returns a list of schemas
+      tags:
+      - Schema
+      x-accepts:
+      - application/json
+    post:
+      description: Creates or updates the specified schema. Any parameters not provided
+        will be left unchanged.
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/schema'
+          description: OK
+      summary: Create or update an schema
+      tags:
+      - Schema
+      x-accepts:
+      - application/json
+  /setup/schema/{id}:
+    delete:
+      description: Deletes the specified schema.
+      parameters:
+      - description: Schema ID
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content: {}
+          description: OK
+        "404":
+          content: {}
+          description: Item not found
+      summary: Delete an schema.
+      tags:
+      - Schema
+      x-accepts:
+      - application/json
+    get:
+      description: Retrieves the details of an existing schema. You need only supply
+        the unique schema identifier that was returned upon schema creation.
+      parameters:
+      - description: Schema ID
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/schema'
+          description: OK
+        "404":
+          content: {}
+          description: Item not found.
+      summary: Retrieve an existing schema
+      tags:
+      - Schema
+      x-accepts:
+      - application/json
+  /setup/translator/:
+    get:
+      description: "Returns a list of translators you've previously created. The translators\
+        \ are returned in sorted order, with the most recent translator appearing\
+        \ first."
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/translator'
+                type: array
+          description: OK
+      summary: Returns a list of translators
+      tags:
+      - Translator
+      x-accepts:
+      - application/json
+    post:
+      description: Creates or updates the specified translator. Any parameters not
+        provided will be left unchanged.
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/translator'
+          description: OK
+      summary: Create or update a translator
+      tags:
+      - Translator
+      x-accepts:
+      - application/json
+  /setup/translator/{id}:
+    delete:
+      description: Deletes the specified translator.
+      parameters:
+      - description: Translator ID.
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content: {}
+          description: OK
+        "404":
+          content: {}
+          description: Item not found
+      summary: Delete a translator
+      tags:
+      - Translator
+      x-accepts:
+      - application/json
+    get:
+      description: Retrieves the details of an existing translator. You need only
+        supply the unique translator identifier that was returned upon translator
+        creation.
+      parameters:
+      - description: Translator ID.
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/translator'
+          description: OK
+        "404":
+          content: {}
+          description: Item not found.
+      summary: Retrieve an existing translator
+      tags:
+      - Translator
+      x-accepts:
+      - application/json
+  /setup/webhook/:
+    get:
+      description: "Returns a list of webhooks you've previously created. The webhooks\
+        \ are returned in sorted order, with the most recent webhook appearing first."
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/webhook'
+                type: array
+          description: OK
+      summary: Returns a list of webhooks
+      tags:
+      - Webhook
+      x-accepts:
+      - application/json
+    post:
+      description: Creates or updates the specified webhook. Any parameters not provided
+        will be left unchanged.
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/webhook'
+          description: OK
+      summary: Create or update a webhook
+      tags:
+      - Webhook
+      x-accepts:
+      - application/json
+  /setup/webhook/{id}:
+    delete:
+      description: Deletes the specified webhook.
+      parameters:
+      - description: Webhook ID.
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content: {}
+          description: OK
+        "404":
+          content: {}
+          description: Item not found
+      summary: Delete a webhook
+      tags:
+      - Webhook
+      x-accepts:
+      - application/json
+    get:
+      description: Retrieves the details of an existing webhook. You need only supply
+        the unique webhook identifier that was returned upon webhook creation.
+      parameters:
+      - description: Webhook ID.
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/webhook'
+          description: OK
+        "404":
+          content: {}
+          description: Item not found.
+      summary: Retrieve an existing webhook
+      tags:
+      - Webhook
+      x-accepts:
+      - application/json
+components:
+  schemas:
+    connection:
+      example:
+        headers:
+        - value: value
+          key: key
+        - value: value
+          key: key
+        name: name
+        namespace:
+          name: name
+          id: id
+          slug: slug
+        id: id
+        parameters:
+        - value: value
+          key: key
+        - value: value
+          key: key
+        key: key
+        url: url
+        token: token
+      properties:
+        headers:
+          items:
+            $ref: '#/components/schemas/connection_headers_inner'
+          type: array
+        id:
+          type: string
+        key:
+          type: string
+        name:
+          type: string
+        namespace:
+          $ref: '#/components/schemas/namespace'
+        parameters:
+          items:
+            $ref: '#/components/schemas/connection_headers_inner'
+          type: array
+        token:
+          type: string
+        url:
+          type: string
+      type: object
+    connection_role:
+      example:
+        webhook:
+        - headers:
+          - value: value
+            key: key
+          - value: value
+            key: key
+          path: path
+          name: name
+          namespace:
+            name: name
+            id: id
+            slug: slug
+          id: id
+          parameters:
+          - value: value
+            key: key
+          - value: value
+            key: key
+        - headers:
+          - value: value
+            key: key
+          - value: value
+            key: key
+          path: path
+          name: name
+          namespace:
+            name: name
+            id: id
+            slug: slug
+          id: id
+          parameters:
+          - value: value
+            key: key
+          - value: value
+            key: key
+        name: name
+        namespace:
+          name: name
+          id: id
+          slug: slug
+        connection:
+        - headers:
+          - value: value
+            key: key
+          - value: value
+            key: key
+          name: name
+          namespace:
+            name: name
+            id: id
+            slug: slug
+          id: id
+          parameters:
+          - value: value
+            key: key
+          - value: value
+            key: key
+          key: key
+          url: url
+          token: token
+        - headers:
+          - value: value
+            key: key
+          - value: value
+            key: key
+          name: name
+          namespace:
+            name: name
+            id: id
+            slug: slug
+          id: id
+          parameters:
+          - value: value
+            key: key
+          - value: value
+            key: key
+          key: key
+          url: url
+          token: token
+        id: id
+      properties:
+        connection:
+          items:
+            $ref: '#/components/schemas/connection'
+          type: array
+        id:
+          type: string
+        name:
+          type: string
+        namespace:
+          $ref: '#/components/schemas/namespace'
+        webhook:
+          items:
+            $ref: '#/components/schemas/webhook'
+          type: array
+      type: object
+    data_type:
+      example:
+        show_navigation_link: show_navigation_link
+        name: name
+        namespace:
+          name: name
+          id: id
+          slug: slug
+        model_schema: model_schema
+        id: id
+        title: title
+        type: "{}"
+        slug: slug
+      properties:
+        id:
+          type: string
+        model_schema:
+          type: string
+        name:
+          type: string
+        namespace:
+          $ref: '#/components/schemas/namespace'
+        show_navigation_link:
+          type: string
+        slug:
+          type: string
+        title:
+          type: string
+        type:
+          properties: {}
+          type: object
+      type: object
+    flow:
+      example:
+        custom_data_type:
+          show_navigation_link: show_navigation_link
+          name: name
+          namespace:
+            name: name
+            id: id
+            slug: slug
+          model_schema: model_schema
+          id: id
+          title: title
+          type: "{}"
+          slug: slug
+        response_translator:
+          custom_data_type:
+            show_navigation_link: show_navigation_link
+            name: name
+            namespace:
+              name: name
+              id: id
+              slug: slug
+            model_schema: model_schema
+            id: id
+            title: title
+            type: "{}"
+            slug: slug
+          target_data_type:
+            show_navigation_link: show_navigation_link
+            name: name
+            namespace:
+              name: name
+              id: id
+              slug: slug
+            model_schema: model_schema
+            id: id
+            title: title
+            type: "{}"
+            slug: slug
+          name: name
+          namespace:
+            name: name
+            id: id
+            slug: slug
+          style: Ruby
+          id: id
+          transformation: transformation
+          type: Import
+          source_data_type:
+            show_navigation_link: show_navigation_link
+            name: name
+            namespace:
+              name: name
+              id: id
+              slug: slug
+            model_schema: model_schema
+            id: id
+            title: title
+            type: "{}"
+            slug: slug
+        webhook:
+          headers:
+          - value: value
+            key: key
+          - value: value
+            key: key
+          path: path
+          name: name
+          namespace:
+            name: name
+            id: id
+            slug: slug
+          id: id
+          parameters:
+          - value: value
+            key: key
+          - value: value
+            key: key
+        translator:
+          custom_data_type:
+            show_navigation_link: show_navigation_link
+            name: name
+            namespace:
+              name: name
+              id: id
+              slug: slug
+            model_schema: model_schema
+            id: id
+            title: title
+            type: "{}"
+            slug: slug
+          target_data_type:
+            show_navigation_link: show_navigation_link
+            name: name
+            namespace:
+              name: name
+              id: id
+              slug: slug
+            model_schema: model_schema
+            id: id
+            title: title
+            type: "{}"
+            slug: slug
+          name: name
+          namespace:
+            name: name
+            id: id
+            slug: slug
+          style: Ruby
+          id: id
+          transformation: transformation
+          type: Import
+          source_data_type:
+            show_navigation_link: show_navigation_link
+            name: name
+            namespace:
+              name: name
+              id: id
+              slug: slug
+            model_schema: model_schema
+            id: id
+            title: title
+            type: "{}"
+            slug: slug
+        name: name
+        namespace:
+          name: name
+          id: id
+          slug: slug
+        notify_response: true
+        active: true
+        connection_role:
+          webhook:
+          - headers:
+            - value: value
+              key: key
+            - value: value
+              key: key
+            path: path
+            name: name
+            namespace:
+              name: name
+              id: id
+              slug: slug
+            id: id
+            parameters:
+            - value: value
+              key: key
+            - value: value
+              key: key
+          - headers:
+            - value: value
+              key: key
+            - value: value
+              key: key
+            path: path
+            name: name
+            namespace:
+              name: name
+              id: id
+              slug: slug
+            id: id
+            parameters:
+            - value: value
+              key: key
+            - value: value
+              key: key
+          name: name
+          namespace:
+            name: name
+            id: id
+            slug: slug
+          connection:
+          - headers:
+            - value: value
+              key: key
+            - value: value
+              key: key
+            name: name
+            namespace:
+              name: name
+              id: id
+              slug: slug
+            id: id
+            parameters:
+            - value: value
+              key: key
+            - value: value
+              key: key
+            key: key
+            url: url
+            token: token
+          - headers:
+            - value: value
+              key: key
+            - value: value
+              key: key
+            name: name
+            namespace:
+              name: name
+              id: id
+              slug: slug
+            id: id
+            parameters:
+            - value: value
+              key: key
+            - value: value
+              key: key
+            key: key
+            url: url
+            token: token
+          id: id
+        id: id
+        notify_request: true
+        event: "{}"
+      properties:
+        active:
+          type: boolean
+        connection_role:
+          $ref: '#/components/schemas/connection_role'
+        custom_data_type:
+          $ref: '#/components/schemas/data_type'
+        event:
+          properties: {}
+          type: object
+        id:
+          type: string
+        name:
+          type: string
+        namespace:
+          $ref: '#/components/schemas/namespace'
+        notify_request:
+          type: boolean
+        notify_response:
+          type: boolean
+        response_translator:
+          $ref: '#/components/schemas/translator'
+        translator:
+          $ref: '#/components/schemas/translator'
+        webhook:
+          $ref: '#/components/schemas/webhook'
+      type: object
+    namespace:
+      example:
+        name: name
+        id: id
+        slug: slug
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        slug:
+          type: string
+      type: object
+    observer:
+      example:
+        data_type:
+          show_navigation_link: show_navigation_link
+          name: name
+          namespace:
+            name: name
+            id: id
+            slug: slug
+          model_schema: model_schema
+          id: id
+          title: title
+          type: "{}"
+          slug: slug
+        name: name
+        namespace:
+          name: name
+          id: id
+          slug: slug
+        id: id
+        triggers: triggers
+        type: "{}"
+      properties:
+        data_type:
+          $ref: '#/components/schemas/data_type'
+        id:
+          type: string
+        name:
+          type: string
+        namespace:
+          $ref: '#/components/schemas/namespace'
+        triggers:
+          type: string
+        type:
+          properties: {}
+          type: object
+      type: object
+    scheduler:
+      example:
+        expression: expression
+        name: name
+        namespace:
+          name: name
+          id: id
+          slug: slug
+        id: id
+        activated: true
+      properties:
+        activated:
+          type: boolean
+        expression:
+          type: string
+        id:
+          type: string
+        name:
+          type: string
+        namespace:
+          $ref: '#/components/schemas/namespace'
+      type: object
+    schema:
+      example:
+        schema: schema
+        namespace:
+          name: name
+          id: id
+          slug: slug
+        id: id
+        uri: uri
+      properties:
+        id:
+          type: string
+        namespace:
+          $ref: '#/components/schemas/namespace'
+        schema:
+          type: string
+        uri:
+          type: string
+      type: object
+    translator:
+      example:
+        custom_data_type:
+          show_navigation_link: show_navigation_link
+          name: name
+          namespace:
+            name: name
+            id: id
+            slug: slug
+          model_schema: model_schema
+          id: id
+          title: title
+          type: "{}"
+          slug: slug
+        target_data_type:
+          show_navigation_link: show_navigation_link
+          name: name
+          namespace:
+            name: name
+            id: id
+            slug: slug
+          model_schema: model_schema
+          id: id
+          title: title
+          type: "{}"
+          slug: slug
+        name: name
+        namespace:
+          name: name
+          id: id
+          slug: slug
+        style: Ruby
+        id: id
+        transformation: transformation
+        type: Import
+        source_data_type:
+          show_navigation_link: show_navigation_link
+          name: name
+          namespace:
+            name: name
+            id: id
+            slug: slug
+          model_schema: model_schema
+          id: id
+          title: title
+          type: "{}"
+          slug: slug
+      properties:
+        custom_data_type:
+          $ref: '#/components/schemas/data_type'
+        id:
+          type: string
+        name:
+          type: string
+        namespace:
+          $ref: '#/components/schemas/namespace'
+        source_data_type:
+          $ref: '#/components/schemas/data_type'
+        style:
+          enum:
+          - Ruby
+          - Liquid
+          - xslt
+          type: string
+        target_data_type:
+          $ref: '#/components/schemas/data_type'
+        transformation:
+          type: string
+        type:
+          enum:
+          - Import
+          - Export
+          - Convert
+          - Update
+          type: string
+      type: object
+    webhook:
+      example:
+        headers:
+        - value: value
+          key: key
+        - value: value
+          key: key
+        path: path
+        name: name
+        namespace:
+          name: name
+          id: id
+          slug: slug
+        id: id
+        parameters:
+        - value: value
+          key: key
+        - value: value
+          key: key
+      properties:
+        headers:
+          items:
+            $ref: '#/components/schemas/connection_headers_inner'
+          type: array
+        id:
+          type: string
+        name:
+          type: string
+        namespace:
+          $ref: '#/components/schemas/namespace'
+        parameters:
+          items:
+            $ref: '#/components/schemas/connection_headers_inner'
+          type: array
+        path:
+          type: string
+      type: object
+    connection_headers_inner:
+      example:
+        value: value
+        key: key
+      properties:
+        key:
+          type: string
+        value:
+          type: string
+      type: object
+  securitySchemes:
+    X-User-Access-Key:
+      in: header
+      name: X-User-Access-Key
+      type: apiKey
+    X-User-Access-Token:
+      in: header
+      name: X-User-Access-Token
+      type: apiKey
+x-original-swagger-version: "2.0"
+

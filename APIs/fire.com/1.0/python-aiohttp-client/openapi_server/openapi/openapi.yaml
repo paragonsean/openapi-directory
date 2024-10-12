@@ -1,0 +1,5077 @@
+openapi: 3.0.2
+info:
+  contact:
+    email: api@fire.com
+    name: Fire API
+    url: https://docs.fire.com
+  description: |
+    The fire.com API allows you to deeply integrate Business Account features into your application or back-office systems.
+
+    The API provides read access to your profile, accounts and transactions, event-driven notifications of activity on the account and payment initiation via batches. Each feature has its own HTTP endpoint and every endpoint has its own permission.
+
+
+    The API exposes 3 main areas of functionality: financial functions, service information and service configuration.
+    ## Financial Functions
+    These functions provide access to your account details, transactions, payee accounts, payment initiation etc.
+    ## Service Functions
+    These provide information about the fees and limits applied to your account.
+    ## Service configuration
+    These provide information about your service configs - applications, webhooks, API tokens, etc.
+  title: Fire Financial Services Business API
+  version: "1.0"
+  x-apisguru-categories:
+  - financial
+  x-logo:
+    url: https://www.fire.com/wp-content/uploads/2018/12/fire-cover.png
+  x-origin:
+  - format: openapi
+    url: https://raw.githubusercontent.com/firefinancialservices/fire-business-api-openapi/master/fire-business-api-v1.yaml
+    version: "3.0"
+  x-providerName: fire.com
+servers:
+- description: Production Server
+  url: https://api.fire.com/business
+security:
+- bearerAuth: []
+tags:
+- description: |
+    Access to the API is by Bearer Tokens. The process is somewhat similar to OAuth2.0, but with some changes to improve security.
+    1. You must first log into the firework online application and create a new Application in the Profile > API page. (You will need your PIN digits and 2-Factor Authentication device).
+    2. Give your application a Name and select the scope/permissions you need the application to have (more on Scopes below).
+    3. You will be provided with three pieces of information - the App Refresh Token, Client ID and Client Key. You need to take note of the Client Key when it is displayed - it will not be shown again.
+
+    You now use these pieces of data to retrieve a short-term Access Token which you can use to access the API. The Access Token expires within a relatively short time, so even if it is compromised, the attacker will not have long to use it. The Client Key is the most important piece of information to keep secret. This should only ever be stored on a backend server, and never in a front end client or mobile app.
+
+    **If you ever accidentally reveal the Client Key (or accidentally commit it to Github for instance) it is vital that you log into firework online and delete/recreate the App Tokens as soon as possible. Anyone who has these three pieces of data can access the API to view your data and set up payments from your account (depending on the scope of the tokens).**
+
+    Once you have the access token, pass it as a header for every call, like so:
+    `Authorization: Bearer $ACCESS_TOKEN`
+    Whenever it expires, create a new nonce and get a new access token again.
+  name: Authentication
+- description: fire.com Accounts are the equivalent of a bank account from bank.
+  name: Accounts
+- description: |
+    Fire Open Payments is a feature of the fire.com business account that leverages Open Banking to allow your customers to pay you via bank transfer and to reconcile those payments as they are received into your fire.com GBP or EUR account.
+
+    To set up each Fire Open Payment you first need to create a payment request. This contains the details of the payment such as the amount, destination account, description as well as various other specific fields that you want to associate with the payment. The payment request is represented as a URL with a unique code which can then be incorporated into an eCommerce shopping cart as an alternative form of payment. For example, you can put “Pay by Bank” on your website along with “Pay by Card” and “Pay by PayPal”. It can also be distributed by a variety of means such as by email, SMS, WhatsApp, encoded as a QR code, NFC tag, etc.
+
+    Consumers confirm the payment details such as the amount are correct, select their bank and authorise the payment. Payments can be made from all major UK banks.
+
+    The funds are settled into your fire.com account, fully reconciled, with your specified fields provided.
+
+    There are two implementation options you can use to display payment pages with Fire Open Payments.
+    1. **Hosted Payment Pages:** fire.com hosts the payment pages - this option allows you to re-direct your customer to the hosted fire.com payment pages displaying the payment details confirmation, bank selection, consent and response pages.
+    2. **Integrated Payment Pages:** You host the payments page yourself - this option allows you to have control of the UI and UX for displaying the payment details confirmation, bank selection and response pages. Once the response is received, fire.com can re-direct the payer back to your website.
+
+    ## Hosted Payment Pages Option
+    ![Image](https://fire.com/docs/images/fop-hosted-flow.png)
+
+    The payer is brought through 5 stages to complete the payment:
+    1. **View Payment Details page:** The payer must first be clear on the amount of the payment, who they are paying and the reason for the payment.
+    2. **Select Bank / Account Provider page:** The payer then selects their bank. Again this step is offered as part of the fire.com payment UI.
+    3. **Consent page:**  The payer must provide consent to the PISP (fire.com) prior to authorising the payment. This is a regulatory requirement, this page must be hosted by fire.com.
+    4. **Authenticate and Authorise Payment:** The payer will be redirected to their bank’s online site or mobile banking app. After authenticating, the details of the payment will be displayed, and the payer will authorise the payment.
+    5. **Response page:** It is a regulatory requirement that the PISP (fire.com) display the results of the payment and provide the same information that would be provided if the payer had made the payment via their banking application. fire.com must display this page, before optionally redirecting the payer back to your website.
+
+    To implement the hosted Fire Open Payments option you need to do the following:
+    1. You can create a new Fire Open Payment request either within Firework Online or via the API.
+    2. Create your new API application with the appropriate permissions required in Firework Online, as outlined in the “Authentication” steps. The permissions needed are:
+        - “Create a Payment Request”
+        - “Get Payment Details”
+
+    3. Use the Refresh Token, Client ID and Client Key to create an access token as outlined in the “Authentication” steps.
+    4. On your website, create a “Pay by Bank” button alongside your other available payment methods, such as Cards and PayPal.
+    5. After the user clicks on “Pay by Bank”, you need to create a new Fire Open Payment request as outlined in the “Create a Fire Open Payment” steps. The Create a Fire Open Payment request endpoint returns a unique code for the payment request.
+    6. Create a URL using the code returned in this format: `https://payments.fire.com/{code}` and redirect your customer to this page.
+    7. fire.com will host all the pages that the customer needs to review and authorise the payment. fire.com will will return the paymentUUID of the successful or failed transaction to the returnUrl that you supplied when creating the Fire Open Payment request. fire.com can also optionally send a “webhook” to your website notifying you of the transaction’s outcome.
+    8. Once fire.com responds with the paymentUUID and/or the webhook to your website, you need to call the “Get Payment Details” endpoint to get the details of the transaction. This will let you know whether the transaction was successful or not. You can set up the “Payment Request Payment Authorised” webhook to notify you once the payment is authorised or cancelled.
+    9. The funds will be received into your GBP or EUR account. Funding will typically be within 6 business hours.
+
+    Once the code is returned the payment can be viewed and paid by going to the following URL: `https://payments.fire.com/{code}`
+  name: Open Banking
+- description: Manage your API Applications and Webhooks
+  name: API
+- description: "While there are many types of transactions, they are all represented\
+    \ by the same JSON object with a different txnType."
+  name: Transactions
+- description: |
+    The fire.com api allows businesses to automate direct debit payment actions on their fire.com business accounts.
+
+    You can retrieve details of your direct debit payments, direct debit mandates and also take actions on both your direct debit payments and mandates.
+  name: Direct Debits
+- description: |
+    The fire.com API allows businesses to automate payments between their accounts or to third parties across the UK and Europe.
+
+    For added security, the API can only set up the payments in batches. These batches must be approved by an authorised user via the firework mobile app.
+
+
+    The process is as follows:
+
+    **1.**Create a new batch
+
+    **2.**Add payments to the batch
+
+    **3.**Submit the batch for approval
+
+    Once the batch is submitted, the authorised users will receive notifications to their firework mobile apps. They can review the contents of the batch and then approve or reject it. If approved, the batch is then processed. You can avail of enhanced security by using Dual Authorisation to verify payments if you wish. Dual Authorisation can be enabled by you when setting up your API application in firework online.
+
+    **Batch Life Cycle Events**
+
+    A batch webhook can be specified to receive details of all the payments as they are processed. This webhook receives notifications for every event in the batch lifecycle.
+
+    The following events are triggered during a batch:
+
+    **batch.opened:** Contains the details of the batch opened. Checks that the callback URL exists - unless a HTTP 200 response is returned, the callback URL will not be configured.
+
+    **batch.item-added:** Details of the item added to the batch
+
+    **batch.item-removed:** Details of the item removed from the batch
+
+    **batch.cancelled:** Notifies that the batch was cancelled.
+
+    **batch.submitted:** Notifes that the batch was submitted
+
+    **batch.approved:** Notifies that the batch was approved.
+
+    **batch.rejected:** Notifies that the batch was rejected.
+
+    **batch.failed:** Notifies that the batch failed - includes the details of the failure (insufficient funds etc)
+
+    **batch.completed:** Notifies that the batch completed successfully. Includes a summary.
+
+    Push notifications are sent to the firework mobile app for many of these events too - these can be configured from within the app.
+  name: Payment Batches
+paths:
+  /v1/accounts:
+    get:
+      description: Returns all your fire.com Accounts. Ordered by Alias ascending.
+        Can be paginated.
+      operationId: get_accounts
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/accounts'
+          description: An array of account objects.
+        "401":
+          description: Access Token is Invalid or missing
+      summary: List all fire.com Accounts
+      tags:
+      - Accounts
+      x-openapi-router-controller: openapi_server.controllers.accounts_controller
+    post:
+      description: |
+        Creates a new fire.com account.
+
+        **Please note there is a charge associated with creating a new account.**
+      operationId: add_account
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/newAccount'
+        description: Details of the new account
+        required: true
+        x-body-name: body
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Account'
+          description: The details of the new account
+      summary: Add a new account
+      tags:
+      - Accounts
+      x-openapi-router-controller: openapi_server.controllers.accounts_controller
+      x-codegen-request-body-name: body
+  /v1/accounts/{ican}:
+    get:
+      description: You can retrieve the details of a fire.com Account by its `ican`.
+      operationId: get_account_by_id
+      parameters:
+      - explode: false
+        in: path
+        name: ican
+        required: true
+        schema:
+          description: The ican of the account to retrieve
+          format: int64
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Account'
+          description: An array of account objects.
+        "401":
+          description: Access Token is Invalid or missing
+      summary: Retrieve the details of a fire.com Account
+      tags:
+      - Accounts
+      x-openapi-router-controller: openapi_server.controllers.accounts_controller
+  /v1/accounts/{ican}/transactions:
+    get:
+      deprecated: true
+      description: Retrieve a list of transactions against an account. Recommended
+        to use the v3 endpoint instead.
+      operationId: get_transactions_by_account_idv1
+      parameters:
+      - explode: false
+        in: path
+        name: ican
+        required: true
+        schema:
+          description: The ican of the account to retrieve
+          format: int64
+          type: integer
+        style: simple
+      - explode: true
+        in: query
+        name: limit
+        required: true
+        schema:
+          description: The number of records to return. Defaults to 10 - max is 200.
+          format: int64
+          type: integer
+        style: form
+      - explode: true
+        in: query
+        name: offset
+        required: true
+        schema:
+          description: The page offset. Defaults to 0. This is the record number that
+            the returned list will start at. E.g. offset = 40 and limit = 20 will
+            return records 40 to 59.
+          format: int64
+          type: integer
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/cardTransactionsv1'
+          description: An array of transaction objects for the account with a count
+            (`total`).
+      summary: List transactions for an account (v1)
+      tags:
+      - Transactions
+      x-openapi-router-controller: openapi_server.controllers.transactions_controller
+  /v1/accounts/{ican}/transactions/filter:
+    get:
+      deprecated: true
+      description: |
+        Retrieve a filtered list of transactions against an account. Recommended to use the v3 endpoint instead.
+        * `dateRangeFrom` - A millisecond epoch time specifying the date range start date.
+        * `dateRangeTo` - A millisecond epoch time specifying the date range end date.
+        * `searchKeyword` - Search term to filter by from the reference field (`myRef`).
+        * `transactionTypes` - One or more of the transaction types above. This field can be repeated multiple times to allow for multiple transaction types.
+        * `offset` - The page offset. Defaults to 0. This is the record number that the returned list will start at. E.g. offset = 40 and limit = 20 will return records 40 to 59.
+      operationId: get_transactions_by_account_id_filtered
+      parameters:
+      - explode: false
+        in: path
+        name: ican
+        required: true
+        schema:
+          description: The ican of the account to retrieve
+          format: int64
+          type: integer
+        style: simple
+      - explode: true
+        in: query
+        name: dateRangeFrom
+        required: true
+        schema:
+          description: A millisecond epoch time specifying the date range start date.
+          format: int64
+          type: integer
+        style: form
+      - explode: true
+        in: query
+        name: dateRangeTo
+        required: true
+        schema:
+          description: A millisecond epoch time specifying the date range end date.
+          format: int64
+          type: integer
+        style: form
+      - explode: true
+        in: query
+        name: searchKeyword
+        required: true
+        schema:
+          description: Search term to filter by from the reference field (`myRef`).
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: transactionTypes
+        required: true
+        schema:
+          description: One or more of the transaction types above. This field can
+            be repeated multiple times to allow for multiple transaction types.
+          items:
+            type: string
+          type: array
+        style: form
+      - explode: true
+        in: query
+        name: offset
+        required: true
+        schema:
+          description: The page offset. Defaults to 0. This is the record number that
+            the returned list will start at. E.g. offset = 40 and limit = 20 will
+            return records 40 to 59.
+          format: int64
+          type: integer
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/cardTransactionsv1'
+          description: An array of transaction objects for the account with a count
+            (`total`) filtered by the specified query parameter.
+      summary: Filtered list of transactions for an account (v1)
+      tags:
+      - Transactions
+      x-openapi-router-controller: openapi_server.controllers.transactions_controller
+  /v1/apps:
+    post:
+      description: Create a new API Application with specified permissions
+      operationId: create_api_application
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/newApiApplication'
+        description: Details of the new API Application
+        required: true
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/apiApplication'
+          description: API Application created successfully
+      summary: Create a new API Application
+      tags:
+      - API
+      x-openapi-router-controller: openapi_server.controllers.api_controller
+      x-codegen-request-body-name: body
+  /v1/apps/accesstokens:
+    post:
+      description: "Access to the API is by Bearer Tokens. The process is somewhat\
+        \ similar to OAuth2.0, but with some changes to improve security.\n\n  1.\
+        \ You must first log into the firework online application and create a new\
+        \ Application in the Profile > API page. (You will need your PIN digits and\
+        \ 2-Factor Authentication device).\n  \n  2. Give your application a Name\
+        \ and select the scope/permissions you need the application to have (more\
+        \ on Scopes below).\n  \n  3. You will be provided with three pieces of information\
+        \ - the App Refresh Token, Client ID and Client Key. You need to take note\
+        \ of the Client Key when it is displayed - it will not be shown again.\n \
+        \ \n  \n  You now use these pieces of data to retrieve a short-term Access\
+        \ Token which you can use to access the API. The Access Token expires within\
+        \ a relatively short time, so even if it is compromised, the attacker will\
+        \ not have long to use it. The Client Key is the most important piece of information\
+        \ to keep secret. This should only ever be stored on a backend server, and\
+        \ never in a front end client or mobile app.\n\n\n  **If you ever accidentally\
+        \ reveal the Client Key (or accidentally commit it to Github for instance)\
+        \ it is vital that you log into firework online and delete/recreate the App\
+        \ Tokens as soon as possible. Anyone who has these three pieces of data can\
+        \ access the API to view your data and set up payments from your account (depending\
+        \ on the scope of the tokens).**\n  \n  \n  Once you have the access token,\
+        \ pass it as a header for every call, like so:\n\n  `Authorization: Bearer\
+        \ $ACCESS_TOKEN`\n\n  Whenever it expires, create a new nonce and get a new\
+        \ access token again.\n"
+      operationId: authenticate
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/authentication'
+        description: Authentication data
+        required: true
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/accessToken'
+          description: Successfully authenticated
+      security: []
+      summary: Authenticate with the API.
+      tags:
+      - Authentication
+      x-openapi-router-controller: openapi_server.controllers.authentication_controller
+      x-codegen-request-body-name: body
+  /v1/aspsps:
+    get:
+      description: |
+        Returns all ASPSPs (Account Servicing Payment Service Provider) / banks. The list can be filtered by currency. You will need to enable the `PERM_BUSINESS_GET_ASPSPS` permission to use this endpoint.
+        ***This endpoint is only required if you intend to host the “Select ASPSP / bank” page yourself.***
+      operationId: get_list_of_aspsps
+      parameters:
+      - description: The three letter code for the currency - either `EUR` or `GBP`.
+          Use this to filter the list for banks that can be used to pay in a certain
+          currency.
+        example: EUR
+        explode: true
+        in: query
+        name: currency
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/aspsps'
+          description: |
+            A list of ASPSPs the customers can use to pay a payment.
+      summary: Get list of ASPSPs / Banks
+      tags:
+      - Open Banking
+      x-openapi-router-controller: openapi_server.controllers.open_banking_controller
+  /v1/batches:
+    get:
+      description: |
+        Returns the list of batch with the specified types and statuses.
+      operationId: get_batches
+      parameters:
+      - explode: true
+        in: query
+        name: batchStatus
+        required: false
+        schema:
+          description: The status of the batch if internal transfer.
+          enum:
+          - SUBMITTED
+          - REMOVED
+          - SUCCEEDED
+          - FAILED
+          example: SUBMITTED
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: batchTypes
+        required: false
+        schema:
+          description: The type of the batch. Can be one of the listed enums.
+          enum:
+          - INTERNAL_TRANSFER
+          - BANK_TRANSFER
+          - INTERNATIONAL_TRANSFER
+          - NEW_PAYEE
+          example: INTERNAL_TRANSFER
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: orderBy
+        required: false
+        schema:
+          description: You can order the batches by date. No other options at this
+            time
+          enum:
+          - DATE
+          example: DATE
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: order
+        required: false
+        schema:
+          description: You can order the batches by ascending or descending order.
+          enum:
+          - DESC
+          - ASC
+          example: DESC
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/batchItems'
+          description: List all batches.
+      summary: List batches
+      tags:
+      - Payment Batches
+      x-openapi-router-controller: openapi_server.controllers.payment_batches_controller
+    post:
+      description: |
+        The fire.com API allows businesses to automate payments between their accounts or to third parties across the UK and Europe.
+
+        For added security, the API can only set up the payments in batches. These batches must be approved by an authorised user via the firework mobile app.
+
+
+        The process is as follows:
+
+        **1.**Create a new batch
+
+        **2.**Add payments to the batch
+
+        **3.**Submit the batch for approval
+
+        Once the batch is submitted, the authorised users will receive notifications to their firework mobile apps. They can review the contents of the batch and then approve or reject it. If approved, the batch is then processed. You can avail of enhanced security by using Dual Authorisation to verify payments if you wish. Dual Authorisation can be enabled by you when setting up your API application in firework online.
+
+        **Batch Life Cycle Events**
+
+        A batch webhook can be specified to receive details of all the payments as they are processed. This webhook receives notifications for every event in the batch lifecycle.
+
+        The following events are triggered during a batch:
+
+        **batch.opened:** Contains the details of the batch opened. Checks that the callback URL exists - unless a HTTP 200 response is returned, the callback URL will not be configured.
+
+        **batch.item-added:** Details of the item added to the batch
+
+        **batch.item-removed:** Details of the item removed from the batch
+
+        **batch.cancelled:** Notifies that the batch was cancelled.
+
+        **batch.submitted:** Notifes that the batch was submitted
+
+        **batch.approved:** Notifies that the batch was approved.
+
+        **batch.rejected:** Notifies that the batch was rejected.
+
+        **batch.failed:** Notifies that the batch failed - includes the details of the failure (insufficient funds etc)
+
+        **batch.completed:** Notifies that the batch completed successfully. Includes a summary.
+
+        Push notifications are sent to the firework mobile app for many of these events too - these can be configured from within the app.
+
+        This is the first step in creating a batch payment.
+      operationId: create_batch_payment
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/newBatch'
+        description: Details of the batch payment
+        required: true
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/newBatchResponse'
+          description: Batch created successfully
+      summary: Create a new batch of payments
+      tags:
+      - Payment Batches
+      x-openapi-router-controller: openapi_server.controllers.payment_batches_controller
+      x-codegen-request-body-name: body
+  /v1/batches/{batchUuid}:
+    delete:
+      description: Cancels the Batch. You can only cancel a batch before it is submitted
+        for approval (while it is in the OPEN state).
+      operationId: cancel_batch_payment
+      parameters:
+      - explode: false
+        in: path
+        name: batchUuid
+        required: true
+        schema:
+          description: The uuid of the batch.
+          example: 4ADFB67A-0F5B-4A9A-9D74-34437250045C
+          type: string
+        style: simple
+      responses:
+        "200":
+          description: Batch payment deleted successfully.
+      summary: Cancel a batch
+      tags:
+      - Payment Batches
+      x-openapi-router-controller: openapi_server.controllers.payment_batches_controller
+    get:
+      description: "Returns the details of the batch specified in the API endpoint\
+        \ - {batchUuid}."
+      operationId: get_details_single_batch
+      parameters:
+      - explode: false
+        in: path
+        name: batchUuid
+        required: true
+        schema:
+          description: The uuid of the batch.
+          example: 4ADFB67A-0F5B-4A9A-9D74-34437250045C
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/batch'
+          description: "Returns the details of the batch specified in the API endpoint\
+            \ - {batchUuid}."
+      summary: Get details of a single Batch
+      tags:
+      - Payment Batches
+      x-openapi-router-controller: openapi_server.controllers.payment_batches_controller
+    put:
+      description: |
+        Submits the Batch (for approval in the case of a **BANK_TRANSFER** or **INTERNATIONAL_TRANSFER**). If this is an **INTERNAL_TRANSFER** batch, the transfers are immediately queued for processing. If this is a **BANK_TRANSFER** or **INTERNATIONAL_TRANSFER** batch, this will trigger requests for approval to the firework mobile apps of authorised users. Once those users approve the batch, it is queued for processing.
+
+        You can only submit a batch while it is in the OPEN state.
+      operationId: submit_batch
+      parameters:
+      - explode: false
+        in: path
+        name: batchUuid
+        required: true
+        schema:
+          description: The uuid of the batch.
+          example: 4ADFB67A-0F5B-4A9A-9D74-34437250045C
+          type: string
+        style: simple
+      responses:
+        "204":
+          description: No body is returned - a HTTP 204 No Content response signifies
+            the call was successful.
+      summary: Submit a batch for approval
+      tags:
+      - Payment Batches
+      x-openapi-router-controller: openapi_server.controllers.payment_batches_controller
+  /v1/batches/{batchUuid}/approvals:
+    get:
+      description: Returns a list of approvers for this batch.
+      operationId: get_listof_approvers_for_batch
+      parameters:
+      - explode: false
+        in: path
+        name: batchUuid
+        required: true
+        schema:
+          description: The uuid of the batch.
+          example: 4ADFB67A-0F5B-4A9A-9D74-34437250045C
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/batchApprovers'
+          description: A list of approvers for this batch.
+      summary: List Approvers for a Batch
+      tags:
+      - Payment Batches
+      x-openapi-router-controller: openapi_server.controllers.payment_batches_controller
+  /v1/batches/{batchUuid}/banktransfers:
+    get:
+      description: Returns a paginated list of items in the specified batch.
+      operationId: get_items_batch_bank_transfer
+      parameters:
+      - explode: false
+        in: path
+        name: batchUuid
+        required: true
+        schema:
+          description: The uuid of the batch.
+          example: 4ADFB67A-0F5B-4A9A-9D74-34437250045C
+          type: string
+        style: simple
+      - explode: true
+        in: query
+        name: offset
+        required: false
+        schema:
+          description: The page offset. Defaults to 0. This is the record number that
+            the returned list will start at. E.g. offset = 40 and limit = 20 will
+            return records 40 to 59.
+          example: 0
+          format: int64
+          type: integer
+        style: form
+      - explode: true
+        in: query
+        name: limit
+        required: false
+        schema:
+          description: The number of records to return. Defaults to 10 - max is 200.
+          example: 10
+          format: int64
+          type: integer
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/batchItems'
+          description: A fire.com list object of Batch Items (Internal transfers or
+            Bank transfers).
+      summary: List items in a Batch (Bank Transfers)
+      tags:
+      - Payment Batches
+      x-openapi-router-controller: openapi_server.controllers.payment_batches_controller
+    post:
+      description: |
+        There are two ways to process bank transfers - by Payee ID (**Mode 1**) or by Payee Account Details (**Mode 2**).
+
+        **Mode 1:** Use the payee IDs of existing approved payees set up against your account. These batches can be approved in the normal manner.
+
+        **Mode 2:** Use the account details of the payee. In the event that these details correspond to an existing approved payee, the batch can be approved as normal. If the account details are new, a batch of New Payees will automatically be created. This batch will need to be approved before the Payment batch can be approved. These payees will then exist as approved payees for future batches.
+      operationId: add_bank_transfer_batch_payment
+      parameters:
+      - explode: false
+        in: path
+        name: batchUuid
+        required: true
+        schema:
+          description: The uuid of the batch.
+          example: 4ADFB67A-0F5B-4A9A-9D74-34437250045C
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/addBankTransferBatchPayment_request'
+        description: Details of **Mode 1** & **Mode 2**.
+        required: true
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/newBatchItemResponse'
+          description: "Batch payment added successfully. **Note*** Please use batchUuid\
+            \ when submitting a batch, not batchItemUuid."
+      summary: Add a bank transfer payment to the batch.
+      tags:
+      - Payment Batches
+      x-openapi-router-controller: openapi_server.controllers.payment_batches_controller
+      x-codegen-request-body-name: body
+  /v1/batches/{batchUuid}/banktransfers/{itemUuid}:
+    delete:
+      description: Removes a Payment from the Batch (Bank Transfers). You can only
+        remove payments before the batch is submitted for approval (while it is in
+        the OPEN state).
+      operationId: delete_bank_transfer_batch_payment
+      parameters:
+      - explode: false
+        in: path
+        name: batchUuid
+        required: true
+        schema:
+          description: The uuid of the batch.
+          example: 4ADFB67A-0F5B-4A9A-9D74-34437250045C
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: itemUuid
+        required: true
+        schema:
+          description: The uuid of the item to remove.
+          type: string
+        style: simple
+      responses:
+        "200":
+          description: Batch payment deleted successfully.
+      summary: Remove a Payment from the Batch (Bank Transfers)
+      tags:
+      - Payment Batches
+      x-openapi-router-controller: openapi_server.controllers.payment_batches_controller
+  /v1/batches/{batchUuid}/internaltransfers:
+    get:
+      description: Returns a paginated list of items in the specified batch.
+      operationId: get_items_batch_internal_trasnfer
+      parameters:
+      - explode: false
+        in: path
+        name: batchUuid
+        required: true
+        schema:
+          description: The uuid of the batch.
+          example: 4ADFB67A-0F5B-4A9A-9D74-34437250045C
+          type: string
+        style: simple
+      - explode: true
+        in: query
+        name: offset
+        required: false
+        schema:
+          description: The page offset. Defaults to 0. This is the record number that
+            the returned list will start at. E.g. offset = 40 and limit = 20 will
+            return records 40 to 59.
+          example: 0
+          format: int64
+          type: integer
+        style: form
+      - explode: true
+        in: query
+        name: limit
+        required: false
+        schema:
+          description: The number of records to return. Defaults to 10 - max is 200.
+          example: 10
+          format: int64
+          type: integer
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/batchItems'
+          description: A fire.com list object of Batch Items (Internal transfers or
+            Bank transfers).
+      summary: List items in a Batch (Internal Transfers)
+      tags:
+      - Payment Batches
+      x-openapi-router-controller: openapi_server.controllers.payment_batches_controller
+    post:
+      description: "Simply specify the source account, destination account, amount\
+        \ and a reference."
+      operationId: add_internal_transfer_batch_payment
+      parameters:
+      - explode: false
+        in: path
+        name: batchUuid
+        required: true
+        schema:
+          description: The uuid of the batch.
+          example: 4ADFB67A-0F5B-4A9A-9D74-34437250045C
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/batchItemInternalTransfer'
+        description: "Details of the source account, destination account, amount and\
+          \ a reference."
+        required: true
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/newBatchItemResponse'
+          description: "Batch payment added successfully. Note* Please use batchUuid\
+            \ when submitting a batch, not batchItemUuid."
+      summary: Add an internal transfer payment to the batch
+      tags:
+      - Payment Batches
+      x-openapi-router-controller: openapi_server.controllers.payment_batches_controller
+      x-codegen-request-body-name: body
+  /v1/batches/{batchUuid}/internaltransfers/{itemUuid}:
+    delete:
+      description: Removes a Payment from the Batch (Internal Transfer). You can only
+        remove payments before the batch is submitted for approval (while it is in
+        the OPEN state).
+      operationId: delete_internal_transfer_batch_payment
+      parameters:
+      - explode: false
+        in: path
+        name: batchUuid
+        required: true
+        schema:
+          description: The uuid of the batch.
+          example: 4ADFB67A-0F5B-4A9A-9D74-34437250045C
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: itemUuid
+        required: true
+        schema:
+          description: The uuid of the item to remove.
+          example: 4ADFB67A-0F5B-4A9A-9D74-34437250045C
+          type: string
+        style: simple
+      responses:
+        "200":
+          description: Batch payment deleted successfully.
+      summary: Remove a Payment from the Batch (Internal Transfer)
+      tags:
+      - Payment Batches
+      x-openapi-router-controller: openapi_server.controllers.payment_batches_controller
+  /v1/cards:
+    get:
+      description: Returns a list of cards related to your fire.com account.
+      operationId: get_listof_cards
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/cards'
+          description: Successful response
+        "401":
+          description: Access Token is Invalid or missing
+        "403":
+          description: Access Token is Invalid or missing
+      summary: View List of Cards.
+      tags:
+      - Cards
+      x-openapi-router-controller: openapi_server.controllers.cards_controller
+    post:
+      description: You can create multiple debit cards which can be linked to your
+        fire.com accounts.
+      operationId: create_new_card
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/newCard'
+        description: Details of the new card
+        required: true
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/newCardResponse'
+          description: Card created successfully
+      summary: Create a new debit card.
+      tags:
+      - Cards
+      x-openapi-router-controller: openapi_server.controllers.cards_controller
+      x-codegen-request-body-name: body
+  /v1/cards/{cardId}/block:
+    post:
+      description: Updates status of an existing card to block which prevents any
+        transactions being carried out with that card.
+      operationId: block_card
+      parameters:
+      - explode: false
+        in: path
+        name: cardId
+        required: true
+        schema:
+          description: The cardid of the card to block
+          format: int64
+          type: integer
+        style: simple
+      responses:
+        "204":
+          description: No body is returned - “Status 204 No Content” signifies the
+            call was successful.
+      summary: Block a card
+      tags:
+      - Cards
+      x-openapi-router-controller: openapi_server.controllers.cards_controller
+  /v1/cards/{cardId}/transactions:
+    get:
+      description: Returns a list of cards transactions related to your fire.com card.
+      operationId: get_listof_card_transactions
+      parameters:
+      - explode: false
+        in: path
+        name: cardId
+        required: true
+        schema:
+          description: The cardid of the card to retrieve the associated transactions
+          format: int64
+          type: integer
+        style: simple
+      - explode: true
+        in: query
+        name: limit
+        required: false
+        schema:
+          description: The number of records to return
+          format: int64
+          type: integer
+        style: form
+      - explode: true
+        in: query
+        name: offset
+        required: false
+        schema:
+          description: The page of records to return
+          format: int64
+          type: integer
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/cardTransactionsv1'
+                type: array
+          description: Successful response
+        "401":
+          description: Access Token is Invalid or missing
+        "403":
+          description: Access Token is Invalid or missing
+      summary: List Card Transactions.
+      tags:
+      - Cards
+      x-openapi-router-controller: openapi_server.controllers.cards_controller
+  /v1/cards/{cardId}/unblock:
+    post:
+      description: Updates status of an existing card to unblock which means that
+        transactions can be carried out with that card.
+      operationId: unblock_card
+      parameters:
+      - explode: false
+        in: path
+        name: cardId
+        required: true
+        schema:
+          description: The cardid of the card to unblock
+          format: int64
+          type: integer
+        style: simple
+      responses:
+        "204":
+          description: No body is returned - “Status 204 No Content” signifies the
+            call was successful.
+      summary: Unblock a card
+      tags:
+      - Cards
+      x-openapi-router-controller: openapi_server.controllers.cards_controller
+  /v1/directdebits:
+    get:
+      description: |
+        Retrieve all direct debit payments associated with a direct debit mandate.
+        The permision needed to access this endpoint is PERM_BUSINESS_GET_DIRECT_DEBITS
+      operationId: get_direct_debits_for_mandate_uuid
+      parameters:
+      - description: The mandate UUID to retrieve
+        example: 1A07774B-1461-4595-BC4B-423B739712AF
+        explode: true
+        in: query
+        name: mandateUuid
+        required: true
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/directDebits'
+          description: Retrieve all direct debit payments associated with a direct
+            debit mandate.
+      summary: Get all DD payments associated with a direct debit mandate
+      tags:
+      - Direct Debits
+      x-openapi-router-controller: openapi_server.controllers.direct_debits_controller
+  /v1/directdebits/{directDebitUuid}:
+    get:
+      description: |
+        Retrieve all details of a single direct debit collection/payment, whether successful or not.
+        The permision needed to access this endpoint is **PERM_BUSINESS_GET_DIRECT_DEBIT**
+      operationId: get_direct_debit_by_uuid
+      parameters:
+      - explode: false
+        in: path
+        name: directDebitUuid
+        required: true
+        schema:
+          description: The uuid of the direct debit to retrieve.
+          example: 4ADFB67A-0F5B-4A9A-9D74-34437250045C
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/directDebit'
+          description: Retrieve all details of a single direct debit collection/payment
+      summary: Get the details of a direct debit
+      tags:
+      - Direct Debits
+      x-openapi-router-controller: openapi_server.controllers.direct_debits_controller
+  /v1/directdebits/{directDebitUuid}/reject:
+    post:
+      description: |
+        This endpoint allows you to reject a direct debit payment where the status is still set to RECEIVED.
+        Permission name PERM_BUSINESS_POST_DIRECT_DEBIT_REJECT
+      operationId: reject_direct_debit
+      parameters:
+      - explode: false
+        in: path
+        name: directDebitUuid
+        required: true
+        schema:
+          description: The uuid of the direct debit to retrieve.
+          example: 4ADFB67A-0F5B-4A9A-9D74-34437250045C
+          type: string
+        style: simple
+      responses:
+        "204":
+          description: 204 no content
+      summary: Reject a direct debit payment
+      tags:
+      - Direct Debits
+      x-openapi-router-controller: openapi_server.controllers.direct_debits_controller
+  /v1/mandates:
+    get:
+      description: |
+        The permision needed to access this endpoint is PERM_BUSINESS_GET_MANDATES
+      operationId: get_direct_debit_mandates
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/mandates'
+          description: List all direct debit mandates.
+      summary: List all direct debit mandates
+      tags:
+      - Direct Debits
+      x-openapi-router-controller: openapi_server.controllers.direct_debits_controller
+  /v1/mandates/{mandateUuid}:
+    get:
+      description: |
+        Retrieve all details for a direct debit mandate.
+        The permision needed to access this endpoint is PERM_BUSINESS_GET_MANDATE
+      operationId: get_mandate
+      parameters:
+      - explode: false
+        in: path
+        name: mandateUuid
+        required: true
+        schema:
+          description: The uuid of the mandate to retrieve.
+          example: 4ADFB67A-0F5B-4A9A-9D74-34437250045C
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/mandate'
+          description: Retrieve all details for a direct debit mandate.
+      summary: Get direct debit mandate details
+      tags:
+      - Direct Debits
+      x-openapi-router-controller: openapi_server.controllers.direct_debits_controller
+    post:
+      description: |
+        Update Direct Debit Mandate Alias
+        The permision needed to access this endpoint is PERM_BUSINESS_PUT_MANDATE
+      operationId: update_mandate_alias
+      parameters:
+      - explode: false
+        in: path
+        name: mandateUuid
+        required: true
+        schema:
+          description: The uuid of the mandate to update.
+          example: 4ADFB67A-0F5B-4A9A-9D74-34437250045C
+          type: string
+        style: simple
+      responses:
+        "204":
+          description: 204 no content
+      summary: Update a direct debit mandate alias
+      tags:
+      - Direct Debits
+      x-openapi-router-controller: openapi_server.controllers.direct_debits_controller
+  /v1/mandates/{mandateUuid}/activate:
+    post:
+      description: |
+        This endpoint can only be used to activate a direct debit mandate when it is in the status REJECT_REQUESTED (even if the account has direct debits disabled). This action will also enable the account for direct debits if it was previously set to be disabled.
+        The permision needed to access this endpoint is PERM_BUSINESS_POST_MANDATE_ACTIVATE
+      operationId: activate_mandate
+      parameters:
+      - explode: false
+        in: path
+        name: mandateUuid
+        required: true
+        schema:
+          description: The uuid of the mandate to activate.
+          example: 4ADFB67A-0F5B-4A9A-9D74-34437250045C
+          type: string
+        style: simple
+      responses:
+        "204":
+          description: 204 no content
+      summary: Activate a direct debit mandate
+      tags:
+      - Direct Debits
+      x-openapi-router-controller: openapi_server.controllers.direct_debits_controller
+  /v1/mandates/{mandateUuid}/cancel:
+    post:
+      description: |
+        This endpoint allows you to cancel a direct debit mandate.
+        The permision needed to access this endpoint is PERM_BUSINESS_POST_MANDATE_CANCEL
+      operationId: cancel_mandate_by_uuid
+      parameters:
+      - explode: false
+        in: path
+        name: mandateUuid
+        required: true
+        schema:
+          description: The uuid of the mandate to cancel.
+          example: 4ADFB67A-0F5B-4A9A-9D74-34437250045C
+          type: string
+        style: simple
+      responses:
+        "204":
+          description: 204 no content
+      summary: Cancel a direct debit mandate
+      tags:
+      - Direct Debits
+      x-openapi-router-controller: openapi_server.controllers.direct_debits_controller
+  /v1/payees:
+    get:
+      description: "Returns all your payee bank accounts. \n\nOrdered by payee name\
+        \ ascending. \n\nCan be paginated.\n"
+      operationId: get_payees
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/payeeBankAccounts'
+          description: An array of Payee Bank Accounts
+      summary: List all Payee Bank Accounts
+      tags:
+      - Payee Bank Accounts
+      x-openapi-router-controller: openapi_server.controllers.payee_bank_accounts_controller
+  /v1/paymentrequests:
+    post:
+      description: |
+        Fire Open Payments is a feature of the fire.com business account that leverages Open Banking to allow your customers to pay you via bank transfer and to reconcile those payments as they are received into your fire.com GBP or EUR account.
+
+        To set up each Fire Open Payment you first need to create a payment request. This contains the details of the payment such as the amount, destination account, description as well as various other specific fields that you want to associate with the payment. The payment request is represented as a URL with a unique code which can then be incorporated into an eCommerce shopping cart as an alternative form of payment. For example, you can put “Pay by Bank” on your website along with “Pay by Card” and “Pay by PayPal”. It can also be distributed by a variety of means such as by email, SMS, WhatsApp, encoded as a QR code, NFC tag, etc.
+
+        Consumers confirm the payment details such as the amount are correct, select their bank and authorise the payment. Payments can be made from all major UK banks.
+
+        The funds are settled into your fire.com account, fully reconciled, with your specified fields provided.
+
+        There are two implementation options you can use to display payment pages with Fire Open Payments.
+        1. **Hosted Payment Pages:** fire.com hosts the payment pages - this option allows you to re-direct your customer to the hosted fire.com payment pages displaying the payment details confirmation, bank selection, consent and response pages.
+        2. **Integrated Payment Pages:** You host the payments page yourself - this option allows you to have control of the UI and UX for displaying the payment details confirmation, bank selection and response pages. Once the response is received, fire.com can re-direct the payer back to your website.
+
+        ## Hosted Payment Pages Option
+        ![Image](https://fire.com/docs/images/fop-hosted-flow.png)
+
+        The payer is brought through 5 stages to complete the payment:
+        1. **View Payment Details page:** The payer must first be clear on the amount of the payment, who they are paying and the reason for the payment.
+        2. **Select Bank / Account Provider page:** The payer then selects their bank. Again this step is offered as part of the fire.com payment UI.
+        3. **Consent page:**  The payer must provide consent to the PISP (fire.com) prior to authorising the payment. This is a regulatory requirement, this page must be hosted by fire.com.
+        4. **Authenticate and Authorise Payment:** The payer will be redirected to their bank’s online site or mobile banking app. After authenticating, the details of the payment will be displayed, and the payer will authorise the payment.
+        5. **Response page:** It is a regulatory requirement that the PISP (fire.com) display the results of the payment and provide the same information that would be provided if the payer had made the payment via their banking application. fire.com must display this page, before optionally redirecting the payer back to your website.
+
+        To implement the hosted Fire Open Payments option you need to do the following:
+        1. You can create a new Fire Open Payment request either within Firework Online or via the API.
+        2. Create your new API application with the appropriate permissions required in Firework Online, as outlined in the “Authentication” steps. The permissions needed are:
+            - “Create a Payment Request”
+            - “Get Payment Details”
+
+        3. Use the Refresh Token, Client ID and Client Key to create an access token as outlined in the “Authentication” steps.
+        4. On your website, create a “Pay by Bank” button alongside your other available payment methods, such as Cards and PayPal.
+        5. After the user clicks on “Pay by Bank”, you need to create a new Fire Open Payment request as outlined in the “Create a Fire Open Payment” steps. The Create a Fire Open Payment request endpoint returns a unique code for the payment request.
+        6. Create a URL using the code returned in this format: `https://payments.fire.com/{code}` and redirect your customer to this page.
+        7. fire.com will host all the pages that the customer needs to review and authorise the payment. fire.com will will return the paymentUUID of the successful or failed transaction to the returnUrl that you supplied when creating the Fire Open Payment request. fire.com can also optionally send a “webhook” to your website notifying you of the transaction’s outcome.
+        8. Once fire.com responds with the paymentUUID and/or the webhook to your website, you need to call the “Get Payment Details” endpoint to get the details of the transaction. This will let you know whether the transaction was successful or not. You can set up the “Payment Request Payment Authorised” webhook to notify you once the payment is authorised or cancelled.
+        9. The funds will be received into your GBP or EUR account. Funding will typically be within 6 business hours.
+
+        Once the code is returned the payment can be viewed and paid by going to the following URL: `https://payments.fire.com/{code}`
+
+        This request creates a new Fire Open Payment Payment. A code is returned that can be shared to your customers as a URL by any channel you wish.
+        You will need to enable the `PERM_BUSINESS_POST_PAYMENT_REQUEST` permission to use this endpoint.
+      operationId: new_payment_request
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/newPaymentRequest'
+        description: Details of the new payment request
+        required: true
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/newPaymentRequestResponse'
+          description: Payment Request created successfully
+      summary: Create a Fire Open Payment request
+      tags:
+      - Open Banking
+      x-openapi-router-controller: openapi_server.controllers.open_banking_controller
+      x-codegen-request-body-name: body
+  /v1/payments/{paymentUuid}:
+    get:
+      description: |
+        Returns the details of a specific payment.
+
+        As the customer goes through the process of making the payment the status of the payment will change.
+
+        * `AWAITING_AUTHORISATION` -This is the initial status of all your payments.
+        * `AUTHORISED` - This is the status that your payment is set to after the customer has authorised the payment with their ASPSP / bank.
+        * `AWAITING_MULTI_AUTHORISATION` - Some business accounts such as charities require dual authorisation.
+        * `NOT_AUTHORISED` - Either your customer clicked on cancel or the payment was rejected by their ASPSP / bank.
+        * `PENDING` - This is the status that your payment is set to after the customer has authorised the payment with their ASPSP / bank but the bank may want to carry out another check before funding the transaction.
+        * `PAID` - Funds were received into your fire.com GBP or EUR account from your customer’s ASPSP / bank.
+
+
+        You will need to enable the `PERM_BUSINESS_GET_PAYMENT` permission to use this endpoint.
+      operationId: get_payment_details
+      parameters:
+      - explode: false
+        in: path
+        name: paymentUuid
+        required: true
+        schema:
+          description: The unique id for the transaction.
+          example: 4ADFB67A-0F5B-4A9A-9D74-34437250045C
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/paymentRequest'
+          description: The Payment Request details object
+      summary: Get Payment Details
+      tags:
+      - Open Banking
+      x-openapi-router-controller: openapi_server.controllers.open_banking_controller
+  /v1/user/{userId}:
+    get:
+      description: You can retrieve the details of a specific fire.com user
+      operationId: get_user
+      parameters:
+      - explode: false
+        in: path
+        name: userId
+        required: true
+        schema:
+          description: Lists a specific User
+          example: 14059
+          format: int64
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/user'
+          description: Unique information about a User.
+      summary: Returns details of a specific fire.com user.
+      tags:
+      - Users
+      x-openapi-router-controller: openapi_server.controllers.users_controller
+  /v1/users:
+    get:
+      description: You can retrieve the details of all fire.com users on your acount.
+      operationId: get_users
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/user'
+                type: array
+          description: List of all Users.
+      summary: Returns list of all users on your fire.com account
+      tags:
+      - Users
+      x-openapi-router-controller: openapi_server.controllers.users_controller
+  /v2/batches/{batchUuid}/internationaltransfers:
+    get:
+      description: Returns a paginated list of items in the specified batch.
+      operationId: get_items_batch_international_transfer
+      parameters:
+      - explode: false
+        in: path
+        name: batchUuid
+        required: true
+        schema:
+          description: The uuid of the batch.
+          example: 4ADFB67A-0F5B-4A9A-9D74-34437250045C
+          type: string
+        style: simple
+      - explode: true
+        in: query
+        name: offset
+        required: false
+        schema:
+          description: The page offset. Defaults to 0. This is the record number that
+            the returned list will start at. E.g. offset = 40 and limit = 20 will
+            return records 40 to 59.
+          example: 0
+          format: int64
+          type: integer
+        style: form
+      - explode: true
+        in: query
+        name: limit
+        required: false
+        schema:
+          description: The number of records to return. Defaults to 10 - max is 200.
+          example: 10
+          format: int64
+          type: integer
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/batchItems'
+          description: "A fire.com list object of Batch Items (Internal transfers,\
+            \ Bank transfers or International transfers)."
+      summary: List items in a Batch (International Transfers)
+      tags:
+      - Payment Batches
+      x-openapi-router-controller: openapi_server.controllers.payment_batches_controller
+    post:
+      description: |
+        International transfers must be added to a batch using the Payee ID (**Mode 1**). Payees must be set up using the web application.
+
+        **Mode 1:** Use the payee IDs of existing approved payees set up against your account. These batches can be approved in the normal manner.
+      operationId: add_international_transfer_batch_payment
+      parameters:
+      - explode: false
+        in: path
+        name: batchUuid
+        required: true
+        schema:
+          description: The uuid of the batch.
+          example: 4ADFB67A-0F5B-4A9A-9D74-34437250045C
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/batchItemInternationalTransferMode1'
+        description: Details of **Mode 1**
+        required: true
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/newBatchItemResponse'
+          description: "Batch payment added successfully. **Note*** Please use batchUuid\
+            \ when submitting a batch, not batchItemUuid."
+      summary: Add an international transfer payment to the batch.
+      tags:
+      - Payment Batches
+      x-openapi-router-controller: openapi_server.controllers.payment_batches_controller
+      x-codegen-request-body-name: body
+  /v2/batches/{batchUuid}/internationaltransfers/{itemUuid}:
+    delete:
+      description: Removes a Payment from the Batch (International Transfers). You
+        can only remove payments before the batch is submitted for approval (while
+        it is in the OPEN state).
+      operationId: delete_international_transfer_batch_payment
+      parameters:
+      - explode: false
+        in: path
+        name: batchUuid
+        required: true
+        schema:
+          description: The uuid of the batch.
+          example: 4ADFB67A-0F5B-4A9A-9D74-34437250045C
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: itemUuid
+        required: true
+        schema:
+          description: The uuid of the item to remove.
+          type: string
+        style: simple
+      responses:
+        "200":
+          description: Batch payment deleted successfully.
+      summary: Remove a Payment from the Batch (International Transfers)
+      tags:
+      - Payment Batches
+      x-openapi-router-controller: openapi_server.controllers.payment_batches_controller
+  /v3/accounts/{ican}/transactions:
+    get:
+      description: |
+        Retrieve a list of transactions against an account. Initially, use the optional `limit`, `dateRangeFrom` and `dateRangeTo` query params to limit your query, then use the embedded `next` or `prev` links in the response to get newer or older pages.
+      operationId: get_transactions_by_account_idv3
+      parameters:
+      - explode: false
+        in: path
+        name: ican
+        required: true
+        schema:
+          description: The ican of the account to retrieve
+          format: int64
+          type: integer
+        style: simple
+      - explode: true
+        in: query
+        name: limit
+        required: false
+        schema:
+          description: The number of records to return. Defaults to 10 - max is 200.
+          format: int64
+          type: integer
+        style: form
+      - explode: true
+        in: query
+        name: dateRangeFrom
+        required: false
+        schema:
+          description: A millisecond epoch time specifying the date range start date.
+          format: int64
+          type: integer
+        style: form
+      - explode: true
+        in: query
+        name: dateRangeTo
+        required: false
+        schema:
+          description: A millisecond epoch time specifying the date range end date.
+          format: int64
+          type: integer
+        style: form
+      - explode: true
+        in: query
+        name: startAfter
+        required: false
+        schema:
+          description: A pointer to the position in the resultset to start from. Used
+            when paging through results using the linked pages.
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/cardTransactionsv3'
+          description: An array of transaction objects for the account with a count
+            (`total`).
+      summary: List transactions for an account (v3)
+      tags:
+      - Transactions
+      x-openapi-router-controller: openapi_server.controllers.transactions_controller
+components:
+  parameters:
+    limitParam:
+      description: The number of records to return. Defaults to 10 - max is 200.
+      explode: true
+      in: query
+      name: limit
+      required: false
+      schema:
+        default: 10
+        maximum: 200
+        type: integer
+      style: form
+    offsetParam:
+      description: The page offset. Defaults to 0. This is the record number that
+        the returned list will start at. E.g. `offset = 40` and `limit = 20` will
+        return records 40 to 59.
+      explode: true
+      in: query
+      name: offset
+      required: false
+      schema:
+        default: 0
+        type: integer
+      style: form
+    orderByParam:
+      description: Currently defaults to `DATE` No other options at this time.
+      explode: true
+      in: query
+      name: orderBy
+      required: false
+      schema:
+        enum:
+        - DATE
+        type: string
+      style: form
+    orderParam:
+      description: Either `ASC` or `DESC`
+      explode: true
+      in: query
+      name: order
+      required: false
+      schema:
+        enum:
+        - ASC
+        - DESC
+        type: string
+      style: form
+  responses:
+    UnauthorisedError:
+      description: Access Token is Invalid or missing
+  schemas:
+    Account:
+      example:
+        ccan: "11111111"
+        fopOnly: false
+        defaultAccount: true
+        ciban: IE54CPAY99119911111111
+        colour: ORANGE
+        balance: 23950
+        cnsc: "232221"
+        directDebitsAllowed: false
+        ican: 42
+        cbic: CPAYIE2D
+        name: Main Account
+        currency:
+          code: EUR
+          description: Euro
+        status: LIVE
+      properties:
+        balance:
+          description: "the balance of the account (in minor currency units - pence,\
+            \ cent etc. 434050 == 4,340.50 GBP for a GBP account)."
+          example: 23950
+          format: int64
+          title: balance
+          type: integer
+        cbic:
+          description: the BIC of the account (provided if currency is EUR).
+          example: CPAYIE2D
+          title: cbic
+          type: string
+        ccan:
+          description: the Account Number of the account.
+          example: "11111111"
+          title: ccan
+          type: string
+        ciban:
+          description: the IBAN of the account (provided if currency is EUR).
+          example: IE54CPAY99119911111111
+          title: ciban
+          type: string
+        cnsc:
+          description: the Sort Code of the account.
+          example: "232221"
+          title: cnsc
+          type: string
+        colour:
+          deprecated: true
+          description: Internal Use
+          example: ORANGE
+          title: colour
+          type: string
+        currency:
+          $ref: '#/components/schemas/currency'
+        defaultAccount:
+          description: true if this is the default account for this currency. This
+            will be the account that general fees are taken from (as opposed to per-transaction
+            fees).
+          example: true
+          title: defaultAccount
+          type: boolean
+        directDebitsAllowed:
+          description: Whether or not direct debits can be set up on this account.
+          example: false
+          title: directDebitsAllowed
+          type: boolean
+        fopOnly:
+          description: Indicates that this account is for collecting Fire Open Payments
+            only. All other payments to this account will be returned.
+          example: false
+          title: fopOnly
+          type: boolean
+        ican:
+          description: identifier for the fire.com account (assigned by fire.com)
+          example: 42
+          format: int64
+          title: ican
+          type: integer
+        name:
+          description: the name the user gives to the account to help them identify
+            it.
+          example: Main Account
+          title: name
+          type: string
+        status:
+          description: Live accounts can be used as normal. Migrated accounts were
+            used before Brexit and are read-only.
+          enum:
+          - LIVE
+          - BREXIT_MIGRATED
+          title: status
+          type: string
+      title: Account
+      type: object
+    country:
+      example:
+        code: GB
+        description: United Kingdom
+      properties:
+        code:
+          description: "The 2-letter code for the country - e.g. `IE`, `GP`..."
+          example: GB
+          title: code
+          type: string
+        description:
+          description: The name of the country
+          example: United Kingdom
+          title: description
+          type: string
+      title: country
+      type: object
+    newApiApplication:
+      properties:
+        applicationName:
+          description: A name for the API Application to help you identify it
+          example: Batch Processing API
+          title: applicationName
+          type: string
+        enabled:
+          description: Whether or not this API Application can be used
+          example: true
+          title: enabled
+          type: boolean
+        expiry:
+          description: The date that this API Application can no longer be used.
+          example: 2019-08-22T07:48:56.46Z
+          format: date-time
+          title: expiry
+          type: string
+        ican:
+          description: The ICAN of one of your Fire accounts. Restrict this API Application
+            to a certan account.
+          format: int64
+          title: ican
+          type: integer
+        numberOfPayeeApprovalsRequired:
+          description: Number of approvals required to create a payee in a batch
+          example: 1
+          title: numberOfPayeeApprovalsRequired
+          type: integer
+        numberOfPaymentApprovalsRequired:
+          description: Number of approvals required to process a payment in a batch
+          example: 1
+          title: numberOfPaymentApprovalsRequired
+          type: integer
+        permissions:
+          description: The list of permissions required
+          example:
+          - PERM_BUSINESS_POST_PAYMENT_REQUEST
+          - PERM_BUSINESS_GET_ASPSPS
+          items:
+            type: string
+          title: permissions
+          type: array
+      title: newApiApplication
+      type: object
+    newBatchItemResponse:
+      example:
+        batchItemUuid: fba4a76a-ce51-4fc1-b562-98ec01299e4d
+      properties:
+        batchItemUuid:
+          description: A Batch Item UUID for this item. Note* Do not confuse this
+            for BatchUuid when submitting a batch.
+          example: fba4a76a-ce51-4fc1-b562-98ec01299e4d
+          title: batchItemUuid
+          type: string
+      title: newBatchItemResponse
+      type: object
+    batchItemInternationalTransferMode1:
+      properties:
+        amount:
+          description: The value of the payment in the beneficiary currency.
+          example: 500
+          format: int64
+          title: amount
+          type: integer
+        icanFrom:
+          description: The Fire account ID for the fire.com account the funds are
+            taken from.
+          example: 2001
+          format: int64
+          title: icanFrom
+          type: integer
+        myRef:
+          description: The reference on the transaction for your records - not shown
+            to the beneficiary.
+          example: Payment to John Smith for Consultancy in device.
+          title: myRef
+          type: string
+        payeeId:
+          description: The ID of the existing payee
+          example: 15002
+          format: int64
+          title: payeeId
+          type: integer
+        paymentReason:
+          description: "The reason for the payment, used for transaction monitoring\
+            \ purposes. Must be one of Invoice Payment|Salary/Dividend Payment|Expenses|Savings|Other"
+          example: "Invoice Payment, Salary/Dividend Payment"
+          title: paymentReason
+          type: string
+        yourRef:
+          description: The reference on the transaction - displayed on the beneficiary
+            bank statement.
+          example: ACME LTD - INV 23434
+          title: yourRef
+          type: string
+      title: batchItemInternationalTransferMode1
+      type: object
+    proprietarySchemeDetails_inner:
+      example:
+        data: remittanceInfoUnstructured^FIRE440286865OD1|instructionId^O223151336499079
+        type: SCT
+      properties:
+        data:
+          description: the scheme proprietary data - key pairs separated by | and
+            key/values separated by ^
+          example: remittanceInfoUnstructured^FIRE440286865OD1|instructionId^O223151336499079
+          title: data
+          type: string
+        type:
+          description: "the type of proprietary scheme - SCT for SEPA, FPS for Faster\
+            \ Payments etc."
+          example: SCT
+          title: type
+          type: string
+      title: proprietarySchemeDetails_inner
+      type: object
+    newBatch:
+      properties:
+        batchName:
+          description: An optional name you give to the batch at creation time.
+          example: January 2018 Payroll
+          title: batchName
+          type: string
+        callbackUrl:
+          description: An optional POST URL that all events for this batch will be
+            sent to.
+          example: https://my.webserver.com/cb/payroll
+          title: callbackUrl
+          type: string
+        currency:
+          description: "3 digit ISO code for the currency you wish to send - GBP,\
+            \ EUR, USD, CAD, etc..."
+          example: EUR
+          title: currency
+          type: string
+        jobNumber:
+          description: An optional job number you can give to the batch to help link
+            it to your own system.
+          example: 2022-01-PR
+          title: jobNumber
+          type: string
+        type:
+          description: The type of the batch - can be one of the listed 3
+          enum:
+          - BANK_TRANSFER
+          - INTERNAL_TRANSFER
+          - INTERNATIONAL_TRANSFER
+          title: type
+          type: string
+      title: newBatch
+      type: object
+    newBatchResponse:
+      example:
+        batchUuid: F2AF3F2B-4406-4199-B249-B354F2CC6019
+      properties:
+        batchUuid:
+          description: A UUID for this item.
+          example: F2AF3F2B-4406-4199-B249-B354F2CC6019
+          title: batchUuid
+          type: string
+      title: newBatchResponse
+      type: object
+    apiApplication:
+      example:
+        clientId: 4ADFB67A-0F5B-4A9A-9D74-34437250045C
+        numberOfPayeeApprovalsRequired: 1
+        clientKey: 4ADFB67A-0F5B-4A9A-9D74-34437250045C
+        ican: 0
+        expiry: 2019-08-22T07:48:56.46Z
+        applicationId: 45345
+        numberOfPaymentApprovalsRequired: 1
+        enabled: true
+        refreshToken: 4ADFB67A-0F5B-4A9A-9D74-34437250045C
+      properties:
+        applicationId:
+          description: The ID of the API Application
+          example: 45345
+          format: int64
+          title: applicationId
+          type: integer
+        clientId:
+          description: The Client ID of the new API Application
+          example: 4ADFB67A-0F5B-4A9A-9D74-34437250045C
+          title: clientId
+          type: string
+        clientKey:
+          description: The Client Key of the new API Application
+          example: 4ADFB67A-0F5B-4A9A-9D74-34437250045C
+          title: clientKey
+          type: string
+        enabled:
+          description: Whether or not this API Application can be used
+          example: true
+          title: enabled
+          type: boolean
+        expiry:
+          description: The date that this API Application can no longer be used.
+          example: 2019-08-22T07:48:56.46Z
+          format: date-time
+          title: expiry
+          type: string
+        ican:
+          description: The ICAN of one of your Fire accounts. Restrict this API Application
+            to a certan account.
+          format: int64
+          title: ican
+          type: integer
+        numberOfPayeeApprovalsRequired:
+          description: Number of approvals required to create a payee in a batch
+          example: 1
+          title: numberOfPayeeApprovalsRequired
+          type: integer
+        numberOfPaymentApprovalsRequired:
+          description: Number of approvals required to process a payment in a batch
+          example: 1
+          title: numberOfPaymentApprovalsRequired
+          type: integer
+        refreshToken:
+          description: The Refresh Token of the new API Application
+          example: 4ADFB67A-0F5B-4A9A-9D74-34437250045C
+          title: refreshToken
+          type: string
+      title: apiApplication
+      type: object
+    payee:
+      example:
+        dateCreated: 2019-08-22T07:48:56.46Z
+        accountName: Joe
+        createdBy: CUSTOMER
+        iban: IE86BOFI90535211111111
+        currency:
+          code: EUR
+          description: Euro
+        id: 742
+        accountNumber: "12345678"
+        accountHolderName: Joe Bloggs
+        bic: BOFIIE2DXXX
+        nsc: "998822"
+        status: LIVE
+      properties:
+        accountHolderName:
+          description: The name on the payee bank account.
+          example: Joe Bloggs
+          title: accountHolderName
+          type: string
+        accountName:
+          description: "The alias attributed to the payee, usually set by the user\
+            \ when creating the payee."
+          example: Joe
+          title: accountName
+          type: string
+        accountNumber:
+          description: The Account Number of the account if currency is GBP.
+          example: "12345678"
+          title: accountNumber
+          type: string
+        bic:
+          description: The BIC of the account if currency is EUR.
+          example: BOFIIE2DXXX
+          title: bic
+          type: string
+        createdBy:
+          description: The creation source of the payee.
+          enum:
+          - CUSTOMER
+          - LODGEMENT
+          - DIRECT DEBIT
+          - OPEN BANKING
+          - FIRE OPEN PAYMENT
+          - FIRE DIRECT
+          example: CUSTOMER
+          title: createdBy
+          type: string
+        currency:
+          $ref: '#/components/schemas/currency'
+        dateCreated:
+          description: The date the payee was created. ISO Date Time.
+          example: 2019-08-22T07:48:56.46Z
+          format: date-time
+          title: dateCreated
+          type: string
+        iban:
+          description: The IBAN of the account if currency is EUR.
+          example: IE86BOFI90535211111111
+          title: iban
+          type: string
+        id:
+          description: Identifier for the fire.com payee bank account (assigned by
+            fire.com).
+          example: 742
+          format: int64
+          title: id
+          type: integer
+        nsc:
+          description: The Sort Code of the account if currency is GBP.
+          example: "998822"
+          title: nsc
+          type: string
+        status:
+          description: |
+            The status of the payee. Only payees in LIVE status can be selected as a destination account for an outgoing payment.
+              * 'CREATED' - The payee has been set-up via Bank Transfer Received, Direct Debit, or Open Banking. This payee must be converted to LIVE status to select as a destination account for an outgoing payment.
+              * 'LIVE' - The payee can be selected as a destination account for an outgoing payment.
+              * 'CLOSED'
+              * 'ARCHIVED' - The payee has been deleted and must be added again to be selected as a destination account for an outgoing payment.
+          enum:
+          - CREATED
+          - LIVE
+          - CLOSED
+          - ARCHIVED
+          example: LIVE
+          title: status
+          type: string
+      title: payee
+      type: object
+    relatedCard:
+      description: Details of the card used (if applicable)
+      example:
+        expiryDate: 2000-01-23T04:56:07.000+00:00
+        maskedPan: maskedPan
+        provider: provider
+        cardId: 0
+        embossBusinessName: embossBusinessName
+        alias: alias
+        embossCardName: embossCardName
+      properties:
+        alias:
+          title: alias
+          type: string
+        cardId:
+          format: int64
+          title: cardId
+          type: integer
+        embossBusinessName:
+          title: embossBusinessName
+          type: string
+        embossCardName:
+          title: embossCardName
+          type: string
+        expiryDate:
+          format: date-time
+          title: expiryDate
+          type: string
+        maskedPan:
+          title: maskedPan
+          type: string
+        provider:
+          title: provider
+          type: string
+      title: relatedCard
+      type: object
+    newCard:
+      properties:
+        acceptFeesAndCharges:
+          example: true
+          title: acceptFeesAndCharges
+          type: boolean
+        addressType:
+          enum:
+          - HOME
+          - BUSINESS
+          example: BUSINESS
+          title: addressType
+          type: string
+        cardPin:
+          example: "5345"
+          title: cardPin
+          type: string
+        eurIcan:
+          example: 2150
+          format: int64
+          title: eurIcan
+          type: integer
+        gbpIcan:
+          example: 2152
+          format: int64
+          title: gbpIcan
+          type: integer
+        userId:
+          example: 3245
+          format: int64
+          title: userId
+          type: integer
+      title: newCard
+      type: object
+    cardTransactionsv3_links_inner:
+      example:
+        rel: self
+        href: The URL of the linked page
+      properties:
+        href:
+          description: https://api.fire.com/business/v3/accounts/1/transactions?startAfter=eyJpY2F
+          example: The URL of the linked page
+          title: href
+          type: string
+        rel:
+          description: "The relationship of this link to the current object - self,\
+            \ next, prev page."
+          example: self
+          title: rel
+          type: string
+      title: cardTransactionsv3_links_inner
+      type: object
+    batch:
+      example:
+        batchName: January 2018 Payroll
+        valueOfItemsSubmitted: 10000
+        numberOfItemsFailed: 0
+        numberOfItemsSucceeded: 1
+        type: INTERNAL_TRANSFER
+        lastUpdated: 2021-04-04T10:48:53.54Z
+        dateCreated: 2021-04-04T10:48:53.54Z
+        numberOfItemsSubmitted: 1
+        callbackUrl: https://my.webserver.com/cb/payroll
+        currency: "EUR, GBP, USD"
+        sourceName: Payment API
+        batchUuid: F2AF3F2B-4406-4199-B249-B354F2CC6019
+        jobNumber: 2018-01-PR
+        valueOfItemsSucceeded: 10000
+        status: COMPLETE
+        valueOfItemsFailed: 0
+      properties:
+        batchName:
+          description: An optional name you give to the batch at creation time
+          example: January 2018 Payroll
+          title: batchName
+          type: string
+        batchUuid:
+          description: A UUID for this item.
+          example: F2AF3F2B-4406-4199-B249-B354F2CC6019
+          title: batchUuid
+          type: string
+        callbackUrl:
+          description: An optional POST URL that all events for this batch will be
+            sent to.
+          example: https://my.webserver.com/cb/payroll
+          title: callbackUrl
+          type: string
+        currency:
+          description: All payments in the batch must be the same currency.
+          example: "EUR, GBP, USD"
+          title: currency
+          type: string
+        dateCreated:
+          description: The datestamp the batch was created - ISO format - e.g. 2018-04-04T00:53:21.910Z
+          example: 2021-04-04T10:48:53.54Z
+          format: date-time
+          title: dateCreated
+          type: string
+        jobNumber:
+          description: An optional job number you can give to the batch to help link
+            it to your own system.
+          example: 2018-01-PR
+          title: jobNumber
+          type: string
+        lastUpdated:
+          description: The datestamp of the last action on this batch - ISO format
+            - e.g. 2018-04-04T10:48:53.540Z
+          example: 2021-04-04T10:48:53.54Z
+          format: date-time
+          title: lastUpdated
+          type: string
+        numberOfItemsFailed:
+          description: "Once processed, a count of the number of items that didn’\
+            t process successfully."
+          example: 0
+          format: int64
+          title: numberOfItemsFailed
+          type: integer
+        numberOfItemsSubmitted:
+          description: A count of the number of items in the batch
+          example: 1
+          format: int64
+          title: numberOfItemsSubmitted
+          type: integer
+        numberOfItemsSucceeded:
+          description: "Once processed, a count of the number of items that processed\
+            \ successfully."
+          example: 1
+          format: int64
+          title: numberOfItemsSucceeded
+          type: integer
+        sourceName:
+          description: "A string describing where the batch originated - for instance\
+            \ the name of the API token that was used, or showing that the batch was\
+            \ automatically created by fire.com (in the case of a new payee batch)."
+          example: Payment API
+          title: sourceName
+          type: string
+        status:
+          description: status of the batch object
+          enum:
+          - PENDING_APPROVAL
+          - REJECTED
+          - COMPLETE
+          - OPEN
+          - CANCELLED
+          - PENDING_PARENT_BATCH_APPROVAL
+          - READY_FOR_PROCESSING
+          - PROCESSING
+          example: COMPLETE
+          title: status
+          type: string
+        type:
+          description: The type of the batch - can be one of the listed enums
+          enum:
+          - INTERNAL_TRANSFER
+          - BANK_TRANSFER
+          - INTERNATIONAL_TRANSFER
+          - NEW_PAYEE
+          title: type
+          type: string
+        valueOfItemsFailed:
+          description: "Once processed, a sum of the value of items that didn’t process\
+            \ successfully. Specified in pence or cent."
+          example: 0
+          format: int64
+          title: valueOfItemsFailed
+          type: integer
+        valueOfItemsSubmitted:
+          description: A sum of the value of items in the batch. Specified in pence
+            or cent.
+          example: 10000
+          format: int64
+          title: valueOfItemsSubmitted
+          type: integer
+        valueOfItemsSucceeded:
+          description: "Once processed, a sum of the value of items that processed\
+            \ successfully. Specified in pence or cent."
+          example: 10000
+          format: int64
+          title: valueOfItemsSucceeded
+          type: integer
+      title: batch
+      type: object
+    batchItemInternalTransfer:
+      properties:
+        amount:
+          description: amount of funds to be transfered
+          example: 10000
+          format: int64
+          title: amount
+          type: integer
+        icanFrom:
+          description: The account ID for the fire.com account the funds are taken
+            from
+          example: 2001
+          format: int64
+          title: icanFrom
+          type: integer
+        icanTo:
+          description: The account ID for the fire.com account the funds are directed
+            to
+          example: 3221
+          format: int64
+          title: icanTo
+          type: integer
+        ref:
+          description: The reference on the transaction
+          example: Moving funds to Operating Account
+          title: ref
+          type: string
+      title: batchItemInternalTransfer
+      type: object
+    batchItemDetails:
+      description: Details of the batch run if this transaction was part of a batch.
+      example:
+        batchName: Payroll 2022-11
+        batchPublicUuid: F2AF3F2B-4406-4199-B249-B354F2CC6019
+        batchItemPublicUuid: F2AF3F2B-4406-4199-B249-B354F2CC6019
+        jobNumber: 2018-01-PR
+      properties:
+        batchItemPublicUuid:
+          description: The UUID for this item in the batch.
+          example: F2AF3F2B-4406-4199-B249-B354F2CC6019
+          title: batchItemPublicUuid
+          type: string
+        batchName:
+          description: The optional name given to the batch at creation time.
+          example: Payroll 2022-11
+          title: batchName
+          type: string
+        batchPublicUuid:
+          description: The UUID for this batch.
+          example: F2AF3F2B-4406-4199-B249-B354F2CC6019
+          title: batchPublicUuid
+          type: string
+        jobNumber:
+          description: The optional job number given to the batch to link it to your
+            own system.
+          example: 2018-01-PR
+          title: jobNumber
+          type: string
+      title: batchItemDetails
+      type: object
+    newAccount:
+      properties:
+        acceptFeesAndCharges:
+          description: a field to indicate you accept the fee for a new account
+          title: acceptFeesAndCharges
+          type: boolean
+        accountName:
+          description: Name to give the new account
+          example: Operating Account
+          maxLength: 50
+          title: accountName
+          type: string
+        currency:
+          description: The currency of the new account
+          enum:
+          - EUR
+          - GBP
+          title: currency
+          type: string
+      title: newAccount
+      type: object
+    relatedParty:
+      description: Details of the related third party involved in the transaction.
+      oneOf:
+      - $ref: '#/components/schemas/relatedPartyFireAccount'
+      - $ref: '#/components/schemas/relatedPartyExternalAccount'
+      - $ref: '#/components/schemas/relatedPartyPayee'
+      - $ref: '#/components/schemas/relatedPartyCardPayment'
+      title: relatedParty
+    accessToken:
+      example:
+        apiApplicationId: 433
+        permissions:
+        - PERM_BUSINESSES_GET_ACCOUNTS
+        - PERM_BUSINESSES_GET_ACCOUNT_TRANSACTIONS
+        businessId: 248
+        expiry: 2020-10-22T07:48:56.46Z
+        accessToken: 4ADFB67A-0F5B-4A9A-9D74-34437250045C
+      properties:
+        accessToken:
+          description: The App Bearer Access Token you can use in further API calls.
+          example: 4ADFB67A-0F5B-4A9A-9D74-34437250045C
+          title: accessToken
+          type: string
+        apiApplicationId:
+          description: The ID of the application you are using.
+          example: 433
+          format: int64
+          title: apiApplicationId
+          type: integer
+        businessId:
+          description: The business ID for the business.
+          example: 248
+          format: int64
+          title: businessId
+          type: integer
+        expiry:
+          description: The expiry date and time for this token (ISO-8601).
+          example: 2020-10-22T07:48:56.46Z
+          format: date-time
+          title: expiry
+          type: string
+        permissions:
+          description: The permissions assigned to the Access Token as an array of
+            strings. This provides information on what API access it is allowed. See
+            the section on Scope below.
+          example:
+          - PERM_BUSINESSES_GET_ACCOUNTS
+          - PERM_BUSINESSES_GET_ACCOUNT_TRANSACTIONS
+          items:
+            type: string
+          title: permissions
+          type: array
+      title: accessToken
+      type: object
+    newPaymentRequest:
+      properties:
+        additionalFields:
+          description: "These fields will be dispalyed to the payer when using the\
+            \ hosted option. You can choose to display any of `ORDER_ID`, `PRODUCT_ID`,\
+            \ `CUSTOMER_ID`, `CUSTOMER_NUMBER` and `COMMENT2` to the payer."
+          example: ORDER_ID|PRODUCT_ID|CUSTOMER_ID|CUSTOMER_NUMBER|COMMENT2
+          title: additionalFields
+          type: string
+        amount:
+          description: "The requested amount to pay. Note the last two digits represent\
+            \ pennies/cents, (e.g., £1.00 = 100)."
+          example: 1000
+          format: int64
+          title: amount
+          type: integer
+        collectFields:
+          description: "For the hosted option, the payer will be asked to fill in\
+            \ these fields but they will not be mandatory. You can choose to collect\
+            \ any of the payer's `ADDRESS`, `REFERENCE` and/or `COMMENT1`. If you\
+            \ choose to collect these fields from the payer, you cannot set 'delivery’\
+            , 'variableReference’ or 'comment1’ fields respectively."
+          example: ADDRESS|REFERENCE|COMMENT1
+          title: collectFields
+          type: string
+        currency:
+          description: "Either `EUR` or `GBP`, and must correspond to the currency\
+            \ of the account the funds are being lodged into in the `icanTo`."
+          enum:
+          - EUR
+          - GBP
+          title: currency
+          type: string
+        description:
+          description: A public facing description of the request. This will be shown
+            to the user when they tap or scan the request.
+          example: Gym Fees Oct 2020
+          title: description
+          type: string
+        expiry:
+          description: "This is the expiry of the payment request. After this time,\
+            \ the payment cannot be paid."
+          example: 2020-10-22T07:48:56.46Z
+          format: date-time
+          title: expiry
+          type: string
+        icanTo:
+          description: The ican of the account to collect the funds into. Must be
+            one of your fire.com Accounts.
+          example: 42
+          format: int64
+          title: icanTo
+          type: integer
+        mandatoryFields:
+          description: "For the hosted option, these fields will be madatory for the\
+            \ payer to fill in on the hosted payment page. You can choose to collect\
+            \ any the payer's `ADDRESS`, `REFERENCE` and/or `COMMENT1`. If you choose\
+            \ to collect these fields from the payer, you cannot set 'delivery’, 'variableReference’\
+            \ or 'comment1’ fields respectively."
+          example: ADDRESS|REFERENCE|COMMENT1
+          title: mandatoryFields
+          type: string
+        maxNumberPayments:
+          description: The max number of people who can pay this request. Must be
+            set to 1 for the ECOMMERCE_GOODS and ECOMMERCE_SERVICES types.
+          example: 1
+          title: maxNumberPayments
+          type: integer
+        myRef:
+          description: An internal description of the request.
+          example: Fees
+          title: myRef
+          type: string
+        orderDetails:
+          $ref: '#/components/schemas/orderDetails'
+        returnUrl:
+          description: The merchant return URL where the customer will be re-directed
+            to with the result of the transaction.
+          example: https://example.com/callback
+          title: returnUrl
+          type: string
+        type:
+          description: The type of Fire Open Payment that was created
+          enum:
+          - OTHER
+          title: type
+          type: string
+      required:
+      - currency
+      - description
+      - icanTo
+      - myRef
+      - type
+      title: newPaymentRequest
+      type: object
+    relatedPartyPayee:
+      properties:
+        account:
+          $ref: '#/components/schemas/relatedPartyPayee_account'
+        type:
+          enum:
+          - WITHDRAWAL_ACCOUNT
+          title: type
+          type: string
+      title: relatedPartyPayee
+      type: object
+    directDebit:
+      example:
+        directDebitReference: VODA-ABC453-1
+        schemeRejectReason: eg. Instruction cancelled by payer
+        schemeRejectReasonCode: for BACS (ARUDD) 0|1|2|3|5|6|7|8|9|A|B
+        originatorReference: VODA-123456
+        amount: 100
+        originatorName: Vodafone PLC
+        targetIcan: 42
+        isDDIC: false
+        originatorAlias: Three
+        type: FIRST_COLLECTION
+        directDebitUuid: 42de0705-e3f1-44fa-8c41-79973eb80eb2
+        lastUpdated: 2016-12-15T22:56:05.937Z
+        dateCreated: 2016-12-15T22:56:05.937Z
+        mandateUUid: f171b143-e3eb-47de-85a6-1c1f1108c701
+        targetPayeeId: 12
+        currency:
+          code: EUR
+          description: Euro
+        status: RECIEVED
+      properties:
+        amount:
+          description: Value of the payment
+          example: 100
+          format: int64
+          title: amount
+          type: integer
+        currency:
+          $ref: '#/components/schemas/currency'
+        dateCreated:
+          description: Date the direct debit was created. Milliseconds since the epoch
+            (1970).
+          example: 2016-12-15T22:56:05.937Z
+          format: date-time
+          title: dateCreated
+          type: string
+        directDebitReference:
+          description: The direct debit reference.
+          example: VODA-ABC453-1
+          title: directDebitReference
+          type: string
+        directDebitUuid:
+          description: The UUID for the direct debit payment
+          example: 42de0705-e3f1-44fa-8c41-79973eb80eb2
+          title: directDebitUuid
+          type: string
+        isDDIC:
+          description: DDIC is a Direct Debit Indemnity Claim (i.e.a refund). If if
+            the DD is requested to be refunded it is marked isDDIC true.
+          example: false
+          title: isDDIC
+          type: boolean
+        lastUpdated:
+          description: Date the direct debit was last updated. Milliseconds since
+            the epoch (1970).
+          example: 2016-12-15T22:56:05.937Z
+          format: date-time
+          title: lastUpdated
+          type: string
+        mandateUUid:
+          description: The UUID for the mandate
+          example: f171b143-e3eb-47de-85a6-1c1f1108c701
+          title: mandateUUid
+          type: string
+        originatorAlias:
+          description: The Alias of the party who sets up the direct debit.
+          example: Three
+          title: originatorAlias
+          type: string
+        originatorName:
+          description: The creator of the party who sets up the direct debit.
+          example: Vodafone PLC
+          title: originatorName
+          type: string
+        originatorReference:
+          description: Set by party who sets up the direct debit.
+          example: VODA-123456
+          title: originatorReference
+          type: string
+        schemeRejectReason:
+          description: Reason why rejected
+          example: eg. Instruction cancelled by payer
+          title: schemeRejectReason
+          type: string
+        schemeRejectReasonCode:
+          description: The reject code returned by the bank indicating an issue with
+            the direct debit. Each ARRUD code represents a rejection reason.
+          enum:
+          - "0"
+          - "1"
+          - "2"
+          - "3"
+          - "4"
+          - "5"
+          - "6"
+          - "7"
+          - "8"
+          - "9"
+          - A
+          - B
+          example: for BACS (ARUDD) 0|1|2|3|5|6|7|8|9|A|B
+          title: schemeRejectReasonCode
+          type: string
+        status:
+          description: "The statuses of the direct debit payments associated with\
+            \ the mandate.\n* 'RECIEVED' - Direct Debit has been recieved\n* 'REJECT_REQUESTED'\
+            \ - The direct debit has a rejected request associated with it\n* 'REJECT_READY_FOR_PROCESSING'\
+            \ \n* 'REJECT_RECORD_IN_PROGRESS'\n* 'REJECT_RECORDED'\n* 'REJECT_FILE_CREATED'\n\
+            * 'REJECT_FILE_SENT'\n* 'COLLECTED' - Direct debit collected\n* 'REFUND_REQUESTED'\
+            \ - Refund requested on direct debit\n* 'REFUND_RECORD_IN_PROGRESS' -\
+            \ Refund in progress on direct debit\n* 'REFUND_RECORDED'\n* 'REFUND_FILE_CREATED'\n\
+            * 'REFUND_FILE_SENT' \n"
+          enum:
+          - RECIEVED
+          - REJECT_REQUESTED
+          - REJECT_READY_FOR_PROCESSING
+          - REJECT_RECORD_IN_PROGRESS
+          - REJECT_RECORDED
+          - REJECT_FILE_CREATED
+          - REJECT_FILE_SENT
+          - COLLECTED
+          - REFUND_REQUESTED
+          - REFUND_RECORD_IN_PROGRESS
+          - REFUND_RECORDED
+          - REFUND_FILE_CREATED
+          - REFUND_FILE_SENT
+          example: RECIEVED
+          title: status
+          type: string
+        targetIcan:
+          description: The ican of your fire account that the money was taken from
+          example: 42
+          format: int64
+          title: targetIcan
+          type: integer
+        targetPayeeId:
+          description: The payee that was created when the DD was processed
+          example: 12
+          format: int64
+          title: targetPayeeId
+          type: integer
+        type:
+          description: The type of the direct debit.
+          enum:
+          - FIRST_COLLECTION
+          - ONGOING_COLLECTION
+          - REPRESENTED_COLLECTION
+          - FINAL_COLLECTION
+          example: FIRST_COLLECTION
+          title: type
+          type: string
+      title: directDebit
+      type: object
+    relatedPartyCardPayment_cardMerchant:
+      properties:
+        acquirerIdDe32:
+          example: "6011329"
+          title: acquirerIdDe32
+          type: string
+        additionalAmtDe54:
+          title: additionalAmtDe54
+          type: string
+        additionalDataDe124:
+          title: additionalDataDe124
+          type: string
+        additionalDataDe48:
+          example: 010X610500000
+          title: additionalDataDe48
+          type: string
+        authCodeDe38:
+          example: "177449"
+          title: authCodeDe38
+          type: string
+        authorisedByGps:
+          example: "N"
+          title: authorisedByGps
+          type: string
+        avsResult:
+          example: "N"
+          title: avsResult
+          type: string
+        billAmt:
+          example: -1000
+          format: int64
+          title: billAmt
+          type: integer
+        billCcy:
+          example: "978"
+          title: billCcy
+          type: string
+        expiryDate:
+          title: expiryDate
+          type: string
+        mccCode:
+          example: "5521"
+          title: mccCode
+          type: string
+        merchIdDe42:
+          example: "13152429"
+          title: merchIdDe42
+          type: string
+        merchNameDe43:
+          example: ABC Coffee Shop
+          title: merchNameDe43
+          type: string
+        mtId:
+          example: "0100"
+          title: mtId
+          type: string
+        posDataDe22:
+          example: "051"
+          title: posDataDe22
+          type: string
+        posDataDe61:
+          example: "1000030037299999"
+          title: posDataDe61
+          type: string
+        posTermnlDe41:
+          example: "80266721"
+          title: posTermnlDe41
+          type: string
+        procCode:
+          example: "000000"
+          title: procCode
+          type: string
+        recordDataDe120:
+          title: recordDataDe120
+          type: string
+        respCodeDe39:
+          example: "00"
+          title: respCodeDe39
+          type: string
+        retRefNoDe37:
+          example: "10900006720"
+          title: retRefNoDe37
+          type: string
+        statusCode:
+          example: "00"
+          title: statusCode
+          type: string
+        token:
+          example: "976307363"
+          title: token
+          type: string
+        txnAmt4d:
+          example: 1000
+          format: int64
+          title: txnAmt4d
+          type: integer
+        txnCcy:
+          example: "978"
+          title: txnCcy
+          type: string
+        txnCtry:
+          example: IRL
+          title: txnCtry
+          type: string
+        txnDesc:
+          example: ABC Coffee Shop
+          title: txnDesc
+          type: string
+        txnStatCode:
+          example: A
+          title: txnStatCode
+          type: string
+        txnType:
+          example: A
+          title: txnType
+          type: string
+      title: relatedPartyCardPayment_cardMerchant
+      type: object
+    addBankTransferBatchPayment_request:
+      oneOf:
+      - $ref: '#/components/schemas/batchItemBankTransferMode2'
+      - $ref: '#/components/schemas/batchItemBankTransferMode1'
+      title: addBankTransferBatchPayment_request
+    relatedPartyPayee_account:
+      properties:
+        accountNumber:
+          description: The account number of the Withdrawl account in reference
+          example: "00000000"
+          title: accountNumber
+          type: string
+        alias:
+          description: The Alias name of the Withdrawl account in reference
+          example: Smyth and Co.
+          title: alias
+          type: string
+        bic:
+          description: The BIC of the Withdrawl account in reference
+          example: CPAYIE2D
+          title: bic
+          type: string
+        iban:
+          description: The BIC of the Withdrawl account in reference
+          example: IE76CPAY99119900000000
+          title: iban
+          type: string
+        id:
+          description: The ID number of the Withdrawl account in reference
+          example: 123
+          format: int64
+          title: id
+          type: integer
+        nsc:
+          description: (Conditional) Provide this field if using Mode 2 and the payee
+            account is in GBP.
+          example: "991199"
+          title: nsc
+          type: string
+      title: relatedPartyPayee_account
+      type: object
+    cardTransactionsv1:
+      example:
+        total: 1
+        dateRangeTo: 1547744156603
+        transactions:
+        - date: 2021-04-13T11:06:32.437Z
+          yourRef: From John Smith
+          amountAfterCharges: 5000
+          batchItemDetails:
+            batchName: Payroll 2022-11
+            batchPublicUuid: F2AF3F2B-4406-4199-B249-B354F2CC6019
+            batchItemPublicUuid: F2AF3F2B-4406-4199-B249-B354F2CC6019
+            jobNumber: 2018-01-PR
+          eventUuid: 42de0705-e3f1-44fa-8c41-79973eb80eb2
+          paymentRequestPublicCode: 1abcdefg
+          relatedParty:
+            type: FIRE_ACCOUNT
+            account:
+              iban: IE54CPAY99119911111111
+              alias: Main Account
+              id: 42
+              accountNumber: "11111111"
+              bic: CPAYIE2D
+              nsc: "232221"
+          type: WITHDRAWAL
+          proprietarySchemeDetails:
+          - data: remittanceInfoUnstructured^FIRE440286865OD1|instructionId^O223151336499079
+            type: SCT
+          - data: remittanceInfoUnstructured^FIRE440286865OD1|instructionId^O223151336499079
+            type: SCT
+          dateAcknowledged: 2021-04-13T11:06:32.437Z
+          feeAmount: 0
+          fxTradeDetails:
+            buyAmount: 359
+            provider: TCC
+            rate4d: 7180
+            fixedSide: SELL
+            sellAmount: 500
+            sellCurrency: EUR
+            buyCurrency: GBP
+          balance: 8500
+          ican: 1951
+          amountBeforeCharges: 5000
+          currency:
+            code: EUR
+            description: Euro
+          directDebitDetails:
+            directDebitReference: VODA-ABC453-1
+            originatorReference: VODA-123456
+            mandateReference: CRZ-102190123
+            originatorName: Vodafone PLC
+            originatorLogoUrlLarge: https://s3-eu-west-1.amazonaws.com/live-fire-assets/prod/49dc9a01-8261-4d98-bebf-c3842c2d3c5d-small.png
+            mandateUUid: f171b143-e3eb-47de-85a6-1c1f1108c701
+            mandateUuid: 28d627c3-1889-44c8-ae59-6f6b20239260
+            originatorAlias: Three
+            originatorLogoUrlSmall: https://s3-eu-west-1.amazonaws.com/live-fire-assets/prod/49dc9a01-8261-4d98-bebf-c3842c2d3c5d-small.png
+            directDebitUuid: 42de0705-e3f1-44fa-8c41-79973eb80eb2
+          refId: 26774
+          taxAmount: 0
+          card:
+            expiryDate: 2000-01-23T04:56:07.000+00:00
+            maskedPan: maskedPan
+            provider: provider
+            cardId: 0
+            embossBusinessName: embossBusinessName
+            alias: alias
+            embossCardName: embossCardName
+          myRef: Transfer to main account
+          txnId: 30157
+        - date: 2021-04-13T11:06:32.437Z
+          yourRef: From John Smith
+          amountAfterCharges: 5000
+          batchItemDetails:
+            batchName: Payroll 2022-11
+            batchPublicUuid: F2AF3F2B-4406-4199-B249-B354F2CC6019
+            batchItemPublicUuid: F2AF3F2B-4406-4199-B249-B354F2CC6019
+            jobNumber: 2018-01-PR
+          eventUuid: 42de0705-e3f1-44fa-8c41-79973eb80eb2
+          paymentRequestPublicCode: 1abcdefg
+          relatedParty:
+            type: FIRE_ACCOUNT
+            account:
+              iban: IE54CPAY99119911111111
+              alias: Main Account
+              id: 42
+              accountNumber: "11111111"
+              bic: CPAYIE2D
+              nsc: "232221"
+          type: WITHDRAWAL
+          proprietarySchemeDetails:
+          - data: remittanceInfoUnstructured^FIRE440286865OD1|instructionId^O223151336499079
+            type: SCT
+          - data: remittanceInfoUnstructured^FIRE440286865OD1|instructionId^O223151336499079
+            type: SCT
+          dateAcknowledged: 2021-04-13T11:06:32.437Z
+          feeAmount: 0
+          fxTradeDetails:
+            buyAmount: 359
+            provider: TCC
+            rate4d: 7180
+            fixedSide: SELL
+            sellAmount: 500
+            sellCurrency: EUR
+            buyCurrency: GBP
+          balance: 8500
+          ican: 1951
+          amountBeforeCharges: 5000
+          currency:
+            code: EUR
+            description: Euro
+          directDebitDetails:
+            directDebitReference: VODA-ABC453-1
+            originatorReference: VODA-123456
+            mandateReference: CRZ-102190123
+            originatorName: Vodafone PLC
+            originatorLogoUrlLarge: https://s3-eu-west-1.amazonaws.com/live-fire-assets/prod/49dc9a01-8261-4d98-bebf-c3842c2d3c5d-small.png
+            mandateUUid: f171b143-e3eb-47de-85a6-1c1f1108c701
+            mandateUuid: 28d627c3-1889-44c8-ae59-6f6b20239260
+            originatorAlias: Three
+            originatorLogoUrlSmall: https://s3-eu-west-1.amazonaws.com/live-fire-assets/prod/49dc9a01-8261-4d98-bebf-c3842c2d3c5d-small.png
+            directDebitUuid: 42de0705-e3f1-44fa-8c41-79973eb80eb2
+          refId: 26774
+          taxAmount: 0
+          card:
+            expiryDate: 2000-01-23T04:56:07.000+00:00
+            maskedPan: maskedPan
+            provider: provider
+            cardId: 0
+            embossBusinessName: embossBusinessName
+            alias: alias
+            embossCardName: embossCardName
+          myRef: Transfer to main account
+          txnId: 30157
+      properties:
+        dateRangeTo:
+          description: milisecond timestamp of date range to value.
+          example: 1547744156603
+          format: int64
+          title: dateRangeTo
+          type: integer
+        total:
+          description: The total number of card transactions in the list.
+          example: 1
+          format: int64
+          title: total
+          type: integer
+        transactions:
+          items:
+            $ref: '#/components/schemas/transaction'
+          title: transactions
+          type: array
+      title: cardTransactionsv1
+      type: object
+    cardTransactionsv3:
+      example:
+        links:
+        - rel: self
+          href: The URL of the linked page
+        - rel: self
+          href: The URL of the linked page
+        content:
+        - date: 2021-04-13T11:06:32.437Z
+          yourRef: From John Smith
+          amountAfterCharges: 5000
+          batchItemDetails:
+            batchName: Payroll 2022-11
+            batchPublicUuid: F2AF3F2B-4406-4199-B249-B354F2CC6019
+            batchItemPublicUuid: F2AF3F2B-4406-4199-B249-B354F2CC6019
+            jobNumber: 2018-01-PR
+          eventUuid: 42de0705-e3f1-44fa-8c41-79973eb80eb2
+          paymentRequestPublicCode: 1abcdefg
+          relatedParty:
+            type: FIRE_ACCOUNT
+            account:
+              iban: IE54CPAY99119911111111
+              alias: Main Account
+              id: 42
+              accountNumber: "11111111"
+              bic: CPAYIE2D
+              nsc: "232221"
+          type: WITHDRAWAL
+          proprietarySchemeDetails:
+          - data: remittanceInfoUnstructured^FIRE440286865OD1|instructionId^O223151336499079
+            type: SCT
+          - data: remittanceInfoUnstructured^FIRE440286865OD1|instructionId^O223151336499079
+            type: SCT
+          dateAcknowledged: 2021-04-13T11:06:32.437Z
+          feeAmount: 0
+          fxTradeDetails:
+            buyAmount: 359
+            provider: TCC
+            rate4d: 7180
+            fixedSide: SELL
+            sellAmount: 500
+            sellCurrency: EUR
+            buyCurrency: GBP
+          balance: 8500
+          ican: 1951
+          amountBeforeCharges: 5000
+          currency:
+            code: EUR
+            description: Euro
+          directDebitDetails:
+            directDebitReference: VODA-ABC453-1
+            originatorReference: VODA-123456
+            mandateReference: CRZ-102190123
+            originatorName: Vodafone PLC
+            originatorLogoUrlLarge: https://s3-eu-west-1.amazonaws.com/live-fire-assets/prod/49dc9a01-8261-4d98-bebf-c3842c2d3c5d-small.png
+            mandateUUid: f171b143-e3eb-47de-85a6-1c1f1108c701
+            mandateUuid: 28d627c3-1889-44c8-ae59-6f6b20239260
+            originatorAlias: Three
+            originatorLogoUrlSmall: https://s3-eu-west-1.amazonaws.com/live-fire-assets/prod/49dc9a01-8261-4d98-bebf-c3842c2d3c5d-small.png
+            directDebitUuid: 42de0705-e3f1-44fa-8c41-79973eb80eb2
+          refId: 26774
+          taxAmount: 0
+          card:
+            expiryDate: 2000-01-23T04:56:07.000+00:00
+            maskedPan: maskedPan
+            provider: provider
+            cardId: 0
+            embossBusinessName: embossBusinessName
+            alias: alias
+            embossCardName: embossCardName
+          myRef: Transfer to main account
+          txnId: 30157
+        - date: 2021-04-13T11:06:32.437Z
+          yourRef: From John Smith
+          amountAfterCharges: 5000
+          batchItemDetails:
+            batchName: Payroll 2022-11
+            batchPublicUuid: F2AF3F2B-4406-4199-B249-B354F2CC6019
+            batchItemPublicUuid: F2AF3F2B-4406-4199-B249-B354F2CC6019
+            jobNumber: 2018-01-PR
+          eventUuid: 42de0705-e3f1-44fa-8c41-79973eb80eb2
+          paymentRequestPublicCode: 1abcdefg
+          relatedParty:
+            type: FIRE_ACCOUNT
+            account:
+              iban: IE54CPAY99119911111111
+              alias: Main Account
+              id: 42
+              accountNumber: "11111111"
+              bic: CPAYIE2D
+              nsc: "232221"
+          type: WITHDRAWAL
+          proprietarySchemeDetails:
+          - data: remittanceInfoUnstructured^FIRE440286865OD1|instructionId^O223151336499079
+            type: SCT
+          - data: remittanceInfoUnstructured^FIRE440286865OD1|instructionId^O223151336499079
+            type: SCT
+          dateAcknowledged: 2021-04-13T11:06:32.437Z
+          feeAmount: 0
+          fxTradeDetails:
+            buyAmount: 359
+            provider: TCC
+            rate4d: 7180
+            fixedSide: SELL
+            sellAmount: 500
+            sellCurrency: EUR
+            buyCurrency: GBP
+          balance: 8500
+          ican: 1951
+          amountBeforeCharges: 5000
+          currency:
+            code: EUR
+            description: Euro
+          directDebitDetails:
+            directDebitReference: VODA-ABC453-1
+            originatorReference: VODA-123456
+            mandateReference: CRZ-102190123
+            originatorName: Vodafone PLC
+            originatorLogoUrlLarge: https://s3-eu-west-1.amazonaws.com/live-fire-assets/prod/49dc9a01-8261-4d98-bebf-c3842c2d3c5d-small.png
+            mandateUUid: f171b143-e3eb-47de-85a6-1c1f1108c701
+            mandateUuid: 28d627c3-1889-44c8-ae59-6f6b20239260
+            originatorAlias: Three
+            originatorLogoUrlSmall: https://s3-eu-west-1.amazonaws.com/live-fire-assets/prod/49dc9a01-8261-4d98-bebf-c3842c2d3c5d-small.png
+            directDebitUuid: 42de0705-e3f1-44fa-8c41-79973eb80eb2
+          refId: 26774
+          taxAmount: 0
+          card:
+            expiryDate: 2000-01-23T04:56:07.000+00:00
+            maskedPan: maskedPan
+            provider: provider
+            cardId: 0
+            embossBusinessName: embossBusinessName
+            alias: alias
+            embossCardName: embossCardName
+          myRef: Transfer to main account
+          txnId: 30157
+      properties:
+        content:
+          items:
+            $ref: '#/components/schemas/transaction'
+          title: content
+          type: array
+        links:
+          items:
+            $ref: '#/components/schemas/cardTransactionsv3_links_inner'
+          title: links
+          type: array
+      title: cardTransactionsv3
+      type: object
+    relatedPartyExternalAccount_account:
+      properties:
+        accountNumber:
+          description: the Account Number of the account.
+          example: "11111111"
+          title: accountNumber
+          type: string
+        alias:
+          description: the name the user gives to the account to help them identify
+            it.
+          example: Main Account
+          title: alias
+          type: string
+        bic:
+          description: the BIC of the account (provided if currency is EUR).
+          example: CPAYIE2D
+          title: bic
+          type: string
+        iban:
+          description: the IBAN of the account (provided if currency is EUR).
+          example: IE54CPAY99119911111111
+          title: iban
+          type: string
+        id:
+          format: int64
+          title: id
+          type: integer
+        nsc:
+          description: the Sort Code of the account.
+          example: "232221"
+          title: nsc
+          type: string
+      title: relatedPartyExternalAccount_account
+      type: object
+    payeeBankAccounts:
+      example:
+        total: 1
+        fundingSources:
+        - dateCreated: 2019-08-22T07:48:56.46Z
+          accountName: Joe
+          createdBy: CUSTOMER
+          iban: IE86BOFI90535211111111
+          currency:
+            code: EUR
+            description: Euro
+          id: 742
+          accountNumber: "12345678"
+          accountHolderName: Joe Bloggs
+          bic: BOFIIE2DXXX
+          nsc: "998822"
+          status: LIVE
+        - dateCreated: 2019-08-22T07:48:56.46Z
+          accountName: Joe
+          createdBy: CUSTOMER
+          iban: IE86BOFI90535211111111
+          currency:
+            code: EUR
+            description: Euro
+          id: 742
+          accountNumber: "12345678"
+          accountHolderName: Joe Bloggs
+          bic: BOFIIE2DXXX
+          nsc: "998822"
+          status: LIVE
+      properties:
+        fundingSources:
+          items:
+            $ref: '#/components/schemas/payee'
+          title: fundingSources
+          type: array
+        total:
+          description: The total number of payees in the list.
+          example: 1
+          title: total
+          type: integer
+      title: payeeBankAccounts
+      type: object
+    directDebitDetails:
+      description: Details of the direct debit (if applicable)
+      example:
+        directDebitReference: VODA-ABC453-1
+        originatorReference: VODA-123456
+        mandateReference: CRZ-102190123
+        originatorName: Vodafone PLC
+        originatorLogoUrlLarge: https://s3-eu-west-1.amazonaws.com/live-fire-assets/prod/49dc9a01-8261-4d98-bebf-c3842c2d3c5d-small.png
+        mandateUUid: f171b143-e3eb-47de-85a6-1c1f1108c701
+        mandateUuid: 28d627c3-1889-44c8-ae59-6f6b20239260
+        originatorAlias: Three
+        originatorLogoUrlSmall: https://s3-eu-west-1.amazonaws.com/live-fire-assets/prod/49dc9a01-8261-4d98-bebf-c3842c2d3c5d-small.png
+        directDebitUuid: 42de0705-e3f1-44fa-8c41-79973eb80eb2
+      properties:
+        directDebitReference:
+          description: The direct debit reference.
+          example: VODA-ABC453-1
+          title: directDebitReference
+          type: string
+        directDebitUuid:
+          description: The UUID for the direct debit payment
+          example: 42de0705-e3f1-44fa-8c41-79973eb80eb2
+          title: directDebitUuid
+          type: string
+        mandateReference:
+          description: the reference of the mandate
+          example: CRZ-102190123
+          title: mandateReference
+          type: string
+        mandateUUid:
+          description: The UUID for the mandate
+          example: f171b143-e3eb-47de-85a6-1c1f1108c701
+          title: mandateUUid
+          type: string
+        mandateUuid:
+          description: The UUID for the mandate
+          example: 28d627c3-1889-44c8-ae59-6f6b20239260
+          title: mandateUuid
+          type: string
+        originatorAlias:
+          description: The Alias of the party who sets up the direct debit.
+          example: Three
+          title: originatorAlias
+          type: string
+        originatorLogoUrlLarge:
+          description: URL pointing to a large version of the Originator Logo (if
+            available)
+          example: https://s3-eu-west-1.amazonaws.com/live-fire-assets/prod/49dc9a01-8261-4d98-bebf-c3842c2d3c5d-small.png
+          title: originatorLogoUrlLarge
+          type: string
+        originatorLogoUrlSmall:
+          description: URL pointing to a small version of the Originator Logo (if
+            available)
+          example: https://s3-eu-west-1.amazonaws.com/live-fire-assets/prod/49dc9a01-8261-4d98-bebf-c3842c2d3c5d-small.png
+          title: originatorLogoUrlSmall
+          type: string
+        originatorName:
+          description: The creator of the party who sets up the direct debit.
+          example: Vodafone PLC
+          title: originatorName
+          type: string
+        originatorReference:
+          description: Set by party who sets up the direct debit.
+          example: VODA-123456
+          title: originatorReference
+          type: string
+      title: directDebitDetails
+      type: object
+    relatedPartyFireAccount:
+      example:
+        type: FIRE_ACCOUNT
+        account:
+          iban: IE54CPAY99119911111111
+          alias: Main Account
+          id: 42
+          accountNumber: "11111111"
+          bic: CPAYIE2D
+          nsc: "232221"
+      properties:
+        account:
+          $ref: '#/components/schemas/relatedPartyFireAccount_account'
+        type:
+          enum:
+          - FIRE_ACCOUNT
+          title: type
+          type: string
+      title: relatedPartyFireAccount
+      type: object
+    mobileApplication:
+      example:
+        businessUserId: 14059
+        clientID: EBB10F29-A653-4DBA-9C8C-BA79F72F78B0
+        OS: Android
+        mobileApplicationId: 18967
+        deviceName: iPhone
+        deviceOSVersion: "14.4"
+        status: LIVE
+      properties:
+        OS:
+          description: Operating system of device.
+          enum:
+          - Android
+          - IOS
+          - OTHER
+          title: OS
+          type: string
+        businessUserId:
+          description: Business user ID
+          example: 14059
+          format: int64
+          title: businessUserId
+          type: integer
+        clientID:
+          description: Client ID of user.
+          example: EBB10F29-A653-4DBA-9C8C-BA79F72F78B0
+          title: clientID
+          type: string
+        deviceName:
+          description: type of device.
+          enum:
+          - iPhone
+          - Android
+          - Other
+          title: deviceName
+          type: string
+        deviceOSVersion:
+          description: OS version for device.
+          example: "14.4"
+          title: deviceOSVersion
+          type: string
+        mobileApplicationId:
+          description: Mobile application id for user.
+          example: 18967
+          format: int64
+          title: mobileApplicationId
+          type: integer
+        status:
+          description: Status of user
+          enum:
+          - LIVE
+          - CLOSED
+          - LOCKED
+          - SMS_SENT
+          title: status
+          type: string
+      title: mobileApplication
+      type: object
+    card:
+      example:
+        lastName: Doe
+        maskedPan: 537455******1111
+        eurIcan: 2150
+        userId: 3138
+        expiryDate: 2019-01-31T00:00:00Z
+        firstName: John
+        emailAddress: user@example.com
+        dateCreated: 2017-01-19T16:38:15.803Z
+        statusReason: LOST_CARD
+        blocked: false
+        gbpIcan: 2152
+        provider: MASTERCARD
+        cardId: 51
+        status: LIVE
+      properties:
+        blocked:
+          description: Whether the card is blocked or not
+          example: false
+          title: blocked
+          type: boolean
+        cardId:
+          description: card id assigned by fire.com
+          example: 51
+          format: int64
+          title: cardId
+          type: integer
+        dateCreated:
+          description: The date-time the card was created
+          example: 2017-01-19T16:38:15.803Z
+          format: date-time
+          title: dateCreated
+          type: string
+        emailAddress:
+          description: card user email address
+          example: user@example.com
+          title: emailAddress
+          type: string
+        eurIcan:
+          description: identifier for the eur fire.com account (assigned by fire.com)
+          example: 2150
+          format: int64
+          title: eurIcan
+          type: integer
+        expiryDate:
+          description: card expiry date
+          example: 2019-01-31T00:00:00Z
+          format: date-time
+          title: expiryDate
+          type: string
+        firstName:
+          description: card user first name
+          example: John
+          title: firstName
+          type: string
+        gbpIcan:
+          description: identifier for the gbp fire.com account (assigned by fire.com)
+          example: 2152
+          format: int64
+          title: gbpIcan
+          type: integer
+        lastName:
+          description: card user last name
+          example: Doe
+          title: lastName
+          type: string
+        maskedPan:
+          description: card number (masked)
+          example: 537455******1111
+          title: maskedPan
+          type: string
+        provider:
+          description: card provider
+          enum:
+          - MASTERCARD
+          example: MASTERCARD
+          title: provider
+          type: string
+        status:
+          description: card status
+          enum:
+          - LIVE
+          - CREATED_ACTIVE
+          - CREATED_INACTIVE
+          - DEACTIVATED
+          example: LIVE
+          title: status
+          type: string
+        statusReason:
+          description: reason for card status
+          enum:
+          - LOST_CARD
+          - STOLEN_CARD
+          - CARD_DESTROYED
+          example: LOST_CARD
+          title: statusReason
+          type: string
+        userId:
+          description: card user id assigned by fire.com
+          example: 3138
+          format: int64
+          title: userId
+          type: integer
+      title: card
+      type: object
+    newPaymentRequestResponse:
+      example:
+        code: 1234abcd
+        type: OTHER
+      properties:
+        code:
+          description: |
+            The code for this request. Create a URL in this format: `https://payments.fire.com/{code}` and share to your customers.
+          example: 1234abcd
+          maxLength: 8
+          minLength: 8
+          title: code
+          type: string
+        type:
+          description: The type of Fire Open Payment that was created.
+          enum:
+          - OTHER
+          title: type
+          type: string
+      title: newPaymentRequestResponse
+      type: object
+    mandate:
+      example:
+        originatorReference: VODA-123456
+        originatorName: Vodafone PLC
+        targetIcan: 1
+        latestDirectDebitAmount: 2
+        numberOfDirectDebitCollected: 2
+        valueOfDirectDebitCollected: 2
+        originatorAlias: Vodaphone PLC
+        latestDirectDebitDate: 2016-12-15T22:56:05.937Z
+        dateCancelled: 2016-12-15T22:56:05.937Z
+        lastUpdated: 2016-12-15T22:56:05.937Z
+        mandateReference: CRZ-102190123
+        dateCreated: 2016-12-15T22:56:05.937Z
+        originatorLogoUrlLarge: originatorLogoLarge
+        mandateUuid: 28d627c3-1889-44c8-ae59-6f6b20239260
+        dateCompleted: 2016-12-15T22:56:05.937Z
+        originatorLogoUrlSmall: originatorLogoSmall
+        alias: Vodaphone
+        schemeCancelReason: e.g. Instruction cancelled by payer
+        currency:
+          code: EUR
+          description: Euro
+        fireRejectionReason: ACCOUNT_DOES_NOT_ACCEPT_DIRECT_DEBITS
+        schemeCancelReasonCode: For BACS (ADDACS) - 0|1|2|3|B|C|D|E|R
+        status: RECIEVED
+      properties:
+        alias:
+          description: The name of the alias
+          example: Vodaphone
+          title: alias
+          type: string
+        currency:
+          $ref: '#/components/schemas/currency'
+        dateCancelled:
+          description: Date the direct debit was canceled. Milliseconds since the
+            epoch (1970).
+          example: 2016-12-15T22:56:05.937Z
+          format: date-time
+          title: dateCancelled
+          type: string
+        dateCompleted:
+          description: Date the direct debit was completed. Milliseconds since the
+            epoch (1970).
+          example: 2016-12-15T22:56:05.937Z
+          format: date-time
+          title: dateCompleted
+          type: string
+        dateCreated:
+          description: Date the direct debit was created. Milliseconds since the epoch
+            (1970).
+          example: 2016-12-15T22:56:05.937Z
+          format: date-time
+          title: dateCreated
+          type: string
+        fireRejectionReason:
+          description: Rejection reason if transaction is rejected
+          enum:
+          - ACCOUNT_DOES_NOT_ACCEPT_DIRECT_DEBITS
+          - DDIC
+          - ACCOUNT_NOT_FOUND
+          - ACCOUNT_NOT_LIVE
+          - CUSTOMER_NOT_FOUND
+          - BUSINESS_NOT_LIVE
+          - BUSINESS_NOT_FULL
+          - PERSONAL_USER_NOT_LIVE
+          - PERSONAL_USER_NOT_FULL
+          - MANDATE_ALREADY_EXISTS
+          - MANDATE_WITH_DIFERENT_ACCOUNT
+          - NULL_MANDATE_REFERENCE
+          - INVALID_ACCOUNT_CURRENCY
+          - INVALID_MANDATE_REFERENCE
+          - REQUESTED_BY_CUSTOMER_VIA_SUPPORT
+          - CUSTOMER_ACCOUNT_CLOSED
+          - CUSTOMER_DECEASED
+          - ACCOUNT_TRANSFERRED
+          - MANDATE_NOT_FOUND
+          - ACCOUNT_TRANSFERRED_TO_DIFFERENT_ACCOUNT
+          - INVALID_ACCOUNT_TYPE
+          - MANDATE_EXPIRED
+          - MANDATE_CANCELLED
+          - REQUESTED_BY_CUSTOMER
+          example: ACCOUNT_DOES_NOT_ACCEPT_DIRECT_DEBITS
+          title: fireRejectionReason
+          type: string
+        lastUpdated:
+          description: Date the direct debit was last updated. Milliseconds since
+            the epoch (1970).
+          example: 2016-12-15T22:56:05.937Z
+          format: date-time
+          title: lastUpdated
+          type: string
+        latestDirectDebitAmount:
+          description: The value of largest direct debit collected
+          example: 2
+          format: int64
+          title: latestDirectDebitAmount
+          type: integer
+        latestDirectDebitDate:
+          description: The date of latest direct debit collected
+          example: 2016-12-15T22:56:05.937Z
+          format: date-time
+          title: latestDirectDebitDate
+          type: string
+        mandateReference:
+          description: the reference of the mandate
+          example: CRZ-102190123
+          title: mandateReference
+          type: string
+        mandateUuid:
+          description: The UUID for the mandate
+          example: 28d627c3-1889-44c8-ae59-6f6b20239260
+          title: mandateUuid
+          type: string
+        numberOfDirectDebitCollected:
+          description: The number of direct debits collected
+          example: 2
+          format: int64
+          title: numberOfDirectDebitCollected
+          type: integer
+        originatorAlias:
+          description: The name of the alias
+          example: Vodaphone PLC
+          title: originatorAlias
+          type: string
+        originatorLogoUrlLarge:
+          description: Logo url from party who sets up the direct debit.
+          example: originatorLogoLarge
+          title: originatorLogoUrlLarge
+          type: string
+        originatorLogoUrlSmall:
+          description: Logo url from party who sets up the direct debit.
+          example: originatorLogoSmall
+          title: originatorLogoUrlSmall
+          type: string
+        originatorName:
+          description: The creator of the party who sets up the direct debit.
+          example: Vodafone PLC
+          title: originatorName
+          type: string
+        originatorReference:
+          description: Set by party who sets up the direct debit.
+          example: VODA-123456
+          title: originatorReference
+          type: string
+        schemeCancelReason:
+          description: Reason for cancelation
+          example: e.g. Instruction cancelled by payer
+          title: schemeCancelReason
+          type: string
+        schemeCancelReasonCode:
+          description: The cancelation code returned by the bank indicating an issue
+            with the direct debit. Each ARRUD code represents a rejection reason.
+          example: For BACS (ADDACS) - 0|1|2|3|B|C|D|E|R
+          title: schemeCancelReasonCode
+          type: string
+        status:
+          description: |
+            The status of the mandate.
+            * 'CREATED'
+            * 'LIVE'
+            * 'REJECT_REQUESTED'
+            * 'REJECT_RECORD_IN_PROGRESS'
+            * 'REJECT_RECORDED'
+            * 'REJECT_FILE_CREATED'
+            * 'REJECT_FILE_SENT'
+            * 'CANCEL_REQUESTED'
+            * 'CANCEL_RECORD_IN_PROGRESS'
+            * 'CANCEL_RECORDED'
+            * 'CANCEL_FILE_CREATED'
+            * 'CANCEL_FILE_SENT'
+            * 'COMPLETE'
+            * 'DORMANT'
+          enum:
+          - CREATED
+          - LIVE
+          - REJECT_REQUESTED
+          - REJECT_RECORD_IN_PROGRESS
+          - REJECT_RECORDED
+          - REJECT_FILE_CREATED
+          - REJECT_FILE_SENT
+          - CANCEL_REQUESTED
+          - CANCEL_RECORD_IN_PROGRESS
+          - CANCEL_RECORDED
+          - CANCEL_FILE_CREATED
+          - CANCEL_FILE_SENT
+          - COMPLETE
+          - DORMANT
+          example: RECIEVED
+          title: status
+          type: string
+        targetIcan:
+          description: Identifier for the fire.com account (assigned by fire.com)
+          example: 1
+          format: int64
+          title: targetIcan
+          type: integer
+        valueOfDirectDebitCollected:
+          description: The value of direct debits collected
+          example: 2
+          format: int64
+          title: valueOfDirectDebitCollected
+          type: integer
+      title: mandate
+      type: object
+    batchItem_result:
+      description: The outcome of the attempted transaction.
+      example:
+        code: 500001
+        message: SUCCESS
+      properties:
+        code:
+          example: 500001
+          format: int64
+          title: code
+          type: integer
+        message:
+          example: SUCCESS
+          title: message
+          type: string
+      title: batchItem_result
+      type: object
+    cards:
+      example:
+        cards:
+        - lastName: Doe
+          maskedPan: 537455******1111
+          eurIcan: 2150
+          userId: 3138
+          expiryDate: 2019-01-31T00:00:00Z
+          firstName: John
+          emailAddress: user@example.com
+          dateCreated: 2017-01-19T16:38:15.803Z
+          statusReason: LOST_CARD
+          blocked: false
+          gbpIcan: 2152
+          provider: MASTERCARD
+          cardId: 51
+          status: LIVE
+        - lastName: Doe
+          maskedPan: 537455******1111
+          eurIcan: 2150
+          userId: 3138
+          expiryDate: 2019-01-31T00:00:00Z
+          firstName: John
+          emailAddress: user@example.com
+          dateCreated: 2017-01-19T16:38:15.803Z
+          statusReason: LOST_CARD
+          blocked: false
+          gbpIcan: 2152
+          provider: MASTERCARD
+          cardId: 51
+          status: LIVE
+      properties:
+        cards:
+          items:
+            $ref: '#/components/schemas/card'
+          title: cards
+          type: array
+      title: cards
+      type: object
+    directDebits:
+      example:
+        total: 1
+        directdebits:
+        - directDebitReference: VODA-ABC453-1
+          schemeRejectReason: eg. Instruction cancelled by payer
+          schemeRejectReasonCode: for BACS (ARUDD) 0|1|2|3|5|6|7|8|9|A|B
+          originatorReference: VODA-123456
+          amount: 100
+          originatorName: Vodafone PLC
+          targetIcan: 42
+          isDDIC: false
+          originatorAlias: Three
+          type: FIRST_COLLECTION
+          directDebitUuid: 42de0705-e3f1-44fa-8c41-79973eb80eb2
+          lastUpdated: 2016-12-15T22:56:05.937Z
+          dateCreated: 2016-12-15T22:56:05.937Z
+          mandateUUid: f171b143-e3eb-47de-85a6-1c1f1108c701
+          targetPayeeId: 12
+          currency:
+            code: EUR
+            description: Euro
+          status: RECIEVED
+        - directDebitReference: VODA-ABC453-1
+          schemeRejectReason: eg. Instruction cancelled by payer
+          schemeRejectReasonCode: for BACS (ARUDD) 0|1|2|3|5|6|7|8|9|A|B
+          originatorReference: VODA-123456
+          amount: 100
+          originatorName: Vodafone PLC
+          targetIcan: 42
+          isDDIC: false
+          originatorAlias: Three
+          type: FIRST_COLLECTION
+          directDebitUuid: 42de0705-e3f1-44fa-8c41-79973eb80eb2
+          lastUpdated: 2016-12-15T22:56:05.937Z
+          dateCreated: 2016-12-15T22:56:05.937Z
+          mandateUUid: f171b143-e3eb-47de-85a6-1c1f1108c701
+          targetPayeeId: 12
+          currency:
+            code: EUR
+            description: Euro
+          status: RECIEVED
+      properties:
+        directdebits:
+          items:
+            $ref: '#/components/schemas/directDebit'
+          title: directdebits
+          type: array
+        total:
+          description: Number of direct debits found
+          example: 1
+          format: int64
+          title: total
+          type: integer
+      title: directDebits
+      type: object
+    batchItem:
+      example:
+        amount: 10000
+        amountAfterCharges: 10000
+        icanFrom: 2150
+        icanTo: 1002
+        result:
+          code: 500001
+          message: SUCCESS
+        feeAmount: 0
+        lastUpdated: 2021-04-04T10:48:53.54Z
+        ref: Testing a transfer via batch
+        dateCreated: 2021-04-04T10:48:53.54Z
+        refId: 123782
+        taxAmount: 0
+        batchItemUuid: F2AF3F2B-4406-4199-B249-B354F2CC6019
+        status: SUCCEEDED
+      properties:
+        amount:
+          description: The amount of funds to send. In cent or pence
+          example: 10000
+          format: int64
+          title: amount
+          type: integer
+        amountAfterCharges:
+          description: The amount of the transfer after fees and taxes. in pence or
+            cent.
+          example: 10000
+          format: int64
+          title: amountAfterCharges
+          type: integer
+        batchItemUuid:
+          description: A UUID for this item.
+          example: F2AF3F2B-4406-4199-B249-B354F2CC6019
+          title: batchItemUuid
+          type: string
+        dateCreated:
+          description: The datestamp the batch was created - ISO format - e.g. 2018-04-04T00:53:21.910Z
+          example: 2021-04-04T10:48:53.54Z
+          format: date-time
+          title: dateCreated
+          type: string
+        feeAmount:
+          description: The fee charged by fire.com for the payment. In pence or cent.
+          example: 0
+          format: int64
+          title: feeAmount
+          type: integer
+        icanFrom:
+          description: The Fire account ID of the source account.
+          example: 2150
+          format: int64
+          title: icanFrom
+          type: integer
+        icanTo:
+          description: The Fire account ID for the fire.com account the funds are
+            sent to.
+          example: 1002
+          format: int64
+          title: icanTo
+          type: integer
+        lastUpdated:
+          description: The datestamp of the last action on this batch - ISO format
+            - e.g. 2018-04-04T10:48:53.540Z
+          example: 2021-04-04T10:48:53.54Z
+          format: date-time
+          title: lastUpdated
+          type: string
+        ref:
+          description: The reference on the transaction.
+          example: Testing a transfer via batch
+          title: ref
+          type: string
+        refId:
+          description: "The ID of the resulting payment in your account. Can be used\
+            \ to retrieve the transaction using the https://api.fire.com/business/v1/accounts/{accountId}/transactions/{refId}\
+            \ endpoint."
+          example: 123782
+          format: int64
+          title: refId
+          type: integer
+        result:
+          $ref: '#/components/schemas/batchItem_result'
+        status:
+          description: status of the batch if internal trasnfer
+          enum:
+          - SUBMITTED
+          - REMOVED
+          - SUCCEEDED
+          - FAILED
+          example: SUCCEEDED
+          title: status
+          type: string
+        taxAmount:
+          description: Any taxes/duty collected by fire.com for this payments (e.g.
+            stamp duty etc). In pence or cent.
+          example: 0
+          format: int64
+          title: taxAmount
+          type: integer
+      title: batchItem
+      type: object
+    relatedPartyCardPayment:
+      properties:
+        cardMerchant:
+          $ref: '#/components/schemas/relatedPartyCardPayment_cardMerchant'
+        type:
+          enum:
+          - CARD_MERCHANT
+          - CARD_ATM
+          title: type
+          type: string
+      title: relatedPartyCardPayment
+      type: object
+    aspsp:
+      example:
+        country:
+          code: GB
+          description: United Kingdom
+        lastUpdated: 2019-08-22T07:48:56.46Z
+        dateCreated: 2019-08-22T07:48:56.46Z
+        alias: Demo Bank
+        aspspUuid: 4ADFB67A-0F5B-4A9A-9D74-34437250045C
+        currency:
+          code: EUR
+          description: Euro
+        logoUrl: https://assets.fire.com/pisp/demo.svg
+      properties:
+        alias:
+          description: The name of the ASPSP / bank.
+          example: Demo Bank
+          title: alias
+          type: string
+        aspspUuid:
+          description: The UUID associated with the ASPSP / bank.
+          example: 4ADFB67A-0F5B-4A9A-9D74-34437250045C
+          title: aspspUuid
+          type: string
+        country:
+          $ref: '#/components/schemas/country'
+        currency:
+          $ref: '#/components/schemas/currency'
+        dateCreated:
+          description: The date the ASPSP / bank was created.
+          example: 2019-08-22T07:48:56.46Z
+          format: date-time
+          title: dateCreated
+          type: string
+        lastUpdated:
+          description: The date the ASPSP / bank was last updated.
+          example: 2019-08-22T07:48:56.46Z
+          format: date-time
+          title: lastUpdated
+          type: string
+        logoUrl:
+          description: A link to the ASPSP / bank's logo in SVG format.
+          example: https://assets.fire.com/pisp/demo.svg
+          title: logoUrl
+          type: string
+      title: aspsp
+      type: object
+    batchApprovers_approvals_inner:
+      example:
+        firstName: Jane
+        lastName: Doe
+        lastUpdated: 2021-04-04T10:48:53.54Z
+        emailAddress: jane.doe@example.com
+        mobileNumber: "353871234567"
+        userId: 3138
+        status: PENDING_APPROVAL
+      properties:
+        emailAddress:
+          description: User email address
+          example: jane.doe@example.com
+          title: emailAddress
+          type: string
+        firstName:
+          example: Jane
+          title: firstName
+          type: string
+        lastName:
+          example: Doe
+          title: lastName
+          type: string
+        lastUpdated:
+          description: The datestamp of the last action on this batch - ISO format
+            - e.g. 2018-04-04T10:48:53.540Z
+          example: 2021-04-04T10:48:53.54Z
+          format: date-time
+          title: lastUpdated
+          type: string
+        mobileNumber:
+          example: "353871234567"
+          title: mobileNumber
+          type: string
+        status:
+          example: PENDING_APPROVAL
+          title: status
+          type: string
+        userId:
+          description: User id assigned by fire.com
+          example: 3138
+          format: int64
+          title: userId
+          type: integer
+      title: batchApprovers_approvals_inner
+      type: object
+    currency:
+      description: The currency.
+      example:
+        code: EUR
+        description: Euro
+      properties:
+        code:
+          description: The three letter code for the currency - either `EUR` or `GBP`.
+          enum:
+          - EUR
+          - GBP
+          title: code
+          type: string
+        description:
+          description: The name of the currency
+          example: Euro
+          title: description
+          type: string
+      title: currency
+      type: object
+    relatedPartyExternalAccount:
+      properties:
+        account:
+          $ref: '#/components/schemas/relatedPartyExternalAccount_account'
+        type:
+          enum:
+          - EXTERNAL_ACCOUNT
+          title: type
+          type: string
+      title: relatedPartyExternalAccount
+      type: object
+    authentication:
+      properties:
+        clientId:
+          description: The Client ID for this API Application
+          example: 4ADFB67A-0F5B-4A9A-9D74-34437250045C
+          title: clientId
+          type: string
+        clientSecret:
+          description: "The SHA256 hash of the nonce above and the app’s Client Key.\
+            \ The Client Key will only be shown to you when you create the app, so\
+            \ don’t forget to save it somewhere safe. SECRET=( `/bin/echo -n $NONCE$CLIENT_KEY\
+            \ | sha256sum` )."
+          example: 4ADFB67A-0F5B-4A9A-9D74-34437250045C
+          title: clientSecret
+          type: string
+        grantType:
+          description: Always `AccessToken`. (This will change to `refresh_token`
+            in a future release.)
+          enum:
+          - AccessToken
+          title: grantType
+          type: string
+        nonce:
+          description: A random non-repeating number used as a salt for the `clientSecret`
+            below. The simplest nonce is a unix time.
+          example: 728345638475
+          format: int64
+          title: nonce
+          type: integer
+        refreshToken:
+          description: The Refresh Token for this API Application
+          example: 4ADFB67A-0F5B-4A9A-9D74-34437250045C
+          title: refreshToken
+          type: string
+      title: authentication
+      type: object
+    paymentRequest:
+      example:
+        amount: 1000
+        additionalFields: ORDER_ID|PRODUCT_ID|CUSTOMER_ID|CUSTOMER_NUMBER|COMMENT2
+        description: Gym Fees Oct 2020
+        type: OTHER
+        webhookUrl: https://example.com/webhook
+        icanTo: 42
+        transactionType: REFUND_REQUEST
+        orderDetails:
+          deliveryCity: London
+          comment2: Additional comments about the transaction
+          productId: ZFDAA-1221
+          comment1: Additional comments about the transaction
+          orderId: 6c28a47d-4502-4111
+          variableReference: John Doe
+          merchantCustomerIdentification: "8303863544"
+          customerNumber: "123645"
+          merchantNumber: "1234567"
+          deliveryPostCode: EC15155
+          deliveryCountry: GB
+          deliveryAddressLine2: The Way
+          deliveryAddressLine1: 12 The Street
+        paymentUuid: 4ADFB67A-0F5B-4A9A-9D74-34437250045C
+        maxNumberPayments: 1
+        mandatoryFields: ADDRESS|REFERENCE|COMMENT1
+        collectFields: ADDRESS|REFERENCE|COMMENT1
+        currency:
+          code: EUR
+          description: Euro
+        expiry: 2024-10-22T07:48:56.46Z
+        returnUrl: https://example.com/callback
+        myRef: Fees
+        paymentRequestCode: 1234abcd
+        status: AWAITING_AUTHORISATION
+      properties:
+        additionalFields:
+          description: "These fields will be dispalyed to the payer when using the\
+            \ hosted option. You can choose to display any of `ORDER_ID`, `PRODUCT_ID`,\
+            \ `CUSTOMER_ID`, `CUSTOMER_NUMBER` and `COMMENT2` to the payer."
+          example: ORDER_ID|PRODUCT_ID|CUSTOMER_ID|CUSTOMER_NUMBER|COMMENT2
+          title: additionalFields
+          type: string
+        amount:
+          description: "The requested amount to pay. Note the last two digits represent\
+            \ pennies/cents, (e.g., £1.00 = 100)."
+          example: 1000
+          format: int64
+          title: amount
+          type: integer
+        collectFields:
+          description: "For the hosted option, the payer will be asked to fill in\
+            \ these fields but they will not be mandatory. You can choose to collect\
+            \ any of the payer's `ADDRESS`, `REFERENCE` and/or `COMMENT1`. If you\
+            \ choose to collect these fields from the payer, you cannot set 'delivery’\
+            , 'variableReference’ or 'comment1’ fields respectively."
+          example: ADDRESS|REFERENCE|COMMENT1
+          title: collectFields
+          type: string
+        currency:
+          $ref: '#/components/schemas/currency'
+        description:
+          description: A public facing description of the request. This will be shown
+            to the user when they tap or scan the request.
+          example: Gym Fees Oct 2020
+          title: description
+          type: string
+        expiry:
+          description: "This is the expiry of the payment request. After this time,\
+            \ the payment cannot be paid."
+          example: 2024-10-22T07:48:56.46Z
+          format: date-time
+          title: expiry
+          type: string
+        icanTo:
+          description: The ican of the account to collect the funds into. Must be
+            one of your fire.com Accounts.
+          example: 42
+          format: int64
+          title: icanTo
+          type: integer
+        mandatoryFields:
+          description: "For the hosted option, these fields will be madatory for the\
+            \ payer to fill in on the hosted payment page. You can choose to collect\
+            \ any the payer's `ADDRESS`, `REFERENCE` and/or `COMMENT1`. If you choose\
+            \ to collect these fields from the payer, you cannot set 'delivery’, 'variableReference’\
+            \ or 'comment1’ fields respectively."
+          example: ADDRESS|REFERENCE|COMMENT1
+          title: mandatoryFields
+          type: string
+        maxNumberPayments:
+          description: The max number of people who can pay this request. Must be
+            set to 1 for the ECOMMERCE_GOODS and ECOMMERCE_SERVICES types.
+          example: 1
+          title: maxNumberPayments
+          type: integer
+        myRef:
+          description: An internal description of the request.
+          example: Fees
+          title: myRef
+          type: string
+        orderDetails:
+          $ref: '#/components/schemas/orderDetails'
+        paymentRequestCode:
+          description: The code that was returned when you created the payment request.
+          example: 1234abcd
+          maxLength: 8
+          minLength: 8
+          title: paymentRequestCode
+          type: string
+        paymentUuid:
+          description: A unique id for the transaction.
+          example: 4ADFB67A-0F5B-4A9A-9D74-34437250045C
+          title: paymentUuid
+          type: string
+        returnUrl:
+          description: The merchant return URL where the customer will be re-directed
+            to with the result of the transaction.
+          example: https://example.com/callback
+          title: returnUrl
+          type: string
+        status:
+          description: The status of the transaction
+          enum:
+          - AWAITING_AUTHORISATION
+          - AUTHORISED
+          - AWAITING_MULTI_AUTHORISATION
+          - NOT_AUTHORISED
+          - PAID
+          - REJECTED
+          - ACCEPTED
+          - RECEIVED
+          title: status
+          type: string
+        transactionType:
+          description: The type of payment request payment
+          enum:
+          - REFUND_REQUEST
+          - PAYMENT
+          title: transactionType
+          type: string
+        type:
+          description: The type of Fire Open Payment that was created
+          enum:
+          - OTHER
+          title: type
+          type: string
+        webhookUrl:
+          description: A URL to be called in the background with the details of the
+            payment after the payment is complete
+          example: https://example.com/webhook
+          title: webhookUrl
+          type: string
+      title: paymentRequest
+      type: object
+    fxTrade:
+      description: Details of the FX trade (if applicable)
+      example:
+        buyAmount: 359
+        provider: TCC
+        rate4d: 7180
+        fixedSide: SELL
+        sellAmount: 500
+        sellCurrency: EUR
+        buyCurrency: GBP
+      properties:
+        buyAmount:
+          description: amount of buyCurrency being bought
+          example: 359
+          format: int64
+          title: buyAmount
+          type: integer
+        buyCurrency:
+          description: currency which is being bought
+          example: GBP
+          title: buyCurrency
+          type: string
+        fixedSide:
+          description: type of trade - BUY or SELL
+          example: SELL
+          title: fixedSide
+          type: string
+        provider:
+          description: The FX provider used to make the trade.
+          example: TCC
+          title: provider
+          type: string
+        rate4d:
+          description: exchange rate
+          example: 7180
+          format: int64
+          title: rate4d
+          type: integer
+        sellAmount:
+          description: amount of sellCurrency being sold
+          example: 500
+          format: int64
+          title: sellAmount
+          type: integer
+        sellCurrency:
+          description: currency which is being sold
+          example: EUR
+          title: sellCurrency
+          type: string
+      title: fxTrade
+      type: object
+    batchItemBankTransferMode1:
+      properties:
+        amount:
+          description: The value of the transaction
+          example: 500
+          format: int64
+          title: amount
+          type: integer
+        icanFrom:
+          description: The Fire account ID for the fire.com account the funds are
+            taken from.
+          example: 2001
+          format: int64
+          title: icanFrom
+          type: integer
+        myRef:
+          description: The reference on the transaction for your records - not shown
+            to the beneficiary.
+          example: Payment to John Smith for Consultancy in device.
+          title: myRef
+          type: string
+        payeeId:
+          description: The ID of the existing or automatically created payee
+          example: 15002
+          format: int64
+          title: payeeId
+          type: integer
+        payeeType:
+          description: Use PAYEE_ID if you are paying existing approved payees (Mode
+            1).
+          enum:
+          - PAYEE_ID
+          example: PAYEE_ID
+          title: payeeType
+          type: string
+        yourRef:
+          description: The reference on the transaction - displayed on the beneficiary
+            bank statement.
+          example: ACME LTD - INV 23434
+          title: yourRef
+          type: string
+      title: batchItemBankTransferMode1
+      type: object
+    relatedPartyFireAccount_account:
+      example:
+        iban: IE54CPAY99119911111111
+        alias: Main Account
+        id: 42
+        accountNumber: "11111111"
+        bic: CPAYIE2D
+        nsc: "232221"
+      properties:
+        accountNumber:
+          description: the Account Number of the account.
+          example: "11111111"
+          title: accountNumber
+          type: string
+        alias:
+          description: the name the user gives to the account to help them identify
+            it.
+          example: Main Account
+          title: alias
+          type: string
+        bic:
+          description: the BIC of the account (provided if currency is EUR).
+          example: CPAYIE2D
+          title: bic
+          type: string
+        iban:
+          description: the IBAN of the account (provided if currency is EUR).
+          example: IE54CPAY99119911111111
+          title: iban
+          type: string
+        id:
+          description: identifier for the fire.com account (assigned by fire.com)
+          example: 42
+          format: int64
+          title: id
+          type: integer
+        nsc:
+          description: the Sort Code of the account.
+          example: "232221"
+          title: nsc
+          type: string
+      title: relatedPartyFireAccount_account
+      type: object
+    batchItemBankTransferMode2:
+      properties:
+        amount:
+          description: The value of the transaction
+          example: 500
+          format: int64
+          title: amount
+          type: integer
+        destAccountHolderName:
+          description: The destination account holder name
+          example: John Smith
+          title: destAccountHolderName
+          type: string
+        destAccountNumber:
+          description: The destination Account Number if a GBP bank transfer
+          example: "12345678"
+          title: destAccountNumber
+          type: string
+        destIban:
+          description: The destination IBAN if a Euro Bank transfer
+          example: IE00AIBK93123412341234
+          title: destIban
+          type: string
+        destNsc:
+          description: The destination Nsc if a GBP bank transfer
+          example: "123456"
+          title: destNsc
+          type: string
+        icanFrom:
+          description: The Fire account ID for the fire.com account the funds are
+            taken from.
+          example: 2001
+          format: int64
+          title: icanFrom
+          type: integer
+        myRef:
+          description: The reference on the transaction for your records - not shown
+            to the beneficiary.
+          example: Payment to John Smith for Consultancy in device.
+          title: myRef
+          type: string
+        payeeType:
+          description: "Use ACCOUNT_DETAILS if you are providing account numbers/sort\
+            \ codes/IBANs (Mode 2). Specify the account details in the destIban, destAccountHolderName,\
+            \ destNsc or destAccountNumber fields as appropriate."
+          enum:
+          - ACCOUNT_DETAILS
+          example: ACCOUNT_DETAILS
+          title: payeeType
+          type: string
+        yourRef:
+          description: The reference on the transaction - displayed on the beneficiary
+            bank statement.
+          example: ACME LTD - INV 23434
+          title: yourRef
+          type: string
+      title: batchItemBankTransferMode2
+      type: object
+    newCardResponse:
+      example:
+        expiryDate: 2019-01-31T00:00:00Z
+        maskedPan: 537455******1111
+        cardId: 51
+        status: CREATED_ACTIVE
+      properties:
+        cardId:
+          example: 51
+          format: int64
+          title: cardId
+          type: integer
+        expiryDate:
+          example: 2019-01-31T00:00:00Z
+          format: date-time
+          title: expiryDate
+          type: string
+        maskedPan:
+          example: 537455******1111
+          title: maskedPan
+          type: string
+        status:
+          enum:
+          - CREATED_ACTIVE
+          - CREATED_INACTIVE
+          example: CREATED_ACTIVE
+          title: status
+          type: string
+      title: newCardResponse
+      type: object
+    batchItems:
+      example:
+        total: 1
+        items:
+        - amount: 10000
+          amountAfterCharges: 10000
+          icanFrom: 2150
+          icanTo: 1002
+          result:
+            code: 500001
+            message: SUCCESS
+          feeAmount: 0
+          lastUpdated: 2021-04-04T10:48:53.54Z
+          ref: Testing a transfer via batch
+          dateCreated: 2021-04-04T10:48:53.54Z
+          refId: 123782
+          taxAmount: 0
+          batchItemUuid: F2AF3F2B-4406-4199-B249-B354F2CC6019
+          status: SUCCEEDED
+        - amount: 10000
+          amountAfterCharges: 10000
+          icanFrom: 2150
+          icanTo: 1002
+          result:
+            code: 500001
+            message: SUCCESS
+          feeAmount: 0
+          lastUpdated: 2021-04-04T10:48:53.54Z
+          ref: Testing a transfer via batch
+          dateCreated: 2021-04-04T10:48:53.54Z
+          refId: 123782
+          taxAmount: 0
+          batchItemUuid: F2AF3F2B-4406-4199-B249-B354F2CC6019
+          status: SUCCEEDED
+      properties:
+        items:
+          items:
+            $ref: '#/components/schemas/batchItem'
+          title: items
+          type: array
+        total:
+          description: total number of batches returned
+          example: 1
+          format: int64
+          title: total
+          type: integer
+      title: batchItems
+      type: object
+    mandates:
+      example:
+        total: 1
+        mandates:
+        - originatorReference: VODA-123456
+          originatorName: Vodafone PLC
+          targetIcan: 1
+          latestDirectDebitAmount: 2
+          numberOfDirectDebitCollected: 2
+          valueOfDirectDebitCollected: 2
+          originatorAlias: Vodaphone PLC
+          latestDirectDebitDate: 2016-12-15T22:56:05.937Z
+          dateCancelled: 2016-12-15T22:56:05.937Z
+          lastUpdated: 2016-12-15T22:56:05.937Z
+          mandateReference: CRZ-102190123
+          dateCreated: 2016-12-15T22:56:05.937Z
+          originatorLogoUrlLarge: originatorLogoLarge
+          mandateUuid: 28d627c3-1889-44c8-ae59-6f6b20239260
+          dateCompleted: 2016-12-15T22:56:05.937Z
+          originatorLogoUrlSmall: originatorLogoSmall
+          alias: Vodaphone
+          schemeCancelReason: e.g. Instruction cancelled by payer
+          currency:
+            code: EUR
+            description: Euro
+          fireRejectionReason: ACCOUNT_DOES_NOT_ACCEPT_DIRECT_DEBITS
+          schemeCancelReasonCode: For BACS (ADDACS) - 0|1|2|3|B|C|D|E|R
+          status: RECIEVED
+        - originatorReference: VODA-123456
+          originatorName: Vodafone PLC
+          targetIcan: 1
+          latestDirectDebitAmount: 2
+          numberOfDirectDebitCollected: 2
+          valueOfDirectDebitCollected: 2
+          originatorAlias: Vodaphone PLC
+          latestDirectDebitDate: 2016-12-15T22:56:05.937Z
+          dateCancelled: 2016-12-15T22:56:05.937Z
+          lastUpdated: 2016-12-15T22:56:05.937Z
+          mandateReference: CRZ-102190123
+          dateCreated: 2016-12-15T22:56:05.937Z
+          originatorLogoUrlLarge: originatorLogoLarge
+          mandateUuid: 28d627c3-1889-44c8-ae59-6f6b20239260
+          dateCompleted: 2016-12-15T22:56:05.937Z
+          originatorLogoUrlSmall: originatorLogoSmall
+          alias: Vodaphone
+          schemeCancelReason: e.g. Instruction cancelled by payer
+          currency:
+            code: EUR
+            description: Euro
+          fireRejectionReason: ACCOUNT_DOES_NOT_ACCEPT_DIRECT_DEBITS
+          schemeCancelReasonCode: For BACS (ADDACS) - 0|1|2|3|B|C|D|E|R
+          status: RECIEVED
+      properties:
+        mandates:
+          items:
+            $ref: '#/components/schemas/mandate'
+          title: mandates
+          type: array
+        total:
+          description: Number of direct debits found
+          example: 1
+          format: int64
+          title: total
+          type: integer
+      title: mandates
+      type: object
+    orderDetails:
+      example:
+        deliveryCity: London
+        comment2: Additional comments about the transaction
+        productId: ZFDAA-1221
+        comment1: Additional comments about the transaction
+        orderId: 6c28a47d-4502-4111
+        variableReference: John Doe
+        merchantCustomerIdentification: "8303863544"
+        customerNumber: "123645"
+        merchantNumber: "1234567"
+        deliveryPostCode: EC15155
+        deliveryCountry: GB
+        deliveryAddressLine2: The Way
+        deliveryAddressLine1: 12 The Street
+      properties:
+        comment1:
+          description: This is your own comment for the transaction.
+          example: Additional comments about the transaction
+          title: comment1
+          type: string
+        comment2:
+          description: This is your own comment for the transaction.
+          example: Additional comments about the transaction
+          title: comment2
+          type: string
+        customerNumber:
+          description: Use this field to store a customer number for the transaction
+            (for example).
+          example: "123645"
+          title: customerNumber
+          type: string
+        deliveryAddressLine1:
+          description: The first line of the delivery address.
+          example: 12 The Street
+          title: deliveryAddressLine1
+          type: string
+        deliveryAddressLine2:
+          description: The second line of the delivery address.
+          example: The Way
+          title: deliveryAddressLine2
+          type: string
+        deliveryCity:
+          description: Delivery address city
+          example: London
+          title: deliveryCity
+          type: string
+        deliveryCountry:
+          description: 2-digit code for the country
+          example: GB
+          title: deliveryCountry
+          type: string
+        deliveryPostCode:
+          description: Delivery address post code
+          example: EC15155
+          title: deliveryPostCode
+          type: string
+        merchantCustomerIdentification:
+          description: This is a reference you use to uniquely identify each of your
+            customers.
+          example: "8303863544"
+          title: merchantCustomerIdentification
+          type: string
+        merchantNumber:
+          description: Your Merchant Number (if applicable).
+          example: "1234567"
+          title: merchantNumber
+          type: string
+        orderId:
+          description: Use this field to store the order id for the transaction. The
+            Order Id cannot be set unless the `maxNumberPayments` is 1.
+          example: 6c28a47d-4502-4111
+          title: orderId
+          type: string
+        productId:
+          description: Use this field to store a product id for the transaction (for
+            example).
+          example: ZFDAA-1221
+          title: productId
+          type: string
+        variableReference:
+          description: "Use this field to store any other reference for the transaction\
+            \ (for example, a phone number)."
+          example: John Doe
+          title: variableReference
+          type: string
+      title: orderDetails
+      type: object
+    aspsps:
+      example:
+        total: 10
+        aspsps:
+        - country:
+            code: GB
+            description: United Kingdom
+          lastUpdated: 2019-08-22T07:48:56.46Z
+          dateCreated: 2019-08-22T07:48:56.46Z
+          alias: Demo Bank
+          aspspUuid: 4ADFB67A-0F5B-4A9A-9D74-34437250045C
+          currency:
+            code: EUR
+            description: Euro
+          logoUrl: https://assets.fire.com/pisp/demo.svg
+        - country:
+            code: GB
+            description: United Kingdom
+          lastUpdated: 2019-08-22T07:48:56.46Z
+          dateCreated: 2019-08-22T07:48:56.46Z
+          alias: Demo Bank
+          aspspUuid: 4ADFB67A-0F5B-4A9A-9D74-34437250045C
+          currency:
+            code: EUR
+            description: Euro
+          logoUrl: https://assets.fire.com/pisp/demo.svg
+      properties:
+        aspsps:
+          items:
+            $ref: '#/components/schemas/aspsp'
+          title: aspsps
+          type: array
+        total:
+          description: The total number of ASPSPs in the list.
+          example: 10
+          title: total
+          type: integer
+      title: aspsps
+      type: object
+    batchApprovers:
+      example:
+        approvals:
+        - firstName: Jane
+          lastName: Doe
+          lastUpdated: 2021-04-04T10:48:53.54Z
+          emailAddress: jane.doe@example.com
+          mobileNumber: "353871234567"
+          userId: 3138
+          status: PENDING_APPROVAL
+        - firstName: Jane
+          lastName: Doe
+          lastUpdated: 2021-04-04T10:48:53.54Z
+          emailAddress: jane.doe@example.com
+          mobileNumber: "353871234567"
+          userId: 3138
+          status: PENDING_APPROVAL
+      properties:
+        approvals:
+          items:
+            $ref: '#/components/schemas/batchApprovers_approvals_inner'
+          title: approvals
+          type: array
+      title: batchApprovers
+      type: object
+    accounts:
+      example:
+        accounts:
+        - ccan: "11111111"
+          fopOnly: false
+          defaultAccount: true
+          ciban: IE54CPAY99119911111111
+          colour: ORANGE
+          balance: 23950
+          cnsc: "232221"
+          directDebitsAllowed: false
+          ican: 42
+          cbic: CPAYIE2D
+          name: Main Account
+          currency:
+            code: EUR
+            description: Euro
+          status: LIVE
+        - ccan: "11111111"
+          fopOnly: false
+          defaultAccount: true
+          ciban: IE54CPAY99119911111111
+          colour: ORANGE
+          balance: 23950
+          cnsc: "232221"
+          directDebitsAllowed: false
+          ican: 42
+          cbic: CPAYIE2D
+          name: Main Account
+          currency:
+            code: EUR
+            description: Euro
+          status: LIVE
+      properties:
+        accounts:
+          items:
+            $ref: '#/components/schemas/Account'
+          title: accounts
+          type: array
+      title: accounts
+      type: object
+    user:
+      example:
+        firstName: Colm
+        lastName: User
+        emailAddress: user@example.com
+        role: ADMIN
+        userCvl: FULL
+        lastlogin: 2012-01-20T11:21:35.000Z
+        mobileNumber: "+353871234567"
+        id: 14059
+        mobileApplicationDetails:
+          businessUserId: 14059
+          clientID: EBB10F29-A653-4DBA-9C8C-BA79F72F78B0
+          OS: Android
+          mobileApplicationId: 18967
+          deviceName: iPhone
+          deviceOSVersion: "14.4"
+          status: LIVE
+        status: LIVE
+      properties:
+        emailAddress:
+          description: email address for user
+          example: user@example.com
+          title: emailAddress
+          type: string
+        firstName:
+          description: User first name
+          example: Colm
+          title: firstName
+          type: string
+        id:
+          description: The User ID for this User
+          example: 14059
+          format: int64
+          title: id
+          type: integer
+        lastName:
+          description: User second name
+          example: User
+          title: lastName
+          type: string
+        lastlogin:
+          description: Timestamp on when user last logged in.
+          example: 2012-01-20T11:21:35.000Z
+          title: lastlogin
+          type: string
+        mobileApplicationDetails:
+          $ref: '#/components/schemas/mobileApplication'
+        mobileNumber:
+          description: User mobile number
+          example: "+353871234567"
+          title: mobileNumber
+          type: string
+        role:
+          description: User role
+          enum:
+          - ADMIN
+          - FULL_USER
+          - READ_ONLY
+          - CARD_ONLY
+          title: role
+          type: string
+        status:
+          description: Status of user
+          enum:
+          - LIVE
+          - CLOSED
+          - FROZEN
+          - INVITE_SENT
+          - SMS_CODE_SENT
+          title: status
+          type: string
+        userCvl:
+          description: Users Cvl type ID (shows up when status is LIVE)
+          example: FULL
+          title: userCvl
+          type: string
+      title: user
+      type: object
+    transaction:
+      example:
+        date: 2021-04-13T11:06:32.437Z
+        yourRef: From John Smith
+        amountAfterCharges: 5000
+        batchItemDetails:
+          batchName: Payroll 2022-11
+          batchPublicUuid: F2AF3F2B-4406-4199-B249-B354F2CC6019
+          batchItemPublicUuid: F2AF3F2B-4406-4199-B249-B354F2CC6019
+          jobNumber: 2018-01-PR
+        eventUuid: 42de0705-e3f1-44fa-8c41-79973eb80eb2
+        paymentRequestPublicCode: 1abcdefg
+        relatedParty:
+          type: FIRE_ACCOUNT
+          account:
+            iban: IE54CPAY99119911111111
+            alias: Main Account
+            id: 42
+            accountNumber: "11111111"
+            bic: CPAYIE2D
+            nsc: "232221"
+        type: WITHDRAWAL
+        proprietarySchemeDetails:
+        - data: remittanceInfoUnstructured^FIRE440286865OD1|instructionId^O223151336499079
+          type: SCT
+        - data: remittanceInfoUnstructured^FIRE440286865OD1|instructionId^O223151336499079
+          type: SCT
+        dateAcknowledged: 2021-04-13T11:06:32.437Z
+        feeAmount: 0
+        fxTradeDetails:
+          buyAmount: 359
+          provider: TCC
+          rate4d: 7180
+          fixedSide: SELL
+          sellAmount: 500
+          sellCurrency: EUR
+          buyCurrency: GBP
+        balance: 8500
+        ican: 1951
+        amountBeforeCharges: 5000
+        currency:
+          code: EUR
+          description: Euro
+        directDebitDetails:
+          directDebitReference: VODA-ABC453-1
+          originatorReference: VODA-123456
+          mandateReference: CRZ-102190123
+          originatorName: Vodafone PLC
+          originatorLogoUrlLarge: https://s3-eu-west-1.amazonaws.com/live-fire-assets/prod/49dc9a01-8261-4d98-bebf-c3842c2d3c5d-small.png
+          mandateUUid: f171b143-e3eb-47de-85a6-1c1f1108c701
+          mandateUuid: 28d627c3-1889-44c8-ae59-6f6b20239260
+          originatorAlias: Three
+          originatorLogoUrlSmall: https://s3-eu-west-1.amazonaws.com/live-fire-assets/prod/49dc9a01-8261-4d98-bebf-c3842c2d3c5d-small.png
+          directDebitUuid: 42de0705-e3f1-44fa-8c41-79973eb80eb2
+        refId: 26774
+        taxAmount: 0
+        card:
+          expiryDate: 2000-01-23T04:56:07.000+00:00
+          maskedPan: maskedPan
+          provider: provider
+          cardId: 0
+          embossBusinessName: embossBusinessName
+          alias: alias
+          embossCardName: embossCardName
+        myRef: Transfer to main account
+        txnId: 30157
+      properties:
+        amountAfterCharges:
+          description: Net amount lodged or taken from the account after fees and
+            charges were applied.
+          example: 5000
+          format: int64
+          title: amountAfterCharges
+          type: integer
+        amountBeforeCharges:
+          description: Amount of the transaction before the fees and taxes were applied.
+          example: 5000
+          format: int64
+          title: amountBeforeCharges
+          type: integer
+        balance:
+          description: "the balance of the account (in minor currency units - pence,\
+            \ cent etc. 434050 == 4,340.50 GBP for a GBP account)."
+          example: 8500
+          format: int64
+          title: balance
+          type: integer
+        batchItemDetails:
+          $ref: '#/components/schemas/batchItemDetails'
+        card:
+          $ref: '#/components/schemas/relatedCard'
+        currency:
+          $ref: '#/components/schemas/currency'
+        date:
+          description: Date of the transaction
+          example: 2021-04-13T11:06:32.437Z
+          format: date-time
+          title: date
+          type: string
+        dateAcknowledged:
+          example: 2021-04-13T11:06:32.437Z
+          format: date-time
+          title: dateAcknowledged
+          type: string
+        directDebitDetails:
+          $ref: '#/components/schemas/directDebitDetails'
+        eventUuid:
+          description: An internal Fire reference for the transaction (UUID)
+          example: 42de0705-e3f1-44fa-8c41-79973eb80eb2
+          title: eventUuid
+          type: string
+        feeAmount:
+          description: "The amount of the fee, if any."
+          example: 0
+          format: int64
+          title: feeAmount
+          type: integer
+        fxTradeDetails:
+          $ref: '#/components/schemas/fxTrade'
+        ican:
+          description: identifier for the fire.com account (assigned by fire.com)
+            This field is only used in the condensed version.
+          example: 1951
+          format: int64
+          title: ican
+          type: integer
+        myRef:
+          description: The comment/reference on the transaction
+          example: Transfer to main account
+          title: myRef
+          type: string
+        paymentRequestPublicCode:
+          description: (FOP payments only) The FOP Payment Code that was used to make
+            this payment.
+          example: 1abcdefg
+          title: paymentRequestPublicCode
+          type: string
+        proprietarySchemeDetails:
+          description: Extra details about the transaction based on the scheme used
+            to make the payment.
+          items:
+            $ref: '#/components/schemas/proprietarySchemeDetails_inner'
+          title: proprietarySchemeDetails
+          type: array
+        refId:
+          description: The id of the transaction.
+          example: 26774
+          format: int64
+          title: refId
+          type: integer
+        relatedParty:
+          $ref: '#/components/schemas/relatedParty'
+        taxAmount:
+          description: "The amount of the tax, if any (e.g. Stamp duty for ATM transactions)"
+          example: 0
+          format: int64
+          title: taxAmount
+          type: integer
+        txnId:
+          description: The id of this side of the transaction (each transaction has
+            two sides - a to and a from). This is used to get the details of the transaction.
+          example: 30157
+          format: int64
+          title: txnId
+          type: integer
+        type:
+          description: "The type of the transaction:\n* `LODGEMENT` - Bank Transfer\
+            \ received\n* `PIS_LODGEMENT` - Fire Open Payments Lodgement received\n\
+            * `MANUAL_TRANSFER` - Manual Transfer to\n* `WITHDRAWAL` - Bank Transfer\
+            \ sent\n* `REVERSAL` - Credit Reversal\n* `DIRECT_DEBIT` - A direct debit.\n\
+            * `DIRECT_DEBIT_REPRESENTED` - A Direct Debit that was requested again\
+            \ after initially failing.\n* `DIRECT_DEBIT_REFUND` - A refund of a Direct\
+            \ debit.\n* `INTERNAL_TRANSFER_TO` - Internal Transfer sent (between two\
+            \ of my accounts of the same currency)\n* `INTERNAL_TRANSFER_FROM` - Internal\
+            \ Transfer received (between two of my accounts of the same currency)\n\
+            * `WITHDRAWAL_RETURNED` - Bank Transfer sent returned\n* `LODGEMENT_REVERSED`\
+            \ - Bank Transfer received returned\n* `FX_INTERNAL_TRANSFER_FROM` - FX\
+            \ Internal Transfer received (between two of my accounts of different\
+            \ currency)\n* `FX_INTERNAL_TRANSFER_TO` - FX Internal Transfer sent (between\
+            \ two of my accounts of different currency)\n* `CREATE_CARD` - The fee\
+            \ taken when a debit card is issued.\n* `ADD_ACCOUNT` - The fee taken\
+            \ when an account is created.\n* `CREATE_ADDITIONAL_USER` - The fee taken\
+            \ when an additional user is created.       \n* `CARD_POS_CONTACT_DEBIT`\
+            \ - Card used in store; read by magnetic stripe or pin\n* `CARD_POS_CONTACT_CREDIT`\
+            \ - Card used in store; read by magnetic stripe or pin\n* `CARD_POS_CONTACTLESS_DEBIT`\
+            \ - Card used in store; read by NFC\n* `CARD_POS_CONTACTLESS_CREDIT` -\
+            \ Card used in store; read by NFC\n* `CARD_ECOMMERCE_DEBIT` - Card used\
+            \ on the internet\n* `CARD_ECOMMERCE_CREDIT` - Card used on the internet\n\
+            * `CARD_ATM_DEBIT` - Card used in an ATM\n* `CARD_ATM_CREDIT` - Card used\
+            \ in an ATM\n* `CARD_INTERNATIONAL_POS_CONTACT_DEBIT` - Card used in store\
+            \ in non-processing currency; read by magnetic stripe or pin\n* `CARD_INTERNATIONAL_POS_CONTACT_CREDIT`\
+            \ - Card used in store in non-processing currency; read by magnetic stripe\
+            \ or pin\n* `CARD_INTERNATIONAL_POS_CONTACTLESS_DEBIT` - Card used in\
+            \ store in non-processing currency; read by NFC\n* `CARD_INTERNATIONAL_POS_CONTACTLESS_CREDIT`\
+            \ - Card used in store in non-processing currency; read by NFC\n* `CARD_INTERNATIONAL_ECOMMERCE_DEBIT\t\
+            ` - Card used on the internet in non-processing currency\n* `CARD_INTERNATIONAL_ECOMMERCE_CREDIT`\
+            \ - Card used on the internet in non-processing currency\n* `CARD_INTERNATIONAL_ATM_DEBIT`\
+            \ - Card used in an ATM in non-processing currency\n* `CARD_INTERNATIONAL_ATM_CREDIT`\
+            \ - Card used in an ATM in non-processing currency\n* `CARD_POS_CONTACT_DEBIT_REVERSAL`\
+            \ - Card used in store; read by magnetic stripe or pin - reversed\n* `CARD_POS_CONTACT_CREDIT_REVERSAL`\
+            \ - Card used in store; read by magnetic stripe or pin - reversed\n* `CARD_POS_CONTACTLESS_DEBIT_REVERSAL`\
+            \ - Card used in store; read by NFC - reversed\n* `CARD_POS_CONTACTLESS_CREDIT_REVERSAL`\
+            \ - Card used in store; read by NFC - reversed\n* `CARD_ECOMMERCE_DEBIT_REVERSAL\t\
+            ` - Card used on the internet - reversed\n* `CARD_ECOMMERCE_CREDIT_REVERSAL`\
+            \ - Card used on the internet - reversed\n* `CARD_ATM_DEBIT_REVERSAL`\
+            \ - Card used in an ATM - reversed\n* `CARD_ATM_CREDIT_REVERSAL` - Card\
+            \ used in an ATM - reversed\n* `CARD_INTERNATIONAL_POS_CONTACT_DEBIT_REVERSAL`\
+            \ - Card used in store in non-processing currency; read by magnetic stripe\
+            \ or pin - reversed\n* `CARD_INTERNATIONAL_POS_CONTACT_CREDIT_REVERSAL`\
+            \ - Card used in store in non-processing currency; read by magnetic stripe\
+            \ or pin - reversed\n* `CARD_INTERNATIONAL_POS_CONTACTLESS_DEBIT_REVERSAL`\
+            \ - Card used in store in non-processing currency; read by NFC - reversed\n\
+            * `CARD_INTERNATIONAL_POS_CONTACTLESS_CREDIT_REVERSAL` - One or more of\
+            \ the transaction types above. This field can be repeated multiple times\
+            \ to allow for multiple transaction types.\n* `CARD_INTERNATIONAL_ECOMMERCE_DEBIT_REVERSAL`\
+            \ - Card used in store in non-processing currency; read by NFC - reversed\n\
+            * `CARD_INTERNATIONAL_ECOMMERCE_CREDIT_REVERSAL` - Card used in store\
+            \ in non-processing currency; read by NFC - reversed\n* `CARD_INTERNATIONAL_ATM_DEBIT_REVERSAL`\
+            \ - Card used on the internet in non-processing currency - reversed\n\
+            * `CARD_INTERNATIONAL_ATM_CREDIT_REVERSAL` - Card used on the internet\
+            \ in non-processing currency - reversed\n"
+          example: WITHDRAWAL
+          title: type
+          type: string
+        yourRef:
+          description: The comment/reference on the transaction that appears on the
+            recipients statement. Only for withdrawals
+          example: From John Smith
+          title: yourRef
+          type: string
+      title: transaction
+      type: object
+  securitySchemes:
+    bearerAuth:
+      bearerFormat: API Access Token
+      scheme: bearer
+      type: http
+      x-bearerInfoFunc: openapi_server.controllers.security_controller.info_from_bearerAuth

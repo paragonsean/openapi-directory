@@ -1,0 +1,14 @@
+# AppCenterClient.BuildServiceStatus
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**message** | **String** |  | [optional] 
+**os** | **String** |  | [optional] 
+**service** | **String** |  | [optional] 
+**status** | **String** |  | [optional] 
+**url** | **String** |  | [optional] 
+**validUntil** | **Number** |  | [optional] 
+
+

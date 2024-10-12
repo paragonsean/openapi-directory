@@ -1,0 +1,81 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIAccount.h \
+    $${PWD}/OAIAccounts.h \
+    $${PWD}/OAIApiKey.h \
+    $${PWD}/OAIApiKeys.h \
+    $${PWD}/OAIGetOrCreateUserRole_200_response.h \
+    $${PWD}/OAIHtmlFooterBody.h \
+    $${PWD}/OAILoginStatus.h \
+    $${PWD}/OAIPermission.h \
+    $${PWD}/OAIPermissions.h \
+    $${PWD}/OAIRole.h \
+    $${PWD}/OAIServer.h \
+    $${PWD}/OAIServerSession.h \
+    $${PWD}/OAIServers.h \
+    $${PWD}/OAISessionInfo.h \
+    $${PWD}/OAITransaction.h \
+    $${PWD}/OAITransactionId.h \
+    $${PWD}/OAITransactionResult.h \
+    $${PWD}/OAIUser.h \
+    $${PWD}/OAIUserContext.h \
+    $${PWD}/OAIUsers.h \
+# APIs
+    $${PWD}/OAIAccountsApi.h \
+    $${PWD}/OAIGlobalApi.h \
+    $${PWD}/OAIHTMLApi.h \
+    $${PWD}/OAIManagementApi.h \
+    $${PWD}/OAIRegistrationApi.h \
+    $${PWD}/OAIServersApi.h \
+    $${PWD}/OAISessionsApi.h \
+    $${PWD}/OAITransactionsApi.h \
+    $${PWD}/OAIUsersApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIAccount.cpp \
+    $${PWD}/OAIAccounts.cpp \
+    $${PWD}/OAIApiKey.cpp \
+    $${PWD}/OAIApiKeys.cpp \
+    $${PWD}/OAIGetOrCreateUserRole_200_response.cpp \
+    $${PWD}/OAIHtmlFooterBody.cpp \
+    $${PWD}/OAILoginStatus.cpp \
+    $${PWD}/OAIPermission.cpp \
+    $${PWD}/OAIPermissions.cpp \
+    $${PWD}/OAIRole.cpp \
+    $${PWD}/OAIServer.cpp \
+    $${PWD}/OAIServerSession.cpp \
+    $${PWD}/OAIServers.cpp \
+    $${PWD}/OAISessionInfo.cpp \
+    $${PWD}/OAITransaction.cpp \
+    $${PWD}/OAITransactionId.cpp \
+    $${PWD}/OAITransactionResult.cpp \
+    $${PWD}/OAIUser.cpp \
+    $${PWD}/OAIUserContext.cpp \
+    $${PWD}/OAIUsers.cpp \
+# APIs
+    $${PWD}/OAIAccountsApi.cpp \
+    $${PWD}/OAIGlobalApi.cpp \
+    $${PWD}/OAIHTMLApi.cpp \
+    $${PWD}/OAIManagementApi.cpp \
+    $${PWD}/OAIRegistrationApi.cpp \
+    $${PWD}/OAIServersApi.cpp \
+    $${PWD}/OAISessionsApi.cpp \
+    $${PWD}/OAITransactionsApi.cpp \
+    $${PWD}/OAIUsersApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

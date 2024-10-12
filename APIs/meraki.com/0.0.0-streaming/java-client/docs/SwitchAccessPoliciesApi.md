@@ -1,0 +1,78 @@
+# SwitchAccessPoliciesApi
+
+All URIs are relative to *https://api.meraki.com/api/v0*
+
+| Method | HTTP request | Description |
+|------------- | ------------- | -------------|
+| [**getNetworkAccessPolicies**](SwitchAccessPoliciesApi.md#getNetworkAccessPolicies) | **GET** /networks/{networkId}/accessPolicies | List the access policies for this network |
+
+
+<a id="getNetworkAccessPolicies"></a>
+# **getNetworkAccessPolicies**
+> List&lt;Object&gt; getNetworkAccessPolicies(networkId)
+
+List the access policies for this network
+
+List the access policies for this network. Only valid for MS networks.
+
+### Example
+```java
+// Import classes:
+import org.openapitools.client.ApiClient;
+import org.openapitools.client.ApiException;
+import org.openapitools.client.Configuration;
+import org.openapitools.client.auth.*;
+import org.openapitools.client.models.*;
+import org.openapitools.client.api.SwitchAccessPoliciesApi;
+
+public class Example {
+  public static void main(String[] args) {
+    ApiClient defaultClient = Configuration.getDefaultApiClient();
+    defaultClient.setBasePath("https://api.meraki.com/api/v0");
+    
+    // Configure API key authorization: meraki_api_key
+    ApiKeyAuth meraki_api_key = (ApiKeyAuth) defaultClient.getAuthentication("meraki_api_key");
+    meraki_api_key.setApiKey("YOUR API KEY");
+    // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+    //meraki_api_key.setApiKeyPrefix("Token");
+
+    SwitchAccessPoliciesApi apiInstance = new SwitchAccessPoliciesApi(defaultClient);
+    String networkId = "networkId_example"; // String | 
+    try {
+      List<Object> result = apiInstance.getNetworkAccessPolicies(networkId);
+      System.out.println(result);
+    } catch (ApiException e) {
+      System.err.println("Exception when calling SwitchAccessPoliciesApi#getNetworkAccessPolicies");
+      System.err.println("Status code: " + e.getCode());
+      System.err.println("Reason: " + e.getResponseBody());
+      System.err.println("Response headers: " + e.getResponseHeaders());
+      e.printStackTrace();
+    }
+  }
+}
+```
+
+### Parameters
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **networkId** | **String**|  | |
+
+### Return type
+
+**List&lt;Object&gt;**
+
+### Authorization
+
+[meraki_api_key](../README.md#meraki_api_key)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | Successful operation |  -  |
+

@@ -1,0 +1,169 @@
+/**
+ * Apacta
+ * API for a tool to craftsmen used to register working hours, material usage and quality assurance. # Endpoint The endpoint `https://app.apacta.com/api/v1` should be used to communicate with the API. API access is only allowed with SSL encrypted connection (https). # Authentication URL query authentication with an API key is used, so appending `?api_key={api_key}` to the URL where `{api_key}` is found within Apacta settings is used for authentication # Pagination If the endpoint returns a `pagination` object it means the endpoint supports pagination - currently it's only possible to change pages with `?page={page_number}` but implementing custom page sizes are on the road map.   # Search/filter Is experimental but implemented in some cases - see the individual endpoints' docs for further explanation. # Ordering Is currently experimental, but on some endpoints it's implemented on URL querys so eg. to order Invoices by `invoice_number` appending `?sort=Invoices.invoice_number&direction=desc` would sort the list descending by the value of `invoice_number`. # Associations Is currently implemented on an experimental basis where you can append eg. `?include=Contacts,Projects`  to the `/api/v1/invoices/` endpoint to embed `Contact` and `Project` objects directly. # Project Files Currently project files can be retrieved from two endpoints. `/projects/{project_id}/files` handles files uploaded from wall posts or forms. `/projects/{project_id}/project_files` allows uploading and showing files, not belonging to specific form or wall post. # Errors/Exceptions ## 422 (Validation) Write something about how the `errors` object contains keys with the properties that failes validation like: ```   {       \"success\": false,       \"data\": {           \"code\": 422,           \"url\": \"/api/v1/contacts?api_key=5523be3b-30ef-425d-8203-04df7caaa93a\",           \"message\": \"A validation error occurred\",           \"errorCount\": 1,           \"errors\": {               \"contact_types\": [ ## Property name that failed validation                   \"Contacts must have at least one contact type\" ## Message with further explanation               ]           }       }   } ``` ## Code examples Running examples of how to retrieve the 5 most recent forms registered and embed the details of the User that made the form, and eventual products contained in the form ### Swift ``` ``` ### Java #### OkHttp ```   OkHttpClient client = new OkHttpClient();    Request request = new Request.Builder()     .url(\"https://app.apacta.com/api/v1/forms?extended=true&sort=Forms.created&direction=DESC&include=Products%2CCreatedBy&limit=5\")     .get()     .addHeader(\"x-auth-token\", \"{INSERT_YOUR_TOKEN}\")     .addHeader(\"accept\", \"application/json\")     .build();    Response response = client.newCall(request).execute(); ``` #### Unirest ```   HttpResponse<String> response = Unirest.get(\"https://app.apacta.com/api/v1/forms?extended=true&sort=Forms.created&direction=DESC&include=Products%2CCreatedBy&limit=5\")     .header(\"x-auth-token\", \"{INSERT_YOUR_TOKEN}\")     .header(\"accept\", \"application/json\")     .asString(); ``` ### Javascript #### Native ```   var data = null;    var xhr = new XMLHttpRequest();    xhr.addEventListener(\"readystatechange\", function () {     if (this.readyState === 4) {       console.log(this.responseText);     }   });    xhr.open(\"GET\", \"https://app.apacta.com/api/v1/forms?extended=true&sort=Forms.created&direction=DESC&include=Products%2CCreatedBy&limit=5\");   xhr.setRequestHeader(\"x-auth-token\", \"{INSERT_YOUR_TOKEN}\");   xhr.setRequestHeader(\"accept\", \"application/json\");    xhr.send(data); ``` #### jQuery ```   var settings = {     \"async\": true,     \"crossDomain\": true,     \"url\": \"https://app.apacta.com/api/v1/forms?extended=true&sort=Forms.created&direction=DESC&include=Products%2CCreatedBy&limit=5\",     \"method\": \"GET\",     \"headers\": {       \"x-auth-token\": \"{INSERT_YOUR_TOKEN}\",       \"accept\": \"application/json\",     }   }    $.ajax(settings).done(function (response) {     console.log(response);   }); ``` #### NodeJS (Request) ```   var request = require(\"request\");    var options = { method: 'GET',     url: 'https://app.apacta.com/api/v1/forms',     qs:      { extended: 'true',        sort: 'Forms.created',        direction: 'DESC',        include: 'Products,CreatedBy',        limit: '5' },     headers:      { accept: 'application/json',        'x-auth-token': '{INSERT_YOUR_TOKEN}' } };    request(options, function (error, response, body) {     if (error) throw new Error(error);      console.log(body);   });  ``` ### Python 3 ```   import http.client    conn = http.client.HTTPSConnection(\"app.apacta.com\")    payload = \"\"    headers = {       'x-auth-token': \"{INSERT_YOUR_TOKEN}\",       'accept': \"application/json\",       }    conn.request(\"GET\", \"/api/v1/forms?extended=true&sort=Forms.created&direction=DESC&include=Products%2CCreatedBy&limit=5\", payload, headers)    res = conn.getresponse()   data = res.read()    print(data.decode(\"utf-8\")) ``` ### C# #### RestSharp ```   var client = new RestClient(\"https://app.apacta.com/api/v1/forms?extended=true&sort=Forms.created&direction=DESC&include=Products%2CCreatedBy&limit=5\");   var request = new RestRequest(Method.GET);   request.AddHeader(\"accept\", \"application/json\");   request.AddHeader(\"x-auth-token\", \"{INSERT_YOUR_TOKEN}\");   IRestResponse response = client.Execute(request); ``` ### Ruby ```   require 'uri'   require 'net/http'    url = URI(\"https://app.apacta.com/api/v1/forms?extended=true&sort=Forms.created&direction=DESC&include=Products%2CCreatedBy&limit=5\")    http = Net::HTTP.new(url.host, url.port)   http.use_ssl = true   http.verify_mode = OpenSSL::SSL::VERIFY_NONE    request = Net::HTTP::Get.new(url)   request[\"x-auth-token\"] = '{INSERT_YOUR_TOKEN}'   request[\"accept\"] = 'application/json'    response = http.request(request)   puts response.read_body ``` ### PHP (HttpRequest) ```   <?php    $request = new HttpRequest();   $request->setUrl('https://app.apacta.com/api/v1/forms');   $request->setMethod(HTTP_METH_GET);    $request->setQueryData(array(     'extended' => 'true',     'sort' => 'Forms.created',     'direction' => 'DESC',     'include' => 'Products,CreatedBy',     'limit' => '5'   ));    $request->setHeaders(array(     'accept' => 'application/json',     'x-auth-token' => '{INSERT_YOUR_TOKEN}'   ));    try {     $response = $request->send();      echo $response->getBody();   } catch (HttpException $ex) {     echo $ex;   } ``` ### Shell (cURL) ```    $ curl --request GET --url 'https://app.apacta.com/api/v1/forms?extended=true&sort=Forms.created&direction=DESC&include=Products%2CCreatedBy&limit=5' --header 'accept: application/json' --header 'x-auth-token: {INSERT_YOUR_TOKEN}'  ```
+ *
+ * The version of the OpenAPI document: 0.0.42
+ *
+ * NOTE: This class is auto generated by OpenAPI Generator (https://openapi-generator.tech).
+ * https://openapi-generator.tech
+ * Do not edit the class manually.
+ */
+
+/*
+ * OAIEmail.h
+ *
+ * 
+ */
+
+#ifndef OAIEmail_H
+#define OAIEmail_H
+
+#include <QJsonObject>
+
+#include <QString>
+
+#include "OAIEnum.h"
+#include "OAIObject.h"
+
+namespace OpenAPI {
+
+class OAIEmail : public OAIObject {
+public:
+    OAIEmail();
+    OAIEmail(QString json);
+    ~OAIEmail() override;
+
+    QString asJson() const override;
+    QJsonObject asJsonObject() const override;
+    void fromJsonObject(QJsonObject json) override;
+    void fromJson(QString jsonString) override;
+
+    QString getApiResponse() const;
+    void setApiResponse(const QString &api_response);
+    bool is_api_response_Set() const;
+    bool is_api_response_Valid() const;
+
+    QString getBody() const;
+    void setBody(const QString &body);
+    bool is_body_Set() const;
+    bool is_body_Valid() const;
+
+    QString getCarbonCopy() const;
+    void setCarbonCopy(const QString &carbon_copy);
+    bool is_carbon_copy_Set() const;
+    bool is_carbon_copy_Valid() const;
+
+    QString getCompanyId() const;
+    void setCompanyId(const QString &company_id);
+    bool is_company_id_Set() const;
+    bool is_company_id_Valid() const;
+
+    QString getCreated() const;
+    void setCreated(const QString &created);
+    bool is_created_Set() const;
+    bool is_created_Valid() const;
+
+    QString getCreatedById() const;
+    void setCreatedById(const QString &created_by_id);
+    bool is_created_by_id_Set() const;
+    bool is_created_by_id_Valid() const;
+
+    QString getDeleted() const;
+    void setDeleted(const QString &deleted);
+    bool is_deleted_Set() const;
+    bool is_deleted_Valid() const;
+
+    QString getId() const;
+    void setId(const QString &id);
+    bool is_id_Set() const;
+    bool is_id_Valid() const;
+
+    bool isIsSent() const;
+    void setIsSent(const bool &is_sent);
+    bool is_is_sent_Set() const;
+    bool is_is_sent_Valid() const;
+
+    QString getModified() const;
+    void setModified(const QString &modified);
+    bool is_modified_Set() const;
+    bool is_modified_Valid() const;
+
+    QString getRecipients() const;
+    void setRecipients(const QString &recipients);
+    bool is_recipients_Set() const;
+    bool is_recipients_Valid() const;
+
+    QString getReplyTo() const;
+    void setReplyTo(const QString &reply_to);
+    bool is_reply_to_Set() const;
+    bool is_reply_to_Valid() const;
+
+    QString getSubject() const;
+    void setSubject(const QString &subject);
+    bool is_subject_Set() const;
+    bool is_subject_Valid() const;
+
+    virtual bool isSet() const override;
+    virtual bool isValid() const override;
+
+private:
+    void initializeModel();
+
+    QString m_api_response;
+    bool m_api_response_isSet;
+    bool m_api_response_isValid;
+
+    QString m_body;
+    bool m_body_isSet;
+    bool m_body_isValid;
+
+    QString m_carbon_copy;
+    bool m_carbon_copy_isSet;
+    bool m_carbon_copy_isValid;
+
+    QString m_company_id;
+    bool m_company_id_isSet;
+    bool m_company_id_isValid;
+
+    QString m_created;
+    bool m_created_isSet;
+    bool m_created_isValid;
+
+    QString m_created_by_id;
+    bool m_created_by_id_isSet;
+    bool m_created_by_id_isValid;
+
+    QString m_deleted;
+    bool m_deleted_isSet;
+    bool m_deleted_isValid;
+
+    QString m_id;
+    bool m_id_isSet;
+    bool m_id_isValid;
+
+    bool m_is_sent;
+    bool m_is_sent_isSet;
+    bool m_is_sent_isValid;
+
+    QString m_modified;
+    bool m_modified_isSet;
+    bool m_modified_isValid;
+
+    QString m_recipients;
+    bool m_recipients_isSet;
+    bool m_recipients_isValid;
+
+    QString m_reply_to;
+    bool m_reply_to_isSet;
+    bool m_reply_to_isValid;
+
+    QString m_subject;
+    bool m_subject_isSet;
+    bool m_subject_isValid;
+};
+
+} // namespace OpenAPI
+
+Q_DECLARE_METATYPE(OpenAPI::OAIEmail)
+
+#endif // OAIEmail_H

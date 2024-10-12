@@ -1,0 +1,16 @@
+
+
+# MessagesList200Response
+
+Paginated Result
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**data** | [**List&lt;DoctorMessage&gt;**](DoctorMessage.md) | result data |  [optional] |
+|**next** | **String** | Next Paginated page |  [optional] |
+|**previous** | **String** | Previous paginated page |  [optional] |
+
+
+

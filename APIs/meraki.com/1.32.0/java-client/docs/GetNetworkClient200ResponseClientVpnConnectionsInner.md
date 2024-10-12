@@ -1,0 +1,15 @@
+
+
+# GetNetworkClient200ResponseClientVpnConnectionsInner
+
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**connectedAt** | **Integer** | The time the client last connected to the VPN |  [optional] |
+|**disconnectedAt** | **Integer** | The time the client last disconnectd from the VPN |  [optional] |
+|**remoteIp** | **String** | The IP address of the VPN the client last connected to |  [optional] |
+
+
+

@@ -1,0 +1,1511 @@
+openapi: 3.0.2
+info:
+  contact:
+    name: Andy Boothe
+    url: https://github.com/sigpwned/pinecone-openapi-spec
+  description: "Pinecone is a vector database. This is an unofficial, community-managed\
+    \ OpenAPI spec that (should) accurately model the Pinecone API. This project was\
+    \ developed independent of and is unaffiliated with Pinecone Systems. Users should\
+    \ switch to the official API spec, if and when Pinecone releases it."
+  title: Pinecone API
+  version: "20230406.1"
+  x-apisguru-categories:
+  - backend
+  x-logo:
+    url: https://www.pinecone.io/images/pinecone-ogimage.jpg
+  x-origin:
+  - format: openapi
+    url: https://raw.githubusercontent.com/sigpwned/pinecone-openapi-spec/main/openapi.yml
+    version: "3.0"
+  x-providerName: pinecone.io
+  x-unofficialSpec: true
+externalDocs:
+  description: The official Pinecone API documentation
+  url: https://docs.pinecone.io/
+servers:
+- url: "https://controller.{environment}.pinecone.io"
+  variables:
+    environment:
+      default: us-east1-gcp
+      description: The regional deployment to use. Must match API key.
+      enum:
+      - us-west1-gcp
+      - us-west4-gcp
+      - us-central1-gcp
+      - us-east1-gcp
+      - us-east4-gcp
+      - eu-west1-gcp
+      - us-east1-aws
+security:
+- ApiKey: []
+tags:
+- description: Endpoints for manipulating indexes
+  name: Index Operations
+- description: Endpoints for manipulating vectors
+  name: Vector Operations
+paths:
+  /collections:
+    get:
+      description: This operation returns a list of your Pinecone collections.
+      operationId: list_collections
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CollectionsList'
+          description: This operation returns a list of all the collections in your
+            current project.
+      summary: List collections
+      tags:
+      - Index Operations
+      x-openapi-router-controller: openapi_server.controllers.index_operations_controller
+    post:
+      description: This operation creates a Pinecone collection.
+      operationId: create_collection
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CollectionDefinition'
+        required: true
+        x-body-name: body
+      responses:
+        "201":
+          description: The collection has been successfully created.
+        "400":
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+          description: "Quota exceeded, or invalid parameters."
+        "409":
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+          description: A collection with the name provided already exists.
+        "500":
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+          description: Internal error. Can be caused by invalid parameters.
+      summary: Create collection
+      tags:
+      - Index Operations
+      x-openapi-router-controller: openapi_server.controllers.index_operations_controller
+      x-codegen-request-body-name: body
+  /collections/{collectionName}:
+    delete:
+      description: This operation deletes an existing collection.
+      operationId: delete_collection
+      parameters:
+      - explode: false
+        in: path
+        name: collectionName
+        required: true
+        schema:
+          $ref: '#/components/schemas/CollectionName'
+        style: simple
+      responses:
+        "202":
+          description: The collection has been successfully deleted.
+        "404":
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+          description: Collection not found.
+        "500":
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+          description: Internal error. Can be caused by invalid parameters.
+      summary: Delete Collection
+      tags:
+      - Index Operations
+      x-openapi-router-controller: openapi_server.controllers.index_operations_controller
+    get:
+      description: Get a description of a collection.
+      operationId: describe_collection
+      parameters:
+      - explode: false
+        in: path
+        name: collectionName
+        required: true
+        schema:
+          $ref: '#/components/schemas/CollectionName'
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Collection'
+          description: This operation returns a list of all the collections in your
+            current project.
+        "404":
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+          description: Collection not found.
+        "500":
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+          description: Internal error. Can be caused by invalid parameters.
+      summary: Describe collection
+      tags:
+      - Index Operations
+      x-openapi-router-controller: openapi_server.controllers.index_operations_controller
+  /databases:
+    get:
+      description: This operation returns a list of your Pinecone indexes.
+      operationId: list_indexes
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IndexesList'
+          description: "This operation returns a list of all the indexes that you\
+            \ have previously created, and which are associated with the given API\
+            \ key"
+      summary: List indexes
+      tags:
+      - Index Operations
+      x-openapi-router-controller: openapi_server.controllers.index_operations_controller
+    post:
+      description: "This operation creates a Pinecone index. You can use it to specify\
+        \ the measure of similarity, the dimension of vectors to be stored in the\
+        \ index, the numbers of replicas to use, and more."
+      operationId: create_index
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IndexDefinition'
+        required: true
+        x-body-name: body
+      responses:
+        "201":
+          description: The collection has been successfully created.
+        "400":
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+          description: "Quota exceeded, or invalid parameters."
+        "409":
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+          description: Index of given name already exists.
+        "500":
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+          description: Internal error. Can be caused by invalid parameters.
+      summary: Create index
+      tags:
+      - Index Operations
+      x-openapi-router-controller: openapi_server.controllers.index_operations_controller
+      x-codegen-request-body-name: body
+  /databases/{indexName}:
+    delete:
+      description: This operation deletes an existing index.
+      operationId: delete_index
+      parameters:
+      - explode: false
+        in: path
+        name: indexName
+        required: true
+        schema:
+          $ref: '#/components/schemas/IndexName'
+        style: simple
+      responses:
+        "202":
+          description: The index has been successfully deleted.
+        "404":
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+          description: Index not found.
+        "500":
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+          description: Internal error. Can be caused by invalid parameters.
+      summary: Delete Index
+      tags:
+      - Index Operations
+      x-openapi-router-controller: openapi_server.controllers.index_operations_controller
+    get:
+      description: Get a description of an index.
+      operationId: describe_index
+      parameters:
+      - explode: false
+        in: path
+        name: indexName
+        required: true
+        schema:
+          $ref: '#/components/schemas/IndexName'
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Index'
+          description: This operation returns a list of all the collections in your
+            current project.
+        "404":
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+          description: Index not found.
+        "500":
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+          description: Internal error. Can be caused by invalid parameters.
+      summary: Describe index
+      tags:
+      - Index Operations
+      x-openapi-router-controller: openapi_server.controllers.index_operations_controller
+    patch:
+      description: This operation specifies the pod type and number of replicas for
+        an index.
+      operationId: configure_index
+      parameters:
+      - explode: false
+        in: path
+        name: indexName
+        required: true
+        schema:
+          $ref: '#/components/schemas/IndexName'
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IndexConfiguration'
+        required: true
+        x-body-name: body
+      responses:
+        "201":
+          description: The index has been successfully updated.
+        "400":
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+          description: "Quota exceeded, or invalid parameters."
+        "404":
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+          description: Index not found.
+        "500":
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+          description: Internal error. Can be caused by invalid parameters.
+      summary: Configure index
+      tags:
+      - Index Operations
+      x-openapi-router-controller: openapi_server.controllers.index_operations_controller
+      x-codegen-request-body-name: body
+  /describe_index_stats:
+    post:
+      description: "The `DescribeIndexStats` operation returns statistics about the\
+        \ index's contents, including the vector count per namespace and the number\
+        \ of dimensions."
+      operationId: describe_index_stats
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DescribeIndexStatsRequest'
+        required: true
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DescribeIndexStatsResponse'
+          description: A successful response
+      summary: Describe Index Stats
+      tags:
+      - Vector Operations
+      x-openapi-router-controller: openapi_server.controllers.vector_operations_controller
+      x-codegen-request-body-name: body
+    servers:
+    - url: "https://{index_name}-{project_id}.svc.{environment}.pinecone.io"
+      variables:
+        environment:
+          default: us-east1-gcp
+          description: The cloud environment
+          enum:
+          - us-west1-gcp
+          - us-west4-gcp
+          - us-central1-gcp
+          - us-east1-gcp
+          - us-east4-gcp
+          - eu-west1-gcp
+          - us-east1-aws
+        index_name:
+          default: example
+          description: The name of the index being manipulated
+        project_id:
+          default: abcd1234
+          description: The project being manipulated
+  /query:
+    post:
+      description: "The `Query` operation searches a namespace, using a query vector.\
+        \ It retrieves the ids of the most similar items in a namespace, along with\
+        \ their similarity scores."
+      operationId: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/QueryRequest'
+        required: true
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QueryResponse'
+          description: A successful response
+      summary: Query
+      tags:
+      - Vector Operations
+      x-openapi-router-controller: openapi_server.controllers.vector_operations_controller
+      x-codegen-request-body-name: body
+    servers:
+    - url: "https://{index_name}-{project_id}.svc.{environment}.pinecone.io"
+      variables:
+        environment:
+          default: us-east1-gcp
+          description: The cloud environment
+          enum:
+          - us-west1-gcp
+          - us-west4-gcp
+          - us-central1-gcp
+          - us-east1-gcp
+          - us-east4-gcp
+          - eu-west1-gcp
+          - us-east1-aws
+        index_name:
+          default: example
+          description: The name of the index being manipulated
+        project_id:
+          default: abcd1234
+          description: The project being manipulated
+  /vectors/delete:
+    post:
+      description: "The `Delete` operation deletes vectors, by id, from a single namespace.\
+        \ You can delete items by their id, from a single namespace."
+      operationId: delete
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeleteRequest'
+        required: true
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeleteResponse'
+          description: A successful response
+      summary: Delete
+      tags:
+      - Vector Operations
+      x-openapi-router-controller: openapi_server.controllers.vector_operations_controller
+      x-codegen-request-body-name: body
+    servers:
+    - url: "https://{index_name}-{project_id}.svc.{environment}.pinecone.io"
+      variables:
+        environment:
+          default: us-east1-gcp
+          description: The cloud environment
+          enum:
+          - us-west1-gcp
+          - us-west4-gcp
+          - us-central1-gcp
+          - us-east1-gcp
+          - us-east4-gcp
+          - eu-west1-gcp
+          - us-east1-aws
+        index_name:
+          default: example
+          description: The name of the index being manipulated
+        project_id:
+          default: abcd1234
+          description: The project being manipulated
+  /vectors/fetch:
+    post:
+      description: "The `Fetch` operation looks up and returns vectors, by ID, from\
+        \ a single namespace. The returned vectors include the vector data and/or\
+        \ metadata."
+      operationId: fetch
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FetchRequest'
+        required: true
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FetchResponse'
+          description: A successful response
+      summary: Fetch
+      tags:
+      - Vector Operations
+      x-openapi-router-controller: openapi_server.controllers.vector_operations_controller
+      x-codegen-request-body-name: body
+    servers:
+    - url: "https://{index_name}-{project_id}.svc.{environment}.pinecone.io"
+      variables:
+        environment:
+          default: us-east1-gcp
+          description: The cloud environment
+          enum:
+          - us-west1-gcp
+          - us-west4-gcp
+          - us-central1-gcp
+          - us-east1-gcp
+          - us-east4-gcp
+          - eu-west1-gcp
+          - us-east1-aws
+        index_name:
+          default: example
+          description: The name of the index being manipulated
+        project_id:
+          default: abcd1234
+          description: The project being manipulated
+  /vectors/update:
+    post:
+      description: "The `Update` operation updates vector in a namespace. If a value\
+        \ is included, it will overwrite the previous value. If a set_metadata is\
+        \ included, the values of the fields specified in it will be added or overwrite\
+        \ the previous value."
+      operationId: update
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateRequest'
+        required: true
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpdateResponse'
+          description: A successful response
+      summary: Fetch
+      tags:
+      - Vector Operations
+      x-openapi-router-controller: openapi_server.controllers.vector_operations_controller
+      x-codegen-request-body-name: body
+    servers:
+    - url: "https://{index_name}-{project_id}.svc.{environment}.pinecone.io"
+      variables:
+        environment:
+          default: us-east1-gcp
+          description: The cloud environment
+          enum:
+          - us-west1-gcp
+          - us-west4-gcp
+          - us-central1-gcp
+          - us-east1-gcp
+          - us-east4-gcp
+          - eu-west1-gcp
+          - us-east1-aws
+        index_name:
+          default: example
+          description: The name of the index being manipulated
+        project_id:
+          default: abcd1234
+          description: The project being manipulated
+  /vectors/upsert:
+    post:
+      description: "The Upsert operation writes vectors into a namespace. If a new\
+        \ value is upserted for an existing vector id, it will overwrite the previous\
+        \ value."
+      operationId: upsert
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpsertRequest'
+        required: true
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpsertResponse'
+          description: A successful response
+      summary: Upsert
+      tags:
+      - Vector Operations
+      x-openapi-router-controller: openapi_server.controllers.vector_operations_controller
+      x-codegen-request-body-name: body
+    servers:
+    - url: "https://{index_name}-{project_id}.svc.{environment}.pinecone.io"
+      variables:
+        environment:
+          default: us-east1-gcp
+          description: The cloud environment
+          enum:
+          - us-west1-gcp
+          - us-west4-gcp
+          - us-central1-gcp
+          - us-east1-gcp
+          - us-east4-gcp
+          - eu-west1-gcp
+          - us-east1-aws
+        index_name:
+          default: example
+          description: The name of the index being manipulated
+        project_id:
+          default: abcd1234
+          description: The project being manipulated
+components:
+  responses:
+    BadRequest:
+      content:
+        text/plain:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
+      description: "Quota exceeded, or invalid parameters."
+    CollectionNotFound:
+      content:
+        text/plain:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
+      description: Collection not found.
+    IndexNotFound:
+      content:
+        text/plain:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
+      description: Index not found.
+    InternalError:
+      content:
+        text/plain:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
+      description: Internal error. Can be caused by invalid parameters.
+  schemas:
+    Collection:
+      example:
+        size: 3590359
+        name: example
+        status: Ready
+      properties:
+        name:
+          description: The unique name of a collection.
+          example: example
+          format: CollectionName
+          nullable: false
+          title: CollectionName
+          type: string
+        size:
+          example: 3590359
+          format: int64
+          title: size
+          type: integer
+        status:
+          description: The current status of a collection.
+          example: Ready
+          format: CollectionState
+          nullable: false
+          title: status
+          type: string
+      required:
+      - name
+      - size
+      - status
+      title: Collection
+      type: object
+    CollectionDefinition:
+      example:
+        name: example
+        source: example
+      properties:
+        name:
+          description: The unique name of a collection.
+          example: example
+          format: CollectionName
+          nullable: false
+          title: CollectionName
+          type: string
+        source:
+          description: The unique name of an index.
+          example: example
+          format: IndexName
+          maxLength: 45
+          minLength: 1
+          nullable: false
+          title: IndexName
+          type: string
+      required:
+      - name
+      - source
+      title: CollectionDefinition
+      type: object
+    CollectionName:
+      description: The unique name of a collection.
+      example: example
+      format: CollectionName
+      nullable: false
+      title: CollectionName
+      type: string
+    CollectionState:
+      description: The current status of a collection.
+      example: Ready
+      format: CollectionState
+      nullable: false
+      title: status
+      type: string
+    CollectionsList:
+      items:
+        $ref: '#/components/schemas/CollectionName'
+      type: array
+    DeleteRequest:
+      example:
+        filter:
+          hello:
+          - alpha
+          - bravo
+        deleteAll: false
+        namespace: namespace-0
+        ids:
+        - vector-0
+        - vector-0
+      properties:
+        deleteAll:
+          default: false
+          title: deleteAll
+          type: boolean
+        filter:
+          additionalProperties: true
+          description: "If this parameter is present, the operation only affects vectors\
+            \ that satisfy the filter. See https://www.pinecone.io/docs/metadata-filtering/."
+          example:
+            hello:
+            - alpha
+            - bravo
+          title: filter
+          type: object
+        ids:
+          items:
+            $ref: '#/components/schemas/VectorId'
+          maxLength: 1000
+          title: ids
+          type: array
+        namespace:
+          description: An index namespace name
+          example: namespace-0
+          format: NamespaceName
+          title: namespace
+          type: string
+      title: DeleteRequest
+      type: object
+    DeleteResponse:
+      properties: {}
+      type: object
+    DescribeIndexStatsRequest:
+      example:
+        filter:
+          hello:
+          - alpha
+          - bravo
+      properties:
+        filter:
+          additionalProperties: true
+          description: "If this parameter is present, the operation only affects vectors\
+            \ that satisfy the filter. See https://www.pinecone.io/docs/metadata-filtering/."
+          example:
+            hello:
+            - alpha
+            - bravo
+          title: filter
+          type: object
+      title: DescribeIndexStatsRequest
+      type: object
+    DescribeIndexStatsResponse:
+      example:
+        totalVectorCount: 5
+        indexFullness: 6.0274563
+        dimension: 1602
+        namespaces:
+          key:
+            vectorCount: 1
+      properties:
+        dimension:
+          description: The number of dimensions in the vector representation
+          format: int32
+          maximum: 20000
+          minimum: 1
+          title: VectorDimensionality
+          type: integer
+        indexFullness:
+          description: "The fullness of the index, regardless of whether a metadata\
+            \ filter expression was passed. The granularity of this metric is 10%."
+          format: float
+          title: indexFullness
+          type: number
+        namespaces:
+          additionalProperties:
+            $ref: '#/components/schemas/IndexNamespaceStats'
+          title: namespaces
+          type: object
+        totalVectorCount:
+          format: int64
+          title: totalVectorCount
+          type: integer
+      title: DescribeIndexStatsResponse
+      type: object
+    Environment:
+      enum:
+      - us-west1-gcp
+      - us-west4-gcp
+      - us-central1-gcp
+      - us-east1-gcp
+      - us-east4-gcp
+      - eu-west1-gcp
+      - us-east1-aws
+      type: string
+    ErrorMessage:
+      type: string
+    FetchRequest:
+      example:
+        namespace: namespace-0
+        ids:
+        - vector-0
+        - vector-0
+      properties:
+        ids:
+          items:
+            $ref: '#/components/schemas/VectorId'
+          maxLength: 1000
+          title: ids
+          type: array
+        namespace:
+          description: An index namespace name
+          example: namespace-0
+          format: NamespaceName
+          title: namespace
+          type: string
+      required:
+      - ids
+      title: FetchRequest
+      type: object
+    FetchResponse:
+      example:
+        vectors:
+          key:
+          - 1
+          - 2
+          - 3
+        namespace: namespace-0
+      properties:
+        namespace:
+          description: An index namespace name
+          example: namespace-0
+          format: NamespaceName
+          title: namespace
+          type: string
+        vectors:
+          additionalProperties:
+            $ref: '#/components/schemas/VectorData'
+          title: vectors
+          type: object
+      title: FetchResponse
+      type: object
+    Index:
+      example:
+        database:
+          shards: 1
+          metric: euclidean
+          replicas: 1
+          name: example
+          pod_type: s1.x1
+          pods: 1
+          dimension: 1602
+        status:
+          port: 5
+          ready: true
+          host: host
+          state: Ready
+      properties:
+        database:
+          $ref: '#/components/schemas/IndexDatabase'
+        status:
+          $ref: '#/components/schemas/IndexStatus'
+      title: Index
+      type: object
+    IndexConfiguration:
+      example:
+        replicas: 1
+        pod_type: s1.x1
+      properties:
+        pod_type:
+          $ref: '#/components/schemas/PodType'
+        replicas:
+          default: 1
+          description: The desired number of replicas for the index.
+          format: int32
+          minimum: 1
+          title: replicas
+          type: integer
+      title: IndexConfiguration
+      type: object
+    IndexDatabase:
+      example:
+        shards: 1
+        metric: euclidean
+        replicas: 1
+        name: example
+        pod_type: s1.x1
+        pods: 1
+        dimension: 1602
+      properties:
+        dimension:
+          description: The number of dimensions in the vector representation
+          format: int32
+          maximum: 20000
+          minimum: 1
+          title: VectorDimensionality
+          type: integer
+        metric:
+          $ref: '#/components/schemas/IndexMetric'
+        name:
+          description: The unique name of an index.
+          example: example
+          format: IndexName
+          maxLength: 45
+          minLength: 1
+          nullable: false
+          title: IndexName
+          type: string
+        pod_type:
+          $ref: '#/components/schemas/PodType'
+        pods:
+          format: int32
+          minimum: 1
+          title: pods
+          type: integer
+        replicas:
+          format: int32
+          minimum: 1
+          title: replicas
+          type: integer
+        shards:
+          format: int32
+          minimum: 1
+          title: shards
+          type: integer
+      title: IndexDatabase
+      type: object
+    IndexDefinition:
+      example:
+        metric: euclidean
+        replicas: 1
+        name: example
+        pod_type: s1.x1
+        metadata_config:
+          indexed:
+          - hello
+        pods: 1
+        dimension: 1602
+        source_collection: example
+      properties:
+        dimension:
+          description: The number of dimensions in the vector representation
+          format: int32
+          maximum: 20000
+          minimum: 1
+          title: VectorDimensionality
+          type: integer
+        metadata_config:
+          $ref: '#/components/schemas/IndexMetadataConfig'
+        metric:
+          $ref: '#/components/schemas/IndexMetric'
+        name:
+          description: The unique name of an index.
+          example: example
+          format: IndexName
+          maxLength: 45
+          minLength: 1
+          nullable: false
+          title: IndexName
+          type: string
+        pod_type:
+          $ref: '#/components/schemas/PodType'
+        pods:
+          default: 1
+          description: "The number of pods for the index to use,including replicas."
+          format: int32
+          minimum: 1
+          title: pods
+          type: integer
+        replicas:
+          default: 1
+          description: The number of replicas. Replicas duplicate your index. They
+            provide higher availability and throughput.
+          format: int32
+          minimum: 1
+          title: replicas
+          type: integer
+        source_collection:
+          description: The unique name of a collection.
+          example: example
+          format: CollectionName
+          nullable: false
+          title: CollectionName
+          type: string
+      required:
+      - dimension
+      - name
+      title: IndexDefinition
+      type: object
+    IndexMetadataConfig:
+      description: "Configuration for the behavior of Pinecone's internal metadata\
+        \ index. By default, all metadata is indexed; when metadata_config is present,\
+        \ only specified metadata fields are indexed."
+      example:
+        indexed:
+        - hello
+      properties:
+        indexed:
+          example:
+          - hello
+          items:
+            type: string
+          minLength: 0
+          title: indexed
+          type: array
+      title: IndexMetadataConfig
+      type: object
+    IndexMetric:
+      description: The vector similarity metric of the index
+      enum:
+      - euclidean
+      - cosine
+      - dotproduct
+      title: IndexMetric
+      type: string
+    IndexName:
+      description: The unique name of an index.
+      example: example
+      format: IndexName
+      maxLength: 45
+      minLength: 1
+      nullable: false
+      title: IndexName
+      type: string
+    IndexNamespaceStats:
+      example:
+        vectorCount: 1
+      properties:
+        vectorCount:
+          format: int64
+          title: vectorCount
+          type: integer
+      title: IndexNamespaceStats
+      type: object
+    IndexState:
+      description: The current status of a index.
+      enum:
+      - Initializing
+      - ScalingUp
+      - ScalingDown
+      - Terminating
+      - Ready
+      example: Ready
+      format: IndexState
+      nullable: false
+      title: IndexState
+      type: string
+    IndexStatus:
+      example:
+        port: 5
+        ready: true
+        host: host
+        state: Ready
+      properties:
+        host:
+          format: Hostname
+          title: host
+          type: string
+        port:
+          format: int32
+          title: port
+          type: integer
+        ready:
+          title: ready
+          type: boolean
+        state:
+          $ref: '#/components/schemas/IndexState'
+      title: IndexStatus
+      type: object
+    IndexesList:
+      items:
+        $ref: '#/components/schemas/IndexName'
+      type: array
+    NamespaceName:
+      description: An index namespace name
+      example: namespace-0
+      format: NamespaceName
+      title: namespace
+      type: string
+    PodType:
+      description: The pod type
+      enum:
+      - s1.x1
+      - s1.x2
+      - s1.x4
+      - s1.x8
+      - p1.x1
+      - p1.x2
+      - p1.x4
+      - p1.x8
+      - p2.x1
+      - p2.x2
+      - p2.x4
+      - p2.x8
+      title: PodType
+      type: string
+    QueryMatch:
+      example:
+        score: 0.8008282
+        metadata:
+          hello: alpha
+        values:
+        - 1
+        - 2
+        - 3
+        id: vector-0
+        sparseValues:
+          indices:
+          - 1
+          values:
+          - 2
+      properties:
+        id:
+          description: The unique ID of a vector
+          example: vector-0
+          format: VectorId
+          title: VectorId
+          type: string
+        metadata:
+          additionalProperties: true
+          example:
+            hello: alpha
+          title: metadata
+          type: object
+        score:
+          format: float
+          title: score
+          type: number
+        sparseValues:
+          $ref: '#/components/schemas/SparseVectorData'
+        values:
+          description: Vector dense data. This should be the same length as the dimension
+            of the index being queried.
+          example:
+          - 1
+          - 2
+          - 3
+          items:
+            format: float
+            type: number
+          title: VectorData
+          type: array
+      required:
+      - id
+      title: QueryMatch
+      type: object
+    QueryRequest:
+      example:
+        filter:
+          hello:
+          - alpha
+          - bravo
+        topK: 800
+        includeMetadata: false
+        includeValues: false
+        sparseVector:
+          indices:
+          - 1
+          values:
+          - 2
+        namespace: namespace-0
+        vector:
+        - 1
+        - 2
+        - 3
+        id: vector-0
+      properties:
+        filter:
+          additionalProperties: true
+          description: "If this parameter is present, the operation only affects vectors\
+            \ that satisfy the filter. See https://www.pinecone.io/docs/metadata-filtering/."
+          example:
+            hello:
+            - alpha
+            - bravo
+          title: filter
+          type: object
+        id:
+          description: The unique ID of a vector
+          example: vector-0
+          format: VectorId
+          title: VectorId
+          type: string
+        includeMetadata:
+          default: false
+          title: includeMetadata
+          type: boolean
+        includeValues:
+          default: false
+          title: includeValues
+          type: boolean
+        namespace:
+          description: An index namespace name
+          example: namespace-0
+          format: NamespaceName
+          title: namespace
+          type: string
+        sparseVector:
+          $ref: '#/components/schemas/SparseVectorData'
+        topK:
+          default: 100
+          description: The number of results to return for each query.
+          format: int64
+          maximum: 10000
+          minimum: 0
+          title: topK
+          type: integer
+        vector:
+          description: Vector dense data. This should be the same length as the dimension
+            of the index being queried.
+          example:
+          - 1
+          - 2
+          - 3
+          items:
+            format: float
+            type: number
+          title: VectorData
+          type: array
+      required:
+      - topK
+      title: QueryRequest
+      type: object
+    QueryResponse:
+      example:
+        namespace: namespace-0
+        matches:
+        - score: 0.8008282
+          metadata:
+            hello: alpha
+          values:
+          - 1
+          - 2
+          - 3
+          id: vector-0
+          sparseValues:
+            indices:
+            - 1
+            values:
+            - 2
+        - score: 0.8008282
+          metadata:
+            hello: alpha
+          values:
+          - 1
+          - 2
+          - 3
+          id: vector-0
+          sparseValues:
+            indices:
+            - 1
+            values:
+            - 2
+      properties:
+        matches:
+          items:
+            $ref: '#/components/schemas/QueryMatch'
+          title: matches
+          type: array
+        namespace:
+          description: An index namespace name
+          example: namespace-0
+          format: NamespaceName
+          title: namespace
+          type: string
+      title: QueryResponse
+      type: object
+    SparseVectorData:
+      description: "Vector sparse data. Represented as a list of indices and a list\
+        \ of corresponded values, which must be the same length."
+      example:
+        indices:
+        - 1
+        values:
+        - 2
+      properties:
+        indices:
+          description: The indices of the sparse data.
+          example:
+          - 1
+          items:
+            format: int64
+            type: integer
+          title: indices
+          type: array
+        values:
+          description: "The corresponding values of the sparse data, which must be\
+            \ the same length as the indices."
+          example:
+          - 2
+          items:
+            format: float
+            type: number
+          title: values
+          type: array
+      required:
+      - indices
+      - values
+      title: SparseVectorData
+      type: object
+    UpdateRequest:
+      example:
+        setMetadata:
+          hello: alpha
+        values:
+        - 1
+        - 2
+        - 3
+        namespace: namespace-0
+        id: id
+        sparseValues:
+          indices:
+          - 1
+          values:
+          - 2
+      properties:
+        id:
+          description: The vector's unique ID
+          format: VectorId
+          title: id
+          type: string
+        namespace:
+          description: An index namespace name
+          example: namespace-0
+          format: NamespaceName
+          title: namespace
+          type: string
+        setMetadata:
+          additionalProperties: true
+          example:
+            hello: alpha
+          title: metadata
+          type: object
+        sparseValues:
+          $ref: '#/components/schemas/SparseVectorData'
+        values:
+          description: Vector dense data. This should be the same length as the dimension
+            of the index being queried.
+          example:
+          - 1
+          - 2
+          - 3
+          items:
+            format: float
+            type: number
+          title: VectorData
+          type: array
+      required:
+      - id
+      title: UpdateRequest
+      type: object
+    UpdateResponse:
+      properties: {}
+      type: object
+    UpsertRequest:
+      example:
+        vectors:
+        - metadata:
+            hello: alpha
+          values:
+          - 1
+          - 2
+          - 3
+          id: vector-0
+          sparseValues:
+            indices:
+            - 1
+            values:
+            - 2
+        - metadata:
+            hello: alpha
+          values:
+          - 1
+          - 2
+          - 3
+          id: vector-0
+          sparseValues:
+            indices:
+            - 1
+            values:
+            - 2
+        namespace: namespace-0
+      properties:
+        namespace:
+          description: An index namespace name
+          example: namespace-0
+          format: NamespaceName
+          title: namespace
+          type: string
+        vectors:
+          items:
+            $ref: '#/components/schemas/UpsertVector'
+          maxLength: 100
+          title: vectors
+          type: array
+      required:
+      - vectors
+      title: UpsertRequest
+      type: object
+    UpsertResponse:
+      example:
+        upsertedCount: 0
+      properties:
+        upsertedCount:
+          format: int64
+          title: upsertedCount
+          type: integer
+      title: UpsertResponse
+      type: object
+    UpsertVector:
+      example:
+        metadata:
+          hello: alpha
+        values:
+        - 1
+        - 2
+        - 3
+        id: vector-0
+        sparseValues:
+          indices:
+          - 1
+          values:
+          - 2
+      properties:
+        id:
+          description: The unique ID of a vector
+          example: vector-0
+          format: VectorId
+          title: VectorId
+          type: string
+        metadata:
+          additionalProperties: true
+          example:
+            hello: alpha
+          title: metadata
+          type: object
+        sparseValues:
+          $ref: '#/components/schemas/SparseVectorData'
+        values:
+          description: Vector dense data. This should be the same length as the dimension
+            of the index being queried.
+          example:
+          - 1
+          - 2
+          - 3
+          items:
+            format: float
+            type: number
+          title: VectorData
+          type: array
+      title: UpsertVector
+      type: object
+    VectorData:
+      description: Vector dense data. This should be the same length as the dimension
+        of the index being queried.
+      example:
+      - 1
+      - 2
+      - 3
+      items:
+        format: float
+        type: number
+      title: VectorData
+      type: array
+    VectorDimensionality:
+      description: The number of dimensions in the vector representation
+      format: int32
+      maximum: 20000
+      minimum: 1
+      title: VectorDimensionality
+      type: integer
+    VectorFilter:
+      additionalProperties: true
+      description: "If this parameter is present, the operation only affects vectors\
+        \ that satisfy the filter. See https://www.pinecone.io/docs/metadata-filtering/."
+      example:
+        hello:
+        - alpha
+        - bravo
+      title: filter
+      type: object
+    VectorId:
+      description: The unique ID of a vector
+      example: vector-0
+      format: VectorId
+      title: VectorId
+      type: string
+    VectorMetadata:
+      additionalProperties: true
+      example:
+        hello: alpha
+      title: metadata
+      type: object
+  securitySchemes:
+    ApiKey:
+      in: header
+      name: Api-Key
+      type: apiKey
+      x-apikeyInfoFunc: openapi_server.controllers.security_controller.info_from_ApiKey

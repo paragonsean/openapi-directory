@@ -1,0 +1,710 @@
+openapi: 3.0.0
+info:
+  contact:
+    email: support@api2pdf.com
+    name: Support
+    x-twitter: api2pdf_status
+  description: |2
+
+    # Introduction
+    [Api2Pdf](https://www.api2pdf.com) is a powerful PDF generation API with no rate limits or file size constraints. Api2Pdf runs on AWS Lambda, a serverless architecture powered by Amazon to scale to millions of requests while being up to 90% cheaper than alternatives. **Supports wkhtmltopdf, Headless Chrome, LibreOffice, and PDF Merge.** You can also generate barcodes with ZXING (Zebra Crossing).
+    # SDKs & Client Libraries
+    We've made a number of open source libraries available for the API
+    - Python: [https://github.com/api2pdf/api2pdf.python](https://github.com/api2pdf/api2pdf.python)
+    - .NET: [https://github.com/api2pdf/api2pdf.dotnet](https://github.com/api2pdf/api2pdf.dotnet)
+    - Nodejs: [https://github.com/api2pdf/api2pdf.node](https://github.com/api2pdf/api2pdf.node)
+    - PHP: [https://github.com/Api2Pdf/api2pdf.php](https://github.com/Api2Pdf/api2pdf.php)
+    - Ruby: (Coming soon)
+    # Authorization
+    Create an account at [portal.api2pdf.com](https://portal.api2pdf.com/register) to get an API key.
+
+    **Authorize your API calls**
+    - GET requests, include apikey=YOUR-API-KEY as a query string parameter
+    - POST requests, add **Authorization** to your header.
+    ``` Authorization: YOUR-API-KEY ```
+
+    # Quickstart
+    If you are looking for just a quick call to grab PDFs of a URL, you can do a GET request like:
+    ``` https://v2018.api2pdf.com/chrome/url?url={UrlToConvert}&apikey={YourApiKey} ```
+
+    For more advanced usage and settings, see the API specification below.
+  license:
+    name: Creative Commons
+    url: https://creativecommons.org/licenses/by/4.0/legalcode
+  title: "Api2Pdf - PDF Generation, Powered by AWS Lambda"
+  version: 1.0.0
+  x-apisguru-categories:
+  - developer_tools
+  x-logo:
+    url: https://twitter.com/api2pdf_status/profile_image?size=original
+  x-origin:
+  - converter:
+      url: https://github.com/lucybot/api-spec-converter
+      version: 2.7.18
+    format: openapi
+    url: https://app.swaggerhub.com/apiproxy/schema/file/api2pdf/api2pdf/1.0.0/swagger.json
+    version: "3.0"
+  x-providerName: api2pdf.com
+externalDocs:
+  description: Find out more about Api2Pdf
+  url: https://www.api2pdf.com
+servers:
+- description: Api2Pdf.com API
+  url: https://v2018.api2pdf.com
+security:
+- HeaderApiKey: []
+paths:
+  /chrome/html:
+    post:
+      description: |-
+        Convert HTML to a PDF using Headless Chrome on AWS Lambda.
+        ### Authorize via Header of Request
+        **Authorization: YOUR-API-KEY**
+      operationId: chrome_from_html_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChromeHtmlToPdfRequest'
+        description: |-
+          A JSON object as a payload is required within the body of the request. The following attributes of the JSON object are detailed below:
+          - `html` *(string, required)* - raw HTML to convert to PDF
+          - `inlinePdf` *(boolean, optional)* - Open the PDF in a browser window. Default to false.
+          - `fileName` *(string, optional)* - Specify a file name for the output PDF. Random name if not specified.
+          - `options` *(object, optional)* - Include advanced Headless Chrome options like margins, headers, and footers. [See full list of advanced options here](https://www.api2pdf.com/documentation/advanced-options-headless-chrome/).
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseSuccess'
+          description: A JSON object containing the url to the PDF and other meta
+            data
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseFailure'
+          description: Failed to generate PDF
+      summary: Convert raw HTML to PDF
+      tags:
+      - Headless Chrome
+      x-openapi-router-controller: openapi_server.controllers.headless_chrome_controller
+      x-codegen-request-body-name: body
+  /chrome/url:
+    get:
+      description: "Convert a URL or Web Page to PDF using Headless Chrome on AWS\
+        \ Lambda. This GET request is for convenience and does not support advanced\
+        \ options. Use the POST request for more flexibility.\n### Authorize via Query\
+        \ String Parameter\n**apikey=YOUR-API-KEY**\n### Example\n``` https://v2018.api2pdf.com/chrome/url?url={UrlToConvert}&apikey={YourApiKey}\
+        \ ``` "
+      operationId: chrome_from_url_get
+      parameters:
+      - description: Url of the page to convert to PDF. Must start with http:// or
+          https://.
+        explode: true
+        in: query
+        name: url
+        required: true
+        schema:
+          type: string
+        style: form
+      - description: Specify output=json to receive a JSON output. Defaults to PDF
+          file.
+        explode: true
+        in: query
+        name: output
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseSuccess'
+            application/pdf:
+              schema:
+                format: binary
+                type: string
+          description: A PDF file or a JSON object depending on the `output` query
+            parameter
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseFailure'
+          description: Failed to generate PDF
+      security:
+      - QueryApiKey: []
+      summary: Convert URL to PDF
+      tags:
+      - Headless Chrome
+      x-openapi-router-controller: openapi_server.controllers.headless_chrome_controller
+    post:
+      description: |-
+        Convert a URL or Web Page to PDF using Headless Chrome on AWS Lambda..
+        ### Authorize via Header of Request
+        **Authorization: YOUR-API-KEY**
+      operationId: chrome_from_url_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChromeUrlToPdfRequest'
+        description: |-
+          A JSON object as a payload is required within the body of the request. The following attributes of the JSON object are detailed below:
+          - `url` *(string, required)* - Url to the web page to convert to PDF
+          - `inlinePdf` *(boolean, optional)* - Open the PDF in a browser window. Default to false.
+          - `fileName` *(string, optional)* - Specify a file name for the output PDF. Random name if not specified.
+          - `options` *(object, optional)* - Include advanced Headless Chrome options like margins, headers, and footers. [See full list of advanced options here](https://www.api2pdf.com/documentation/advanced-options-headless-chrome/).
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseSuccess'
+          description: A JSON object containing the url to the PDF and other meta
+            data
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseFailure'
+          description: Failed to generate PDF
+      summary: Convert URL to PDF
+      tags:
+      - Headless Chrome
+      x-openapi-router-controller: openapi_server.controllers.headless_chrome_controller
+      x-codegen-request-body-name: body
+  /libreoffice/convert:
+    post:
+      description: |-
+        Convert an office document (Word, Excel, Powerpoint) or an image (jpg, gif, png) to a PDF using LibreOffice on AWS Lambda.
+        ### Authorize via Header of Request
+        **Authorization: YOUR-API-KEY**
+      operationId: libre_convert_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LibreOfficeConvertRequest'
+        description: "A JSON object as a payload is required within the body of the\
+          \ request. The following attributes of the JSON object are detailed below:\n\
+          - `url` *(string, required)* - A direct URL to the file. Api2Pdf will consume\
+          \ the file at that URL and then convert it.\n- `inlinePdf` *(boolean, optional)*\
+          \ - Open the PDF in a browser window. Default to false.\n- `fileName` *(string,\
+          \ optional)* - Specify a file name for the output PDF. Random name if not\
+          \ specified. "
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseSuccess'
+          description: A JSON object containing the url to the PDF and other meta
+            data
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseFailure'
+          description: Failed to generate PDF
+      summary: Convert office document or image to PDF
+      tags:
+      - LibreOffice
+      x-openapi-router-controller: openapi_server.controllers.libre_office_controller
+      x-codegen-request-body-name: body
+  /merge:
+    post:
+      description: |-
+        Merge two or more PDFs together on AWS Lambda.
+        ### Authorize via Header of Request
+        **Authorization: YOUR-API-KEY**
+      operationId: merge_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MergeRequest'
+        description: "A JSON object as a payload is required within the body of the\
+          \ request. The following attributes of the JSON object are detailed below:\n\
+          - `urls` *(array of urls, required)* - A JSON array of direct URLs to PDFs.\
+          \ Api2Pdf will consume the PDF files in the list and then merge them all\
+          \ together..\n- `inlinePdf` *(boolean, optional)* - Open the PDF in a browser\
+          \ window. Default to false.\n- `fileName` *(string, optional)* - Specify\
+          \ a file name for the output PDF. Random name if not specified. "
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseSuccess'
+          description: A JSON object containing the url to the PDF and other meta
+            data
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseFailure'
+          description: Failed to generate PDF
+      summary: Merge multiple PDFs together
+      tags:
+      - Merge / Combine Pdfs
+      x-openapi-router-controller: openapi_server.controllers.merge__combine_pdfs_controller
+      x-codegen-request-body-name: body
+  /wkhtmltopdf/html:
+    post:
+      description: |-
+        Convert HTML to a PDF using WkHtmlToPdf on AWS Lambda.
+        ### Authorize via Header of Request
+        **Authorization: YOUR-API-KEY**
+      operationId: wkhtmltopdf_from_html_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WkHtmlToPdfHtmlToPdfRequest'
+        description: |-
+          A JSON object as a payload is required within the body of the request. The following attributes of the JSON object are detailed below:
+          - `html` *(string, required)* - raw HTML to convert to PDF
+          - `inlinePdf` *(boolean, optional)* - Open the PDF in a browser window. Default to false.
+          - `fileName` *(string, optional)* - Specify a file name for the output PDF. Random name if not specified.
+          - `options` *(object, optional)* - Include advanced WkHtmlToPdf options like margins, headers, and footers. [See full list of advanced options here](https://www.api2pdf.com/documentation/advanced-options-wkhtmltopdf/).
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseSuccess'
+          description: A JSON object containing the url to the PDF and other meta
+            data
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseFailure'
+          description: Failed to generate PDF
+      summary: Convert raw HTML to PDF
+      tags:
+      - wkhtmltopdf
+      x-openapi-router-controller: openapi_server.controllers.wkhtmltopdf_controller
+      x-codegen-request-body-name: body
+  /wkhtmltopdf/url:
+    get:
+      description: "Convert a URL or Web Page to PDF using WkHtmlToPdf on AWS Lambda.\
+        \ This GET request is for convenience and does not support advanced options.\
+        \ Use the POST request for more flexibility.\n### Authorize via Query String\
+        \ Parameter\n**apikey=YOUR-API-KEY**\n### Example\n``` https://v2018.api2pdf.com/wkhtmltopdf/url?url={UrlToConvert}&apikey={YourApiKey}\
+        \ ``` "
+      operationId: wkhtmltopdf_from_url_get
+      parameters:
+      - description: Url of the page to convert to PDF. Must start with http:// or
+          https://.
+        explode: true
+        in: query
+        name: url
+        required: true
+        schema:
+          type: string
+        style: form
+      - description: Specify output=json to receive a JSON output. Defaults to PDF
+          file.
+        explode: true
+        in: query
+        name: output
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseSuccess'
+            application/pdf:
+              schema:
+                format: binary
+                type: string
+          description: A PDF file or a JSON object depending on the `output` query
+            parameter
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseFailure'
+          description: Failed to generate PDF
+      security:
+      - QueryApiKey: []
+      summary: Convert URL to PDF
+      tags:
+      - wkhtmltopdf
+      x-openapi-router-controller: openapi_server.controllers.wkhtmltopdf_controller
+    post:
+      description: |-
+        Convert a URL or Web Page to PDF using WkHtmlToPdf on AWS Lambda..
+        ### Authorize via Header of Request
+        **Authorization: YOUR-API-KEY**
+      operationId: wkhtmltopdf_from_url_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WkHtmlToPdfUrlToPdfRequest'
+        description: |-
+          A JSON object as a payload is required within the body of the request. The following attributes of the JSON object are detailed below:
+          - `url` *(string, required)* - Url to the web page to convert to PDF
+          - `inlinePdf` *(boolean, optional)* - Open the PDF in a browser window. Default to false.
+          - `fileName` *(string, optional)* - Specify a file name for the output PDF. Random name if not specified.
+          - `options` *(object, optional)* - Include advanced WkHtmlToPdf options like margins, headers, and footers. [See full list of advanced options here](https://www.api2pdf.com/documentation/advanced-options-wkhtmltopdf/).
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseSuccess'
+          description: A JSON object containing the url to the PDF and other meta
+            data
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseFailure'
+          description: Failed to generate PDF
+      summary: Convert URL to PDF
+      tags:
+      - wkhtmltopdf
+      x-openapi-router-controller: openapi_server.controllers.wkhtmltopdf_controller
+      x-codegen-request-body-name: body
+  /zebra:
+    get:
+      description: "See full list of options and documentation [here](https://www.api2pdf.com/documentation/advanced-options-zxing-zebra-crossing-barcodes/)\n\
+        ### Authorize via Query String Parameter\n**apikey=YOUR-API-KEY**\n### Example\n\
+        ``` https://v2018.api2pdf.com/zebra?format={format}&apikey={YourApiKey}&value={YourText}\
+        \ ``` "
+      operationId: zebra_get
+      parameters:
+      - description: Most common is CODE_39 or QR_CODE
+        explode: true
+        in: query
+        name: format
+        required: true
+        schema:
+          type: string
+        style: form
+      - description: Specify the text value you want to convert
+        explode: true
+        in: query
+        name: value
+        required: true
+        schema:
+          type: string
+        style: form
+      - description: Show label of text below barcode
+        explode: true
+        in: query
+        name: showlabel
+        required: false
+        schema:
+          type: boolean
+        style: form
+      - description: Height of the barcode generated image
+        explode: true
+        in: query
+        name: height
+        required: false
+        schema:
+          type: integer
+        style: form
+      - description: Width of the barcode generated image
+        explode: true
+        in: query
+        name: width
+        required: false
+        schema:
+          type: integer
+        style: form
+      responses:
+        "200":
+          content:
+            image/png:
+              schema:
+                format: binary
+                type: string
+          description: An image of the generated barcode or QR code
+      security:
+      - QueryApiKey: []
+      summary: Generate bar codes and QR codes with ZXING.
+      tags:
+      - ZXING (Zebra Crossing) Bar Codes
+      x-openapi-router-controller: openapi_server.controllers.zxing_(zebra_crossing)_bar_codes_controller
+components:
+  schemas:
+    ApiResponseFailure:
+      example:
+        reason: Source website could not be found
+        success: false
+      properties:
+        reason:
+          description: The reason for the PDF generation failure
+          example: Source website could not be found
+          title: reason
+          type: string
+        success:
+          description: Will be false if the operation failed
+          example: false
+          title: success
+          type: boolean
+      title: ApiResponseFailure
+      type: object
+    ApiResponseSuccess:
+      example:
+        cost: 0.0007979
+        pdf: https://link-to-your-pdf
+        mbOut: 0.73327
+        success: true
+        mbIn: 0.06463
+      properties:
+        cost:
+          description: Cost of the operation (mbIn + mbOut) * $.001
+          example: 0.0007979
+          title: cost
+          type: number
+        mbIn:
+          description: The amount of megabytes of bandwidth used to process the pdf
+          example: 0.06463
+          title: mbIn
+          type: number
+        mbOut:
+          description: The amount of megabytes of bandwidth generated from the resulting
+            pdf
+          example: 0.73327
+          title: mbOut
+          type: number
+        pdf:
+          description: A url to the PDF that will exist only for 24 hours
+          example: https://link-to-your-pdf
+          title: pdf
+          type: string
+        success:
+          description: Will be true if the operation suceeded
+          example: true
+          title: success
+          type: boolean
+      title: ApiResponseSuccess
+      type: object
+    ChromeAdvancedOptions:
+      example:
+        printBackground: false
+        landscape: "true"
+      properties:
+        landscape:
+          example: "true"
+          title: landscape
+          type: string
+        printBackground:
+          example: false
+          title: printBackground
+          type: boolean
+      title: ChromeAdvancedOptions
+      type: object
+    ChromeHtmlToPdfRequest:
+      example:
+        fileName: test.pdf
+        inlinePdf: true
+        options:
+          printBackground: false
+          landscape: "true"
+        html: <p>Hello World</p>
+      properties:
+        fileName:
+          example: test.pdf
+          title: fileName
+          type: string
+        html:
+          example: <p>Hello World</p>
+          format: html
+          title: html
+          type: string
+        inlinePdf:
+          example: true
+          title: inlinePdf
+          type: boolean
+        options:
+          $ref: '#/components/schemas/ChromeAdvancedOptions'
+      required:
+      - html
+      title: ChromeHtmlToPdfRequest
+      type: object
+    ChromeUrlToPdfRequest:
+      example:
+        fileName: test.pdf
+        inlinePdf: true
+        options:
+          printBackground: false
+          landscape: "true"
+        url: https://www.github.com
+      properties:
+        fileName:
+          example: test.pdf
+          title: fileName
+          type: string
+        inlinePdf:
+          example: true
+          title: inlinePdf
+          type: boolean
+        options:
+          $ref: '#/components/schemas/ChromeAdvancedOptions'
+        url:
+          example: https://www.github.com
+          format: url
+          title: url
+          type: string
+      required:
+      - url
+      title: ChromeUrlToPdfRequest
+      type: object
+    LibreOfficeConvertRequest:
+      example:
+        fileName: test.pdf
+        inlinePdf: true
+        url: https://www.api2pdf.com/wp-content/themes/api2pdf/assets/samples/sample-word-doc.docx
+      properties:
+        fileName:
+          example: test.pdf
+          title: fileName
+          type: string
+        inlinePdf:
+          example: true
+          title: inlinePdf
+          type: boolean
+        url:
+          example: https://www.api2pdf.com/wp-content/themes/api2pdf/assets/samples/sample-word-doc.docx
+          format: url
+          title: url
+          type: string
+      required:
+      - url
+      title: LibreOfficeConvertRequest
+      type: object
+    MergeRequest:
+      example:
+        fileName: test.pdf
+        urls:
+        - link-to-pdf1
+        - link-to-pdf2
+        - link-to-pdf3
+        inlinePdf: true
+      properties:
+        fileName:
+          example: test.pdf
+          title: fileName
+          type: string
+        inlinePdf:
+          example: true
+          title: inlinePdf
+          type: boolean
+        urls:
+          example:
+          - link-to-pdf1
+          - link-to-pdf2
+          - link-to-pdf3
+          format: list of urls to pdfs
+          items:
+            type: string
+          title: urls
+          type: array
+      required:
+      - urls
+      title: MergeRequest
+      type: object
+    WkHtmlToPdfAdvancedOptions:
+      example:
+        orientation: landscape
+        pageSize: A4
+      properties:
+        orientation:
+          example: landscape
+          title: orientation
+          type: string
+        pageSize:
+          example: A4
+          title: pageSize
+          type: string
+      title: WkHtmlToPdfAdvancedOptions
+      type: object
+    WkHtmlToPdfHtmlToPdfRequest:
+      example:
+        fileName: test.pdf
+        inlinePdf: true
+        options:
+          orientation: landscape
+          pageSize: A4
+        html: <p>Hello World</p>
+      properties:
+        fileName:
+          example: test.pdf
+          title: fileName
+          type: string
+        html:
+          example: <p>Hello World</p>
+          format: html
+          title: html
+          type: string
+        inlinePdf:
+          example: true
+          title: inlinePdf
+          type: boolean
+        options:
+          $ref: '#/components/schemas/WkHtmlToPdfAdvancedOptions'
+      required:
+      - html
+      title: WkHtmlToPdfHtmlToPdfRequest
+      type: object
+    WkHtmlToPdfUrlToPdfRequest:
+      example:
+        fileName: test.pdf
+        inlinePdf: true
+        options:
+          orientation: landscape
+          pageSize: A4
+        url: https://www.github.com
+      properties:
+        fileName:
+          example: test.pdf
+          title: fileName
+          type: string
+        inlinePdf:
+          example: true
+          title: inlinePdf
+          type: boolean
+        options:
+          $ref: '#/components/schemas/WkHtmlToPdfAdvancedOptions'
+        url:
+          example: https://www.github.com
+          format: url
+          title: url
+          type: string
+      required:
+      - url
+      title: WkHtmlToPdfUrlToPdfRequest
+      type: object
+  securitySchemes:
+    HeaderApiKey:
+      in: header
+      name: Authorization
+      type: apiKey
+      x-apikeyInfoFunc: openapi_server.controllers.security_controller.info_from_HeaderApiKey
+    QueryApiKey:
+      in: query
+      name: apikey
+      type: apiKey
+      x-apikeyInfoFunc: openapi_server.controllers.security_controller.info_from_QueryApiKey
