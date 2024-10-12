@@ -1,0 +1,34 @@
+# coding: utf-8
+
+# import models into model package
+from openapi_server.models.adult_info import AdultInfo
+from openapi_server.models.analyze_image_request import AnalyzeImageRequest
+from openapi_server.models.category import Category
+from openapi_server.models.category_detail import CategoryDetail
+from openapi_server.models.celebrities_model import CelebritiesModel
+from openapi_server.models.celebrity_results import CelebrityResults
+from openapi_server.models.color_info import ColorInfo
+from openapi_server.models.computer_vision_error import ComputerVisionError
+from openapi_server.models.domain_model_results import DomainModelResults
+from openapi_server.models.face_description import FaceDescription
+from openapi_server.models.face_rectangle import FaceRectangle
+from openapi_server.models.image_analysis import ImageAnalysis
+from openapi_server.models.image_caption import ImageCaption
+from openapi_server.models.image_description import ImageDescription
+from openapi_server.models.image_description_details import ImageDescriptionDetails
+from openapi_server.models.image_metadata import ImageMetadata
+from openapi_server.models.image_tag import ImageTag
+from openapi_server.models.image_type import ImageType
+from openapi_server.models.landmark_results import LandmarkResults
+from openapi_server.models.landmark_results_landmarks_inner import LandmarkResultsLandmarksInner
+from openapi_server.models.line import Line
+from openapi_server.models.list_models_result import ListModelsResult
+from openapi_server.models.model_description import ModelDescription
+from openapi_server.models.ocr_line import OcrLine
+from openapi_server.models.ocr_region import OcrRegion
+from openapi_server.models.ocr_result import OcrResult
+from openapi_server.models.ocr_word import OcrWord
+from openapi_server.models.recognition_result import RecognitionResult
+from openapi_server.models.tag_result import TagResult
+from openapi_server.models.text_operation_result import TextOperationResult
+from openapi_server.models.word import Word

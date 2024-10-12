@@ -1,0 +1,9 @@
+# ApiManagementClient.ApiContractPropertiesAllOfAuthenticationSettings
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**oAuth2** | [**ApiContractPropertiesAllOfAuthenticationSettingsOAuth2**](ApiContractPropertiesAllOfAuthenticationSettingsOAuth2.md) |  | [optional] 
+
+

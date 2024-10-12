@@ -1,0 +1,10 @@
+# ApiManagementClient.RepresentationContract
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**contentType** | **String** | Specifies a registered or custom content type for this representation, e.g. application/xml. | 
+**sample** | **String** | An example of the representation. | [optional] 
+
+
