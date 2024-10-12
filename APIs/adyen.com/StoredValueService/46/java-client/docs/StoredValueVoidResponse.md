@@ -1,0 +1,28 @@
+
+
+# StoredValueVoidResponse
+
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**currentBalance** | [**Amount**](Amount.md) | The balance currently on the payment method. |  [optional] |
+|**pspReference** | **String** | Adyen&#39;s 16-character string reference associated with the transaction/request. This value is globally unique; quote it when communicating with us about this request. |  [optional] |
+|**refusalReason** | **String** | If the transaction is refused or an error occurs, this field holds Adyen&#39;s mapped reason for the refusal or a description of the error.  When a transaction fails, the authorisation response includes &#x60;resultCode&#x60; and &#x60;refusalReason&#x60; values. |  [optional] |
+|**resultCode** | [**ResultCodeEnum**](#ResultCodeEnum) | The result of the payment. Possible values:  * **Success** – The operation has been completed successfully.  * **Refused** – The operation was refused. The reason is given in the &#x60;refusalReason&#x60; field.  * **Error** – There was an error when the operation was processed. The reason is given in the &#x60;refusalReason&#x60; field.  * **NotEnoughBalance** – The amount on the payment method is lower than the amount given in the request. Only applicable to balance checks.   |  [optional] |
+|**thirdPartyRefusalReason** | **String** | Raw refusal reason received from the third party, where available |  [optional] |
+
+
+
+## Enum: ResultCodeEnum
+
+| Name | Value |
+|---- | -----|
+| SUCCESS | &quot;Success&quot; |
+| REFUSED | &quot;Refused&quot; |
+| ERROR | &quot;Error&quot; |
+| NOT_ENOUGH_BALANCE | &quot;NotEnoughBalance&quot; |
+
+
+

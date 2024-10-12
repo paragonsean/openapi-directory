@@ -1,0 +1,55 @@
+
+
+# NotificationEventConfiguration
+
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**eventType** | [**EventTypeEnum**](#EventTypeEnum) | The type of event.  Possible values: **ACCOUNT_CLOSED**, **ACCOUNT_CREATED**, **ACCOUNT_FUNDS_BELOW_THRESHOLD**, **ACCOUNT_HOLDER_CREATED**, **ACCOUNT_HOLDER_LIMIT_REACHED**, **ACCOUNT_HOLDER_PAYOUT**, **ACCOUNT_HOLDER_STATUS_CHANGE**, **ACCOUNT_HOLDER_STORE_STATUS_CHANGE**, **ACCOUNT_HOLDER_UPCOMING_DEADLINE**, **ACCOUNT_HOLDER_UPDATED**, **ACCOUNT_HOLDER_VERIFICATION**, **ACCOUNT_UPDATED**, **BENEFICIARY_SETUP**, **COMPENSATE_NEGATIVE_BALANCE**, **DIRECT_DEBIT_INITIATED**, **PAYMENT_FAILURE**, **REFUND_FUNDS_TRANSFER**, **REPORT_AVAILABLE**, **SCHEDULED_REFUNDS**, **TRANSFER_FUNDS**. |  |
+|**includeMode** | [**IncludeModeEnum**](#IncludeModeEnum) | Indicates whether the specified &#x60;eventType&#x60; is sent to your webhook endpoint. Possible values: * **INCLUDE**: Send the specified &#x60;eventType&#x60;. * **EXCLUDE**: Send all event types except the specified &#x60;eventType&#x60; and other event types with the &#x60;includeMode&#x60; set to **EXCLUDE**. |  |
+
+
+
+## Enum: EventTypeEnum
+
+| Name | Value |
+|---- | -----|
+| ACCOUNT_CLOSED | &quot;ACCOUNT_CLOSED&quot; |
+| ACCOUNT_CREATED | &quot;ACCOUNT_CREATED&quot; |
+| ACCOUNT_FUNDS_BELOW_THRESHOLD | &quot;ACCOUNT_FUNDS_BELOW_THRESHOLD&quot; |
+| ACCOUNT_HOLDER_CREATED | &quot;ACCOUNT_HOLDER_CREATED&quot; |
+| ACCOUNT_HOLDER_LIMIT_REACHED | &quot;ACCOUNT_HOLDER_LIMIT_REACHED&quot; |
+| ACCOUNT_HOLDER_MIGRATED | &quot;ACCOUNT_HOLDER_MIGRATED&quot; |
+| ACCOUNT_HOLDER_PAYOUT | &quot;ACCOUNT_HOLDER_PAYOUT&quot; |
+| ACCOUNT_HOLDER_STATUS_CHANGE | &quot;ACCOUNT_HOLDER_STATUS_CHANGE&quot; |
+| ACCOUNT_HOLDER_STORE_STATUS_CHANGE | &quot;ACCOUNT_HOLDER_STORE_STATUS_CHANGE&quot; |
+| ACCOUNT_HOLDER_UPCOMING_DEADLINE | &quot;ACCOUNT_HOLDER_UPCOMING_DEADLINE&quot; |
+| ACCOUNT_HOLDER_UPDATED | &quot;ACCOUNT_HOLDER_UPDATED&quot; |
+| ACCOUNT_HOLDER_VERIFICATION | &quot;ACCOUNT_HOLDER_VERIFICATION&quot; |
+| ACCOUNT_UPDATED | &quot;ACCOUNT_UPDATED&quot; |
+| BENEFICIARY_SETUP | &quot;BENEFICIARY_SETUP&quot; |
+| COMPENSATE_NEGATIVE_BALANCE | &quot;COMPENSATE_NEGATIVE_BALANCE&quot; |
+| DIRECT_DEBIT_INITIATED | &quot;DIRECT_DEBIT_INITIATED&quot; |
+| FUNDS_MIGRATED | &quot;FUNDS_MIGRATED&quot; |
+| PAYMENT_FAILURE | &quot;PAYMENT_FAILURE&quot; |
+| PENDING_CREDIT | &quot;PENDING_CREDIT&quot; |
+| REFUND_FUNDS_TRANSFER | &quot;REFUND_FUNDS_TRANSFER&quot; |
+| REPORT_AVAILABLE | &quot;REPORT_AVAILABLE&quot; |
+| SCHEDULED_REFUNDS | &quot;SCHEDULED_REFUNDS&quot; |
+| SCORE_SIGNAL_TRIGGERED | &quot;SCORE_SIGNAL_TRIGGERED&quot; |
+| TRANSFER_FUNDS | &quot;TRANSFER_FUNDS&quot; |
+| TRANSFER_NOT_PAIDOUT_TRANSFERS | &quot;TRANSFER_NOT_PAIDOUT_TRANSFERS&quot; |
+
+
+
+## Enum: IncludeModeEnum
+
+| Name | Value |
+|---- | -----|
+| EXCLUDE | &quot;EXCLUDE&quot; |
+| INCLUDE | &quot;INCLUDE&quot; |
+
+
+
