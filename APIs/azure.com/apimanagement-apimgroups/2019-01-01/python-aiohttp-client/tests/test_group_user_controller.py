@@ -1,0 +1,97 @@
+# coding: utf-8
+
+import pytest
+import json
+from aiohttp import web
+
+from openapi_server.models.group_list_by_service_default_response import GroupListByServiceDefaultResponse
+from openapi_server.models.group_user_create200_response import GroupUserCreate200Response
+from openapi_server.models.group_user_list200_response import GroupUserList200Response
+
+
+pytestmark = pytest.mark.asyncio
+
+async def test_group_user_check_entity_exists(client):
+    """Test case for group_user_check_entity_exists
+
+    
+    """
+    params = [('api-version', 'api_version_example')]
+    headers = { 
+        'Accept': 'application/json',
+        'Authorization': 'Bearer special-key',
+    }
+    response = await client.request(
+        method='HEAD',
+        path='/subscriptions/{subscription_id}/resourceGroups/{resource_group_name}/providers/Microsoft.ApiManagement/service/{service_name}/groups/{group_id}/users/{user_id}'.format(resource_group_name='resource_group_name_example', service_name='service_name_example', group_id='group_id_example', user_id='user_id_example', subscription_id='subscription_id_example'),
+        headers=headers,
+        params=params,
+        )
+    assert response.status == 200, 'Response body is : ' + (await response.read()).decode('utf-8')
+
+
+pytestmark = pytest.mark.asyncio
+
+async def test_group_user_create(client):
+    """Test case for group_user_create
+
+    
+    """
+    params = [('api-version', 'api_version_example')]
+    headers = { 
+        'Accept': 'application/json',
+        'Authorization': 'Bearer special-key',
+    }
+    response = await client.request(
+        method='PUT',
+        path='/subscriptions/{subscription_id}/resourceGroups/{resource_group_name}/providers/Microsoft.ApiManagement/service/{service_name}/groups/{group_id}/users/{user_id}'.format(resource_group_name='resource_group_name_example', service_name='service_name_example', group_id='group_id_example', user_id='user_id_example', subscription_id='subscription_id_example'),
+        headers=headers,
+        params=params,
+        )
+    assert response.status == 200, 'Response body is : ' + (await response.read()).decode('utf-8')
+
+
+pytestmark = pytest.mark.asyncio
+
+async def test_group_user_delete(client):
+    """Test case for group_user_delete
+
+    
+    """
+    params = [('api-version', 'api_version_example')]
+    headers = { 
+        'Accept': 'application/json',
+        'Authorization': 'Bearer special-key',
+    }
+    response = await client.request(
+        method='DELETE',
+        path='/subscriptions/{subscription_id}/resourceGroups/{resource_group_name}/providers/Microsoft.ApiManagement/service/{service_name}/groups/{group_id}/users/{user_id}'.format(resource_group_name='resource_group_name_example', service_name='service_name_example', group_id='group_id_example', user_id='user_id_example', subscription_id='subscription_id_example'),
+        headers=headers,
+        params=params,
+        )
+    assert response.status == 200, 'Response body is : ' + (await response.read()).decode('utf-8')
+
+
+pytestmark = pytest.mark.asyncio
+
+async def test_group_user_list(client):
+    """Test case for group_user_list
+
+    
+    """
+    params = [('$filter', 'filter_example'),
+                    ('$top', 56),
+                    ('$skip', 56),
+                    ('api-version', 'api_version_example')]
+    headers = { 
+        'Accept': 'application/json',
+        'Authorization': 'Bearer special-key',
+    }
+    response = await client.request(
+        method='GET',
+        path='/subscriptions/{subscription_id}/resourceGroups/{resource_group_name}/providers/Microsoft.ApiManagement/service/{service_name}/groups/{group_id}/users'.format(resource_group_name='resource_group_name_example', service_name='service_name_example', group_id='group_id_example', subscription_id='subscription_id_example'),
+        headers=headers,
+        params=params,
+        )
+    assert response.status == 200, 'Response body is : ' + (await response.read()).decode('utf-8')
+
