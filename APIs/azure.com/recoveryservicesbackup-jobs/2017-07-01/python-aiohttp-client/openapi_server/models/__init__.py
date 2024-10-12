@@ -1,0 +1,21 @@
+# coding: utf-8
+
+# import models into model package
+from openapi_server.models.azure_iaa_svm_error_info import AzureIaaSVMErrorInfo
+from openapi_server.models.azure_iaa_svm_job import AzureIaaSVMJob
+from openapi_server.models.azure_iaa_svm_job_extended_info import AzureIaaSVMJobExtendedInfo
+from openapi_server.models.azure_iaa_svm_job_task_details import AzureIaaSVMJobTaskDetails
+from openapi_server.models.dpm_error_info import DpmErrorInfo
+from openapi_server.models.dpm_job import DpmJob
+from openapi_server.models.dpm_job_extended_info import DpmJobExtendedInfo
+from openapi_server.models.dpm_job_task_details import DpmJobTaskDetails
+from openapi_server.models.job import Job
+from openapi_server.models.job_query_object import JobQueryObject
+from openapi_server.models.job_resource import JobResource
+from openapi_server.models.job_resource_list import JobResourceList
+from openapi_server.models.mab_error_info import MabErrorInfo
+from openapi_server.models.mab_job import MabJob
+from openapi_server.models.mab_job_extended_info import MabJobExtendedInfo
+from openapi_server.models.mab_job_task_details import MabJobTaskDetails
+from openapi_server.models.resource import Resource
+from openapi_server.models.resource_list import ResourceList

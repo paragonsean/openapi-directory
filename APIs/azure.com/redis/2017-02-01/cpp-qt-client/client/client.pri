@@ -1,0 +1,97 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIExportRDBParameters.h \
+    $${PWD}/OAIImportRDBParameters.h \
+    $${PWD}/OAIOperation.h \
+    $${PWD}/OAIOperationListResult.h \
+    $${PWD}/OAIOperation_display.h \
+    $${PWD}/OAIProxyResource.h \
+    $${PWD}/OAIRedisAccessKeys.h \
+    $${PWD}/OAIRedisCreateParameters.h \
+    $${PWD}/OAIRedisCreateProperties.h \
+    $${PWD}/OAIRedisFirewallRule.h \
+    $${PWD}/OAIRedisFirewallRuleListResult.h \
+    $${PWD}/OAIRedisFirewallRuleProperties.h \
+    $${PWD}/OAIRedisForceRebootResponse.h \
+    $${PWD}/OAIRedisLinkedServer.h \
+    $${PWD}/OAIRedisLinkedServerCreateParameters.h \
+    $${PWD}/OAIRedisLinkedServerCreateProperties.h \
+    $${PWD}/OAIRedisLinkedServerList.h \
+    $${PWD}/OAIRedisLinkedServerProperties.h \
+    $${PWD}/OAIRedisLinkedServerWithProperties.h \
+    $${PWD}/OAIRedisLinkedServerWithPropertiesList.h \
+    $${PWD}/OAIRedisListResult.h \
+    $${PWD}/OAIRedisPatchSchedule.h \
+    $${PWD}/OAIRedisProperties.h \
+    $${PWD}/OAIRedisRebootParameters.h \
+    $${PWD}/OAIRedisRegenerateKeyParameters.h \
+    $${PWD}/OAIRedisResource.h \
+    $${PWD}/OAIRedisResourceProperties.h \
+    $${PWD}/OAIRedisUpdateParameters.h \
+    $${PWD}/OAIRedisUpdateProperties.h \
+    $${PWD}/OAIResource.h \
+    $${PWD}/OAIScheduleEntries.h \
+    $${PWD}/OAIScheduleEntry.h \
+    $${PWD}/OAISku.h \
+    $${PWD}/OAITrackedResource.h \
+# APIs
+    $${PWD}/OAIFirewallRulesApi.h \
+    $${PWD}/OAIOperationsApi.h \
+    $${PWD}/OAIRedisApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIExportRDBParameters.cpp \
+    $${PWD}/OAIImportRDBParameters.cpp \
+    $${PWD}/OAIOperation.cpp \
+    $${PWD}/OAIOperationListResult.cpp \
+    $${PWD}/OAIOperation_display.cpp \
+    $${PWD}/OAIProxyResource.cpp \
+    $${PWD}/OAIRedisAccessKeys.cpp \
+    $${PWD}/OAIRedisCreateParameters.cpp \
+    $${PWD}/OAIRedisCreateProperties.cpp \
+    $${PWD}/OAIRedisFirewallRule.cpp \
+    $${PWD}/OAIRedisFirewallRuleListResult.cpp \
+    $${PWD}/OAIRedisFirewallRuleProperties.cpp \
+    $${PWD}/OAIRedisForceRebootResponse.cpp \
+    $${PWD}/OAIRedisLinkedServer.cpp \
+    $${PWD}/OAIRedisLinkedServerCreateParameters.cpp \
+    $${PWD}/OAIRedisLinkedServerCreateProperties.cpp \
+    $${PWD}/OAIRedisLinkedServerList.cpp \
+    $${PWD}/OAIRedisLinkedServerProperties.cpp \
+    $${PWD}/OAIRedisLinkedServerWithProperties.cpp \
+    $${PWD}/OAIRedisLinkedServerWithPropertiesList.cpp \
+    $${PWD}/OAIRedisListResult.cpp \
+    $${PWD}/OAIRedisPatchSchedule.cpp \
+    $${PWD}/OAIRedisProperties.cpp \
+    $${PWD}/OAIRedisRebootParameters.cpp \
+    $${PWD}/OAIRedisRegenerateKeyParameters.cpp \
+    $${PWD}/OAIRedisResource.cpp \
+    $${PWD}/OAIRedisResourceProperties.cpp \
+    $${PWD}/OAIRedisUpdateParameters.cpp \
+    $${PWD}/OAIRedisUpdateProperties.cpp \
+    $${PWD}/OAIResource.cpp \
+    $${PWD}/OAIScheduleEntries.cpp \
+    $${PWD}/OAIScheduleEntry.cpp \
+    $${PWD}/OAISku.cpp \
+    $${PWD}/OAITrackedResource.cpp \
+# APIs
+    $${PWD}/OAIFirewallRulesApi.cpp \
+    $${PWD}/OAIOperationsApi.cpp \
+    $${PWD}/OAIRedisApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

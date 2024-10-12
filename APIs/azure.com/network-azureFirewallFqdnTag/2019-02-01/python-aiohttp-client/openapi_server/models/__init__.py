@@ -1,0 +1,6 @@
+# coding: utf-8
+
+# import models into model package
+from openapi_server.models.azure_firewall_fqdn_tag import AzureFirewallFqdnTag
+from openapi_server.models.azure_firewall_fqdn_tag_list_result import AzureFirewallFqdnTagListResult
+from openapi_server.models.azure_firewall_fqdn_tag_properties_format import AzureFirewallFqdnTagPropertiesFormat
