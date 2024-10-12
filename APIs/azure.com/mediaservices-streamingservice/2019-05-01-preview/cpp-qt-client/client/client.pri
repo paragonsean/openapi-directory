@@ -1,0 +1,89 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIAkamaiAccessControl.h \
+    $${PWD}/OAIAkamaiSignatureHeaderAuthenticationKey.h \
+    $${PWD}/OAIApiError.h \
+    $${PWD}/OAICrossSiteAccessPolicies.h \
+    $${PWD}/OAIHls.h \
+    $${PWD}/OAIIPAccessControl.h \
+    $${PWD}/OAIIPRange.h \
+    $${PWD}/OAILiveEvent.h \
+    $${PWD}/OAILiveEventActionInput.h \
+    $${PWD}/OAILiveEventEncoding.h \
+    $${PWD}/OAILiveEventEndpoint.h \
+    $${PWD}/OAILiveEventInput.h \
+    $${PWD}/OAILiveEventInputAccessControl.h \
+    $${PWD}/OAILiveEventInputTrackSelection.h \
+    $${PWD}/OAILiveEventListResult.h \
+    $${PWD}/OAILiveEventOutputTranscriptionTrack.h \
+    $${PWD}/OAILiveEventPreview.h \
+    $${PWD}/OAILiveEventPreviewAccessControl.h \
+    $${PWD}/OAILiveEventProperties.h \
+    $${PWD}/OAILiveEventTranscription.h \
+    $${PWD}/OAILiveOutput.h \
+    $${PWD}/OAILiveOutputListResult.h \
+    $${PWD}/OAILiveOutputProperties.h \
+    $${PWD}/OAIODataError.h \
+    $${PWD}/OAIStreamingEndpoint.h \
+    $${PWD}/OAIStreamingEndpointAccessControl.h \
+    $${PWD}/OAIStreamingEndpointListResult.h \
+    $${PWD}/OAIStreamingEndpointProperties.h \
+    $${PWD}/OAIStreamingEntityScaleUnit.h \
+# APIs
+    $${PWD}/OAILiveEventsApi.h \
+    $${PWD}/OAILiveOutputsApi.h \
+    $${PWD}/OAIStreamingEndpointApi.h \
+    $${PWD}/OAIStreamingEndpointsApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIAkamaiAccessControl.cpp \
+    $${PWD}/OAIAkamaiSignatureHeaderAuthenticationKey.cpp \
+    $${PWD}/OAIApiError.cpp \
+    $${PWD}/OAICrossSiteAccessPolicies.cpp \
+    $${PWD}/OAIHls.cpp \
+    $${PWD}/OAIIPAccessControl.cpp \
+    $${PWD}/OAIIPRange.cpp \
+    $${PWD}/OAILiveEvent.cpp \
+    $${PWD}/OAILiveEventActionInput.cpp \
+    $${PWD}/OAILiveEventEncoding.cpp \
+    $${PWD}/OAILiveEventEndpoint.cpp \
+    $${PWD}/OAILiveEventInput.cpp \
+    $${PWD}/OAILiveEventInputAccessControl.cpp \
+    $${PWD}/OAILiveEventInputTrackSelection.cpp \
+    $${PWD}/OAILiveEventListResult.cpp \
+    $${PWD}/OAILiveEventOutputTranscriptionTrack.cpp \
+    $${PWD}/OAILiveEventPreview.cpp \
+    $${PWD}/OAILiveEventPreviewAccessControl.cpp \
+    $${PWD}/OAILiveEventProperties.cpp \
+    $${PWD}/OAILiveEventTranscription.cpp \
+    $${PWD}/OAILiveOutput.cpp \
+    $${PWD}/OAILiveOutputListResult.cpp \
+    $${PWD}/OAILiveOutputProperties.cpp \
+    $${PWD}/OAIODataError.cpp \
+    $${PWD}/OAIStreamingEndpoint.cpp \
+    $${PWD}/OAIStreamingEndpointAccessControl.cpp \
+    $${PWD}/OAIStreamingEndpointListResult.cpp \
+    $${PWD}/OAIStreamingEndpointProperties.cpp \
+    $${PWD}/OAIStreamingEntityScaleUnit.cpp \
+# APIs
+    $${PWD}/OAILiveEventsApi.cpp \
+    $${PWD}/OAILiveOutputsApi.cpp \
+    $${PWD}/OAIStreamingEndpointApi.cpp \
+    $${PWD}/OAIStreamingEndpointsApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

@@ -1,0 +1,33 @@
+# coding: utf-8
+
+# import models into model package
+from openapi_server.models.assessed_disk import AssessedDisk
+from openapi_server.models.assessed_machine import AssessedMachine
+from openapi_server.models.assessed_machine_properties import AssessedMachineProperties
+from openapi_server.models.assessed_machine_result_list import AssessedMachineResultList
+from openapi_server.models.assessed_network_adapter import AssessedNetworkAdapter
+from openapi_server.models.assessment import Assessment
+from openapi_server.models.assessment_options_result_list import AssessmentOptionsResultList
+from openapi_server.models.assessment_properties import AssessmentProperties
+from openapi_server.models.assessment_result_list import AssessmentResultList
+from openapi_server.models.check_name_availability_parameters import CheckNameAvailabilityParameters
+from openapi_server.models.check_name_availability_result import CheckNameAvailabilityResult
+from openapi_server.models.cloud_error import CloudError
+from openapi_server.models.cloud_error_body import CloudErrorBody
+from openapi_server.models.disk import Disk
+from openapi_server.models.download_url import DownloadUrl
+from openapi_server.models.group import Group
+from openapi_server.models.group_properties import GroupProperties
+from openapi_server.models.group_result_list import GroupResultList
+from openapi_server.models.machine import Machine
+from openapi_server.models.machine_properties import MachineProperties
+from openapi_server.models.machine_result_list import MachineResultList
+from openapi_server.models.network_adapter import NetworkAdapter
+from openapi_server.models.operation import Operation
+from openapi_server.models.operation_display import OperationDisplay
+from openapi_server.models.operation_result_list import OperationResultList
+from openapi_server.models.project import Project
+from openapi_server.models.project_key import ProjectKey
+from openapi_server.models.project_properties import ProjectProperties
+from openapi_server.models.project_result_list import ProjectResultList
+from openapi_server.models.vm_family import VmFamily

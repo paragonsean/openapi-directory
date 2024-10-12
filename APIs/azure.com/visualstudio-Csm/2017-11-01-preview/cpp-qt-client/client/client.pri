@@ -1,0 +1,81 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIAccountResource.h \
+    $${PWD}/OAIAccountResourceListResult.h \
+    $${PWD}/OAIAccountResourceRequest.h \
+    $${PWD}/OAIApplicationSource.h \
+    $${PWD}/OAIApplicationTarget.h \
+    $${PWD}/OAIAuthorization.h \
+    $${PWD}/OAICheckNameAvailabilityParameter.h \
+    $${PWD}/OAICheckNameAvailabilityResult.h \
+    $${PWD}/OAICodeRepository.h \
+    $${PWD}/OAICodeRepositoryApplicationSource.h \
+    $${PWD}/OAICodeTemplateApplicationSource.h \
+    $${PWD}/OAIExtensionResource.h \
+    $${PWD}/OAIExtensionResourceListResult.h \
+    $${PWD}/OAIExtensionResourcePlan.h \
+    $${PWD}/OAIExtensionResourceRequest.h \
+    $${PWD}/OAIOperation.h \
+    $${PWD}/OAIOperationListResult.h \
+    $${PWD}/OAIOperationProperties.h \
+    $${PWD}/OAIPipelineTemplate.h \
+    $${PWD}/OAIProjectResource.h \
+    $${PWD}/OAIProjectResourceListResult.h \
+    $${PWD}/OAIProjectResourceProperties.h \
+    $${PWD}/OAIProjectResourceUpdateParameters.h \
+    $${PWD}/OAIResource.h \
+    $${PWD}/OAITargetResource.h \
+# APIs
+    $${PWD}/OAIAccountsApi.h \
+    $${PWD}/OAIExtensionsApi.h \
+    $${PWD}/OAIOperationsApi.h \
+    $${PWD}/OAIProjectsApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIAccountResource.cpp \
+    $${PWD}/OAIAccountResourceListResult.cpp \
+    $${PWD}/OAIAccountResourceRequest.cpp \
+    $${PWD}/OAIApplicationSource.cpp \
+    $${PWD}/OAIApplicationTarget.cpp \
+    $${PWD}/OAIAuthorization.cpp \
+    $${PWD}/OAICheckNameAvailabilityParameter.cpp \
+    $${PWD}/OAICheckNameAvailabilityResult.cpp \
+    $${PWD}/OAICodeRepository.cpp \
+    $${PWD}/OAICodeRepositoryApplicationSource.cpp \
+    $${PWD}/OAICodeTemplateApplicationSource.cpp \
+    $${PWD}/OAIExtensionResource.cpp \
+    $${PWD}/OAIExtensionResourceListResult.cpp \
+    $${PWD}/OAIExtensionResourcePlan.cpp \
+    $${PWD}/OAIExtensionResourceRequest.cpp \
+    $${PWD}/OAIOperation.cpp \
+    $${PWD}/OAIOperationListResult.cpp \
+    $${PWD}/OAIOperationProperties.cpp \
+    $${PWD}/OAIPipelineTemplate.cpp \
+    $${PWD}/OAIProjectResource.cpp \
+    $${PWD}/OAIProjectResourceListResult.cpp \
+    $${PWD}/OAIProjectResourceProperties.cpp \
+    $${PWD}/OAIProjectResourceUpdateParameters.cpp \
+    $${PWD}/OAIResource.cpp \
+    $${PWD}/OAITargetResource.cpp \
+# APIs
+    $${PWD}/OAIAccountsApi.cpp \
+    $${PWD}/OAIExtensionsApi.cpp \
+    $${PWD}/OAIOperationsApi.cpp \
+    $${PWD}/OAIProjectsApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp
