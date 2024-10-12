@@ -1,0 +1,83 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAICoreSummary.h \
+    $${PWD}/OAILinkTarget.h \
+    $${PWD}/OAIOperation.h \
+    $${PWD}/OAIOperationListResult.h \
+    $${PWD}/OAIOperation_display.h \
+    $${PWD}/OAIProxyResource.h \
+    $${PWD}/OAIResource.h \
+    $${PWD}/OAISavedSearch.h \
+    $${PWD}/OAISavedSearchProperties.h \
+    $${PWD}/OAISavedSearchesListResult.h \
+    $${PWD}/OAISearchGetSchemaResponse.h \
+    $${PWD}/OAISearchMetadata.h \
+    $${PWD}/OAISearchMetadataSchema.h \
+    $${PWD}/OAISearchSchemaValue.h \
+    $${PWD}/OAISearchSort.h \
+    $${PWD}/OAISharedKeys.h \
+    $${PWD}/OAIStorageAccount.h \
+    $${PWD}/OAIStorageInsight.h \
+    $${PWD}/OAIStorageInsightListResult.h \
+    $${PWD}/OAIStorageInsightProperties.h \
+    $${PWD}/OAIStorageInsightStatus.h \
+    $${PWD}/OAITag.h \
+    $${PWD}/OAIWorkspacePurgeBody.h \
+    $${PWD}/OAIWorkspacePurgeBodyFilters.h \
+    $${PWD}/OAIWorkspacePurgeResponse.h \
+    $${PWD}/OAIWorkspacePurgeStatusResponse.h \
+# APIs
+    $${PWD}/OAIOperationsApi.h \
+    $${PWD}/OAISavedSearchesApi.h \
+    $${PWD}/OAIStorageInsightsApi.h \
+    $${PWD}/OAIWorkspacesApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAICoreSummary.cpp \
+    $${PWD}/OAILinkTarget.cpp \
+    $${PWD}/OAIOperation.cpp \
+    $${PWD}/OAIOperationListResult.cpp \
+    $${PWD}/OAIOperation_display.cpp \
+    $${PWD}/OAIProxyResource.cpp \
+    $${PWD}/OAIResource.cpp \
+    $${PWD}/OAISavedSearch.cpp \
+    $${PWD}/OAISavedSearchProperties.cpp \
+    $${PWD}/OAISavedSearchesListResult.cpp \
+    $${PWD}/OAISearchGetSchemaResponse.cpp \
+    $${PWD}/OAISearchMetadata.cpp \
+    $${PWD}/OAISearchMetadataSchema.cpp \
+    $${PWD}/OAISearchSchemaValue.cpp \
+    $${PWD}/OAISearchSort.cpp \
+    $${PWD}/OAISharedKeys.cpp \
+    $${PWD}/OAIStorageAccount.cpp \
+    $${PWD}/OAIStorageInsight.cpp \
+    $${PWD}/OAIStorageInsightListResult.cpp \
+    $${PWD}/OAIStorageInsightProperties.cpp \
+    $${PWD}/OAIStorageInsightStatus.cpp \
+    $${PWD}/OAITag.cpp \
+    $${PWD}/OAIWorkspacePurgeBody.cpp \
+    $${PWD}/OAIWorkspacePurgeBodyFilters.cpp \
+    $${PWD}/OAIWorkspacePurgeResponse.cpp \
+    $${PWD}/OAIWorkspacePurgeStatusResponse.cpp \
+# APIs
+    $${PWD}/OAIOperationsApi.cpp \
+    $${PWD}/OAISavedSearchesApi.cpp \
+    $${PWD}/OAIStorageInsightsApi.cpp \
+    $${PWD}/OAIWorkspacesApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

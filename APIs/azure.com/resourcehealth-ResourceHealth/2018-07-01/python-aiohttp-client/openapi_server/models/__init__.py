@@ -1,0 +1,34 @@
+# coding: utf-8
+
+# import models into model package
+from openapi_server.models.availability_status import AvailabilityStatus
+from openapi_server.models.availability_status_list_result import AvailabilityStatusListResult
+from openapi_server.models.availability_status_properties import AvailabilityStatusProperties
+from openapi_server.models.availability_status_properties_recently_resolved import AvailabilityStatusPropertiesRecentlyResolved
+from openapi_server.models.emerging_issue import EmergingIssue
+from openapi_server.models.emerging_issue_impact import EmergingIssueImpact
+from openapi_server.models.emerging_issue_list_result import EmergingIssueListResult
+from openapi_server.models.emerging_issues_get_result import EmergingIssuesGetResult
+from openapi_server.models.error_response import ErrorResponse
+from openapi_server.models.event import Event
+from openapi_server.models.events import Events
+from openapi_server.models.faq import Faq
+from openapi_server.models.impact import Impact
+from openapi_server.models.impacted_region import ImpactedRegion
+from openapi_server.models.impacted_service_region import ImpactedServiceRegion
+from openapi_server.models.link import Link
+from openapi_server.models.link_display_text import LinkDisplayText
+from openapi_server.models.metadata_entity import MetadataEntity
+from openapi_server.models.metadata_entity_list_result import MetadataEntityListResult
+from openapi_server.models.metadata_entity_properties import MetadataEntityProperties
+from openapi_server.models.metadata_supported_value_detail import MetadataSupportedValueDetail
+from openapi_server.models.operation import Operation
+from openapi_server.models.operation_display import OperationDisplay
+from openapi_server.models.operation_list_result import OperationListResult
+from openapi_server.models.recommended_action import RecommendedAction
+from openapi_server.models.service_impacting_event import ServiceImpactingEvent
+from openapi_server.models.service_impacting_event_incident_properties import ServiceImpactingEventIncidentProperties
+from openapi_server.models.service_impacting_event_status import ServiceImpactingEventStatus
+from openapi_server.models.status_active_event import StatusActiveEvent
+from openapi_server.models.status_banner import StatusBanner
+from openapi_server.models.update import Update

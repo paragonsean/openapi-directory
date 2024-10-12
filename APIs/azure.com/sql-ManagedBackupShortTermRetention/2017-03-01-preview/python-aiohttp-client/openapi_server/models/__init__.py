@@ -1,0 +1,8 @@
+# coding: utf-8
+
+# import models into model package
+from openapi_server.models.managed_backup_short_term_retention_policy import ManagedBackupShortTermRetentionPolicy
+from openapi_server.models.managed_backup_short_term_retention_policy_list_result import ManagedBackupShortTermRetentionPolicyListResult
+from openapi_server.models.managed_backup_short_term_retention_policy_properties import ManagedBackupShortTermRetentionPolicyProperties
+from openapi_server.models.proxy_resource import ProxyResource
+from openapi_server.models.resource import Resource

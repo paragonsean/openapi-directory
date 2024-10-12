@@ -1,0 +1,101 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIAvailabilityStatus.h \
+    $${PWD}/OAIAvailabilityStatusListResult.h \
+    $${PWD}/OAIAvailabilityStatus_properties.h \
+    $${PWD}/OAIAvailabilityStatus_properties_recentlyResolved.h \
+    $${PWD}/OAIEmergingIssue.h \
+    $${PWD}/OAIEmergingIssueImpact.h \
+    $${PWD}/OAIEmergingIssueListResult.h \
+    $${PWD}/OAIEmergingIssuesGetResult.h \
+    $${PWD}/OAIErrorResponse.h \
+    $${PWD}/OAIEvent.h \
+    $${PWD}/OAIEvents.h \
+    $${PWD}/OAIFaq.h \
+    $${PWD}/OAIImpact.h \
+    $${PWD}/OAIImpactedRegion.h \
+    $${PWD}/OAIImpactedResourceListResult.h \
+    $${PWD}/OAIImpactedResourceStatus.h \
+    $${PWD}/OAIImpactedServiceRegion.h \
+    $${PWD}/OAILink.h \
+    $${PWD}/OAILink_displayText.h \
+    $${PWD}/OAIMetadataEntity.h \
+    $${PWD}/OAIMetadataEntityListResult.h \
+    $${PWD}/OAIMetadataEntityProperties.h \
+    $${PWD}/OAIMetadataSupportedValueDetail.h \
+    $${PWD}/OAIOperation.h \
+    $${PWD}/OAIOperationListResult.h \
+    $${PWD}/OAIOperation_display.h \
+    $${PWD}/OAIRecommendedAction.h \
+    $${PWD}/OAIServiceImpactingEvent.h \
+    $${PWD}/OAIServiceImpactingEvent_incidentProperties.h \
+    $${PWD}/OAIServiceImpactingEvent_status.h \
+    $${PWD}/OAIStatusActiveEvent.h \
+    $${PWD}/OAIStatusBanner.h \
+    $${PWD}/OAIUpdate.h \
+# APIs
+    $${PWD}/OAIAvailabilityStatusesApi.h \
+    $${PWD}/OAIEmergingIssuesApi.h \
+    $${PWD}/OAIEventsApi.h \
+    $${PWD}/OAIImpactedResourcesApi.h \
+    $${PWD}/OAIMetadataApi.h \
+    $${PWD}/OAIOperationsApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIAvailabilityStatus.cpp \
+    $${PWD}/OAIAvailabilityStatusListResult.cpp \
+    $${PWD}/OAIAvailabilityStatus_properties.cpp \
+    $${PWD}/OAIAvailabilityStatus_properties_recentlyResolved.cpp \
+    $${PWD}/OAIEmergingIssue.cpp \
+    $${PWD}/OAIEmergingIssueImpact.cpp \
+    $${PWD}/OAIEmergingIssueListResult.cpp \
+    $${PWD}/OAIEmergingIssuesGetResult.cpp \
+    $${PWD}/OAIErrorResponse.cpp \
+    $${PWD}/OAIEvent.cpp \
+    $${PWD}/OAIEvents.cpp \
+    $${PWD}/OAIFaq.cpp \
+    $${PWD}/OAIImpact.cpp \
+    $${PWD}/OAIImpactedRegion.cpp \
+    $${PWD}/OAIImpactedResourceListResult.cpp \
+    $${PWD}/OAIImpactedResourceStatus.cpp \
+    $${PWD}/OAIImpactedServiceRegion.cpp \
+    $${PWD}/OAILink.cpp \
+    $${PWD}/OAILink_displayText.cpp \
+    $${PWD}/OAIMetadataEntity.cpp \
+    $${PWD}/OAIMetadataEntityListResult.cpp \
+    $${PWD}/OAIMetadataEntityProperties.cpp \
+    $${PWD}/OAIMetadataSupportedValueDetail.cpp \
+    $${PWD}/OAIOperation.cpp \
+    $${PWD}/OAIOperationListResult.cpp \
+    $${PWD}/OAIOperation_display.cpp \
+    $${PWD}/OAIRecommendedAction.cpp \
+    $${PWD}/OAIServiceImpactingEvent.cpp \
+    $${PWD}/OAIServiceImpactingEvent_incidentProperties.cpp \
+    $${PWD}/OAIServiceImpactingEvent_status.cpp \
+    $${PWD}/OAIStatusActiveEvent.cpp \
+    $${PWD}/OAIStatusBanner.cpp \
+    $${PWD}/OAIUpdate.cpp \
+# APIs
+    $${PWD}/OAIAvailabilityStatusesApi.cpp \
+    $${PWD}/OAIEmergingIssuesApi.cpp \
+    $${PWD}/OAIEventsApi.cpp \
+    $${PWD}/OAIImpactedResourcesApi.cpp \
+    $${PWD}/OAIMetadataApi.cpp \
+    $${PWD}/OAIOperationsApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

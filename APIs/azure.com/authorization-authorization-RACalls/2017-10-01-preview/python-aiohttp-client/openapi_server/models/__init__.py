@@ -1,0 +1,9 @@
+# coding: utf-8
+
+# import models into model package
+from openapi_server.models.role_assignment import RoleAssignment
+from openapi_server.models.role_assignment_create_parameters import RoleAssignmentCreateParameters
+from openapi_server.models.role_assignment_filter import RoleAssignmentFilter
+from openapi_server.models.role_assignment_list_result import RoleAssignmentListResult
+from openapi_server.models.role_assignment_properties import RoleAssignmentProperties
+from openapi_server.models.role_assignment_properties_with_scope import RoleAssignmentPropertiesWithScope

@@ -1,0 +1,79 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIDataSource.h \
+    $${PWD}/OAIDataSourceFilter.h \
+    $${PWD}/OAIDataSourceKind.h \
+    $${PWD}/OAIDataSourceListResult.h \
+    $${PWD}/OAIIntelligencePack.h \
+    $${PWD}/OAILinkedService.h \
+    $${PWD}/OAILinkedServiceListResult.h \
+    $${PWD}/OAILinkedServiceProperties.h \
+    $${PWD}/OAIManagementGroup.h \
+    $${PWD}/OAIManagementGroupProperties.h \
+    $${PWD}/OAIMetricName.h \
+    $${PWD}/OAIOperation.h \
+    $${PWD}/OAIOperationListResult.h \
+    $${PWD}/OAIOperation_display.h \
+    $${PWD}/OAIProxyResource.h \
+    $${PWD}/OAIResource.h \
+    $${PWD}/OAISharedKeys.h \
+    $${PWD}/OAISku.h \
+    $${PWD}/OAIUsageMetric.h \
+    $${PWD}/OAIWorkspace.h \
+    $${PWD}/OAIWorkspaceListManagementGroupsResult.h \
+    $${PWD}/OAIWorkspaceListResult.h \
+    $${PWD}/OAIWorkspaceListUsagesResult.h \
+    $${PWD}/OAIWorkspaceProperties.h \
+# APIs
+    $${PWD}/OAIDataSourcesApi.h \
+    $${PWD}/OAILinkedServicesApi.h \
+    $${PWD}/OAIOperationsApi.h \
+    $${PWD}/OAIWorkspacesApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIDataSource.cpp \
+    $${PWD}/OAIDataSourceFilter.cpp \
+    $${PWD}/OAIDataSourceKind.cpp \
+    $${PWD}/OAIDataSourceListResult.cpp \
+    $${PWD}/OAIIntelligencePack.cpp \
+    $${PWD}/OAILinkedService.cpp \
+    $${PWD}/OAILinkedServiceListResult.cpp \
+    $${PWD}/OAILinkedServiceProperties.cpp \
+    $${PWD}/OAIManagementGroup.cpp \
+    $${PWD}/OAIManagementGroupProperties.cpp \
+    $${PWD}/OAIMetricName.cpp \
+    $${PWD}/OAIOperation.cpp \
+    $${PWD}/OAIOperationListResult.cpp \
+    $${PWD}/OAIOperation_display.cpp \
+    $${PWD}/OAIProxyResource.cpp \
+    $${PWD}/OAIResource.cpp \
+    $${PWD}/OAISharedKeys.cpp \
+    $${PWD}/OAISku.cpp \
+    $${PWD}/OAIUsageMetric.cpp \
+    $${PWD}/OAIWorkspace.cpp \
+    $${PWD}/OAIWorkspaceListManagementGroupsResult.cpp \
+    $${PWD}/OAIWorkspaceListResult.cpp \
+    $${PWD}/OAIWorkspaceListUsagesResult.cpp \
+    $${PWD}/OAIWorkspaceProperties.cpp \
+# APIs
+    $${PWD}/OAIDataSourcesApi.cpp \
+    $${PWD}/OAILinkedServicesApi.cpp \
+    $${PWD}/OAIOperationsApi.cpp \
+    $${PWD}/OAIWorkspacesApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp
