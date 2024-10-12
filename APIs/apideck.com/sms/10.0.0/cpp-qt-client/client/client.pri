@@ -1,0 +1,83 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIBadRequestResponse.h \
+    $${PWD}/OAIBadRequestResponse_detail.h \
+    $${PWD}/OAICreateMessageResponse.h \
+    $${PWD}/OAICurrency.h \
+    $${PWD}/OAICustomField.h \
+    $${PWD}/OAICustomField_value.h \
+    $${PWD}/OAIDeleteMessageResponse.h \
+    $${PWD}/OAIEmail.h \
+    $${PWD}/OAIError.h \
+    $${PWD}/OAIGetMessageResponse.h \
+    $${PWD}/OAIGetMessagesResponse.h \
+    $${PWD}/OAILinks.h \
+    $${PWD}/OAIMessage.h \
+    $${PWD}/OAIMeta.h \
+    $${PWD}/OAIMeta_cursors.h \
+    $${PWD}/OAINotFoundResponse.h \
+    $${PWD}/OAINotFoundResponse_detail.h \
+    $${PWD}/OAINotImplementedResponse.h \
+    $${PWD}/OAINotImplementedResponse_detail.h \
+    $${PWD}/OAIPaymentRequiredResponse.h \
+    $${PWD}/OAIPrice.h \
+    $${PWD}/OAITooManyRequestsResponse.h \
+    $${PWD}/OAITooManyRequestsResponse_detail.h \
+    $${PWD}/OAIUnauthorizedResponse.h \
+    $${PWD}/OAIUnexpectedErrorResponse.h \
+    $${PWD}/OAIUnexpectedErrorResponse_detail.h \
+    $${PWD}/OAIUnifiedId.h \
+    $${PWD}/OAIUnprocessableResponse.h \
+    $${PWD}/OAIUpdateMessageResponse.h \
+# APIs
+    $${PWD}/OAIMessagesApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIBadRequestResponse.cpp \
+    $${PWD}/OAIBadRequestResponse_detail.cpp \
+    $${PWD}/OAICreateMessageResponse.cpp \
+    $${PWD}/OAICurrency.cpp \
+    $${PWD}/OAICustomField.cpp \
+    $${PWD}/OAICustomField_value.cpp \
+    $${PWD}/OAIDeleteMessageResponse.cpp \
+    $${PWD}/OAIEmail.cpp \
+    $${PWD}/OAIError.cpp \
+    $${PWD}/OAIGetMessageResponse.cpp \
+    $${PWD}/OAIGetMessagesResponse.cpp \
+    $${PWD}/OAILinks.cpp \
+    $${PWD}/OAIMessage.cpp \
+    $${PWD}/OAIMeta.cpp \
+    $${PWD}/OAIMeta_cursors.cpp \
+    $${PWD}/OAINotFoundResponse.cpp \
+    $${PWD}/OAINotFoundResponse_detail.cpp \
+    $${PWD}/OAINotImplementedResponse.cpp \
+    $${PWD}/OAINotImplementedResponse_detail.cpp \
+    $${PWD}/OAIPaymentRequiredResponse.cpp \
+    $${PWD}/OAIPrice.cpp \
+    $${PWD}/OAITooManyRequestsResponse.cpp \
+    $${PWD}/OAITooManyRequestsResponse_detail.cpp \
+    $${PWD}/OAIUnauthorizedResponse.cpp \
+    $${PWD}/OAIUnexpectedErrorResponse.cpp \
+    $${PWD}/OAIUnexpectedErrorResponse_detail.cpp \
+    $${PWD}/OAIUnifiedId.cpp \
+    $${PWD}/OAIUnprocessableResponse.cpp \
+    $${PWD}/OAIUpdateMessageResponse.cpp \
+# APIs
+    $${PWD}/OAIMessagesApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

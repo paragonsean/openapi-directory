@@ -1,0 +1,95 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIBCADefinition.h \
+    $${PWD}/OAIBCADefinitionMeta.h \
+    $${PWD}/OAIBCAMarketingState_inner.h \
+    $${PWD}/OAIBCA_inner.h \
+    $${PWD}/OAIBrand_inner.h \
+    $${PWD}/OAIBrand_inner_1.h \
+    $${PWD}/OAIBrand_inner_2.h \
+    $${PWD}/OAIBrand_inner_3.h \
+    $${PWD}/OAICCCDefinition.h \
+    $${PWD}/OAICCCDefinitionMeta.h \
+    $${PWD}/OAICCCMarketingState_inner.h \
+    $${PWD}/OAICCC_inner.h \
+    $${PWD}/OAIErrorDefinition400.h \
+    $${PWD}/OAIErrorDefinition408.h \
+    $${PWD}/OAIErrorDefinition429.h \
+    $${PWD}/OAIErrorDefinition500.h \
+    $${PWD}/OAIErrorDefinition503.h \
+    $${PWD}/OAIFeeChargeCap_inner.h \
+    $${PWD}/OAIFeeChargeDetail_inner.h \
+    $${PWD}/OAIMetaDefinition.h \
+    $${PWD}/OAIOtherFeeType_inner.h \
+    $${PWD}/OAIOtherFeesCharges_inner.h \
+    $${PWD}/OAIPCADefinition.h \
+    $${PWD}/OAIPCADefinitionMeta.h \
+    $${PWD}/OAIPCAMarketingState_inner.h \
+    $${PWD}/OAIPCA_inner.h \
+    $${PWD}/OAIRepaymentHoliday_inner.h \
+    $${PWD}/OAIRepayment_inner.h \
+    $${PWD}/OAISMELendingDefinition.h \
+    $${PWD}/OAISMELendingDefinitionMeta.h \
+    $${PWD}/OAISMELoanMarketingState_inner.h \
+    $${PWD}/OAISMELoan_inner.h \
+# APIs
+    $${PWD}/OAIProductsBCAApi.h \
+    $${PWD}/OAIProductsCommercialCreditCardsApi.h \
+    $${PWD}/OAIProductsPCAApi.h \
+    $${PWD}/OAIProductsSMELendingApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIBCADefinition.cpp \
+    $${PWD}/OAIBCADefinitionMeta.cpp \
+    $${PWD}/OAIBCAMarketingState_inner.cpp \
+    $${PWD}/OAIBCA_inner.cpp \
+    $${PWD}/OAIBrand_inner.cpp \
+    $${PWD}/OAIBrand_inner_1.cpp \
+    $${PWD}/OAIBrand_inner_2.cpp \
+    $${PWD}/OAIBrand_inner_3.cpp \
+    $${PWD}/OAICCCDefinition.cpp \
+    $${PWD}/OAICCCDefinitionMeta.cpp \
+    $${PWD}/OAICCCMarketingState_inner.cpp \
+    $${PWD}/OAICCC_inner.cpp \
+    $${PWD}/OAIErrorDefinition400.cpp \
+    $${PWD}/OAIErrorDefinition408.cpp \
+    $${PWD}/OAIErrorDefinition429.cpp \
+    $${PWD}/OAIErrorDefinition500.cpp \
+    $${PWD}/OAIErrorDefinition503.cpp \
+    $${PWD}/OAIFeeChargeCap_inner.cpp \
+    $${PWD}/OAIFeeChargeDetail_inner.cpp \
+    $${PWD}/OAIMetaDefinition.cpp \
+    $${PWD}/OAIOtherFeeType_inner.cpp \
+    $${PWD}/OAIOtherFeesCharges_inner.cpp \
+    $${PWD}/OAIPCADefinition.cpp \
+    $${PWD}/OAIPCADefinitionMeta.cpp \
+    $${PWD}/OAIPCAMarketingState_inner.cpp \
+    $${PWD}/OAIPCA_inner.cpp \
+    $${PWD}/OAIRepaymentHoliday_inner.cpp \
+    $${PWD}/OAIRepayment_inner.cpp \
+    $${PWD}/OAISMELendingDefinition.cpp \
+    $${PWD}/OAISMELendingDefinitionMeta.cpp \
+    $${PWD}/OAISMELoanMarketingState_inner.cpp \
+    $${PWD}/OAISMELoan_inner.cpp \
+# APIs
+    $${PWD}/OAIProductsBCAApi.cpp \
+    $${PWD}/OAIProductsCommercialCreditCardsApi.cpp \
+    $${PWD}/OAIProductsPCAApi.cpp \
+    $${PWD}/OAIProductsSMELendingApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

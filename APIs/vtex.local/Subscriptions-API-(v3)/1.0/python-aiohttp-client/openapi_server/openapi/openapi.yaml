@@ -1,0 +1,4562 @@
+openapi: 3.0.0
+info:
+  contact: {}
+  description: "\r\nA **Subscription** is a list of items (SKUs) tied to certain recurring\
+    \ purchase settings:\r\n\r\n- User profile\r\n- Address\r\n- Payment method\r\n\
+    - Frequency\r\n- Cycle\r\n\r\nOnce you have [configured subscriptions](https://help.vtex.com/tutorial/how-to-configure-subscriptions%20--1FA9dfE7vJqxBna9Nft5Sj)\
+    \ in your store, the Subscriptions API allows you to create, manage and monitor\
+    \ your customers' subscriptions.\r\n\r\n![image](https://user-images.githubusercontent.com/77292838/213024675-9407863b-0c55-4282-9442-306352716abe.png)\r\
+    \n\r\nTo read more about the Subscriptions feature, check our article [How Subscription\
+    \ works](https://help.vtex.com/tutorial/how-subscriptions-work--frequentlyAskedQuestions_4453)."
+  title: Subscriptions API (v3)
+  version: "1.0"
+  x-origin:
+  - format: openapi
+    url: https://raw.githubusercontent.com/vtex/openapi-schemas/master/VTEX - Subscriptions
+      API (v3).json
+    version: "3.0"
+  x-providerName: vtex.local
+  x-serviceName: Subscriptions-API-(v3)
+servers:
+- url: https://vtex.local
+- description: VTEX server url
+  url: "https://{accountName}.{environment}.com.br"
+  variables:
+    accountName:
+      default: "{accountName}"
+      description: Name of the VTEX account. Used as part of the URL.
+    environment:
+      default: "{environment}"
+      description: Environment to use. Used as part of the URL.
+security:
+- appKey: []
+  appToken: []
+tags:
+- name: Cycles
+- name: Plans
+- name: Reports
+- name: Subscriptions
+paths:
+  /api/rns/pub/cycles:
+    get:
+      description: List cycles filtering by some arguments.
+      operationId: api_rns_pub_cycles_get
+      parameters:
+      - description: Lower limit for the date of creation of the cycle
+        explode: true
+        in: query
+        name: beginDate
+        required: false
+        schema:
+          nullable: true
+          type: string
+        style: form
+      - description: Upper limit for the date of creation of the cycle
+        explode: true
+        in: query
+        name: endDate
+        required: false
+        schema:
+          nullable: true
+          type: string
+        style: form
+      - description: Id from the subscription that generated the cycle
+        explode: true
+        in: query
+        name: subscriptionId
+        required: false
+        schema:
+          nullable: true
+          type: string
+        style: form
+      - description: Customer that owns the subscription. Defaults to the current
+          logged user
+        explode: true
+        in: query
+        name: customerEmail
+        required: false
+        schema:
+          nullable: true
+          type: string
+        style: form
+      - description: Current cycle status
+        explode: true
+        in: query
+        name: status
+        required: false
+        schema:
+          nullable: true
+          type: string
+        style: form
+      - description: Page used for pagination
+        explode: true
+        in: query
+        name: page
+        required: false
+        schema:
+          default: 1
+          format: int32
+          type: integer
+        style: form
+      - description: Page size used for pagination
+        explode: true
+        in: query
+        name: size
+        required: false
+        schema:
+          default: 15
+          format: int32
+          type: integer
+        style: form
+      - description: Type of the content being sent.
+        explode: false
+        in: header
+        name: Content-Type
+        required: true
+        schema:
+          example: application/json
+          type: string
+        style: simple
+      - description: HTTP Client Negotiation Accept Header. Indicates the types of
+          responses the client can understand.
+        explode: false
+        in: header
+        name: Accept
+        required: true
+        schema:
+          example: application/json
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/SubscriptionCycleResponse'
+                type: array
+            text/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/SubscriptionCycleResponse'
+                type: array
+            text/plain:
+              schema:
+                items:
+                  $ref: '#/components/schemas/SubscriptionCycleResponse'
+                type: array
+          description: OK
+      summary: List cycles
+      tags:
+      - Cycles
+      x-openapi-router-controller: openapi_server.controllers.cycles_controller
+  /api/rns/pub/cycles/{cycleId}:
+    get:
+      description: Retrieve a specific cycle by its ID.
+      operationId: api_rns_pub_cycles_cycle_id_get
+      parameters:
+      - description: ID from the desired cycle.
+        explode: false
+        in: path
+        name: cycleId
+        required: true
+        schema:
+          nullable: true
+          type: string
+        style: simple
+      - description: Type of the content being sent.
+        explode: false
+        in: header
+        name: Content-Type
+        required: true
+        schema:
+          example: application/json
+          type: string
+        style: simple
+      - description: HTTP Client Negotiation Accept Header. Indicates the types of
+          responses the client can understand.
+        explode: false
+        in: header
+        name: Accept
+        required: true
+        schema:
+          example: application/json
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubscriptionCycleResponse'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/SubscriptionCycleResponse'
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/SubscriptionCycleResponse'
+          description: OK
+      summary: Get cycle details
+      tags:
+      - Cycles
+      x-openapi-router-controller: openapi_server.controllers.cycles_controller
+  /api/rns/pub/cycles/{cycleId}/retry:
+    post:
+      description: "Every subscription order has an execution count called cycle,\
+        \ which determines the position of an order counting from when the shopper\
+        \ subscribed. This endpoint reruns a cycle that is currently in error state."
+      operationId: api_rns_pub_cycles_cycle_id_retry_post
+      parameters:
+      - description: Id from the cycle that will be retried
+        explode: false
+        in: path
+        name: cycleId
+        required: true
+        schema:
+          nullable: true
+          type: string
+        style: simple
+      - description: Type of the content being sent.
+        explode: false
+        in: header
+        name: Content-Type
+        required: true
+        schema:
+          example: application/json
+          type: string
+        style: simple
+      - description: HTTP Client Negotiation Accept Header. Indicates the types of
+          responses the client can understand.
+        explode: false
+        in: header
+        name: Accept
+        required: true
+        schema:
+          example: application/json
+          type: string
+        style: simple
+      responses:
+        "200":
+          description: OK
+      summary: Retry cycle
+      tags:
+      - Cycles
+      x-openapi-router-controller: openapi_server.controllers.cycles_controller
+  /api/rns/pub/subscriptions:
+    get:
+      description: List subscriptions filtering by some arguments.
+      operationId: api_rns_pub_subscriptions_get
+      parameters:
+      - description: Customer that owns the subscription. Defaults to the current
+          logged user.
+        explode: true
+        in: query
+        name: customerEmail
+        required: false
+        schema:
+          nullable: true
+          type: string
+        style: form
+      - description: Current subscription status
+        explode: true
+        in: query
+        name: status
+        required: false
+        schema:
+          nullable: true
+          type: string
+        style: form
+      - description: Id from the address used as shipping address
+        explode: true
+        in: query
+        name: addressId
+        required: false
+        schema:
+          nullable: true
+          type: string
+        style: form
+      - description: Id from the payment used as payment method
+        explode: true
+        in: query
+        name: paymentId
+        required: false
+        schema:
+          nullable: true
+          type: string
+        style: form
+      - description: Id from the plan that the subscription belongs to
+        explode: true
+        in: query
+        name: planId
+        required: false
+        schema:
+          nullable: true
+          type: string
+        style: form
+      - description: Date for the next cycle
+        explode: true
+        in: query
+        name: nextPurchaseDate
+        required: false
+        schema:
+          nullable: true
+          type: string
+        style: form
+      - description: Id from the order that generated the subscription
+        explode: true
+        in: query
+        name: originalOrderId
+        required: false
+        schema:
+          nullable: true
+          type: string
+        style: form
+      - description: Page used for pagination
+        explode: true
+        in: query
+        name: page
+        required: false
+        schema:
+          default: 1
+          format: int32
+          type: integer
+        style: form
+      - description: Page size used for pagination
+        explode: true
+        in: query
+        name: size
+        required: false
+        schema:
+          default: 15
+          format: int32
+          type: integer
+        style: form
+      - description: Type of the content being sent.
+        explode: false
+        in: header
+        name: Content-Type
+        required: true
+        schema:
+          example: application/json
+          type: string
+        style: simple
+      - description: HTTP Client Negotiation Accept Header. Indicates the types of
+          responses the client can understand.
+        explode: false
+        in: header
+        name: Accept
+        required: true
+        schema:
+          example: application/json
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/SubscriptionGroupResponse'
+                type: array
+            text/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/SubscriptionGroupResponse'
+                type: array
+            text/plain:
+              schema:
+                items:
+                  $ref: '#/components/schemas/SubscriptionGroupResponse'
+                type: array
+          description: Requested subscriptions
+      summary: List subscriptions
+      tags:
+      - Subscriptions
+      x-openapi-router-controller: openapi_server.controllers.subscriptions_controller
+    post:
+      description: Create a new subscription.
+      operationId: api_rns_pub_subscriptions_post
+      parameters:
+      - description: Type of the content being sent.
+        explode: false
+        in: header
+        name: Content-Type
+        required: true
+        schema:
+          example: application/json
+          type: string
+        style: simple
+      - description: HTTP Client Negotiation Accept Header. Indicates the types of
+          responses the client can understand.
+        explode: false
+        in: header
+        name: Accept
+        required: true
+        schema:
+          example: application/json
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/SubscriptionGroupRequest'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SubscriptionGroupRequest'
+          application/json-patch+json:
+            schema:
+              $ref: '#/components/schemas/SubscriptionGroupRequest'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/SubscriptionGroupRequest'
+        x-body-name: body
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubscriptionGroupResponse'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/SubscriptionGroupResponse'
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/SubscriptionGroupResponse'
+          description: Subscription created
+      summary: Create subscription
+      tags:
+      - Subscriptions
+      x-openapi-router-controller: openapi_server.controllers.subscriptions_controller
+      x-codegen-request-body-name: body
+  /api/rns/pub/subscriptions/simulate:
+    post:
+      description: Simulates an order made by subscriptions on checkout and retrieves
+        the current price for items and shipping.
+      operationId: api_rns_pub_subscriptions_simulate_post
+      parameters:
+      - description: Type of the content being sent.
+        explode: false
+        in: header
+        name: Content-Type
+        required: true
+        schema:
+          example: application/json
+          type: string
+        style: simple
+      - description: HTTP Client Negotiation Accept Header. Indicates the types of
+          responses the client can understand.
+        explode: false
+        in: header
+        name: Accept
+        required: true
+        schema:
+          example: application/json
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/SubscriptionGroupRequest'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SubscriptionGroupRequest'
+          application/json-patch+json:
+            schema:
+              $ref: '#/components/schemas/SubscriptionGroupRequest'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/SubscriptionGroupRequest'
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SimulateResponseVO'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/SimulateResponseVO'
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/SimulateResponseVO'
+          description: Simulation result
+      summary: Calculate the current prices for the provided subscription template
+      tags:
+      - Subscriptions
+      x-openapi-router-controller: openapi_server.controllers.subscriptions_controller
+      x-codegen-request-body-name: body
+  /api/rns/pub/subscriptions/{id}:
+    get:
+      description: Retrieve a specific subscription by its ID.
+      operationId: api_rns_pub_subscriptions_id_get
+      parameters:
+      - description: ID from the target subscription.
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          nullable: true
+          type: string
+        style: simple
+      - description: Type of the content being sent.
+        explode: false
+        in: header
+        name: Content-Type
+        required: true
+        schema:
+          example: application/json
+          type: string
+        style: simple
+      - description: HTTP Client Negotiation Accept Header. Indicates the types of
+          responses the client can understand.
+        explode: false
+        in: header
+        name: Accept
+        required: true
+        schema:
+          example: application/json
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubscriptionGroupResponse'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/SubscriptionGroupResponse'
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/SubscriptionGroupResponse'
+          description: Requested subscription
+      summary: Get subscription details
+      tags:
+      - Subscriptions
+      x-openapi-router-controller: openapi_server.controllers.subscriptions_controller
+    patch:
+      description: Update a specific subscription.
+      operationId: api_rns_pub_subscriptions_id_patch
+      parameters:
+      - description: ID from the given subscription.
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          example: "4002961"
+          nullable: false
+          type: string
+        style: simple
+      - description: Type of the content being sent.
+        explode: false
+        in: header
+        name: Content-Type
+        required: true
+        schema:
+          example: application/json
+          type: string
+        style: simple
+      - description: HTTP Client Negotiation Accept Header. Indicates the types of
+          responses the client can understand.
+        explode: false
+        in: header
+        name: Accept
+        required: true
+        schema:
+          example: application/json
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/SubscriptionUpdateRequestV3'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SubscriptionUpdateRequestV3'
+          application/json-patch+json:
+            schema:
+              $ref: '#/components/schemas/SubscriptionUpdateRequestV3'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/SubscriptionUpdateRequestV3'
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubscriptionGroupResponse'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/SubscriptionGroupResponse'
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/SubscriptionGroupResponse'
+          description: Subscription successfully updated
+      summary: Update subscription
+      tags:
+      - Subscriptions
+      x-openapi-router-controller: openapi_server.controllers.subscriptions_controller
+      x-codegen-request-body-name: body
+  /api/rns/pub/subscriptions/{id}/items:
+    post:
+      description: Add a new item to a given subscription.
+      operationId: api_rns_pub_subscriptions_id_items_post
+      parameters:
+      - description: ID from the target subscription
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          nullable: true
+          type: string
+        style: simple
+      - description: Type of the content being sent.
+        explode: false
+        in: header
+        name: Content-Type
+        required: true
+        schema:
+          example: application/json
+          type: string
+        style: simple
+      - description: HTTP Client Negotiation Accept Header. Indicates the types of
+          responses the client can understand.
+        explode: false
+        in: header
+        name: Accept
+        required: true
+        schema:
+          example: application/json
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/SubscriptionThinItemRequest'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SubscriptionThinItemRequest'
+          application/json-patch+json:
+            schema:
+              $ref: '#/components/schemas/SubscriptionThinItemRequest'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/SubscriptionThinItemRequest'
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubscriptionGroupResponse'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/SubscriptionGroupResponse'
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/SubscriptionGroupResponse'
+          description: Subscription successfully updated
+      summary: Add item to subscription
+      tags:
+      - Subscriptions
+      x-openapi-router-controller: openapi_server.controllers.subscriptions_controller
+      x-codegen-request-body-name: body
+  /api/rns/pub/subscriptions/{id}/items/{itemId}:
+    delete:
+      description: Removes a specific item from a given subscription
+      operationId: api_rns_pub_subscriptions_id_items_item_id_delete
+      parameters:
+      - description: Id from the target subscription
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          nullable: true
+          type: string
+        style: simple
+      - description: Id from the subscription item that will be removed
+        explode: false
+        in: path
+        name: itemId
+        required: true
+        schema:
+          nullable: true
+          type: string
+        style: simple
+      - description: Type of the content being sent.
+        explode: false
+        in: header
+        name: Content-Type
+        required: true
+        schema:
+          example: application/json
+          type: string
+        style: simple
+      - description: HTTP Client Negotiation Accept Header. Indicates the types of
+          responses the client can understand.
+        explode: false
+        in: header
+        name: Accept
+        required: true
+        schema:
+          example: application/json
+          type: string
+        style: simple
+      responses:
+        "200":
+          description: Success
+      summary: Remove items from a subscription.
+      tags:
+      - Subscriptions
+      x-openapi-router-controller: openapi_server.controllers.subscriptions_controller
+    patch:
+      description: Edit a given item on a specific subscription
+      operationId: api_rns_pub_subscriptions_id_items_item_id_patch
+      parameters:
+      - description: Id from the target subscription
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          nullable: true
+          type: string
+        style: simple
+      - description: Id from the target item
+        explode: false
+        in: path
+        name: itemId
+        required: true
+        schema:
+          nullable: true
+          type: string
+        style: simple
+      - description: Type of the content being sent.
+        explode: false
+        in: header
+        name: Content-Type
+        required: true
+        schema:
+          example: application/json
+          type: string
+        style: simple
+      - description: HTTP Client Negotiation Accept Header. Indicates the types of
+          responses the client can understand.
+        explode: false
+        in: header
+        name: Accept
+        required: true
+        schema:
+          example: application/json
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/UpdateItemInput'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateItemInput'
+          application/json-patch+json:
+            schema:
+              $ref: '#/components/schemas/UpdateItemInput'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/UpdateItemInput'
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubscriptionGroupResponse'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/SubscriptionGroupResponse'
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/SubscriptionGroupResponse'
+          description: Subscription updated
+      summary: Edit items on a subscription.
+      tags:
+      - Subscriptions
+      x-openapi-router-controller: openapi_server.controllers.subscriptions_controller
+      x-codegen-request-body-name: body
+  /api/rns/pub/subscriptions/{id}/simulate:
+    post:
+      description: Simulates an order made by the specific subscription on checkout
+        and retrieves the current price for items and shipping.
+      operationId: api_rns_pub_subscriptions_id_simulate_post
+      parameters:
+      - description: Id from the target subscription
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          nullable: true
+          type: string
+        style: simple
+      - description: Type of the content being sent.
+        explode: false
+        in: header
+        name: Content-Type
+        required: true
+        schema:
+          example: application/json
+          type: string
+        style: simple
+      - description: HTTP Client Negotiation Accept Header. Indicates the types of
+          responses the client can understand.
+        explode: false
+        in: header
+        name: Accept
+        required: true
+        schema:
+          example: application/json
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SimulateResponseVO'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/SimulateResponseVO'
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/SimulateResponseVO'
+          description: Simulation result
+      summary: Calculate the current prices for a specific subscription
+      tags:
+      - Subscriptions
+      x-openapi-router-controller: openapi_server.controllers.subscriptions_controller
+  /api/rns/pub/subscriptions/{subscriptionId}/conversation-message:
+    get:
+      description: Retrieve all conversation messages sent to a customer regarding
+        a given subscription.
+      operationId: api_rns_pub_subscriptions_subscription_id_conversation_message_get
+      parameters:
+      - description: ID of the subscription.
+        explode: false
+        in: path
+        name: subscriptionId
+        required: true
+        schema:
+          default: 123456789abc
+          type: string
+        style: simple
+      - description: Type of the content being sent.
+        explode: false
+        in: header
+        name: Content-Type
+        required: true
+        schema:
+          example: application/json
+          type: string
+        style: simple
+      - description: HTTP Client Negotiation Accept Header. Indicates the types of
+          responses the client can understand.
+        explode: false
+        in: header
+        name: Accept
+        required: true
+        schema:
+          example: application/json
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              example:
+              - attachmentNames:
+                - string
+                body: string
+                date: 2021-08-31T22:50:53.564Z
+                firstWords: string
+                from:
+                  aliasMaskType: string
+                  conversationRelatedTo: string
+                  conversationSubject: string
+                  email: string
+                  emailAlias: string
+                  name: string
+                  role: string
+                hasAttachment: true
+                id: string
+                subject: string
+                to:
+                - aliasMaskType: string
+                  conversationRelatedTo: string
+                  conversationSubject: string
+                  email: string
+                  emailAlias: string
+                  name: string
+                  role: string
+              schema:
+                items:
+                  $ref: '#/components/schemas/_api_rns_pub_subscriptions__subscriptionId__conversation_message_get_200_response_inner'
+                type: array
+          description: ""
+      summary: Get conversation messages
+      tags:
+      - Subscriptions
+      x-openapi-router-controller: openapi_server.controllers.subscriptions_controller
+  /api/rns/pvt/plans:
+    get:
+      description: List plans filtering by some arguments.
+      operationId: api_rns_pvt_plans_get
+      parameters:
+      - description: Filter plans by available periodicity
+        explode: true
+        in: query
+        name: periodicity
+        required: false
+        schema:
+          nullable: true
+          type: string
+        style: form
+      - description: Filter plans by available interval
+        explode: true
+        in: query
+        name: interval
+        required: false
+        schema:
+          nullable: true
+          type: string
+        style: form
+      - description: Page used for pagination
+        explode: true
+        in: query
+        name: page
+        required: false
+        schema:
+          default: 1
+          format: int32
+          type: integer
+        style: form
+      - description: Page size used for pagination
+        explode: true
+        in: query
+        name: size
+        required: false
+        schema:
+          default: 15
+          format: int32
+          type: integer
+        style: form
+      - description: Type of the content being sent.
+        explode: false
+        in: header
+        name: Content-Type
+        required: true
+        schema:
+          example: application/json
+          type: string
+        style: simple
+      - description: HTTP Client Negotiation Accept Header. Indicates the types of
+          responses the client can understand.
+        explode: false
+        in: header
+        name: Accept
+        required: true
+        schema:
+          example: application/json
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/StorePlan'
+                type: array
+            text/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/StorePlan'
+                type: array
+            text/plain:
+              schema:
+                items:
+                  $ref: '#/components/schemas/StorePlan'
+                type: array
+          description: Requested plans
+      summary: List plans
+      tags:
+      - Plans
+      x-openapi-router-controller: openapi_server.controllers.plans_controller
+  /api/rns/pvt/plans/{id}:
+    get:
+      description: This endpoint retrieves a specific plan by its ID.
+      operationId: api_rns_pvt_plans_id_get
+      parameters:
+      - description: Id from the desired plan
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          nullable: true
+          type: string
+        style: simple
+      - description: Type of the content being sent.
+        explode: false
+        in: header
+        name: Content-Type
+        required: true
+        schema:
+          example: application/json
+          type: string
+        style: simple
+      - description: HTTP Client Negotiation Accept Header. Indicates the types of
+          responses the client can understand.
+        explode: false
+        in: header
+        name: Accept
+        required: true
+        schema:
+          example: application/json
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StorePlan'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/StorePlan'
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/StorePlan'
+          description: Requested plan
+      summary: Get plan details
+      tags:
+      - Plans
+      x-openapi-router-controller: openapi_server.controllers.plans_controller
+  /api/rns/pvt/reports:
+    get:
+      description: List all report templates available.
+      operationId: api_rns_pvt_reports_get
+      parameters:
+      - description: Type of the content being sent.
+        explode: false
+        in: header
+        name: Content-Type
+        required: true
+        schema:
+          example: application/json
+          type: string
+        style: simple
+      - description: HTTP Client Negotiation Accept Header. Indicates the types of
+          responses the client can understand.
+        explode: false
+        in: header
+        name: Accept
+        required: true
+        schema:
+          example: application/json
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/SubscriptionReport'
+                type: array
+            text/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/SubscriptionReport'
+                type: array
+            text/plain:
+              schema:
+                items:
+                  $ref: '#/components/schemas/SubscriptionReport'
+                type: array
+          description: Requested report templates
+      summary: List report templates
+      tags:
+      - Reports
+      x-openapi-router-controller: openapi_server.controllers.reports_controller
+  /api/rns/pvt/reports/{reportName}/documents:
+    post:
+      description: "This endpoint creates a new report in the format of a CSV file\
+        \ and sends it via email. You can generate one of the following reports: \n\
+        \n - subscriptionsWithStatus \n\n - subscriptionsScheduledBetweenDate \n\n\
+        \ - subscriptionsUpdatedBetweenDate \n\n - subscriptionsCreatedBetweenDate\
+        \ \n\n - executionsBetweenDate"
+      operationId: api_rns_pvt_reports_report_name_documents_post
+      parameters:
+      - description: "Name of the type of report in wish to generate. The following\
+          \ values are accepted: \n\n - `subscriptionsWithStatus` \n\n - `subscriptionsScheduledBetweenDate`\
+          \ \n\n - `subscriptionsUpdatedBetweenDate` \n\n - `subscriptionsCreatedBetweenDate`\
+          \ \n\n - `executionsBetweenDate`"
+        explode: false
+        in: path
+        name: reportName
+        required: true
+        schema:
+          nullable: true
+          type: string
+        style: simple
+      - description: The report is sent to the email in this field.
+        explode: true
+        in: query
+        name: email
+        required: false
+        schema:
+          default: receiver@email.com
+          nullable: false
+          type: string
+        style: form
+      - description: Start date of the report with the format `yyyy-mm-dd`. This field
+          is required for any type of report.
+        explode: true
+        in: query
+        name: beginDate
+        required: false
+        schema:
+          default: 2022-09-01
+          type: string
+        style: form
+      - description: End date of the report with the format `yyyy-mm-dd`. This field
+          is required for any type of report.
+        explode: true
+        in: query
+        name: endDate
+        required: false
+        schema:
+          default: 2022-10-01
+          type: string
+        style: form
+      - description: Type of the content being sent.
+        explode: false
+        in: header
+        name: Content-Type
+        required: true
+        schema:
+          example: application/json
+          type: string
+        style: simple
+      - description: HTTP Client Negotiation Accept Header. Indicates the types of
+          responses the client can understand.
+        explode: false
+        in: header
+        name: Accept
+        required: true
+        schema:
+          example: application/json
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReportResponse'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ReportResponse'
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ReportResponse'
+          description: Requested report
+      summary: Generate report
+      tags:
+      - Reports
+      x-openapi-router-controller: openapi_server.controllers.reports_controller
+  /api/rns/pvt/reports/{reportName}/documents/{documentId}:
+    get:
+      description: Retrieve a specific report document by its Id.
+      operationId: api_rns_pvt_reports_report_name_documents_document_id_get
+      parameters:
+      - description: Name of the report
+        explode: false
+        in: path
+        name: reportName
+        required: true
+        schema:
+          nullable: true
+          type: string
+        style: simple
+      - description: Id from the desired report document
+        explode: false
+        in: path
+        name: documentId
+        required: true
+        schema:
+          nullable: true
+          type: string
+        style: simple
+      - description: Type of the content being sent.
+        explode: false
+        in: header
+        name: Content-Type
+        required: true
+        schema:
+          example: application/json
+          type: string
+        style: simple
+      - description: HTTP Client Negotiation Accept Header. Indicates the types of
+          responses the client can understand.
+        explode: false
+        in: header
+        name: Accept
+        required: true
+        schema:
+          example: application/json
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReportResponse'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ReportResponse'
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ReportResponse'
+          description: Requested report document
+      summary: Get report document details
+      tags:
+      - Reports
+      x-openapi-router-controller: openapi_server.controllers.reports_controller
+  /api/rns/settings:
+    get:
+      deprecated: false
+      description: List the details of the settings of a given subscription.
+      operationId: get_settings
+      parameters:
+      - description: Type of the content being sent.
+        explode: false
+        in: header
+        name: Content-Type
+        required: true
+        schema:
+          default: application/json
+          type: string
+        style: simple
+      - description: HTTP Client Negotiation Accept Header. Indicates the types of
+          responses the client can understand.
+        explode: false
+        in: header
+        name: Accept
+        required: true
+        schema:
+          default: application/json
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/settings'
+          description: OK
+      summary: Get Subscription Settings
+      tags:
+      - Settings
+      x-openapi-router-controller: openapi_server.controllers.settings_controller
+    post:
+      deprecated: false
+      description: Edits Subscriptions settings in your store.
+      operationId: edit_settings
+      parameters:
+      - description: Type of the content being sent.
+        explode: false
+        in: header
+        name: Content-Type
+        required: true
+        schema:
+          default: application/json
+          type: string
+        style: simple
+      - description: HTTP Client Negotiation Accept Header. Indicates the types of
+          responses the client can understand.
+        explode: false
+        in: header
+        name: Accept
+        required: true
+        schema:
+          default: application/json
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/settings'
+        description: Request body
+        required: true
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/settings'
+          description: OK
+      summary: Edit Subscriptions settings
+      tags:
+      - Settings
+      x-openapi-router-controller: openapi_server.controllers.settings_controller
+      x-codegen-request-body-name: body
+components:
+  schemas:
+    Frequency:
+      additionalProperties: false
+      example:
+        periodicity: 6
+        interval: 0
+        periodicityAsString: periodicityAsString
+      properties:
+        interval:
+          format: int32
+          title: interval
+          type: integer
+        periodicity:
+          $ref: '#/components/schemas/Periodicity'
+        periodicityAsString:
+          nullable: true
+          title: periodicityAsString
+          type: string
+      title: Frequency
+      type: object
+    FrequencyRequest:
+      additionalProperties: false
+      description: Information about subscriptions' recurrence.
+      example:
+        periodicity: MONTHLY
+        interval: 3
+      properties:
+        interval:
+          description: "Time interval configured between subscription orders, which\
+            \ depends on the periodicity. For a `DAILY` periodicity, the value will\
+            \ be days, for `MONTHLY` it will be months, and so on."
+          example: 3
+          format: int32
+          title: interval
+          type: integer
+        periodicity:
+          description: "Defines the subscriptions recurrence period. The possible\
+            \ values are: \r\n- `DAILY` \r\n- `WEEKLY` \r\n- `MONTHLY` \r\n- `YEARLY`"
+          example: MONTHLY
+          nullable: true
+          title: periodicity
+          type: string
+      required:
+      - interval
+      - periodicity
+      title: FrequencyRequest
+      type: object
+    FrequencyResponse:
+      additionalProperties: false
+      example:
+        periodicity: periodicity
+        interval: 6
+      properties:
+        interval:
+          format: int32
+          title: interval
+          type: integer
+        periodicity:
+          nullable: true
+          title: periodicity
+          type: string
+      required:
+      - interval
+      - periodicity
+      title: Frequency
+      type: object
+    ItemAttachment:
+      additionalProperties: false
+      example:
+        name: name
+        content:
+          key: content
+      properties:
+        content:
+          additionalProperties:
+            type: string
+          nullable: true
+          title: content
+          type: object
+        name:
+          nullable: true
+          title: name
+          type: string
+      title: ItemAttachment
+      type: object
+    ItemSimulationStatus:
+      enum:
+      - 0
+      - 1
+      - 2
+      - 3
+      - 4
+      format: int32
+      title: ItemSimulationStatus
+      type: integer
+    LogisticsInfo:
+      additionalProperties: false
+      example:
+        selectedDeliveryChannel: selectedDeliveryChannel
+        deliveryWindow:
+          price: 2
+          startDateUtc: 2000-01-23T04:56:07.000+00:00
+          endDateUtc: 2000-01-23T04:56:07.000+00:00
+        quantity: 5
+        price: 9
+        itemIndex: 7
+        selectedSla: selectedSla
+        pickupId: pickupId
+        shippingEstimate: shippingEstimate
+        lockTtl: lockTtl
+        slAs:
+        - deliveryWindows:
+          - price: 2
+            startDateUtc: 2000-01-23T04:56:07.000+00:00
+            endDateUtc: 2000-01-23T04:56:07.000+00:00
+          - price: 2
+            startDateUtc: 2000-01-23T04:56:07.000+00:00
+            endDateUtc: 2000-01-23T04:56:07.000+00:00
+          availableDeliveryWindows:
+          - price: 2
+            startDateUtc: 2000-01-23T04:56:07.000+00:00
+            endDateUtc: 2000-01-23T04:56:07.000+00:00
+          - price: 2
+            startDateUtc: 2000-01-23T04:56:07.000+00:00
+            endDateUtc: 2000-01-23T04:56:07.000+00:00
+          deliveryChannel: deliveryChannel
+          price: 3
+          pickupPointId: pickupPointId
+          id: id
+          shippingEstimate: shippingEstimate
+          lockTtl: lockTtl
+        - deliveryWindows:
+          - price: 2
+            startDateUtc: 2000-01-23T04:56:07.000+00:00
+            endDateUtc: 2000-01-23T04:56:07.000+00:00
+          - price: 2
+            startDateUtc: 2000-01-23T04:56:07.000+00:00
+            endDateUtc: 2000-01-23T04:56:07.000+00:00
+          availableDeliveryWindows:
+          - price: 2
+            startDateUtc: 2000-01-23T04:56:07.000+00:00
+            endDateUtc: 2000-01-23T04:56:07.000+00:00
+          - price: 2
+            startDateUtc: 2000-01-23T04:56:07.000+00:00
+            endDateUtc: 2000-01-23T04:56:07.000+00:00
+          deliveryChannel: deliveryChannel
+          price: 3
+          pickupPointId: pickupPointId
+          id: id
+          shippingEstimate: shippingEstimate
+          lockTtl: lockTtl
+        addressId: addressId
+      properties:
+        addressId:
+          nullable: true
+          title: addressId
+          type: string
+        deliveryWindow:
+          $ref: '#/components/schemas/LogisticsInfoDeliveryWindow'
+        itemIndex:
+          format: int32
+          title: itemIndex
+          type: integer
+        lockTtl:
+          nullable: true
+          title: lockTtl
+          type: string
+        pickupId:
+          nullable: true
+          title: pickupId
+          type: string
+        price:
+          format: int32
+          title: price
+          type: integer
+        quantity:
+          description: Amount of units in the cart.
+          example: 5
+          format: int32
+          title: quantity
+          type: integer
+        selectedDeliveryChannel:
+          nullable: true
+          title: selectedDeliveryChannel
+          type: string
+        selectedSla:
+          nullable: true
+          title: selectedSla
+          type: string
+        shippingEstimate:
+          nullable: true
+          title: shippingEstimate
+          type: string
+        slAs:
+          items:
+            $ref: '#/components/schemas/LogisticsInfoSLA'
+          nullable: true
+          title: slAs
+          type: array
+      title: LogisticsInfo
+      type: object
+    LogisticsInfoDeliveryWindow:
+      additionalProperties: false
+      example:
+        price: 2
+        startDateUtc: 2000-01-23T04:56:07.000+00:00
+        endDateUtc: 2000-01-23T04:56:07.000+00:00
+      properties:
+        endDateUtc:
+          format: date-time
+          title: endDateUtc
+          type: string
+        price:
+          format: int64
+          title: price
+          type: integer
+        startDateUtc:
+          format: date-time
+          title: startDateUtc
+          type: string
+      title: LogisticsInfoDeliveryWindow
+      type: object
+    LogisticsInfoSLA:
+      additionalProperties: false
+      example:
+        deliveryWindows:
+        - price: 2
+          startDateUtc: 2000-01-23T04:56:07.000+00:00
+          endDateUtc: 2000-01-23T04:56:07.000+00:00
+        - price: 2
+          startDateUtc: 2000-01-23T04:56:07.000+00:00
+          endDateUtc: 2000-01-23T04:56:07.000+00:00
+        availableDeliveryWindows:
+        - price: 2
+          startDateUtc: 2000-01-23T04:56:07.000+00:00
+          endDateUtc: 2000-01-23T04:56:07.000+00:00
+        - price: 2
+          startDateUtc: 2000-01-23T04:56:07.000+00:00
+          endDateUtc: 2000-01-23T04:56:07.000+00:00
+        deliveryChannel: deliveryChannel
+        price: 3
+        pickupPointId: pickupPointId
+        id: id
+        shippingEstimate: shippingEstimate
+        lockTtl: lockTtl
+      properties:
+        availableDeliveryWindows:
+          items:
+            $ref: '#/components/schemas/LogisticsInfoDeliveryWindow'
+          nullable: true
+          title: availableDeliveryWindows
+          type: array
+        deliveryChannel:
+          nullable: true
+          title: deliveryChannel
+          type: string
+        deliveryWindows:
+          items:
+            $ref: '#/components/schemas/LogisticsInfoDeliveryWindow'
+          nullable: true
+          title: deliveryWindows
+          type: array
+        id:
+          nullable: true
+          title: id
+          type: string
+        lockTtl:
+          nullable: true
+          title: lockTtl
+          type: string
+        pickupPointId:
+          nullable: true
+          title: pickupPointId
+          type: string
+        price:
+          format: int32
+          title: price
+          type: integer
+        shippingEstimate:
+          nullable: true
+          title: shippingEstimate
+          type: string
+      title: LogisticsInfoSLA
+      type: object
+    OrderItem:
+      additionalProperties: false
+      example:
+        seller: seller
+        sellingPrice: 5
+        attachments:
+        - name: name
+          content:
+            key: content
+        - name: name
+          content:
+            key: content
+        quantity: 5
+        unitMultiplier: 5.637376656633329
+        price: 0
+        name: name
+        isGift: true
+        priceTags:
+        - identifier: identifier
+          rawValue: 6.027456183070403
+          name: name
+          isPercentual: true
+          valueAsInt: 1
+        - identifier: identifier
+          rawValue: 6.027456183070403
+          name: name
+          isPercentual: true
+          valueAsInt: 1
+        id: id
+      properties:
+        attachments:
+          items:
+            $ref: '#/components/schemas/ItemAttachment'
+          nullable: true
+          title: attachments
+          type: array
+        id:
+          nullable: true
+          title: id
+          type: string
+        isGift:
+          title: isGift
+          type: boolean
+        name:
+          nullable: true
+          title: name
+          type: string
+        price:
+          format: int64
+          nullable: true
+          title: price
+          type: integer
+        priceTags:
+          items:
+            $ref: '#/components/schemas/PriceTag'
+          nullable: true
+          title: priceTags
+          type: array
+        quantity:
+          description: Amount of units in the cart.
+          example: 5
+          format: int32
+          title: quantity
+          type: integer
+        seller:
+          nullable: true
+          title: seller
+          type: string
+        sellingPrice:
+          format: int64
+          nullable: true
+          title: sellingPrice
+          type: integer
+        unitMultiplier:
+          format: double
+          nullable: true
+          title: unitMultiplier
+          type: number
+      title: OrderItem
+      type: object
+    Payment:
+      additionalProperties: false
+      example:
+        parentAccountId: parentAccountId
+        paymentSystem: paymentSystem
+        accountId: accountId
+        installments: 2
+        bin: bin
+        id: id
+        fields:
+        - name: name
+          value: value
+        - name: name
+          value: value
+        value: 7
+        cardNumber: cardNumber
+        url: url
+        group: group
+        referenceValue: 4
+      properties:
+        accountId:
+          nullable: true
+          title: accountId
+          type: string
+        bin:
+          nullable: true
+          title: bin
+          type: string
+        cardNumber:
+          nullable: true
+          title: cardNumber
+          type: string
+        fields:
+          items:
+            $ref: '#/components/schemas/PaymentField'
+          nullable: true
+          title: fields
+          type: array
+        group:
+          nullable: true
+          title: group
+          type: string
+        id:
+          nullable: true
+          title: id
+          type: string
+        installments:
+          format: int32
+          title: installments
+          type: integer
+        parentAccountId:
+          nullable: true
+          title: parentAccountId
+          type: string
+        paymentSystem:
+          nullable: true
+          title: paymentSystem
+          type: string
+        referenceValue:
+          format: int64
+          title: referenceValue
+          type: integer
+        url:
+          nullable: true
+          title: url
+          type: string
+        value:
+          format: int64
+          title: value
+          type: integer
+      title: Payment
+      type: object
+    PaymentData:
+      additionalProperties: false
+      example:
+        payments:
+        - parentAccountId: parentAccountId
+          paymentSystem: paymentSystem
+          accountId: accountId
+          installments: 2
+          bin: bin
+          id: id
+          fields:
+          - name: name
+            value: value
+          - name: name
+            value: value
+          value: 7
+          cardNumber: cardNumber
+          url: url
+          group: group
+          referenceValue: 4
+        - parentAccountId: parentAccountId
+          paymentSystem: paymentSystem
+          accountId: accountId
+          installments: 2
+          bin: bin
+          id: id
+          fields:
+          - name: name
+            value: value
+          - name: name
+            value: value
+          value: 7
+          cardNumber: cardNumber
+          url: url
+          group: group
+          referenceValue: 4
+        transactions:
+        - payments:
+          - parentAccountId: parentAccountId
+            paymentSystem: paymentSystem
+            accountId: accountId
+            installments: 2
+            bin: bin
+            id: id
+            fields:
+            - name: name
+              value: value
+            - name: name
+              value: value
+            value: 7
+            cardNumber: cardNumber
+            url: url
+            group: group
+            referenceValue: 4
+          - parentAccountId: parentAccountId
+            paymentSystem: paymentSystem
+            accountId: accountId
+            installments: 2
+            bin: bin
+            id: id
+            fields:
+            - name: name
+              value: value
+            - name: name
+              value: value
+            value: 7
+            cardNumber: cardNumber
+            url: url
+            group: group
+            referenceValue: 4
+          isActive: true
+        - payments:
+          - parentAccountId: parentAccountId
+            paymentSystem: paymentSystem
+            accountId: accountId
+            installments: 2
+            bin: bin
+            id: id
+            fields:
+            - name: name
+              value: value
+            - name: name
+              value: value
+            value: 7
+            cardNumber: cardNumber
+            url: url
+            group: group
+            referenceValue: 4
+          - parentAccountId: parentAccountId
+            paymentSystem: paymentSystem
+            accountId: accountId
+            installments: 2
+            bin: bin
+            id: id
+            fields:
+            - name: name
+              value: value
+            - name: name
+              value: value
+            value: 7
+            cardNumber: cardNumber
+            url: url
+            group: group
+            referenceValue: 4
+          isActive: true
+      properties:
+        payments:
+          items:
+            $ref: '#/components/schemas/Payment'
+          nullable: true
+          title: payments
+          type: array
+        transactions:
+          items:
+            $ref: '#/components/schemas/Transaction'
+          nullable: true
+          title: transactions
+          type: array
+      title: PaymentData
+      type: object
+    PaymentField:
+      additionalProperties: false
+      example:
+        name: name
+        value: value
+      properties:
+        name:
+          nullable: true
+          title: name
+          type: string
+        value:
+          nullable: true
+          title: value
+          type: string
+      title: PaymentField
+      type: object
+    PaymentMethodResponse:
+      additionalProperties: false
+      example:
+        paymentSystem: paymentSystem
+        paymentAccountId: paymentAccountId
+        installments: 5
+      properties:
+        installments:
+          format: int32
+          nullable: true
+          title: installments
+          type: integer
+        paymentAccountId:
+          nullable: true
+          title: paymentAccountId
+          type: string
+        paymentSystem:
+          nullable: true
+          title: paymentSystem
+          type: string
+      required:
+      - paymentSystem
+      title: PaymentMethod
+      type: object
+    PaymentMethodThinRequest:
+      additionalProperties: false
+      description: Object containing information about the payment method.
+      example:
+        paymentSystem: "4"
+        paymentAccountId: "340357032569595"
+        installments: 3
+      properties:
+        installments:
+          description: Number of payment installments.
+          example: 3
+          format: int32
+          nullable: true
+          title: installments
+          type: integer
+        paymentAccountId:
+          description: "Data about shoppers' profiles and documents. For example,\
+            \ their credit card number. To obtain that information, use the endpoint\
+            \ [Get client profile by email](https://developers.vtex.com/docs/api-reference/checkout-api#get-/api/checkout/pub/profiles)."
+          example: "340357032569595"
+          nullable: true
+          title: paymentAccountId
+          type: string
+        paymentSystem:
+          description: Payment system's ID.
+          example: "4"
+          nullable: true
+          title: paymentSystem
+          type: string
+      required:
+      - paymentSystem
+      title: PaymentMethodRequest
+      type: object
+    Periodicity:
+      enum:
+      - 0
+      - 1
+      - 2
+      - 3
+      - 4
+      format: int32
+      title: Periodicity
+      type: integer
+    PlanResponse:
+      additionalProperties: false
+      example:
+        purchaseDay: 1
+        id: id
+        validity:
+          end: 2000-01-23T04:56:07.000+00:00
+          begin: 2000-01-23T04:56:07.000+00:00
+        frequency:
+          periodicity: periodicity
+          interval: 6
+      properties:
+        frequency:
+          $ref: '#/components/schemas/FrequencyResponse'
+        id:
+          nullable: true
+          title: id
+          type: string
+        purchaseDay:
+          $ref: '#/components/schemas/PurchaseDay'
+        validity:
+          $ref: '#/components/schemas/ValidityResponse'
+      required:
+      - frequency
+      - id
+      - purchaseDay
+      - validity
+      title: Plan
+      type: object
+    PlanThinRequest:
+      additionalProperties: false
+      description: Information about the plan.
+      example:
+        purchaseDay: "15"
+        id: store.subscription
+        validity:
+          end: 2023-06-10T00:00:00
+          begin: 2022-06-10T00:00:00
+        frequency:
+          periodicity: MONTHLY
+          interval: 3
+      properties:
+        frequency:
+          $ref: '#/components/schemas/FrequencyRequest'
+        id:
+          description: ID of the plan.
+          example: store.subscription
+          nullable: true
+          title: id
+          type: string
+        purchaseDay:
+          description: Day in which recurrent orders will be created.
+          example: "15"
+          nullable: true
+          title: purchaseDay
+          type: string
+        validity:
+          $ref: '#/components/schemas/ValidityRequest'
+      required:
+      - frequency
+      - id
+      - purchaseDay
+      title: PlanRequest
+      type: object
+    PriceTag:
+      additionalProperties: false
+      example:
+        identifier: identifier
+        rawValue: 6.027456183070403
+        name: name
+        isPercentual: true
+        valueAsInt: 1
+      properties:
+        identifier:
+          nullable: true
+          title: identifier
+          type: string
+        isPercentual:
+          title: isPercentual
+          type: boolean
+        name:
+          nullable: true
+          title: name
+          type: string
+        rawValue:
+          format: double
+          title: rawValue
+          type: number
+        valueAsInt:
+          format: int64
+          title: valueAsInt
+          type: integer
+      title: PriceTag
+      type: object
+    PurchaseContextAvailableGiftResponse:
+      additionalProperties: false
+      example:
+        seller: seller
+        sellingPrice: 1
+        attachments:
+        - name: name
+          content:
+            key: content
+        - name: name
+          content:
+            key: content
+        quantity: 5
+        unitMultiplier: 1.4894159098541704
+        price: 1
+        isSelected: true
+        name: name
+        isGift: true
+        priceTags:
+        - identifier: identifier
+          rawValue: 6.027456183070403
+          name: name
+          isPercentual: true
+          valueAsInt: 1
+        - identifier: identifier
+          rawValue: 6.027456183070403
+          name: name
+          isPercentual: true
+          valueAsInt: 1
+        id: id
+      properties:
+        attachments:
+          items:
+            $ref: '#/components/schemas/ItemAttachment'
+          nullable: true
+          title: attachments
+          type: array
+        id:
+          nullable: true
+          title: id
+          type: string
+        isGift:
+          title: isGift
+          type: boolean
+        isSelected:
+          title: isSelected
+          type: boolean
+        name:
+          nullable: true
+          title: name
+          type: string
+        price:
+          format: int64
+          nullable: true
+          title: price
+          type: integer
+        priceTags:
+          items:
+            $ref: '#/components/schemas/PriceTag'
+          nullable: true
+          title: priceTags
+          type: array
+        quantity:
+          description: Amount of units in the cart.
+          example: 5
+          format: int32
+          title: quantity
+          type: integer
+        seller:
+          nullable: true
+          title: seller
+          type: string
+        sellingPrice:
+          format: int64
+          nullable: true
+          title: sellingPrice
+          type: integer
+        unitMultiplier:
+          format: double
+          nullable: true
+          title: unitMultiplier
+          type: number
+      title: PurchaseContextAvailableGiftResponse
+      type: object
+    PurchaseContextSelectableGiftsResponse:
+      additionalProperties: false
+      example:
+        availableQuantity: 6
+        availableGifts:
+        - seller: seller
+          sellingPrice: 1
+          attachments:
+          - name: name
+            content:
+              key: content
+          - name: name
+            content:
+              key: content
+          quantity: 5
+          unitMultiplier: 1.4894159098541704
+          price: 1
+          isSelected: true
+          name: name
+          isGift: true
+          priceTags:
+          - identifier: identifier
+            rawValue: 6.027456183070403
+            name: name
+            isPercentual: true
+            valueAsInt: 1
+          - identifier: identifier
+            rawValue: 6.027456183070403
+            name: name
+            isPercentual: true
+            valueAsInt: 1
+          id: id
+        - seller: seller
+          sellingPrice: 1
+          attachments:
+          - name: name
+            content:
+              key: content
+          - name: name
+            content:
+              key: content
+          quantity: 5
+          unitMultiplier: 1.4894159098541704
+          price: 1
+          isSelected: true
+          name: name
+          isGift: true
+          priceTags:
+          - identifier: identifier
+            rawValue: 6.027456183070403
+            name: name
+            isPercentual: true
+            valueAsInt: 1
+          - identifier: identifier
+            rawValue: 6.027456183070403
+            name: name
+            isPercentual: true
+            valueAsInt: 1
+          id: id
+        id: id
+      properties:
+        availableGifts:
+          items:
+            $ref: '#/components/schemas/PurchaseContextAvailableGiftResponse'
+          nullable: true
+          title: availableGifts
+          type: array
+        availableQuantity:
+          format: int32
+          title: availableQuantity
+          type: integer
+        id:
+          nullable: true
+          title: id
+          type: string
+      title: PurchaseContextSelectableGiftsResponse
+      type: object
+    PurchaseDay:
+      enum:
+      - 0
+      - 1
+      - 2
+      - 3
+      - 4
+      - 5
+      - 6
+      - 7
+      - 8
+      - 9
+      - 10
+      - 11
+      - 12
+      - 13
+      - 14
+      - 15
+      - 16
+      - 17
+      - 18
+      - 19
+      - 20
+      - 21
+      - 22
+      - 23
+      - 24
+      - 25
+      - 26
+      - 27
+      - 28
+      - 29
+      - 30
+      - 31
+      - 999
+      - -6
+      - -5
+      - -4
+      - -3
+      - -2
+      - -1
+      format: int32
+      title: PurchaseDay
+      type: integer
+    PurchaseSettingsResponse:
+      additionalProperties: false
+      example:
+        paymentMethod:
+          paymentSystem: paymentSystem
+          paymentAccountId: paymentAccountId
+          installments: 5
+        currencyCode: currencyCode
+      properties:
+        currencyCode:
+          nullable: true
+          title: currencyCode
+          type: string
+        paymentMethod:
+          $ref: '#/components/schemas/PaymentMethodResponse'
+      required:
+      - currencyCode
+      - paymentMethod
+      title: PurchaseSettings
+      type: object
+    PurchaseSettingsThinRequest:
+      additionalProperties: false
+      description: Object containing purchase settings information.
+      example:
+        paymentMethod:
+          paymentSystem: "4"
+          paymentAccountId: "340357032569595"
+          installments: 3
+        salesChannel: "1"
+      properties:
+        paymentMethod:
+          $ref: '#/components/schemas/PaymentMethodThinRequest'
+        salesChannel:
+          default: "1"
+          description: "Sales channel (or [trade policy](https://help.vtex.com/en/tutorial/how-trade-policies-work--6Xef8PZiFm40kg2STrMkMV))\
+            \ applied to the subscription being created. You can associate only one\
+            \ sales channel to each subscription. The default value is the main sales\
+            \ channel, which corresponds to `1`."
+          title: salesChannel
+          type: string
+      required:
+      - paymentMethod
+      - salesChannel
+      title: PurchaseSettingsRequest
+      type: object
+    ReportResponse:
+      additionalProperties: false
+      example:
+        enqueueDate: 2000-01-23T04:56:07.000+00:00
+        lastErrorMessage: lastErrorMessage
+        zipped: true
+        linkToDownload: linkToDownload
+        outputType: outputType
+        finished: true
+        completedDate: 2000-01-23T04:56:07.000+00:00
+        statusMessage: statusMessage
+        canceled: true
+        recordsSum: 5
+        percentageProcessed: 6
+        recordsProcessed: 1
+        id: id
+        email: email
+        errorCount: 0
+        startDate: 2000-01-23T04:56:07.000+00:00
+        lastUpdateTime: 2000-01-23T04:56:07.000+00:00
+      properties:
+        canceled:
+          title: canceled
+          type: boolean
+        completedDate:
+          format: date-time
+          nullable: true
+          title: completedDate
+          type: string
+        email:
+          nullable: true
+          title: email
+          type: string
+        enqueueDate:
+          format: date-time
+          nullable: true
+          title: enqueueDate
+          type: string
+        errorCount:
+          format: int64
+          nullable: true
+          title: errorCount
+          type: integer
+        finished:
+          title: finished
+          type: boolean
+        id:
+          nullable: true
+          title: id
+          type: string
+        lastErrorMessage:
+          nullable: true
+          title: lastErrorMessage
+          type: string
+        lastUpdateTime:
+          format: date-time
+          nullable: true
+          title: lastUpdateTime
+          type: string
+        linkToDownload:
+          nullable: true
+          title: linkToDownload
+          type: string
+        outputType:
+          nullable: true
+          title: outputType
+          type: string
+        percentageProcessed:
+          format: int64
+          title: percentageProcessed
+          type: integer
+        recordsProcessed:
+          format: int64
+          readOnly: true
+          title: recordsProcessed
+          type: integer
+        recordsSum:
+          format: int64
+          nullable: true
+          title: recordsSum
+          type: integer
+        startDate:
+          format: date-time
+          nullable: true
+          title: startDate
+          type: string
+        statusMessage:
+          nullable: true
+          readOnly: true
+          title: statusMessage
+          type: string
+        zipped:
+          title: zipped
+          type: boolean
+      title: ReportResponse
+      type: object
+    ShippingAddressResponse:
+      additionalProperties: false
+      example:
+        addressType: addressType
+        addressId: addressId
+      properties:
+        addressId:
+          nullable: true
+          title: addressId
+          type: string
+        addressType:
+          nullable: true
+          title: addressType
+          type: string
+      required:
+      - addressId
+      - addressType
+      title: Address
+      type: object
+    ShippingEstimate:
+      additionalProperties: false
+      example:
+        estimate: estimate
+        name: name
+        estimateDeliveryDate: 2000-01-23T04:56:07.000+00:00
+        allItemsMatched: true
+        nextPurchaseDate: 2000-01-23T04:56:07.000+00:00
+      properties:
+        allItemsMatched:
+          title: allItemsMatched
+          type: boolean
+        estimate:
+          nullable: true
+          title: estimate
+          type: string
+        estimateDeliveryDate:
+          format: date-time
+          nullable: true
+          title: estimateDeliveryDate
+          type: string
+        name:
+          nullable: true
+          title: name
+          type: string
+        nextPurchaseDate:
+          format: date-time
+          title: nextPurchaseDate
+          type: string
+      title: ShippingEstimate
+      type: object
+    SimulateMessageResponse:
+      additionalProperties: false
+      example:
+        code: code
+        text: text
+        status: status
+      properties:
+        code:
+          nullable: true
+          title: code
+          type: string
+        status:
+          nullable: true
+          title: status
+          type: string
+        text:
+          nullable: true
+          title: text
+          type: string
+      title: SimulateMessageResponse
+      type: object
+    SimulateResponse:
+      additionalProperties: false
+      example:
+        country: country
+        selectableGiftsResponse:
+        - availableQuantity: 6
+          availableGifts:
+          - seller: seller
+            sellingPrice: 1
+            attachments:
+            - name: name
+              content:
+                key: content
+            - name: name
+              content:
+                key: content
+            quantity: 5
+            unitMultiplier: 1.4894159098541704
+            price: 1
+            isSelected: true
+            name: name
+            isGift: true
+            priceTags:
+            - identifier: identifier
+              rawValue: 6.027456183070403
+              name: name
+              isPercentual: true
+              valueAsInt: 1
+            - identifier: identifier
+              rawValue: 6.027456183070403
+              name: name
+              isPercentual: true
+              valueAsInt: 1
+            id: id
+          - seller: seller
+            sellingPrice: 1
+            attachments:
+            - name: name
+              content:
+                key: content
+            - name: name
+              content:
+                key: content
+            quantity: 5
+            unitMultiplier: 1.4894159098541704
+            price: 1
+            isSelected: true
+            name: name
+            isGift: true
+            priceTags:
+            - identifier: identifier
+              rawValue: 6.027456183070403
+              name: name
+              isPercentual: true
+              valueAsInt: 1
+            - identifier: identifier
+              rawValue: 6.027456183070403
+              name: name
+              isPercentual: true
+              valueAsInt: 1
+            id: id
+          id: id
+        - availableQuantity: 6
+          availableGifts:
+          - seller: seller
+            sellingPrice: 1
+            attachments:
+            - name: name
+              content:
+                key: content
+            - name: name
+              content:
+                key: content
+            quantity: 5
+            unitMultiplier: 1.4894159098541704
+            price: 1
+            isSelected: true
+            name: name
+            isGift: true
+            priceTags:
+            - identifier: identifier
+              rawValue: 6.027456183070403
+              name: name
+              isPercentual: true
+              valueAsInt: 1
+            - identifier: identifier
+              rawValue: 6.027456183070403
+              name: name
+              isPercentual: true
+              valueAsInt: 1
+            id: id
+          - seller: seller
+            sellingPrice: 1
+            attachments:
+            - name: name
+              content:
+                key: content
+            - name: name
+              content:
+                key: content
+            quantity: 5
+            unitMultiplier: 1.4894159098541704
+            price: 1
+            isSelected: true
+            name: name
+            isGift: true
+            priceTags:
+            - identifier: identifier
+              rawValue: 6.027456183070403
+              name: name
+              isPercentual: true
+              valueAsInt: 1
+            - identifier: identifier
+              rawValue: 6.027456183070403
+              name: name
+              isPercentual: true
+              valueAsInt: 1
+            id: id
+          id: id
+        postalCode: postalCode
+        paymentData:
+          payments:
+          - parentAccountId: parentAccountId
+            paymentSystem: paymentSystem
+            accountId: accountId
+            installments: 2
+            bin: bin
+            id: id
+            fields:
+            - name: name
+              value: value
+            - name: name
+              value: value
+            value: 7
+            cardNumber: cardNumber
+            url: url
+            group: group
+            referenceValue: 4
+          - parentAccountId: parentAccountId
+            paymentSystem: paymentSystem
+            accountId: accountId
+            installments: 2
+            bin: bin
+            id: id
+            fields:
+            - name: name
+              value: value
+            - name: name
+              value: value
+            value: 7
+            cardNumber: cardNumber
+            url: url
+            group: group
+            referenceValue: 4
+          transactions:
+          - payments:
+            - parentAccountId: parentAccountId
+              paymentSystem: paymentSystem
+              accountId: accountId
+              installments: 2
+              bin: bin
+              id: id
+              fields:
+              - name: name
+                value: value
+              - name: name
+                value: value
+              value: 7
+              cardNumber: cardNumber
+              url: url
+              group: group
+              referenceValue: 4
+            - parentAccountId: parentAccountId
+              paymentSystem: paymentSystem
+              accountId: accountId
+              installments: 2
+              bin: bin
+              id: id
+              fields:
+              - name: name
+                value: value
+              - name: name
+                value: value
+              value: 7
+              cardNumber: cardNumber
+              url: url
+              group: group
+              referenceValue: 4
+            isActive: true
+          - payments:
+            - parentAccountId: parentAccountId
+              paymentSystem: paymentSystem
+              accountId: accountId
+              installments: 2
+              bin: bin
+              id: id
+              fields:
+              - name: name
+                value: value
+              - name: name
+                value: value
+              value: 7
+              cardNumber: cardNumber
+              url: url
+              group: group
+              referenceValue: 4
+            - parentAccountId: parentAccountId
+              paymentSystem: paymentSystem
+              accountId: accountId
+              installments: 2
+              bin: bin
+              id: id
+              fields:
+              - name: name
+                value: value
+              - name: name
+                value: value
+              value: 7
+              cardNumber: cardNumber
+              url: url
+              group: group
+              referenceValue: 4
+            isActive: true
+        messages:
+        - code: code
+          text: text
+          status: status
+        - code: code
+          text: text
+          status: status
+        simulationItems:
+        - unitPrice: 2
+          quantity: 5
+          statusName: statusName
+          id: id
+          status: 5
+        - unitPrice: 2
+          quantity: 5
+          statusName: statusName
+          id: id
+          status: 5
+        totals:
+        - name: name
+          id: id
+          valueAsInt: 7
+        - name: name
+          id: id
+          valueAsInt: 7
+        items:
+        - seller: seller
+          sellingPrice: 5
+          attachments:
+          - name: name
+            content:
+              key: content
+          - name: name
+            content:
+              key: content
+          quantity: 5
+          unitMultiplier: 5.637376656633329
+          price: 0
+          name: name
+          isGift: true
+          priceTags:
+          - identifier: identifier
+            rawValue: 6.027456183070403
+            name: name
+            isPercentual: true
+            valueAsInt: 1
+          - identifier: identifier
+            rawValue: 6.027456183070403
+            name: name
+            isPercentual: true
+            valueAsInt: 1
+          id: id
+        - seller: seller
+          sellingPrice: 5
+          attachments:
+          - name: name
+            content:
+              key: content
+          - name: name
+            content:
+              key: content
+          quantity: 5
+          unitMultiplier: 5.637376656633329
+          price: 0
+          name: name
+          isGift: true
+          priceTags:
+          - identifier: identifier
+            rawValue: 6.027456183070403
+            name: name
+            isPercentual: true
+            valueAsInt: 1
+          - identifier: identifier
+            rawValue: 6.027456183070403
+            name: name
+            isPercentual: true
+            valueAsInt: 1
+          id: id
+        logisticsInfo:
+        - selectedDeliveryChannel: selectedDeliveryChannel
+          deliveryWindow:
+            price: 2
+            startDateUtc: 2000-01-23T04:56:07.000+00:00
+            endDateUtc: 2000-01-23T04:56:07.000+00:00
+          quantity: 5
+          price: 9
+          itemIndex: 7
+          selectedSla: selectedSla
+          pickupId: pickupId
+          shippingEstimate: shippingEstimate
+          lockTtl: lockTtl
+          slAs:
+          - deliveryWindows:
+            - price: 2
+              startDateUtc: 2000-01-23T04:56:07.000+00:00
+              endDateUtc: 2000-01-23T04:56:07.000+00:00
+            - price: 2
+              startDateUtc: 2000-01-23T04:56:07.000+00:00
+              endDateUtc: 2000-01-23T04:56:07.000+00:00
+            availableDeliveryWindows:
+            - price: 2
+              startDateUtc: 2000-01-23T04:56:07.000+00:00
+              endDateUtc: 2000-01-23T04:56:07.000+00:00
+            - price: 2
+              startDateUtc: 2000-01-23T04:56:07.000+00:00
+              endDateUtc: 2000-01-23T04:56:07.000+00:00
+            deliveryChannel: deliveryChannel
+            price: 3
+            pickupPointId: pickupPointId
+            id: id
+            shippingEstimate: shippingEstimate
+            lockTtl: lockTtl
+          - deliveryWindows:
+            - price: 2
+              startDateUtc: 2000-01-23T04:56:07.000+00:00
+              endDateUtc: 2000-01-23T04:56:07.000+00:00
+            - price: 2
+              startDateUtc: 2000-01-23T04:56:07.000+00:00
+              endDateUtc: 2000-01-23T04:56:07.000+00:00
+            availableDeliveryWindows:
+            - price: 2
+              startDateUtc: 2000-01-23T04:56:07.000+00:00
+              endDateUtc: 2000-01-23T04:56:07.000+00:00
+            - price: 2
+              startDateUtc: 2000-01-23T04:56:07.000+00:00
+              endDateUtc: 2000-01-23T04:56:07.000+00:00
+            deliveryChannel: deliveryChannel
+            price: 3
+            pickupPointId: pickupPointId
+            id: id
+            shippingEstimate: shippingEstimate
+            lockTtl: lockTtl
+          addressId: addressId
+        - selectedDeliveryChannel: selectedDeliveryChannel
+          deliveryWindow:
+            price: 2
+            startDateUtc: 2000-01-23T04:56:07.000+00:00
+            endDateUtc: 2000-01-23T04:56:07.000+00:00
+          quantity: 5
+          price: 9
+          itemIndex: 7
+          selectedSla: selectedSla
+          pickupId: pickupId
+          shippingEstimate: shippingEstimate
+          lockTtl: lockTtl
+          slAs:
+          - deliveryWindows:
+            - price: 2
+              startDateUtc: 2000-01-23T04:56:07.000+00:00
+              endDateUtc: 2000-01-23T04:56:07.000+00:00
+            - price: 2
+              startDateUtc: 2000-01-23T04:56:07.000+00:00
+              endDateUtc: 2000-01-23T04:56:07.000+00:00
+            availableDeliveryWindows:
+            - price: 2
+              startDateUtc: 2000-01-23T04:56:07.000+00:00
+              endDateUtc: 2000-01-23T04:56:07.000+00:00
+            - price: 2
+              startDateUtc: 2000-01-23T04:56:07.000+00:00
+              endDateUtc: 2000-01-23T04:56:07.000+00:00
+            deliveryChannel: deliveryChannel
+            price: 3
+            pickupPointId: pickupPointId
+            id: id
+            shippingEstimate: shippingEstimate
+            lockTtl: lockTtl
+          - deliveryWindows:
+            - price: 2
+              startDateUtc: 2000-01-23T04:56:07.000+00:00
+              endDateUtc: 2000-01-23T04:56:07.000+00:00
+            - price: 2
+              startDateUtc: 2000-01-23T04:56:07.000+00:00
+              endDateUtc: 2000-01-23T04:56:07.000+00:00
+            availableDeliveryWindows:
+            - price: 2
+              startDateUtc: 2000-01-23T04:56:07.000+00:00
+              endDateUtc: 2000-01-23T04:56:07.000+00:00
+            - price: 2
+              startDateUtc: 2000-01-23T04:56:07.000+00:00
+              endDateUtc: 2000-01-23T04:56:07.000+00:00
+            deliveryChannel: deliveryChannel
+            price: 3
+            pickupPointId: pickupPointId
+            id: id
+            shippingEstimate: shippingEstimate
+            lockTtl: lockTtl
+          addressId: addressId
+      properties:
+        country:
+          nullable: true
+          title: country
+          type: string
+        items:
+          items:
+            $ref: '#/components/schemas/OrderItem'
+          nullable: true
+          title: items
+          type: array
+        logisticsInfo:
+          items:
+            $ref: '#/components/schemas/LogisticsInfo'
+          nullable: true
+          title: logisticsInfo
+          type: array
+        messages:
+          items:
+            $ref: '#/components/schemas/SimulateMessageResponse'
+          nullable: true
+          title: messages
+          type: array
+        paymentData:
+          $ref: '#/components/schemas/PaymentData'
+        postalCode:
+          nullable: true
+          title: postalCode
+          type: string
+        selectableGiftsResponse:
+          items:
+            $ref: '#/components/schemas/PurchaseContextSelectableGiftsResponse'
+          nullable: true
+          title: selectableGiftsResponse
+          type: array
+        simulationItems:
+          items:
+            $ref: '#/components/schemas/SimulationItemResult'
+          nullable: true
+          title: simulationItems
+          type: array
+        totals:
+          items:
+            $ref: '#/components/schemas/TotalizationResponse'
+          nullable: true
+          title: totals
+          type: array
+      title: SimulateResponse
+      type: object
+    SimulateResponseVO:
+      additionalProperties: false
+      example:
+        simulationItems:
+        - unitPrice: 2
+          quantity: 5
+          statusName: statusName
+          id: id
+          status: 5
+        - unitPrice: 2
+          quantity: 5
+          statusName: statusName
+          id: id
+          status: 5
+        totals:
+        - id: id
+          value: 1.1730742509559433
+        - id: id
+          value: 1.1730742509559433
+        shippingEstimate:
+          estimate: estimate
+          name: name
+          estimateDeliveryDate: 2000-01-23T04:56:07.000+00:00
+          allItemsMatched: true
+          nextPurchaseDate: 2000-01-23T04:56:07.000+00:00
+        simulateResponse:
+          country: country
+          selectableGiftsResponse:
+          - availableQuantity: 6
+            availableGifts:
+            - seller: seller
+              sellingPrice: 1
+              attachments:
+              - name: name
+                content:
+                  key: content
+              - name: name
+                content:
+                  key: content
+              quantity: 5
+              unitMultiplier: 1.4894159098541704
+              price: 1
+              isSelected: true
+              name: name
+              isGift: true
+              priceTags:
+              - identifier: identifier
+                rawValue: 6.027456183070403
+                name: name
+                isPercentual: true
+                valueAsInt: 1
+              - identifier: identifier
+                rawValue: 6.027456183070403
+                name: name
+                isPercentual: true
+                valueAsInt: 1
+              id: id
+            - seller: seller
+              sellingPrice: 1
+              attachments:
+              - name: name
+                content:
+                  key: content
+              - name: name
+                content:
+                  key: content
+              quantity: 5
+              unitMultiplier: 1.4894159098541704
+              price: 1
+              isSelected: true
+              name: name
+              isGift: true
+              priceTags:
+              - identifier: identifier
+                rawValue: 6.027456183070403
+                name: name
+                isPercentual: true
+                valueAsInt: 1
+              - identifier: identifier
+                rawValue: 6.027456183070403
+                name: name
+                isPercentual: true
+                valueAsInt: 1
+              id: id
+            id: id
+          - availableQuantity: 6
+            availableGifts:
+            - seller: seller
+              sellingPrice: 1
+              attachments:
+              - name: name
+                content:
+                  key: content
+              - name: name
+                content:
+                  key: content
+              quantity: 5
+              unitMultiplier: 1.4894159098541704
+              price: 1
+              isSelected: true
+              name: name
+              isGift: true
+              priceTags:
+              - identifier: identifier
+                rawValue: 6.027456183070403
+                name: name
+                isPercentual: true
+                valueAsInt: 1
+              - identifier: identifier
+                rawValue: 6.027456183070403
+                name: name
+                isPercentual: true
+                valueAsInt: 1
+              id: id
+            - seller: seller
+              sellingPrice: 1
+              attachments:
+              - name: name
+                content:
+                  key: content
+              - name: name
+                content:
+                  key: content
+              quantity: 5
+              unitMultiplier: 1.4894159098541704
+              price: 1
+              isSelected: true
+              name: name
+              isGift: true
+              priceTags:
+              - identifier: identifier
+                rawValue: 6.027456183070403
+                name: name
+                isPercentual: true
+                valueAsInt: 1
+              - identifier: identifier
+                rawValue: 6.027456183070403
+                name: name
+                isPercentual: true
+                valueAsInt: 1
+              id: id
+            id: id
+          postalCode: postalCode
+          paymentData:
+            payments:
+            - parentAccountId: parentAccountId
+              paymentSystem: paymentSystem
+              accountId: accountId
+              installments: 2
+              bin: bin
+              id: id
+              fields:
+              - name: name
+                value: value
+              - name: name
+                value: value
+              value: 7
+              cardNumber: cardNumber
+              url: url
+              group: group
+              referenceValue: 4
+            - parentAccountId: parentAccountId
+              paymentSystem: paymentSystem
+              accountId: accountId
+              installments: 2
+              bin: bin
+              id: id
+              fields:
+              - name: name
+                value: value
+              - name: name
+                value: value
+              value: 7
+              cardNumber: cardNumber
+              url: url
+              group: group
+              referenceValue: 4
+            transactions:
+            - payments:
+              - parentAccountId: parentAccountId
+                paymentSystem: paymentSystem
+                accountId: accountId
+                installments: 2
+                bin: bin
+                id: id
+                fields:
+                - name: name
+                  value: value
+                - name: name
+                  value: value
+                value: 7
+                cardNumber: cardNumber
+                url: url
+                group: group
+                referenceValue: 4
+              - parentAccountId: parentAccountId
+                paymentSystem: paymentSystem
+                accountId: accountId
+                installments: 2
+                bin: bin
+                id: id
+                fields:
+                - name: name
+                  value: value
+                - name: name
+                  value: value
+                value: 7
+                cardNumber: cardNumber
+                url: url
+                group: group
+                referenceValue: 4
+              isActive: true
+            - payments:
+              - parentAccountId: parentAccountId
+                paymentSystem: paymentSystem
+                accountId: accountId
+                installments: 2
+                bin: bin
+                id: id
+                fields:
+                - name: name
+                  value: value
+                - name: name
+                  value: value
+                value: 7
+                cardNumber: cardNumber
+                url: url
+                group: group
+                referenceValue: 4
+              - parentAccountId: parentAccountId
+                paymentSystem: paymentSystem
+                accountId: accountId
+                installments: 2
+                bin: bin
+                id: id
+                fields:
+                - name: name
+                  value: value
+                - name: name
+                  value: value
+                value: 7
+                cardNumber: cardNumber
+                url: url
+                group: group
+                referenceValue: 4
+              isActive: true
+          messages:
+          - code: code
+            text: text
+            status: status
+          - code: code
+            text: text
+            status: status
+          simulationItems:
+          - unitPrice: 2
+            quantity: 5
+            statusName: statusName
+            id: id
+            status: 5
+          - unitPrice: 2
+            quantity: 5
+            statusName: statusName
+            id: id
+            status: 5
+          totals:
+          - name: name
+            id: id
+            valueAsInt: 7
+          - name: name
+            id: id
+            valueAsInt: 7
+          items:
+          - seller: seller
+            sellingPrice: 5
+            attachments:
+            - name: name
+              content:
+                key: content
+            - name: name
+              content:
+                key: content
+            quantity: 5
+            unitMultiplier: 5.637376656633329
+            price: 0
+            name: name
+            isGift: true
+            priceTags:
+            - identifier: identifier
+              rawValue: 6.027456183070403
+              name: name
+              isPercentual: true
+              valueAsInt: 1
+            - identifier: identifier
+              rawValue: 6.027456183070403
+              name: name
+              isPercentual: true
+              valueAsInt: 1
+            id: id
+          - seller: seller
+            sellingPrice: 5
+            attachments:
+            - name: name
+              content:
+                key: content
+            - name: name
+              content:
+                key: content
+            quantity: 5
+            unitMultiplier: 5.637376656633329
+            price: 0
+            name: name
+            isGift: true
+            priceTags:
+            - identifier: identifier
+              rawValue: 6.027456183070403
+              name: name
+              isPercentual: true
+              valueAsInt: 1
+            - identifier: identifier
+              rawValue: 6.027456183070403
+              name: name
+              isPercentual: true
+              valueAsInt: 1
+            id: id
+          logisticsInfo:
+          - selectedDeliveryChannel: selectedDeliveryChannel
+            deliveryWindow:
+              price: 2
+              startDateUtc: 2000-01-23T04:56:07.000+00:00
+              endDateUtc: 2000-01-23T04:56:07.000+00:00
+            quantity: 5
+            price: 9
+            itemIndex: 7
+            selectedSla: selectedSla
+            pickupId: pickupId
+            shippingEstimate: shippingEstimate
+            lockTtl: lockTtl
+            slAs:
+            - deliveryWindows:
+              - price: 2
+                startDateUtc: 2000-01-23T04:56:07.000+00:00
+                endDateUtc: 2000-01-23T04:56:07.000+00:00
+              - price: 2
+                startDateUtc: 2000-01-23T04:56:07.000+00:00
+                endDateUtc: 2000-01-23T04:56:07.000+00:00
+              availableDeliveryWindows:
+              - price: 2
+                startDateUtc: 2000-01-23T04:56:07.000+00:00
+                endDateUtc: 2000-01-23T04:56:07.000+00:00
+              - price: 2
+                startDateUtc: 2000-01-23T04:56:07.000+00:00
+                endDateUtc: 2000-01-23T04:56:07.000+00:00
+              deliveryChannel: deliveryChannel
+              price: 3
+              pickupPointId: pickupPointId
+              id: id
+              shippingEstimate: shippingEstimate
+              lockTtl: lockTtl
+            - deliveryWindows:
+              - price: 2
+                startDateUtc: 2000-01-23T04:56:07.000+00:00
+                endDateUtc: 2000-01-23T04:56:07.000+00:00
+              - price: 2
+                startDateUtc: 2000-01-23T04:56:07.000+00:00
+                endDateUtc: 2000-01-23T04:56:07.000+00:00
+              availableDeliveryWindows:
+              - price: 2
+                startDateUtc: 2000-01-23T04:56:07.000+00:00
+                endDateUtc: 2000-01-23T04:56:07.000+00:00
+              - price: 2
+                startDateUtc: 2000-01-23T04:56:07.000+00:00
+                endDateUtc: 2000-01-23T04:56:07.000+00:00
+              deliveryChannel: deliveryChannel
+              price: 3
+              pickupPointId: pickupPointId
+              id: id
+              shippingEstimate: shippingEstimate
+              lockTtl: lockTtl
+            addressId: addressId
+          - selectedDeliveryChannel: selectedDeliveryChannel
+            deliveryWindow:
+              price: 2
+              startDateUtc: 2000-01-23T04:56:07.000+00:00
+              endDateUtc: 2000-01-23T04:56:07.000+00:00
+            quantity: 5
+            price: 9
+            itemIndex: 7
+            selectedSla: selectedSla
+            pickupId: pickupId
+            shippingEstimate: shippingEstimate
+            lockTtl: lockTtl
+            slAs:
+            - deliveryWindows:
+              - price: 2
+                startDateUtc: 2000-01-23T04:56:07.000+00:00
+                endDateUtc: 2000-01-23T04:56:07.000+00:00
+              - price: 2
+                startDateUtc: 2000-01-23T04:56:07.000+00:00
+                endDateUtc: 2000-01-23T04:56:07.000+00:00
+              availableDeliveryWindows:
+              - price: 2
+                startDateUtc: 2000-01-23T04:56:07.000+00:00
+                endDateUtc: 2000-01-23T04:56:07.000+00:00
+              - price: 2
+                startDateUtc: 2000-01-23T04:56:07.000+00:00
+                endDateUtc: 2000-01-23T04:56:07.000+00:00
+              deliveryChannel: deliveryChannel
+              price: 3
+              pickupPointId: pickupPointId
+              id: id
+              shippingEstimate: shippingEstimate
+              lockTtl: lockTtl
+            - deliveryWindows:
+              - price: 2
+                startDateUtc: 2000-01-23T04:56:07.000+00:00
+                endDateUtc: 2000-01-23T04:56:07.000+00:00
+              - price: 2
+                startDateUtc: 2000-01-23T04:56:07.000+00:00
+                endDateUtc: 2000-01-23T04:56:07.000+00:00
+              availableDeliveryWindows:
+              - price: 2
+                startDateUtc: 2000-01-23T04:56:07.000+00:00
+                endDateUtc: 2000-01-23T04:56:07.000+00:00
+              - price: 2
+                startDateUtc: 2000-01-23T04:56:07.000+00:00
+                endDateUtc: 2000-01-23T04:56:07.000+00:00
+              deliveryChannel: deliveryChannel
+              price: 3
+              pickupPointId: pickupPointId
+              id: id
+              shippingEstimate: shippingEstimate
+              lockTtl: lockTtl
+            addressId: addressId
+      properties:
+        shippingEstimate:
+          $ref: '#/components/schemas/ShippingEstimate'
+        simulateResponse:
+          $ref: '#/components/schemas/SimulateResponse'
+        simulationItems:
+          items:
+            $ref: '#/components/schemas/SimulationItemResult'
+          nullable: true
+          title: simulationItems
+          type: array
+        totals:
+          items:
+            $ref: '#/components/schemas/Totalization'
+          nullable: true
+          title: totals
+          type: array
+      title: SimulateResponseVO
+      type: object
+    SimulationItemResult:
+      additionalProperties: false
+      example:
+        unitPrice: 2
+        quantity: 5
+        statusName: statusName
+        id: id
+        status: 5
+      properties:
+        id:
+          nullable: true
+          title: id
+          type: string
+        quantity:
+          description: Amount of units in the cart.
+          example: 5
+          format: int32
+          title: quantity
+          type: integer
+        status:
+          $ref: '#/components/schemas/ItemSimulationStatus'
+        statusName:
+          nullable: true
+          title: statusName
+          type: string
+        unitPrice:
+          format: int64
+          nullable: true
+          title: unitPrice
+          type: integer
+      title: SimulationItemResult
+      type: object
+    Status:
+      enum:
+      - 0
+      - 1
+      - 2
+      - 3
+      format: int32
+      title: Status
+      type: integer
+    StorePlan:
+      additionalProperties: false
+      example:
+        id: id
+        frequencies:
+        - periodicity: 6
+          interval: 0
+          periodicityAsString: periodicityAsString
+        - periodicity: 6
+          interval: 0
+          periodicityAsString: periodicityAsString
+      properties:
+        frequencies:
+          items:
+            $ref: '#/components/schemas/Frequency'
+          nullable: true
+          title: frequencies
+          type: array
+        id:
+          nullable: true
+          title: id
+          type: string
+      title: StorePlan
+      type: object
+    SubscriptionCycleContext:
+      additionalProperties: false
+      example:
+        paymentSystem: paymentSystem
+        paymentAccountId: paymentAccountId
+        paymentSystemName: paymentSystemName
+        addressType: addressType
+        paymentSystemGroup: paymentSystemGroup
+        items:
+        - quantity: 5
+          subscriptionItemId: subscriptionItemId
+          isSkipped: true
+          cycleCount: 0
+          skuId: "12"
+          status: 6
+        - quantity: 5
+          subscriptionItemId: subscriptionItemId
+          isSkipped: true
+          cycleCount: 0
+          skuId: "12"
+          status: 6
+        addressId: addressId
+      properties:
+        addressId:
+          nullable: true
+          title: addressId
+          type: string
+        addressType:
+          nullable: true
+          title: addressType
+          type: string
+        items:
+          items:
+            $ref: '#/components/schemas/SubscriptionCycleItemContext'
+          nullable: true
+          title: items
+          type: array
+        paymentAccountId:
+          nullable: true
+          title: paymentAccountId
+          type: string
+        paymentSystem:
+          nullable: true
+          title: paymentSystem
+          type: string
+        paymentSystemGroup:
+          nullable: true
+          title: paymentSystemGroup
+          type: string
+        paymentSystemName:
+          nullable: true
+          title: paymentSystemName
+          type: string
+      title: SubscriptionCycleContext
+      type: object
+    SubscriptionCycleItemContext:
+      additionalProperties: false
+      example:
+        quantity: 5
+        subscriptionItemId: subscriptionItemId
+        isSkipped: true
+        cycleCount: 0
+        skuId: "12"
+        status: 6
+      properties:
+        cycleCount:
+          format: int32
+          title: cycleCount
+          type: integer
+        isSkipped:
+          title: isSkipped
+          type: boolean
+        quantity:
+          description: Amount of units in the cart.
+          example: 5
+          format: int32
+          title: quantity
+          type: integer
+        skuId:
+          description: SKU ID.
+          example: "12"
+          nullable: true
+          title: skuId
+          type: string
+        status:
+          $ref: '#/components/schemas/Status'
+        subscriptionItemId:
+          nullable: true
+          title: subscriptionItemId
+          type: string
+      title: SubscriptionCycleItemContext
+      type: object
+    SubscriptionCycleOrderInfo:
+      additionalProperties: false
+      example:
+        orderGroup: orderGroup
+        orderId: orderId
+        paymentURL: paymentURL
+        value: 5
+      properties:
+        orderGroup:
+          nullable: true
+          title: orderGroup
+          type: string
+        orderId:
+          nullable: true
+          title: orderId
+          type: string
+        paymentURL:
+          nullable: true
+          title: paymentURL
+          type: string
+        value:
+          format: int64
+          title: value
+          type: integer
+      title: SubscriptionCycleOrderInfo
+      type: object
+    SubscriptionCycleResponse:
+      additionalProperties: false
+      example:
+        date: 2000-01-23T04:56:07.000+00:00
+        customerEmail: customerEmail
+        lastUpdate: 2000-01-23T04:56:07.000+00:00
+        context:
+          paymentSystem: paymentSystem
+          paymentAccountId: paymentAccountId
+          paymentSystemName: paymentSystemName
+          addressType: addressType
+          paymentSystemGroup: paymentSystemGroup
+          items:
+          - quantity: 5
+            subscriptionItemId: subscriptionItemId
+            isSkipped: true
+            cycleCount: 0
+            skuId: "12"
+            status: 6
+          - quantity: 5
+            subscriptionItemId: subscriptionItemId
+            isSkipped: true
+            cycleCount: 0
+            skuId: "12"
+            status: 6
+          addressId: addressId
+        orderInfo:
+          orderGroup: orderGroup
+          orderId: orderId
+          paymentURL: paymentURL
+          value: 5
+        simulationItems:
+        - unitPrice: 2
+          quantity: 5
+          statusName: statusName
+          id: id
+          status: 5
+        - unitPrice: 2
+          quantity: 5
+          statusName: statusName
+          id: id
+          status: 5
+        cycleCount: 1
+        id: id
+        message: message
+        subscriptionId: subscriptionId
+        isInRetry: true
+        status: status
+      properties:
+        context:
+          $ref: '#/components/schemas/SubscriptionCycleContext'
+        customerEmail:
+          nullable: true
+          title: customerEmail
+          type: string
+        cycleCount:
+          format: int32
+          title: cycleCount
+          type: integer
+        date:
+          format: date-time
+          title: date
+          type: string
+        id:
+          nullable: true
+          title: id
+          type: string
+        isInRetry:
+          title: isInRetry
+          type: boolean
+        lastUpdate:
+          format: date-time
+          title: lastUpdate
+          type: string
+        message:
+          nullable: true
+          title: message
+          type: string
+        orderInfo:
+          $ref: '#/components/schemas/SubscriptionCycleOrderInfo'
+        simulationItems:
+          items:
+            $ref: '#/components/schemas/SimulationItemResult'
+          nullable: true
+          title: simulationItems
+          type: array
+        status:
+          nullable: true
+          title: status
+          type: string
+        subscriptionId:
+          nullable: true
+          title: subscriptionId
+          type: string
+      title: SubscriptionCycleResponse
+      type: object
+    SubscriptionGroupRequest:
+      additionalProperties: false
+      example:
+        purchaseSettings:
+          paymentMethod:
+            paymentSystem: "4"
+            paymentAccountId: "340357032569595"
+            installments: 3
+          salesChannel: "1"
+        customerEmail: customerEmail
+        shippingAddress:
+          addressType: residential
+          addressId: "8109266555005"
+        catalogAttachment: catalogAttachment
+        title: title
+        items:
+        - quantity: 5
+          manualPrice: 40
+          skuId: "12"
+        - quantity: 5
+          manualPrice: 40
+          skuId: "12"
+        plan:
+          purchaseDay: "15"
+          id: store.subscription
+          validity:
+            end: 2023-06-10T00:00:00
+            begin: 2022-06-10T00:00:00
+          frequency:
+            periodicity: MONTHLY
+            interval: 3
+        nextPurchaseDate: 2000-01-23T04:56:07.000+00:00
+        status: status
+      properties:
+        catalogAttachment:
+          nullable: true
+          title: catalogAttachment
+          type: string
+        customerEmail:
+          nullable: true
+          title: customerEmail
+          type: string
+        items:
+          items:
+            $ref: '#/components/schemas/SubscriptionThinItemRequest'
+          nullable: true
+          title: items
+          type: array
+        nextPurchaseDate:
+          format: date-time
+          nullable: true
+          title: nextPurchaseDate
+          type: string
+        plan:
+          $ref: '#/components/schemas/PlanThinRequest'
+        purchaseSettings:
+          $ref: '#/components/schemas/PurchaseSettingsThinRequest'
+        shippingAddress:
+          $ref: '#/components/schemas/shippingAddress'
+        status:
+          nullable: true
+          title: status
+          type: string
+        title:
+          nullable: true
+          title: title
+          type: string
+      required:
+      - customerEmail
+      - items
+      - plan
+      - purchaseSettings
+      - shippingAddress
+      title: SubscriptionRequest
+      type: object
+    SubscriptionGroupResponse:
+      additionalProperties: false
+      example:
+        lastPurchaseDate: 2000-01-23T04:56:07.000+00:00
+        title: title
+        nextPurchaseDate: 2000-01-23T04:56:07.000+00:00
+        createdAt: 2000-01-23T04:56:07.000+00:00
+        purchaseSettings:
+          paymentMethod:
+            paymentSystem: paymentSystem
+            paymentAccountId: paymentAccountId
+            installments: 5
+          currencyCode: currencyCode
+        isSkipped: true
+        customerEmail: customerEmail
+        lastUpdate: 2000-01-23T04:56:07.000+00:00
+        customerId: customerId
+        shippingAddress:
+          addressType: addressType
+          addressId: addressId
+        cycleCount: 0
+        id: id
+        items:
+        - quantity: 5
+          originalOrderId: originalOrderId
+          isSkipped: true
+          manualPrice: 40
+          id: id
+          skuId: "12"
+          status: status
+        - quantity: 5
+          originalOrderId: originalOrderId
+          isSkipped: true
+          manualPrice: 40
+          id: id
+          skuId: "12"
+          status: status
+        plan:
+          purchaseDay: 1
+          id: id
+          validity:
+            end: 2000-01-23T04:56:07.000+00:00
+            begin: 2000-01-23T04:56:07.000+00:00
+          frequency:
+            periodicity: periodicity
+            interval: 6
+        status: status
+      properties:
+        createdAt:
+          format: date-time
+          title: createdAt
+          type: string
+        customerEmail:
+          nullable: true
+          title: customerEmail
+          type: string
+        customerId:
+          nullable: true
+          title: customerId
+          type: string
+        cycleCount:
+          format: int32
+          title: cycleCount
+          type: integer
+        id:
+          nullable: true
+          title: id
+          type: string
+        isSkipped:
+          title: isSkipped
+          type: boolean
+        items:
+          items:
+            $ref: '#/components/schemas/SubscriptionItemResponse'
+          nullable: true
+          title: items
+          type: array
+        lastPurchaseDate:
+          format: date-time
+          nullable: true
+          title: lastPurchaseDate
+          type: string
+        lastUpdate:
+          format: date-time
+          title: lastUpdate
+          type: string
+        nextPurchaseDate:
+          format: date-time
+          title: nextPurchaseDate
+          type: string
+        plan:
+          $ref: '#/components/schemas/PlanResponse'
+        purchaseSettings:
+          $ref: '#/components/schemas/PurchaseSettingsResponse'
+        shippingAddress:
+          $ref: '#/components/schemas/ShippingAddressResponse'
+        status:
+          nullable: true
+          title: status
+          type: string
+        title:
+          nullable: true
+          title: title
+          type: string
+      required:
+      - createdAt
+      - customerEmail
+      - customerId
+      - cycleCount
+      - id
+      - isSkipped
+      - items
+      - lastUpdate
+      - nextPurchaseDate
+      - plan
+      - purchaseSettings
+      - shippingAddress
+      - status
+      title: Subscription
+      type: object
+    SubscriptionItemResponse:
+      additionalProperties: false
+      example:
+        quantity: 5
+        originalOrderId: originalOrderId
+        isSkipped: true
+        manualPrice: 40
+        id: id
+        skuId: "12"
+        status: status
+      properties:
+        id:
+          nullable: true
+          title: id
+          type: string
+        isSkipped:
+          title: isSkipped
+          type: boolean
+        manualPrice:
+          description: Manual price.
+          example: 40
+          format: int32
+          nullable: true
+          title: manualPrice
+          type: integer
+        originalOrderId:
+          nullable: true
+          title: originalOrderId
+          type: string
+        quantity:
+          description: Amount of units in the cart.
+          example: 5
+          format: int32
+          title: quantity
+          type: integer
+        skuId:
+          description: SKU ID.
+          example: "12"
+          nullable: true
+          title: skuId
+          type: string
+        status:
+          nullable: true
+          title: status
+          type: string
+      required:
+      - id
+      - isSkipped
+      - quantity
+      - skuId
+      - status
+      title: SubscriptionItem
+      type: object
+    SubscriptionReport:
+      additionalProperties: false
+      example:
+        schema: schema
+        requesterEmail: requesterEmail
+        query: query
+        name: name
+        description: description
+        params:
+        - name: name
+          type: type
+          value: ""
+        - name: name
+          type: type
+          value: ""
+        account: account
+        entity: entity
+        key: key
+      properties:
+        account:
+          nullable: true
+          title: account
+          type: string
+        description:
+          nullable: true
+          title: description
+          type: string
+        entity:
+          nullable: true
+          title: entity
+          type: string
+        key:
+          nullable: true
+          title: key
+          type: string
+        name:
+          nullable: true
+          title: name
+          type: string
+        params:
+          items:
+            $ref: '#/components/schemas/SubscriptionReportParam'
+          nullable: true
+          title: params
+          type: array
+        query:
+          nullable: true
+          title: query
+          type: string
+        requesterEmail:
+          nullable: true
+          title: requesterEmail
+          type: string
+        schema:
+          nullable: true
+          title: schema
+          type: string
+      title: SubscriptionReport
+      type: object
+    SubscriptionReportParam:
+      additionalProperties: false
+      example:
+        name: name
+        type: type
+        value: ""
+      properties:
+        name:
+          nullable: true
+          title: name
+          type: string
+        type:
+          nullable: true
+          title: type
+          type: string
+        value:
+          nullable: true
+          title: value
+      title: SubscriptionReportParam
+      type: object
+    SubscriptionThinItemRequest:
+      additionalProperties: false
+      example:
+        quantity: 5
+        manualPrice: 40
+        skuId: "12"
+      properties:
+        manualPrice:
+          description: Manual price.
+          example: 40
+          format: int32
+          nullable: true
+          title: manualPrice
+          type: integer
+        quantity:
+          description: Amount of units in the cart.
+          example: 5
+          format: int32
+          title: quantity
+          type: integer
+        skuId:
+          description: SKU ID.
+          example: "12"
+          nullable: true
+          title: skuId
+          type: string
+      title: SubscriptionThinItemRequest
+      type: object
+    SubscriptionUpdateRequestV3:
+      additionalProperties: false
+      example:
+        purchaseSettings:
+          paymentMethod:
+            paymentSystem: "4"
+            paymentAccountId: "340357032569595"
+            installments: 3
+          salesChannel: "1"
+        isSkipped: false
+        shippingAddress:
+          addressType: residential
+          addressId: "8109266555005"
+        title: catFood
+        plan:
+          purchaseDay: "15"
+          id: store.subscription
+          validity:
+            end: 2023-06-10T00:00:00
+            begin: 2022-06-10T00:00:00
+          frequency:
+            periodicity: MONTHLY
+            interval: 3
+        status: ACTIVE
+      properties:
+        isSkipped:
+          description: "When set as `true`, it means the shopper asked to skip the\
+            \ next subscription order, and when set as `false`, no subscription order\
+            \ is going to be skipped."
+          example: false
+          nullable: true
+          title: isSkipped
+          type: boolean
+        plan:
+          $ref: '#/components/schemas/PlanThinRequest'
+        purchaseSettings:
+          $ref: '#/components/schemas/PurchaseSettingsThinRequest'
+        shippingAddress:
+          $ref: '#/components/schemas/shippingAddress'
+        status:
+          description: "Status to which you wish to update the subscription. The accepted\
+            \ values are: \r\n- `ACTIVE` \r\n- `PAUSED` \r\n- `CANCELLED` \r\n- `EXPIRED`\
+            \ \r\n- `MISSING`"
+          example: ACTIVE
+          nullable: true
+          title: status
+          type: string
+        title:
+          description: Name of the subscription.
+          example: catFood
+          nullable: true
+          title: title
+          type: string
+      title: SubscriptionUpdateRequest
+      type: object
+    Totalization:
+      additionalProperties: false
+      example:
+        id: id
+        value: 1.1730742509559433
+      properties:
+        id:
+          nullable: true
+          title: id
+          type: string
+        value:
+          format: double
+          title: value
+          type: number
+      title: Totalization
+      type: object
+    TotalizationResponse:
+      additionalProperties: false
+      example:
+        name: name
+        id: id
+        valueAsInt: 7
+      properties:
+        id:
+          nullable: true
+          title: id
+          type: string
+        name:
+          nullable: true
+          title: name
+          type: string
+        valueAsInt:
+          format: int64
+          title: valueAsInt
+          type: integer
+      title: TotalizationResponse
+      type: object
+    Transaction:
+      additionalProperties: false
+      example:
+        payments:
+        - parentAccountId: parentAccountId
+          paymentSystem: paymentSystem
+          accountId: accountId
+          installments: 2
+          bin: bin
+          id: id
+          fields:
+          - name: name
+            value: value
+          - name: name
+            value: value
+          value: 7
+          cardNumber: cardNumber
+          url: url
+          group: group
+          referenceValue: 4
+        - parentAccountId: parentAccountId
+          paymentSystem: paymentSystem
+          accountId: accountId
+          installments: 2
+          bin: bin
+          id: id
+          fields:
+          - name: name
+            value: value
+          - name: name
+            value: value
+          value: 7
+          cardNumber: cardNumber
+          url: url
+          group: group
+          referenceValue: 4
+        isActive: true
+      properties:
+        isActive:
+          title: isActive
+          type: boolean
+        payments:
+          items:
+            $ref: '#/components/schemas/Payment'
+          nullable: true
+          title: payments
+          type: array
+      title: Transaction
+      type: object
+    UpdateItemInput:
+      additionalProperties: false
+      example:
+        quantity: 5
+        isSkipped: true
+        manualPrice: 40
+        status: status
+      properties:
+        isSkipped:
+          nullable: true
+          title: isSkipped
+          type: boolean
+        manualPrice:
+          description: Manual price.
+          example: 40
+          format: int32
+          nullable: true
+          title: manualPrice
+          type: integer
+        quantity:
+          description: Amount of units in the cart.
+          example: 5
+          format: int32
+          title: quantity
+          type: integer
+        status:
+          nullable: true
+          title: status
+          type: string
+      title: UpdateItemInput
+      type: object
+    ValidityRequest:
+      additionalProperties: false
+      description: Information about the period during which the subscription will
+        be valid.
+      example:
+        end: 2023-06-10T00:00:00
+        begin: 2022-06-10T00:00:00
+      properties:
+        begin:
+          description: Subscription's beginning date with the format `yyyy-mm-ddThh:mm:ss`.
+          example: 2022-06-10T00:00:00
+          nullable: true
+          title: begin
+          type: string
+        end:
+          description: Subscription's ending date with the format `yyyy-mm-ddThh:mm:ss`.
+          example: 2023-06-10T00:00:00
+          nullable: true
+          title: end
+          type: string
+      title: ValidityRequest
+      type: object
+    ValidityResponse:
+      additionalProperties: false
+      example:
+        end: 2000-01-23T04:56:07.000+00:00
+        begin: 2000-01-23T04:56:07.000+00:00
+      properties:
+        begin:
+          format: date-time
+          title: begin
+          type: string
+        end:
+          format: date-time
+          nullable: true
+          title: end
+          type: string
+      required:
+      - begin
+      title: Validity
+      type: object
+    settings:
+      description: Subscriptions settings
+      example:
+      - defaultSla: null
+        deliveryChannels:
+        - delivery
+        executionHourInUtc: 9
+        isMultipleInstallmentsEnabledOnCreation: false
+        isMultipleInstallmentsEnabledOnUpdate: false
+        isUsingV3: true
+        manualPriceAllowed: false
+        onMigrationProcess: false
+        orderCustomDataAppId: null
+        postponeExpiration: false
+        randomIdGeneration: false
+        slaOption: NONE
+        useItemPriceFromOriginalOrder: false
+        workflowVersion: "1.1"
+      properties:
+        defaultSla:
+          description: Default delivery method.
+          nullable: true
+          title: defaultSla
+          type: string
+          example: null
+        deliveryChannels:
+          default: []
+          description: Array containing delivery channels.
+          example: delivery
+          items:
+            description: "Type of delivery channel. The values that are possible are:\
+              \ `pickupInPoint` for pickup point and `delivery` for regular delivery."
+            example: delivery
+            title: ""
+            type: string
+          title: deliveryChannels
+          type: array
+        executionHourInUtc:
+          default: 0
+          description: Indicates the time future subscription orders will be generated.
+          example: 9
+          title: executionHourInUtc
+          type: integer
+        isMultipleInstallmentsEnabledOnCreation:
+          default: false
+          description: Defines whether or not multiple installments are enabled when
+            a subscription is created.
+          example: false
+          title: isMultipleInstallmentsEnabledOnCreation
+          type: boolean
+        isMultipleInstallmentsEnabledOnUpdate:
+          default: false
+          description: Defines whether or not multiple installments are enabled when
+            a subscription is updated.
+          example: false
+          title: isMultipleInstallmentsEnabledOnUpdate
+          type: boolean
+        isUsingV3:
+          default: false
+          description: Indicates whether or not Subscriptions V3 is enabled.
+          example: true
+          title: isUsingV3
+          type: boolean
+        manualPriceAllowed:
+          default: false
+          description: "When set to `true`, this property enables manual price configuration\
+            \ in subscription items. This is valid for all existing subscriptions,\
+            \ provided that there is a manual price configured and that `isUsingV3`\
+            \ is `true`."
+          example: false
+          title: manualPriceAllowed
+          type: boolean
+        onMigrationProcess:
+          default: false
+          description: Indicates whether or not the account is in the migration process
+            to Subscriptions V3.
+          example: false
+          title: onMigrationProcess
+          type: boolean
+        orderCustomDataAppId:
+          description: "When filled, this field passes along the `customData` infomration\
+            \ in the order to the future recurrent subscription orders."
+          title: orderCustomDataAppId
+          type: string
+          example: null
+        postponeExpiration:
+          default: false
+          description: Defines whether or not the expiration of subscriptions can
+            be postponed.
+          example: false
+          title: postponeExpiration
+          type: boolean
+        randomIdGeneration:
+          default: false
+          description: Defines whether or not the subscription order IDs will be randomly
+            generated.
+          example: false
+          title: randomIdGeneration
+          type: boolean
+        slaOption:
+          default: ""
+          description: Delivery method.
+          example: NONE
+          title: slaOption
+          type: string
+        useItemPriceFromOriginalOrder:
+          default: false
+          description: "When set to `true`, this property enables using the manual\
+            \ price for each item from the original subscription order. This is only\
+            \ valid for new subscriptions, created from the moment this configuration\
+            \ is enabled. For this to work, it is mandatory that the `manualPriceAllowed`\
+            \ property is set to `true` and that `isUsingV3` is `true`."
+          example: false
+          title: useItemPriceFromOriginalOrder
+          type: boolean
+        workflowVersion:
+          default: ""
+          description: Workflow version.
+          example: "1.1"
+          title: workflowVersion
+          type: string
+      required:
+      - defaultSla
+      - deliveryChannels
+      - executionHourInUtc
+      - isMultipleInstallmentsEnabledOnCreation
+      - isMultipleInstallmentsEnabledOnUpdate
+      - isUsingV3
+      - manualPriceAllowed
+      - onMigrationProcess
+      - orderCustomDataAppId
+      - postponeExpiration
+      - randomIdGeneration
+      - slaOption
+      - useItemPriceFromOriginalOrder
+      - workflowVersion
+      title: settings
+      type: object
+    shippingAddress:
+      additionalProperties: false
+      example:
+        addressType: residential
+        addressId: "8109266555005"
+      properties:
+        addressId:
+          description: Shipping address ID.
+          example: "8109266555005"
+          nullable: true
+          title: addressId
+          type: string
+        addressType:
+          description: Type of the address. Possible values are `residential` or `pickup`.
+          example: residential
+          nullable: true
+          title: addressType
+          type: string
+      required:
+      - addressId
+      - addressType
+      title: shippingAddress
+      type: object
+    _api_rns_pub_subscriptions__subscriptionId__conversation_message_get_200_response_inner_from:
+      description: Information regarding the message sender.
+      example:
+        aliasMaskType: aliasMaskType
+        role: role
+        conversationSubject: conversationSubject
+        name: name
+        conversationRelatedTo: conversationRelatedTo
+        emailAlias: emailAlias
+        email: email
+      properties:
+        aliasMaskType:
+          description: Alias mask type.
+          title: aliasMaskType
+          type: string
+        conversationRelatedTo:
+          description: ID of the subscription related to the message.
+          title: conversationRelatedTo
+          type: string
+        conversationSubject:
+          description: Subject of conversation.
+          title: conversationSubject
+          type: string
+        email:
+          description: Email address.
+          title: email
+          type: string
+        emailAlias:
+          description: Email alias.
+          title: emailAlias
+          type: string
+        name:
+          description: Name.
+          title: name
+          type: string
+        role:
+          description: Role.
+          title: role
+          type: string
+      title: _api_rns_pub_subscriptions__subscriptionId__conversation_message_get_200_response_inner_from
+      type: object
+    _api_rns_pub_subscriptions__subscriptionId__conversation_message_get_200_response_inner_to_inner:
+      example:
+        aliasMaskType: aliasMaskType
+        role: role
+        conversationSubject: conversationSubject
+        name: name
+        conversationRelatedTo: conversationRelatedTo
+        emailAlias: emailAlias
+        email: email
+      properties:
+        aliasMaskType:
+          description: Alias mask type.
+          title: aliasMaskType
+          type: string
+        conversationRelatedTo:
+          description: ID of the subscription related to the message.
+          title: conversationRelatedTo
+          type: string
+        conversationSubject:
+          description: Subject of conversation.
+          title: conversationSubject
+          type: string
+        email:
+          description: Email address.
+          title: email
+          type: string
+        emailAlias:
+          description: Email alias.
+          title: emailAlias
+          type: string
+        name:
+          description: Name.
+          title: name
+          type: string
+        role:
+          description: Role.
+          title: role
+          type: string
+      title: _api_rns_pub_subscriptions__subscriptionId__conversation_message_get_200_response_inner_to_inner
+      type: object
+    _api_rns_pub_subscriptions__subscriptionId__conversation_message_get_200_response_inner:
+      example:
+        date: date
+        hasAttachment: true
+        subject: subject
+        from:
+          aliasMaskType: aliasMaskType
+          role: role
+          conversationSubject: conversationSubject
+          name: name
+          conversationRelatedTo: conversationRelatedTo
+          emailAlias: emailAlias
+          email: email
+        id: id
+        to:
+        - aliasMaskType: aliasMaskType
+          role: role
+          conversationSubject: conversationSubject
+          name: name
+          conversationRelatedTo: conversationRelatedTo
+          emailAlias: emailAlias
+          email: email
+        - aliasMaskType: aliasMaskType
+          role: role
+          conversationSubject: conversationSubject
+          name: name
+          conversationRelatedTo: conversationRelatedTo
+          emailAlias: emailAlias
+          email: email
+        body: body
+        firstWords: firstWords
+        attachmentNames:
+        - attachmentNames
+        - attachmentNames
+      properties:
+        attachmentNames:
+          description: Attachment names.
+          items:
+            type: string
+          title: attachmentNames
+          type: array
+        body:
+          description: HTML content of the message's body.
+          title: body
+          type: string
+        date:
+          description: Date of message.
+          title: date
+          type: string
+        firstWords:
+          description: First words of the message text.
+          title: firstWords
+          type: string
+        from:
+          $ref: '#/components/schemas/_api_rns_pub_subscriptions__subscriptionId__conversation_message_get_200_response_inner_from'
+        hasAttachment:
+          description: Indicates whether the message has at least one attachment.
+          title: hasAttachment
+          type: boolean
+        id:
+          description: Message ID
+          title: id
+          type: string
+        subject:
+          description: Message subject.
+          title: subject
+          type: string
+        to:
+          description: Information regarding the message receivers.
+          items:
+            $ref: '#/components/schemas/_api_rns_pub_subscriptions__subscriptionId__conversation_message_get_200_response_inner_to_inner'
+          title: to
+          type: array
+      title: _api_rns_pub_subscriptions__subscriptionId__conversation_message_get_200_response_inner
+      type: object
+  securitySchemes:
+    appKey:
+      in: header
+      name: X-VTEX-API-AppKey
+      type: apiKey
+      x-apikeyInfoFunc: openapi_server.controllers.security_controller.info_from_appKey
+    appToken:
+      in: header
+      name: X-VTEX-API-AppToken
+      type: apiKey
+      x-apikeyInfoFunc: openapi_server.controllers.security_controller.info_from_appToken

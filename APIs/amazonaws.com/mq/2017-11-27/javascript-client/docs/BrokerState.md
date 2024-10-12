@@ -1,0 +1,20 @@
+# AmazonMq.BrokerState
+
+## Enum
+
+
+* `CREATION_IN_PROGRESS` (value: `"CREATION_IN_PROGRESS"`)
+
+* `CREATION_FAILED` (value: `"CREATION_FAILED"`)
+
+* `DELETION_IN_PROGRESS` (value: `"DELETION_IN_PROGRESS"`)
+
+* `RUNNING` (value: `"RUNNING"`)
+
+* `REBOOT_IN_PROGRESS` (value: `"REBOOT_IN_PROGRESS"`)
+
+* `CRITICAL_ACTION_REQUIRED` (value: `"CRITICAL_ACTION_REQUIRED"`)
+
+* `REPLICA` (value: `"REPLICA"`)
+
+

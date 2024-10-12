@@ -1,0 +1,9 @@
+# CustomerCreditApi.DecreasebalanceofanaccountRequest
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**value** | **String** |  | 
+
+

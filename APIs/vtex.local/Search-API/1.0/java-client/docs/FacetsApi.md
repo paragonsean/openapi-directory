@@ -1,0 +1,178 @@
+# FacetsApi
+
+All URIs are relative to *https://vtex.local*
+
+| Method | HTTP request | Description |
+|------------- | ------------- | -------------|
+| [**apiCatalogSystemPubFacetsCategoryCategoryIdGet**](FacetsApi.md#apiCatalogSystemPubFacetsCategoryCategoryIdGet) | **GET** /api/catalog_system/pub/facets/category/{categoryId} | Get Category Facets |
+| [**facetscategory**](FacetsApi.md#facetscategory) | **GET** /api/catalog_system/pub/facets/search/{term} | Search by Store Facets |
+
+
+<a id="apiCatalogSystemPubFacetsCategoryCategoryIdGet"></a>
+# **apiCatalogSystemPubFacetsCategoryCategoryIdGet**
+> List&lt;ApiCatalogSystemPubFacetsCategoryCategoryIdGet200ResponseInner&gt; apiCatalogSystemPubFacetsCategoryCategoryIdGet(accept, contentType, categoryId, from, to)
+
+Get Category Facets
+
+Retrieves the names and IDs of the categories facets.   &gt;⚠️ This endpoint returns a maximum of 50 items per response, so the difference between &#x60;_from&#x60; and &#x60;_to&#x60; should not exceed this number. The result order is descending, from the highest product ID to the lowest.    ## Response body example:    &#x60;&#x60;&#x60;json  [   [      {        \&quot;Name\&quot;:\&quot;Tamanho Global\&quot;,        \&quot;Id\&quot;:45    },    {        \&quot;Name\&quot;:\&quot;Percentuals\&quot;,        \&quot;Id\&quot;:25    }   ]  ]  &#x60;&#x60;&#x60;
+
+### Example
+```java
+// Import classes:
+import org.openapitools.client.ApiClient;
+import org.openapitools.client.ApiException;
+import org.openapitools.client.Configuration;
+import org.openapitools.client.auth.*;
+import org.openapitools.client.models.*;
+import org.openapitools.client.api.FacetsApi;
+
+public class Example {
+  public static void main(String[] args) {
+    ApiClient defaultClient = Configuration.getDefaultApiClient();
+    defaultClient.setBasePath("https://vtex.local");
+    
+    // Configure API key authorization: appToken
+    ApiKeyAuth appToken = (ApiKeyAuth) defaultClient.getAuthentication("appToken");
+    appToken.setApiKey("YOUR API KEY");
+    // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+    //appToken.setApiKeyPrefix("Token");
+
+    // Configure API key authorization: appKey
+    ApiKeyAuth appKey = (ApiKeyAuth) defaultClient.getAuthentication("appKey");
+    appKey.setApiKey("YOUR API KEY");
+    // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+    //appKey.setApiKeyPrefix("Token");
+
+    FacetsApi apiInstance = new FacetsApi(defaultClient);
+    String accept = "application/json"; // String | HTTP Client Negotiation Accept Header. Indicates the types of responses the client can understand.
+    String contentType = "application/json"; // String | Describes the type of the content being sent.
+    String categoryId = "1"; // String | Category unique number identifier.
+    String from = "1"; // String | Starter page range. These parameters allow the API to be paginated. Take into account that the initial and final pages cannot have a separation superior to 50 pages. Thus, it will be displayed 50 items per page.
+    String to = "50"; // String | Finisher page range. These parameters allow the API to be paginated. Take into account that the initial and final pages cannot have a separation superior to 50 pages. Thus, it will be displayed 50 items per page.
+    try {
+      List<ApiCatalogSystemPubFacetsCategoryCategoryIdGet200ResponseInner> result = apiInstance.apiCatalogSystemPubFacetsCategoryCategoryIdGet(accept, contentType, categoryId, from, to);
+      System.out.println(result);
+    } catch (ApiException e) {
+      System.err.println("Exception when calling FacetsApi#apiCatalogSystemPubFacetsCategoryCategoryIdGet");
+      System.err.println("Status code: " + e.getCode());
+      System.err.println("Reason: " + e.getResponseBody());
+      System.err.println("Response headers: " + e.getResponseHeaders());
+      e.printStackTrace();
+    }
+  }
+}
+```
+
+### Parameters
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **accept** | **String**| HTTP Client Negotiation Accept Header. Indicates the types of responses the client can understand. | |
+| **contentType** | **String**| Describes the type of the content being sent. | |
+| **categoryId** | **String**| Category unique number identifier. | |
+| **from** | **String**| Starter page range. These parameters allow the API to be paginated. Take into account that the initial and final pages cannot have a separation superior to 50 pages. Thus, it will be displayed 50 items per page. | [optional] |
+| **to** | **String**| Finisher page range. These parameters allow the API to be paginated. Take into account that the initial and final pages cannot have a separation superior to 50 pages. Thus, it will be displayed 50 items per page. | [optional] |
+
+### Return type
+
+[**List&lt;ApiCatalogSystemPubFacetsCategoryCategoryIdGet200ResponseInner&gt;**](ApiCatalogSystemPubFacetsCategoryCategoryIdGet200ResponseInner.md)
+
+### Authorization
+
+[appToken](../README.md#appToken), [appKey](../README.md#appKey)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | OK |  -  |
+
+<a id="facetscategory"></a>
+# **facetscategory**
+> Facetscategory200Response facetscategory(map, accept, contentType, term, from, to)
+
+Search by Store Facets
+
+Retrieves products by store facets.   &gt;⚠️ This endpoint returns a maximum of 50 items per response, so the difference between &#x60;_from&#x60; and &#x60;_to&#x60; should not exceed this number. The result order is descending, from the highest product ID to the lowest.    ## Response body example:    &#x60;&#x60;&#x60;json  {   \&quot;Departments\&quot;: [     {       \&quot;Quantity\&quot;: 2,        \&quot;Position\&quot;: null,        \&quot;Name\&quot;: \&quot;Beers Beers Mesmo\&quot;,        \&quot;Link\&quot;: \&quot;/Beers-Beers-Mesmo/1?map&#x3D;c,b\&quot;,        \&quot;LinkEncoded\&quot;: \&quot;/Beers-Beers-Mesmo/1?map&#x3D;c,b\&quot;,        \&quot;Map\&quot;: \&quot;c\&quot;,        \&quot;Value\&quot;: \&quot;Beers-Beers-Mesmo\&quot;       },       {        \&quot;Quantity\&quot;: 2,        \&quot;Position\&quot;: null,        \&quot;Name\&quot;: \&quot;Merch Integration Category ||\&quot;,        \&quot;Link\&quot;: \&quot;/Merch-Integration-Category-||/1?map&#x3D;c,b\&quot;,        \&quot;LinkEncoded\&quot;: \&quot;/Merch-Integration-Category-%7C%7C/1?map&#x3D;c,b\&quot;,        \&quot;Map\&quot;: \&quot;c\&quot;,        \&quot;Value\&quot;: \&quot;Merch-Integration-Category-||\&quot;       },       {        \&quot;Quantity\&quot;: 1,        \&quot;Position\&quot;: null,        \&quot;Name\&quot;: \&quot;Jogos\&quot;,        \&quot;Link\&quot;: \&quot;/Jogos/1?map&#x3D;c,b\&quot;,        \&quot;LinkEncoded\&quot;: \&quot;/Jogos/1?map&#x3D;c,b\&quot;,        \&quot;Map\&quot;: \&quot;c\&quot;,        \&quot;Value\&quot;: \&quot;Jogos\&quot;       },       {        \&quot;Quantity\&quot;: 3,        \&quot;Position\&quot;: null,        \&quot;Name\&quot;: \&quot;189\&quot;,        \&quot;Link\&quot;: \&quot;/189/1?map&#x3D;c,b\&quot;,        \&quot;LinkEncoded\&quot;: \&quot;/189/1?map&#x3D;c,b\&quot;,        \&quot;Map\&quot;: \&quot;c\&quot;,        \&quot;Value\&quot;: \&quot;189\&quot;       },       {        \&quot;Quantity\&quot;: 1,        \&quot;Position\&quot;: null,        \&quot;Name\&quot;: \&quot;Tests\&quot;,        \&quot;Link\&quot;: \&quot;/Tests/1?map&#x3D;c,b\&quot;,        \&quot;LinkEncoded\&quot;: \&quot;/Tests/1?map&#x3D;c,b\&quot;,        \&quot;Map\&quot;: \&quot;c\&quot;,        \&quot;Value\&quot;: \&quot;Tests\&quot;       },       {        \&quot;Quantity\&quot;: 1,        \&quot;Position\&quot;: null,        \&quot;Name\&quot;: \&quot;Accessories\&quot;,        \&quot;Link\&quot;: \&quot;/Accessories/1?map&#x3D;c,b\&quot;,        \&quot;LinkEncoded\&quot;: \&quot;/Accessories/1?map&#x3D;c,b\&quot;,        \&quot;Map\&quot;: \&quot;c\&quot;,        \&quot;Value\&quot;: \&quot;Accessories\&quot;       },       {        \&quot;Quantity\&quot;: 2,        \&quot;Position\&quot;: null,        \&quot;Name\&quot;: \&quot;Bars\&quot;,        \&quot;Link\&quot;: \&quot;/Bars/1?map&#x3D;c,b\&quot;,        \&quot;LinkEncoded\&quot;: \&quot;/Bars/1?map&#x3D;c,b\&quot;,        \&quot;Map\&quot;: \&quot;c\&quot;,        \&quot;Value\&quot;: \&quot;Bars\&quot;       },       {        \&quot;Quantity\&quot;: 5,        \&quot;Position\&quot;: null,        \&quot;Name\&quot;: \&quot;Categoria Teste Timeout\&quot;,        \&quot;Link\&quot;: \&quot;/Categoria-Teste-Timeout/1?map&#x3D;c,b\&quot;,        \&quot;LinkEncoded\&quot;: \&quot;/Categoria-Teste-Timeout/1?map&#x3D;c,b\&quot;,        \&quot;Map\&quot;: \&quot;c\&quot;,        \&quot;Value\&quot;: \&quot;Categoria-Teste-Timeout\&quot;       }      ],      \&quot;Brands\&quot;: [       {        \&quot;Quantity\&quot;: 2,        \&quot;Position\&quot;: null,        \&quot;Name\&quot;: \&quot;Merch XP\&quot;,        \&quot;Link\&quot;: \&quot;/1/1234600/1/Merch-XP?map&#x3D;c,c,b,b\&quot;,        \&quot;LinkEncoded\&quot;: \&quot;/1/1234600/1/Merch-XP?map&#x3D;c,c,b,b\&quot;,        \&quot;Map\&quot;: \&quot;b\&quot;,        \&quot;Value\&quot;: \&quot;Merch-XP\&quot;       },       {        \&quot;Quantity\&quot;: 2,        \&quot;Position\&quot;: null,        \&quot;Name\&quot;: \&quot;Zé\&quot;,        \&quot;Link\&quot;: \&quot;/1/1234600/1/Ze?map&#x3D;c,c,b,b\&quot;,        \&quot;LinkEncoded\&quot;: \&quot;/1/1234600/1/Ze?map&#x3D;c,c,b,b\&quot;,        \&quot;Map\&quot;: \&quot;b\&quot;,        \&quot;Value\&quot;: \&quot;Ze\&quot;       },       {        \&quot;Quantity\&quot;: 1,        \&quot;Position\&quot;: null,        \&quot;Name\&quot;: \&quot;Odin\&quot;,        \&quot;Link\&quot;: \&quot;/1/1234600/1/Odin?map&#x3D;c,c,b,b\&quot;,        \&quot;LinkEncoded\&quot;: \&quot;/1/1234600/1/Odin?map&#x3D;c,c,b,b\&quot;,        \&quot;Map\&quot;: \&quot;b\&quot;,        \&quot;Value\&quot;: \&quot;Odin\&quot;       },       {        \&quot;Quantity\&quot;: 2,        \&quot;Position\&quot;: null,        \&quot;Name\&quot;: \&quot;Hoegaarden\&quot;,        \&quot;Link\&quot;: \&quot;/1/1234600/1/Hoegaarden?map&#x3D;c,c,b,b\&quot;,        \&quot;LinkEncoded\&quot;: \&quot;/1/1234600/1/Hoegaarden?map&#x3D;c,c,b,b\&quot;,        \&quot;Map\&quot;: \&quot;b\&quot;,        \&quot;Value\&quot;: \&quot;Hoegaarden\&quot;       },       {        \&quot;Quantity\&quot;: 1,        \&quot;Position\&quot;: null,        \&quot;Name\&quot;: \&quot;Teste marcas\&quot;,        \&quot;Link\&quot;: \&quot;/1/1234600/1/Teste-marcas?map&#x3D;c,c,b,b\&quot;,        \&quot;LinkEncoded\&quot;: \&quot;/1/1234600/1/Teste-marcas?map&#x3D;c,c,b,b\&quot;,        \&quot;Map\&quot;: \&quot;b\&quot;,        \&quot;Value\&quot;: \&quot;Teste-marcas\&quot;       },       {         \&quot;Quantity\&quot;: 1,         \&quot;Position\&quot;: null,         \&quot;Name\&quot;: \&quot;Bitmap Bureau\&quot;,         \&quot;Link\&quot;: \&quot;/1/1234600/1/Bitmap-Bureau?map&#x3D;c,c,b,b\&quot;,         \&quot;LinkEncoded\&quot;: \&quot;/1/1234600/1/Bitmap-Bureau?map&#x3D;c,c,b,b\&quot;,         \&quot;Map\&quot;: \&quot;b\&quot;,         \&quot;Value\&quot;: \&quot;Bitmap-Bureau\&quot;       },        {          \&quot;Quantity\&quot;: 1,          \&quot;Position\&quot;: null,          \&quot;Name\&quot;: \&quot;Sega\&quot;,          \&quot;Link\&quot;: \&quot;/1/1234600/1/Sega?map&#x3D;c,c,b,b\&quot;,          \&quot;LinkEncoded\&quot;: \&quot;/1/1234600/1/Sega?map&#x3D;c,c,b,b\&quot;,          \&quot;Map\&quot;: \&quot;b\&quot;,          \&quot;Value\&quot;: \&quot;Sega\&quot;        },        {          \&quot;Quantity\&quot;: 3,          \&quot;Position\&quot;: null,          \&quot;Name\&quot;: \&quot;Technogym\&quot;,          \&quot;Link\&quot;: \&quot;/1/1234600/1/Technogym?map&#x3D;c,c,b,b\&quot;,          \&quot;LinkEncoded\&quot;: \&quot;/1/1234600/1/Technogym?map&#x3D;c,c,b,b\&quot;,          \&quot;Map\&quot;: \&quot;b\&quot;,          \&quot;Value\&quot;: \&quot;Technogym\&quot;        },        {          \&quot;Quantity\&quot;: 3,          \&quot;Position\&quot;: null,          \&quot;Name\&quot;: \&quot;Aptany\&quot;,          \&quot;Link\&quot;: \&quot;/1/1234600/1/Aptany?map&#x3D;c,c,b,b\&quot;,          \&quot;LinkEncoded\&quot;: \&quot;/1/1234600/1/Aptany?map&#x3D;c,c,b,b\&quot;,          \&quot;Map\&quot;: \&quot;b\&quot;,          \&quot;Value\&quot;: \&quot;Aptany\&quot;        },        {          \&quot;Quantity\&quot;: 1,          \&quot;Position\&quot;: null,          \&quot;Name\&quot;: \&quot;Tectoy\&quot;,          \&quot;Link\&quot;: \&quot;/1/1234600/1/Tectoy?map&#x3D;c,c,b,b\&quot;,          \&quot;LinkEncoded\&quot;: \&quot;/1/1234600/1/Tectoy?map&#x3D;c,c,b,b\&quot;,          \&quot;Map\&quot;: \&quot;b\&quot;,          \&quot;Value\&quot;: \&quot;Tectoy\&quot;        }      ],        \&quot;SpecificationFilters\&quot;: {},          \&quot;CategoriesTrees\&quot;: [            {              \&quot;Id\&quot;: 1,              \&quot;Quantity\&quot;: 4,              \&quot;Position\&quot;: null,              \&quot;Name\&quot;: \&quot;Beers Beers Mesmo\&quot;,              \&quot;Link\&quot;: \&quot;/Beers-Beers-Mesmo/1?map&#x3D;c,b\&quot;,              \&quot;LinkEncoded\&quot;: \&quot;/Beers-Beers-Mesmo/1?map&#x3D;c,b\&quot;,              \&quot;Map\&quot;: \&quot;c\&quot;,              \&quot;Value\&quot;: \&quot;Beers-Beers-Mesmo\&quot;,              \&quot;Children\&quot;: [                {                  \&quot;Id\&quot;: 2,                  \&quot;Quantity\&quot;: 1,                  \&quot;Position\&quot;: null,                  \&quot;Name\&quot;: \&quot;Lager Beers\&quot;,                  \&quot;Link\&quot;: \&quot;/Beers-Beers-Mesmo/Lager-Beers/1?map&#x3D;c,c,b\&quot;,                  \&quot;LinkEncoded\&quot;: \&quot;/Beers-Beers-Mesmo/Lager-Beers/1?map&#x3D;c,c,b\&quot;,                  \&quot;Map\&quot;: \&quot;c\&quot;,                  \&quot;Value\&quot;: \&quot;Lager-Beers\&quot;,                  \&quot;Children\&quot;: []                }              ]            },            {              \&quot;Id\&quot;: 1234571,              \&quot;Quantity\&quot;: 2,              \&quot;Position\&quot;: null,              \&quot;Name\&quot;: \&quot;Jogos\&quot;,              \&quot;Link\&quot;: \&quot;/Jogos/1?map&#x3D;c,b\&quot;,              \&quot;LinkEncoded\&quot;: \&quot;/Jogos/1?map&#x3D;c,b\&quot;,              \&quot;Map\&quot;: \&quot;c\&quot;,              \&quot;Value\&quot;: \&quot;Jogos\&quot;,              \&quot;Children\&quot;: []            },            {              \&quot;Id\&quot;: 1234579,              \&quot;Quantity\&quot;: 3,              \&quot;Position\&quot;: null,              \&quot;Name\&quot;: \&quot;189\&quot;,              \&quot;Link\&quot;: \&quot;/189/1?map&#x3D;c,b\&quot;,              \&quot;LinkEncoded\&quot;: \&quot;/189/1?map&#x3D;c,b\&quot;,              \&quot;Map\&quot;: \&quot;c\&quot;,              \&quot;Value\&quot;: \&quot;189\&quot;,              \&quot;Children\&quot;: []            },            {              \&quot;Id\&quot;: 1234587,              \&quot;Quantity\&quot;: 1,              \&quot;Position\&quot;: null,              \&quot;Name\&quot;: \&quot;Tests\&quot;,              \&quot;Link\&quot;: \&quot;/Tests/1?map&#x3D;c,b\&quot;,              \&quot;LinkEncoded\&quot;: \&quot;/Tests/1?map&#x3D;c,b\&quot;,              \&quot;Map\&quot;: \&quot;c\&quot;,              \&quot;Value\&quot;: \&quot;Tests\&quot;,              \&quot;Children\&quot;: []            },            {              \&quot;Id\&quot;: 1234595,              \&quot;Quantity\&quot;: 1,              \&quot;Position\&quot;: null,              \&quot;Name\&quot;: \&quot;Accessories\&quot;,              \&quot;Link\&quot;: \&quot;/Accessories/1?map&#x3D;c,b\&quot;,              \&quot;LinkEncoded\&quot;: \&quot;/Accessories/1?map&#x3D;c,b\&quot;,              \&quot;Map\&quot;: \&quot;c\&quot;,              \&quot;Value\&quot;: \&quot;Accessories\&quot;,              \&quot;Children\&quot;: [                {                  \&quot;Id\&quot;: 1234596,                  \&quot;Quantity\&quot;: 1,                  \&quot;Position\&quot;: null,                  \&quot;Name\&quot;: \&quot;Foam rollers\&quot;,                  \&quot;Link\&quot;: \&quot;/Accessories/Foam-rollers/1?map&#x3D;c,c,b\&quot;,                  \&quot;LinkEncoded\&quot;: \&quot;/Accessories/Foam-rollers/1?map&#x3D;c,c,b\&quot;,                  \&quot;Map\&quot;: \&quot;c\&quot;,                  \&quot;Value\&quot;: \&quot;Foam-rollers\&quot;,                  \&quot;Children\&quot;: []                }              ]            },            {              \&quot;Id\&quot;: 1234597,              \&quot;Quantity\&quot;: 2,              \&quot;Position\&quot;: null,              \&quot;Name\&quot;: \&quot;Bars\&quot;,              \&quot;Link\&quot;: \&quot;/Bars/1?map&#x3D;c,b\&quot;,              \&quot;LinkEncoded\&quot;: \&quot;/Bars/1?map&#x3D;c,b\&quot;,              \&quot;Map\&quot;: \&quot;c\&quot;,              \&quot;Value\&quot;: \&quot;Bars\&quot;,              \&quot;Children\&quot;: [                {                  \&quot;Id\&quot;: 1234598,                  \&quot;Quantity\&quot;: 1,                  \&quot;Position\&quot;: null,                  \&quot;Name\&quot;: \&quot;Training Bars\&quot;,                  \&quot;Link\&quot;: \&quot;/Bars/Training-Bars/1?map&#x3D;c,c,b\&quot;,                  \&quot;LinkEncoded\&quot;: \&quot;/Bars/Training-Bars/1?map&#x3D;c,c,b\&quot;,                  \&quot;Map\&quot;: \&quot;c\&quot;,                  \&quot;Value\&quot;: \&quot;Training-Bars\&quot;,                  \&quot;Children\&quot;: []                },                {                  \&quot;Id\&quot;: 1234599,                  \&quot;Quantity\&quot;: 1,                  \&quot;Position\&quot;: null,                  \&quot;Name\&quot;: \&quot;Curl Bars\&quot;,                  \&quot;Link\&quot;: \&quot;/Bars/Curl-Bars/1?map&#x3D;c,c,b\&quot;,                  \&quot;LinkEncoded\&quot;: \&quot;/Bars/Curl-Bars/1?map&#x3D;c,c,b\&quot;,                  \&quot;Map\&quot;: \&quot;c\&quot;,                  \&quot;Value\&quot;: \&quot;Curl-Bars\&quot;,                  \&quot;Children\&quot;: []                }              ]            },            {              \&quot;Id\&quot;: 15,              \&quot;Quantity\&quot;: 1,              \&quot;Position\&quot;: null,              \&quot;Name\&quot;: \&quot;Coronas\&quot;,              \&quot;Link\&quot;: \&quot;/Coronas/1?map&#x3D;c,b\&quot;,              \&quot;LinkEncoded\&quot;: \&quot;/Coronas/1?map&#x3D;c,b\&quot;,              \&quot;Map\&quot;: \&quot;c\&quot;,              \&quot;Value\&quot;: \&quot;Coronas\&quot;,              \&quot;Children\&quot;: [                {                  \&quot;Id\&quot;: 13,                  \&quot;Quantity\&quot;: 1,                  \&quot;Position\&quot;: null,                  \&quot;Name\&quot;: \&quot;não tem limite!\&quot;,                  \&quot;Link\&quot;: \&quot;/Coronas/nao-tem-limite-/1?map&#x3D;c,c,b\&quot;,                  \&quot;LinkEncoded\&quot;: \&quot;/Coronas/nao-tem-limite-/1?map&#x3D;c,c,b\&quot;,                  \&quot;Map\&quot;: \&quot;c\&quot;,                  \&quot;Value\&quot;: \&quot;nao-tem-limite-\&quot;,                  \&quot;Children\&quot;: []                }              ]            },            {              \&quot;Id\&quot;: 4,              \&quot;Quantity\&quot;: 4,              \&quot;Position\&quot;: null,              \&quot;Name\&quot;: \&quot;Merch Integration Category ||\&quot;,              \&quot;Link\&quot;: \&quot;/Merch-Integration-Category-||/1?map&#x3D;c,b\&quot;,              \&quot;LinkEncoded\&quot;: \&quot;/Merch-Integration-Category-%7C%7C/1?map&#x3D;c,b\&quot;,              \&quot;Map\&quot;: \&quot;c\&quot;,              \&quot;Value\&quot;: \&quot;Merch-Integration-Category-||\&quot;,              \&quot;Children\&quot;: []            }          ],            \&quot;PriceRanges\&quot;: [],              \&quot;Summary\&quot;: {                \&quot;Departments\&quot;: {                  \&quot;DisplayedItems\&quot;: 8,                    \&quot;TotalItems\&quot;: 8                },                  \&quot;CategoriesTrees\&quot;: {                    \&quot;DisplayedItems\&quot;: 13,                      \&quot;TotalItems\&quot;: 13                  },                    \&quot;Brands\&quot;: {                      \&quot;DisplayedItems\&quot;: 10,                        \&quot;TotalItems\&quot;: 10                    },                      \&quot;PriceRanges\&quot;: {                        \&quot;DisplayedItems\&quot;: 0,                          \&quot;TotalItems\&quot;: 0                      },                        \&quot;SpecificationFilters\&quot;: {}              }  }  &#x60;&#x60;&#x60;
+
+### Example
+```java
+// Import classes:
+import org.openapitools.client.ApiClient;
+import org.openapitools.client.ApiException;
+import org.openapitools.client.Configuration;
+import org.openapitools.client.auth.*;
+import org.openapitools.client.models.*;
+import org.openapitools.client.api.FacetsApi;
+
+public class Example {
+  public static void main(String[] args) {
+    ApiClient defaultClient = Configuration.getDefaultApiClient();
+    defaultClient.setBasePath("https://vtex.local");
+    
+    // Configure API key authorization: appToken
+    ApiKeyAuth appToken = (ApiKeyAuth) defaultClient.getAuthentication("appToken");
+    appToken.setApiKey("YOUR API KEY");
+    // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+    //appToken.setApiKeyPrefix("Token");
+
+    // Configure API key authorization: appKey
+    ApiKeyAuth appKey = (ApiKeyAuth) defaultClient.getAuthentication("appKey");
+    appKey.setApiKey("YOUR API KEY");
+    // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+    //appKey.setApiKeyPrefix("Token");
+
+    FacetsApi apiInstance = new FacetsApi(defaultClient);
+    String map = "c"; // String | Mapping of the term. It can be `c` for a category, `b` for a brand, or `specificationFilter_{specificationId}` for a specification. You need to include a map for each term you are searching for in the same term's order.
+    String accept = "application/json"; // String | HTTP Client Negotiation Accept Header. Indicates the types of responses the client can understand.
+    String contentType = "application/json"; // String | Describes the type of the content being sent.
+    String term = "2"; // String | Term used for the facet's search. You can search for as much term as you want. The term can be: `categoryId`, `brandId`, `specificationId`.
+    String from = "1"; // String | Starter page range. These parameters allow the API to be paginated. Take into account that the initial and final pages cannot have a separation superior to 50 pages. Thus, it will be displayed 50 items per page.
+    String to = "50"; // String | Finisher page range. These parameters allow the API to be paginated. Take into account that the initial and final pages cannot have a separation superior to 50 pages. Thus, it will be displayed 50 items per page.
+    try {
+      Facetscategory200Response result = apiInstance.facetscategory(map, accept, contentType, term, from, to);
+      System.out.println(result);
+    } catch (ApiException e) {
+      System.err.println("Exception when calling FacetsApi#facetscategory");
+      System.err.println("Status code: " + e.getCode());
+      System.err.println("Reason: " + e.getResponseBody());
+      System.err.println("Response headers: " + e.getResponseHeaders());
+      e.printStackTrace();
+    }
+  }
+}
+```
+
+### Parameters
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **map** | **String**| Mapping of the term. It can be &#x60;c&#x60; for a category, &#x60;b&#x60; for a brand, or &#x60;specificationFilter_{specificationId}&#x60; for a specification. You need to include a map for each term you are searching for in the same term&#39;s order. | |
+| **accept** | **String**| HTTP Client Negotiation Accept Header. Indicates the types of responses the client can understand. | |
+| **contentType** | **String**| Describes the type of the content being sent. | |
+| **term** | **String**| Term used for the facet&#39;s search. You can search for as much term as you want. The term can be: &#x60;categoryId&#x60;, &#x60;brandId&#x60;, &#x60;specificationId&#x60;. | |
+| **from** | **String**| Starter page range. These parameters allow the API to be paginated. Take into account that the initial and final pages cannot have a separation superior to 50 pages. Thus, it will be displayed 50 items per page. | [optional] |
+| **to** | **String**| Finisher page range. These parameters allow the API to be paginated. Take into account that the initial and final pages cannot have a separation superior to 50 pages. Thus, it will be displayed 50 items per page. | [optional] |
+
+### Return type
+
+[**Facetscategory200Response**](Facetscategory200Response.md)
+
+### Authorization
+
+[appToken](../README.md#appToken), [appKey](../README.md#appKey)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | OK |  -  |
+

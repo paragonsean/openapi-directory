@@ -1,0 +1,89 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIAPIError.h \
+    $${PWD}/OAIBINLookupResponse.h \
+    $${PWD}/OAIBadWordFilterResponse.h \
+    $${PWD}/OAIBlacklist.h \
+    $${PWD}/OAIBlocklistSensor.h \
+    $${PWD}/OAIBrowserBotResponse.h \
+    $${PWD}/OAIConvertResponse.h \
+    $${PWD}/OAIDomainLookupResponse.h \
+    $${PWD}/OAIEmailValidateResponse.h \
+    $${PWD}/OAIEmailVerifyResponse.h \
+    $${PWD}/OAIGeocodeAddressResponse.h \
+    $${PWD}/OAIGeocodeReverseResponse.h \
+    $${PWD}/OAIHLRLookupResponse.h \
+    $${PWD}/OAIHostReputationResponse.h \
+    $${PWD}/OAIIPBlocklistResponse.h \
+    $${PWD}/OAIIPInfoResponse.h \
+    $${PWD}/OAIIPProbeResponse.h \
+    $${PWD}/OAILocation.h \
+    $${PWD}/OAIPhonePlaybackResponse.h \
+    $${PWD}/OAIPhoneValidateResponse.h \
+    $${PWD}/OAIPhoneVerifyResponse.h \
+    $${PWD}/OAISMSVerifyResponse.h \
+    $${PWD}/OAITimezone.h \
+    $${PWD}/OAIUALookupResponse.h \
+    $${PWD}/OAIURLInfoResponse.h \
+    $${PWD}/OAIVerifySecurityCodeResponse.h \
+# APIs
+    $${PWD}/OAIDataToolsApi.h \
+    $${PWD}/OAIECommerceApi.h \
+    $${PWD}/OAIGeolocationApi.h \
+    $${PWD}/OAIImagingApi.h \
+    $${PWD}/OAISecurityAndNetworkingApi.h \
+    $${PWD}/OAITelephonyApi.h \
+    $${PWD}/OAIWWWApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIAPIError.cpp \
+    $${PWD}/OAIBINLookupResponse.cpp \
+    $${PWD}/OAIBadWordFilterResponse.cpp \
+    $${PWD}/OAIBlacklist.cpp \
+    $${PWD}/OAIBlocklistSensor.cpp \
+    $${PWD}/OAIBrowserBotResponse.cpp \
+    $${PWD}/OAIConvertResponse.cpp \
+    $${PWD}/OAIDomainLookupResponse.cpp \
+    $${PWD}/OAIEmailValidateResponse.cpp \
+    $${PWD}/OAIEmailVerifyResponse.cpp \
+    $${PWD}/OAIGeocodeAddressResponse.cpp \
+    $${PWD}/OAIGeocodeReverseResponse.cpp \
+    $${PWD}/OAIHLRLookupResponse.cpp \
+    $${PWD}/OAIHostReputationResponse.cpp \
+    $${PWD}/OAIIPBlocklistResponse.cpp \
+    $${PWD}/OAIIPInfoResponse.cpp \
+    $${PWD}/OAIIPProbeResponse.cpp \
+    $${PWD}/OAILocation.cpp \
+    $${PWD}/OAIPhonePlaybackResponse.cpp \
+    $${PWD}/OAIPhoneValidateResponse.cpp \
+    $${PWD}/OAIPhoneVerifyResponse.cpp \
+    $${PWD}/OAISMSVerifyResponse.cpp \
+    $${PWD}/OAITimezone.cpp \
+    $${PWD}/OAIUALookupResponse.cpp \
+    $${PWD}/OAIURLInfoResponse.cpp \
+    $${PWD}/OAIVerifySecurityCodeResponse.cpp \
+# APIs
+    $${PWD}/OAIDataToolsApi.cpp \
+    $${PWD}/OAIECommerceApi.cpp \
+    $${PWD}/OAIGeolocationApi.cpp \
+    $${PWD}/OAIImagingApi.cpp \
+    $${PWD}/OAISecurityAndNetworkingApi.cpp \
+    $${PWD}/OAITelephonyApi.cpp \
+    $${PWD}/OAIWWWApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

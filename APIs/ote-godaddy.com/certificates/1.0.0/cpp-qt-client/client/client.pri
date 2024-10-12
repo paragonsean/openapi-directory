@@ -1,0 +1,85 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAICertificate.h \
+    $${PWD}/OAICertificateAction.h \
+    $${PWD}/OAICertificateAddress.h \
+    $${PWD}/OAICertificateBundle.h \
+    $${PWD}/OAICertificateCallback.h \
+    $${PWD}/OAICertificateContact.h \
+    $${PWD}/OAICertificateCreate.h \
+    $${PWD}/OAICertificateDetailV2.h \
+    $${PWD}/OAICertificateEmailHistory.h \
+    $${PWD}/OAICertificateIdentifier.h \
+    $${PWD}/OAICertificateOrganization.h \
+    $${PWD}/OAICertificateOrganizationCreate.h \
+    $${PWD}/OAICertificateReissue.h \
+    $${PWD}/OAICertificateRenew.h \
+    $${PWD}/OAICertificateRevoke.h \
+    $${PWD}/OAICertificateSiteSeal.h \
+    $${PWD}/OAICertificateSummariesV2.h \
+    $${PWD}/OAICertificateSummaryV2.h \
+    $${PWD}/OAIDomainVerificationDetail.h \
+    $${PWD}/OAIDomainVerificationDetail_allOf_certificateAuthorityAuthorization.h \
+    $${PWD}/OAIDomainVerificationSummary.h \
+    $${PWD}/OAIError.h \
+    $${PWD}/OAIErrorField.h \
+    $${PWD}/OAIErrorLimit.h \
+    $${PWD}/OAIExternalAccountBinding.h \
+    $${PWD}/OAIJurisdictionOfIncorporation.h \
+    $${PWD}/OAIPEMCertificates.h \
+    $${PWD}/OAIPagination.h \
+    $${PWD}/OAISubjectAlternativeNameDetails.h \
+# APIs
+    $${PWD}/OAIV1Api.h \
+    $${PWD}/OAIV2Api.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAICertificate.cpp \
+    $${PWD}/OAICertificateAction.cpp \
+    $${PWD}/OAICertificateAddress.cpp \
+    $${PWD}/OAICertificateBundle.cpp \
+    $${PWD}/OAICertificateCallback.cpp \
+    $${PWD}/OAICertificateContact.cpp \
+    $${PWD}/OAICertificateCreate.cpp \
+    $${PWD}/OAICertificateDetailV2.cpp \
+    $${PWD}/OAICertificateEmailHistory.cpp \
+    $${PWD}/OAICertificateIdentifier.cpp \
+    $${PWD}/OAICertificateOrganization.cpp \
+    $${PWD}/OAICertificateOrganizationCreate.cpp \
+    $${PWD}/OAICertificateReissue.cpp \
+    $${PWD}/OAICertificateRenew.cpp \
+    $${PWD}/OAICertificateRevoke.cpp \
+    $${PWD}/OAICertificateSiteSeal.cpp \
+    $${PWD}/OAICertificateSummariesV2.cpp \
+    $${PWD}/OAICertificateSummaryV2.cpp \
+    $${PWD}/OAIDomainVerificationDetail.cpp \
+    $${PWD}/OAIDomainVerificationDetail_allOf_certificateAuthorityAuthorization.cpp \
+    $${PWD}/OAIDomainVerificationSummary.cpp \
+    $${PWD}/OAIError.cpp \
+    $${PWD}/OAIErrorField.cpp \
+    $${PWD}/OAIErrorLimit.cpp \
+    $${PWD}/OAIExternalAccountBinding.cpp \
+    $${PWD}/OAIJurisdictionOfIncorporation.cpp \
+    $${PWD}/OAIPEMCertificates.cpp \
+    $${PWD}/OAIPagination.cpp \
+    $${PWD}/OAISubjectAlternativeNameDetails.cpp \
+# APIs
+    $${PWD}/OAIV1Api.cpp \
+    $${PWD}/OAIV2Api.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

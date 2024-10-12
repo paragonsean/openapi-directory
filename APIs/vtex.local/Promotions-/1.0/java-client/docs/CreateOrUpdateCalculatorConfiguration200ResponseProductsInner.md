@@ -1,0 +1,15 @@
+
+
+# CreateOrUpdateCalculatorConfiguration200ResponseProductsInner
+
+Object with information of the product.
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**id** | **String** | Product ID. |  [optional] |
+|**name** | **String** | Product Name. |  [optional] |
+
+
+

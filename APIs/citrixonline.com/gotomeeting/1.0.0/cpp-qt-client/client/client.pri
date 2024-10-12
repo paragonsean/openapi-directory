@@ -1,0 +1,83 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIAttendeeByGroup.h \
+    $${PWD}/OAIAttendeeByMeeting.h \
+    $${PWD}/OAIAttendeeByOrganizer.h \
+    $${PWD}/OAIGroup.h \
+    $${PWD}/OAIHistoricalMeeting.h \
+    $${PWD}/OAIHistoricalMeetingByGroup.h \
+    $${PWD}/OAIHistoryMeetingByGroup.h \
+    $${PWD}/OAIMeetingById.h \
+    $${PWD}/OAIMeetingByOrganizer.h \
+    $${PWD}/OAIMeetingCreated.h \
+    $${PWD}/OAIMeetingHistory.h \
+    $${PWD}/OAIMeetingReqCreate.h \
+    $${PWD}/OAIMeetingReqUpdate.h \
+    $${PWD}/OAIMeetingScheduled.h \
+    $${PWD}/OAIMeetingStatus.h \
+    $${PWD}/OAIMeetingType.h \
+    $${PWD}/OAIOrganizer.h \
+    $${PWD}/OAIOrganizerByGroup.h \
+    $${PWD}/OAIOrganizerReq.h \
+    $${PWD}/OAIOrganizerShort.h \
+    $${PWD}/OAIOrganizerStatus.h \
+    $${PWD}/OAIProduct.h \
+    $${PWD}/OAIScheduledMeetingByGroup.h \
+    $${PWD}/OAIStartUrl.h \
+    $${PWD}/OAIStatus.h \
+    $${PWD}/OAIUpcomingMeeting.h \
+    $${PWD}/OAIUpcomingMeetingByGroup.h \
+# APIs
+    $${PWD}/OAIGroupsApi.h \
+    $${PWD}/OAIMeetingsApi.h \
+    $${PWD}/OAIOrganizersApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIAttendeeByGroup.cpp \
+    $${PWD}/OAIAttendeeByMeeting.cpp \
+    $${PWD}/OAIAttendeeByOrganizer.cpp \
+    $${PWD}/OAIGroup.cpp \
+    $${PWD}/OAIHistoricalMeeting.cpp \
+    $${PWD}/OAIHistoricalMeetingByGroup.cpp \
+    $${PWD}/OAIHistoryMeetingByGroup.cpp \
+    $${PWD}/OAIMeetingById.cpp \
+    $${PWD}/OAIMeetingByOrganizer.cpp \
+    $${PWD}/OAIMeetingCreated.cpp \
+    $${PWD}/OAIMeetingHistory.cpp \
+    $${PWD}/OAIMeetingReqCreate.cpp \
+    $${PWD}/OAIMeetingReqUpdate.cpp \
+    $${PWD}/OAIMeetingScheduled.cpp \
+    $${PWD}/OAIMeetingStatus.cpp \
+    $${PWD}/OAIMeetingType.cpp \
+    $${PWD}/OAIOrganizer.cpp \
+    $${PWD}/OAIOrganizerByGroup.cpp \
+    $${PWD}/OAIOrganizerReq.cpp \
+    $${PWD}/OAIOrganizerShort.cpp \
+    $${PWD}/OAIOrganizerStatus.cpp \
+    $${PWD}/OAIProduct.cpp \
+    $${PWD}/OAIScheduledMeetingByGroup.cpp \
+    $${PWD}/OAIStartUrl.cpp \
+    $${PWD}/OAIStatus.cpp \
+    $${PWD}/OAIUpcomingMeeting.cpp \
+    $${PWD}/OAIUpcomingMeetingByGroup.cpp \
+# APIs
+    $${PWD}/OAIGroupsApi.cpp \
+    $${PWD}/OAIMeetingsApi.cpp \
+    $${PWD}/OAIOrganizersApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

@@ -1,0 +1,12 @@
+# AwsServiceCatalog.StackSetOperationType
+
+## Enum
+
+
+* `CREATE` (value: `"CREATE"`)
+
+* `UPDATE` (value: `"UPDATE"`)
+
+* `DELETE` (value: `"DELETE"`)
+
+

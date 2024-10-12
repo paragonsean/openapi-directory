@@ -1,0 +1,99 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIAddress.h \
+    $${PWD}/OAIBadRequestResponse.h \
+    $${PWD}/OAIBadRequestResponse_detail.h \
+    $${PWD}/OAIBankAccount.h \
+    $${PWD}/OAICompany.h \
+    $${PWD}/OAICompany_Row_Type.h \
+    $${PWD}/OAIContact.h \
+    $${PWD}/OAICreateCustomerSupportCustomerResponse.h \
+    $${PWD}/OAICurrency.h \
+    $${PWD}/OAICustomField.h \
+    $${PWD}/OAICustomField_value.h \
+    $${PWD}/OAICustomerSupportCustomer.h \
+    $${PWD}/OAIDeleteCustomerSupportCustomerResponse.h \
+    $${PWD}/OAIEmail.h \
+    $${PWD}/OAIGetCustomerSupportCustomerResponse.h \
+    $${PWD}/OAIGetCustomerSupportCustomersResponse.h \
+    $${PWD}/OAILead.h \
+    $${PWD}/OAILinks.h \
+    $${PWD}/OAIMeta.h \
+    $${PWD}/OAIMeta_cursors.h \
+    $${PWD}/OAINotFoundResponse.h \
+    $${PWD}/OAINotFoundResponse_detail.h \
+    $${PWD}/OAINotImplementedResponse.h \
+    $${PWD}/OAINotImplementedResponse_detail.h \
+    $${PWD}/OAIOpportunity.h \
+    $${PWD}/OAIPaymentRequiredResponse.h \
+    $${PWD}/OAIPhoneNumber.h \
+    $${PWD}/OAISocialLink.h \
+    $${PWD}/OAITooManyRequestsResponse.h \
+    $${PWD}/OAITooManyRequestsResponse_detail.h \
+    $${PWD}/OAIUnauthorizedResponse.h \
+    $${PWD}/OAIUnexpectedErrorResponse.h \
+    $${PWD}/OAIUnexpectedErrorResponse_detail.h \
+    $${PWD}/OAIUnifiedId.h \
+    $${PWD}/OAIUnprocessableResponse.h \
+    $${PWD}/OAIUpdateCustomerSupportCustomerResponse.h \
+    $${PWD}/OAIWebsite.h \
+# APIs
+    $${PWD}/OAICustomersApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIAddress.cpp \
+    $${PWD}/OAIBadRequestResponse.cpp \
+    $${PWD}/OAIBadRequestResponse_detail.cpp \
+    $${PWD}/OAIBankAccount.cpp \
+    $${PWD}/OAICompany.cpp \
+    $${PWD}/OAICompany_Row_Type.cpp \
+    $${PWD}/OAIContact.cpp \
+    $${PWD}/OAICreateCustomerSupportCustomerResponse.cpp \
+    $${PWD}/OAICurrency.cpp \
+    $${PWD}/OAICustomField.cpp \
+    $${PWD}/OAICustomField_value.cpp \
+    $${PWD}/OAICustomerSupportCustomer.cpp \
+    $${PWD}/OAIDeleteCustomerSupportCustomerResponse.cpp \
+    $${PWD}/OAIEmail.cpp \
+    $${PWD}/OAIGetCustomerSupportCustomerResponse.cpp \
+    $${PWD}/OAIGetCustomerSupportCustomersResponse.cpp \
+    $${PWD}/OAILead.cpp \
+    $${PWD}/OAILinks.cpp \
+    $${PWD}/OAIMeta.cpp \
+    $${PWD}/OAIMeta_cursors.cpp \
+    $${PWD}/OAINotFoundResponse.cpp \
+    $${PWD}/OAINotFoundResponse_detail.cpp \
+    $${PWD}/OAINotImplementedResponse.cpp \
+    $${PWD}/OAINotImplementedResponse_detail.cpp \
+    $${PWD}/OAIOpportunity.cpp \
+    $${PWD}/OAIPaymentRequiredResponse.cpp \
+    $${PWD}/OAIPhoneNumber.cpp \
+    $${PWD}/OAISocialLink.cpp \
+    $${PWD}/OAITooManyRequestsResponse.cpp \
+    $${PWD}/OAITooManyRequestsResponse_detail.cpp \
+    $${PWD}/OAIUnauthorizedResponse.cpp \
+    $${PWD}/OAIUnexpectedErrorResponse.cpp \
+    $${PWD}/OAIUnexpectedErrorResponse_detail.cpp \
+    $${PWD}/OAIUnifiedId.cpp \
+    $${PWD}/OAIUnprocessableResponse.cpp \
+    $${PWD}/OAIUpdateCustomerSupportCustomerResponse.cpp \
+    $${PWD}/OAIWebsite.cpp \
+# APIs
+    $${PWD}/OAICustomersApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

@@ -1,0 +1,85 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIAccountResponse.h \
+    $${PWD}/OAIAccountResponse_appKey.h \
+    $${PWD}/OAIAccountResponse_contact.h \
+    $${PWD}/OAIAccountResponse_sponsor.h \
+    $${PWD}/OAIAppKeyItems.h \
+    $${PWD}/OAICreateUserRequest.h \
+    $${PWD}/OAICreateUser_200_response.h \
+    $${PWD}/OAICreateUser_400_response.h \
+    $${PWD}/OAICreatenewappkeyRequest.h \
+    $${PWD}/OAICreatenewappkeyResponse.h \
+    $${PWD}/OAIGetRolesbyUser_200_response_inner.h \
+    $${PWD}/OAIGetUser_400_response.h \
+    $${PWD}/OAIGetappkeysfromaccount.h \
+    $${PWD}/OAILicenseItems.h \
+    $${PWD}/OAILicenseItems_products_inner.h \
+    $${PWD}/OAILicenseItems_products_inner_endpoints.h \
+    $${PWD}/OAIListRolesResponse.h \
+    $${PWD}/OAIListUsersResponse.h \
+    $${PWD}/OAIPaging.h \
+    $${PWD}/OAIProductItems.h \
+    $${PWD}/OAIRoleItems.h \
+    $${PWD}/OAISiteItems.h \
+    $${PWD}/OAIStoreItems.h \
+    $${PWD}/OAIUpdateappkeyRequest.h \
+    $${PWD}/OAIUserItems.h \
+    $${PWD}/OAIVLMError.h \
+# APIs
+    $${PWD}/OAIAccountApi.h \
+    $${PWD}/OAIAppKeysApi.h \
+    $${PWD}/OAIRolesApi.h \
+    $${PWD}/OAIStoreApi.h \
+    $${PWD}/OAIUserApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIAccountResponse.cpp \
+    $${PWD}/OAIAccountResponse_appKey.cpp \
+    $${PWD}/OAIAccountResponse_contact.cpp \
+    $${PWD}/OAIAccountResponse_sponsor.cpp \
+    $${PWD}/OAIAppKeyItems.cpp \
+    $${PWD}/OAICreateUserRequest.cpp \
+    $${PWD}/OAICreateUser_200_response.cpp \
+    $${PWD}/OAICreateUser_400_response.cpp \
+    $${PWD}/OAICreatenewappkeyRequest.cpp \
+    $${PWD}/OAICreatenewappkeyResponse.cpp \
+    $${PWD}/OAIGetRolesbyUser_200_response_inner.cpp \
+    $${PWD}/OAIGetUser_400_response.cpp \
+    $${PWD}/OAIGetappkeysfromaccount.cpp \
+    $${PWD}/OAILicenseItems.cpp \
+    $${PWD}/OAILicenseItems_products_inner.cpp \
+    $${PWD}/OAILicenseItems_products_inner_endpoints.cpp \
+    $${PWD}/OAIListRolesResponse.cpp \
+    $${PWD}/OAIListUsersResponse.cpp \
+    $${PWD}/OAIPaging.cpp \
+    $${PWD}/OAIProductItems.cpp \
+    $${PWD}/OAIRoleItems.cpp \
+    $${PWD}/OAISiteItems.cpp \
+    $${PWD}/OAIStoreItems.cpp \
+    $${PWD}/OAIUpdateappkeyRequest.cpp \
+    $${PWD}/OAIUserItems.cpp \
+    $${PWD}/OAIVLMError.cpp \
+# APIs
+    $${PWD}/OAIAccountApi.cpp \
+    $${PWD}/OAIAppKeysApi.cpp \
+    $${PWD}/OAIRolesApi.cpp \
+    $${PWD}/OAIStoreApi.cpp \
+    $${PWD}/OAIUserApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

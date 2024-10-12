@@ -1,0 +1,123 @@
+# NetBoxApi.WritableFrontPort
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**occupied** | **Boolean** |  | [optional] [readonly] 
+**cable** | [**NestedCable**](NestedCable.md) |  | [optional] 
+**cableEnd** | **String** |  | [optional] [readonly] 
+**color** | **String** |  | [optional] 
+**created** | **Date** |  | [optional] [readonly] 
+**customFields** | **Object** |  | [optional] 
+**description** | **String** |  | [optional] 
+**device** | **Number** |  | 
+**display** | **String** |  | [optional] [readonly] 
+**id** | **Number** |  | [optional] [readonly] 
+**label** | **String** | Physical label | [optional] 
+**lastUpdated** | **Date** |  | [optional] [readonly] 
+**linkPeers** | **[String]** |  Return the appropriate serializer for the link termination model.  | [optional] [readonly] 
+**linkPeersType** | **String** |  | [optional] [readonly] 
+**markConnected** | **Boolean** | Treat as if a cable is connected | [optional] 
+**module** | **Number** |  | [optional] 
+**name** | **String** |  | 
+**rearPort** | **Number** |  | 
+**rearPortPosition** | **Number** |  | [optional] 
+**tags** | [**[NestedTag]**](NestedTag.md) |  | [optional] 
+**type** | **String** |  | 
+**url** | **String** |  | [optional] [readonly] 
+
+
+
+## Enum: TypeEnum
+
+
+* `8p8c` (value: `"8p8c"`)
+
+* `8p6c` (value: `"8p6c"`)
+
+* `8p4c` (value: `"8p4c"`)
+
+* `8p2c` (value: `"8p2c"`)
+
+* `6p6c` (value: `"6p6c"`)
+
+* `6p4c` (value: `"6p4c"`)
+
+* `6p2c` (value: `"6p2c"`)
+
+* `4p4c` (value: `"4p4c"`)
+
+* `4p2c` (value: `"4p2c"`)
+
+* `gg45` (value: `"gg45"`)
+
+* `tera-4p` (value: `"tera-4p"`)
+
+* `tera-2p` (value: `"tera-2p"`)
+
+* `tera-1p` (value: `"tera-1p"`)
+
+* `110-punch` (value: `"110-punch"`)
+
+* `bnc` (value: `"bnc"`)
+
+* `f` (value: `"f"`)
+
+* `n` (value: `"n"`)
+
+* `mrj21` (value: `"mrj21"`)
+
+* `fc` (value: `"fc"`)
+
+* `lc` (value: `"lc"`)
+
+* `lc-pc` (value: `"lc-pc"`)
+
+* `lc-upc` (value: `"lc-upc"`)
+
+* `lc-apc` (value: `"lc-apc"`)
+
+* `lsh` (value: `"lsh"`)
+
+* `lsh-pc` (value: `"lsh-pc"`)
+
+* `lsh-upc` (value: `"lsh-upc"`)
+
+* `lsh-apc` (value: `"lsh-apc"`)
+
+* `mpo` (value: `"mpo"`)
+
+* `mtrj` (value: `"mtrj"`)
+
+* `sc` (value: `"sc"`)
+
+* `sc-pc` (value: `"sc-pc"`)
+
+* `sc-upc` (value: `"sc-upc"`)
+
+* `sc-apc` (value: `"sc-apc"`)
+
+* `st` (value: `"st"`)
+
+* `cs` (value: `"cs"`)
+
+* `sn` (value: `"sn"`)
+
+* `sma-905` (value: `"sma-905"`)
+
+* `sma-906` (value: `"sma-906"`)
+
+* `urm-p2` (value: `"urm-p2"`)
+
+* `urm-p4` (value: `"urm-p4"`)
+
+* `urm-p8` (value: `"urm-p8"`)
+
+* `splice` (value: `"splice"`)
+
+* `other` (value: `"other"`)
+
+
+
+

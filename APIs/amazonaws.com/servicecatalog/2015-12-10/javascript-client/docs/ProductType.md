@@ -1,0 +1,12 @@
+# AwsServiceCatalog.ProductType
+
+## Enum
+
+
+* `CLOUD_FORMATION_TEMPLATE` (value: `"CLOUD_FORMATION_TEMPLATE"`)
+
+* `MARKETPLACE` (value: `"MARKETPLACE"`)
+
+* `TERRAFORM_OPEN_SOURCE` (value: `"TERRAFORM_OPEN_SOURCE"`)
+
+

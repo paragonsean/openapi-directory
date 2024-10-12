@@ -1,0 +1,109 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIApiException.h \
+    $${PWD}/OAIApiResponse.h \
+    $${PWD}/OAIArticleDTO.h \
+    $${PWD}/OAIArticleSearchDTO.h \
+    $${PWD}/OAIDefaultResponseDTOOfArticleDTO.h \
+    $${PWD}/OAIDefaultResponseDTOOfArticleDTO_result.h \
+    $${PWD}/OAIDefaultResponseDTOOfBoolean.h \
+    $${PWD}/OAIDefaultResponseDTOOfGymDTO.h \
+    $${PWD}/OAIDefaultResponseDTOOfGymDTO_result.h \
+    $${PWD}/OAIDefaultResponseDTOOfInteger.h \
+    $${PWD}/OAIDefaultResponseDTOOfListOfArticleSearchDTO.h \
+    $${PWD}/OAIDefaultResponseDTOOfListOfPackageSearchDTO.h \
+    $${PWD}/OAIDefaultResponseDTOOfPackageDTO.h \
+    $${PWD}/OAIDefaultResponseDTOOfPackageDTO_result.h \
+    $${PWD}/OAIDefaultResponseDTOOfPackageSearchDTO.h \
+    $${PWD}/OAIDefaultResponseDTOOfPackageSearchDTO_result.h \
+    $${PWD}/OAIDefaultResponseDTOOfStatusDTO.h \
+    $${PWD}/OAIDefaultResponseDTOOfStatusDTO_result.h \
+    $${PWD}/OAIDefaultResponseDTOOfString.h \
+    $${PWD}/OAIException.h \
+    $${PWD}/OAIException_InnerException.h \
+    $${PWD}/OAIGymArticleDetailsDTO.h \
+    $${PWD}/OAIGymDTO.h \
+    $${PWD}/OAILoginDTO.h \
+    $${PWD}/OAIMeasureUnitDTO.h \
+    $${PWD}/OAIMemberDTO.h \
+    $${PWD}/OAIMessageStatus.h \
+    $${PWD}/OAIPackageDTO.h \
+    $${PWD}/OAIPackageItemDTO.h \
+    $${PWD}/OAIPackageSearchDTO.h \
+    $${PWD}/OAIProblemDetails.h \
+    $${PWD}/OAIStatusDTO.h \
+    $${PWD}/OAITestDTO.h \
+    $${PWD}/OAIUserDTO.h \
+    $${PWD}/OAIValidationError.h \
+# APIs
+    $${PWD}/OAIArticleApi.h \
+    $${PWD}/OAIAuthApi.h \
+    $${PWD}/OAIGymApi.h \
+    $${PWD}/OAIMembershipApi.h \
+    $${PWD}/OAIPackageApi.h \
+    $${PWD}/OAIStatusApi.h \
+    $${PWD}/OAITestApi.h \
+    $${PWD}/OAIUserApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIApiException.cpp \
+    $${PWD}/OAIApiResponse.cpp \
+    $${PWD}/OAIArticleDTO.cpp \
+    $${PWD}/OAIArticleSearchDTO.cpp \
+    $${PWD}/OAIDefaultResponseDTOOfArticleDTO.cpp \
+    $${PWD}/OAIDefaultResponseDTOOfArticleDTO_result.cpp \
+    $${PWD}/OAIDefaultResponseDTOOfBoolean.cpp \
+    $${PWD}/OAIDefaultResponseDTOOfGymDTO.cpp \
+    $${PWD}/OAIDefaultResponseDTOOfGymDTO_result.cpp \
+    $${PWD}/OAIDefaultResponseDTOOfInteger.cpp \
+    $${PWD}/OAIDefaultResponseDTOOfListOfArticleSearchDTO.cpp \
+    $${PWD}/OAIDefaultResponseDTOOfListOfPackageSearchDTO.cpp \
+    $${PWD}/OAIDefaultResponseDTOOfPackageDTO.cpp \
+    $${PWD}/OAIDefaultResponseDTOOfPackageDTO_result.cpp \
+    $${PWD}/OAIDefaultResponseDTOOfPackageSearchDTO.cpp \
+    $${PWD}/OAIDefaultResponseDTOOfPackageSearchDTO_result.cpp \
+    $${PWD}/OAIDefaultResponseDTOOfStatusDTO.cpp \
+    $${PWD}/OAIDefaultResponseDTOOfStatusDTO_result.cpp \
+    $${PWD}/OAIDefaultResponseDTOOfString.cpp \
+    $${PWD}/OAIException.cpp \
+    $${PWD}/OAIException_InnerException.cpp \
+    $${PWD}/OAIGymArticleDetailsDTO.cpp \
+    $${PWD}/OAIGymDTO.cpp \
+    $${PWD}/OAILoginDTO.cpp \
+    $${PWD}/OAIMeasureUnitDTO.cpp \
+    $${PWD}/OAIMemberDTO.cpp \
+    $${PWD}/OAIMessageStatus.cpp \
+    $${PWD}/OAIPackageDTO.cpp \
+    $${PWD}/OAIPackageItemDTO.cpp \
+    $${PWD}/OAIPackageSearchDTO.cpp \
+    $${PWD}/OAIProblemDetails.cpp \
+    $${PWD}/OAIStatusDTO.cpp \
+    $${PWD}/OAITestDTO.cpp \
+    $${PWD}/OAIUserDTO.cpp \
+    $${PWD}/OAIValidationError.cpp \
+# APIs
+    $${PWD}/OAIArticleApi.cpp \
+    $${PWD}/OAIAuthApi.cpp \
+    $${PWD}/OAIGymApi.cpp \
+    $${PWD}/OAIMembershipApi.cpp \
+    $${PWD}/OAIPackageApi.cpp \
+    $${PWD}/OAIStatusApi.cpp \
+    $${PWD}/OAITestApi.cpp \
+    $${PWD}/OAIUserApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

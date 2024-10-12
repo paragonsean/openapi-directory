@@ -1,0 +1,1714 @@
+openapi: 3.0.0
+info:
+  contact:
+    x-twitter: Spinitron
+  description: |
+    ## Notes
+
+    **Tutorial demo** using this API is at [https://spinitron.com/v2-api-demo/](https://spinitron.com/v2-api-demo/). For web integration using iframes and/or JavaScript instead of an API, see [https://spinitron.github.io/v2-web-integration/](https://spinitron.github.io/v2-web-integration/).
+
+    **Your API key** is found in the Spinitron web app. Log in to Spinitron and go to *Automation & API* in the *Admin* menu.
+
+    **Authenticate** by presenting your API key using either HTTP Bearer Authorization
+    (preferred)
+
+        curl -H 'Authorization: Bearer YOURAPIKEY' 'https://spinitron.com/api/spins'
+
+    or in the query parameter `access-token` (less secure owing to webserver
+    log files)
+
+        curl 'https://spinitron.com/api/spins?access-token=YOURAPIKEY'
+
+    **Limit** per page of results is 20 by default and miximally 200.
+
+    **Try it out** below works to
+    generate example cURL requests but not to get responses from Spinitron. We
+    do not accept queries sent from web browsers. Copy-paste the cURL commands
+    and run them from your computer.
+
+    **Cache** the data you get from the API if you are using it in web or mobile integration. It's not ok to query the API on *every* page request you serve. The [demo](https://spinitron.com/v2-api-demo/) shows how easy it can be to implement a file cache.
+
+    An extension to this API with access to all stations for partner applications is available. Contact us.
+  title: Spinitron v2 API
+  version: 1.0.0
+  x-apisguru-categories:
+  - media
+  x-logo:
+    url: https://twitter.com/Spinitron/profile_image?size=original
+  x-origin:
+  - format: swagger
+    url: https://raw.githubusercontent.com/spinitron/v2api/master/spinitron.yaml
+    version: "2.0"
+  x-providerName: spinitron.com
+servers:
+- url: https://spinitron.com/api
+security:
+- httpBearer: []
+- accessToken: []
+tags:
+- name: Persona
+- name: Show
+- name: Playlist
+- name: Spin
+paths:
+  /personas:
+    get:
+      operationId: personas_get
+      parameters:
+      - description: Filter by Persona name
+        explode: true
+        in: query
+        name: name
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Amount of items to return
+        explode: true
+        in: query
+        name: count
+        required: false
+        schema:
+          default: 20
+          minimum: 1
+          type: integer
+        style: form
+      - description: "Offset, used together with count"
+        explode: true
+        in: query
+        name: page
+        required: false
+        schema:
+          minimum: 1
+          type: integer
+        style: form
+      - description: Allows to select only needed fields
+        explode: true
+        in: query
+        name: fields
+        required: false
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: Allows to select extra fields
+        explode: true
+        in: query
+        name: expand
+        required: false
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/_personas_get_200_response'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/_personas_get_200_response'
+          description: The personas
+      summary: Get Personas
+      tags:
+      - Persona
+      x-openapi-router-controller: openapi_server.controllers.persona_controller
+  /personas/{id}:
+    get:
+      operationId: personas_id_get
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: integer
+        style: simple
+      - description: Allows to select only needed fields
+        explode: true
+        in: query
+        name: fields
+        required: false
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: Allows to select extra fields
+        explode: true
+        in: query
+        name: expand
+        required: false
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Persona'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Persona'
+          description: The Persona
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Persona not found
+      summary: Get Persona by id
+      tags:
+      - Persona
+      x-openapi-router-controller: openapi_server.controllers.persona_controller
+  /playlists:
+    get:
+      description: |
+        Get Playlists optionally filtered by a datetime range.
+        Only past Playlists will be returned (with allowed tolerance equals 1 hour in future).
+
+        Ordered chronologically from newest to oldest.
+      operationId: playlists_get
+      parameters:
+      - description: |
+          The datetime starting from items must be returned. Maximum 1 hour in future.
+        explode: true
+        in: query
+        name: start
+        required: false
+        schema:
+          format: date-time
+          type: string
+        style: form
+      - description: |
+          The ending datetime. Maximum 1 hour in future.
+        explode: true
+        in: query
+        name: end
+        required: false
+        schema:
+          format: date-time
+          type: string
+        style: form
+      - description: Filter by show
+        explode: true
+        in: query
+        name: show_id
+        required: false
+        schema:
+          type: integer
+        style: form
+      - description: Filter by persona
+        explode: true
+        in: query
+        name: persona_id
+        required: false
+        schema:
+          type: integer
+        style: form
+      - description: Amount of items to return
+        explode: true
+        in: query
+        name: count
+        required: false
+        schema:
+          default: 20
+          minimum: 1
+          type: integer
+        style: form
+      - description: "Offset, used together with count"
+        explode: true
+        in: query
+        name: page
+        required: false
+        schema:
+          minimum: 1
+          type: integer
+        style: form
+      - description: Allows to select only needed fields
+        explode: true
+        in: query
+        name: fields
+        required: false
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: Allows to select extra fields
+        explode: true
+        in: query
+        name: expand
+        required: false
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/_playlists_get_200_response'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/_playlists_get_200_response'
+          description: The playlists
+      summary: "Returns playlists optionally filtered by {start} and/or {end} datetimes"
+      tags:
+      - Playlist
+      x-openapi-router-controller: openapi_server.controllers.playlist_controller
+  /playlists/{id}:
+    get:
+      description: |
+        The response object represents the playlist specified by {id}.
+
+        Status 404 is returned if a playlist with {id} does not exist or if it does but starts in the future (with allowed tolerance equals 1 hour in future).
+      operationId: playlists_id_get
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: integer
+        style: simple
+      - description: Allows to select only needed fields
+        explode: true
+        in: query
+        name: fields
+        required: false
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: Allows to select extra fields
+        explode: true
+        in: query
+        name: expand
+        required: false
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Playlist'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Playlist'
+          description: The playlist
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Playlist not found or is in the future
+      summary: Get a Playlist by id
+      tags:
+      - Playlist
+      x-openapi-router-controller: openapi_server.controllers.playlist_controller
+  /shows:
+    get:
+      description: |
+        **Terminology**: Spinitron defines a *show* as a radio program. A show can have one or more *schedules*,
+        each of which may specify either an *occurence* or a *repetition*, which represents a set of occurences.
+        Thus scheduled shows have occurences that, for example, may be displayed in a calendar.
+
+        In the response, `items` is an array of objects representing occurences of scheduled shows.
+
+        You may optionally filter `items` to a datetime *range* by including in the request {start} and/or {end}
+        parameters, both of which must be no more than one hour in the past. An occurence starting at {end} is
+        included in the reponse.
+
+        `itmes` can include occurences that begin *or* end within the filter range. A show that goes on air before
+        {start} appears in `items` if it ends *after* but not *at* {start}. An occurence starting at or before {end}
+        is included.
+
+        If the request omits the {start} parameter, the server sets its value to the current time so that the filter
+        range's start is always defined. If the request specifies {end} then the requested range is *bounded*,
+        otherwise it is *unbounded*.
+
+        For a bounded request, `items` includes *every* occurence of all shows occuring in the range. The only
+        difference between objects in `items` representing a given show will be the `start` field value.
+
+        For an unbounded request, `items` includes *only one* occurence per show, specifically, the
+        next occurrence after {start} of all shows occuring after {start}.
+
+        Use an unbounded request to get a straight list all shows. Use a bounded request to get a calendar/agenda
+        of shows expanded into occurrences by thir shedules and repetitions.
+
+        Objects in `items` are ordered first by `datetime` and then by `id`.
+      operationId: shows_get
+      parameters:
+      - description: |
+          The datetime starting from items must be returned. Maximum 1 hour in past.
+        explode: true
+        in: query
+        name: start
+        required: false
+        schema:
+          format: date-time
+          type: string
+        style: form
+      - description: |
+          The ending datetime. Maximum 1 hour in past.
+        explode: true
+        in: query
+        name: end
+        required: false
+        schema:
+          format: date-time
+          type: string
+        style: form
+      - description: Amount of items to return
+        explode: true
+        in: query
+        name: count
+        required: false
+        schema:
+          default: 20
+          minimum: 1
+          type: integer
+        style: form
+      - description: "Offset, used together with count"
+        explode: true
+        in: query
+        name: page
+        required: false
+        schema:
+          minimum: 1
+          type: integer
+        style: form
+      - description: Allows to select only needed fields
+        explode: true
+        in: query
+        name: fields
+        required: false
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: Allows to select extra fields
+        explode: true
+        in: query
+        name: expand
+        required: false
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/_shows_get_200_response'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/_shows_get_200_response'
+          description: The shows
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: |
+            Invalid datetimes in filter: either too old or {end} is less than {start}.
+      summary: "Returns scheduled shows optionally filtered by {start} and/or {end}\
+        \ datetimes"
+      tags:
+      - Show
+      x-openapi-router-controller: openapi_server.controllers.show_controller
+  /shows/{id}:
+    get:
+      description: |
+        The response object represents the next occurence of the show specified by {id}.
+
+        Status 404 is returned if a show with {id} does not exist or if it does but all its scheduled occurences elapsed in the past.
+      operationId: shows_id_get
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: integer
+        style: simple
+      - description: Allows to select only needed fields
+        explode: true
+        in: query
+        name: fields
+        required: false
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: Allows to select extra fields
+        explode: true
+        in: query
+        name: expand
+        required: false
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Show'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Show'
+          description: The Show
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Show not found or too old
+      summary: Get a Show by id
+      tags:
+      - Show
+      x-openapi-router-controller: openapi_server.controllers.show_controller
+  /spins:
+    get:
+      description: |
+        Get Spins optionally filtered by a datetime range. Only past Spins will be returned.
+      operationId: spins_get
+      parameters:
+      - description: |
+          The datetime starting from items must be returned.
+        explode: true
+        in: query
+        name: start
+        required: false
+        schema:
+          format: date-time
+          type: string
+        style: form
+      - description: |
+          The ending datetime.
+        explode: true
+        in: query
+        name: end
+        required: false
+        schema:
+          format: date-time
+          type: string
+        style: form
+      - description: Filter by playlist
+        explode: true
+        in: query
+        name: playlist_id
+        required: false
+        schema:
+          type: integer
+        style: form
+      - description: Filter by show
+        explode: true
+        in: query
+        name: show_id
+        required: false
+        schema:
+          type: integer
+        style: form
+      - description: Amount of items to return
+        explode: true
+        in: query
+        name: count
+        required: false
+        schema:
+          default: 20
+          minimum: 1
+          type: integer
+        style: form
+      - description: "Offset, used together with count"
+        explode: true
+        in: query
+        name: page
+        required: false
+        schema:
+          minimum: 1
+          type: integer
+        style: form
+      - description: Allows to select only needed fields
+        explode: true
+        in: query
+        name: fields
+        required: false
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: Allows to select extra fields
+        explode: true
+        in: query
+        name: expand
+        required: false
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/_spins_get_200_response'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/_spins_get_200_response'
+          description: The spins
+      summary: "Returns spins optionally filtered by {start} and/or {end} datetimes"
+      tags:
+      - Spin
+      x-openapi-router-controller: openapi_server.controllers.spin_controller
+    post:
+      description: An endpoint for automation systems to log spins into the spin table.
+      operationId: spins_post
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/_spins_post_request'
+        x-body-name: body
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Spin'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Spin'
+          description: The new created Spin.
+        "422":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/ValidationError'
+                type: array
+            application/xml:
+              schema:
+                items:
+                  $ref: '#/components/schemas/ValidationError'
+                type: array
+          description: Validation failed.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Failed to create the object for unknown reason.
+      summary: Log a Spin
+      tags:
+      - Spin
+      x-openapi-router-controller: openapi_server.controllers.spin_controller
+      x-codegen-request-body-name: body
+  /spins/{id}:
+    get:
+      operationId: spins_id_get
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: integer
+        style: simple
+      - description: Allows to select only needed fields
+        explode: true
+        in: query
+        name: fields
+        required: false
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: Allows to select extra fields
+        explode: true
+        in: query
+        name: expand
+        required: false
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Spin'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Spin'
+          description: The spin
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Spin not found
+      summary: Get a Spin by id
+      tags:
+      - Spin
+      x-openapi-router-controller: openapi_server.controllers.spin_controller
+components:
+  parameters:
+    expand:
+      description: Allows to select extra fields
+      explode: true
+      in: query
+      name: expand
+      required: false
+      schema:
+        items:
+          type: string
+        type: array
+      style: form
+    fields:
+      description: Allows to select only needed fields
+      explode: true
+      in: query
+      name: fields
+      required: false
+      schema:
+        items:
+          type: string
+        type: array
+      style: form
+    limit:
+      description: Amount of items to return
+      explode: true
+      in: query
+      name: count
+      required: false
+      schema:
+        default: 20
+        minimum: 1
+        type: integer
+      style: form
+    page:
+      description: "Offset, used together with count"
+      explode: true
+      in: query
+      name: page
+      required: false
+      schema:
+        minimum: 1
+        type: integer
+      style: form
+  schemas:
+    BaseIndexResponse:
+      properties:
+        _links:
+          $ref: '#/components/schemas/BaseIndexResponse__links'
+        _meta:
+          $ref: '#/components/schemas/Pagination'
+      title: BaseIndexResponse
+      type: object
+    Error:
+      example:
+        code: 0
+        name: name
+        message: message
+        type: type
+        status: 6
+      properties:
+        code:
+          title: code
+          type: integer
+        message:
+          title: message
+          type: string
+        name:
+          title: name
+          type: string
+        status:
+          title: status
+          type: integer
+        type:
+          title: type
+          type: string
+      title: Error
+      type: object
+    Link:
+      example:
+        href: href
+      properties:
+        href:
+          title: href
+          type: string
+      title: Link
+      type: object
+    Pagination:
+      example:
+        pageCount: 6
+        perPage: 1
+        currentPage: 0
+        totalCount: 5
+      properties:
+        currentPage:
+          title: currentPage
+          type: integer
+        pageCount:
+          title: pageCount
+          type: integer
+        perPage:
+          title: perPage
+          type: integer
+        totalCount:
+          title: totalCount
+          type: integer
+      title: Pagination
+      type: object
+    Persona:
+      description: The `Persona` object describes a radio DJ/host. One person can
+        have multiple personas
+      example:
+        image: https://spinitron.com/images/Persona/28/2832-img_profile-original.jpg
+        website: https://spinitron.com/example/doesnt/exist
+        _links:
+          shows:
+          - href: href
+          - href: href
+          self:
+            href: href
+        name: Deftly-D
+        bio: "<p>Besides DJ'ing industrial and experimental music since 1991, Deftly\
+          \ has performed in industrial ..."
+        id: 2832
+        email: example@spinitron.com
+        since: 1991
+      properties:
+        _links:
+          $ref: '#/components/schemas/Persona__links'
+        bio:
+          description: HTML-formatted biography
+          example: "<p>Besides DJ'ing industrial and experimental music since 1991,\
+            \ Deftly has performed in industrial ..."
+          title: bio
+          type: string
+        email:
+          description: DJ/host's email address
+          example: example@spinitron.com
+          format: email
+          title: email
+          type: string
+        id:
+          example: 2832
+          title: id
+          type: integer
+        image:
+          example: https://spinitron.com/images/Persona/28/2832-img_profile-original.jpg
+          format: url
+          title: image
+          type: string
+        name:
+          description: On-air DJ/host name
+          example: Deftly-D
+          title: name
+          type: string
+        since:
+          description: Since what year has the DJ/host been at the station?
+          example: 1991
+          format: year
+          title: since
+          type: integer
+        website:
+          description: URL to web site for the DJ/host
+          example: https://spinitron.com/example/doesnt/exist
+          format: url
+          title: website
+          type: string
+      title: Persona
+      type: object
+    Playlist:
+      example:
+        image: https://spinitron.com/images/Show/44/4498/img_show-original.jpg
+        _links:
+          persona:
+            href: href
+          show:
+            href: href
+          spins:
+            href: href
+          self:
+            href: href
+        show_id: 4498
+        hide_dj: false
+        timezone: America/Chicago
+        start: 2000-01-23T04:56:07.000+00:00
+        description: It is a <em>cross-­cultural musical journey united in voices
+          and rhythms</em>.
+        title: Transworld Airwaves
+        url: http://example.com/aeiou
+        episode_description: <p>Episode description</p>
+        duration: 3600
+        automation: false
+        episode_name: episode_name
+        persona_id: 2832
+        end: 2000-01-23T04:56:07.000+00:00
+        id: 219992
+        category: Music
+        since: 1999
+      properties:
+        _links:
+          $ref: '#/components/schemas/Playlist__links'
+        automation:
+          description: Was the playlist created playlists created by a radio station
+            automation system?
+          example: false
+          title: automation
+          type: boolean
+        category:
+          description: Program/show category
+          example: Music
+          title: category
+          type: string
+        description:
+          description: HTML-formatted description of the playlist or program/show
+          example: It is a <em>cross-­cultural musical journey united in voices and
+            rhythms</em>.
+          title: description
+          type: string
+        duration:
+          description: Duration in seconds
+          example: 3600
+          title: duration
+          type: integer
+        end:
+          description: UTC datetime ISO-8601
+          format: date-time
+          title: end
+          type: string
+        episode_description:
+          description: HTML-formatted description of the episode
+          example: <p>Episode description</p>
+          title: episode_description
+          type: string
+        episode_name:
+          description: Title of this episode of the program/show
+          title: episode_name
+          type: string
+        hide_dj:
+          description: Should the client application hide information about the playlist's
+            DJ/host?
+          example: false
+          title: hide_dj
+          type: boolean
+        id:
+          example: 219992
+          title: id
+          type: integer
+        image:
+          example: https://spinitron.com/images/Show/44/4498/img_show-original.jpg
+          format: url
+          title: image
+          type: string
+        persona_id:
+          example: 2832
+          title: persona_id
+          type: integer
+        show_id:
+          example: 4498
+          title: show_id
+          type: integer
+        since:
+          description: Since what year has the program/show existed?
+          example: 1999
+          format: year
+          title: since
+          type: integer
+        start:
+          description: UTC datetime ISO-8601
+          format: date-time
+          title: start
+          type: string
+        timezone:
+          description: Station's time zone
+          example: America/Chicago
+          title: timezone
+          type: string
+        title:
+          description: Program/show title
+          example: Transworld Airwaves
+          title: title
+          type: string
+        url:
+          description: URL to web site for the playlist or program/show
+          format: url
+          title: url
+          type: string
+      title: Playlist
+      type: object
+    Show:
+      description: A `Show` object describes one occurrence of a radio program. A
+        result set may contain multiple occurrences of the same show with difference
+        `start` and `end` values.
+      example:
+        image: https://spinitron.com/images/Show/44/4498/img_show-original.jpg
+        _links:
+          playlists:
+            href: href
+          self:
+            href: href
+          personas:
+          - href: href
+          - href: href
+        hide_dj: false
+        timezone: America/Chicago
+        start: 2000-01-23T04:56:07.000+00:00
+        description: "<p>Since 2001, <strong>The High Voltage Circumcision</strong>\
+          \ show has delivered a full spectrum barrage of dark hard and experimental\
+          \ music from industrial to noise to idm to ebm to bizarre to audio collage\
+          \ often with a side of live guests, social consciousness, interviews, twisted\
+          \ humor, studio experiments and left turns.</p>"
+        title: Voidstar Productions’ High Voltage Circumcision Show
+        url: https://spinitron.com/example/doesnt/exist
+        duration: 10800
+        one_off: false
+        end: 2000-01-23T04:56:07.000+00:00
+        id: 4498
+        category: Music
+        since: 2001
+      properties:
+        _links:
+          $ref: '#/components/schemas/Show__links'
+        category:
+          description: Program/show category
+          example: Music
+          title: category
+          type: string
+        description:
+          description: HTML-formatted description of the playlist or program/show
+          example: "<p>Since 2001, <strong>The High Voltage Circumcision</strong>\
+            \ show has delivered a full spectrum barrage of dark hard and experimental\
+            \ music from industrial to noise to idm to ebm to bizarre to audio collage\
+            \ often with a side of live guests, social consciousness, interviews,\
+            \ twisted humor, studio experiments and left turns.</p>"
+          title: description
+          type: string
+        duration:
+          description: Duration in seconds
+          example: 10800
+          title: duration
+          type: integer
+        end:
+          description: UTC datetime ISO-8601
+          format: date-time
+          title: end
+          type: string
+        hide_dj:
+          description: Should the client application hide information about the show's
+            DJs/hosts?
+          example: false
+          title: hide_dj
+          type: boolean
+        id:
+          example: 4498
+          title: id
+          type: integer
+        image:
+          example: https://spinitron.com/images/Show/44/4498/img_show-original.jpg
+          format: url
+          title: image
+          type: string
+        one_off:
+          description: Is the show a one-off in the schedule instead of repeating?
+          example: false
+          title: one_off
+          type: boolean
+        since:
+          description: Since what year has the program/show existed?
+          example: 2001
+          format: year
+          title: since
+          type: integer
+        start:
+          description: UTC datetime ISO-8601
+          format: date-time
+          title: start
+          type: string
+        timezone:
+          description: Station's time zone
+          example: America/Chicago
+          title: timezone
+          type: string
+        title:
+          description: Program/show title
+          example: Voidstar Productions’ High Voltage Circumcision Show
+          title: title
+          type: string
+        url:
+          description: URL to web site for the program/show
+          example: https://spinitron.com/example/doesnt/exist
+          format: url
+          title: url
+          type: string
+      title: Show
+      type: object
+    Spin:
+      example:
+        note: B-side of the <strong>original</strong> 7" vinyl in the station's collection.
+        request: false
+        _links:
+          playlist:
+            href: href
+          self:
+            href: href
+        artist: The Beatles
+        release: All Together Now / Hey Bulldog
+        timezone: America/Chicago
+        iswc: T-010.434.166-3
+        classical: false
+        ensemble: Vienna Philharmonic Orchestra
+        medium: 7"
+        local: false
+        duration: 199
+        playlist_id: 336722
+        genre: Pop
+        end: 2000-01-23T04:56:07.000+00:00
+        id: 8017277
+        catalog-number: 5C 006-04982
+        released: 1972
+        song: Hey Bulldog
+        artist-custom: artist-custom
+        image: https://is5-ssl.mzstatic.com/image/thumb/Music3/v4/ef/e8/67/efe8674e-467a-adfe-9f67-8d50860b4f1e/dj.sokyjuyt.jpg/170x170bb.jpg
+        new: false
+        performers: "Rohan DeSaram (cello), Marianne Schroeder (piano)"
+        composer: Lennon - McCartney
+        work: The Marriage of Figaro
+        start: 2000-01-23T04:56:07.000+00:00
+        upc: "4006408126775"
+        isrc: GBAYE9901218
+        label: Apple Records
+        va: false
+        conductor: Herbert von Karajan
+        label-custom: label-custom
+        release-custom: release-custom
+      properties:
+        _links:
+          $ref: '#/components/schemas/Spin__links'
+        artist:
+          example: The Beatles
+          title: artist
+          type: string
+        artist-custom:
+          description: Station-specific custom field relating to the song's artist
+          title: artist-custom
+          type: string
+        catalog-number:
+          description: Reference number in the record label's catalog
+          example: 5C 006-04982
+          title: catalog-number
+          type: string
+        classical:
+          description: Is the track's metadata schema "classical" rather than "popular"?
+          example: false
+          title: classical
+          type: boolean
+        composer:
+          example: Lennon - McCartney
+          title: composer
+          type: string
+        conductor:
+          description: "For classical music, conducor of the ensemble"
+          example: Herbert von Karajan
+          title: conductor
+          type: string
+        duration:
+          description: Duration in seconds
+          example: 199
+          title: duration
+          type: integer
+        end:
+          description: UTC datetime ISO-8601
+          format: date-time
+          title: end
+          type: string
+        ensemble:
+          description: "For classical music, orchestra, performing ensemble, choir,\
+            \ etc."
+          example: Vienna Philharmonic Orchestra
+          title: ensemble
+          type: string
+        genre:
+          example: Pop
+          title: genre
+          type: string
+        id:
+          example: 8017277
+          title: id
+          type: integer
+        image:
+          description: Cover art
+          example: https://is5-ssl.mzstatic.com/image/thumb/Music3/v4/ef/e8/67/efe8674e-467a-adfe-9f67-8d50860b4f1e/dj.sokyjuyt.jpg/170x170bb.jpg
+          format: url
+          title: image
+          type: string
+        isrc:
+          example: GBAYE9901218
+          title: isrc
+          type: string
+        iswc:
+          example: T-010.434.166-3
+          title: iswc
+          type: string
+        label:
+          description: "Record label, i.e. publisher of the sound recording"
+          example: Apple Records
+          title: label
+          type: string
+        label-custom:
+          description: Station-specific custom field relating to the record label
+          title: label-custom
+          type: string
+        local:
+          description: Is the artist local to the station?
+          example: false
+          title: local
+          type: boolean
+        medium:
+          description: Media format in which the sound recording was reased
+          example: 7"
+          title: medium
+          type: string
+        new:
+          description: Is this a recent release?
+          example: false
+          title: new
+          type: boolean
+        note:
+          description: "HTML-formatted DJ annotation of the spin, can include images\
+            \ etc."
+          example: B-side of the <strong>original</strong> 7" vinyl in the station's
+            collection.
+          title: note
+          type: string
+        performers:
+          description: "For classical music, featured performing artists, e.g. soloists"
+          example: "Rohan DeSaram (cello), Marianne Schroeder (piano)"
+          title: performers
+          type: string
+        playlist_id:
+          example: 336722
+          title: playlist_id
+          type: integer
+        release:
+          example: All Together Now / Hey Bulldog
+          title: release
+          type: string
+        release-custom:
+          description: Station-specific custom field relating to the release
+          title: release-custom
+          type: string
+        released:
+          description: Year of initial release
+          example: 1972
+          title: released
+          type: integer
+        request:
+          description: Was the spin requested by a listener?
+          example: false
+          title: request
+          type: boolean
+        song:
+          description: Title of the song or track
+          example: Hey Bulldog
+          title: song
+          type: string
+        start:
+          description: UTC datetime ISO-8601
+          format: date-time
+          title: start
+          type: string
+        timezone:
+          description: Station's time zone
+          example: America/Chicago
+          title: timezone
+          type: string
+        upc:
+          description: Universal Product Code of the release
+          example: "4006408126775"
+          title: upc
+          type: string
+        va:
+          description: Is it a "Various Artists" release?
+          example: false
+          title: va
+          type: boolean
+        work:
+          description: "For classical music, the main compositional work the track\
+            \ (see `song` field) belongs to"
+          example: The Marriage of Figaro
+          title: work
+          type: string
+      title: Spin
+      type: object
+    ValidationError:
+      example:
+        field: field
+        message: message
+      properties:
+        field:
+          title: field
+          type: string
+        message:
+          title: message
+          type: string
+      title: ValidationError
+      type: object
+    _personas_get_200_response:
+      allOf:
+      - $ref: '#/components/schemas/BaseIndexResponse'
+      - properties:
+          items:
+            items:
+              $ref: '#/components/schemas/Persona'
+            type: array
+        type: object
+      example:
+        _links:
+          self:
+            href: href
+        _meta:
+          pageCount: 6
+          perPage: 1
+          currentPage: 0
+          totalCount: 5
+        items:
+        - image: https://spinitron.com/images/Persona/28/2832-img_profile-original.jpg
+          website: https://spinitron.com/example/doesnt/exist
+          _links:
+            shows:
+            - href: href
+            - href: href
+            self:
+              href: href
+          name: Deftly-D
+          bio: "<p>Besides DJ'ing industrial and experimental music since 1991, Deftly\
+            \ has performed in industrial ..."
+          id: 2832
+          email: example@spinitron.com
+          since: 1991
+        - image: https://spinitron.com/images/Persona/28/2832-img_profile-original.jpg
+          website: https://spinitron.com/example/doesnt/exist
+          _links:
+            shows:
+            - href: href
+            - href: href
+            self:
+              href: href
+          name: Deftly-D
+          bio: "<p>Besides DJ'ing industrial and experimental music since 1991, Deftly\
+            \ has performed in industrial ..."
+          id: 2832
+          email: example@spinitron.com
+          since: 1991
+      title: _personas_get_200_response
+    _playlists_get_200_response:
+      allOf:
+      - $ref: '#/components/schemas/BaseIndexResponse'
+      - properties:
+          items:
+            items:
+              $ref: '#/components/schemas/Playlist'
+            type: array
+        type: object
+      example:
+        _links:
+          self:
+            href: href
+        _meta:
+          pageCount: 6
+          perPage: 1
+          currentPage: 0
+          totalCount: 5
+        items:
+        - image: https://spinitron.com/images/Show/44/4498/img_show-original.jpg
+          _links:
+            persona:
+              href: href
+            show:
+              href: href
+            spins:
+              href: href
+            self:
+              href: href
+          show_id: 4498
+          hide_dj: false
+          timezone: America/Chicago
+          start: 2000-01-23T04:56:07.000+00:00
+          description: It is a <em>cross-­cultural musical journey united in voices
+            and rhythms</em>.
+          title: Transworld Airwaves
+          url: http://example.com/aeiou
+          episode_description: <p>Episode description</p>
+          duration: 3600
+          automation: false
+          episode_name: episode_name
+          persona_id: 2832
+          end: 2000-01-23T04:56:07.000+00:00
+          id: 219992
+          category: Music
+          since: 1999
+        - image: https://spinitron.com/images/Show/44/4498/img_show-original.jpg
+          _links:
+            persona:
+              href: href
+            show:
+              href: href
+            spins:
+              href: href
+            self:
+              href: href
+          show_id: 4498
+          hide_dj: false
+          timezone: America/Chicago
+          start: 2000-01-23T04:56:07.000+00:00
+          description: It is a <em>cross-­cultural musical journey united in voices
+            and rhythms</em>.
+          title: Transworld Airwaves
+          url: http://example.com/aeiou
+          episode_description: <p>Episode description</p>
+          duration: 3600
+          automation: false
+          episode_name: episode_name
+          persona_id: 2832
+          end: 2000-01-23T04:56:07.000+00:00
+          id: 219992
+          category: Music
+          since: 1999
+      title: _playlists_get_200_response
+    _shows_get_200_response:
+      allOf:
+      - $ref: '#/components/schemas/BaseIndexResponse'
+      - properties:
+          items:
+            items:
+              $ref: '#/components/schemas/Show'
+            type: array
+        type: object
+      example:
+        _links:
+          self:
+            href: href
+        _meta:
+          pageCount: 6
+          perPage: 1
+          currentPage: 0
+          totalCount: 5
+        items:
+        - image: https://spinitron.com/images/Show/44/4498/img_show-original.jpg
+          _links:
+            playlists:
+              href: href
+            self:
+              href: href
+            personas:
+            - href: href
+            - href: href
+          hide_dj: false
+          timezone: America/Chicago
+          start: 2000-01-23T04:56:07.000+00:00
+          description: "<p>Since 2001, <strong>The High Voltage Circumcision</strong>\
+            \ show has delivered a full spectrum barrage of dark hard and experimental\
+            \ music from industrial to noise to idm to ebm to bizarre to audio collage\
+            \ often with a side of live guests, social consciousness, interviews,\
+            \ twisted humor, studio experiments and left turns.</p>"
+          title: Voidstar Productions’ High Voltage Circumcision Show
+          url: https://spinitron.com/example/doesnt/exist
+          duration: 10800
+          one_off: false
+          end: 2000-01-23T04:56:07.000+00:00
+          id: 4498
+          category: Music
+          since: 2001
+        - image: https://spinitron.com/images/Show/44/4498/img_show-original.jpg
+          _links:
+            playlists:
+              href: href
+            self:
+              href: href
+            personas:
+            - href: href
+            - href: href
+          hide_dj: false
+          timezone: America/Chicago
+          start: 2000-01-23T04:56:07.000+00:00
+          description: "<p>Since 2001, <strong>The High Voltage Circumcision</strong>\
+            \ show has delivered a full spectrum barrage of dark hard and experimental\
+            \ music from industrial to noise to idm to ebm to bizarre to audio collage\
+            \ often with a side of live guests, social consciousness, interviews,\
+            \ twisted humor, studio experiments and left turns.</p>"
+          title: Voidstar Productions’ High Voltage Circumcision Show
+          url: https://spinitron.com/example/doesnt/exist
+          duration: 10800
+          one_off: false
+          end: 2000-01-23T04:56:07.000+00:00
+          id: 4498
+          category: Music
+          since: 2001
+      title: _shows_get_200_response
+    _spins_get_200_response:
+      allOf:
+      - $ref: '#/components/schemas/BaseIndexResponse'
+      - properties:
+          items:
+            items:
+              $ref: '#/components/schemas/Spin'
+            type: array
+        type: object
+      example:
+        _links:
+          self:
+            href: href
+        _meta:
+          pageCount: 6
+          perPage: 1
+          currentPage: 0
+          totalCount: 5
+        items:
+        - note: B-side of the <strong>original</strong> 7" vinyl in the station's
+            collection.
+          request: false
+          _links:
+            playlist:
+              href: href
+            self:
+              href: href
+          artist: The Beatles
+          release: All Together Now / Hey Bulldog
+          timezone: America/Chicago
+          iswc: T-010.434.166-3
+          classical: false
+          ensemble: Vienna Philharmonic Orchestra
+          medium: 7"
+          local: false
+          duration: 199
+          playlist_id: 336722
+          genre: Pop
+          end: 2000-01-23T04:56:07.000+00:00
+          id: 8017277
+          catalog-number: 5C 006-04982
+          released: 1972
+          song: Hey Bulldog
+          artist-custom: artist-custom
+          image: https://is5-ssl.mzstatic.com/image/thumb/Music3/v4/ef/e8/67/efe8674e-467a-adfe-9f67-8d50860b4f1e/dj.sokyjuyt.jpg/170x170bb.jpg
+          new: false
+          performers: "Rohan DeSaram (cello), Marianne Schroeder (piano)"
+          composer: Lennon - McCartney
+          work: The Marriage of Figaro
+          start: 2000-01-23T04:56:07.000+00:00
+          upc: "4006408126775"
+          isrc: GBAYE9901218
+          label: Apple Records
+          va: false
+          conductor: Herbert von Karajan
+          label-custom: label-custom
+          release-custom: release-custom
+        - note: B-side of the <strong>original</strong> 7" vinyl in the station's
+            collection.
+          request: false
+          _links:
+            playlist:
+              href: href
+            self:
+              href: href
+          artist: The Beatles
+          release: All Together Now / Hey Bulldog
+          timezone: America/Chicago
+          iswc: T-010.434.166-3
+          classical: false
+          ensemble: Vienna Philharmonic Orchestra
+          medium: 7"
+          local: false
+          duration: 199
+          playlist_id: 336722
+          genre: Pop
+          end: 2000-01-23T04:56:07.000+00:00
+          id: 8017277
+          catalog-number: 5C 006-04982
+          released: 1972
+          song: Hey Bulldog
+          artist-custom: artist-custom
+          image: https://is5-ssl.mzstatic.com/image/thumb/Music3/v4/ef/e8/67/efe8674e-467a-adfe-9f67-8d50860b4f1e/dj.sokyjuyt.jpg/170x170bb.jpg
+          new: false
+          performers: "Rohan DeSaram (cello), Marianne Schroeder (piano)"
+          composer: Lennon - McCartney
+          work: The Marriage of Figaro
+          start: 2000-01-23T04:56:07.000+00:00
+          upc: "4006408126775"
+          isrc: GBAYE9901218
+          label: Apple Records
+          va: false
+          conductor: Herbert von Karajan
+          label-custom: label-custom
+          release-custom: release-custom
+      title: _spins_get_200_response
+    _spins_post_request:
+      properties:
+        artist:
+          type: string
+        composer:
+          type: string
+        duration:
+          type: integer
+        genre:
+          type: string
+        isrc:
+          type: string
+        label:
+          type: string
+        live:
+          description: |
+            Only when automation params are configured with the "Pass through" mode.
+            Enables "live assist" mode. Default mode is "full automation".
+          type: boolean
+        release:
+          type: string
+        song:
+          type: string
+        start:
+          format: date-time
+          type: string
+      required:
+      - artist
+      - song
+      type: object
+    BaseIndexResponse__links:
+      example:
+        self:
+          href: href
+      properties:
+        self:
+          $ref: '#/components/schemas/Link'
+      title: BaseIndexResponse__links
+      type: object
+    Persona__links:
+      example:
+        shows:
+        - href: href
+        - href: href
+        self:
+          href: href
+      properties:
+        self:
+          $ref: '#/components/schemas/Link'
+        shows:
+          items:
+            $ref: '#/components/schemas/Link'
+          title: shows
+          type: array
+      title: Persona__links
+      type: object
+    Playlist__links:
+      example:
+        persona:
+          href: href
+        show:
+          href: href
+        spins:
+          href: href
+        self:
+          href: href
+      properties:
+        persona:
+          $ref: '#/components/schemas/Link'
+        self:
+          $ref: '#/components/schemas/Link'
+        show:
+          $ref: '#/components/schemas/Link'
+        spins:
+          $ref: '#/components/schemas/Link'
+      title: Playlist__links
+      type: object
+    Show__links:
+      example:
+        playlists:
+          href: href
+        self:
+          href: href
+        personas:
+        - href: href
+        - href: href
+      properties:
+        personas:
+          items:
+            $ref: '#/components/schemas/Link'
+          title: personas
+          type: array
+        playlists:
+          $ref: '#/components/schemas/Link'
+        self:
+          $ref: '#/components/schemas/Link'
+      title: Show__links
+      type: object
+    Spin__links:
+      example:
+        playlist:
+          href: href
+        self:
+          href: href
+      properties:
+        playlist:
+          $ref: '#/components/schemas/Link'
+        self:
+          $ref: '#/components/schemas/Link'
+      title: Spin__links
+      type: object
+  securitySchemes:
+    accessToken:
+      in: query
+      name: access-token
+      type: apiKey
+      x-apikeyInfoFunc: openapi_server.controllers.security_controller.info_from_accessToken
+    httpBearer:
+      bearerFormat: JWT
+      scheme: bearer
+      type: http
+      x-bearerInfoFunc: openapi_server.controllers.security_controller.info_from_httpBearer

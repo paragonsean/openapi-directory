@@ -1,0 +1,105 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIAttributes_inner.h \
+    $${PWD}/OAIChildren_inner.h \
+    $${PWD}/OAIChildren_inner_1.h \
+    $${PWD}/OAICreateCategory_request.h \
+    $${PWD}/OAIData_inner.h \
+    $${PWD}/OAIDimensions.h \
+    $${PWD}/OAIGetBrand_200_response.h \
+    $${PWD}/OAIGetCategoryTree_200_response.h \
+    $${PWD}/OAIGetProductDescription_200_response.h \
+    $${PWD}/OAIGetProductQuery_200_response.h \
+    $${PWD}/OAIGetProduct_200_response.h \
+    $${PWD}/OAIGetbyid_200_response.h \
+    $${PWD}/OAIImages_inner.h \
+    $${PWD}/OAIListBrand_200_response.h \
+    $${PWD}/OAIListSKU_200_response.h \
+    $${PWD}/OAIPostBrand_200_response.h \
+    $${PWD}/OAIPostBrand_request.h \
+    $${PWD}/OAIPostProduct_200_response.h \
+    $${PWD}/OAIPostProduct_request.h \
+    $${PWD}/OAIPutBrand_request.h \
+    $${PWD}/OAIPutProductDescription_request.h \
+    $${PWD}/OAIPutProduct_request.h \
+    $${PWD}/OAIRoots_inner.h \
+    $${PWD}/OAISearchSKU_200_response.h \
+    $${PWD}/OAISearchSKU_200_response__metadata.h \
+    $${PWD}/OAISearchSKU_200_response_data_inner.h \
+    $${PWD}/OAISkus_inner.h \
+    $${PWD}/OAISkus_inner_1.h \
+    $${PWD}/OAISkus_inner_2.h \
+    $${PWD}/OAISkus_inner_3.h \
+    $${PWD}/OAISpecs_inner.h \
+    $${PWD}/OAISpecs_inner_1.h \
+    $${PWD}/OAIUpdateCategoryTree_request.h \
+    $${PWD}/OAIValue.h \
+    $${PWD}/OAIValue_1.h \
+    $${PWD}/OAIValue_2.h \
+    $${PWD}/OAI_metadata.h \
+# APIs
+    $${PWD}/OAIBrandApi.h \
+    $${PWD}/OAICategoryApi.h \
+    $${PWD}/OAIProductApi.h \
+    $${PWD}/OAISKUApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIAttributes_inner.cpp \
+    $${PWD}/OAIChildren_inner.cpp \
+    $${PWD}/OAIChildren_inner_1.cpp \
+    $${PWD}/OAICreateCategory_request.cpp \
+    $${PWD}/OAIData_inner.cpp \
+    $${PWD}/OAIDimensions.cpp \
+    $${PWD}/OAIGetBrand_200_response.cpp \
+    $${PWD}/OAIGetCategoryTree_200_response.cpp \
+    $${PWD}/OAIGetProductDescription_200_response.cpp \
+    $${PWD}/OAIGetProductQuery_200_response.cpp \
+    $${PWD}/OAIGetProduct_200_response.cpp \
+    $${PWD}/OAIGetbyid_200_response.cpp \
+    $${PWD}/OAIImages_inner.cpp \
+    $${PWD}/OAIListBrand_200_response.cpp \
+    $${PWD}/OAIListSKU_200_response.cpp \
+    $${PWD}/OAIPostBrand_200_response.cpp \
+    $${PWD}/OAIPostBrand_request.cpp \
+    $${PWD}/OAIPostProduct_200_response.cpp \
+    $${PWD}/OAIPostProduct_request.cpp \
+    $${PWD}/OAIPutBrand_request.cpp \
+    $${PWD}/OAIPutProductDescription_request.cpp \
+    $${PWD}/OAIPutProduct_request.cpp \
+    $${PWD}/OAIRoots_inner.cpp \
+    $${PWD}/OAISearchSKU_200_response.cpp \
+    $${PWD}/OAISearchSKU_200_response__metadata.cpp \
+    $${PWD}/OAISearchSKU_200_response_data_inner.cpp \
+    $${PWD}/OAISkus_inner.cpp \
+    $${PWD}/OAISkus_inner_1.cpp \
+    $${PWD}/OAISkus_inner_2.cpp \
+    $${PWD}/OAISkus_inner_3.cpp \
+    $${PWD}/OAISpecs_inner.cpp \
+    $${PWD}/OAISpecs_inner_1.cpp \
+    $${PWD}/OAIUpdateCategoryTree_request.cpp \
+    $${PWD}/OAIValue.cpp \
+    $${PWD}/OAIValue_1.cpp \
+    $${PWD}/OAIValue_2.cpp \
+    $${PWD}/OAI_metadata.cpp \
+# APIs
+    $${PWD}/OAIBrandApi.cpp \
+    $${PWD}/OAICategoryApi.cpp \
+    $${PWD}/OAIProductApi.cpp \
+    $${PWD}/OAISKUApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

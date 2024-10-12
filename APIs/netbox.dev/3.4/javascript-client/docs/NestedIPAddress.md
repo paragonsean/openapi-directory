@@ -1,0 +1,13 @@
+# NetBoxApi.NestedIPAddress
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**address** | **String** | IPv4 or IPv6 address (with mask) | 
+**display** | **String** |  | [optional] [readonly] 
+**family** | **Number** |  | [optional] [readonly] 
+**id** | **Number** |  | [optional] [readonly] 
+**url** | **String** |  | [optional] [readonly] 
+
+

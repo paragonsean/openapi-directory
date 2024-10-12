@@ -1,0 +1,35 @@
+# coding: utf-8
+
+# import models into model package
+from openapi_server.models.bca_definition import BCADefinition
+from openapi_server.models.bca_definition_meta import BCADefinitionMeta
+from openapi_server.models.bca_inner import BCAInner
+from openapi_server.models.bca_marketing_state_inner import BCAMarketingStateInner
+from openapi_server.models.brand_inner import BrandInner
+from openapi_server.models.brand_inner1 import BrandInner1
+from openapi_server.models.brand_inner2 import BrandInner2
+from openapi_server.models.brand_inner3 import BrandInner3
+from openapi_server.models.ccc_definition import CCCDefinition
+from openapi_server.models.ccc_definition_meta import CCCDefinitionMeta
+from openapi_server.models.ccc_inner import CCCInner
+from openapi_server.models.ccc_marketing_state_inner import CCCMarketingStateInner
+from openapi_server.models.error_definition400 import ErrorDefinition400
+from openapi_server.models.error_definition408 import ErrorDefinition408
+from openapi_server.models.error_definition429 import ErrorDefinition429
+from openapi_server.models.error_definition500 import ErrorDefinition500
+from openapi_server.models.error_definition503 import ErrorDefinition503
+from openapi_server.models.fee_charge_cap_inner import FeeChargeCapInner
+from openapi_server.models.fee_charge_detail_inner import FeeChargeDetailInner
+from openapi_server.models.meta_definition import MetaDefinition
+from openapi_server.models.other_fee_type_inner import OtherFeeTypeInner
+from openapi_server.models.other_fees_charges_inner import OtherFeesChargesInner
+from openapi_server.models.pca_definition import PCADefinition
+from openapi_server.models.pca_definition_meta import PCADefinitionMeta
+from openapi_server.models.pca_inner import PCAInner
+from openapi_server.models.pca_marketing_state_inner import PCAMarketingStateInner
+from openapi_server.models.repayment_holiday_inner import RepaymentHolidayInner
+from openapi_server.models.repayment_inner import RepaymentInner
+from openapi_server.models.sme_lending_definition import SMELendingDefinition
+from openapi_server.models.sme_lending_definition_meta import SMELendingDefinitionMeta
+from openapi_server.models.sme_loan_inner import SMELoanInner
+from openapi_server.models.sme_loan_marketing_state_inner import SMELoanMarketingStateInner

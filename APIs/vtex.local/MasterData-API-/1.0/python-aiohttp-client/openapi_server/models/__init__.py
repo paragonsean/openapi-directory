@@ -1,0 +1,24 @@
+# coding: utf-8
+
+# import models into model package
+from openapi_server.models.ar_e_ventila_o import ArEVentilaO
+from openapi_server.models.createnewdocument import Createnewdocument
+from openapi_server.models.createnewdocument_request import CreatenewdocumentRequest
+from openapi_server.models.createorupdateentiredocument_request import CreateorupdateentiredocumentRequest
+from openapi_server.models.createorupdatepartialdocument_request import CreateorupdatepartialdocumentRequest
+from openapi_server.models.deletescorebyfield_request import DeletescorebyfieldRequest
+from openapi_server.models.department_visited_tag import DepartmentVisitedTag
+from openapi_server.models.document import Document
+from openapi_server.models.getdataentityfields import Getdataentityfields
+from openapi_server.models.getversion import Getversion
+from openapi_server.models.listdataentity import Listdataentity
+from openapi_server.models.listversion import Listversion
+from openapi_server.models.model_field import ModelField
+from openapi_server.models.putscorebyfield_request import PutscorebyfieldRequest
+from openapi_server.models.putscores_request import PutscoresRequest
+from openapi_server.models.putversion import Putversion
+from openapi_server.models.scores import Scores
+from openapi_server.models.updateentiredocument_request import UpdateentiredocumentRequest
+from openapi_server.models.updatepartialdocument_request import UpdatepartialdocumentRequest
+from openapi_server.models.usingfilters import Usingfilters
+from openapi_server.models.validate_documentby_clusters_request import ValidateDocumentbyClustersRequest

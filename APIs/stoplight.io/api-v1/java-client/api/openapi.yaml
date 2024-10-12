@@ -1,0 +1,531 @@
+openapi: 3.0.0
+info:
+  contact:
+    x-twitter: stoplightio
+  description: ""
+  title: Stoplight
+  version: api-v1
+  x-apisguru-categories:
+  - developer_tools
+  x-logo:
+    url: https://twitter.com/stoplightio/profile_image?size=original
+  x-origin:
+  - format: openapi
+    url: https://api.stoplight.io/v1/versions/wDcMCTKXwn8X4ynL9/export/oas.json
+    version: "3.0"
+  x-providerName: stoplight.io
+servers:
+- url: https://api.stoplight.io/v1
+paths:
+  /versions/publish/anon:
+    post:
+      description: |-
+        Anonymously publish to API Docs.
+
+        This endpoint will take a JSON spec or a URL to a swagger or raml spec.
+
+        ```
+        {
+          "specData": {...}
+        }
+        ```
+
+        or
+
+        ```
+        {
+          "url": "http://petstore.swagger.io/v2/swagger.json"
+        }
+        ```
+
+        The spec will be published to api-docs.io anonymously, which means you will not be able to update or remove this documentation.
+
+        The response will contain a url to the published documentation.
+
+        ```
+        {
+          "url": "https://swagger-petstore.api-docs.io/v1.0.0"
+        }
+        ```
+
+
+        The limitations of anonymous publishing
+        * Cannot update/remove the documentation
+        * Cannot choose the subdomain
+        * Cannot choose the version
+        * Cannot add theming
+      operationId: POST_versions-publish-anon
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/POST_versions_publish_anon_request'
+      responses:
+        "200":
+          content:
+            application/json:
+              examples:
+                response:
+                  value:
+                    url: https://stoplight.api-docs.io/api-v1
+              schema:
+                $ref: '#/components/schemas/POST_versions_publish_anon_200_response'
+          description: ""
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/standarderror'
+          description: ""
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/standarderror'
+          description: ""
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/standarderror'
+          description: ""
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/standarderror'
+          description: ""
+      summary: Publish Anonymous
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+  /versions/{versionId}/export/{format}:
+    get:
+      description: |-
+        Export a version to your choice of API specification.
+
+        ### Allowed Formats:
+
+        - oas.json
+        - oas.yaml
+        - raml08.yaml
+        - raml10.yaml
+        - stoplight.json
+        - stoplight.yaml
+
+        The stoplight format actually returns OAS (Swagger 2) with x-stoplight annotations. If you are exporting with the intent on importing back into Stoplight, this export format preserves the most information.
+
+        ### Example URL:
+
+        `https://api.stoplight.io/v1/versions/123/export/oas.json`
+      operationId: GET_versions-versionId-export-format
+      parameters:
+      - description: This is the unique identifier for the version.
+        explode: false
+        in: path
+        name: versionId
+        required: true
+        schema:
+          default: ""
+          type: string
+        style: simple
+      - description: The specification / format that you want to export.
+        explode: false
+        in: path
+        name: format
+        required: true
+        schema:
+          default: oas.json
+          enum:
+          - oas.json
+          - oas.yaml
+          - raml08.yaml
+          - raml10.yaml
+          - stoplight.json
+          - stoplight.yaml
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              examples:
+                response:
+                  value:
+                    info:
+                      title: Test API
+                      version: "1.0"
+                    paths: {}
+                    swagger: "2.0"
+            text/yaml:
+              schema:
+                $ref: '#/components/schemas/GET_versions_versionId_export_format_200_response'
+          description: ""
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/standarderror'
+          description: ""
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/standarderror'
+          description: ""
+      summary: Export
+      tags:
+      - Versions
+      x-accepts:
+      - application/json
+      - text/yaml
+  /versions/{versionId}/import:
+    put:
+      description: "Import the given specification into an existing version. \n\n\
+        **Warning, this is a destructive action! Any resources present in both the\
+        \ existing version, and the specification being imported, will be overwritten.**\n\
+        \nThis endpoint is particularly useful when you manage a specification file\
+        \ (Swagger or RAML) outside of Stoplight, and want to keep your Stoplight\
+        \ API version up to date as that specification changes.\n\nBy default, a \"\
+        merge\" is performed when importing. If a resource exists in the specification\
+        \ that you are importing, and in the Stoplight API, the resource will be overwritten.\
+        \ If a resource exists in the Stoplight API, but not in the spefication that\
+        \ you are importing, the resource will be left alone (and not deleted).\n\n\
+        You can include an optional `options` property in the request body, to indicate\
+        \ if you would like to perform more of a replacement (instead of a merge).\
+        \ The options are documented in full in the response definition below these\
+        \ notes.\n\nTake this request + request body for example:\n\n`PUT https://api.stoplight.io/v1/versions/123/import`\n\
+        ```json\n{\n  \"url\": \"http://petstore.swagger.io/v2/swagger.json\",\n \
+        \ \"options\": {\n    \"removeExtraEndpoints\": true,\n    \"removeExtraSchemas\"\
+        : true\n  }\n}\n```\n\nThis request will grab the swagger specification described\
+        \ at `http://petstore.swagger.io/v2/swagger.json`, and import it into the\
+        \ Stoplight API version with id `123`. Additionally, it will delete any existing\
+        \ endpoints or models that are not described in the petstore swagger being\
+        \ imported.\n\nInstead of a URL, you can provide the actual specification\
+        \ to be imported, either as a string (in the case of YAML) or an object (in\
+        \ the case of JSON). That request would look something like this:\n\n`PUT\
+        \ https://api.stoplight.io/v1/versions/123/import`\n```json\n{\n  \"specData\"\
+        : {\n    \"swagger\": \"2.0\",\n    \"info\": {}\n    ... rest of spec\n \
+        \ }\n}\n```"
+      operationId: PUT_versions-versionId-import
+      parameters:
+      - description: This is the unique identifier for the version.
+        explode: false
+        in: path
+        name: versionId
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PUT_versions_versionId_import_request'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PUT_versions_versionId_import_200_response'
+          description: ""
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/standarderror'
+          description: ""
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/standarderror'
+          description: ""
+      security:
+      - Authorization: []
+      summary: Import
+      tags:
+      - Versions
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+  /versions/{versionId}/publish:
+    post:
+      description: |-
+        Re-publish an API version in Stoplight. This will re-publish the given API version, with whatever publish settings have already been setup in the app.
+
+        This will only work with APIs that have previously been published at least once.
+
+        This works well with the #endpoint:957qEfc97BB5XGAeZ endpoint to augment your continuous integration processes, and automatically re-publish your documentation when certain events happen. Once such scenario is:
+
+        1. Swagger is generated from your codebase, and pushed up to Github.
+        2. A simple script that you write sends a request to the Stoplight API to import the new specification, passing in the URL to the swagger file on Github.
+        3. After the import succeeds, and your API in Stoplight is up to date, the script sends a request to the Stoplight API (this endpoint) to re-publish your documentation.
+      operationId: POST_versions-versionId-publish
+      parameters:
+      - description: This is the unique identifier for the version.
+        explode: false
+        in: path
+        name: versionId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              examples:
+                response:
+                  value:
+                    customDomain: https://help.stoplight.io/api-v1
+                    url: https://stoplight.api-docs.io/api-v1
+              schema:
+                $ref: '#/components/schemas/POST_versions_versionId_publish_200_response'
+          description: ""
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/standarderror'
+          description: ""
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/standarderror'
+          description: ""
+      security:
+      - Authorization: []
+      summary: Publish
+      tags:
+      - Versions
+      x-accepts:
+      - application/json
+  /versions/{versionId}/unpublish:
+    put:
+      description: Unpublish the documentation associated with the given API version.
+      operationId: PUT_versions-versionId-unpublish
+      parameters:
+      - description: This is the unique identifier for the version.
+        explode: false
+        in: path
+        name: versionId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              examples:
+                response:
+                  value:
+                    data: {}
+              schema:
+                $ref: '#/components/schemas/PUT_versions_versionId_unpublish_200_response'
+          description: ""
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/standarderror'
+          description: ""
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/standarderror'
+          description: ""
+      security:
+      - Authorization: []
+      summary: Unpublish
+      tags:
+      - Versions
+      x-accepts:
+      - application/json
+components:
+  responses:
+    trait_standardErrors_400:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/standarderror'
+      description: ""
+    trait_standardErrors_401:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/standarderror'
+      description: ""
+    trait_standardErrors_404:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/standarderror'
+      description: ""
+    trait_standardErrors_500:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/standarderror'
+      description: ""
+  schemas:
+    shared-user:
+      properties:
+        ? ""
+        : type: string
+        username:
+          type: string
+      title: Shared User
+      type: object
+    standarderror: {}
+    POST_versions_publish_anon_request_specData:
+      oneOf:
+      - type: object
+      - type: string
+    POST_versions_publish_anon_request:
+      properties:
+        specData:
+          $ref: '#/components/schemas/POST_versions_publish_anon_request_specData'
+        url:
+          type: string
+      type: object
+    POST_versions_publish_anon_200_response:
+      example:
+        url: url
+      properties:
+        url:
+          type: string
+      required:
+      - url
+      type: object
+    GET_versions_versionId_export_format_200_response:
+      description: "The specification. Returned as a string when YAML, object when\
+        \ JSON."
+      oneOf:
+      - type: object
+      - type: string
+    PUT_versions_versionId_import_request_options:
+      properties:
+        removeExtraEndpoints:
+          default: false
+          description: "Default: false."
+          type: boolean
+        removeExtraSchemas:
+          default: false
+          description: "Default: false."
+          type: boolean
+        removeExtraTextSections:
+          default: false
+          description: "Default: false."
+          type: boolean
+        removeExtraTraits:
+          default: false
+          description: "Default: false."
+          type: boolean
+      type: object
+    PUT_versions_versionId_import_request:
+      example:
+        options:
+          removeExtraEndpoints: true
+          removeExtraModels: true
+        url: http://petstore.swagger.io/v2/swagger.json
+      properties:
+        options:
+          $ref: '#/components/schemas/PUT_versions_versionId_import_request_options'
+        specData:
+          $ref: '#/components/schemas/POST_versions_publish_anon_request_specData'
+        url:
+          type: string
+      type: object
+    PUT_versions_versionId_import_200_response_data:
+      example:
+        testCount: 1.4658129805029452
+        versionId: versionId
+        endpointCount: 0.8008281904610115
+        textSectionCount: 5.962133916683182
+        schemaCount: 6.027456183070403
+        traitCount: 5.637376656633329
+        format: RAML08
+        projectId: projectId
+        workspaceId: workspaceId
+      properties:
+        endpointCount:
+          type: number
+        format:
+          enum:
+          - RAML08
+          - RAML10
+          - SWAGGER
+          - STOPLIGHTX
+          type: string
+        projectId:
+          type: string
+        schemaCount:
+          type: number
+        testCount:
+          type: number
+        textSectionCount:
+          type: number
+        traitCount:
+          type: number
+        versionId:
+          type: string
+        workspaceId:
+          type: string
+      required:
+      - endpointCount
+      - format
+      - projectId
+      - schemaCount
+      - testCount
+      - textSectionCount
+      - traitCount
+      - versionId
+      - workspaceId
+      type: object
+    PUT_versions_versionId_import_200_response:
+      example:
+        data:
+          testCount: 1.4658129805029452
+          versionId: versionId
+          endpointCount: 0.8008281904610115
+          textSectionCount: 5.962133916683182
+          schemaCount: 6.027456183070403
+          traitCount: 5.637376656633329
+          format: RAML08
+          projectId: projectId
+          workspaceId: workspaceId
+      properties:
+        data:
+          $ref: '#/components/schemas/PUT_versions_versionId_import_200_response_data'
+      required:
+      - data
+      type: object
+    POST_versions_versionId_publish_200_response:
+      example:
+        customDomain: customDomain
+        url: url
+      properties:
+        customDomain:
+          type: string
+        url:
+          type: string
+      required:
+      - url
+      type: object
+    PUT_versions_versionId_unpublish_200_response:
+      example:
+        data: "{}"
+      properties:
+        data:
+          type: object
+      type: object
+  securitySchemes:
+    Authorization:
+      in: header
+      name: Authorization
+      type: apiKey
+

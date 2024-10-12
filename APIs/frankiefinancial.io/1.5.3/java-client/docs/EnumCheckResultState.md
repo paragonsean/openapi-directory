@@ -1,0 +1,27 @@
+
+
+# EnumCheckResultState
+
+## Enum
+
+
+* `UNCHECKED` (value: `"UNCHECKED"`)
+
+* `CHECKING` (value: `"CHECKING"`)
+
+* `UNPROCESSABLE` (value: `"UNPROCESSABLE"`)
+
+* `NOT_SUPPORTED` (value: `"NOT_SUPPORTED"`)
+
+* `NO_MATCH` (value: `"NO_MATCH"`)
+
+* `CHECKED_PARTIAL_SUCCESS` (value: `"CHECKED_PARTIAL_SUCCESS"`)
+
+* `CHECKED_SUCCESS_WITH_NOTES` (value: `"CHECKED_SUCCESS_WITH_NOTES"`)
+
+* `CHECKED_SUCCESS_CLEAR` (value: `"CHECKED_SUCCESS_CLEAR"`)
+
+* `CHECKED_FAILED` (value: `"CHECKED_FAILED"`)
+
+
+
