@@ -1,0 +1,93 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIArticle.h \
+    $${PWD}/OAIArticle_Attribute.h \
+    $${PWD}/OAIArticle_Image.h \
+    $${PWD}/OAIArticle_Media.h \
+    $${PWD}/OAIArticle_Price.h \
+    $${PWD}/OAIArticle_Review.h \
+    $${PWD}/OAIArticle_Review_articleSizeRatings.h \
+    $${PWD}/OAIArticle_Reviews.h \
+    $${PWD}/OAIArticle_Reviews_Summaries.h \
+    $${PWD}/OAIArticle_Reviews_Summary.h \
+    $${PWD}/OAIArticle_Reviews_Summary_articleSizeRatings.h \
+    $${PWD}/OAIArticle_Reviews_Summary_starRatingDistribution.h \
+    $${PWD}/OAIArticle_Unit.h \
+    $${PWD}/OAIArticles.h \
+    $${PWD}/OAIBrand.h \
+    $${PWD}/OAIBrandFamily.h \
+    $${PWD}/OAIBrands.h \
+    $${PWD}/OAICategories.h \
+    $${PWD}/OAICategory.h \
+    $${PWD}/OAIDomain.h \
+    $${PWD}/OAIErrorDetail.h \
+    $${PWD}/OAIErrorMessage.h \
+    $${PWD}/OAIFacet.h \
+    $${PWD}/OAIFacet_Value.h \
+    $${PWD}/OAIFilter.h \
+    $${PWD}/OAIFilter_Value.h \
+    $${PWD}/OAIPage.h \
+    $${PWD}/OAIRecommendations_Article.h \
+# APIs
+    $${PWD}/OAIArticlesApi.h \
+    $${PWD}/OAIBrandsApi.h \
+    $${PWD}/OAICategoriesApi.h \
+    $${PWD}/OAIDomainsApi.h \
+    $${PWD}/OAIFacetsApi.h \
+    $${PWD}/OAIFiltersApi.h \
+    $${PWD}/OAIRecommendationsApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIArticle.cpp \
+    $${PWD}/OAIArticle_Attribute.cpp \
+    $${PWD}/OAIArticle_Image.cpp \
+    $${PWD}/OAIArticle_Media.cpp \
+    $${PWD}/OAIArticle_Price.cpp \
+    $${PWD}/OAIArticle_Review.cpp \
+    $${PWD}/OAIArticle_Review_articleSizeRatings.cpp \
+    $${PWD}/OAIArticle_Reviews.cpp \
+    $${PWD}/OAIArticle_Reviews_Summaries.cpp \
+    $${PWD}/OAIArticle_Reviews_Summary.cpp \
+    $${PWD}/OAIArticle_Reviews_Summary_articleSizeRatings.cpp \
+    $${PWD}/OAIArticle_Reviews_Summary_starRatingDistribution.cpp \
+    $${PWD}/OAIArticle_Unit.cpp \
+    $${PWD}/OAIArticles.cpp \
+    $${PWD}/OAIBrand.cpp \
+    $${PWD}/OAIBrandFamily.cpp \
+    $${PWD}/OAIBrands.cpp \
+    $${PWD}/OAICategories.cpp \
+    $${PWD}/OAICategory.cpp \
+    $${PWD}/OAIDomain.cpp \
+    $${PWD}/OAIErrorDetail.cpp \
+    $${PWD}/OAIErrorMessage.cpp \
+    $${PWD}/OAIFacet.cpp \
+    $${PWD}/OAIFacet_Value.cpp \
+    $${PWD}/OAIFilter.cpp \
+    $${PWD}/OAIFilter_Value.cpp \
+    $${PWD}/OAIPage.cpp \
+    $${PWD}/OAIRecommendations_Article.cpp \
+# APIs
+    $${PWD}/OAIArticlesApi.cpp \
+    $${PWD}/OAIBrandsApi.cpp \
+    $${PWD}/OAICategoriesApi.cpp \
+    $${PWD}/OAIDomainsApi.cpp \
+    $${PWD}/OAIFacetsApi.cpp \
+    $${PWD}/OAIFiltersApi.cpp \
+    $${PWD}/OAIRecommendationsApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

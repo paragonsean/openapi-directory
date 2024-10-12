@@ -1,0 +1,14 @@
+# UpApi.WebhookEventTypeEnum
+
+## Enum
+
+
+* `TRANSACTION_CREATED` (value: `"TRANSACTION_CREATED"`)
+
+* `TRANSACTION_SETTLED` (value: `"TRANSACTION_SETTLED"`)
+
+* `TRANSACTION_DELETED` (value: `"TRANSACTION_DELETED"`)
+
+* `PING` (value: `"PING"`)
+
+

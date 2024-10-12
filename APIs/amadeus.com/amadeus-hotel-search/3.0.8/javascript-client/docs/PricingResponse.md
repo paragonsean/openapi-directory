@@ -1,0 +1,9 @@
+# HotelSearchApi.PricingResponse
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**data** | [**HotelOffers**](HotelOffers.md) |  | [optional] 
+
+

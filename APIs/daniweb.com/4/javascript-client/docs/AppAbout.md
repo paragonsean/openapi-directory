@@ -1,0 +1,11 @@
+# DaniWebConnectApi.AppAbout
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**description** | **String** |  | [optional] 
+**name** | **String** |  | [optional] 
+**website** | [**AppAboutWebsite**](AppAboutWebsite.md) |  | [optional] 
+
+

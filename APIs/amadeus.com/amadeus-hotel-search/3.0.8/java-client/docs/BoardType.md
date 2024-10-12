@@ -1,0 +1,49 @@
+
+
+# BoardType
+
+## Enum
+
+
+* `ROOM_ONLY` (value: `"ROOM_ONLY"`)
+
+* `BREAKFAST` (value: `"BREAKFAST"`)
+
+* `HALF_BOARD` (value: `"HALF_BOARD"`)
+
+* `FULL_BOARD` (value: `"FULL_BOARD"`)
+
+* `ALL_INCLUSIVE` (value: `"ALL_INCLUSIVE"`)
+
+* `BUFFET_BREAKFAST` (value: `"BUFFET_BREAKFAST"`)
+
+* `CARIBBEAN_BREAKFAST` (value: `"CARIBBEAN_BREAKFAST"`)
+
+* `CONTINENTAL_BREAKFAST` (value: `"CONTINENTAL_BREAKFAST"`)
+
+* `ENGLISH_BREAKFAST` (value: `"ENGLISH_BREAKFAST"`)
+
+* `FULL_BREAKFAST` (value: `"FULL_BREAKFAST"`)
+
+* `DINNER_BED_AND_BREAKFAST` (value: `"DINNER_BED_AND_BREAKFAST"`)
+
+* `LUNCH` (value: `"LUNCH"`)
+
+* `DINNER` (value: `"DINNER"`)
+
+* `FAMILY_PLAN` (value: `"FAMILY_PLAN"`)
+
+* `AS_BROCHURED` (value: `"AS_BROCHURED"`)
+
+* `SELF_CATERING` (value: `"SELF_CATERING"`)
+
+* `BERMUDA` (value: `"BERMUDA"`)
+
+* `AMERICAN` (value: `"AMERICAN"`)
+
+* `FAMILY_AMERICAN` (value: `"FAMILY_AMERICAN"`)
+
+* `MODIFIED` (value: `"MODIFIED"`)
+
+
+

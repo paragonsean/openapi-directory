@@ -1,0 +1,9 @@
+# FitbitPlusApi.CalendarEventResponseResourceRelationshipsCalendarEventLinks
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**related** | **String** |  | [optional] 
+
+

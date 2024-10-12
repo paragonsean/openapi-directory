@@ -1,0 +1,27 @@
+
+
+# GeneralRemarkType
+
+## Enum
+
+
+* `GENERAL_MISCELLANEOUS` (value: `"GENERAL_MISCELLANEOUS"`)
+
+* `CONFIDENTIAL` (value: `"CONFIDENTIAL"`)
+
+* `INVOICE` (value: `"INVOICE"`)
+
+* `QUALITY_CONTROL` (value: `"QUALITY_CONTROL"`)
+
+* `BACKOFFICE` (value: `"BACKOFFICE"`)
+
+* `FULFILLMENT` (value: `"FULFILLMENT"`)
+
+* `ITINERARY` (value: `"ITINERARY"`)
+
+* `TICKETING_MISCELLANEOUS` (value: `"TICKETING_MISCELLANEOUS"`)
+
+* `TOUR_CODE` (value: `"TOUR_CODE"`)
+
+
+

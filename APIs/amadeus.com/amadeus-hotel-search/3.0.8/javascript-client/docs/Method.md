@@ -1,0 +1,32 @@
+# HotelSearchApi.Method
+
+## Enum
+
+
+* `CREDIT_CARD` (value: `"CREDIT_CARD"`)
+
+* `AGENCY_ACCOUNT` (value: `"AGENCY_ACCOUNT"`)
+
+* `TRAVEL_AGENT_ID` (value: `"TRAVEL_AGENT_ID"`)
+
+* `CORPORATE_ID` (value: `"CORPORATE_ID"`)
+
+* `HOTEL_GUEST_ID` (value: `"HOTEL_GUEST_ID"`)
+
+* `CHECK` (value: `"CHECK"`)
+
+* `MISC_CHARGE_ORDER` (value: `"MISC_CHARGE_ORDER"`)
+
+* `ADVANCE_DEPOSIT` (value: `"ADVANCE_DEPOSIT"`)
+
+* `COMPANY_ADDRESS` (value: `"COMPANY_ADDRESS"`)
+
+* `VCC_BILLBACK` (value: `"VCC_BILLBACK"`)
+
+* `VCC_B2B_WALLET` (value: `"VCC_B2B_WALLET"`)
+
+* `DEFERED_PAYMENT` (value: `"DEFERED_PAYMENT"`)
+
+* `TRAVEL_AGENT_IMMEDIATE` (value: `"TRAVEL_AGENT_IMMEDIATE"`)
+
+

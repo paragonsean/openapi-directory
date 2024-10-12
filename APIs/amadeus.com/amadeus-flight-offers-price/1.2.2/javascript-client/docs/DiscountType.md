@@ -1,0 +1,14 @@
+# FlightOffersPrice.DiscountType
+
+## Enum
+
+
+* `SPANISH_RESIDENT` (value: `"SPANISH_RESIDENT"`)
+
+* `AIR_FRANCE_DOMESTIC` (value: `"AIR_FRANCE_DOMESTIC"`)
+
+* `AIR_FRANCE_COMBINED` (value: `"AIR_FRANCE_COMBINED"`)
+
+* `AIR_FRANCE_METROPOLITAN` (value: `"AIR_FRANCE_METROPOLITAN"`)
+
+

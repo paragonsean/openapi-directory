@@ -1,0 +1,21 @@
+# FitbitPlusApi.TokenResource
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**attributes** | [**TokenResourceAttributes**](TokenResourceAttributes.md) |  | [optional] 
+**id** | **String** |  | 
+**relationships** | [**TokenResourceRelationships**](TokenResourceRelationships.md) |  | [optional] 
+**type** | **String** |  | 
+
+
+
+## Enum: TypeEnum
+
+
+* `token` (value: `"token"`)
+
+
+
+

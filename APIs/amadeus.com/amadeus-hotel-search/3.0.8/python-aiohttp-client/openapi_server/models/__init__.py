@@ -1,0 +1,35 @@
+# coding: utf-8
+
+# import models into model package
+from openapi_server.models.board_type import BoardType
+from openapi_server.models.cancellation_type import CancellationType
+from openapi_server.models.error import Error
+from openapi_server.models.error_source import ErrorSource
+from openapi_server.models.errors import Errors
+from openapi_server.models.hotel import Hotel
+from openapi_server.models.hotel_offer import HotelOffer
+from openapi_server.models.hotel_offers import HotelOffers
+from openapi_server.models.hotel_product_cancellation_policy import HotelProductCancellationPolicy
+from openapi_server.models.hotel_product_check_in_out_policy import HotelProductCheckInOutPolicy
+from openapi_server.models.hotel_product_commission import HotelProductCommission
+from openapi_server.models.hotel_product_deposit_policy import HotelProductDepositPolicy
+from openapi_server.models.hotel_product_estimated_room_type import HotelProductEstimatedRoomType
+from openapi_server.models.hotel_product_guarantee_policy import HotelProductGuaranteePolicy
+from openapi_server.models.hotel_product_guests import HotelProductGuests
+from openapi_server.models.hotel_product_hold_policy import HotelProductHoldPolicy
+from openapi_server.models.hotel_product_hotel_price import HotelProductHotelPrice
+from openapi_server.models.hotel_product_payment_policy import HotelProductPaymentPolicy
+from openapi_server.models.hotel_product_policy_details import HotelProductPolicyDetails
+from openapi_server.models.hotel_product_price_variation import HotelProductPriceVariation
+from openapi_server.models.hotel_product_price_variations import HotelProductPriceVariations
+from openapi_server.models.hotel_product_rate_family import HotelProductRateFamily
+from openapi_server.models.hotel_product_room_details import HotelProductRoomDetails
+from openapi_server.models.markup import Markup
+from openapi_server.models.method import Method
+from openapi_server.models.multi_response import MultiResponse
+from openapi_server.models.payment_type import PaymentType
+from openapi_server.models.price import Price
+from openapi_server.models.pricing_response import PricingResponse
+from openapi_server.models.qualified_free_text import QualifiedFreeText
+from openapi_server.models.tax import Tax
+from openapi_server.models.type import Type

@@ -1,0 +1,387 @@
+openapi: 3.0.0
+info:
+  description: "The missing minimalistic JSON real-time UV Index API for awesome Developers,\
+    \ Innovators and Smart Home Enthusiasts"
+  title: OpenUV - Global Real-Time UV Index Forecast API
+  version: v1
+  x-origin:
+  - format: openapi
+    url: https://gist.githubusercontent.com/MikeRalphson/77bb693d4cf9213909527b9cc4566609/raw/9febc5d16d8d162c93f3503510ce0808a8075d5b/openuv.yaml
+    version: "3.0"
+  x-providerName: openuv.io
+servers:
+- url: "https://api.openuv.io/api/{version}"
+  variables:
+    version:
+      default: v1
+paths:
+  /forecast:
+    description: Hourly UV Index Forecast
+    get:
+      description: "Get hourly UV Index Forecast by location and date. Optional altitude,\
+        \ ozone level and datetime could be provided."
+      operationId: forecast_get
+      parameters:
+      - description: "latitude, from -90.00 to 90.00"
+        explode: true
+        in: query
+        name: lat
+        required: true
+        schema:
+          description: "latitude, from -90.00 to 90.00"
+          example: 78.67
+          type: number
+        style: form
+      - description: "longitude, from -180.00 to 180.00"
+        explode: true
+        in: query
+        name: lng
+        required: true
+        schema:
+          description: "longitude, from -180.00 to 180.00"
+          example: 115.67
+          type: number
+        style: form
+      - description: "Altitude in meters, from 0 to 10000m, 0m by default. If provided\
+          \ the altitude correction factor will be applied to clear sky sea level\
+          \ UV Index value."
+        explode: true
+        in: query
+        name: alt
+        required: false
+        schema:
+          description: "Altitude in meters, from 0 to 10000m, 0m by default. If provided\
+            \ the altitude correction factor will be applied to clear sky sea level\
+            \ UV Index value."
+          example: 1050
+          type: number
+        style: form
+      - description: "Ozone in du (Dobson Units), from 100 to 550du, the latest forecast\
+          \ from OMI dataset is used by default."
+        explode: true
+        in: query
+        name: ozone
+        required: false
+        schema:
+          description: "Ozone in du (Dobson Units), from 100 to 550du, the latest\
+            \ forecast from OMI dataset is used by default."
+          example: 304.5
+          type: number
+        style: form
+      - description: "UTC datetime in ISO-8601 format, now by default. Use that parameter\
+          \ to get UV Index Forecast for any point in time."
+        explode: true
+        in: query
+        name: dt
+        required: false
+        schema:
+          description: "UTC datetime in ISO-8601 format, now by default. Use that\
+            \ parameter to get UV Index Forecast for any point in time."
+          example: 2018-02-04T04:39:06.467Z
+          format: date-time
+          type: string
+        style: form
+      - description: This header is used to send data that contains your OpenUV API
+          key
+        explode: false
+        in: header
+        name: x-access-token
+        required: true
+        schema:
+          description: This header is used to send data that contains your OpenUV
+            API key
+          title: x-access-token
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/forecastResult'
+                type: array
+          description: ""
+      x-openapi-router-controller: openapi_server.controllers.default_controller
+  /protection:
+    description: Daily Protection Time
+    get:
+      description: "Get daily protection time by location, UV Index from and UV Index\
+        \ to with 10 minutes accuracy. Optional altitide and ozone level could be\
+        \ provided."
+      operationId: protection_get
+      parameters:
+      - description: "latitude, from -90.00 to 90.00"
+        explode: true
+        in: query
+        name: lat
+        required: true
+        schema:
+          description: "latitude, from -90.00 to 90.00"
+          example: 78.67
+          type: number
+        style: form
+      - description: "longitude, from -180.00 to 180.00"
+        explode: true
+        in: query
+        name: lng
+        required: true
+        schema:
+          description: "longitude, from -180.00 to 180.00"
+          example: 115.67
+          type: number
+        style: form
+      - description: UV Index from value for protection datetime lookup. From 0 to
+          40.
+        explode: true
+        in: query
+        name: from
+        required: true
+        schema:
+          description: UV Index from value for protection datetime lookup. From 0
+            to 40.
+          example: 2.5
+          type: number
+        style: form
+      - description: UV Index to value for protection datetime lookup. From 0 to 40.
+        explode: true
+        in: query
+        name: to
+        required: true
+        schema:
+          description: UV Index to value for protection datetime lookup. From 0 to
+            40.
+          example: 3.6
+          type: number
+        style: form
+      - description: "Altitude in meters, from 0 to 10000m, 0m by default. If provided\
+          \ the altitude correction factor will be applied to clear sky sea level\
+          \ UV Index value."
+        explode: true
+        in: query
+        name: alt
+        required: false
+        schema:
+          description: "Altitude in meters, from 0 to 10000m, 0m by default. If provided\
+            \ the altitude correction factor will be applied to clear sky sea level\
+            \ UV Index value."
+          example: 1050
+          type: number
+        style: form
+      - description: "Ozone in du (Dobson Units), from 100 to 550du, the latest forecast\
+          \ from OMI dataset is used by default."
+        explode: true
+        in: query
+        name: ozone
+        required: false
+        schema:
+          description: "Ozone in du (Dobson Units), from 100 to 550du, the latest\
+            \ forecast from OMI dataset is used by default."
+          example: 304.5
+          type: number
+        style: form
+      - description: This header is used to send data that contains your OpenUV API
+          key
+        explode: false
+        in: header
+        name: x-access-token
+        required: true
+        schema:
+          description: This header is used to send data that contains your OpenUV
+            API key
+          title: x-access-token
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/protectionResult'
+          description: ""
+      x-openapi-router-controller: openapi_server.controllers.default_controller
+  /uv:
+    description: Real-time UV Index
+    get:
+      description: "Get real-time UV Index by location. Optional altitude, ozone level\
+        \ and datetime could be provided."
+      operationId: uv_get
+      parameters:
+      - description: "latitude, from -90.00 to 90.00"
+        explode: true
+        in: query
+        name: lat
+        required: true
+        schema:
+          description: "latitude, from -90.00 to 90.00"
+          example: 78.67
+          type: number
+        style: form
+      - description: "longitude, from -180.00 to 180.00"
+        explode: true
+        in: query
+        name: lng
+        required: true
+        schema:
+          description: "longitude, from -180.00 to 180.00"
+          example: 115.67
+          type: number
+        style: form
+      - description: "Altitude in meters, from 0 to 10000m, 0m by default. If provided\
+          \ the altitude correction factor will be applied to clear sky sea level\
+          \ UV Index value."
+        explode: true
+        in: query
+        name: alt
+        required: false
+        schema:
+          description: "Altitude in meters, from 0 to 10000m, 0m by default. If provided\
+            \ the altitude correction factor will be applied to clear sky sea level\
+            \ UV Index value."
+          example: 1050
+          type: number
+        style: form
+      - description: "Ozone in du (Dobson Units), from 100 to 550du, the latest forecast\
+          \ from OMI dataset is used by default."
+        explode: true
+        in: query
+        name: ozone
+        required: false
+        schema:
+          description: "Ozone in du (Dobson Units), from 100 to 550du, the latest\
+            \ forecast from OMI dataset is used by default."
+          example: 304.5
+          type: number
+        style: form
+      - description: "UTC datetime in ISO-8601 format, now by default. Use that parameter\
+          \ to get UV Index Forecast for any point in time."
+        explode: true
+        in: query
+        name: dt
+        required: false
+        schema:
+          description: "UTC datetime in ISO-8601 format, now by default. Use that\
+            \ parameter to get UV Index Forecast for any point in time."
+          example: 2018-02-04T04:39:06.467Z
+          format: date-time
+          type: string
+        style: form
+      - description: This header is used to send data that contains your OpenUV API
+          key
+        explode: false
+        in: header
+        name: x-access-token
+        required: true
+        schema:
+          description: This header is used to send data that contains your OpenUV
+            API key
+          title: x-access-token
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/uvIndexResult'
+          description: ""
+      x-openapi-router-controller: openapi_server.controllers.default_controller
+components:
+  schemas:
+    Error:
+      properties:
+        error:
+          type: string
+      required:
+      - error
+      type: object
+    forecast:
+      example:
+        uv: 0.8008281904610115
+        uv_time: uv_time
+      properties:
+        uv:
+          title: uv
+          type: number
+        uv_time:
+          format: date-time-only
+          title: uv_time
+          type: string
+      required:
+      - uv
+      - uv_time
+      title: forecast
+      type: object
+    forecastResult:
+      items:
+        $ref: '#/components/schemas/forecast'
+      title: result
+      type: array
+      uniqueItems: true
+    protectionResult:
+      example:
+        uv: 6.027456183070403
+        uv_max: 1.4658129805029452
+        ozone: 0.8008281904610115
+        ozone_time: ozone_time
+        uv_max_time: uv_max_time
+        uv_time: uv_time
+      properties:
+        ozone:
+          title: ozone
+          type: number
+        ozone_time:
+          format: date-time-only
+          title: ozone_time
+          type: string
+        uv:
+          title: uv
+          type: number
+        uv_max:
+          title: uv_max
+          type: number
+        uv_max_time:
+          format: date-time-only
+          title: uv_max_time
+          type: string
+        uv_time:
+          format: date-time-only
+          title: uv_time
+          type: string
+      required:
+      - ozone
+      - ozone_time
+      - uv
+      - uv_max
+      - uv_max_time
+      - uv_time
+      title: result
+      type: object
+    uvIndexResult:
+      example:
+        to_uv: 6.027456183070403
+        from_uv: 0.8008281904610115
+        to_time: to_time
+        from_time: from_time
+      properties:
+        from_time:
+          format: date-time-only
+          title: from_time
+          type: string
+        from_uv:
+          title: from_uv
+          type: number
+        to_time:
+          format: date-time-only
+          title: to_time
+          type: string
+        to_uv:
+          title: to_uv
+          type: number
+      required:
+      - from_time
+      - from_uv
+      - to_time
+      - to_uv
+      title: result
+      type: object

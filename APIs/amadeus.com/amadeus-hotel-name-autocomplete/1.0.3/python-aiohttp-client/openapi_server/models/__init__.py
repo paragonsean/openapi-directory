@@ -1,0 +1,11 @@
+# coding: utf-8
+
+# import models into model package
+from openapi_server.models.gethotels400_response import Gethotels400Response
+from openapi_server.models.gethotels400_response_errors_inner import Gethotels400ResponseErrorsInner
+from openapi_server.models.gethotels400_response_errors_inner_source import Gethotels400ResponseErrorsInnerSource
+from openapi_server.models.gethotels500_response import Gethotels500Response
+from openapi_server.models.success import Success
+from openapi_server.models.success_data_inner import SuccessDataInner
+from openapi_server.models.success_data_inner_address import SuccessDataInnerAddress
+from openapi_server.models.success_data_inner_geo_code import SuccessDataInnerGeoCode

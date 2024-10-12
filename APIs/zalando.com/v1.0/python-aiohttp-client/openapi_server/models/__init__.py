@@ -1,0 +1,31 @@
+# coding: utf-8
+
+# import models into model package
+from openapi_server.models.article import Article
+from openapi_server.models.article_attribute import ArticleAttribute
+from openapi_server.models.article_image import ArticleImage
+from openapi_server.models.article_media import ArticleMedia
+from openapi_server.models.article_price import ArticlePrice
+from openapi_server.models.article_review import ArticleReview
+from openapi_server.models.article_review_article_size_ratings import ArticleReviewArticleSizeRatings
+from openapi_server.models.article_reviews import ArticleReviews
+from openapi_server.models.article_reviews_summaries import ArticleReviewsSummaries
+from openapi_server.models.article_reviews_summary import ArticleReviewsSummary
+from openapi_server.models.article_reviews_summary_article_size_ratings import ArticleReviewsSummaryArticleSizeRatings
+from openapi_server.models.article_reviews_summary_star_rating_distribution import ArticleReviewsSummaryStarRatingDistribution
+from openapi_server.models.article_unit import ArticleUnit
+from openapi_server.models.articles import Articles
+from openapi_server.models.brand import Brand
+from openapi_server.models.brand_family import BrandFamily
+from openapi_server.models.brands import Brands
+from openapi_server.models.categories import Categories
+from openapi_server.models.category import Category
+from openapi_server.models.domain import Domain
+from openapi_server.models.error_detail import ErrorDetail
+from openapi_server.models.error_message import ErrorMessage
+from openapi_server.models.facet import Facet
+from openapi_server.models.facet_value import FacetValue
+from openapi_server.models.filter import Filter
+from openapi_server.models.filter_value import FilterValue
+from openapi_server.models.page import Page
+from openapi_server.models.recommendations_article import RecommendationsArticle

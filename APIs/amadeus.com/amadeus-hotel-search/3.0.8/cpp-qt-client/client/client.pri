@@ -1,0 +1,89 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIBoardType.h \
+    $${PWD}/OAICancellationType.h \
+    $${PWD}/OAIError.h \
+    $${PWD}/OAIError_Source.h \
+    $${PWD}/OAIErrors.h \
+    $${PWD}/OAIHotel.h \
+    $${PWD}/OAIHotelOffer.h \
+    $${PWD}/OAIHotelOffers.h \
+    $${PWD}/OAIHotelProduct_CancellationPolicy.h \
+    $${PWD}/OAIHotelProduct_CheckInOutPolicy.h \
+    $${PWD}/OAIHotelProduct_Commission.h \
+    $${PWD}/OAIHotelProduct_DepositPolicy.h \
+    $${PWD}/OAIHotelProduct_EstimatedRoomType.h \
+    $${PWD}/OAIHotelProduct_GuaranteePolicy.h \
+    $${PWD}/OAIHotelProduct_Guests.h \
+    $${PWD}/OAIHotelProduct_HoldPolicy.h \
+    $${PWD}/OAIHotelProduct_HotelPrice.h \
+    $${PWD}/OAIHotelProduct_PaymentPolicy.h \
+    $${PWD}/OAIHotelProduct_PolicyDetails.h \
+    $${PWD}/OAIHotelProduct_PriceVariation.h \
+    $${PWD}/OAIHotelProduct_PriceVariations.h \
+    $${PWD}/OAIHotelProduct_RateFamily.h \
+    $${PWD}/OAIHotelProduct_RoomDetails.h \
+    $${PWD}/OAIMarkup.h \
+    $${PWD}/OAIMethod.h \
+    $${PWD}/OAIMultiResponse.h \
+    $${PWD}/OAIPaymentType.h \
+    $${PWD}/OAIPrice.h \
+    $${PWD}/OAIPricingResponse.h \
+    $${PWD}/OAIQualifiedFreeText.h \
+    $${PWD}/OAITax.h \
+    $${PWD}/OAIType.h \
+# APIs
+    $${PWD}/OAIShoppingApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIBoardType.cpp \
+    $${PWD}/OAICancellationType.cpp \
+    $${PWD}/OAIError.cpp \
+    $${PWD}/OAIError_Source.cpp \
+    $${PWD}/OAIErrors.cpp \
+    $${PWD}/OAIHotel.cpp \
+    $${PWD}/OAIHotelOffer.cpp \
+    $${PWD}/OAIHotelOffers.cpp \
+    $${PWD}/OAIHotelProduct_CancellationPolicy.cpp \
+    $${PWD}/OAIHotelProduct_CheckInOutPolicy.cpp \
+    $${PWD}/OAIHotelProduct_Commission.cpp \
+    $${PWD}/OAIHotelProduct_DepositPolicy.cpp \
+    $${PWD}/OAIHotelProduct_EstimatedRoomType.cpp \
+    $${PWD}/OAIHotelProduct_GuaranteePolicy.cpp \
+    $${PWD}/OAIHotelProduct_Guests.cpp \
+    $${PWD}/OAIHotelProduct_HoldPolicy.cpp \
+    $${PWD}/OAIHotelProduct_HotelPrice.cpp \
+    $${PWD}/OAIHotelProduct_PaymentPolicy.cpp \
+    $${PWD}/OAIHotelProduct_PolicyDetails.cpp \
+    $${PWD}/OAIHotelProduct_PriceVariation.cpp \
+    $${PWD}/OAIHotelProduct_PriceVariations.cpp \
+    $${PWD}/OAIHotelProduct_RateFamily.cpp \
+    $${PWD}/OAIHotelProduct_RoomDetails.cpp \
+    $${PWD}/OAIMarkup.cpp \
+    $${PWD}/OAIMethod.cpp \
+    $${PWD}/OAIMultiResponse.cpp \
+    $${PWD}/OAIPaymentType.cpp \
+    $${PWD}/OAIPrice.cpp \
+    $${PWD}/OAIPricingResponse.cpp \
+    $${PWD}/OAIQualifiedFreeText.cpp \
+    $${PWD}/OAITax.cpp \
+    $${PWD}/OAIType.cpp \
+# APIs
+    $${PWD}/OAIShoppingApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

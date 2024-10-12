@@ -1,0 +1,1863 @@
+openapi: 3.0.0
+info:
+  contact:
+    email: support@ideaconsult.net
+    name: IDEAconsult's technical support
+    url: https://phabricator.ideaconsult.net
+  description: "AMBIT REST web services [eNanoMapper profile] with free text & faceted\
+    \ search"
+  license:
+    name: API available under GNU Lesser General Public License
+    url: http://www.gnu.org/licenses/lgpl.html
+  termsOfService: http://ambit.sf.net
+  title: eNanoMapper database
+  version: 4.0.0
+  x-apisguru-categories:
+  - open_data
+  x-logo:
+    backgroundColor: '#388c9a'
+    url: https://api.ideaconsult.net/portal/themes/assets/idea_simple_logo.svg
+  x-origin:
+  - format: openapi
+    url: https://api.ideaconsult.net/management/apis/7d2c3a0e-ddc5-4553-ac3a-0eddc5e5532a/pages/161df366-7bae-410c-9df3-667bae510c7c/content
+    version: "3.0"
+  x-providerName: ideaconsult.net
+  x-serviceName: nanoreg
+externalDocs:
+  description: More information about the Nano safety data
+  url: https://search.data.enanomapper.net
+servers:
+- description: NanoReg2 database
+  url: https://api.ideaconsult.net/nanoreg1
+- description: caLIBRAte database
+  url: https://api.ideaconsult.net/nanoreg1
+- description: GRACIOUS database
+  url: https://api.ideaconsult.net/nanoreg1
+- description: PATROLS database
+  url: https://api.ideaconsult.net/nanoreg1
+- description: NanoInformaTIX database
+  url: https://api.ideaconsult.net/nanoreg1
+- description: RISKGONE database
+  url: https://api.ideaconsult.net/nanoreg1
+- description: Gov4Nano database
+  url: https://api.ideaconsult.net/nanoreg1
+tags:
+- description: Multi-DB aggregated free text and faceted search
+  name: Search
+- description: Chemical structures
+  externalDocs:
+    url: https://github.com/ideaconsult/apps-ambit/blob/master/ambit-json-docs/
+  name: Structures
+- description: Chemical substances and (nano)materials
+  externalDocs:
+    url: https://github.com/ideaconsult/apps-ambit/blob/master/ambit-json-docs/substance.md
+  name: Substances
+- description: Measurements or calculations attached to a substance
+  externalDocs:
+    url: https://github.com/ideaconsult/apps-ambit/blob/master/ambit-json-docs/substance.md#study
+  name: Studies
+- description: "Machine learning algorithms and models, property prediction models"
+  externalDocs:
+    url: https://github.com/ideaconsult/apps-ambit/blob/master/ambit-json-docs
+  name: Data analysis
+- description: Summaries
+  externalDocs:
+    url: https://github.com/ideaconsult/apps-ambit/blob/master/ambit-json-docs
+  name: Facets
+- description: Asynchronous jobs
+  externalDocs:
+    url: https://github.com/ideaconsult/apps-ambit/blob/master/ambit-json-docs
+  name: Task service
+paths:
+  /enm/{db}/investigation:
+    get:
+      description: Multiple studies in tabular form
+      operationId: get_investigation_results
+      parameters:
+      - description: Database ID
+        explode: false
+        in: path
+        name: db
+        required: true
+        schema:
+          default: nanoreg1
+          enum:
+          - calibrate
+          - enanomapper
+          - enpra
+          - marina
+          - nanogenotox
+          - nanoinformatix
+          - nanoreg1
+          - nanoreg2
+          - nanotest
+          type: string
+        style: simple
+      - description: query type
+        example: bystudytype
+        explode: true
+        in: query
+        name: type
+        required: true
+        schema:
+          enum:
+          - byinvestigation
+          - byassay
+          - bysubstance
+          - byprovider
+          - bycitation
+          - bystudytype
+          - bystructure_inchikey
+          - bystructure_smiles
+          - bystructure_name
+          - bysubstance_name
+          - bysubstance_type
+          type: string
+        style: form
+      - description: "Search parameter, UUID of the investigation or a substance"
+        example: PC_GRANULOMETRY_SECTION
+        explode: true
+        in: query
+        name: search
+        required: true
+        schema:
+          type: string
+        style: form
+      - description: "Search parameter, InChI key(s) of the substance component(s),\
+          \ comma delimited"
+        example: YUYCVXFAYWRXLS-UHFFFAOYSA-N
+        explode: true
+        in: query
+        name: inchikey
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: "Search parameter, chemical structure or substance identifier(s),\
+          \ comma delimited"
+        explode: true
+        in: query
+        name: id
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Starting page
+        example: 0
+        explode: true
+        in: query
+        name: page
+        required: false
+        schema:
+          type: integer
+        style: form
+      - description: Page size
+        example: 10
+        explode: true
+        in: query
+        name: pagesize
+        required: false
+        schema:
+          type: integer
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Investigation'
+            application/vnd.openxmlformats-officedocument.spreadsheetml.sheet:
+              schema:
+                $ref: '#/components/schemas/Investigation'
+            application/x-javascript:
+              schema:
+                $ref: '#/components/schemas/Investigation'
+            text/csv:
+              schema:
+                $ref: '#/components/schemas/Investigation'
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/Investigation'
+          description: OK. Entries found
+        "404":
+          description: Entries not found
+      summary: Details of multiple studies
+      tags:
+      - Studies
+      x-openapi-router-controller: openapi_server.controllers.studies_controller
+  /enm/{db}/query/compound/{term}/{representation}:
+    get:
+      description: Returns compounds found
+      externalDocs:
+        description: Learn more about operations provided by this API.
+        url: http://ambit.sf.net
+      operationId: search_by_identifier
+      parameters:
+      - description: Database ID
+        explode: false
+        in: path
+        name: db
+        required: true
+        schema:
+          default: nanoreg1
+          enum:
+          - calibrate
+          - enanomapper
+          - enpra
+          - marina
+          - nanogenotox
+          - nanoinformatix
+          - nanoreg1
+          - nanoreg2
+          - nanotest
+          type: string
+        style: simple
+      - description: search term type
+        explode: false
+        in: path
+        name: term
+        required: true
+        schema:
+          enum:
+          - search
+          - url
+          - inchikey
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: representation
+        required: true
+        schema:
+          enum:
+          - all
+          - smiles
+          - reach
+          - stdinchi
+          - stdinchikey
+          - names
+          - iupac_name
+          - synonym
+          - cas
+          - einecs
+          type: string
+        style: simple
+      - description: "Compound identifier (SMILES, InChI, name, registry identifiers)"
+        explode: true
+        in: query
+        name: search
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: "Base64 encoded mol file; if included, will be used instead of\
+          \ the 'search' parameter"
+        explode: true
+        in: query
+        name: b64search
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Case sensitive search if yes
+        explode: true
+        in: query
+        name: casesens
+        required: false
+        schema:
+          type: boolean
+        style: form
+      - description: Bundle URI
+        explode: true
+        in: query
+        name: bundle_uri
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Ontology URI to define groups of columns
+        explode: true
+        in: query
+        name: sameas
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Starting page
+        example: 0
+        explode: true
+        in: query
+        name: page
+        required: false
+        schema:
+          type: integer
+        style: form
+      - description: Page size
+        example: 10
+        explode: true
+        in: query
+        name: pagesize
+        required: false
+        schema:
+          type: integer
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Dataset'
+          description: OK. Entries found
+        "404":
+          description: Entries not found
+      summary: Exact chemical structure search
+      tags:
+      - Structures
+      x-openapi-router-controller: openapi_server.controllers.structures_controller
+  /enm/{db}/query/similarity:
+    get:
+      description: Returns similar compounds
+      externalDocs:
+        description: Learn more about operations provided by this API.
+        url: http://ambit.sf.net
+      operationId: search_by_similarity
+      parameters:
+      - description: Database ID
+        explode: false
+        in: path
+        name: db
+        required: true
+        schema:
+          default: nanoreg1
+          enum:
+          - calibrate
+          - enanomapper
+          - enpra
+          - marina
+          - nanogenotox
+          - nanoinformatix
+          - nanoreg1
+          - nanoreg2
+          - nanotest
+          type: string
+        style: simple
+      - description: "Compound identifier (SMILES, InChI, name, registry identifiers)"
+        explode: true
+        in: query
+        name: search
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: "Base64 encoded mol file; if included, will be used instead of\
+          \ the 'search' parameter"
+        explode: true
+        in: query
+        name: b64search
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Defines the expected content of the search parameter
+        explode: true
+        in: query
+        name: type
+        required: false
+        schema:
+          enum:
+          - smiles
+          - mol
+          - url
+          type: string
+        style: form
+      - description: Similarity threshold
+        explode: true
+        in: query
+        name: threshold
+        required: false
+        schema:
+          type: number
+        style: form
+      - description: Restrict the search within the AMBIT dataset specified with the
+          URI
+        explode: true
+        in: query
+        name: dataset_uri
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Restrict the search within the set of structures with assigned
+          substances
+        explode: true
+        in: query
+        name: filterBySubstance
+        required: false
+        schema:
+          type: boolean
+        style: form
+      - description: "If the structure is used in the specified bundle URI, the selection\
+          \ tag will be returned"
+        explode: true
+        in: query
+        name: bundle_uri
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Ontology URI to define groups of columns
+        explode: true
+        in: query
+        name: sameas
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Only for application/json; to include mol as JSON field
+        explode: true
+        in: query
+        name: mol
+        required: false
+        schema:
+          type: boolean
+        style: form
+      - description: Starting page
+        example: 0
+        explode: true
+        in: query
+        name: page
+        required: false
+        schema:
+          type: integer
+        style: form
+      - description: Page size
+        example: 10
+        explode: true
+        in: query
+        name: pagesize
+        required: false
+        schema:
+          type: integer
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Dataset'
+          description: OK. Entries found
+        "404":
+          description: Entries not found
+      summary: Exact similarity search
+      tags:
+      - Structures
+      x-openapi-router-controller: openapi_server.controllers.structures_controller
+  /enm/{db}/query/smarts:
+    get:
+      description: Returns compounds with the specified substructure
+      externalDocs:
+        description: Learn more about operations provided by this API.
+        url: http://ambit.sf.net
+      operationId: search_by_smarts
+      parameters:
+      - description: Database ID
+        explode: false
+        in: path
+        name: db
+        required: true
+        schema:
+          default: nanoreg1
+          enum:
+          - calibrate
+          - enanomapper
+          - enpra
+          - marina
+          - nanogenotox
+          - nanoinformatix
+          - nanoreg1
+          - nanoreg2
+          - nanotest
+          type: string
+        style: simple
+      - description: "Compound identifier (SMILES, InChI, name, registry identifiers)"
+        explode: true
+        in: query
+        name: search
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: "Base64 encoded mol file; if included, will be used instead of\
+          \ the 'search' parameter"
+        explode: true
+        in: query
+        name: b64search
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Defines the expected content of the search parameter
+        explode: true
+        in: query
+        name: type
+        required: false
+        schema:
+          enum:
+          - smiles
+          - mol
+          - url
+          type: string
+        style: form
+      - description: Restrict the search within the AMBIT dataset specified with the
+          URI
+        explode: true
+        in: query
+        name: dataset_uri
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Restrict the search within the set of structures with assigned
+          substances
+        explode: true
+        in: query
+        name: filterBySubstance
+        required: false
+        schema:
+          type: boolean
+        style: form
+      - description: "If the structure is used in the specified bundle URI, the selection\
+          \ tag will be returned"
+        explode: true
+        in: query
+        name: bundle_uri
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Ontology URI to define groups of columns
+        explode: true
+        in: query
+        name: sameas
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Only for application/json; to include mol as JSON field
+        explode: true
+        in: query
+        name: mol
+        required: false
+        schema:
+          type: boolean
+        style: form
+      - description: Starting page
+        example: 0
+        explode: true
+        in: query
+        name: page
+        required: false
+        schema:
+          type: integer
+        style: form
+      - description: Page size
+        example: 10
+        explode: true
+        in: query
+        name: pagesize
+        required: false
+        schema:
+          type: integer
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Dataset'
+          description: OK. Entries found
+        "404":
+          description: Entries not found
+      summary: Substructure search
+      tags:
+      - Structures
+      x-openapi-router-controller: openapi_server.controllers.structures_controller
+  /enm/{db}/query/study:
+    get:
+      description: Returns endpoint summary
+      operationId: get_endpoint_summary
+      parameters:
+      - description: Database ID
+        explode: false
+        in: path
+        name: db
+        required: true
+        schema:
+          default: nanoreg1
+          enum:
+          - calibrate
+          - enanomapper
+          - enpra
+          - marina
+          - nanogenotox
+          - nanoinformatix
+          - nanoreg1
+          - nanoreg2
+          - nanotest
+          type: string
+        style: simple
+      - description: Top endpoint category
+        explode: true
+        in: query
+        name: top
+        required: false
+        schema:
+          enum:
+          - P-CHEM
+          - ECOTOX
+          - ENV FATE
+          - TOX
+          - EXPOSURE
+          type: string
+        style: form
+      - description: Endpoint category (The value in the protocol.category.code field)
+        explode: true
+        in: query
+        name: category
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Facet'
+          description: OK.
+        "404":
+          description: Entries not found
+      summary: Search endpoint summary
+      tags:
+      - Studies
+      - Facets
+      x-openapi-router-controller: openapi_server.controllers.studies_controller
+  /enm/{db}/substance:
+    get:
+      description: "Returns a list of substances, according to the search criteria"
+      operationId: get_substances
+      parameters:
+      - description: Database ID
+        explode: false
+        in: path
+        name: db
+        required: true
+        schema:
+          default: nanoreg1
+          enum:
+          - calibrate
+          - enanomapper
+          - enpra
+          - marina
+          - nanogenotox
+          - nanoinformatix
+          - nanoreg1
+          - nanoreg2
+          - nanotest
+          type: string
+        style: simple
+      - description: Search parameter
+        explode: true
+        in: query
+        name: search
+        required: false
+        schema:
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: type
+        required: false
+        schema:
+          enum:
+          - substancetype
+          - name
+          - like
+          - regexp
+          - uuif
+          - CompTox
+          - DOI
+          - reliability
+          - purposeFlag
+          - studyResultType
+          - isRobustStudy
+          - citation
+          - citationowner
+          - topcategory
+          - endpointcategory
+          - params
+          - owner_name
+          - owner_uuid
+          - related
+          - reference
+          - facet
+          type: string
+        style: form
+      - description: If type=related finds all substances containing this compound;
+          if typ =reference - finds all substances with this compound as reference
+          structure
+        explode: true
+        in: query
+        name: compound_uri
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Retrieves if selected in this bundle
+        explode: true
+        in: query
+        name: bundle_uri
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Adds a compound record as substance in JSON; only if type=related
+        explode: true
+        in: query
+        name: addDummySubstance
+        required: false
+        schema:
+          type: boolean
+        style: form
+      - description: If true retrieves study summary for each substance
+        explode: true
+        in: query
+        name: studysummary
+        required: false
+        schema:
+          type: boolean
+        style: form
+      - description: Starting page
+        example: 0
+        explode: true
+        in: query
+        name: page
+        required: false
+        schema:
+          type: integer
+        style: form
+      - description: Page size
+        example: 10
+        explode: true
+        in: query
+        name: pagesize
+        required: false
+        schema:
+          type: integer
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Substance'
+          description: OK. Substances found
+        "404":
+          description: Substances not found
+      summary: List substances
+      tags:
+      - Substances
+      x-openapi-router-controller: openapi_server.controllers.substances_controller
+  /enm/{db}/substance/{uuid}:
+    get:
+      description: Returns substance representation
+      operationId: get_substance_by_uuid
+      parameters:
+      - description: Database ID
+        explode: false
+        in: path
+        name: db
+        required: true
+        schema:
+          default: nanoreg1
+          enum:
+          - calibrate
+          - enanomapper
+          - enpra
+          - marina
+          - nanogenotox
+          - nanoinformatix
+          - nanoreg1
+          - nanoreg2
+          - nanotest
+          type: string
+        style: simple
+      - description: Substance UUID
+        explode: false
+        in: path
+        name: uuid
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: Property URIs
+        explode: true
+        in: query
+        name: "property_uris[]"
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Starting page
+        example: 0
+        explode: true
+        in: query
+        name: page
+        required: false
+        schema:
+          type: integer
+        style: form
+      - description: Page size
+        example: 10
+        explode: true
+        in: query
+        name: pagesize
+        required: false
+        schema:
+          type: integer
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Substance'
+          description: OK. Substances found
+        "404":
+          description: Substances not found
+      summary: Get a substance
+      tags:
+      - Substances
+      x-openapi-router-controller: openapi_server.controllers.substances_controller
+  /enm/{db}/substance/{uuid}/composition:
+    get:
+      description: Returns substance composition
+      operationId: get_substance_composition
+      parameters:
+      - description: Database ID
+        explode: false
+        in: path
+        name: db
+        required: true
+        schema:
+          default: nanoreg1
+          enum:
+          - calibrate
+          - enanomapper
+          - enpra
+          - marina
+          - nanogenotox
+          - nanoinformatix
+          - nanoreg1
+          - nanoreg2
+          - nanotest
+          type: string
+        style: simple
+      - description: Substance UUID
+        explode: false
+        in: path
+        name: uuid
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: true (Show all compositions) false (do not show hidden compositions)
+        explode: true
+        in: query
+        name: all
+        required: false
+        schema:
+          type: boolean
+        style: form
+      - description: Starting page
+        example: 0
+        explode: true
+        in: query
+        name: page
+        required: false
+        schema:
+          type: integer
+        style: form
+      - description: Page size
+        example: 10
+        explode: true
+        in: query
+        name: pagesize
+        required: false
+        schema:
+          type: integer
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubstanceComposition'
+          description: OK. compositions found
+        "404":
+          description: compositions not found
+      summary: Substance composition
+      tags:
+      - Structures
+      - Substances
+      x-openapi-router-controller: openapi_server.controllers.structures_controller
+  /enm/{db}/substance/{uuid}/structures:
+    get:
+      description: Returns substance composition
+      operationId: get_substance_structures
+      parameters:
+      - description: Database ID
+        explode: false
+        in: path
+        name: db
+        required: true
+        schema:
+          default: nanoreg1
+          enum:
+          - calibrate
+          - enanomapper
+          - enpra
+          - marina
+          - nanogenotox
+          - nanoinformatix
+          - nanoreg1
+          - nanoreg2
+          - nanotest
+          type: string
+        style: simple
+      - description: Substance UUID
+        explode: false
+        in: path
+        name: uuid
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: Starting page
+        example: 0
+        explode: true
+        in: query
+        name: page
+        required: false
+        schema:
+          type: integer
+        style: form
+      - description: Page size
+        example: 10
+        explode: true
+        in: query
+        name: pagesize
+        required: false
+        schema:
+          type: integer
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Dataset'
+          description: OK. compositions found
+        "404":
+          description: compositions not found
+      summary: Get substance composition as a dataset
+      tags:
+      - Structures
+      - Substances
+      x-openapi-router-controller: openapi_server.controllers.structures_controller
+  /enm/{db}/substance/{uuid}/study:
+    get:
+      description: Returns substance study representation
+      operationId: get_substance_study
+      parameters:
+      - description: Database ID
+        explode: false
+        in: path
+        name: db
+        required: true
+        schema:
+          default: nanoreg1
+          enum:
+          - calibrate
+          - enanomapper
+          - enpra
+          - marina
+          - nanogenotox
+          - nanoinformatix
+          - nanoreg1
+          - nanoreg2
+          - nanotest
+          type: string
+        style: simple
+      - description: Substance UUID
+        explode: false
+        in: path
+        name: uuid
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: Top endpoint category
+        explode: true
+        in: query
+        name: top
+        required: false
+        schema:
+          enum:
+          - P-CHEM
+          - ECOTOX
+          - ENV FATE
+          - TOX
+          - EXPOSURE
+          type: string
+        style: form
+      - description: Endpoint category (The value in the protocol.category.code field)
+        explode: true
+        in: query
+        name: category
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: "Property URI https://data.enanomapper.net/property/{UUID} ,\
+          \ see Property service"
+        explode: true
+        in: query
+        name: property_uri
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Property UUID
+        explode: true
+        in: query
+        name: property
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: "Investigation UUID, a code to link different studies"
+        explode: true
+        in: query
+        name: investigation_uuid
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Starting page
+        example: 0
+        explode: true
+        in: query
+        name: page
+        required: false
+        schema:
+          type: integer
+        style: form
+      - description: Page size
+        example: 10
+        explode: true
+        in: query
+        name: pagesize
+        required: false
+        schema:
+          type: integer
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubstanceStudy'
+          description: OK. Substances found
+        "404":
+          description: Substances not found
+      summary: get substance study
+      tags:
+      - Studies
+      - Substances
+      x-openapi-router-controller: openapi_server.controllers.studies_controller
+  /enm/{db}/substance/{uuid}/studySummary:
+    get:
+      description: Study summary
+      operationId: get_substance_study_summary
+      parameters:
+      - description: Database ID
+        explode: false
+        in: path
+        name: db
+        required: true
+        schema:
+          default: nanoreg1
+          enum:
+          - calibrate
+          - enanomapper
+          - enpra
+          - marina
+          - nanogenotox
+          - nanoinformatix
+          - nanoreg1
+          - nanoreg2
+          - nanotest
+          type: string
+        style: simple
+      - description: Substance UUID
+        explode: false
+        in: path
+        name: uuid
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: Top endpoint category
+        explode: true
+        in: query
+        name: top
+        required: false
+        schema:
+          enum:
+          - P-CHEM
+          - ECOTOX
+          - ENV FATE
+          - TOX
+          - EXPOSURE
+          type: string
+        style: form
+      - description: Endpoint category (The value in the protocol.category.code field)
+        explode: true
+        in: query
+        name: category
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: "Property URI https://data.enanomapper.net/property/{UUID} ,\
+          \ see Property service"
+        explode: true
+        in: query
+        name: property_uri
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: "Property UUID, see Property service"
+        explode: true
+        in: query
+        name: property
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: "If true will group by topcategory,endpointcategory,interpretation\
+          \ result"
+        explode: true
+        in: query
+        name: result
+        required: false
+        schema:
+          type: boolean
+        style: form
+      - description: Starting page
+        example: 0
+        explode: true
+        in: query
+        name: page
+        required: false
+        schema:
+          type: integer
+        style: form
+      - description: Page size
+        example: 10
+        explode: true
+        in: query
+        name: pagesize
+        required: false
+        schema:
+          type: integer
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubstanceStudySummary'
+          description: OK.
+        "404":
+          description: Entries not found
+      summary: Get study summary for the substance
+      tags:
+      - Studies
+      - Substances
+      x-openapi-router-controller: openapi_server.controllers.studies_controller
+  /select:
+    description: Apache Solr powered search for Nanosafety data
+    get:
+      description: "GET is simpler to use, but imposes restrictions on the complexity\
+        \ and the lenght of the parameters."
+      operationId: solrquery_get
+      parameters:
+      - description: The query
+        example: '*:*'
+        explode: true
+        in: query
+        name: q
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Starting page
+        example: 0
+        explode: true
+        in: query
+        name: start
+        required: false
+        schema:
+          type: integer
+        style: form
+      - description: Page size
+        example: 10
+        explode: true
+        in: query
+        name: rows
+        required: false
+        schema:
+          type: integer
+        style: form
+      - description: Response format
+        example: json
+        explode: true
+        in: query
+        name: wt
+        required: false
+        schema:
+          default: xml
+          enum:
+          - json
+          - xml
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SolrResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/SolrResponse'
+          description: Query performed successfully
+        "400":
+          description: BAD_REQUEST
+        "401":
+          description: UNAUTHORIZED
+        "403":
+          description: FORBIDDEN
+        "404":
+          description: NOT_FOUND
+        "409":
+          description: CONFLICT
+        "415":
+          description: UNSUPPORTED_MEDIA_TYPE
+        "500":
+          description: SERVER_ERROR
+        "503":
+          description: SERVICE_UNAVAILABLE
+        "510":
+          description: 'INVALID_STATE          '
+      summary: Apache Solr powered search
+      tags:
+      - Search
+      x-openapi-router-controller: openapi_server.controllers.search_controller
+    post:
+      description: "POST is more complex to use, but also allows for much for complex\
+        \ and lengthy queries."
+      operationId: solrquery_post
+      parameters:
+      - description: Response format
+        example: json
+        explode: true
+        in: query
+        name: wt
+        required: false
+        schema:
+          default: xml
+          enum:
+          - json
+          - xml
+          type: string
+        style: form
+      requestBody:
+        $ref: '#/components/requestBodies/QueryBody'
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SolrResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/SolrResponse'
+          description: Query performed successfully
+        "400":
+          description: BAD_REQUEST
+        "401":
+          description: UNAUTHORIZED
+        "403":
+          description: FORBIDDEN
+        "404":
+          description: NOT_FOUND
+        "409":
+          description: CONFLICT
+        "415":
+          description: UNSUPPORTED_MEDIA_TYPE
+        "500":
+          description: SERVER_ERROR
+        "503":
+          description: SERVICE_UNAVAILABLE
+        "510":
+          description: INVALID_STATE
+      summary: Apache Solr powered search
+      tags:
+      - Search
+      x-openapi-router-controller: openapi_server.controllers.search_controller
+      x-codegen-request-body-name: body
+    summary: eNanoMapper Database aggregated search
+components:
+  parameters:
+    ambitDatabaseId:
+      description: Database ID
+      explode: false
+      in: path
+      name: db
+      required: true
+      schema:
+        default: nanoreg1
+        enum:
+        - calibrate
+        - enanomapper
+        - enpra
+        - marina
+        - nanogenotox
+        - nanoinformatix
+        - nanoreg1
+        - nanoreg2
+        - nanotest
+        type: string
+      style: simple
+  requestBodies:
+    QueryBody:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/solrquery_post_request'
+      description: a JSON object with Solr query parameters
+  schemas:
+    Dataset:
+      example:
+        feature: "{}"
+        query: "{}"
+        model_uri: model_uri
+        dataEntry: "{}"
+      properties:
+        dataEntry:
+          title: dataEntry
+          type: object
+        feature:
+          title: feature
+          type: object
+        model_uri:
+          title: model_uri
+          type: string
+        query:
+          title: query
+          type: object
+      title: Dataset
+      type: object
+    Facet:
+      example:
+        facet: "{}"
+      properties:
+        facet:
+          title: facet
+          type: object
+      title: Facet
+      type: object
+    Investigation:
+      example:
+        effectendpoint: effectendpoint
+        loQualifier: loQualifier
+        studyResultType: studyResultType
+        reference: reference
+        endpoint: endpoint
+        upValue: 1.4658129805029452
+        loValue: 6.027456183070403
+        document_uuid: document_uuid
+        type_s: type_s
+        endpointcategory: endpointcategory
+        owner_name: owner_name
+        err: 0.8008281904610115
+        textValue: textValue
+        s_uuid: s_uuid
+        reference_owner: reference_owner
+        resulttype: resulttype
+        unit: unit
+        reference_year: reference_year
+        assay: assay
+        guidance: guidance
+        substanceType: substanceType
+        errQualifier: errQualifier
+        name: name
+        upQualifier: upQualifier
+        investigation: investigation
+        publicname: publicname
+        _childDocuments_: "{}"
+        updated: updated
+        topcategory: topcategory
+      properties:
+        _childDocuments_:
+          title: _childDocuments_
+          type: object
+        assay:
+          title: assay
+          type: string
+        document_uuid:
+          title: document_uuid
+          type: string
+        effectendpoint:
+          title: effectendpoint
+          type: string
+        endpoint:
+          title: endpoint
+          type: string
+        endpointcategory:
+          title: endpointcategory
+          type: string
+        err:
+          title: err
+          type: number
+        errQualifier:
+          title: errQualifier
+          type: string
+        guidance:
+          title: guidance
+          type: string
+        investigation:
+          title: investigation
+          type: string
+        loQualifier:
+          title: loQualifier
+          type: string
+        loValue:
+          title: loValue
+          type: number
+        name:
+          title: name
+          type: string
+        owner_name:
+          title: owner_name
+          type: string
+        publicname:
+          title: publicname
+          type: string
+        reference:
+          title: reference
+          type: string
+        reference_owner:
+          title: reference_owner
+          type: string
+        reference_year:
+          title: reference_year
+          type: string
+        resulttype:
+          title: resulttype
+          type: string
+        s_uuid:
+          title: s_uuid
+          type: string
+        studyResultType:
+          title: studyResultType
+          type: string
+        substanceType:
+          title: substanceType
+          type: string
+        textValue:
+          title: textValue
+          type: string
+        topcategory:
+          title: topcategory
+          type: string
+        type_s:
+          title: type_s
+          type: string
+        unit:
+          title: unit
+          type: string
+        upQualifier:
+          title: upQualifier
+          type: string
+        upValue:
+          title: upValue
+          type: number
+        updated:
+          title: updated
+          type: string
+      title: Investigation
+      type: object
+    SolrQuery:
+      properties:
+        facet:
+          type: string
+        filter:
+          type: string
+        query:
+          type: string
+        rows:
+          type: integer
+        sort:
+          type: boolean
+        start:
+          type: integer
+      type: object
+    SolrResponse:
+      example:
+        response:
+          docs:
+          - "{}"
+          - "{}"
+          numFound: 6
+          start: 1
+          maxScore: 0.8008281904610115
+        responseHeader:
+          QTime: 5
+          zkConnected: true
+          params: "{}"
+          status: 5
+      properties:
+        response:
+          $ref: '#/components/schemas/SolrResponse_response'
+        responseHeader:
+          $ref: '#/components/schemas/SolrResponse_responseHeader'
+      title: SolrResponse
+      type: object
+    Substance:
+      example:
+        substance: "{}"
+      properties:
+        substance:
+          title: substance
+          type: object
+      title: Substance
+      type: object
+    SubstanceComposition:
+      example:
+        feature: "{}"
+        composition: "{}"
+      properties:
+        composition:
+          title: composition
+          type: object
+        feature:
+          title: feature
+          type: object
+      title: SubstanceComposition
+      type: object
+    SubstanceStudy:
+      example:
+        study: "{}"
+      properties:
+        study:
+          title: study
+          type: object
+      title: SubstanceStudy
+      type: object
+    SubstanceStudySummary:
+      example:
+        facet: "{}"
+      properties:
+        facet:
+          title: facet
+          type: object
+      title: SubstanceStudySummary
+      type: object
+    solrquery_post_request_params:
+      properties:
+        fl:
+          items:
+            type: string
+          title: fl
+          type: array
+        rows:
+          title: rows
+          type: integer
+      title: solrquery_post_request_params
+      type: object
+    solrquery_post_request:
+      example: |
+        {
+          "params": {
+            "fl": [
+              "[child parentFilter=type_s:substance childFilter=type_s:composition limit=100]",
+              "dbtag_hss",
+              "name:name_hs",
+              "publicname:publicname_hs",
+              "owner_name:owner_name_hs",
+              "substanceType:substanceType_hs",
+              "s_uuid:s_uuid_hs",
+              "content:content_hss",
+              "SUMMARY.*"
+            ],
+            "rows": 20
+          },
+          "facet": {
+            "owner_name": {
+              "type": "terms",
+              "field": "owner_name_s",
+              "mincount": 1,
+              "limit": -1,
+              "domain": {
+                "excludeTags": "owner_name_tag",
+                "blockChildren": "type_s:substance"
+              }
+            },
+            "reference_owner": {
+              "type": "terms",
+              "field": "reference_owner_s",
+              "mincount": 1,
+              "limit": -1,
+              "domain": {
+                "excludeTags": "reference_owner_tag",
+                "blockChildren": "type_s:substance"
+              }
+            },
+            "substanceType": {
+              "type": "terms",
+              "field": "substanceType_s",
+              "mincount": 1,
+              "limit": -1,
+              "domain": {
+                "excludeTags": "substanceType_tag",
+                "blockChildren": "type_s:substance"
+              }
+            },
+            "nm_name": {
+              "type": "terms",
+              "field": "publicname_s",
+              "mincount": 451,
+              "limit": -1,
+              "domain": {
+                "excludeTags": "nm_name_tag",
+                "blockChildren": "type_s:substance"
+              }
+            },
+            "protocol": {
+              "type": "terms",
+              "field": "guidance_s",
+              "mincount": 1,
+              "limit": -1,
+              "domain": {
+                "excludeTags": "protocol_tag",
+                "blockChildren": "type_s:substance"
+              }
+            },
+            "method": {
+              "type": "terms",
+              "field": "E.method_s",
+              "mincount": 1,
+              "limit": -1,
+              "domain": {
+                "excludeTags": "method_tag",
+                "blockChildren": "type_s:substance"
+              }
+            },
+            "cell": {
+              "type": "terms",
+              "field": "E.cell_type_s",
+              "mincount": 1,
+              "limit": -1,
+              "domain": {
+                "excludeTags": "cell_tag",
+                "blockChildren": "type_s:substance"
+              }
+            },
+            "species": {
+              "type": "terms",
+              "field": "E.animal_model_s",
+              "mincount": 1,
+              "limit": -1,
+              "domain": {
+                "excludeTags": "species_tag",
+                "blockChildren": "type_s:substance"
+              }
+            },
+            "route": {
+              "type": "terms",
+              "field": "E.exposure_route_s",
+              "mincount": 1,
+              "limit": -1,
+              "domain": {
+                "excludeTags": "route_tag",
+                "blockChildren": "type_s:substance"
+              }
+            },
+            "interpretation": {
+              "type": "terms",
+              "field": "MEDIUM_s",
+              "mincount": 2,
+              "limit": -1,
+              "domain": {
+                "excludeTags": "interpretation_tag",
+                "blockChildren": "type_s:substance"
+              }
+            },
+            "dprotocol": {
+              "type": "terms",
+              "field": "Dispersion protocol_s",
+              "mincount": 2,
+              "limit": -1,
+              "domain": {
+                "excludeTags": "dprotocol_tag",
+                "blockChildren": "type_s:substance"
+              }
+            },
+            "reference_year": {
+              "type": "terms",
+              "field": "reference_year_s",
+              "mincount": 2,
+              "limit": -1,
+              "domain": {
+                "excludeTags": "reference_year_tag",
+                "blockChildren": "type_s:substance"
+              }
+            },
+            "reference": {
+              "type": "terms",
+              "field": "reference_s",
+              "mincount": 2,
+              "limit": -1,
+              "domain": {
+                "excludeTags": "reference_tag",
+                "blockChildren": "type_s:substance"
+              }
+            },
+            "release": {
+              "type": "terms",
+              "field": "updated_s",
+              "mincount": 1,
+              "limit": -1,
+              "domain": {
+                "excludeTags": "release_tag",
+                "blockChildren": "type_s:substance"
+              }
+            },
+            "topcategory": {
+              "type": "terms",
+              "field": "topcategory_s",
+              "mincount": 1,
+              "limit": -1,
+              "facet": {
+                "min": "min(loValue_d)",
+                "max": "max(loValue_d)",
+                "avg": "avg(loValue_d)",
+                "endpointcategory": {
+                  "type": "terms",
+                  "field": "endpointcategory_s",
+                  "mincount": 1,
+                  "limit": -1,
+                  "facet": {
+                    "min": "min(loValue_d)",
+                    "max": "max(loValue_d)",
+                    "avg": "avg(loValue_d)",
+                    "effectendpoint": {
+                      "type": "terms",
+                      "field": "effectendpoint_s",
+                      "mincount": 1,
+                      "limit": -1,
+                      "facet": {
+                        "min": "min(loValue_d)",
+                        "max": "max(loValue_d)",
+                        "avg": "avg(loValue_d)",
+                        "unit": {
+                          "type": "terms",
+                          "field": "unit_s",
+                          "mincount": 1,
+                          "limit": -1,
+                          "facet": {
+                            "min": "min(loValue_d)",
+                            "max": "max(loValue_d)",
+                            "avg": "avg(loValue_d)"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "domain": {
+                "blockChildren": "type_s:substance"
+              }
+            }
+          }
+        }
+      properties:
+        facet:
+          type: object
+        params:
+          $ref: '#/components/schemas/solrquery_post_request_params'
+      title: solrquery_post_request
+      type: object
+    SolrResponse_response:
+      example:
+        docs:
+        - "{}"
+        - "{}"
+        numFound: 6
+        start: 1
+        maxScore: 0.8008281904610115
+      properties:
+        docs:
+          items:
+            type: object
+          title: docs
+          type: array
+        maxScore:
+          title: maxScore
+          type: number
+        numFound:
+          title: numFound
+          type: integer
+        start:
+          title: start
+          type: integer
+      title: SolrResponse_response
+      type: object
+    SolrResponse_responseHeader:
+      example:
+        QTime: 5
+        zkConnected: true
+        params: "{}"
+        status: 5
+      properties:
+        QTime:
+          title: QTime
+          type: integer
+        params:
+          title: params
+          type: object
+        status:
+          title: status
+          type: integer
+        zkConnected:
+          title: zkConnected
+          type: boolean
+      title: SolrResponse_responseHeader
+      type: object

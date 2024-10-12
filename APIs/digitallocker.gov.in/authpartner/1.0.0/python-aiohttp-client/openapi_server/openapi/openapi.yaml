@@ -1,0 +1,3932 @@
+openapi: 3.0.2
+info:
+  contact:
+    email: support@digitallocker.gov.in
+  description: "To access files in user’s DigiLocker account from your application,\
+    \ you must first obtain user’s authorization."
+  termsOfService: https://ndh.digitallocker.gov.in/terms.php
+  title: Authorized Partner API Specification
+  version: 1.0.0
+  x-apisguru-categories:
+  - open_data
+  x-origin:
+  - format: openapi
+    url: https://apisetu.gov.in/api_specification_v8/authpartner.yaml
+    version: "3.0"
+  x-providerName: digitallocker.gov.in
+  x-serviceName: authpartner
+servers:
+- url: https://betaapi.digitallocker.gov.in/public
+tags:
+- description: Authorization APIs For Server Side Web Applications.
+  name: Authorization
+- description: Authorization APIs For Limited Input Devices.
+  name: Authorization API
+- description: To revoke a previously obtained Token.
+  name: Token Revocation API
+- description: Get User Details
+  name: Account Detail API
+- description: File APIs allow your application to get the meta-data about issued
+    and uploaded documents in user’s DigiLocker.
+  name: File APIs
+- description: This API can be used to sign up a user for DigiLocker.
+  name: DigiLocker Sign up APIs
+- description: "DigiLocker Meta APIs provide information about a user account, issuers,\
+    \ document types and parameters required to pull a document."
+  name: DigiLocker Meta APIs
+paths:
+  /account/1/pushuri:
+    post:
+      description: The API can use to push or delete a single URI into Digital Locker
+        using DigiLocker Id acquired using Get User Details API. This API can be used
+        to push the certificate details to Digital Locker as and when a certificate
+        is generated in the issuer system. The issuing departments must register on
+        DigiLocker as a registered Issuer and implement the requisite Issuer APIs
+        as mentioned in Digital Locker Issuer API Specification document prior to
+        pushing certificates using this API.
+      operationId: push_uri_to_account_id
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PushUri'
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                title: Sample
+          description: successful operation
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Push_URI_to_Account_id_400_response'
+          description: Bad request
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Push_URI_to_Account_id_401_response'
+          description: Unauthorized error
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Push_URI_to_Account_id_404_response'
+          description: Not found
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Push_URI_to_Account_id_500_response'
+          description: Internal Error
+      security:
+      - oauthsecurity: []
+      summary: Push URI to Account
+      tags:
+      - DigiLocker Meta APIs
+      x-openapi-router-controller: openapi_server.controllers.digi_locker_meta_apis_controller
+      x-codegen-request-body-name: body
+  /account/2/verify:
+    post:
+      description: This API can be used to verify whether a mobile number or Aadhaar
+        number is already registered with DigiLocker.
+      operationId: verify_account_id
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/VerifyAccount'
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VerifyAccountResponse'
+          description: successful operation
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Verify_Account_id_400_response'
+          description: Bad request
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Push_URI_to_Account_id_401_response'
+          description: Unauthorized error
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Verify_Account_id_500_response'
+          description: Internal Error
+      security:
+      - oauthsecurity: []
+      summary: Verify Account
+      tags:
+      - DigiLocker Meta APIs
+      x-openapi-router-controller: openapi_server.controllers.digi_locker_meta_apis_controller
+      x-codegen-request-body-name: body
+  /oauth2/1/authorize:
+    get:
+      description: "Call to this API starts authorization flow using OAuth 2.0 protocol.\
+        \ This isn't an API call—it's a DigiLocker web page that lets the user sign\
+        \ in to DigiLocker and authorize your application to access user’s data. After\
+        \ the user decides whether or not to authorize your app, they will be redirected\
+        \ to the redirect link provided by your application."
+      operationId: get_authorization_code_id
+      parameters:
+      - description: Provide the client id that was created during the application
+          registration process on Partners Portal.
+        explode: true
+        in: query
+        name: client_id
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: "Provide the grant type requested, either token or code."
+        explode: true
+        in: query
+        name: response_type
+        required: true
+        schema:
+          type: string
+        style: form
+      - description: The URI to redirect the user after authorization has completed.
+        explode: true
+        in: query
+        name: redirect_uri
+        required: true
+        schema:
+          type: string
+        style: form
+      - description: This is your application specific data that will be passed back
+          to your application through redirect_uri.
+        explode: true
+        in: query
+        name: state
+        required: true
+        schema:
+          type: string
+        style: form
+      - description: "A unique random string called code verifier (code_verifier)\
+          \ is\ncreated by the client application for every authorization request.\n\
+          The code_challenge sent as this parameter is the Base64URL (with no\npadding)\
+          \ encoded SHA256 hash of the code verifier.\n        Code block:\n\n   \
+          \    ```\n       string base64_url_encode_without_padding(string arg)\n\
+          \       { \n          string s = base64encode(arg); //Regular base64encoder\
+          \ with padding\n          s = s.replace(’=’,’’); //Remove any trailing ’\
+          =’\n          s = s.replace(’+’, ’-’); //Replace ’+’ with ’-’\n        \
+          \  s = s.replace(’/’, ’_’); //Replace ’/’ with ’_’ return s;\n        }\n\
+          \        ```\n"
+        explode: true
+        in: query
+        name: Code_challenge
+        required: false
+        schema:
+          example: base64_url_encode_without_padding(sha256(code_verifier))
+          properties:
+            parameter:
+              enum:
+              - Base64URL
+              - SHA256
+              type: string
+          type: string
+        style: form
+      - description: Specifies what method was used to encode a code_verifier to generate
+          code_challenge parameter above. This parameter must be used with the code_challenge
+          parameter. The only supported values for this parameter is S256.
+        explode: true
+        in: query
+        name: Code_challenge_method
+        required: false
+        schema:
+          properties:
+            parameter:
+              enum:
+              - S256
+              type: string
+          type: string
+        style: form
+      - description: "If this parameter is provided its value will always be signup.\
+          \ This parameter indicates that the user does not have a DigiLocker account\
+          \ and will be directed to the signup flow directly. After the account is\
+          \ created, the user will be directed to the authorization flow. If this\
+          \ parameter is not sent, the user will be redirected to the sign in flow."
+        explode: true
+        in: query
+        name: dl_flow
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: "Verified mobile number of the user. If this parameter is passed,\
+          \ DigiLocker will skip the mobile OTP verification step during sign up.\
+          \ DigiLocker will treat the mobile number passed in this parameter as a\
+          \ verified mobile number by the trusted client application. This parameter\
+          \ will be used only if dl_flow parameter mentioned above is set to signup\
+          \ and will be ignored otherwise."
+        explode: true
+        in: query
+        name: Verified_mobile
+        required: false
+        schema:
+          type: integer
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Sample'
+          description: successful operation
+        "400":
+          description: Invalid status value
+      security:
+      - oauthAuthorizeCode: []
+      summary: Get Authorization Code
+      tags:
+      - Authorization
+      x-openapi-router-controller: openapi_server.controllers.authorization_controller
+  /oauth2/1/code:
+    post:
+      description: The client device calls the DigiLocker API to get the device code
+        by providing the client_id issued to the device OEM and either the username
+        or the mobile number of the user. DigiLocker responds with a device code and
+        then sends an OTP on the mobile number and email address associated with the
+        user’s account. The masked mobile number and email address is also sent in
+        response. The device should use these values to notify the users about the
+        mobile and email address on which the OTP has been sent.
+      operationId: get_device_code_id
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeviceAuthorizationCode'
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeviceAuthorizationCodeResponse'
+          description: successful operation
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Get_Device_Code_id_400_response'
+          description: Bad Request
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Get_Device_Code_id_401_response'
+          description: The client_id parameter is invalid.
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Get_Device_Code_id_500_response'
+          description: Internal Error
+      security:
+      - oauthsecurity: []
+      summary: Get Device Code
+      tags:
+      - Authorization API
+      x-openapi-router-controller: openapi_server.controllers.authorization_api_controller
+      x-codegen-request-body-name: body
+  /oauth2/1/file/upload:
+    post:
+      description: "This API can be used to save/upload a file to uploaded documents\
+        \ in DigiLocker. The allowed file types are JPG, JPEG, PNG and PDF. The file\
+        \ size must not exceed 10MB."
+      operationId: upload_file_to_locker_id
+      parameters:
+      - description: The destination path of the file in DigiLocker including filename.
+        explode: false
+        in: header
+        name: path
+        required: false
+        schema:
+          type: string
+        style: simple
+      - description: "This is used to verify the integrity of the file data. The client\
+          \ app calculates the hash message authentication code (HMAC) of the file\
+          \ content using SHA256 hashing algorithm and the client secret as the hashing\
+          \ key. The resulting HMAC is converted to Base64 format and sent in this\
+          \ parameter. Upon upload of file, DigiLocker calculates the HMAC of the\
+          \ file data and compares it with this HMAC.."
+        explode: false
+        in: header
+        name: hmac
+        required: false
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/octet-stream:
+            schema:
+              $ref: '#/components/schemas/FileUpload'
+          image/jpeg:
+            schema:
+              format: binary
+              type: string
+          image/jpg:
+            schema:
+              format: binary
+              type: string
+          image/pdf:
+            schema:
+              format: binary
+              type: string
+          image/png:
+            schema:
+              format: binary
+              type: string
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FileUploadResponse'
+          description: successful operation
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Upload_File_to_Locker_id_400_response'
+          description: Bad request
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Upload_File_to_Locker_id_401_response'
+          description: Unauthorized error
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Push_URI_to_Account_id_500_response'
+          description: Internal Error
+      security:
+      - bearerAuth: []
+      summary: Upload file to locker
+      tags:
+      - File APIs
+      x-openapi-router-controller: openapi_server.controllers.file_apis_controller
+      x-codegen-request-body-name: body
+  /oauth2/1/file/{uri}:
+    get:
+      description: Returns a file from URI. This API can be used to fetch both issued
+        document and uploaded document.
+      operationId: get_file_from_uri_id
+      parameters:
+      - description: This is the unique identifier of the document.
+        explode: false
+        in: path
+        name: uri
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/pdf:
+              schema:
+                example: pdf binary content
+                type: string
+            image/jpeg:
+              schema:
+                example: jpeg binary content
+                type: string
+            image/jpg:
+              schema:
+                example: jpg binary content
+                type: string
+            image/png:
+              schema:
+                example: png binary content
+                type: string
+          description: successful operation
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Get_File_from_URI_id_400_response'
+          description: Bad request
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Upload_File_to_Locker_id_401_response'
+          description: Unauthorized error
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Get_File_from_URI_id_404_response'
+          description: Not found
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Get_File_from_URI_id_500_response'
+          description: Internal Error
+        "503":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Get_File_from_URI_id_503_response'
+          description: Gateway timeout
+      security:
+      - bearerAuth: []
+      summary: Get File from URI
+      tags:
+      - File APIs
+      x-openapi-router-controller: openapi_server.controllers.file_apis_controller
+  /oauth2/1/files/:
+    get:
+      description: Returns the list of meta-data about documents or folders in user’s
+        DigiLocker in a specific location.
+      operationId: get_list_of_self_uploaded_documents
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Sample_1'
+          description: successful operation
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Upload_File_to_Locker_id_401_response'
+          description: Unauthorized error
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Get_List_of_Self_Uploaded_Documents_404_response'
+          description: Not found
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Get_List_of_Self_Uploaded_Documents_500_response'
+          description: Internal Error
+      security:
+      - bearerAuth: []
+      summary: Get List of Self Uploaded Documents
+      tags:
+      - File APIs
+      x-openapi-router-controller: openapi_server.controllers.file_apis_controller
+  /oauth2/1/files/issued:
+    get:
+      description: Returns the list of meta-data about issued documents in user’s
+        DigiLocker.
+      operationId: get_list_of_issued_documents_version1_id
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Sample_2'
+          description: successful operation
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Upload_File_to_Locker_id_401_response'
+          description: Unauthorized error
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Get_List_of_issued_Documents_Version1_id_500_response'
+          description: Internal Error
+      security:
+      - bearerAuth: []
+      summary: Issued Documents
+      tags:
+      - File APIs
+      x-openapi-router-controller: openapi_server.controllers.file_apis_controller
+  /oauth2/1/files/{id}:
+    get:
+      description: Returns the list of meta-data about documents or folders in user’s
+        DigiLocker in a specific location.
+      operationId: get_list_of_self_uploaded_documents_id
+      parameters:
+      - description: "The id of the folder to list. To list the files of root folder\
+          \ of a user’s locker, do not send this parameter. This is sent as a part\
+          \ of the URL."
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Sample_3'
+          description: successful operation
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Upload_File_to_Locker_id_401_response'
+          description: Unauthorized error
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Get_List_of_Self_Uploaded_Documents_404_response'
+          description: Not found
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Get_List_of_Self_Uploaded_Documents_500_response'
+          description: Internal Error
+      security:
+      - bearerAuth: []
+      summary: Get List of Self Uploaded Documents
+      tags:
+      - File APIs
+      x-openapi-router-controller: openapi_server.controllers.file_apis_controller
+  /oauth2/1/pull/doctype:
+    post:
+      description: Returns a list of documents/certificates issued by an issuer organization
+        registered with DigiLocker.
+      operationId: get_list_of_documents_provided_by_an_issuer_id
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/DocType'
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DocTypeResponse'
+          description: successful operation
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Get_List_of_Documents_Provided_by_an_Issuer_id_400_response'
+          description: Bad request
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Get_Device_Code_id_401_response'
+          description: Unauthorized error
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Verify_Account_id_500_response'
+          description: Internal Error
+      security:
+      - oauthsecurity: []
+      summary: Get List of Documents Provided by an Issuer
+      tags:
+      - DigiLocker Meta APIs
+      x-openapi-router-controller: openapi_server.controllers.digi_locker_meta_apis_controller
+      x-codegen-request-body-name: body
+  /oauth2/1/pull/issuers:
+    post:
+      description: Returns the list of issuers registered with DigiLocker.
+      operationId: get_list_of_issuers_id
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Issuer'
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IssuerResponse'
+          description: successful operation
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Get_List_of_Issuers_id_400_response'
+          description: Bad request
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Get_Device_Code_id_401_response'
+          description: Unauthorized error
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Verify_Account_id_500_response'
+          description: Internal Error
+      security:
+      - oauthsecurity: []
+      summary: Get List of Issuers
+      tags:
+      - DigiLocker Meta APIs
+      x-openapi-router-controller: openapi_server.controllers.digi_locker_meta_apis_controller
+      x-codegen-request-body-name: body
+  /oauth2/1/pull/parameters:
+    post:
+      description: Returns a list of parameters required to search a document/certificate
+        of an issuer organization registered with DigiLocker. These parameters are
+        used to pull a document from issuer’s repository using Pull Document API mentioned
+        in subsequent section.
+      operationId: get_search_parameters_for_a_document_id
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/SearchParameters'
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchParametersResponse'
+          description: successful operation
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Get_Search_Parameters_for_a_Document_id_400_response'
+          description: Bad request
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Get_Device_Code_id_401_response'
+          description: Unauthorized error
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Verify_Account_id_500_response'
+          description: Internal Error
+      security:
+      - oauthsecurity: []
+      summary: Get Search Parameters for a Document
+      tags:
+      - DigiLocker Meta APIs
+      x-openapi-router-controller: openapi_server.controllers.digi_locker_meta_apis_controller
+      x-codegen-request-body-name: body
+  /oauth2/1/pull/pulldocument:
+    post:
+      description: This API allows a client application to search a document/certificate
+        from issuer’s repository using the parameters provided by a user. The searched
+        document is saved in user’s issued document section of DigiLocker if the search
+        is successful.
+      operationId: pull_document_id
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PullDocumentSchema'
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Sample_4'
+          description: successful operation
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pull_Document_id_400_response'
+          description: Bad request
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Upload_File_to_Locker_id_401_response'
+          description: Unauthorized error
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pull_Document_id_404_response'
+          description: Not found
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pull_Document_id_500_response'
+          description: Internal Error
+      security:
+      - bearerAuth: []
+      summary: Pull Document
+      tags:
+      - File APIs
+      x-openapi-router-controller: openapi_server.controllers.file_apis_controller
+      x-codegen-request-body-name: body
+  /oauth2/1/revoke:
+    post:
+      description: "Client applications can revoke a previously obtained refresh or\
+        \ access token when it is no longer needed. This is done by making a request\
+        \ to the token revocation endpoint. DigiLocker will invalidate the specified\
+        \ token and, if applicable, other tokens based on the same authorisation grant.\
+        \ This API may be used to sign out a user from DigiLocker. This API will work\
+        \ for server based web applications, mobile application and limited input\
+        \ devices."
+      operationId: get_token_revocation_id
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/get_token_revocation_id_request'
+        x-body-name: body
+      responses:
+        "200":
+          description: successful operation
+        "400":
+          description: The token is invalid
+      security:
+      - oauthsecurity: []
+      summary: Revoke Token.
+      tags:
+      - Token Revocation API
+      x-openapi-router-controller: openapi_server.controllers.token_revocation_api_controller
+      x-codegen-request-body-name: body
+  /oauth2/1/token:
+    post:
+      description: "This endpoint only applies to apps using the authorization code\
+        \ flow. An app calls this endpoint to acquire a bearer token once the user\
+        \ has authorized the app. Calls to /oauth2/1/token need to be authenticated\
+        \ using the app's key and secret. These can either be passed as application/x-www-form-urlencoded\
+        \ POST parameters (see parameters below) or via HTTP basic authentication.\
+        \ If basic authentication is used, the app key should be provided as the username,\
+        \ and the app secret should be provided as the password."
+      operationId: getaccesstoken_id
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/getaccesstoken_id_request'
+        description: Details of documents being created.
+        required: true
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccessResponse'
+          description: successful operation
+        "400":
+          description: Bad request
+        "401":
+          description: If the access token is expired or has been revoked by DigiLocker
+            user.
+      summary: Get Access Token
+      tags:
+      - Authorization
+      x-openapi-router-controller: openapi_server.controllers.authorization_controller
+      x-codegen-request-body-name: body
+  /oauth2/1/user:
+    get:
+      description: "Client applications can call this API to get the DigiLocker Id,\
+        \ name, date of birth and gender of the account holder. An access token is\
+        \ required to call this API. The API will return the user details of the account\
+        \ with which the access token is linked. It is strongly recommended that the\
+        \ API can be called by client application only once after acquiring the access\
+        \ token. Since the user details do not change, the client application may\
+        \ store the values and use them when necessary than calling this API repeatedly."
+      operationId: account_detail_api_id
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Sample_5'
+          description: successful operation
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Upload_File_to_Locker_id_401_response'
+          description: Unauthorized error
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Get_List_of_Self_Uploaded_Documents_500_response'
+          description: Internal server error
+      security:
+      - bearerAuth: []
+      summary: Get User Details
+      tags:
+      - Account Detail API
+      x-openapi-router-controller: openapi_server.controllers.account_detail_api_controller
+  /oauth2/1/xml/{uri}:
+    get:
+      description: "Returns the certificate data in machine readable XML format for\
+        \ a URI. This API can be used to only for issued documents. The XML data may\
+        \ not be available for all documents. If the XML data is available for a particular\
+        \ document, the mime parameter in Get List of Issued Documents API will contain\
+        \ application/xml. Please refer to Digital Locker XML Certificate Formats\
+        \ for more details of XML formats of various documents."
+      operationId: get_certificate_data_in_xml_format_from_uri_id
+      parameters:
+      - explode: false
+        in: path
+        name: uri
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/XMLFormatSchema'
+          description: successful operation
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Get_File_from_URI_id_400_response'
+          description: Bad request
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Upload_File_to_Locker_id_401_response'
+          description: Unauthorized error
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Get_File_from_URI_id_404_response'
+          description: Not found
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Get_File_from_URI_id_500_response'
+          description: Internal Error
+        "503":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Get_File_from_URI_id_503_response'
+          description: Gateway timeout
+      security:
+      - bearerAuth: []
+      summary: Get Certificate Data in XML Format from URI
+      tags:
+      - File APIs
+      x-openapi-router-controller: openapi_server.controllers.file_apis_controller
+  /oauth2/2/files/issued:
+    get:
+      description: Returns the list of meta-data about issued documents in user’s
+        DigiLocker.
+      operationId: get_list_of_issued_documents_id
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Get_List_of_issued_Documents_id_200_response'
+          description: successful operation
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Upload_File_to_Locker_id_401_response'
+          description: Unauthorized error
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Get_List_of_issued_Documents_Version1_id_500_response'
+          description: Internal Error
+      summary: Issued Documents
+      tags:
+      - File APIs
+      x-openapi-router-controller: openapi_server.controllers.file_apis_controller
+  /oauth2/2/xml/eaadhaar:
+    get:
+      description: Returns e-Aadhaar data in XML format for the account.
+      operationId: get_e_aadhaar_data_in_xml_format_id
+      responses:
+        "200":
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/EaadharXamlSchema'
+          description: successful operation
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Get_e_Aadhaar_Data_in_XML_Format_id_401_response'
+          description: Unauthorized error
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Get_e_Aadhaar_Data_in_XML_Format_id_404_response'
+          description: Not found
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Get_File_from_URI_id_500_response'
+          description: Internal Error
+        "503":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Get_File_from_URI_id_503_response'
+          description: Gateway timeout
+      security:
+      - bearerAuth: []
+      summary: Get e-Aadhaar Data in XML Format
+      tags:
+      - File APIs
+      x-openapi-router-controller: openapi_server.controllers.file_apis_controller
+  /signup/1/demoauthverify:
+    post:
+      description: This API is used to verify the OTP sent by DigiLocker during the
+        sign up API call above.
+      operationId: verify_otp_id
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/DemoAuthVerify'
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DemoAuthVerifyResponse'
+          description: successful operation
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Verify_OTP_id_400_response'
+          description: Bad request
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Get_Device_Code_id_401_response'
+          description: Unauthorized error
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Verify_Account_id_500_response'
+          description: Internal Error
+      security:
+      - oauthsecurity: []
+      summary: Verify OTP
+      tags:
+      - DigiLocker Sign up APIs
+      x-openapi-router-controller: openapi_server.controllers.digi_locker_sign_up_apis_controller
+      x-codegen-request-body-name: body
+  /signup/2/demoauth:
+    post:
+      description: "This API is used to validate Aadhaar details and verify the mobile\
+        \ number by generating an OTP. This API call, if successful, will be followed\
+        \ by verify OTP call by the partner application if the user is online or available\
+        \ to perform OTP validation as indicated in verification parameter"
+      operationId: s_ign_up_id
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/DemoAuth'
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DemoAuthResponse'
+          description: successful operation
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SIGN_UP_id_400_response'
+          description: Bad request
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Get_Device_Code_id_401_response'
+          description: Unauthorized error
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Verify_Account_id_500_response'
+          description: Internal Error
+      security:
+      - oauthsecurity: []
+      summary: SIGN UP
+      tags:
+      - DigiLocker Sign up APIs
+      x-openapi-router-controller: openapi_server.controllers.digi_locker_sign_up_apis_controller
+      x-codegen-request-body-name: body
+  /statistics/1/counts:
+    post:
+      description: "Returns DigiLocker statistics such as the count of users, authentic\
+        \ documents, issuers and requesters as on a specific date."
+      operationId: get_statistics_id
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/GetStatistics'
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetStatisticsResponse'
+          description: successful operation
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Get_Statistics_id_400_response'
+          description: Bad request
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Push_URI_to_Account_id_401_response'
+          description: Unauthorized error
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Push_URI_to_Account_id_500_response'
+          description: Internal Error
+      security:
+      - oauthsecurity: []
+      summary: Get Statistics
+      tags:
+      - DigiLocker Meta APIs
+      x-openapi-router-controller: openapi_server.controllers.digi_locker_meta_apis_controller
+      x-codegen-request-body-name: body
+components:
+  schemas:
+    AccessResponse:
+      example:
+        access_token: bc125c212a4b03a9a188a858be5a163f379e878a
+        refresh_token: a47ab18c593703e4f83a274694db7422a8cfcb8f
+        gender: M
+        dob: 31121970
+        scope: scope
+        digilocker_id: 123e4567-e89b-12d3-a456-426655440000
+        name: Sunil Kumar
+        reference_key: 1c66bec26364cd6fefaabc6cae91840a
+        eaadhar: "Y"
+        token_type: Bearer
+        expires_in: 3600
+      properties:
+        access_token:
+          description: The access token that can be used to call the DigiLocker APIs.
+          example: bc125c212a4b03a9a188a858be5a163f379e878a
+          title: access_token
+          type: string
+        digilocker_id:
+          description: A unique 36 character DigiLocker Id of the user account.
+          example: 123e4567-e89b-12d3-a456-426655440000
+          title: digilocker_id
+          type: string
+        dob:
+          description: This is date of birth of the user as registered with DigiLocker
+            in DDMMYYYY format.
+          example: 31121970
+          format: dd-mm-yyy
+          title: dob
+          type: integer
+        eaadhar:
+          description: This indicates whether eAadhaar data is available for this
+            account. Possible values are Y and N.
+          enum:
+          - "Y"
+          - "N"
+          title: eaadhar
+          type: string
+        expires_in:
+          description: The duration in seconds for which the access token is valid
+          example: 3600
+          format: int64
+          title: expires_in
+          type: integer
+        gender:
+          description: "This is gender of the user as registered with DigiLocker.\
+            \ The possible values are M, F, T for male, female and transgender respectively."
+          enum:
+          - M
+          - F
+          - T
+          title: gender
+          type: string
+        name:
+          description: The name of the user as registered with DigiLocker.
+          example: Sunil Kumar
+          title: name
+          type: string
+        reference_key:
+          description: A unique reference of the user account.
+          example: 1c66bec26364cd6fefaabc6cae91840a
+          title: reference_key
+          type: string
+        refresh_token:
+          description: The refresh token used to refresh the above access token when
+            it expires. Please refer to Refresh Access Token API for more details.
+          example: a47ab18c593703e4f83a274694db7422a8cfcb8f
+          title: refresh_token
+          type: string
+        scope:
+          description: Scope of the token.
+          title: scope
+          type: string
+        token_type:
+          description: The type of token which will always be Bearer.
+          example: Bearer
+          title: token_type
+          type: string
+      required:
+      - access_token
+      - digilocker_id
+      - dob
+      - eaadhar
+      - expires_in
+      - gender
+      - name
+      - reference_key
+      - refresh_token
+      - scope
+      - token_type
+      title: AccessResponse
+      type: object
+    AccessToken:
+      properties:
+        client_id:
+          example: ABCDEFG
+          title: client_id
+          type: string
+        client_secret:
+          example: a123456abcdeghijk7890
+          title: client_secret
+          type: string
+        code:
+          example: ca82123a5476aa2f5e4638957c0ecc55c6ec07c1
+          title: code
+          type: string
+        code_verifier:
+          example: a123456abca
+          title: code_verifier
+          type: string
+        grant_type:
+          enum:
+          - authorization_code
+          title: grant_type
+          type: string
+        redirect_uri:
+          example: https://ndh.digitallocker.gov.in/oauth2-redirect.html
+          title: redirect_uri
+          type: string
+      required:
+      - client_id
+      - client_secret
+      - grant_type
+      title: AccessToken
+      type: object
+    AuthTokenResponse:
+      properties:
+        access_token:
+          description: |-
+            The access token that can be used to call the
+                DigiLocker APIs.
+          example: bc125c212a4b03a9a188a858be5a163f379e878a
+          type: string
+        expires_in:
+          description: |-
+            The duration in seconds for which the access token is
+                        valid.
+          example: 3600
+          format: int64
+          type: integer
+        refresh_token:
+          description: |-
+            The refresh token used to refresh the above access
+              token when it expires. This will value will be
+              returned only in case of web applications and not be
+              returned for limited input devices.
+          example: ad6f4004cc3e53f56bda391fe485fc4d32928061
+          type: string
+        scope:
+          description: Scope of the token.
+          type: string
+        token_type:
+          description: The type of token which will always be Bearer.
+          example: Bearer
+          type: string
+      required:
+      - access_token
+      - expires_in
+      - refresh_token
+      - scope
+      - token_type
+      type: object
+    DemoAuth:
+      properties:
+        clientid:
+          description: Provide the client id that was created during the application
+            registration process on Partners Portal.
+          type: string
+        consent:
+          description: The consent indicator from the user for performing demographic
+            authentication using Aadhaar details. This Partner Application must capture
+            the user consent for performing the Aadhaar demographic authentication.
+            The possible values are ‘Y’ and ‘N’. The sign up request will be processed
+            only when this indicator is ‘Y’.
+          type: string
+        demoauth:
+          description: The parameter indicates whether Aadhaar demographic authentication
+            must be successful for creating DigiLocker account. The possible values
+            are ‘Y’ and ‘N’. The value of ‘Y’ will perform Aadhaar demographic authentication
+            and will return errors if any in response. The value of ‘N’ will also
+            perform Aadhaar demographic authentication but will return any error in
+            case of authentication failure. It will create a basic mobile based account
+            for the user. Value ‘N’ should be used when the user account needs to
+            be created in the absence of the user.
+          type: string
+        dob:
+          description: This is date of birth of the user as mentioned in Aadhaar in
+            DDMMYYYY format.
+          type: integer
+        gender:
+          description: "This is gender of the user as mentioned in Aadhaar. The possible\
+            \ values are M, F, T for male, female and transgender respectively."
+          enum:
+          - M
+          - F
+          - T
+          type: string
+        hmac:
+          description: "Provide SHA-256 encrypted value of the client secret, clientid\
+            \ and ts parameters above concatenated in this sequence (client secret,\
+            \ clientid, ts). The hmac parameter is used by DigiLocker to ensure the\
+            \ data integrity and authentication of the request. Use the Client Secret\
+            \ Key generated during the application registration process on Partners\
+            \ Portal as the client secret."
+          format: binary
+          type: string
+        mobile:
+          description: This is the mobile number of the user. DigiLocker will check
+            whether an account exists for this mobile number. Either uid or mobile
+            is required to verify whether an account exists.
+          type: integer
+        name:
+          description: This is name of the user as mentioned in Aadhaar.
+          type: string
+        ts:
+          description: Provide a timestamp value in UNIX (or POSIX) format in IST
+            time zone in seconds. This timestamp value must not be older than 30 minutes.
+          type: string
+        uid:
+          description: This is the Aadhaar number of the user. DigiLocker will check
+            whether an account exists for this Aadhaar number. Either uid or mobile
+            is required to verify whether an account exists.
+          type: integer
+        verification:
+          description: "The parameter indicates whether the mobile number provided\
+            \ above should be validated by DigiLocker. If this parameter is ‘Y’, the\
+            \ DigiLocker sends an OTP to verify the mobile number. In this case the\
+            \ client application will call the second API to validate the OTP. The\
+            \ user will be signed on only after successful OTP validation. This flow\
+            \ should be used when the user account is created by user himself/herself\
+            \ or the user is present to provide the OTP. If this parameter is ‘N’\
+            , the user account will be created without OTP validation. The OTP validation\
+            \ will be performed when the user signs in for the first time in DigiLocker.\
+            \ This flow should be used when the user account needs to be created in\
+            \ the absence of the user."
+          type: string
+    DemoAuthResponse:
+      example:
+        details:
+          access_token: bc125c212a4b03a9a188a858be5a163f379e878a
+          refresh_token: a47ab18c593703e4f83a274694db7422a8cfcb8f
+          scope: ""
+          mobile: 0
+          token_type: Bearer
+          expires_in: "3600"
+      properties:
+        details:
+          $ref: '#/components/schemas/DemoAuthResponse_details'
+      title: DemoAuthResponse
+    DemoAuthVerify:
+      properties:
+        clientid:
+          description: Provide the client id that was created during the application
+            registration process on Partners Portal.
+          type: string
+        hmac:
+          description: "Provide SHA-256 encrypted value of the client secret, clientid\
+            \ and ts parameters above concatenated in this sequence (client secret,\
+            \ clientid, ts). The hmac parameter is used by DigiLocker to ensure the\
+            \ data integrity and authentication of the request. Use the Client Secret\
+            \ Key generated during the application registration process on Partners\
+            \ Portal as the client secret."
+          format: binary
+          type: string
+        mobile:
+          description: This is the mobile number of the user. DigiLocker will check
+            whether an account exists for this mobile number. Either uid or mobile
+            is required to verify whether an account exists.
+          type: integer
+        otp:
+          description: The OTP provided by the user.
+          type: integer
+        ts:
+          description: Provide a timestamp value in UNIX (or POSIX) format in IST
+            time zone in seconds. This timestamp value must not be older than 30 minutes.
+          type: string
+    DemoAuthVerifyResponse:
+      example:
+        details:
+          access_token: bc125c212a4b03a9a188a858be5a163f379e878a
+          refresh_token: a47ab18c593703e4f83a274694db7422a8cfcb8f
+          scope: ""
+          token_type: Bearer
+          expires_in: "3600"
+      properties:
+        details:
+          $ref: '#/components/schemas/DemoAuthVerifyResponse_details'
+      title: DemoAuthVerifyResponse
+    DeviceAccessToken:
+      properties:
+        client_id:
+          description: Provide the client id that was created during the application
+            registration process on Partners Portal.
+          title: client_id
+          type: string
+        device_code:
+          description: The device verification code. The device_code field from Get
+            Device Code Response.
+          title: device_code
+          type: string
+        dl_otp:
+          description: The OTP collected from the user
+          title: dl_otp
+          type: string
+        grant_type:
+          description: "The grant type, which must be “urn:ietf:params:oauth:grant-type:device_code”\
+            ."
+          example: urn:ietf:params:oauth:grant-type:device_code
+          title: grant_type
+          type: string
+      title: DeviceAccessToken
+    DeviceAuthorizationCode:
+      example:
+        response_type: device_code
+        dl_mobile: 0
+        dl_username: dl_username
+        client_id: client_id
+      properties:
+        client_id:
+          title: client_id
+          type: string
+        dl_mobile:
+          description: |-
+            Mobile number associated with DigiLocker account of the
+              user. The client device accepts the mobile number on the device from user and sends it in this parameter. Either the username or the mobile number must be provided.
+          title: dl_mobile
+          type: integer
+        dl_username:
+          description: 'DigiLocker username of the user. The client device accepts
+            the username on the device from user and sends the username in this parameter.
+            Either the username or the mobile number must be provided.   '
+          title: dl_username
+          type: string
+        response_type:
+          description: The parameter must be set to device_code.
+          example: device_code
+          title: response_type
+          type: string
+      title: DeviceAuthorizationCode
+    DeviceAuthorizationCodeResponse:
+      example:
+        dl_masked_email: xxxxxx@gmail.com
+        device_code: 74tq5miHKB
+        expires_in: 600
+        dl_masked_mobile: 0
+      properties:
+        device_code:
+          description: The device verification code.
+          example: 74tq5miHKB
+          title: device_code
+          type: string
+        dl_masked_email:
+          description: The masked email on which the OTP is sent.
+          example: xxxxxx@gmail.com
+          title: dl_masked_email
+          type: string
+        dl_masked_mobile:
+          description: The masked mobile number on which the OTP is sent.
+          title: dl_masked_mobile
+          type: integer
+        expires_in:
+          description: The duration in seconds for which the code is valid.
+          example: 600
+          title: expires_in
+          type: integer
+      required:
+      - device_code
+      - dl_masked_email
+      - dl_masked_mobile
+      - expires_in
+      title: DeviceAuthorizationCodeResponse
+      type: object
+    DocType:
+      properties:
+        clientid:
+          description: Provide the client id that was created during the application
+            registration process on Partners Portal.
+          type: string
+        hmac:
+          description: "Provide SHA-256 encrypted value of the client secret, clientid\
+            \ and ts parameters above concatenated in this sequence (client secret,\
+            \ clientid, ts). The hmac parameter is used by DigiLocker to ensure the\
+            \ data integrity and authentication of the request. Use the Client Secret\
+            \ Key generated during the application registration process on Partners\
+            \ Portal as the client secret."
+          format: binary
+          type: string
+        orgid:
+          description: The organization id for the issuer in DigiLocker. This organization
+            id is returned in Get List of Issuers API mentioned earlier.
+          type: string
+        ts:
+          description: Provide a timestamp value in UNIX (or POSIX) format in IST
+            time zone in seconds. This timestamp value must not be older than 30 minutes.
+          type: string
+    DocTypeResponse:
+      example:
+        documents:
+        - doctype: doctype
+          description: description
+        - doctype: doctype
+          description: description
+      properties:
+        documents:
+          items:
+            $ref: '#/components/schemas/DocTypeResponse_documents_inner'
+          minItems: 1
+          title: documents
+          type: array
+          uniqueItems: true
+      required:
+      - documents
+      title: DocTypeResponse
+      type: object
+    EaadharXamlSchema:
+      properties:
+        KycRes:
+          $ref: '#/components/schemas/EaadharXamlSchema_KycRes'
+      required:
+      - KycRes
+      title: EaadharXamlSchema
+      type: object
+    FileUpload:
+      properties:
+        Content-Type:
+          description: "The mime type of the file e.g. image/jpg, image/jpeg, image/png,\
+            \ application/pdf."
+          title: Content-Type
+          type: string
+      title: FileUpload
+    FileUploadResponse:
+      example:
+        details:
+          Path: Path
+          size: size
+      properties:
+        details:
+          $ref: '#/components/schemas/FileUploadResponse_details'
+      title: FileUploadResponse
+    GetStatistics:
+      properties:
+        clientid:
+          description: Provide the client id that was created during the application
+            registration process on Partners Portal.
+          type: string
+        hmac:
+          description: "Provide SHA-256 encrypted value of the client secret, clientid\
+            \ and ts parameters above concatenated in this sequence (client secret,\
+            \ clientid, ts). The hmac parameter is used by DigiLocker to ensure the\
+            \ data integrity and authentication of the request. Use the Client Secret\
+            \ Key generated during the application registration process on Partners\
+            \ Portal as the client secret."
+          format: binary
+          type: string
+        ts:
+          description: Provide a timestamp value in UNIX (or POSIX) format in IST
+            time zone in seconds. This timestamp value must not be older than 30 minutes.
+          type: string
+    GetStatisticsResponse:
+      example:
+        count_as_on: "31072019"
+        yearwise_authentic_documents:
+          details2:
+            year: 2019
+            count: 3520475277
+            id: 18567
+          year: 2016
+          count: 10134567
+          details:
+            year: 2017
+            count: 1000548093
+            id: 18350
+          details1:
+            year: 2018
+            count: 2410543684
+            id: 18354
+          id: 18347
+        monthwise_registations:
+          month: 5
+          details2:
+            month: 5
+            year: 2018
+            count: 124794
+            id: 18496
+          year: 2018
+          count: 124794
+          id: 18496
+        requestors: "45"
+        authentic_documents: "3520475277"
+        issuers: "134"
+        users: "25873490"
+      properties:
+        authentic_documents:
+          description: Count of authentic documents available through DigiLocker.
+          example: "3520475277"
+          title: authentic_documents
+          type: string
+        count_as_on:
+          description: The date on which this statistics is generated.
+          example: "31072019"
+          title: count_as_on
+          type: string
+        issuers:
+          description: Count of issuer organizations registered on DigiLocker.
+          example: "134"
+          title: issuers
+          type: string
+        monthwise_registations:
+          $ref: '#/components/schemas/GetStatisticsResponse_monthwise_registations'
+        requestors:
+          description: Count of requester organizations registered on DigiLocker.
+          example: "45"
+          title: requestors
+          type: string
+        users:
+          description: Count of registered users on DigiLocker.
+          example: "25873490"
+          title: users
+          type: string
+        yearwise_authentic_documents:
+          $ref: '#/components/schemas/GetStatisticsResponse_yearwise_authentic_documents'
+      required:
+      - authentic_documents
+      - count
+      - count_as_on
+      - id
+      - issuers
+      - month
+      - monthwise_registations
+      - requestors
+      - users
+      - year
+      - yearwise_authentic_documents
+      title: GetStatisticsResponse
+      type: object
+    Issuer:
+      properties:
+        clientid:
+          description: Provide the client id that was created during the application
+            registration process on Partners Portal.
+          type: string
+        hmac:
+          description: "Provide SHA-256 encrypted value of the client secret, clientid\
+            \ and ts parameters above concatenated in this sequence (client secret,\
+            \ clientid, ts). The hmac parameter is used by DigiLocker to ensure the\
+            \ data integrity and authentication of the request. Use the Client Secret\
+            \ Key generated during the application registration process on Partners\
+            \ Portal as the client secret."
+          format: binary
+          type: string
+        ts:
+          description: Provide a timestamp value in UNIX (or POSIX) format in IST
+            time zone in seconds. This timestamp value must not be older than 30 minutes.
+          type: string
+    IssuerResponse:
+      example:
+        issuers:
+        - issuerid: issuerid
+          name: name
+          description: description
+          categories: categories
+          orgid: orgid
+        - issuerid: issuerid
+          name: name
+          description: description
+          categories: categories
+          orgid: orgid
+      properties:
+        issuers:
+          items:
+            $ref: '#/components/schemas/IssuerResponse_issuers_inner'
+          minItems: 1
+          title: issuers
+          type: array
+          uniqueItems: true
+      required:
+      - issuers
+      title: IssuerResponse
+      type: object
+    PullDocumentSchema:
+      properties:
+        chasis_no:
+          description: Other parameters required for fetching a document as listed
+            in paramname field of Get Search Parameters API.
+          type: string
+        consent:
+          description: The consent indicator from the user for performing demographic
+            authentication using Aadhaar details. This Partner Application must capture
+            the user consent for performing the Aadhaar demographic authentication.
+            The possible values are ‘Y’ and ‘N’. The sign up request will be processed
+            only when this indicator is ‘Y’.
+          type: string
+        doctype:
+          description: A 5 character unique document type provided by DigiLocker.
+          type: string
+        orgid:
+          description: The organization id for the issuer in DigiLocker. This organization
+            id is returned in Get List of Issuers API mentioned above.
+          type: string
+        reg_no:
+          description: Other parameters required for fetching a document as listed
+            in paramname field of Get Search Parameters API.
+          type: string
+    PushUri:
+      properties:
+        action:
+          description: "Action that needs to be taken for the Aadhaar number and URI\
+            \ combination. Possible values are A for adding a new URI, U for updating\
+            \ an already added URI details or D for deleting the URI."
+          type: string
+        clientid:
+          description: Provide the client id that was created during the application
+            registration process on Partners Portal.
+          type: string
+        digilockerid:
+          description: This is the DigiLocker Id of the user that was acquired using
+            Get User Details API.
+          type: integer
+        docid:
+          description: A unique number of the document. This id will be unique within
+            the document type issued by the issuer.
+          type: string
+        hmac:
+          description: "Provide SHA-256 encrypted value of the client secret, clientid\
+            \ and ts parameters above concatenated in this sequence (client secret,\
+            \ clientid, ts). The hmac parameter is used by DigiLocker to ensure the\
+            \ data integrity and authentication of the request. Use the Client Secret\
+            \ Key generated during the application registration process on Partners\
+            \ Portal as the client secret."
+          format: binary
+          type: string
+        issuedate:
+          description: The issue date of the document in DDMMYYYY format.
+          type: string
+        ts:
+          description: Provide a timestamp value in UNIX (or POSIX) format in IST
+            time zone in seconds. This timestamp value must not be older than 30 minutes.
+          type: string
+        uri:
+          description: This is the unique identifier of the document.
+          type: string
+        validfrom:
+          description: The date from which the document is valid in DDMMYYYY format.
+            This may be same as the issue date.
+          type: integer
+        validto:
+          description: The expiry date of the document in DDMMYYYY format.
+          type: string
+    RefreshAccessToken:
+      properties:
+        grant_type:
+          example: refresh_token
+          type: string
+        refresh_Token:
+          example: a47ab18c593703e4f83a274694db7422a8cfcb8f
+          type: string
+      required:
+      - grant_type
+      - refresh_Token
+      type: object
+    RefreshToken:
+      properties:
+        client_id:
+          example: ABCDEFG
+          title: client_id
+          type: string
+        client_secret:
+          example: a123456abcdeghijk7890
+          title: client_secret
+          type: string
+        grant_type:
+          enum:
+          - refresh_token
+          title: grant_type
+          type: string
+        refresh_token:
+          example: ca82123a5476aa2f5e4638957c0ecc55c6ec07c1
+          title: refresh_token
+          type: string
+      required:
+      - client_id
+      - client_secret
+      - grant_type
+      - refresh_token
+      title: RefreshToken
+      type: object
+    Response1:
+      example:
+        error_description: error_description
+        error: error
+      properties:
+        error:
+          description: repository_service_inactive
+          title: error
+          type: string
+        error_description:
+          description: Internal server error
+          title: error_description
+          type: string
+      title: Response1
+      type: object
+    Response10:
+      example:
+        error_description: error_description
+        error: error
+      properties:
+        error:
+          description: mobile_exists
+          title: error
+          type: string
+        error_description:
+          description: A DigiLocker account already exists with this mobile number.
+          title: error_description
+          type: string
+      title: Response10
+      type: object
+    Response11:
+      properties:
+        error:
+          description: auth_failure
+          title: error
+          type: string
+        error_description:
+          description: "The data on Aadhaar does not match with one or more of Aadhaar,\
+            \ Name, DOB and Gender data provided. Aadhaar demographic authentication\
+            \ failure."
+          title: error_description
+          type: string
+      title: Response11
+      type: object
+    Response12:
+      properties:
+        error:
+          description: invalid_parameter
+          title: error
+          type: string
+        error_description:
+          description: One or more of the mandatory parameters is missing or invalid.
+            The error description text will contain one or more of the following error
+            texts:|-  uid parameter is missing or invalid  Name parameter is missing
+            or invalid  Dob parameter is missing or invalid  Gender parameter is
+            missing or invalid  Mobile parameter is missing or invalid  Verification
+            parameter is missing or invalid  Consent parameter is missing or invalid
+             Timestamp parameter is missing or invalid  HMAC parameter is missing
+            or invalid
+          title: error_description
+          type: string
+      title: Response12
+      type: object
+    Response13:
+      example:
+        error_description: error_description
+        error: error
+      properties:
+        error:
+          description: repository_service_configerror
+          title: error
+          type: string
+        error_description:
+          description: The issuer service is not available. Please contact DigiLocker
+            support.
+          title: error_description
+          type: string
+      title: Response13
+      type: object
+    Response14:
+      example:
+        error_description: error_description
+        error: error
+      properties:
+        error:
+          description: invalid_orgid
+          title: error
+          type: string
+        error_description:
+          description: The orgid parameter is missing or invalid.
+          title: error_description
+          type: string
+      title: Response14
+      type: object
+    Response15:
+      properties:
+        error:
+          description: invalid_doctype
+          title: error
+          type: string
+        error_description:
+          description: The doctype parameter is missing or invalid.
+          title: error_description
+          type: string
+      title: Response15
+      type: object
+    Response16:
+      properties:
+        error:
+          description: pull_response_pending
+          title: error
+          type: string
+        error_description:
+          description: "The details provided above do not exactly match with the details\
+            \ on the certificate. Your request has been forwarded to the Issuer department.\
+            \ The Issuer department will verify the details provided above. If the\
+            \ verification is successful, your certificate will be made available\
+            \ in the Issued Documents section of your DigiLocker."
+          title: error_description
+          type: string
+      title: Response16
+      type: object
+    Response17:
+      properties:
+        error:
+          description: uri_exists
+          title: error
+          type: string
+        error_description:
+          description: This document already exists in your Issued Documents.
+          title: error_description
+          type: string
+      title: Response17
+      type: object
+    Response18:
+      properties:
+        error:
+          description: aadhaar_not_linked
+          title: error
+          type: string
+        error_description:
+          description: "To access issued documents, please link your Aadhaar number\
+            \ to your DigiLocker account."
+          title: error_description
+          type: string
+      title: Response18
+      type: object
+    Response2:
+      properties:
+        error:
+          description: repository_service_unpublished
+          title: error
+          type: string
+        error_description:
+          description: Internal server error
+          title: error_description
+          type: string
+      title: Response2
+      type: object
+    Response3:
+      example:
+        error_description: error_description
+        error: error
+      properties:
+        error:
+          description: repository_service_unresponsive
+          title: error
+          type: string
+        error_description:
+          description: Internal server error
+          title: error_description
+          type: string
+      title: Response3
+      type: object
+    Response4:
+      properties:
+        error:
+          description: repository_service_configerror
+          title: error
+          type: string
+        error_description:
+          description: Internal server error
+          title: error_description
+          type: string
+      title: Response4
+      type: object
+    Response5:
+      properties:
+        error:
+          description: repository_service_resperror
+          title: error
+          type: string
+        error_description:
+          description: Internal server error
+          title: error_description
+          type: string
+      title: Response5
+      type: object
+    Response6:
+      properties:
+        error:
+          description: repository_service_exception
+          title: error
+          type: string
+        error_description:
+          description: Internal server error
+          title: error_description
+          type: string
+      title: Response6
+      type: object
+    Response7:
+      example:
+        error_description: error_description
+        error: error
+      properties:
+        error:
+          description: parameter_missing
+          title: error
+          type: string
+        error_description:
+          description: One or more of the mandatory parameters is missing
+          title: error_description
+          type: string
+      title: Response7
+      type: object
+    Response8:
+      properties:
+        error:
+          description: invalid_ts
+          title: error
+          type: string
+        error_description:
+          description: Timestamp parameter is invalid
+          title: error_description
+          type: string
+      title: Response8
+      type: object
+    Response9:
+      properties:
+        error:
+          description: hmac_mismatch
+          title: error
+          type: string
+        error_description:
+          description: HMAC does not match
+          title: error_description
+          type: string
+      title: Response9
+      type: object
+    ResponseFive:
+      example:
+        error_description: error_description
+        error: error
+      properties:
+        error:
+          description: otp_error
+          title: error
+          type: string
+        error_description:
+          description: OTP could not be sent as the account may not have a valid mobile
+            or a valid email.
+          title: error_description
+          type: string
+      title: ResponseFive
+      type: object
+    ResponseFour:
+      properties:
+        error:
+          description: multiple_mobile_accounts
+          title: error
+          type: string
+        error_description:
+          description: The mobile number provided is associated with more than one
+            DigiLocker accounts. Please login using username.
+          title: error_description
+          type: string
+      title: ResponseFour
+      type: object
+    ResponseOne:
+      example:
+        error_description: error_description
+        error: error
+      properties:
+        error:
+          description: invalid_response_type
+          title: error
+          type: string
+        error_description:
+          description: The response_type parameter is invalid
+          title: error_description
+          type: string
+      title: ResponseOne
+      type: object
+    ResponseSeven:
+      properties:
+        error:
+          description: partner_service_unresponsive
+          title: error
+          type: string
+        error_description:
+          description: Internal server error
+          title: error_description
+          type: string
+      title: ResponseSeven
+      type: object
+    ResponseSix:
+      example:
+        error_description: error_description
+        error: error
+      properties:
+        error:
+          description: unexpected_error
+          title: error
+          type: string
+        error_description:
+          description: Internal server error
+          title: error_description
+          type: string
+      title: ResponseSix
+      type: object
+    ResponseThree:
+      properties:
+        error:
+          description: invalid_mobile
+          title: error
+          type: string
+        error_description:
+          description: The dl_mobile parameter is invalid
+          title: error_description
+          type: string
+      title: ResponseThree
+      type: object
+    ResponseTwo:
+      properties:
+        error:
+          description: invalid_username
+          title: error
+          type: string
+        error_description:
+          description: The dl_username parameter is invalid
+          title: error_description
+          type: string
+      title: ResponseTwo
+      type: object
+    SearchParameters:
+      properties:
+        clientid:
+          description: Provide the client id that was created during the application
+            registration process on Partners Portal.
+          type: string
+        doctype:
+          description: A 5 character unique document type provided by DigiLocker.
+          type: string
+        hmac:
+          description: "Provide SHA-256 encrypted value of the client secret, clientid\
+            \ and ts parameters above concatenated in this sequence (client secret,\
+            \ clientid, ts). The hmac parameter is used by DigiLocker to ensure the\
+            \ data integrity and authentication of the request. Use the Client Secret\
+            \ Key generated during the application registration process on Partners\
+            \ Portal as the client secret."
+          format: binary
+          type: string
+        orgid:
+          description: The organization id for the issuer in DigiLocker. This organization
+            id is returned in Get List of Issuers API mentioned earlier.
+          type: string
+        ts:
+          description: Provide a timestamp value in UNIX (or POSIX) format in IST
+            time zone in seconds. This timestamp value must not be older than 30 minutes.
+          type: string
+    SearchParametersResponse:
+      items:
+        $ref: '#/components/schemas/SearchParametersResponse_inner'
+      minItems: 1
+      type: array
+      uniqueItems: true
+    VerifyAccount:
+      properties:
+        clientid:
+          description: Provide the client id that was created during the application
+            registration process on Partners Portal.
+          type: string
+        hmac:
+          description: "Provide SHA-256 encrypted value of the client secret, clientid\
+            \ and ts parameters above concatenated in this sequence (client secret,\
+            \ clientid, ts). The hmac parameter is used by DigiLocker to ensure the\
+            \ data integrity and authentication of the request. Use the Client Secret\
+            \ Key generated during the application registration process on Partners\
+            \ Portal as the client secret."
+          format: binary
+          type: string
+        mobile:
+          description: This is the mobile number of the user. DigiLocker will check
+            whether an account exists for this mobile number. Either uid or mobile
+            is required to verify whether an account exists.
+          type: integer
+        ts:
+          description: Provide a timestamp value in UNIX (or POSIX) format in IST
+            time zone in seconds. This timestamp value must not be older than 30 minutes.
+          type: string
+        uid:
+          description: This is the Aadhaar number of the user. DigiLocker will check
+            whether an account exists for this Aadhaar number. Either uid or mobile
+            is required to verify whether an account exists.
+          type: integer
+    VerifyAccountResponse:
+      example:
+        registered: "true"
+        digilockerid: 123e4567-e89b-12d3-a456-426655440000
+      properties:
+        digilockerid:
+          description: A unique 36 character DigiLocker Id of the user account.
+          example: 123e4567-e89b-12d3-a456-426655440000
+          title: digilockerid
+          type: string
+        registered:
+          description: true indicates that the provided Aadhaar/mobile number is already
+            registered and false indicates otherwise.
+          example: "true"
+          title: registered
+          type: string
+      required:
+      - digilockerid
+      - registered
+      title: VerifyAccountResponse
+      type: object
+    XMLFormatSchema:
+      properties:
+        CertificateData:
+          items:
+            properties: {}
+          title: CertificateData
+          type: array
+        Signature:
+          $ref: '#/components/schemas/XMLFormatSchema_Signature'
+      required:
+      - CertificateData
+      - Signature
+      title: XMLFormatSchema
+      type: object
+    Push_URI_to_Account_id_400_response:
+      example:
+        error_description: error_description
+        error: error
+      properties:
+        error:
+          description: invalid_parameter
+          title: error
+          type: string
+        error_description:
+          description: One or more of the mandatory parameters is missing or invalid.
+            The error description text will contain one or more of the following error
+            texts:|-  URI parameter is missing or invalid  Doctype parameter is
+            missing or invalid  Description parameter is missing or invalid  Docid
+            parameter is missing or invalid  Issuedate parameter is missing orinvalid
+             Timestamp parameter is missing or invalid  HMAC parameter is missing
+            or invalid   URI already exists in this account   URI already exists
+            in another account
+          title: error_description
+          type: string
+      title: Push_URI_to_Account_id_400_response
+      type: object
+    Push_URI_to_Account_id_401_response:
+      example:
+        error_description: error_description
+        error: error
+      properties:
+        error:
+          description: invalid_client_id
+          title: error
+          type: string
+        error_description:
+          description: The client_id parameter is invalid
+          title: error_description
+          type: string
+      title: Push_URI_to_Account_id_401_response
+      type: object
+    Push_URI_to_Account_id_404_response:
+      example:
+        error_description: error_description
+        error: error
+      properties:
+        error:
+          description: invalid_digilocker_id
+          title: error
+          type: string
+        error_description:
+          description: The digilockerid parameter is invalid
+          title: error_description
+          type: string
+      title: Push_URI_to_Account_id_404_response
+      type: object
+    Push_URI_to_Account_id_500_response:
+      example:
+        error_description: error_description
+        error: error
+      properties:
+        error:
+          description: unexpected_error
+          title: error
+          type: string
+        error_description:
+          description: Internal server error
+          title: error_description
+          type: string
+      title: Push_URI_to_Account_id_500_response
+      type: object
+    Verify_Account_id_400_response:
+      example:
+        error_description: ""
+        error: ""
+      properties:
+        error:
+          description: invalid_parameter
+          title: error
+        error_description:
+          description: One or more of the mandatory parameters is missing or invalid.
+            The error description text will contain one or more of the following error
+            texts:|-  Either one of uid or mobile number is mandatory  Timestamp
+            parameter is missing or invalid  HMAC parameter is missing or invalid
+          title: error_description
+      title: Verify_Account_id_400_response
+      type: object
+    Verify_Account_id_500_response:
+      example:
+        error_description: ""
+        error: ""
+      properties:
+        error:
+          description: unexpected_error
+          title: error
+        error_description:
+          description: Internal server error
+          title: error_description
+      title: Verify_Account_id_500_response
+      type: object
+    Sample_details:
+      example:
+        access_token: access_token
+        scope: scope
+        token_type: token_type
+        expires_in: 0
+      properties:
+        access_token:
+          title: access_token
+          type: string
+        expires_in:
+          title: expires_in
+          type: integer
+        scope:
+          title: scope
+          type: string
+        token_type:
+          title: token_type
+          type: string
+      required:
+      - access_token
+      - expires_in
+      - scope
+      - token_type
+      title: Sample_details
+      type: object
+    Sample:
+      example:
+        details:
+          access_token: access_token
+          scope: scope
+          token_type: token_type
+          expires_in: 0
+      properties:
+        details:
+          $ref: '#/components/schemas/Sample_details'
+      title: Sample
+    Get_Device_Code_id_400_response:
+      oneOf:
+      - $ref: '#/components/schemas/ResponseOne'
+      - $ref: '#/components/schemas/ResponseTwo'
+      - $ref: '#/components/schemas/ResponseThree'
+      - $ref: '#/components/schemas/ResponseFour'
+      title: Get_Device_Code_id_400_response
+    Get_Device_Code_id_401_response:
+      example:
+        error_description: The client_id parameter is invalid
+        error: invalid_client_id
+      properties:
+        error:
+          example: invalid_client_id
+          title: error
+          type: string
+        error_description:
+          example: The client_id parameter is invalid
+          title: error_description
+          type: string
+      title: Get_Device_Code_id_401_response
+      type: object
+    Get_Device_Code_id_500_response:
+      oneOf:
+      - $ref: '#/components/schemas/ResponseFive'
+      - $ref: '#/components/schemas/ResponseSix'
+      title: Get_Device_Code_id_500_response
+    Upload_File_to_Locker_id_400_response:
+      example:
+        error_description: Path parameter is missing
+        error: path_missing
+      properties:
+        error:
+          enum:
+          - path_missing
+          - contenttype_missing
+          - hmac_missing
+          - filename_missing
+          - hmac_mismatch
+          - invalid_filename
+          - invalid_filesize
+          - invalid_filetype
+          - invalid_path
+          - file_data_missing
+          - mimetype_mismatch
+          title: error
+          type: string
+        error_description:
+          enum:
+          - Path parameter is missing
+          - Content-Type parameter is missing
+          - HMAC parameter is missing
+          - Filename is missing in path parameter
+          - HMAC does not match
+          - Restricted characters are not allowed in file name
+          - The file size exceeds maximum allowed file size of 10MB
+          - The file type is not allowed
+          - The destination folder does not exist
+          - Missing file content in the request
+          - The mimetype provided in Content-Type parameter does not match with the
+            mimetype of the file
+          title: error_description
+          type: string
+      title: Upload_File_to_Locker_id_400_response
+      type: object
+    Upload_File_to_Locker_id_401_response:
+      example:
+        error_description: The access token is invalid
+        error: invalid_token
+      properties:
+        error:
+          example: invalid_token
+          title: error
+          type: string
+        error_description:
+          example: The access token is invalid
+          title: error_description
+          type: string
+      title: Upload_File_to_Locker_id_401_response
+      type: object
+    Get_File_from_URI_id_400_response:
+      example:
+        error_description: URI parameter missing
+        error: uri_missing
+      properties:
+        error:
+          example: uri_missing
+          title: error
+          type: string
+        error_description:
+          example: URI parameter missing
+          title: error_description
+          type: string
+      title: Get_File_from_URI_id_400_response
+      type: object
+    Get_File_from_URI_id_404_response:
+      example:
+        error_description: No file found for given URI
+        error: invalid_uri
+      properties:
+        error:
+          example: invalid_uri
+          title: error
+          type: string
+        error_description:
+          example: No file found for given URI
+          title: error_description
+          type: string
+      title: Get_File_from_URI_id_404_response
+      type: object
+    Get_File_from_URI_id_500_response:
+      oneOf:
+      - $ref: '#/components/schemas/Response3'
+      - $ref: '#/components/schemas/Response4'
+      - $ref: '#/components/schemas/Response5'
+      - $ref: '#/components/schemas/Response6'
+      title: Get_File_from_URI_id_500_response
+    Get_File_from_URI_id_503_response:
+      oneOf:
+      - $ref: '#/components/schemas/Response1'
+      - $ref: '#/components/schemas/Response2'
+      title: Get_File_from_URI_id_503_response
+    Sample_1_items_inner:
+      example:
+        date: date
+        parent: parent
+        size: size
+        mime: mime
+        name: name
+        description: description
+        id: "189079894"
+        type: type
+        uri: uri
+        issuer: issuer
+      properties:
+        date:
+          minLength: 1
+          title: date
+          type: string
+        description:
+          title: description
+          type: string
+        id:
+          example: "189079894"
+          minLength: 1
+          title: id
+          type: string
+        issuer:
+          title: issuer
+          type: string
+        mime:
+          title: mime
+          type: string
+        name:
+          minLength: 1
+          title: name
+          type: string
+        parent:
+          minLength: 1
+          title: parent
+          type: string
+        size:
+          minLength: 1
+          title: size
+          type: string
+        type:
+          minLength: 1
+          title: type
+          type: string
+        uri:
+          title: uri
+          type: string
+      required:
+      - date
+      - description
+      - id
+      - issuer
+      - mime
+      - name
+      - parent
+      - size
+      - type
+      - uri
+      title: Sample_1_items_inner
+    Sample_1:
+      example:
+        directory: directory
+        items:
+        - date: date
+          parent: parent
+          size: size
+          mime: mime
+          name: name
+          description: description
+          id: "189079894"
+          type: type
+          uri: uri
+          issuer: issuer
+        - date: date
+          parent: parent
+          size: size
+          mime: mime
+          name: name
+          description: description
+          id: "189079894"
+          type: type
+          uri: uri
+          issuer: issuer
+      properties:
+        directory:
+          minLength: 1
+          title: directory
+          type: string
+        items:
+          items:
+            $ref: '#/components/schemas/Sample_1_items_inner'
+          minItems: 1
+          title: items
+          type: array
+          uniqueItems: true
+      required:
+      - directory
+      - items
+      title: Sample
+    Get_List_of_Self_Uploaded_Documents_404_response:
+      example:
+        error_description: The folder does not exist
+        error: invalid_id
+      properties:
+        error:
+          example: invalid_id
+          title: error
+          type: string
+        error_description:
+          example: The folder does not exist
+          title: error_description
+          type: string
+      title: Get_List_of_Self_Uploaded_Documents_404_response
+      type: object
+    Get_List_of_Self_Uploaded_Documents_500_response:
+      example:
+        error_description: Internal server error
+        error: unexpected_error
+      properties:
+        error:
+          example: unexpected_error
+          title: error
+          type: string
+        error_description:
+          example: Internal server error
+          title: error_description
+          type: string
+      title: Get_List_of_Self_Uploaded_Documents_500_response
+      type: object
+    Sample_2_details:
+      example:
+        date: 2015-05-12T15:50:38Z
+        doctype: HSCER
+        issuerid: in.gov.cbse
+        parent: ' '
+        size: ' '
+        mime: application/pdf
+        name: Class XII Marksheet
+        description: Class XII Marksheet
+        type: file
+        uri: in.gov.cbse-HSCER-201412345678
+        issuer: CBSE
+      properties:
+        date:
+          description: This contains the date on which the certificate was last modified
+            in DigiLocker.
+          example: 2015-05-12T15:50:38Z
+          title: date
+          type: string
+        description:
+          description: This is the descriptive document type stored in DigiLocker
+            such as ‘Income Certificate’ or ‘Driving License’.
+          example: Class XII Marksheet
+          title: description
+          type: string
+        doctype:
+          description: A 5 character unique document type provided by DigiLocker.
+          example: HSCER
+          title: doctype
+          type: string
+        issuer:
+          description: The name of the issuer.
+          example: CBSE
+          title: issuer
+          type: string
+        issuerid:
+          description: Unique DigiLocker issuer id as mentioned in the URI.
+          example: in.gov.cbse
+          title: issuerid
+          type: string
+        mime:
+          description: The list of mime types for the certificate data. This field
+            will contain “application/PDF” or “application/xml”.
+          example: application/pdf
+          title: mime
+          type: string
+        name:
+          description: The name of the certificate.
+          example: Class XII Marksheet
+          title: name
+          type: string
+        parent:
+          description: This will be blank.
+          example: ' '
+          title: parent
+          type: string
+        size:
+          description: This will be blank.
+          example: ' '
+          title: size
+          type: string
+        type:
+          description: String file.
+          example: file
+          title: type
+          type: string
+        uri:
+          description: This is the unique identifier of the document shared by the
+            user in DigiLocker. You will use this identifier to get the actual file
+            from DigiLocker using the API.
+          example: in.gov.cbse-HSCER-201412345678
+          title: uri
+          type: string
+      required:
+      - date
+      - description
+      - doctype
+      - issuer
+      - issuerid
+      - mime
+      - name
+      - parent
+      - size
+      - type
+      - uri
+      title: Sample_2_details
+      type: object
+    Sample_2:
+      example:
+        details:
+          date: 2015-05-12T15:50:38Z
+          doctype: HSCER
+          issuerid: in.gov.cbse
+          parent: ' '
+          size: ' '
+          mime: application/pdf
+          name: Class XII Marksheet
+          description: Class XII Marksheet
+          type: file
+          uri: in.gov.cbse-HSCER-201412345678
+          issuer: CBSE
+      properties:
+        details:
+          $ref: '#/components/schemas/Sample_2_details'
+      title: Sample
+    Get_List_of_issued_Documents_Version1_id_500_response:
+      oneOf:
+      - $ref: '#/components/schemas/ResponseSix'
+      - $ref: '#/components/schemas/ResponseSeven'
+      title: Get_List_of_issued_Documents_Version1_id_500_response
+    Sample_3_details:
+      example:
+        date: 2015-05-12T15:50:38Z
+        parent: "1234"
+        size: "366481"
+        mime: ""
+        name: My Documents
+        description: ""
+        id: 5678
+        type: dir
+        uri: ""
+        issuer: ""
+      properties:
+        date:
+          description: This contains the date of file upload in case of self uploaded
+            documents
+          example: 2015-05-12T15:50:38Z
+          title: date
+          type: string
+        description:
+          description: This is the descriptive document type stored in DigiLocker
+            such as ‘Income Certificate’ or ‘Driving License’.
+          example: ""
+          title: description
+          type: string
+        id:
+          description: The id if this item is a folder.
+          example: 5678
+          title: id
+          type: integer
+        issuer:
+          description: The name of the issuer. This is blank in case of uploaded documents
+            and folders.
+          example: ""
+          title: issuer
+          type: string
+        mime:
+          description: The mime type of the file. This field will contain “application/PDF”
+            for PDF files; “image/png” for PNG files and “image/jpg” or “image/jpeg”
+            for JPG/JPEG files. This will be blank in case of folder.
+          example: ""
+          title: mime
+          type: string
+        name:
+          description: The name of the file or folder.
+          example: My Documents
+          title: name
+          type: string
+        parent:
+          description: The id of the parent folder.
+          example: "1234"
+          title: parent
+          type: string
+        size:
+          description: Size of file or folder.
+          example: "366481"
+          title: size
+          type: string
+        type:
+          description: String dir for folder and string file for file.
+          example: dir
+          title: type
+          type: string
+        uri:
+          description: This is the unique identifier of the document shared by the
+            user in DigiLocker. You will use this identifier to get the actual file
+            from DigiLocker using the API. URI will be blank in case of folder.
+          example: ""
+          title: uri
+          type: string
+      required:
+      - date
+      - description
+      - id
+      - issuer
+      - mime
+      - name
+      - parent
+      - size
+      - type
+      - uri
+      title: Sample_3_details
+      type: object
+    Sample_3:
+      example:
+        details:
+          date: 2015-05-12T15:50:38Z
+          parent: "1234"
+          size: "366481"
+          mime: ""
+          name: My Documents
+          description: ""
+          id: 5678
+          type: dir
+          uri: ""
+          issuer: ""
+      properties:
+        details:
+          $ref: '#/components/schemas/Sample_3_details'
+      title: Sample
+    Get_List_of_Documents_Provided_by_an_Issuer_id_400_response:
+      example:
+        error_description: ""
+        error: ""
+      properties:
+        error:
+          description: invalid_parameter
+          title: error
+        error_description:
+          description: One or more of the mandatory parameters is missing or invalid.
+            The error description text will contain one or more of the following error
+            texts:|-  The orgid parameter is missing or invalid  Timestamp parameter
+            is missing or invalid  HMAC parameter is missing or invalid
+          title: error_description
+      title: Get_List_of_Documents_Provided_by_an_Issuer_id_400_response
+      type: object
+    Get_List_of_Issuers_id_400_response:
+      example:
+        error_description: One or more of the mandatory parameters is missing or invalid.
+          The error description text will contain one or more of the following error
+          texts:|-  Timestamp parameter is missing or invalid  HMAC parameter is
+          missing or invalid
+        error: invalid_parameter
+      properties:
+        error:
+          example: invalid_parameter
+          title: error
+          type: string
+        error_description:
+          example: One or more of the mandatory parameters is missing or invalid.
+            The error description text will contain one or more of the following error
+            texts:|-  Timestamp parameter is missing or invalid  HMAC parameter
+            is missing or invalid
+          title: error_description
+          type: string
+      title: Get_List_of_Issuers_id_400_response
+      type: object
+    Get_Search_Parameters_for_a_Document_id_400_response:
+      example:
+        error_description: ""
+        error: ""
+      properties:
+        error:
+          description: invalid_parameter
+          title: error
+        error_description:
+          description: One or more of the mandatory parameters is missing or invalid.
+            The error description text will contain one or more of the following error
+            texts:|-  The orgid parameter is missing or invalid  The doctype parameter
+            is missing or invalid  Timestamp parameter is missing or invalid  HMAC
+            parameter is missing or invalid
+          title: error_description
+      title: Get_Search_Parameters_for_a_Document_id_400_response
+      type: object
+    Sample_4_details:
+      example:
+        uri: uri
+      properties:
+        uri:
+          title: uri
+          type: string
+      required:
+      - uri
+      title: Sample_4_details
+      type: object
+    Sample_4:
+      example:
+        details:
+          uri: uri
+      properties:
+        details:
+          $ref: '#/components/schemas/Sample_4_details'
+      title: Sample
+    Pull_Document_id_400_response:
+      oneOf:
+      - $ref: '#/components/schemas/Response13'
+      - $ref: '#/components/schemas/ResponseSix'
+      title: Pull_Document_id_400_response
+    Pull_Document_id_404_response:
+      example:
+        error_description: ""
+        error: ""
+      properties:
+        error:
+          description: record_not_found
+          title: error
+        error_description:
+          description: "No record found in issuer database for given criteria. Please\
+            \ check the details and try again. If problem persists, see the FAQ section\
+            \ for possible causes."
+          title: error_description
+      title: Pull_Document_id_404_response
+      type: object
+    Pull_Document_id_500_response:
+      oneOf:
+      - $ref: '#/components/schemas/Response14'
+      - $ref: '#/components/schemas/Response15'
+      - $ref: '#/components/schemas/Response16'
+      - $ref: '#/components/schemas/Response17'
+      - $ref: '#/components/schemas/Response18'
+      title: Pull_Document_id_500_response
+    get_token_revocation_id_request:
+      properties:
+        token:
+          description: The token that needs to be revoked.
+          title: token
+          type: string
+        token_type_hint:
+          description: "The type of the above token. The value will be one of access_token\
+            \ or refresh_token. If this parameter is not sent, DigiLocker will look\
+            \ for this token in both access and refresh tokens and then revoke it."
+          enum:
+          - refresh_token
+          - access_token
+          title: token_type_hint
+          type: string
+      required:
+      - token
+      title: get_token_revocation_id_request
+      type: object
+    getaccesstoken_id_request:
+      properties:
+        Get access token using authorization code:
+          $ref: '#/components/schemas/AccessToken'
+        Get access token using device code and OTP:
+          $ref: '#/components/schemas/DeviceAccessToken'
+        Get access token using refresh token:
+          $ref: '#/components/schemas/RefreshToken'
+      title: getaccesstoken_id_request
+      type: object
+    Sample_5_details:
+      example:
+        gender: M
+        dob: "31121970"
+        name: Sunil Kumar
+        eaadhar: "Y"
+        digilockerid: 123e4567-e89b-12d3-a456-426655440000
+      properties:
+        digilockerid:
+          description: A unique 36 character DigiLocker Id of the user account.
+          example: 123e4567-e89b-12d3-a456-426655440000
+          title: digilockerid
+          type: string
+        dob:
+          description: This is date of birth of the user as registered with DigiLocker
+            in DDMMYYYY format.
+          example: "31121970"
+          format: dd-mm-yyy
+          title: dob
+          type: string
+        eaadhar:
+          description: This indicates whether eAadhaar data is available for this
+            account. Possible values are Y and N.
+          enum:
+          - "Y"
+          - "N"
+          title: eaadhar
+          type: string
+        gender:
+          description: "This is gender of the user as registered with DigiLocker.\
+            \ The possible values are M, F, T for male, female and transgender respectively."
+          enum:
+          - M
+          - F
+          - T
+          title: gender
+          type: string
+        name:
+          description: The name of the user as registered with DigiLocker.
+          example: Sunil Kumar
+          title: name
+          type: string
+      required:
+      - digilockerid
+      - dob
+      - eaadhaar
+      - gender
+      - name
+      title: Sample_5_details
+      type: object
+    Sample_5:
+      example:
+        details:
+          gender: M
+          dob: "31121970"
+          name: Sunil Kumar
+          eaadhar: "Y"
+          digilockerid: 123e4567-e89b-12d3-a456-426655440000
+      properties:
+        details:
+          $ref: '#/components/schemas/Sample_5_details'
+      title: Sample
+    Get_List_of_issued_Documents_id_200_response_items_inner:
+      example:
+        date: date
+        doctype: doctype
+        issuerid: issuerid
+        parent: parent
+        size: size
+        mime:
+        - ""
+        - ""
+        name: name
+        description: description
+        type: type
+        uri: uri
+        issuer: issuer
+      properties:
+        date:
+          minLength: 1
+          title: date
+          type: string
+        description:
+          minLength: 1
+          title: description
+          type: string
+        doctype:
+          minLength: 1
+          title: doctype
+          type: string
+        issuer:
+          minLength: 1
+          title: issuer
+          type: string
+        issuerid:
+          minLength: 1
+          title: issuerid
+          type: string
+        mime:
+          items:
+            properties: {}
+          title: mime
+          type: array
+        name:
+          minLength: 1
+          title: name
+          type: string
+        parent:
+          title: parent
+          type: string
+        size:
+          title: size
+          type: string
+        type:
+          minLength: 1
+          title: type
+          type: string
+        uri:
+          minLength: 1
+          title: uri
+          type: string
+      required:
+      - date
+      - description
+      - doctype
+      - issuer
+      - issuerid
+      - name
+      - parent
+      - size
+      - type
+      - uri
+      title: Get_List_of_issued_Documents_id_200_response_items_inner
+    Get_List_of_issued_Documents_id_200_response:
+      example:
+        resource: resource
+        items:
+        - date: date
+          doctype: doctype
+          issuerid: issuerid
+          parent: parent
+          size: size
+          mime:
+          - ""
+          - ""
+          name: name
+          description: description
+          type: type
+          uri: uri
+          issuer: issuer
+        - date: date
+          doctype: doctype
+          issuerid: issuerid
+          parent: parent
+          size: size
+          mime:
+          - ""
+          - ""
+          name: name
+          description: description
+          type: type
+          uri: uri
+          issuer: issuer
+      properties:
+        items:
+          items:
+            $ref: '#/components/schemas/Get_List_of_issued_Documents_id_200_response_items_inner'
+          minItems: 1
+          title: items
+          type: array
+          uniqueItems: true
+        resource:
+          minLength: 1
+          title: resource
+          type: string
+      required:
+      - items
+      - resource
+      title: Get_List_of_issued_Documents_id_200_response
+      type: object
+    Get_e_Aadhaar_Data_in_XML_Format_id_401_response:
+      example:
+        error_description: The access token is invalid
+        error: invalid token
+      properties:
+        error:
+          example: invalid token
+          title: error
+          type: string
+        error_description:
+          example: The access token is invalid
+          title: error_description
+          type: string
+      title: Get_e_Aadhaar_Data_in_XML_Format_id_401_response
+      type: object
+    Get_e_Aadhaar_Data_in_XML_Format_id_404_response:
+      example:
+        error_description: Aadhaar is not linked to the account
+        error: aadhaar_not_linked
+      properties:
+        error:
+          enum:
+          - aadhaar_not_linked
+          - aadhaar_not_available
+          title: error
+          type: string
+        error_description:
+          enum:
+          - Aadhaar is not linked to the account
+          - Aadhaar data is not available for this user. Please perform Aadhaar eKYC
+            again.
+          title: error_description
+          type: string
+      title: Get_e_Aadhaar_Data_in_XML_Format_id_404_response
+      type: object
+    Verify_OTP_id_400_response:
+      oneOf:
+      - $ref: '#/components/schemas/Response7'
+      - $ref: '#/components/schemas/Response8'
+      - $ref: '#/components/schemas/Response9'
+      title: Verify_OTP_id_400_response
+    SIGN_UP_id_400_response:
+      oneOf:
+      - $ref: '#/components/schemas/Response10'
+      - $ref: '#/components/schemas/Response11'
+      - $ref: '#/components/schemas/Response12'
+      title: SIGN_UP_id_400_response
+    Get_Statistics_id_400_response:
+      example:
+        error_description: error_description
+        error: error
+      properties:
+        error:
+          description: invalid_parameter
+          title: error
+          type: string
+        error_description:
+          description: One or more of the mandatory parameters is missing or invalid.
+            The error description text will contain one or more of the following error
+            texts:|-  Timestamp parameter is missing or invalid  HMAC parameter
+            is missing or invalid
+          title: error_description
+          type: string
+      title: Get_Statistics_id_400_response
+      type: object
+    DemoAuthResponse_details:
+      example:
+        access_token: bc125c212a4b03a9a188a858be5a163f379e878a
+        refresh_token: a47ab18c593703e4f83a274694db7422a8cfcb8f
+        scope: ""
+        mobile: 0
+        token_type: Bearer
+        expires_in: "3600"
+      properties:
+        access_token:
+          description: The access token that can be used to call the DigiLocker APIs.
+          example: bc125c212a4b03a9a188a858be5a163f379e878a
+          title: access_token
+          type: string
+        expires_in:
+          description: The duration in seconds for which the access token is valid.
+          example: "3600"
+          title: expires_in
+          type: string
+        mobile:
+          description: 'The masked mobile number of the user on which the OTP has
+            been sent.           '
+          title: mobile
+          type: integer
+        refresh_token:
+          description: The refresh token used to refresh the above access token when
+            it expires. Please refer to Refresh Access Token API for more details.
+          example: a47ab18c593703e4f83a274694db7422a8cfcb8f
+          title: refresh_token
+          type: string
+        scope:
+          description: Scope of the token
+          example: ""
+          title: scope
+          type: string
+        token_type:
+          description: The type of token which will always be Bearer.
+          example: Bearer
+          title: token_type
+          type: string
+      required:
+      - access_token
+      - expires_in
+      - mobile
+      - refresh_token
+      - scope
+      - token_type
+      title: DemoAuthResponse_details
+      type: object
+    DemoAuthVerifyResponse_details:
+      example:
+        access_token: bc125c212a4b03a9a188a858be5a163f379e878a
+        refresh_token: a47ab18c593703e4f83a274694db7422a8cfcb8f
+        scope: ""
+        token_type: Bearer
+        expires_in: "3600"
+      properties:
+        access_token:
+          description: The access token that can be used to call the DigiLocker APIs.
+          example: bc125c212a4b03a9a188a858be5a163f379e878a
+          title: access_token
+          type: string
+        expires_in:
+          description: The duration in seconds for which the access token is valid.
+          example: "3600"
+          title: expires_in
+          type: string
+        refresh_token:
+          description: The refresh token used to refresh the above access token when
+            it expires. Please refer to Refresh Access Token API for more details.
+          example: a47ab18c593703e4f83a274694db7422a8cfcb8f
+          title: refresh_token
+          type: string
+        scope:
+          description: Scope of the token
+          example: ""
+          title: scope
+          type: string
+        token_type:
+          description: The type of token which will always be Bearer.
+          example: Bearer
+          title: token_type
+          type: string
+      required:
+      - access_token
+      - expires_in
+      - refresh_token
+      - scope
+      - token_type
+      title: DemoAuthVerifyResponse_details
+      type: object
+    DocTypeResponse_documents_inner:
+      example:
+        doctype: doctype
+        description: description
+      properties:
+        description:
+          minLength: 1
+          title: description
+          type: string
+        doctype:
+          minLength: 1
+          title: doctype
+          type: string
+      required:
+      - description
+      - doctype
+      title: DocTypeResponse_documents_inner
+    EaadharXamlSchema_KycRes_Signature_KeyInfo_X509Data:
+      properties:
+        X509Certificate:
+          minLength: 1
+          title: X509Certificate
+          type: string
+        X509SubjectName:
+          minLength: 1
+          title: X509SubjectName
+          type: string
+      required:
+      - X509Certificate
+      - X509SubjectName
+      title: EaadharXamlSchema_KycRes_Signature_KeyInfo_X509Data
+      type: object
+    EaadharXamlSchema_KycRes_Signature_KeyInfo:
+      properties:
+        X509Data:
+          $ref: '#/components/schemas/EaadharXamlSchema_KycRes_Signature_KeyInfo_X509Data'
+      required:
+      - X509Data
+      title: EaadharXamlSchema_KycRes_Signature_KeyInfo
+      type: object
+    EaadharXamlSchema_KycRes_Signature_SignedInfo_CanonicalizationMethod:
+      properties:
+        Algorithm:
+          minLength: 1
+          title: Algorithm
+          type: string
+      required:
+      - Algorithm
+      title: EaadharXamlSchema_KycRes_Signature_SignedInfo_CanonicalizationMethod
+      type: object
+    EaadharXamlSchema_KycRes_Signature_SignedInfo_Reference_Transforms:
+      properties:
+        Transform:
+          $ref: '#/components/schemas/EaadharXamlSchema_KycRes_Signature_SignedInfo_CanonicalizationMethod'
+      required:
+      - Transform
+      title: EaadharXamlSchema_KycRes_Signature_SignedInfo_Reference_Transforms
+      type: object
+    EaadharXamlSchema_KycRes_Signature_SignedInfo_Reference:
+      properties:
+        DigestMethod:
+          $ref: '#/components/schemas/EaadharXamlSchema_KycRes_Signature_SignedInfo_CanonicalizationMethod'
+        DigestValue:
+          minLength: 1
+          title: DigestValue
+          type: string
+        Transforms:
+          $ref: '#/components/schemas/EaadharXamlSchema_KycRes_Signature_SignedInfo_Reference_Transforms'
+        URI:
+          title: URI
+          type: string
+      required:
+      - DigestMethod
+      - DigestValue
+      - Transforms
+      - URI
+      title: EaadharXamlSchema_KycRes_Signature_SignedInfo_Reference
+      type: object
+    EaadharXamlSchema_KycRes_Signature_SignedInfo:
+      properties:
+        CanonicalizationMethod:
+          $ref: '#/components/schemas/EaadharXamlSchema_KycRes_Signature_SignedInfo_CanonicalizationMethod'
+        Reference:
+          $ref: '#/components/schemas/EaadharXamlSchema_KycRes_Signature_SignedInfo_Reference'
+        SignatureMethod:
+          $ref: '#/components/schemas/EaadharXamlSchema_KycRes_Signature_SignedInfo_CanonicalizationMethod'
+      required:
+      - CanonicalizationMethod
+      - Reference
+      - SignatureMethod
+      title: EaadharXamlSchema_KycRes_Signature_SignedInfo
+      type: object
+    EaadharXamlSchema_KycRes_Signature:
+      properties:
+        KeyInfo:
+          $ref: '#/components/schemas/EaadharXamlSchema_KycRes_Signature_KeyInfo'
+        SignatureValue:
+          minLength: 1
+          title: SignatureValue
+          type: string
+        SignedInfo:
+          $ref: '#/components/schemas/EaadharXamlSchema_KycRes_Signature_SignedInfo'
+        xmlns:
+          minLength: 1
+          title: xmlns
+          type: string
+      required:
+      - KeyInfo
+      - SignatureValue
+      - SignedInfo
+      - xmlns
+      title: EaadharXamlSchema_KycRes_Signature
+      type: object
+    EaadharXamlSchema_KycRes_UidData_LData:
+      properties:
+        co:
+          minLength: 1
+          title: co
+          type: string
+        country:
+          minLength: 1
+          title: country
+          type: string
+        dist:
+          minLength: 1
+          title: dist
+          type: string
+        lang:
+          minLength: 1
+          title: lang
+          type: string
+        lm:
+          minLength: 1
+          title: lm
+          type: string
+        loc:
+          minLength: 1
+          title: loc
+          type: string
+        name:
+          minLength: 1
+          title: name
+          type: string
+        pc:
+          minLength: 1
+          title: pc
+          type: string
+        state:
+          minLength: 1
+          title: state
+          type: string
+        vtc:
+          minLength: 1
+          title: vtc
+          type: string
+      required:
+      - co
+      - country
+      - dist
+      - lang
+      - lm
+      - loc
+      - name
+      - pc
+      - state
+      - vtc
+      title: EaadharXamlSchema_KycRes_UidData_LData
+      type: object
+    EaadharXamlSchema_KycRes_UidData_Poa:
+      properties:
+        co:
+          minLength: 1
+          title: co
+          type: string
+        country:
+          minLength: 1
+          title: country
+          type: string
+        dist:
+          minLength: 1
+          title: dist
+          type: string
+        lm:
+          minLength: 1
+          title: lm
+          type: string
+        loc:
+          minLength: 1
+          title: loc
+          type: string
+        pc:
+          minLength: 1
+          title: pc
+          type: string
+        state:
+          minLength: 1
+          title: state
+          type: string
+        vtc:
+          minLength: 1
+          title: vtc
+          type: string
+      required:
+      - co
+      - country
+      - dist
+      - lm
+      - loc
+      - pc
+      - state
+      - vtc
+      title: EaadharXamlSchema_KycRes_UidData_Poa
+      type: object
+    EaadharXamlSchema_KycRes_UidData_Poi:
+      properties:
+        dob:
+          minLength: 1
+          title: dob
+          type: string
+        gender:
+          minLength: 1
+          title: gender
+          type: string
+        name:
+          minLength: 1
+          title: name
+          type: string
+      required:
+      - dob
+      - gender
+      - name
+      title: EaadharXamlSchema_KycRes_UidData_Poi
+      type: object
+    EaadharXamlSchema_KycRes_UidData_Prn:
+      properties:
+        text:
+          minLength: 1
+          title: text
+          type: string
+        type:
+          minLength: 1
+          title: type
+          type: string
+      required:
+      - text
+      - type
+      title: EaadharXamlSchema_KycRes_UidData_Prn
+      type: object
+    EaadharXamlSchema_KycRes_UidData:
+      properties:
+        LData:
+          $ref: '#/components/schemas/EaadharXamlSchema_KycRes_UidData_LData'
+        Pht:
+          minLength: 1
+          title: Pht
+          type: string
+        Poa:
+          $ref: '#/components/schemas/EaadharXamlSchema_KycRes_UidData_Poa'
+        Poi:
+          $ref: '#/components/schemas/EaadharXamlSchema_KycRes_UidData_Poi'
+        Prn:
+          $ref: '#/components/schemas/EaadharXamlSchema_KycRes_UidData_Prn'
+        tkn:
+          minLength: 1
+          title: tkn
+          type: string
+        uid:
+          minLength: 1
+          title: uid
+          type: string
+      required:
+      - LData
+      - Pht
+      - Poa
+      - Poi
+      - Prn
+      - tkn
+      - uid
+      title: EaadharXamlSchema_KycRes_UidData
+      type: object
+    EaadharXamlSchema_KycRes:
+      properties:
+        Rar:
+          minLength: 1
+          title: Rar
+          type: string
+        Signature:
+          $ref: '#/components/schemas/EaadharXamlSchema_KycRes_Signature'
+        UidData:
+          $ref: '#/components/schemas/EaadharXamlSchema_KycRes_UidData'
+        code:
+          minLength: 1
+          title: code
+          type: string
+        ret:
+          minLength: 1
+          title: ret
+          type: string
+        ts:
+          minLength: 1
+          title: ts
+          type: string
+        ttl:
+          minLength: 1
+          title: ttl
+          type: string
+        txn:
+          minLength: 1
+          title: txn
+          type: string
+      required:
+      - Rar
+      - Signature
+      - UidData
+      - code
+      - ret
+      - ts
+      - ttl
+      - txn
+      title: EaadharXamlSchema_KycRes
+      type: object
+    FileUploadResponse_details:
+      example:
+        Path: Path
+        size: size
+      properties:
+        Path:
+          description: The destination path of the file in DigiLocker including filename.
+          title: Path
+          type: string
+        size:
+          description: Size of file.
+          title: size
+          type: string
+      required:
+      - Path
+      - size
+      title: FileUploadResponse_details
+      type: object
+    GetStatisticsResponse_monthwise_registations_details2:
+      example:
+        month: 5
+        year: 2018
+        count: 124794
+        id: 18496
+      properties:
+        count:
+          description: Count of cumulative user registrations in the given month.
+          example: 124794
+          title: count
+          type: integer
+        id:
+          description: Unique id of the list item.
+          example: 18496
+          title: id
+          type: integer
+        month:
+          description: Month of the year in numeric format with January as 1
+          example: 5
+          title: month
+          type: integer
+        year:
+          description: Year in YYYY format
+          example: 2018
+          title: year
+          type: integer
+      title: GetStatisticsResponse_monthwise_registations_details2
+      type: object
+    GetStatisticsResponse_monthwise_registations:
+      description: List of last 12 months cumulative user registrations
+      example:
+        month: 5
+        details2:
+          month: 5
+          year: 2018
+          count: 124794
+          id: 18496
+        year: 2018
+        count: 124794
+        id: 18496
+      properties:
+        count:
+          description: Count of cumulative user registrations in the given month.
+          example: 124794
+          title: count
+          type: integer
+        details2:
+          $ref: '#/components/schemas/GetStatisticsResponse_monthwise_registations_details2'
+        id:
+          description: Unique id of the list item.
+          example: 18496
+          title: id
+          type: integer
+        month:
+          description: Month of the year in numeric format with January as 1
+          example: 5
+          title: month
+          type: integer
+        year:
+          description: Year in YYYY format
+          example: 2018
+          title: year
+          type: integer
+      title: GetStatisticsResponse_monthwise_registations
+      type: object
+    GetStatisticsResponse_yearwise_authentic_documents_details:
+      example:
+        year: 2017
+        count: 1000548093
+        id: 18350
+      properties:
+        count:
+          description: Count of cumulative user authentic documents in the given year.
+          example: 1000548093
+          title: count
+          type: integer
+        id:
+          description: Unique id of the list item.
+          example: 18350
+          title: id
+          type: integer
+        year:
+          description: Year in YYYY format.
+          example: 2017
+          title: year
+          type: integer
+      title: GetStatisticsResponse_yearwise_authentic_documents_details
+      type: object
+    GetStatisticsResponse_yearwise_authentic_documents_details1:
+      example:
+        year: 2018
+        count: 2410543684
+        id: 18354
+      properties:
+        count:
+          description: Count of cumulative user authentic documents in the given year.
+          example: 2410543684
+          title: count
+          type: integer
+        id:
+          description: Unique id of the list item.
+          example: 18354
+          title: id
+          type: integer
+        year:
+          description: Year in YYYY format.
+          example: 2018
+          title: year
+          type: integer
+      title: GetStatisticsResponse_yearwise_authentic_documents_details1
+      type: object
+    GetStatisticsResponse_yearwise_authentic_documents_details2:
+      example:
+        year: 2019
+        count: 3520475277
+        id: 18567
+      properties:
+        count:
+          description: 'Count of cumulative user authentic documents in the given
+            year.  '
+          example: 3520475277
+          title: count
+          type: integer
+        id:
+          description: Unique id of the list item.
+          example: 18567
+          title: id
+          type: integer
+        year:
+          description: Year in YYYY format.
+          example: 2019
+          title: year
+          type: integer
+      title: GetStatisticsResponse_yearwise_authentic_documents_details2
+      type: object
+    GetStatisticsResponse_yearwise_authentic_documents:
+      description: List of cumulative year-wise counts of authentic documents in DigiLocker.
+      example:
+        details2:
+          year: 2019
+          count: 3520475277
+          id: 18567
+        year: 2016
+        count: 10134567
+        details:
+          year: 2017
+          count: 1000548093
+          id: 18350
+        details1:
+          year: 2018
+          count: 2410543684
+          id: 18354
+        id: 18347
+      properties:
+        count:
+          description: |-
+            Count of cumulative user authentic documents in
+              the given year.
+          example: 10134567
+          title: count
+          type: integer
+        details:
+          $ref: '#/components/schemas/GetStatisticsResponse_yearwise_authentic_documents_details'
+        details1:
+          $ref: '#/components/schemas/GetStatisticsResponse_yearwise_authentic_documents_details1'
+        details2:
+          $ref: '#/components/schemas/GetStatisticsResponse_yearwise_authentic_documents_details2'
+        id:
+          description: Unique id of the list item.
+          example: 18347
+          title: id
+          type: integer
+        year:
+          description: Year in YYYY format.
+          example: 2016
+          title: year
+          type: integer
+      title: GetStatisticsResponse_yearwise_authentic_documents
+      type: object
+    IssuerResponse_issuers_inner:
+      example:
+        issuerid: issuerid
+        name: name
+        description: description
+        categories: categories
+        orgid: orgid
+      properties:
+        categories:
+          minLength: 1
+          title: categories
+          type: string
+        description:
+          title: description
+          type: string
+        issuerid:
+          minLength: 1
+          title: issuerid
+          type: string
+        name:
+          minLength: 1
+          title: name
+          type: string
+        orgid:
+          minLength: 1
+          title: orgid
+          type: string
+      required:
+      - categories
+      - description
+      - issuerid
+      - name
+      - orgid
+      title: IssuerResponse_issuers_inner
+    SearchParametersResponse_inner:
+      example:
+        valuelist: ""
+        paramname: paramname
+        label: label
+        example: example
+      properties:
+        example:
+          minLength: 1
+          title: example
+          type: string
+        label:
+          minLength: 1
+          title: label
+          type: string
+        paramname:
+          minLength: 1
+          title: paramname
+          type: string
+        valuelist:
+          title: valuelist
+      required:
+      - example
+      - label
+      - paramname
+      title: SearchParametersResponse_inner
+      type: object
+    XMLFormatSchema_Signature_KeyInfo:
+      properties:
+        X509Data:
+          title: X509Data
+      title: XMLFormatSchema_Signature_KeyInfo
+      type: object
+    XMLFormatSchema_Signature:
+      properties:
+        KeyInfo:
+          $ref: '#/components/schemas/XMLFormatSchema_Signature_KeyInfo'
+        SignatureValue:
+          title: SignatureValue
+        SignedInfo:
+          title: SignedInfo
+      required:
+      - KeyInfo
+      title: XMLFormatSchema_Signature
+      type: object
+  securitySchemes:
+    Customkey2:
+      in: header
+      name: X-2
+      type: apiKey
+      x-apikeyInfoFunc: openapi_server.controllers.security_controller.info_from_Customkey2
+    Customkeys1:
+      in: header
+      name: X1123
+      type: apiKey
+      x-apikeyInfoFunc: openapi_server.controllers.security_controller.info_from_Customkeys1
+    bearerAuth:
+      scheme: bearer
+      type: http
+      x-bearerInfoFunc: openapi_server.controllers.security_controller.info_from_bearerAuth
+    oauthAuthorizeCode:
+      flows:
+        authorizationCode:
+          authorizationUrl: https://betaapi.digitallocker.gov.in/public/oauth2/1/authorize
+          scopes: {}
+          tokenUrl: https://betaapi.digitallocker.gov.in/public/oauth2/1/token
+      type: oauth2
+      x-tokenInfoFunc: openapi_server.controllers.security_controller.info_from_oauthAuthorizeCode
+      x-scopeValidateFunc: openapi_server.controllers.security_controller.validate_scope_oauthAuthorizeCode
+    oauthsecurity:
+      flows:
+        clientCredentials:
+          scopes:
+            default: default scope
+          tokenUrl: https://betaapi.digitallocker.gov.in/public/oauth2/1/token
+      type: oauth2
+      x-tokenInfoFunc: openapi_server.controllers.security_controller.info_from_oauthsecurity
+      x-scopeValidateFunc: openapi_server.controllers.security_controller.validate_scope_oauthsecurity

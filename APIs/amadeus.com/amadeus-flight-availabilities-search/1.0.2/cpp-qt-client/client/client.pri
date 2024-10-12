@@ -1,0 +1,97 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIAircraftEquipment.h \
+    $${PWD}/OAIAllotmentDetails.h \
+    $${PWD}/OAIAvailabilityClass.h \
+    $${PWD}/OAICabinRestriction.h \
+    $${PWD}/OAICarrierRestrictions.h \
+    $${PWD}/OAICo2Emission.h \
+    $${PWD}/OAICollection_Meta_AvailSearch.h \
+    $${PWD}/OAIConnectionRestriction.h \
+    $${PWD}/OAIDateTimeType.h \
+    $${PWD}/OAIDictionaries.h \
+    $${PWD}/OAIError_400.h \
+    $${PWD}/OAIError_500.h \
+    $${PWD}/OAIExtended_OriginDestinationLight.h \
+    $${PWD}/OAIExtended_SearchCriteria.h \
+    $${PWD}/OAIExtended_Segment.h \
+    $${PWD}/OAIFlightAvailability.h \
+    $${PWD}/OAIFlightEndPoint.h \
+    $${PWD}/OAIFlightFiltersLight.h \
+    $${PWD}/OAIFlightOfferSource.h \
+    $${PWD}/OAIFlightSegment.h \
+    $${PWD}/OAIFlightStop.h \
+    $${PWD}/OAIGetFlightAvailabilitiesQuery.h \
+    $${PWD}/OAIIssue.h \
+    $${PWD}/OAIIssue_Source.h \
+    $${PWD}/OAILocationValue.h \
+    $${PWD}/OAIOperatingFlight.h \
+    $${PWD}/OAIOriginDestinationLight.h \
+    $${PWD}/OAIOriginalFlightEndPoint.h \
+    $${PWD}/OAIOriginalFlightStop.h \
+    $${PWD}/OAISearchCriteriaLight.h \
+    $${PWD}/OAISegment.h \
+    $${PWD}/OAISuccess_Availability.h \
+    $${PWD}/OAITourAllotment.h \
+    $${PWD}/OAITravelClass.h \
+    $${PWD}/OAITravelerInfo.h \
+    $${PWD}/OAITravelerType.h \
+# APIs
+    $${PWD}/OAIAvailibilityApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIAircraftEquipment.cpp \
+    $${PWD}/OAIAllotmentDetails.cpp \
+    $${PWD}/OAIAvailabilityClass.cpp \
+    $${PWD}/OAICabinRestriction.cpp \
+    $${PWD}/OAICarrierRestrictions.cpp \
+    $${PWD}/OAICo2Emission.cpp \
+    $${PWD}/OAICollection_Meta_AvailSearch.cpp \
+    $${PWD}/OAIConnectionRestriction.cpp \
+    $${PWD}/OAIDateTimeType.cpp \
+    $${PWD}/OAIDictionaries.cpp \
+    $${PWD}/OAIError_400.cpp \
+    $${PWD}/OAIError_500.cpp \
+    $${PWD}/OAIExtended_OriginDestinationLight.cpp \
+    $${PWD}/OAIExtended_SearchCriteria.cpp \
+    $${PWD}/OAIExtended_Segment.cpp \
+    $${PWD}/OAIFlightAvailability.cpp \
+    $${PWD}/OAIFlightEndPoint.cpp \
+    $${PWD}/OAIFlightFiltersLight.cpp \
+    $${PWD}/OAIFlightOfferSource.cpp \
+    $${PWD}/OAIFlightSegment.cpp \
+    $${PWD}/OAIFlightStop.cpp \
+    $${PWD}/OAIGetFlightAvailabilitiesQuery.cpp \
+    $${PWD}/OAIIssue.cpp \
+    $${PWD}/OAIIssue_Source.cpp \
+    $${PWD}/OAILocationValue.cpp \
+    $${PWD}/OAIOperatingFlight.cpp \
+    $${PWD}/OAIOriginDestinationLight.cpp \
+    $${PWD}/OAIOriginalFlightEndPoint.cpp \
+    $${PWD}/OAIOriginalFlightStop.cpp \
+    $${PWD}/OAISearchCriteriaLight.cpp \
+    $${PWD}/OAISegment.cpp \
+    $${PWD}/OAISuccess_Availability.cpp \
+    $${PWD}/OAITourAllotment.cpp \
+    $${PWD}/OAITravelClass.cpp \
+    $${PWD}/OAITravelerInfo.cpp \
+    $${PWD}/OAITravelerType.cpp \
+# APIs
+    $${PWD}/OAIAvailibilityApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

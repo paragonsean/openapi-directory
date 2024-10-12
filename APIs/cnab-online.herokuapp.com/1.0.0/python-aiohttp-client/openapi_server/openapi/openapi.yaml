@@ -1,0 +1,601 @@
+openapi: 3.0.1
+info:
+  description: Processe arquivos de retorno CNAB
+  title: Cnab Online
+  version: 1.0.0
+  x-apisguru-categories:
+  - financial
+  x-description-language: pt
+  x-logo:
+    backgroundColor: '#FFFFFF'
+    url: http://cnab-online.github.io/img/logo.png
+  x-origin:
+  - format: swagger
+    url: http://cnab-online.github.io/api-reference/api-reference-v1.json
+    version: "2.0"
+  x-providerName: cnab-online.herokuapp.com
+servers:
+- url: https://cnab-online.herokuapp.com/v1
+paths:
+  /file:
+    post:
+      description: |
+        Processa um arquivo CNAB para obter informações sobre o mesmo. Retorna um ID temporário para o mesmo.
+      operationId: file_post
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/_file_post_request'
+        required: true
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/_file_post_200_response'
+          description: Informações básicas do arquivo
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Unexpected error
+      summary: Faz o upload de um arquivo
+      tags:
+      - file
+      x-openapi-router-controller: openapi_server.controllers.file_controller
+      x-codegen-request-body-name: body
+  /file/{fileId}:
+    get:
+      operationId: file_file_id_get
+      parameters:
+      - description: ID Temporário gerado no endpoint file
+        in: path
+        name: fileId
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/_file_post_200_response'
+          description: Informações básicas do arquivo
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Unexpected error
+      summary: Retorna as informações básicas de um arquivo previamente processado
+      tags:
+      - file
+      x-openapi-router-controller: openapi_server.controllers.file_controller
+  /file/{fileId}/lines:
+    get:
+      operationId: file_file_id_lines_get
+      parameters:
+      - description: ID Temporário gerado no endpoint file
+        in: path
+        name: fileId
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/_file__fileId__lines_get_200_response'
+          description: Informações básicas do arquivo
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Unexpected error
+      summary: "Retorna todas as linhas e seus respectivos campos (de forma não processada,\
+        \ apenas indicando os campos reconhecidos)"
+      tags:
+      - file
+      x-openapi-router-controller: openapi_server.controllers.file_controller
+  /file/{fileId}/occurrences:
+    get:
+      operationId: file_file_id_occurrences_get
+      parameters:
+      - description: ID Temporário gerado no endpoint file
+        in: path
+        name: fileId
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/_file__fileId__occurrences_get_200_response'
+          description: Informações básicas do arquivo
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Unexpected error
+      summary: Retorna as informações de baixa de boletos e outros tipos de ocorrências
+      tags:
+      - file
+      x-openapi-router-controller: openapi_server.controllers.file_controller
+components:
+  schemas:
+    Error:
+      example:
+        errors:
+        - detail: detail
+          title: title
+        - detail: detail
+          title: title
+      properties:
+        errors:
+          items:
+            $ref: '#/components/schemas/Error_errors_inner'
+          title: errors
+          type: array
+      title: Error
+      type: object
+    File:
+      example:
+        attributes:
+          account_number: account_number
+          bank_code: 0
+          generation_date: 2000-01-23
+          company_name: company_name
+          bank_name: bank_name
+          name: name
+        id: id
+        type: type
+      properties:
+        attributes:
+          $ref: '#/components/schemas/File_attributes'
+        id:
+          description: Id temporário gerado para o arquivo
+          title: id
+          type: string
+        type:
+          description: Sempre 'files' para seguir a especificação JSON API
+          title: type
+          type: string
+      title: File
+      type: object
+    Line:
+      example:
+        attributes:
+          raw_text: raw_text
+          identified_fields:
+          - name: name
+            start: 6
+            end: 0
+            value: value
+          - name: name
+            start: 6
+            end: 0
+            value: value
+        id: id
+        type: type
+      properties:
+        attributes:
+          $ref: '#/components/schemas/Line_attributes'
+        id:
+          description: Posição desta linha em relação as outras
+          title: id
+          type: string
+        type:
+          description: Sempre 'lines' para seguir a especificação JSON API
+          title: type
+          type: string
+      title: Line
+      type: object
+    Occurrence:
+      example:
+        attributes:
+          occurrence_date: occurrence_date
+          code: code
+          charged_agency: charged_agency
+          code_name: code_name
+          others_credits_value: 5.962133916683182
+          iof_tax: 1.4658129805029452
+          is_rejected_payment: true
+          received_value: 2.3021358869347655
+          credit_date: credit_date
+          liquidation_code: liquidation_code
+          title_value: 9.301444243932576
+          mulct_value: mulct_value
+          liquidation_description: liquidation_description
+          bank_tax: 0.8008281904610115
+          rebate_value: 5.637376656633329
+          is_dda: is_dda
+          document_number: document_number
+          wallet: wallet
+          agency: agency
+          sequencial_number: 7.061401241503109
+          due_date: due_date
+          discount_value: 6.027456183070403
+          our_number: our_number
+          payer_allegation: payer_allegation
+          is_payment: true
+        id: 3
+        type: type
+      properties:
+        attributes:
+          $ref: '#/components/schemas/Occurrence_attributes'
+        id:
+          description: Posição da ocorrência em relação às outras ocorrências processadas
+            neste mesmo arquivo
+          title: id
+          type: integer
+        type:
+          description: Sempre 'occurrences' para seguir a especificação JSON API
+          title: type
+          type: string
+      title: Occurrence
+      type: object
+    _file_post_request:
+      properties:
+        file:
+          description: Arquivo CNAB
+          format: binary
+          type: string
+      required:
+      - file
+      type: object
+    _file_post_200_response:
+      example:
+        data:
+          attributes:
+            account_number: account_number
+            bank_code: 0
+            generation_date: 2000-01-23
+            company_name: company_name
+            bank_name: bank_name
+            name: name
+          id: id
+          type: type
+      properties:
+        data:
+          $ref: '#/components/schemas/File'
+      title: _file_post_200_response
+      type: object
+    _file__fileId__lines_get_200_response:
+      example:
+        data:
+        - attributes:
+            raw_text: raw_text
+            identified_fields:
+            - name: name
+              start: 6
+              end: 0
+              value: value
+            - name: name
+              start: 6
+              end: 0
+              value: value
+          id: id
+          type: type
+        - attributes:
+            raw_text: raw_text
+            identified_fields:
+            - name: name
+              start: 6
+              end: 0
+              value: value
+            - name: name
+              start: 6
+              end: 0
+              value: value
+          id: id
+          type: type
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/Line'
+          title: data
+          type: array
+      title: _file__fileId__lines_get_200_response
+      type: object
+    _file__fileId__occurrences_get_200_response:
+      example:
+        data:
+        - attributes:
+            occurrence_date: occurrence_date
+            code: code
+            charged_agency: charged_agency
+            code_name: code_name
+            others_credits_value: 5.962133916683182
+            iof_tax: 1.4658129805029452
+            is_rejected_payment: true
+            received_value: 2.3021358869347655
+            credit_date: credit_date
+            liquidation_code: liquidation_code
+            title_value: 9.301444243932576
+            mulct_value: mulct_value
+            liquidation_description: liquidation_description
+            bank_tax: 0.8008281904610115
+            rebate_value: 5.637376656633329
+            is_dda: is_dda
+            document_number: document_number
+            wallet: wallet
+            agency: agency
+            sequencial_number: 7.061401241503109
+            due_date: due_date
+            discount_value: 6.027456183070403
+            our_number: our_number
+            payer_allegation: payer_allegation
+            is_payment: true
+          id: 3
+          type: type
+        - attributes:
+            occurrence_date: occurrence_date
+            code: code
+            charged_agency: charged_agency
+            code_name: code_name
+            others_credits_value: 5.962133916683182
+            iof_tax: 1.4658129805029452
+            is_rejected_payment: true
+            received_value: 2.3021358869347655
+            credit_date: credit_date
+            liquidation_code: liquidation_code
+            title_value: 9.301444243932576
+            mulct_value: mulct_value
+            liquidation_description: liquidation_description
+            bank_tax: 0.8008281904610115
+            rebate_value: 5.637376656633329
+            is_dda: is_dda
+            document_number: document_number
+            wallet: wallet
+            agency: agency
+            sequencial_number: 7.061401241503109
+            due_date: due_date
+            discount_value: 6.027456183070403
+            our_number: our_number
+            payer_allegation: payer_allegation
+            is_payment: true
+          id: 3
+          type: type
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/Occurrence'
+          title: data
+          type: array
+      title: _file__fileId__occurrences_get_200_response
+      type: object
+    Error_errors_inner:
+      example:
+        detail: detail
+        title: title
+      properties:
+        detail:
+          title: detail
+          type: string
+        title:
+          title: title
+          type: string
+      title: Error_errors_inner
+      type: object
+    File_attributes:
+      example:
+        account_number: account_number
+        bank_code: 0
+        generation_date: 2000-01-23
+        company_name: company_name
+        bank_name: bank_name
+        name: name
+      properties:
+        account_number:
+          description: Número da conta à qual este arquivo está vinculado
+          title: account_number
+          type: string
+        bank_code:
+          description: Código do banco
+          title: bank_code
+          type: integer
+        bank_name:
+          description: Nome do banco
+          title: bank_name
+          type: string
+        company_name:
+          description: Nome da empresa a quem pertence este arquivo
+          title: company_name
+          type: string
+        generation_date:
+          description: Data em que este arquivo foi gerado
+          format: date
+          title: generation_date
+          type: string
+        name:
+          description: Nome do arquivo
+          title: name
+          type: string
+      title: File_attributes
+      type: object
+    Line_attributes_identified_fields_inner:
+      example:
+        name: name
+        start: 6
+        end: 0
+        value: value
+      properties:
+        end:
+          title: end
+          type: integer
+        name:
+          title: name
+          type: string
+        start:
+          title: start
+          type: integer
+        value:
+          title: value
+          type: string
+      title: Line_attributes_identified_fields_inner
+      type: object
+    Line_attributes:
+      example:
+        raw_text: raw_text
+        identified_fields:
+        - name: name
+          start: 6
+          end: 0
+          value: value
+        - name: name
+          start: 6
+          end: 0
+          value: value
+      properties:
+        identified_fields:
+          items:
+            $ref: '#/components/schemas/Line_attributes_identified_fields_inner'
+          title: identified_fields
+          type: array
+        raw_text:
+          description: Linha completa (em texto)
+          title: raw_text
+          type: string
+      title: Line_attributes
+      type: object
+    Occurrence_attributes:
+      example:
+        occurrence_date: occurrence_date
+        code: code
+        charged_agency: charged_agency
+        code_name: code_name
+        others_credits_value: 5.962133916683182
+        iof_tax: 1.4658129805029452
+        is_rejected_payment: true
+        received_value: 2.3021358869347655
+        credit_date: credit_date
+        liquidation_code: liquidation_code
+        title_value: 9.301444243932576
+        mulct_value: mulct_value
+        liquidation_description: liquidation_description
+        bank_tax: 0.8008281904610115
+        rebate_value: 5.637376656633329
+        is_dda: is_dda
+        document_number: document_number
+        wallet: wallet
+        agency: agency
+        sequencial_number: 7.061401241503109
+        due_date: due_date
+        discount_value: 6.027456183070403
+        our_number: our_number
+        payer_allegation: payer_allegation
+        is_payment: true
+      properties:
+        agency:
+          description: Retorna o número da agencia
+          title: agency
+          type: string
+        bank_tax:
+          description: Tarifa bancária
+          title: bank_tax
+          type: number
+        charged_agency:
+          description: Retorna a agencia cobradora (com o digito)
+          title: charged_agency
+          type: string
+        code:
+          description: Código de Ocorrência conforme o padrão CNAB
+          title: code
+          type: string
+        code_name:
+          description: Nome do código
+          title: code_name
+          type: string
+        credit_date:
+          description: Retorna a data em que o dinheiro caiu na conta
+          title: credit_date
+          type: string
+        discount_value:
+          description: Valor de desconto
+          title: discount_value
+          type: number
+        document_number:
+          description: Retorna o número do documento do boleto
+          title: document_number
+          type: string
+        due_date:
+          description: Retorna a data de vencimento de boleto
+          title: due_date
+          type: string
+        iof_tax:
+          description: Retorna o valor do Imposto sobre operações financeiras (IOF)
+          title: iof_tax
+          type: number
+        is_dda:
+          description: Retorna de o boleto foi pago através do Débito Direto Autorizado
+          title: is_dda
+          type: string
+        is_payment:
+          description: Retorna se é para dar baixa no boleto
+          title: is_payment
+          type: boolean
+        is_rejected_payment:
+          description: "Retorno se é uma baixa rejeitada (Ex: pedido de baixa foi\
+            \ rejeitado)"
+          title: is_rejected_payment
+          type: boolean
+        liquidation_code:
+          description: "Retorna o código de liquidação, normalmente usado para saber\
+            \ onde o cliente efetuou o pagamento"
+          title: liquidation_code
+          type: string
+        liquidation_description:
+          description: Retorna a descrição do código de liquidação
+          title: liquidation_description
+          type: string
+        mulct_value:
+          description: Retorna o valor de juros e mora
+          title: mulct_value
+          type: string
+        occurrence_date:
+          description: "Retorna a data da ocorrencia, o dia do pagamento"
+          title: occurrence_date
+          type: string
+        others_credits_value:
+          description: Retorna o valor de outros creditos
+          title: others_credits_value
+          type: number
+        our_number:
+          description: Retorna o nosso número do boleto (sem o digito)
+          title: our_number
+          type: string
+        payer_allegation:
+          description: Retorna a alegação do pagador (para erros)
+          title: payer_allegation
+          type: string
+        rebate_value:
+          description: Retornna o valor dos abatimentos concedidos (depois da emissão)
+          title: rebate_value
+          type: number
+        received_value:
+          description: Valor recebido
+          title: received_value
+          type: number
+        sequencial_number:
+          description: Retorna o numero sequencial da ocorrência no arquivo
+          title: sequencial_number
+          type: number
+        title_value:
+          description: Valor do título (valor do boleto)
+          title: title_value
+          type: number
+        wallet:
+          description: Retorna o número da carteira do boleto
+          title: wallet
+          type: string
+      title: Occurrence_attributes
+      type: object
+x-original-swagger-version: "2.0"

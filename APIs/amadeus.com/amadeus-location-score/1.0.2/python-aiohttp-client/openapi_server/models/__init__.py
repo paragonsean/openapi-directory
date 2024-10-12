@@ -1,0 +1,19 @@
+# coding: utf-8
+
+# import models into model package
+from openapi_server.models.category_rated_areas import CategoryRatedAreas
+from openapi_server.models.category_rated_areas_all_of_category_scores import CategoryRatedAreasAllOfCategoryScores
+from openapi_server.models.category_rated_areas_all_of_category_scores_night_life import CategoryRatedAreasAllOfCategoryScoresNightLife
+from openapi_server.models.category_rated_areas_all_of_category_scores_restaurant import CategoryRatedAreasAllOfCategoryScoresRestaurant
+from openapi_server.models.category_rated_areas_all_of_category_scores_shopping import CategoryRatedAreasAllOfCategoryScoresShopping
+from openapi_server.models.category_rated_areas_all_of_category_scores_sight import CategoryRatedAreasAllOfCategoryScoresSight
+from openapi_server.models.error import Error
+from openapi_server.models.error400 import Error400
+from openapi_server.models.error500 import Error500
+from openapi_server.models.error_source import ErrorSource
+from openapi_server.models.geo_code import GeoCode
+from openapi_server.models.get_category_rated_areas200_response import GetCategoryRatedAreas200Response
+from openapi_server.models.links import Links
+from openapi_server.models.meta import Meta
+from openapi_server.models.warning import Warning
+from openapi_server.models.warning_source import WarningSource

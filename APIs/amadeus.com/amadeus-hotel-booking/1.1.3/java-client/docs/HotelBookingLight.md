@@ -1,0 +1,18 @@
+
+
+# HotelBookingLight
+
+Booking Details
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**associatedRecords** | [**List&lt;AssociatedRecord&gt;**](AssociatedRecord.md) |  |  [optional] |
+|**id** | **String** | Booking Id |  |
+|**providerConfirmationId** | **String** | GDS Confirmation Number. If you call the Provider, this Reference may be asked |  |
+|**self** | **URI** | Retrieve Booking Details |  [optional] |
+|**type** | **String** | Response Type |  |
+
+
+

@@ -1,0 +1,14 @@
+# FlightDelayPrediction.PredictionResultType
+
+## Enum
+
+
+* `LESS_THAN_30_MINUTES` (value: `"LESS_THAN_30_MINUTES"`)
+
+* `BETWEEN_30_AND_60_MINUTES` (value: `"BETWEEN_30_AND_60_MINUTES"`)
+
+* `BETWEEN_60_AND_120_MINUTES` (value: `"BETWEEN_60_AND_120_MINUTES"`)
+
+* `OVER_120_MINUTES_OR_CANCELLED` (value: `"OVER_120_MINUTES_OR_CANCELLED"`)
+
+
