@@ -1,0 +1,18 @@
+
+
+# VnetValidationFailureDetails
+
+A class that describes the reason for a validation failure.
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**properties** | [**Object**](Object.md) | VnetValidationFailureDetails resource specific properties |  [optional] |
+|**id** | **String** | Resource Id. |  [optional] [readonly] |
+|**kind** | **String** | Kind of resource. |  [optional] |
+|**name** | **String** | Resource Name. |  [optional] [readonly] |
+|**type** | **String** | Resource type. |  [optional] [readonly] |
+
+
+

@@ -1,0 +1,6 @@
+# coding: utf-8
+
+# import models into model package
+from openapi_server.models.backup_long_term_retention_vault import BackupLongTermRetentionVault
+from openapi_server.models.backup_long_term_retention_vault_list_result import BackupLongTermRetentionVaultListResult
+from openapi_server.models.backup_long_term_retention_vault_properties import BackupLongTermRetentionVaultProperties

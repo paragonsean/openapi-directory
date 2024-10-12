@@ -1,0 +1,101 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIBaseImageDependency.h \
+    $${PWD}/OAIBuild.h \
+    $${PWD}/OAIBuildArgument.h \
+    $${PWD}/OAIBuildArgumentList.h \
+    $${PWD}/OAIBuildFilter.h \
+    $${PWD}/OAIBuildGetLogResult.h \
+    $${PWD}/OAIBuildListResult.h \
+    $${PWD}/OAIBuildProperties.h \
+    $${PWD}/OAIBuildStep.h \
+    $${PWD}/OAIBuildStepList.h \
+    $${PWD}/OAIBuildStepProperties.h \
+    $${PWD}/OAIBuildStepPropertiesUpdateParameters.h \
+    $${PWD}/OAIBuildStepUpdateParameters.h \
+    $${PWD}/OAIBuildTask.h \
+    $${PWD}/OAIBuildTaskBuildRequest.h \
+    $${PWD}/OAIBuildTaskFilter.h \
+    $${PWD}/OAIBuildTaskListResult.h \
+    $${PWD}/OAIBuildTaskProperties.h \
+    $${PWD}/OAIBuildTaskPropertiesUpdateParameters.h \
+    $${PWD}/OAIBuildTaskUpdateParameters.h \
+    $${PWD}/OAIBuildUpdateParameters.h \
+    $${PWD}/OAIDockerBuildStep.h \
+    $${PWD}/OAIDockerBuildStepUpdateParameters.h \
+    $${PWD}/OAIGitCommitTrigger.h \
+    $${PWD}/OAIImageDescriptor.h \
+    $${PWD}/OAIImageUpdateTrigger.h \
+    $${PWD}/OAIPlatformProperties.h \
+    $${PWD}/OAIProxyResource.h \
+    $${PWD}/OAIQueueBuildRequest.h \
+    $${PWD}/OAIQuickBuildRequest.h \
+    $${PWD}/OAIResource.h \
+    $${PWD}/OAISourceControlAuthInfo.h \
+    $${PWD}/OAISourceRepositoryProperties.h \
+    $${PWD}/OAISourceRepositoryUpdateParameters.h \
+    $${PWD}/OAISourceUploadDefinition.h \
+# APIs
+    $${PWD}/OAIBuildStepsApi.h \
+    $${PWD}/OAIBuildTasksApi.h \
+    $${PWD}/OAIBuildsApi.h \
+    $${PWD}/OAIRegistriesApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIBaseImageDependency.cpp \
+    $${PWD}/OAIBuild.cpp \
+    $${PWD}/OAIBuildArgument.cpp \
+    $${PWD}/OAIBuildArgumentList.cpp \
+    $${PWD}/OAIBuildFilter.cpp \
+    $${PWD}/OAIBuildGetLogResult.cpp \
+    $${PWD}/OAIBuildListResult.cpp \
+    $${PWD}/OAIBuildProperties.cpp \
+    $${PWD}/OAIBuildStep.cpp \
+    $${PWD}/OAIBuildStepList.cpp \
+    $${PWD}/OAIBuildStepProperties.cpp \
+    $${PWD}/OAIBuildStepPropertiesUpdateParameters.cpp \
+    $${PWD}/OAIBuildStepUpdateParameters.cpp \
+    $${PWD}/OAIBuildTask.cpp \
+    $${PWD}/OAIBuildTaskBuildRequest.cpp \
+    $${PWD}/OAIBuildTaskFilter.cpp \
+    $${PWD}/OAIBuildTaskListResult.cpp \
+    $${PWD}/OAIBuildTaskProperties.cpp \
+    $${PWD}/OAIBuildTaskPropertiesUpdateParameters.cpp \
+    $${PWD}/OAIBuildTaskUpdateParameters.cpp \
+    $${PWD}/OAIBuildUpdateParameters.cpp \
+    $${PWD}/OAIDockerBuildStep.cpp \
+    $${PWD}/OAIDockerBuildStepUpdateParameters.cpp \
+    $${PWD}/OAIGitCommitTrigger.cpp \
+    $${PWD}/OAIImageDescriptor.cpp \
+    $${PWD}/OAIImageUpdateTrigger.cpp \
+    $${PWD}/OAIPlatformProperties.cpp \
+    $${PWD}/OAIProxyResource.cpp \
+    $${PWD}/OAIQueueBuildRequest.cpp \
+    $${PWD}/OAIQuickBuildRequest.cpp \
+    $${PWD}/OAIResource.cpp \
+    $${PWD}/OAISourceControlAuthInfo.cpp \
+    $${PWD}/OAISourceRepositoryProperties.cpp \
+    $${PWD}/OAISourceRepositoryUpdateParameters.cpp \
+    $${PWD}/OAISourceUploadDefinition.cpp \
+# APIs
+    $${PWD}/OAIBuildStepsApi.cpp \
+    $${PWD}/OAIBuildTasksApi.cpp \
+    $${PWD}/OAIBuildsApi.cpp \
+    $${PWD}/OAIRegistriesApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

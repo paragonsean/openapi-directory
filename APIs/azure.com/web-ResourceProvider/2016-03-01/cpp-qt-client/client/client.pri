@@ -1,0 +1,99 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIBillingMeter.h \
+    $${PWD}/OAIBillingMeterCollection.h \
+    $${PWD}/OAICsmMoveResourceEnvelope.h \
+    $${PWD}/OAIDeploymentLocations.h \
+    $${PWD}/OAIDeploymentLocations_hostingEnvironments_inner.h \
+    $${PWD}/OAIDeploymentLocations_hostingEnvironments_inner_clusterSettings_inner.h \
+    $${PWD}/OAIDeploymentLocations_hostingEnvironments_inner_environmentCapacities_inner.h \
+    $${PWD}/OAIDeploymentLocations_hostingEnvironments_inner_networkAccessControlList_inner.h \
+    $${PWD}/OAIDeploymentLocations_hostingEnvironments_inner_vipMappings_inner.h \
+    $${PWD}/OAIDeploymentLocations_hostingEnvironments_inner_virtualNetwork.h \
+    $${PWD}/OAIDeploymentLocations_hostingEnvironments_inner_workerPools_inner.h \
+    $${PWD}/OAIGeoRegion.h \
+    $${PWD}/OAIGeoRegionCollection.h \
+    $${PWD}/OAIGetPublishingUser_200_response.h \
+    $${PWD}/OAIGetPublishingUser_200_response_properties.h \
+    $${PWD}/OAIGlobalCsmSkuDescription.h \
+    $${PWD}/OAIGlobalCsmSkuDescription_capabilities_inner.h \
+    $${PWD}/OAIGlobalCsmSkuDescription_capacity.h \
+    $${PWD}/OAIHostingEnvironmentDeploymentInfo.h \
+    $${PWD}/OAIListSiteIdentifiersAssignedToHostName_200_response.h \
+    $${PWD}/OAIListSiteIdentifiersAssignedToHostName_200_response_value_inner.h \
+    $${PWD}/OAIListSiteIdentifiersAssignedToHostName_200_response_value_inner_properties.h \
+    $${PWD}/OAIListSiteIdentifiersAssignedToHostName_request.h \
+    $${PWD}/OAIPremierAddOnOffer.h \
+    $${PWD}/OAIPremierAddOnOfferCollection.h \
+    $${PWD}/OAIResourceNameAvailability.h \
+    $${PWD}/OAIResourceNameAvailabilityRequest.h \
+    $${PWD}/OAISkuInfos.h \
+    $${PWD}/OAISourceControl.h \
+    $${PWD}/OAISourceControlCollection.h \
+    $${PWD}/OAIValidateProperties.h \
+    $${PWD}/OAIValidateRequest.h \
+    $${PWD}/OAIValidateResponse.h \
+    $${PWD}/OAIValidateResponseError.h \
+    $${PWD}/OAIVnetParameters.h \
+    $${PWD}/OAIVnetValidationFailureDetails.h \
+    $${PWD}/OAIVnetValidationTestFailure.h \
+# APIs
+    $${PWD}/OAIDefaultApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIBillingMeter.cpp \
+    $${PWD}/OAIBillingMeterCollection.cpp \
+    $${PWD}/OAICsmMoveResourceEnvelope.cpp \
+    $${PWD}/OAIDeploymentLocations.cpp \
+    $${PWD}/OAIDeploymentLocations_hostingEnvironments_inner.cpp \
+    $${PWD}/OAIDeploymentLocations_hostingEnvironments_inner_clusterSettings_inner.cpp \
+    $${PWD}/OAIDeploymentLocations_hostingEnvironments_inner_environmentCapacities_inner.cpp \
+    $${PWD}/OAIDeploymentLocations_hostingEnvironments_inner_networkAccessControlList_inner.cpp \
+    $${PWD}/OAIDeploymentLocations_hostingEnvironments_inner_vipMappings_inner.cpp \
+    $${PWD}/OAIDeploymentLocations_hostingEnvironments_inner_virtualNetwork.cpp \
+    $${PWD}/OAIDeploymentLocations_hostingEnvironments_inner_workerPools_inner.cpp \
+    $${PWD}/OAIGeoRegion.cpp \
+    $${PWD}/OAIGeoRegionCollection.cpp \
+    $${PWD}/OAIGetPublishingUser_200_response.cpp \
+    $${PWD}/OAIGetPublishingUser_200_response_properties.cpp \
+    $${PWD}/OAIGlobalCsmSkuDescription.cpp \
+    $${PWD}/OAIGlobalCsmSkuDescription_capabilities_inner.cpp \
+    $${PWD}/OAIGlobalCsmSkuDescription_capacity.cpp \
+    $${PWD}/OAIHostingEnvironmentDeploymentInfo.cpp \
+    $${PWD}/OAIListSiteIdentifiersAssignedToHostName_200_response.cpp \
+    $${PWD}/OAIListSiteIdentifiersAssignedToHostName_200_response_value_inner.cpp \
+    $${PWD}/OAIListSiteIdentifiersAssignedToHostName_200_response_value_inner_properties.cpp \
+    $${PWD}/OAIListSiteIdentifiersAssignedToHostName_request.cpp \
+    $${PWD}/OAIPremierAddOnOffer.cpp \
+    $${PWD}/OAIPremierAddOnOfferCollection.cpp \
+    $${PWD}/OAIResourceNameAvailability.cpp \
+    $${PWD}/OAIResourceNameAvailabilityRequest.cpp \
+    $${PWD}/OAISkuInfos.cpp \
+    $${PWD}/OAISourceControl.cpp \
+    $${PWD}/OAISourceControlCollection.cpp \
+    $${PWD}/OAIValidateProperties.cpp \
+    $${PWD}/OAIValidateRequest.cpp \
+    $${PWD}/OAIValidateResponse.cpp \
+    $${PWD}/OAIValidateResponseError.cpp \
+    $${PWD}/OAIVnetParameters.cpp \
+    $${PWD}/OAIVnetValidationFailureDetails.cpp \
+    $${PWD}/OAIVnetValidationTestFailure.cpp \
+# APIs
+    $${PWD}/OAIDefaultApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp
