@@ -1,0 +1,18 @@
+# coding: utf-8
+
+# import models into model package
+from openapi_server.models.basic_dependency import BasicDependency
+from openapi_server.models.dependency import Dependency
+from openapi_server.models.deployment import Deployment
+from openapi_server.models.deployment_extended import DeploymentExtended
+from openapi_server.models.deployment_parameters import DeploymentParameters
+from openapi_server.models.deployment_parameters_admin_password import DeploymentParametersAdminPassword
+from openapi_server.models.deployment_parameters_admin_username import DeploymentParametersAdminUsername
+from openapi_server.models.deployment_parameters_dns_label_prefix import DeploymentParametersDnsLabelPrefix
+from openapi_server.models.deployment_parameters_os_version import DeploymentParametersOsVersion
+from openapi_server.models.deployment_properties import DeploymentProperties
+from openapi_server.models.deployment_properties_extended import DeploymentPropertiesExtended
+from openapi_server.models.parameters_link import ParametersLink
+from openapi_server.models.provider import Provider
+from openapi_server.models.provider_resource_type import ProviderResourceType
+from openapi_server.models.template_link import TemplateLink

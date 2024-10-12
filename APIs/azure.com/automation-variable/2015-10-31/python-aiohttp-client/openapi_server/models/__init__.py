@@ -1,0 +1,11 @@
+# coding: utf-8
+
+# import models into model package
+from openapi_server.models.variable import Variable
+from openapi_server.models.variable_create_or_update_parameters import VariableCreateOrUpdateParameters
+from openapi_server.models.variable_create_or_update_properties import VariableCreateOrUpdateProperties
+from openapi_server.models.variable_list_by_automation_account_default_response import VariableListByAutomationAccountDefaultResponse
+from openapi_server.models.variable_list_result import VariableListResult
+from openapi_server.models.variable_properties import VariableProperties
+from openapi_server.models.variable_update_parameters import VariableUpdateParameters
+from openapi_server.models.variable_update_properties import VariableUpdateProperties
