@@ -1,0 +1,9 @@
+# LinodeApi.ResetDiskPasswordRequest
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**password** | **String** | The new root password for the OS installed on this Disk. The password must meet the complexity strength validation requirements for a strong password.  | 
+
+

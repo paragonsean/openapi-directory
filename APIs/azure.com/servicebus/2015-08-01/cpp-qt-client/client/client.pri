@@ -1,0 +1,103 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAICheckNameAvailability.h \
+    $${PWD}/OAICheckNameAvailabilityResult.h \
+    $${PWD}/OAIEntityAvailabilityStatus.h \
+    $${PWD}/OAIEntityStatus.h \
+    $${PWD}/OAIMessageCountDetails.h \
+    $${PWD}/OAINamespaceCreateOrUpdateParameters.h \
+    $${PWD}/OAINamespaceListResult.h \
+    $${PWD}/OAINamespaceProperties.h \
+    $${PWD}/OAINamespaceResource.h \
+    $${PWD}/OAINamespaceUpdateParameters.h \
+    $${PWD}/OAIOperation.h \
+    $${PWD}/OAIOperationListResult.h \
+    $${PWD}/OAIOperation_display.h \
+    $${PWD}/OAIQueueCreateOrUpdateParameters.h \
+    $${PWD}/OAIQueueListResult.h \
+    $${PWD}/OAIQueueProperties.h \
+    $${PWD}/OAIQueueResource.h \
+    $${PWD}/OAIRegenerateKeysParameters.h \
+    $${PWD}/OAIResource.h \
+    $${PWD}/OAIResourceListKeys.h \
+    $${PWD}/OAISharedAccessAuthorizationRuleCreateOrUpdateParameters.h \
+    $${PWD}/OAISharedAccessAuthorizationRuleListResult.h \
+    $${PWD}/OAISharedAccessAuthorizationRuleProperties.h \
+    $${PWD}/OAISharedAccessAuthorizationRuleResource.h \
+    $${PWD}/OAISku.h \
+    $${PWD}/OAISubscriptionCreateOrUpdateParameters.h \
+    $${PWD}/OAISubscriptionListResult.h \
+    $${PWD}/OAISubscriptionProperties.h \
+    $${PWD}/OAISubscriptionResource.h \
+    $${PWD}/OAITopicCreateOrUpdateParameters.h \
+    $${PWD}/OAITopicListResult.h \
+    $${PWD}/OAITopicProperties.h \
+    $${PWD}/OAITopicResource.h \
+    $${PWD}/OAITrackedResource.h \
+    $${PWD}/OAIUnavailableReason.h \
+# APIs
+    $${PWD}/OAINamespacesApi.h \
+    $${PWD}/OAIOperationsApi.h \
+    $${PWD}/OAIQueuesApi.h \
+    $${PWD}/OAISubscriptionsApi.h \
+    $${PWD}/OAITopicsApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAICheckNameAvailability.cpp \
+    $${PWD}/OAICheckNameAvailabilityResult.cpp \
+    $${PWD}/OAIEntityAvailabilityStatus.cpp \
+    $${PWD}/OAIEntityStatus.cpp \
+    $${PWD}/OAIMessageCountDetails.cpp \
+    $${PWD}/OAINamespaceCreateOrUpdateParameters.cpp \
+    $${PWD}/OAINamespaceListResult.cpp \
+    $${PWD}/OAINamespaceProperties.cpp \
+    $${PWD}/OAINamespaceResource.cpp \
+    $${PWD}/OAINamespaceUpdateParameters.cpp \
+    $${PWD}/OAIOperation.cpp \
+    $${PWD}/OAIOperationListResult.cpp \
+    $${PWD}/OAIOperation_display.cpp \
+    $${PWD}/OAIQueueCreateOrUpdateParameters.cpp \
+    $${PWD}/OAIQueueListResult.cpp \
+    $${PWD}/OAIQueueProperties.cpp \
+    $${PWD}/OAIQueueResource.cpp \
+    $${PWD}/OAIRegenerateKeysParameters.cpp \
+    $${PWD}/OAIResource.cpp \
+    $${PWD}/OAIResourceListKeys.cpp \
+    $${PWD}/OAISharedAccessAuthorizationRuleCreateOrUpdateParameters.cpp \
+    $${PWD}/OAISharedAccessAuthorizationRuleListResult.cpp \
+    $${PWD}/OAISharedAccessAuthorizationRuleProperties.cpp \
+    $${PWD}/OAISharedAccessAuthorizationRuleResource.cpp \
+    $${PWD}/OAISku.cpp \
+    $${PWD}/OAISubscriptionCreateOrUpdateParameters.cpp \
+    $${PWD}/OAISubscriptionListResult.cpp \
+    $${PWD}/OAISubscriptionProperties.cpp \
+    $${PWD}/OAISubscriptionResource.cpp \
+    $${PWD}/OAITopicCreateOrUpdateParameters.cpp \
+    $${PWD}/OAITopicListResult.cpp \
+    $${PWD}/OAITopicProperties.cpp \
+    $${PWD}/OAITopicResource.cpp \
+    $${PWD}/OAITrackedResource.cpp \
+    $${PWD}/OAIUnavailableReason.cpp \
+# APIs
+    $${PWD}/OAINamespacesApi.cpp \
+    $${PWD}/OAIOperationsApi.cpp \
+    $${PWD}/OAIQueuesApi.cpp \
+    $${PWD}/OAISubscriptionsApi.cpp \
+    $${PWD}/OAITopicsApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

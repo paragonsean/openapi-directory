@@ -1,0 +1,14 @@
+
+
+# LKEVersion
+
+LKE versions 
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**id** | **String** | A Kubernetes version number available for deployment to a Kubernetes cluster in the format of &amp;lt;major&amp;gt;.&amp;lt;minor&amp;gt;, and the latest supported patch version.  |  [optional] |
+
+
+

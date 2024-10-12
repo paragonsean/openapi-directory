@@ -1,0 +1,18 @@
+
+
+# MonitoringEmailSubscriptionUpdate
+
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**attachments** | **List&lt;SubscriptionAttachmentType&gt;** | Attachment files to send with the subscription. |  |
+|**emailAddresses** | **List&lt;String&gt;** | Email addresses to send monitoring subscriptions to. |  |
+|**jobStates** | **List&lt;JobMonitoringState&gt;** | User-selected job states. |  |
+|**timeAttributes** | [**SubscriptionScheduleTimeAttributes**](SubscriptionScheduleTimeAttributes.md) |  |  |
+|**assumeOwnership** | **Boolean** | Changes the owner of an email subscription object to the username of the account that is logged into the current session. |  [optional] |
+|**id** | **String** | ID assigned to an email subscription object. |  |
+
+
+

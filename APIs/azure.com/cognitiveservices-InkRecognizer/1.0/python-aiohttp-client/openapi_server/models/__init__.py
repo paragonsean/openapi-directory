@@ -1,0 +1,21 @@
+# coding: utf-8
+
+# import models into model package
+from openapi_server.models.alternate_pattern_inner import AlternatePatternInner
+from openapi_server.models.analysis_request import AnalysisRequest
+from openapi_server.models.analysis_response import AnalysisResponse
+from openapi_server.models.category_pattern import CategoryPattern
+from openapi_server.models.class_pattern import ClassPattern
+from openapi_server.models.container_category_pattern import ContainerCategoryPattern
+from openapi_server.models.drawing_attributes_pattern import DrawingAttributesPattern
+from openapi_server.models.drawing_attributes_pattern_color import DrawingAttributesPatternColor
+from openapi_server.models.error_model import ErrorModel
+from openapi_server.models.error_model_details_inner import ErrorModelDetailsInner
+from openapi_server.models.ink_point import InkPoint
+from openapi_server.models.ink_point_value_attribute import InkPointValueAttribute
+from openapi_server.models.leaf_category_pattern import LeafCategoryPattern
+from openapi_server.models.point_details_pattern import PointDetailsPattern
+from openapi_server.models.recognition_unit_inner import RecognitionUnitInner
+from openapi_server.models.recognition_unit_inner_bounding_rectangle import RecognitionUnitInnerBoundingRectangle
+from openapi_server.models.shape_pattern import ShapePattern
+from openapi_server.models.stroke import Stroke

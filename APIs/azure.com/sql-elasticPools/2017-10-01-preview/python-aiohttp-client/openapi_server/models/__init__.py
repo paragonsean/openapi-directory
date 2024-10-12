@@ -1,0 +1,10 @@
+# coding: utf-8
+
+# import models into model package
+from openapi_server.models.elastic_pool import ElasticPool
+from openapi_server.models.elastic_pool_list_result import ElasticPoolListResult
+from openapi_server.models.elastic_pool_per_database_settings import ElasticPoolPerDatabaseSettings
+from openapi_server.models.elastic_pool_properties import ElasticPoolProperties
+from openapi_server.models.elastic_pool_update import ElasticPoolUpdate
+from openapi_server.models.elastic_pool_update_properties import ElasticPoolUpdateProperties
+from openapi_server.models.elastic_pool_update_sku import ElasticPoolUpdateSku

@@ -1,0 +1,115 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIAvailableProviderOperation.h \
+    $${PWD}/OAIAvailableProviderOperationDisplay.h \
+    $${PWD}/OAIAvailableProviderOperations.h \
+    $${PWD}/OAICustomerSecret.h \
+    $${PWD}/OAIDataManager.h \
+    $${PWD}/OAIDataManagerList.h \
+    $${PWD}/OAIDataManagerUpdateParameter.h \
+    $${PWD}/OAIDataService.h \
+    $${PWD}/OAIDataServiceList.h \
+    $${PWD}/OAIDataServiceProperties.h \
+    $${PWD}/OAIDataStore.h \
+    $${PWD}/OAIDataStoreFilter.h \
+    $${PWD}/OAIDataStoreList.h \
+    $${PWD}/OAIDataStoreProperties.h \
+    $${PWD}/OAIDataStoreType.h \
+    $${PWD}/OAIDataStoreTypeList.h \
+    $${PWD}/OAIDataStoreTypeProperties.h \
+    $${PWD}/OAIDmsBaseObject.h \
+    $${PWD}/OAIError.h \
+    $${PWD}/OAIErrorDetails.h \
+    $${PWD}/OAIJob.h \
+    $${PWD}/OAIJobDefinition.h \
+    $${PWD}/OAIJobDefinitionFilter.h \
+    $${PWD}/OAIJobDefinitionList.h \
+    $${PWD}/OAIJobDefinitionProperties.h \
+    $${PWD}/OAIJobDetails.h \
+    $${PWD}/OAIJobFilter.h \
+    $${PWD}/OAIJobList.h \
+    $${PWD}/OAIJobProperties.h \
+    $${PWD}/OAIJobStages.h \
+    $${PWD}/OAIKey.h \
+    $${PWD}/OAIPublicKey.h \
+    $${PWD}/OAIPublicKeyList.h \
+    $${PWD}/OAIPublicKeyProperties.h \
+    $${PWD}/OAIResource.h \
+    $${PWD}/OAIRunParameters.h \
+    $${PWD}/OAISchedule.h \
+    $${PWD}/OAISku.h \
+# APIs
+    $${PWD}/OAIDataManagersApi.h \
+    $${PWD}/OAIDataServicesApi.h \
+    $${PWD}/OAIDataStoreTypesApi.h \
+    $${PWD}/OAIDataStoresApi.h \
+    $${PWD}/OAIJobDefinitionsApi.h \
+    $${PWD}/OAIJobsApi.h \
+    $${PWD}/OAIOperationsApi.h \
+    $${PWD}/OAIPublicKeysApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIAvailableProviderOperation.cpp \
+    $${PWD}/OAIAvailableProviderOperationDisplay.cpp \
+    $${PWD}/OAIAvailableProviderOperations.cpp \
+    $${PWD}/OAICustomerSecret.cpp \
+    $${PWD}/OAIDataManager.cpp \
+    $${PWD}/OAIDataManagerList.cpp \
+    $${PWD}/OAIDataManagerUpdateParameter.cpp \
+    $${PWD}/OAIDataService.cpp \
+    $${PWD}/OAIDataServiceList.cpp \
+    $${PWD}/OAIDataServiceProperties.cpp \
+    $${PWD}/OAIDataStore.cpp \
+    $${PWD}/OAIDataStoreFilter.cpp \
+    $${PWD}/OAIDataStoreList.cpp \
+    $${PWD}/OAIDataStoreProperties.cpp \
+    $${PWD}/OAIDataStoreType.cpp \
+    $${PWD}/OAIDataStoreTypeList.cpp \
+    $${PWD}/OAIDataStoreTypeProperties.cpp \
+    $${PWD}/OAIDmsBaseObject.cpp \
+    $${PWD}/OAIError.cpp \
+    $${PWD}/OAIErrorDetails.cpp \
+    $${PWD}/OAIJob.cpp \
+    $${PWD}/OAIJobDefinition.cpp \
+    $${PWD}/OAIJobDefinitionFilter.cpp \
+    $${PWD}/OAIJobDefinitionList.cpp \
+    $${PWD}/OAIJobDefinitionProperties.cpp \
+    $${PWD}/OAIJobDetails.cpp \
+    $${PWD}/OAIJobFilter.cpp \
+    $${PWD}/OAIJobList.cpp \
+    $${PWD}/OAIJobProperties.cpp \
+    $${PWD}/OAIJobStages.cpp \
+    $${PWD}/OAIKey.cpp \
+    $${PWD}/OAIPublicKey.cpp \
+    $${PWD}/OAIPublicKeyList.cpp \
+    $${PWD}/OAIPublicKeyProperties.cpp \
+    $${PWD}/OAIResource.cpp \
+    $${PWD}/OAIRunParameters.cpp \
+    $${PWD}/OAISchedule.cpp \
+    $${PWD}/OAISku.cpp \
+# APIs
+    $${PWD}/OAIDataManagersApi.cpp \
+    $${PWD}/OAIDataServicesApi.cpp \
+    $${PWD}/OAIDataStoreTypesApi.cpp \
+    $${PWD}/OAIDataStoresApi.cpp \
+    $${PWD}/OAIJobDefinitionsApi.cpp \
+    $${PWD}/OAIJobsApi.cpp \
+    $${PWD}/OAIOperationsApi.cpp \
+    $${PWD}/OAIPublicKeysApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

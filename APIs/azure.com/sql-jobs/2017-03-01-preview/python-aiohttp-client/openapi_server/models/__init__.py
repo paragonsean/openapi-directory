@@ -1,0 +1,30 @@
+# coding: utf-8
+
+# import models into model package
+from openapi_server.models.job import Job
+from openapi_server.models.job_agent import JobAgent
+from openapi_server.models.job_agent_list_result import JobAgentListResult
+from openapi_server.models.job_agent_properties import JobAgentProperties
+from openapi_server.models.job_agent_update import JobAgentUpdate
+from openapi_server.models.job_credential import JobCredential
+from openapi_server.models.job_credential_list_result import JobCredentialListResult
+from openapi_server.models.job_credential_properties import JobCredentialProperties
+from openapi_server.models.job_execution import JobExecution
+from openapi_server.models.job_execution_list_result import JobExecutionListResult
+from openapi_server.models.job_execution_properties import JobExecutionProperties
+from openapi_server.models.job_execution_target import JobExecutionTarget
+from openapi_server.models.job_list_result import JobListResult
+from openapi_server.models.job_properties import JobProperties
+from openapi_server.models.job_schedule import JobSchedule
+from openapi_server.models.job_step import JobStep
+from openapi_server.models.job_step_action import JobStepAction
+from openapi_server.models.job_step_execution_options import JobStepExecutionOptions
+from openapi_server.models.job_step_list_result import JobStepListResult
+from openapi_server.models.job_step_output import JobStepOutput
+from openapi_server.models.job_step_properties import JobStepProperties
+from openapi_server.models.job_target import JobTarget
+from openapi_server.models.job_target_group import JobTargetGroup
+from openapi_server.models.job_target_group_list_result import JobTargetGroupListResult
+from openapi_server.models.job_target_group_properties import JobTargetGroupProperties
+from openapi_server.models.job_version import JobVersion
+from openapi_server.models.job_version_list_result import JobVersionListResult

@@ -1,0 +1,95 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIJob.h \
+    $${PWD}/OAIJobAgent.h \
+    $${PWD}/OAIJobAgentListResult.h \
+    $${PWD}/OAIJobAgentProperties.h \
+    $${PWD}/OAIJobAgentUpdate.h \
+    $${PWD}/OAIJobCredential.h \
+    $${PWD}/OAIJobCredentialListResult.h \
+    $${PWD}/OAIJobCredentialProperties.h \
+    $${PWD}/OAIJobExecution.h \
+    $${PWD}/OAIJobExecutionListResult.h \
+    $${PWD}/OAIJobExecutionProperties.h \
+    $${PWD}/OAIJobExecutionTarget.h \
+    $${PWD}/OAIJobListResult.h \
+    $${PWD}/OAIJobProperties.h \
+    $${PWD}/OAIJobSchedule.h \
+    $${PWD}/OAIJobStep.h \
+    $${PWD}/OAIJobStepAction.h \
+    $${PWD}/OAIJobStepExecutionOptions.h \
+    $${PWD}/OAIJobStepListResult.h \
+    $${PWD}/OAIJobStepOutput.h \
+    $${PWD}/OAIJobStepProperties.h \
+    $${PWD}/OAIJobTarget.h \
+    $${PWD}/OAIJobTargetGroup.h \
+    $${PWD}/OAIJobTargetGroupListResult.h \
+    $${PWD}/OAIJobTargetGroupProperties.h \
+    $${PWD}/OAIJobVersion.h \
+    $${PWD}/OAIJobVersionListResult.h \
+# APIs
+    $${PWD}/OAIJobAgentsApi.h \
+    $${PWD}/OAIJobCredentialsApi.h \
+    $${PWD}/OAIJobExecutionsApi.h \
+    $${PWD}/OAIJobStepExecutionsApi.h \
+    $${PWD}/OAIJobStepsApi.h \
+    $${PWD}/OAIJobTargetExecutionsApi.h \
+    $${PWD}/OAIJobTargetGroupsApi.h \
+    $${PWD}/OAIJobVersionsApi.h \
+    $${PWD}/OAIJobsApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIJob.cpp \
+    $${PWD}/OAIJobAgent.cpp \
+    $${PWD}/OAIJobAgentListResult.cpp \
+    $${PWD}/OAIJobAgentProperties.cpp \
+    $${PWD}/OAIJobAgentUpdate.cpp \
+    $${PWD}/OAIJobCredential.cpp \
+    $${PWD}/OAIJobCredentialListResult.cpp \
+    $${PWD}/OAIJobCredentialProperties.cpp \
+    $${PWD}/OAIJobExecution.cpp \
+    $${PWD}/OAIJobExecutionListResult.cpp \
+    $${PWD}/OAIJobExecutionProperties.cpp \
+    $${PWD}/OAIJobExecutionTarget.cpp \
+    $${PWD}/OAIJobListResult.cpp \
+    $${PWD}/OAIJobProperties.cpp \
+    $${PWD}/OAIJobSchedule.cpp \
+    $${PWD}/OAIJobStep.cpp \
+    $${PWD}/OAIJobStepAction.cpp \
+    $${PWD}/OAIJobStepExecutionOptions.cpp \
+    $${PWD}/OAIJobStepListResult.cpp \
+    $${PWD}/OAIJobStepOutput.cpp \
+    $${PWD}/OAIJobStepProperties.cpp \
+    $${PWD}/OAIJobTarget.cpp \
+    $${PWD}/OAIJobTargetGroup.cpp \
+    $${PWD}/OAIJobTargetGroupListResult.cpp \
+    $${PWD}/OAIJobTargetGroupProperties.cpp \
+    $${PWD}/OAIJobVersion.cpp \
+    $${PWD}/OAIJobVersionListResult.cpp \
+# APIs
+    $${PWD}/OAIJobAgentsApi.cpp \
+    $${PWD}/OAIJobCredentialsApi.cpp \
+    $${PWD}/OAIJobExecutionsApi.cpp \
+    $${PWD}/OAIJobStepExecutionsApi.cpp \
+    $${PWD}/OAIJobStepsApi.cpp \
+    $${PWD}/OAIJobTargetExecutionsApi.cpp \
+    $${PWD}/OAIJobTargetGroupsApi.cpp \
+    $${PWD}/OAIJobVersionsApi.cpp \
+    $${PWD}/OAIJobsApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

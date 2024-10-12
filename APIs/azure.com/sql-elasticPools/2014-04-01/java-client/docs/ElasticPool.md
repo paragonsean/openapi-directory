@@ -1,0 +1,20 @@
+
+
+# ElasticPool
+
+Represents a database elastic pool.
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**kind** | **String** | Kind of elastic pool.  This is metadata used for the Azure portal experience. |  [optional] [readonly] |
+|**properties** | [**ElasticPoolProperties**](ElasticPoolProperties.md) |  |  [optional] |
+|**location** | **String** | Resource location. |  |
+|**tags** | **Map&lt;String, String&gt;** | Resource tags. |  [optional] |
+|**id** | **String** | Resource ID. |  [optional] [readonly] |
+|**name** | **String** | Resource name. |  [optional] [readonly] |
+|**type** | **String** | Resource type. |  [optional] [readonly] |
+
+
+

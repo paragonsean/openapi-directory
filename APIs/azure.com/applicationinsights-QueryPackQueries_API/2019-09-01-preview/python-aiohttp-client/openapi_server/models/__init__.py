@@ -1,0 +1,9 @@
+# coding: utf-8
+
+# import models into model package
+from openapi_server.models.azure_resource_properties import AzureResourceProperties
+from openapi_server.models.error_response import ErrorResponse
+from openapi_server.models.log_analytics_query_pack_query import LogAnalyticsQueryPackQuery
+from openapi_server.models.log_analytics_query_pack_query_list_result import LogAnalyticsQueryPackQueryListResult
+from openapi_server.models.log_analytics_query_pack_query_properties import LogAnalyticsQueryPackQueryProperties
+from openapi_server.models.log_analytics_query_pack_query_search_properties import LogAnalyticsQueryPackQuerySearchProperties

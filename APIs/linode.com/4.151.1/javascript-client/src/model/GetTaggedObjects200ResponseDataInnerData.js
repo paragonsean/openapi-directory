@@ -1,0 +1,375 @@
+/**
+ * Linode API
+ * ## Introduction The Linode API provides the ability to programmatically manage the full range of Linode products and services.  This reference is designed to assist application developers and system administrators.  Each endpoint includes descriptions, request syntax, and examples using standard HTTP requests. Response data is returned in JSON format.   This document was generated from our OpenAPI Specification.  See the <a target=\"_top\" href=\"https://www.openapis.org\">OpenAPI website</a> for more information.  <a target=\"_top\" href=\"/docs/api/openapi.yaml\">Download the Linode OpenAPI Specification</a>.   ## Changelog  <a target=\"_top\" href=\"/docs/products/tools/api/release-notes/\">View our Changelog</a> to see release notes on all changes made to our API.  ## Access and Authentication  Some endpoints are publicly accessible without requiring authentication. All endpoints affecting your Account, however, require either a Personal Access Token or OAuth authentication (when using third-party applications).  ### Personal Access Token  The easiest way to access the API is with a Personal Access Token (PAT) generated from the <a target=\"_top\" href=\"https://cloud.linode.com/profile/tokens\">Linode Cloud Manager</a> or the [Create Personal Access Token](/docs/api/profile/#personal-access-token-create) endpoint.  All scopes for the OAuth security model ([defined below](/docs/api/#oauth)) apply to this security model as well.  ### Authentication  | Security Scheme Type: | HTTP | |-----------------------|------| | **HTTP Authorization Scheme** | bearer |  ## OAuth  If you only need to access the Linode API for personal use, we recommend that you create a [personal access token](/docs/api/#personal-access-token). If you're designing an application that can authenticate with an arbitrary Linode user, then you should use the OAuth 2.0 workflows presented in this section.  For a more detailed example of an OAuth 2.0 implementation, see our guide on [How to Create an OAuth App with the Linode Python API Library](/docs/products/tools/api/guides/create-an-oauth-app-with-the-python-api-library/#oauth-2-authentication-exchange).  Before you implement OAuth in your application, you first need to create an OAuth client. You can do this [with the Linode API](/docs/api/account/#oauth-client-create) or [via the Cloud Manager](https://cloud.linode.com/profile/clients):    - When creating the client, you'll supply a `label` and a `redirect_uri` (referred to as the Callback URL in the Cloud Manager).   - The response from this endpoint will give you a `client_id` and a `secret`.   - Clients can be public or private, and are private by default. You can choose to make the client public when it is created.     - A private client is used with applications which can securely store the client secret (that is, the secret returned to you when you first created the client). For example, an application running on a secured server that only the developer has access to would use a private OAuth client. This is also called a confidential client in some OAuth documentation.     - A public client is used with applications where the client secret is not guaranteed to be secure. For example, a native app running on a user's computer may not be able to keep the client secret safe, as a user could potentially inspect the source of the application. So, native apps or apps that run in a user's browser should use a public client.     - Public and private clients follow different workflows, as described below.  ### OAuth Workflow  The OAuth workflow is a series of exchanges between your third-party app and Linode. The workflow is used to authenticate a user before an application can start making API calls on the user's behalf.  Notes:  - With respect to the diagram in [section 1.2 of RFC 6749](https://tools.ietf.org/html/rfc6749#section-1.2), login.linode.com (referred to in this section as the *login server*) is the Resource Owner and the Authorization Server; api.linode.com (referred to here as the *api server*) is the Resource Server. - The OAuth spec refers to the private and public workflows listed below as the [authorization code flow](https://tools.ietf.org/html/rfc6749#section-1.3.1) and [implicit flow](https://tools.ietf.org/html/rfc6749#section-1.3.2).  | PRIVATE WORKFLOW | PUBLIC WORKFLOW | |------------------|------------------| | 1.  The user visits the application's website and is directed to login with Linode. | 1.  The user visits the application's website and is directed to login with Linode. | | 2.  Your application then redirects the user to Linode's [login server](https://login.linode.com) with the client application's `client_id` and requested OAuth `scope`, which should appear in the URL of the login page. | 2.  Your application then redirects the user to Linode's [login server](https://login.linode.com) with the client application's `client_id` and requested OAuth `scope`, which should appear in the URL of the login page. | | 3.  The user logs into the login server with their username and password. | 3.  The user logs into the login server with their username and password. | | 4.  The login server redirects the user to the specificed redirect URL with a temporary authorization `code` (exchange code) in the URL. | 4.  The login server redirects the user back to your application with an OAuth `access_token` embedded in the redirect URL's hash. This is temporary and expires in two hours. No `refresh_token` is issued. Therefore, once the `access_token` expires, a new one will need to be issued by having the user log in again. | | 5.  The application issues a POST request (*see additional details below*) to the login server with the exchange code, `client_id`, and the client application's `client_secret`. | | | 6.  The login server responds to the client application with a new OAuth `access_token` and `refresh_token`. The `access_token` is set to expire in two hours. | | | 7.  The `refresh_token` can be used by contacting the login server with the `client_id`, `client_secret`, `grant_type`, and `refresh_token` to get a new OAuth `access_token` and `refresh_token`. The new `access_token` is good for another two hours, and the new `refresh_token` can be used to extend the session again by this same method (*see additional details below*). | |  #### OAuth Private Workflow - Additional Details  The following information expands on steps 5 through 7 of the private workflow:  Once the user has logged into Linode and you have received an exchange code, you will need to trade that exchange code for an `access_token` and `refresh_token`. You do this by making an HTTP POST request to the following address:  ``` https://login.linode.com/oauth/token ```  Make this request as `application/x-www-form-urlencoded` or as `multipart/form-data` and include the following parameters in the POST body:  | PARAMETER | DESCRIPTION | |-----------|-------------| | client_id | Your app's client ID. | | client_secret | Your app's client secret. | | code | The code you just received from the redirect. |  You'll get a response like this:  ```json {   \"scope\": \"linodes:read_write\",   \"access_token\": \"03d084436a6c91fbafd5c4b20c82e5056a2e9ce1635920c30dc8d81dc7a6665c\",   \"refresh_token\": \"f2ec9712e616fdb5a2a21aa0e88cfadea7502ebc62cf5bd758dbcd65e1803bad\",   \"token_type\": \"bearer\",   \"expires_in\": 7200 } ```  Included in the response is an `access_token`. With this token, you can proceed to make authenticated HTTP requests to the API by adding this header to each request:  ``` Authorization: Bearer 03d084436a6c91fbafd5c4b20c82e5056a2e9ce1635920c30dc8d81dc7a6665c ```  This `access_token` is set to expire in two hours. To refresh access prior to expiration, make another request to the same URL with the following parameters in the POST body:  | PARAMETER | DESCRIPTION | |-----------|-------------| | grant_type | The grant type you're using. Use \"refresh_token\" when refreshing access. | | client_id | Your app's client ID. | | client_secret | Your app's client secret. | | refresh_token | The `refresh_token` received from the previous response. |  You'll get another response with an updated `access_token` and `refresh_token`, which can then be used to refresh access again.  ### OAuth Reference  | Security Scheme Type | OAuth 2.0 | |-----------------------|--------| | **Authorization URL** | `https://login.linode.com/oauth/authorize` | | **Token URL** | `https://login.linode.com/oauth/token` | | **Scopes** | <ul><li>`account:read_only` - Allows access to GET information about your Account.</li><li>`account:read_write` - Allows access to all endpoints related to your Account.</li><li>`databases:read_only` - Allows access to GET Managed Databases on your Account.</li><li>`databases:read_write` - Allows access to all endpoints related to your Managed Databases.</li><li>`domains:read_only` - Allows access to GET Domains on your Account.</li><li>`domains:read_write` - Allows access to all Domain endpoints.</li><li>`events:read_only` - Allows access to GET your Events.</li><li>`events:read_write` - Allows access to all endpoints related to your Events.</li><li>`firewall:read_only` - Allows access to GET information about your Firewalls.</li><li>`firewall:read_write` - Allows access to all Firewall endpoints.</li><li>`images:read_only` - Allows access to GET your Images.</li><li>`images:read_write` - Allows access to all endpoints related to your Images.</li><li>`ips:read_only` - Allows access to GET your ips.</li><li>`ips:read_write` - Allows access to all endpoints related to your ips.</li><li>`linodes:read_only` - Allows access to GET Linodes on your Account.</li><li>`linodes:read_write` - Allow access to all endpoints related to your Linodes.</li><li>`lke:read_only` - Allows access to GET LKE Clusters on your Account.</li><li>`lke:read_write` - Allows access to all endpoints related to LKE Clusters on your Account.</li><li>`longview:read_only` - Allows access to GET your Longview Clients.</li><li>`longview:read_write` - Allows access to all endpoints related to your Longview Clients.</li><li>`nodebalancers:read_only` - Allows access to GET NodeBalancers on your Account.</li><li>`nodebalancers:read_write` - Allows access to all NodeBalancer endpoints.</li><li>`object_storage:read_only` - Allows access to GET information related to your Object Storage.</li><li>`object_storage:read_write` - Allows access to all Object Storage endpoints.</li><li>`stackscripts:read_only` - Allows access to GET your StackScripts.</li><li>`stackscripts:read_write` - Allows access to all endpoints related to your StackScripts.</li><li>`volumes:read_only` - Allows access to GET your Volumes.</li><li>`volumes:read_write` - Allows access to all endpoints related to your Volumes.</li></ul><br/>|  ## Requests  Requests must be made over HTTPS to ensure transactions are encrypted. Data included in requests must be supplied in json format unless otherwise specified in the command description.  The following request methods are supported:  | METHOD  | USAGE | |---------|-------| | GET     | Retrieves data about collections and individual resources. | | POST    | For collections, creates a new resource of that type. Also used to perform actions on action endpoints. | | PUT     | Updates an existing resource. | | DELETE  | Deletes a resource. This is a destructive action. | | HEAD    | Returns only the response header information of a GET request | | OPTIONS | Provides permitted communication options for a command |  ## Responses  ### Response Status Codes  Actions will return one of the following HTTP response status codes:  | STATUS  | DESCRIPTION | |---------|-------------| | 200 OK  | The request was successful. | | 202 Accepted | The request was successful, but processing has not been completed. The response body includes a \"warnings\" array containing the details of incomplete processes. | | 204 No Content | The server successfully fulfilled the request and there is no additional content to send. | | 299 Deprecated | The request was successful, but involved a deprecated endpoint. The response body includes a \"warnings\" array containing warning messages. | | 400 Bad Request | You submitted an invalid request (missing parameters, etc.). | | 401 Unauthorized | You failed to authenticate for this resource. | | 403 Forbidden | You are authenticated, but don't have permission to do this. | | 404 Not Found | The resource you're requesting does not exist. | | 429 Too Many Requests | You've hit a rate limit. | | 500 Internal Server Error | Please [open a Support Ticket](/docs/api/support/#support-ticket-open). |  ### Response Headers  There are many ways to access response header information for individual command URLs, depending on how you are accessing the Linode API. For example, to view HTTP response headers for the `/regions` endpoint when making requests with `curl`, use the `-I` or `--head` option as follows:  ```Shell curl -I https://api.linode.com/v4/regions ```  Responses may include the following headers:  | HEADER | DESCRIPTION | EXAMPLE | |--------|-------------|---------| | Access-Control-Allow-Credentials | Responses to credentialed requests are exposed to frontend JavaScript code. | true | | Access-Control-Allow-Headers | All permissible request headers for this endpoint. | Authorization, Origin, X-Requested-With, Content-Type, Accept, X-Filter | | Access-Control-Allow-Methods | Permissible HTTP methods for this endpoint | HEAD, GET, OPTIONS, POST, PUT, DELETE | | Access-Control-Allow-Origin | Indicates origin access permissions. The wildcard character `*` means any origin can access the resource. | * | | Access-Control-Expose-Headers | Available headers to include in response to cross-origin requests. | X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Status | | Cache-Control | Controls caching in browsers and shared caches such as CDNs. | private, max-age=60, s-maxage=60 | | Content-Security-Policy | Controls which resources are allowed to load. By default, resources do not load. | default-src 'none' | | Content-Type | All responses are in json format. | application/json | | Content-Warning | A message containing instructions for successful requests that were not able to be completed. | Please contact support for assistance. | | Retry-After | The remaining time in seconds until the current [rate limit](#rate-limiting) window resets. | 60 | | Strict-Transport-Security | Enforces HTTPS-only access until the returned time in seconds. | max-age=31536000 | | Vary | Optional request headers that affected the response content. | Authorization, X-Filter | | X-Accepted-OAuth-Scopes | Required [scopes](#oauth-reference) for accessing the requested command. | linodes:read_only | | X-Customer-UUID | A unique identifier for the account owning the the [personal access token](#personal-access-token) that was used for the request. | ABCDEF01-3456-789A-BCDEF0123456789A | | X-OAuth-Scopes | Allowed [scopes](#oauth-reference) associated with the [personal access token](#personal-access-token) that was used for the request. A value of `*` indicates read/write access for all scope categories. | images:read_write linodes:read_only | | X-RateLimit-Limit | The maximum number of permitted requests during the [rate limit](#rate-limiting) window for this endpoint. | 800 | | X-RateLimit-Remaining | The remaining number of permitted requests in the current [rate limit](#rate-limiting) window. | 798 | | X-RateLimit-Reset | The time when the current [rate limit](#rate-limiting) window rests in UTC epoch seconds. | 1674747739 | | X-Spec-Version | The current API version that handled the request. | 4.150.0 |  ## Errors  Success is indicated via <a href=\"https://en.wikipedia.org/wiki/List_of_HTTP_status_codes\" target=\"_top\">Standard HTTP status codes</a>. `2xx` codes indicate success, `4xx` codes indicate a request error, and `5xx` errors indicate a server error. A request error might be an invalid input, a required parameter being omitted, or a malformed request. A server error means something went wrong processing your request. If this occurs, please [open a Support Ticket](/docs/api/support/#support-ticket-open) and let us know. Though errors are logged and we work quickly to resolve issues, opening a ticket and providing us with reproducable steps and data is always helpful.  The `errors` field is an array of the things that went wrong with your request. We will try to include as many of the problems in the response as possible, but it's conceivable that fixing these errors and resubmitting may result in new errors coming back once we are able to get further along in the process of handling your request.  Within each error object, the `field` parameter will be included if the error pertains to a specific field in the JSON you've submitted. This will be omitted if there is no relevant field. The `reason` is a human-readable explanation of the error, and will always be included.  ## Pagination  Resource lists are always paginated. The response will look similar to this:  ```json {     \"data\": [ ... ],     \"page\": 1,     \"pages\": 3,     \"results\": 300 } ```  * Pages start at 1. You may retrieve a specific page of results by adding `?page=x` to your URL (for example, `?page=4`). If the value of `page` exceeds `2^64/page_size`, the last possible page will be returned.   * Page sizes default to 100, and can be set to return between 25 and 500. Page size can be set using `?page_size=x`.  ## Filtering and Sorting  Collections are searchable by fields they include, marked in the spec as `x-linode-filterable: true`. Filters are passed in the `X-Filter` header and are formatted as JSON objects. Here is a request call for Linode Types in our \"standard\" class:  ```Shell curl \"https://api.linode.com/v4/linode/types\" \\   -H 'X-Filter: { \"class\": \"standard\" }' ```  The filter object's keys are the keys of the object you're filtering, and the values are accepted values. You can add multiple filters by including more than one key. For example, filtering for \"standard\" Linode Types that offer one vcpu:  ```Shell  curl \"https://api.linode.com/v4/linode/types\" \\   -H 'X-Filter: { \"class\": \"standard\", \"vcpus\": 1 }' ```  In the above example, both filters are combined with an \"and\" operation. However, if you wanted either Types with one vcpu or Types in our \"standard\" class, you can add an operator:   ```Shell curl \"https://api.linode.com/v4/linode/types\" \\   -H 'X-Filter: { \"+or\": [ { \"vcpus\": 1 }, { \"class\": \"standard\" } ] }' ```  Each filter in the `+or` array is its own filter object, and all conditions in it are combined with an \"and\" operation as they were in the previous example.  Other operators are also available. Operators are keys of a Filter JSON object. Their value must be of the appropriate type, and they are evaluated as described below:  | OPERATOR | TYPE   | DESCRIPTION                       | |----------|--------|-----------------------------------| | +and     | array  | All conditions must be true.       | | +or      | array  | One condition must be true.        | | +gt      | number | Value must be greater than number. | | +gte     | number | Value must be greater than or equal to number. | | +lt      | number | Value must be less than number. | | +lte     | number | Value must be less than or equal to number. | | +contains | string | Given string must be in the value. | | +neq      | string | Does not equal the value.          | | +order_by | string | Attribute to order the results by - must be filterable. | | +order    | string | Either \"asc\" or \"desc\". Defaults to \"asc\". Requires `+order_by`. |  For example, filtering for [Linode Types](/docs/api/linode-types/) that offer memory equal to or higher than 61440:  ```Shell curl \"https://api.linode.com/v4/linode/types\" \\   -H '     X-Filter: {       \"memory\": {         \"+gte\": 61440       }     }' ```  You can combine and nest operators to construct arbitrarily-complex queries. For example, give me all [Linode Types](/docs/api/linode-types/) which are either `standard` or `highmem` class, or have between 12 and 20 vcpus:  ```Shell curl \"https://api.linode.com/v4/linode/types\" \\   -H '     X-Filter: {       \"+or\": [         {           \"+or\": [             {               \"class\": \"standard\"             },             {               \"class\": \"highmem\"             }           ]         },         {           \"+and\": [             {               \"vcpus\": {                 \"+gte\": 12               }             },             {               \"vcpus\": {                 \"+lte\": 20               }             }           ]         }       ]     }' ``` ## Time Values  All times returned by the API are in UTC, regardless of the timezone configured within your user's profile (see `timezone` property within [Profile View](/docs/api/profile/#profile-view__responses)).  ## Rate Limiting  Rate limits on API requests help maintain the health and stability of the Linode API. Accordingly, every endpoint of the Linode API applies a rate limit on a per user basis as determined by OAuth token for authenticated requests or IP address for public endpoints.  Each rate limit consists of a total number of requests and a time window. For example, if an endpoint has a rate limit of 800 requests per minute, then up to 800 requests over a one minute window are permitted. Subsequent requests to an endpoint after hitting a rate limit return a 429 error. You can successfully remake requests to that endpoint after the rate limit window resets.  ### Linode APIv4 Rate Limits  With the Linode API, you can generally make up to 1,600 general API requests every two minutes. Additionally, all endpoints have a rate limit of 800 requests per minute unless otherwise specified below.  **Note:** There may be rate limiting applied at other levels outside of the API, for example, at the load balancer.  Creating Linodes has a dedicated rate limit of 10 requests per 30 seconds. That endpoint is:  * [Linode Create](/docs/api/linode-instances/#linode-create)  `/stats` endpoints have their own dedicated rate limits of 100 requests per minute. These endpoints are:  * [View Linode Statistics](/docs/api/linode-instances/#linode-statistics-view) * [View Linode Statistics (year/month)](/docs/api/linode-instances/#statistics-yearmonth-view) * [View NodeBalancer Statistics](/docs/api/nodebalancers/#nodebalancer-statistics-view) * [List Managed Stats](/docs/api/managed/#managed-stats-list)  Object Storage endpoints have a dedicated rate limit of 750 requests per second. The Object Storage endpoints are:  * [Object Storage Endpoints](/docs/api/object-storage/)  Opening Support Tickets has a dedicated rate limit of 2 requests per minute. That endpoint is:  * [Open Support Ticket](/docs/api/support/#support-ticket-open)  Accepting Service Transfers has a dedicated rate limit of 2 requests per minute. That endpoint is:  * [Service Transfer Accept](/docs/api/account/#service-transfer-accept)  ### Rate Limit HTTP Response Headers  The Linode API includes the following HTTP response headers which are designed to help you avoid hitting rate limits which might disrupt your applications:  * **X-RateLimit-Limit**: The maximum number of permitted requests during the rate limit window for this endpoint. * **X-RateLimit-Remaining**: The remaining number of permitted requests in the current rate limit window. * **X-RateLimit-Reset**: The time when the current rate limit window rests in UTC epoch seconds. * **Retry-After**: The remaining time in seconds until the current rate limit window resets.  ## CLI (Command Line Interface)  The <a href=\"https://github.com/linode/linode-cli\" target=\"_top\">Linode CLI</a> allows you to easily work with the API using intuitive and simple syntax. It requires a [Personal Access Token](/docs/api/#personal-access-token) for authentication, and gives you access to all of the features and functionality of the Linode API that are documented here with CLI examples.  Endpoints that do not have CLI examples are currently unavailable through the CLI, but can be accessed via other methods such as Shell commands and other third-party applications. 
+ *
+ * The version of the OpenAPI document: 4.151.1
+ * Contact: support@linode.com
+ *
+ * NOTE: This class is auto generated by OpenAPI Generator (https://openapi-generator.tech).
+ * https://openapi-generator.tech
+ * Do not edit the class manually.
+ *
+ */
+
+import ApiClient from '../ApiClient';
+import Domain from './Domain';
+import Linode from './Linode';
+import LinodeAlerts from './LinodeAlerts';
+import LinodeBackups from './LinodeBackups';
+import LinodeSpecs from './LinodeSpecs';
+import NodeBalancer from './NodeBalancer';
+import NodeBalancerTransfer from './NodeBalancerTransfer';
+import Volume from './Volume';
+
+/**
+ * The GetTaggedObjects200ResponseDataInnerData model module.
+ * @module model/GetTaggedObjects200ResponseDataInnerData
+ * @version 4.151.1
+ */
+class GetTaggedObjects200ResponseDataInnerData {
+    /**
+     * Constructs a new <code>GetTaggedObjects200ResponseDataInnerData</code>.
+     * @alias module:model/GetTaggedObjects200ResponseDataInnerData
+     * @param {(module:model/Domain|module:model/Linode|module:model/NodeBalancer|module:model/Volume)} instance The actual instance to initialize GetTaggedObjects200ResponseDataInnerData.
+     */
+    constructor(instance = null) {
+        if (instance === null) {
+            this.actualInstance = null;
+            return;
+        }
+        var match = 0;
+        var errorMessages = [];
+        try {
+            if (typeof instance === "Linode") {
+                this.actualInstance = instance;
+            } else {
+                // plain JS object
+                // validate the object
+                Linode.validateJSON(instance); // throw an exception if no match
+                // create Linode from JS object
+                this.actualInstance = Linode.constructFromObject(instance);
+            }
+            match++;
+        } catch(err) {
+            // json data failed to deserialize into Linode
+            errorMessages.push("Failed to construct Linode: " + err)
+        }
+
+        try {
+            if (typeof instance === "Domain") {
+                this.actualInstance = instance;
+            } else {
+                // plain JS object
+                // validate the object
+                Domain.validateJSON(instance); // throw an exception if no match
+                // create Domain from JS object
+                this.actualInstance = Domain.constructFromObject(instance);
+            }
+            match++;
+        } catch(err) {
+            // json data failed to deserialize into Domain
+            errorMessages.push("Failed to construct Domain: " + err)
+        }
+
+        try {
+            if (typeof instance === "Volume") {
+                this.actualInstance = instance;
+            } else {
+                // plain JS object
+                // validate the object
+                Volume.validateJSON(instance); // throw an exception if no match
+                // create Volume from JS object
+                this.actualInstance = Volume.constructFromObject(instance);
+            }
+            match++;
+        } catch(err) {
+            // json data failed to deserialize into Volume
+            errorMessages.push("Failed to construct Volume: " + err)
+        }
+
+        try {
+            if (typeof instance === "NodeBalancer") {
+                this.actualInstance = instance;
+            } else {
+                // plain JS object
+                // validate the object
+                NodeBalancer.validateJSON(instance); // throw an exception if no match
+                // create NodeBalancer from JS object
+                this.actualInstance = NodeBalancer.constructFromObject(instance);
+            }
+            match++;
+        } catch(err) {
+            // json data failed to deserialize into NodeBalancer
+            errorMessages.push("Failed to construct NodeBalancer: " + err)
+        }
+
+        if (match > 1) {
+            throw new Error("Multiple matches found constructing `GetTaggedObjects200ResponseDataInnerData` with oneOf schemas Domain, Linode, NodeBalancer, Volume. Input: " + JSON.stringify(instance));
+        } else if (match === 0) {
+            this.actualInstance = null; // clear the actual instance in case there are multiple matches
+            throw new Error("No match found constructing `GetTaggedObjects200ResponseDataInnerData` with oneOf schemas Domain, Linode, NodeBalancer, Volume. Details: " +
+                            errorMessages.join(", "));
+        } else { // only 1 match
+            // the input is valid
+        }
+    }
+
+    /**
+     * Constructs a <code>GetTaggedObjects200ResponseDataInnerData</code> from a plain JavaScript object, optionally creating a new instance.
+     * Copies all relevant properties from <code>data</code> to <code>obj</code> if supplied or a new instance if not.
+     * @param {Object} data The plain JavaScript object bearing properties of interest.
+     * @param {module:model/GetTaggedObjects200ResponseDataInnerData} obj Optional instance to populate.
+     * @return {module:model/GetTaggedObjects200ResponseDataInnerData} The populated <code>GetTaggedObjects200ResponseDataInnerData</code> instance.
+     */
+    static constructFromObject(data, obj) {
+        return new GetTaggedObjects200ResponseDataInnerData(data);
+    }
+
+    /**
+     * Gets the actual instance, which can be <code>Domain</code>, <code>Linode</code>, <code>NodeBalancer</code>, <code>Volume</code>.
+     * @return {(module:model/Domain|module:model/Linode|module:model/NodeBalancer|module:model/Volume)} The actual instance.
+     */
+    getActualInstance() {
+        return this.actualInstance;
+    }
+
+    /**
+     * Sets the actual instance, which can be <code>Domain</code>, <code>Linode</code>, <code>NodeBalancer</code>, <code>Volume</code>.
+     * @param {(module:model/Domain|module:model/Linode|module:model/NodeBalancer|module:model/Volume)} obj The actual instance.
+     */
+    setActualInstance(obj) {
+       this.actualInstance = GetTaggedObjects200ResponseDataInnerData.constructFromObject(obj).getActualInstance();
+    }
+
+    /**
+     * Returns the JSON representation of the actual instance.
+     * @return {string}
+     */
+    toJSON = function(){
+        return this.getActualInstance();
+    }
+
+    /**
+     * Create an instance of GetTaggedObjects200ResponseDataInnerData from a JSON string.
+     * @param {string} json_string JSON string.
+     * @return {module:model/GetTaggedObjects200ResponseDataInnerData} An instance of GetTaggedObjects200ResponseDataInnerData.
+     */
+    static fromJSON = function(json_string){
+        return GetTaggedObjects200ResponseDataInnerData.constructFromObject(JSON.parse(json_string));
+    }
+}
+
+/**
+ * @member {module:model/LinodeAlerts} alerts
+ */
+GetTaggedObjects200ResponseDataInnerData.prototype['alerts'] = undefined;
+
+/**
+ * @member {module:model/LinodeBackups} backups
+ */
+GetTaggedObjects200ResponseDataInnerData.prototype['backups'] = undefined;
+
+/**
+ * When this NodeBalancer was created. 
+ * @member {Date} created
+ */
+GetTaggedObjects200ResponseDataInnerData.prototype['created'] = undefined;
+
+/**
+ * The group this Domain belongs to.  This is for display purposes only. 
+ * @member {String} group
+ */
+GetTaggedObjects200ResponseDataInnerData.prototype['group'] = undefined;
+
+/**
+ * The Linode's host machine, as a UUID.
+ * @member {String} host_uuid
+ */
+GetTaggedObjects200ResponseDataInnerData.prototype['host_uuid'] = undefined;
+
+/**
+ * The virtualization software powering this Linode. 
+ * @member {module:model/GetTaggedObjects200ResponseDataInnerData.HypervisorEnum} hypervisor
+ */
+GetTaggedObjects200ResponseDataInnerData.prototype['hypervisor'] = undefined;
+
+/**
+ * This NodeBalancer's unique ID. 
+ * @member {Number} id
+ */
+GetTaggedObjects200ResponseDataInnerData.prototype['id'] = undefined;
+
+/**
+ * @member {String} image
+ */
+GetTaggedObjects200ResponseDataInnerData.prototype['image'] = undefined;
+
+/**
+ * This NodeBalancer's public IPv4 address. 
+ * @member {String} ipv4
+ */
+GetTaggedObjects200ResponseDataInnerData.prototype['ipv4'] = undefined;
+
+/**
+ * This NodeBalancer's public IPv6 address. 
+ * @member {String} ipv6
+ */
+GetTaggedObjects200ResponseDataInnerData.prototype['ipv6'] = undefined;
+
+/**
+ * This NodeBalancer's label. These must be unique on your Account. 
+ * @member {String} label
+ */
+GetTaggedObjects200ResponseDataInnerData.prototype['label'] = undefined;
+
+/**
+ * The Region where this NodeBalancer is located. NodeBalancers only support backends in the same Region. 
+ * @member {String} region
+ */
+GetTaggedObjects200ResponseDataInnerData.prototype['region'] = undefined;
+
+/**
+ * @member {module:model/LinodeSpecs} specs
+ */
+GetTaggedObjects200ResponseDataInnerData.prototype['specs'] = undefined;
+
+/**
+ * The current status of the volume.  Can be one of:    * `creating` - the Volume is being created and is not yet available     for use.   * `active` - the Volume is online and available for use.   * `resizing` - the Volume is in the process of upgrading     its current capacity. 
+ * @member {module:model/GetTaggedObjects200ResponseDataInnerData.StatusEnum} status
+ */
+GetTaggedObjects200ResponseDataInnerData.prototype['status'] = undefined;
+
+/**
+ * An array of Tags applied to this object.  Tags are for organizational purposes only. 
+ * @member {Array.<String>} tags
+ */
+GetTaggedObjects200ResponseDataInnerData.prototype['tags'] = undefined;
+
+/**
+ * This is the [Linode Type](/docs/api/linode-types/#types-list) that this Linode was deployed with. To change a Linode's Type, use [POST /linode/instances/{linodeId}/resize](/docs/api/linode-instances/#linode-resize). 
+ * @member {String} type
+ */
+GetTaggedObjects200ResponseDataInnerData.prototype['type'] = undefined;
+
+/**
+ * When this NodeBalancer was last updated. 
+ * @member {Date} updated
+ */
+GetTaggedObjects200ResponseDataInnerData.prototype['updated'] = undefined;
+
+/**
+ * The watchdog, named Lassie, is a Shutdown Watchdog that monitors your Linode and will reboot it if it powers off unexpectedly. It works by issuing a boot job when your Linode powers off without a shutdown job being responsible. To prevent a loop, Lassie will give up if there have been more than 5 boot jobs issued within 15 minutes. 
+ * @member {Boolean} watchdog_enabled
+ */
+GetTaggedObjects200ResponseDataInnerData.prototype['watchdog_enabled'] = undefined;
+
+/**
+ * The list of IPs that may perform a zone transfer for this Domain. The total combined length of all data within this array cannot exceed 1000 characters.  **Note**: This is potentially dangerous, and should be set to an empty list unless you intend to use it. 
+ * @member {Array.<String>} axfr_ips
+ */
+GetTaggedObjects200ResponseDataInnerData.prototype['axfr_ips'] = undefined;
+
+/**
+ * A description for this Domain. This is for display purposes only. 
+ * @member {String} description
+ */
+GetTaggedObjects200ResponseDataInnerData.prototype['description'] = undefined;
+
+/**
+ * The domain this Domain represents. Domain labels cannot be longer than 63 characters and must conform to [RFC1035](https://tools.ietf.org/html/rfc1035). Domains must be unique on Linode's platform, including across different Linode accounts; there cannot be two Domains representing the same domain. 
+ * @member {String} domain
+ */
+GetTaggedObjects200ResponseDataInnerData.prototype['domain'] = undefined;
+
+/**
+ * The amount of time in seconds that may pass before this Domain is no longer authoritative.  * Valid values are 0, 300, 3600, 7200, 14400, 28800, 57600, 86400, 172800, 345600, 604800, 1209600, and 2419200.  * Any other value is rounded up to the nearest valid value.  * A value of 0 is equivalent to the default value of 1209600. 
+ * @member {Number} expire_sec
+ * @default 0
+ */
+GetTaggedObjects200ResponseDataInnerData.prototype['expire_sec'] = 0;
+
+/**
+ * The IP addresses representing the master DNS for this Domain. At least one value is required for `type` slave Domains. The total combined length of all data within this array cannot exceed 1000 characters. 
+ * @member {Array.<String>} master_ips
+ */
+GetTaggedObjects200ResponseDataInnerData.prototype['master_ips'] = undefined;
+
+/**
+ * The amount of time in seconds before this Domain should be refreshed.  * Valid values are 0, 300, 3600, 7200, 14400, 28800, 57600, 86400, 172800, 345600, 604800, 1209600, and 2419200.  * Any other value is rounded up to the nearest valid value.  * A value of 0 is equivalent to the default value of 14400. 
+ * @member {Number} refresh_sec
+ * @default 0
+ */
+GetTaggedObjects200ResponseDataInnerData.prototype['refresh_sec'] = 0;
+
+/**
+ * The interval, in seconds, at which a failed refresh should be retried.  * Valid values are 0, 300, 3600, 7200, 14400, 28800, 57600, 86400, 172800, 345600, 604800, 1209600, and 2419200.  * Any other value is rounded up to the nearest valid value.  * A value of 0 is equivalent to the default value of 14400. 
+ * @member {Number} retry_sec
+ * @default 0
+ */
+GetTaggedObjects200ResponseDataInnerData.prototype['retry_sec'] = 0;
+
+/**
+ * Start of Authority email address. This is required for `type` master Domains. 
+ * @member {String} soa_email
+ */
+GetTaggedObjects200ResponseDataInnerData.prototype['soa_email'] = undefined;
+
+/**
+ * \"Time to Live\" - the amount of time in seconds that this Domain's records may be cached by resolvers or other domain servers. * Valid values are 0, 300, 3600, 7200, 14400, 28800, 57600, 86400, 172800, 345600, 604800, 1209600, and 2419200. * Any other value is rounded up to the nearest valid value. * A value of 0 is equivalent to the default value of 86400. 
+ * @member {Number} ttl_sec
+ * @default 0
+ */
+GetTaggedObjects200ResponseDataInnerData.prototype['ttl_sec'] = 0;
+
+/**
+ * The full filesystem path for the Volume based on the Volume's label. Path is /dev/disk/by-id/scsi-0Linode_Volume_ + Volume label. 
+ * @member {String} filesystem_path
+ */
+GetTaggedObjects200ResponseDataInnerData.prototype['filesystem_path'] = undefined;
+
+/**
+ * The storage type of this Volume.
+ * @member {module:model/GetTaggedObjects200ResponseDataInnerData.HardwareTypeEnum} hardware_type
+ */
+GetTaggedObjects200ResponseDataInnerData.prototype['hardware_type'] = undefined;
+
+/**
+ * If a Volume is attached to a specific Linode, the ID of that Linode will be displayed here. 
+ * @member {Number} linode_id
+ */
+GetTaggedObjects200ResponseDataInnerData.prototype['linode_id'] = undefined;
+
+/**
+ * If a Volume is attached to a specific Linode, the label of that Linode will be displayed here. 
+ * @member {String} linode_label
+ */
+GetTaggedObjects200ResponseDataInnerData.prototype['linode_label'] = undefined;
+
+/**
+ * The Volume's size, in GiB. 
+ * @member {Number} size
+ */
+GetTaggedObjects200ResponseDataInnerData.prototype['size'] = undefined;
+
+/**
+ * Throttle connections per second.  Set to 0 (zero) to disable throttling. 
+ * @member {Number} client_conn_throttle
+ */
+GetTaggedObjects200ResponseDataInnerData.prototype['client_conn_throttle'] = undefined;
+
+/**
+ * This NodeBalancer's hostname, beginning with its IP address and ending with _.ip.linodeusercontent.com_. 
+ * @member {String} hostname
+ */
+GetTaggedObjects200ResponseDataInnerData.prototype['hostname'] = undefined;
+
+/**
+ * @member {module:model/NodeBalancerTransfer} transfer
+ */
+GetTaggedObjects200ResponseDataInnerData.prototype['transfer'] = undefined;
+
+
+GetTaggedObjects200ResponseDataInnerData.OneOf = ["Domain", "Linode", "NodeBalancer", "Volume"];
+
+export default GetTaggedObjects200ResponseDataInnerData;
+
