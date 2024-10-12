@@ -1,0 +1,10 @@
+# AwsIoTSiteWise.TimeOrdering
+
+## Enum
+
+
+* `ASCENDING` (value: `"ASCENDING"`)
+
+* `DESCENDING` (value: `"DESCENDING"`)
+
+

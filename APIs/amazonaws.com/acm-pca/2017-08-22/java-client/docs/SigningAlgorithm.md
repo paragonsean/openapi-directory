@@ -1,0 +1,21 @@
+
+
+# SigningAlgorithm
+
+## Enum
+
+
+* `SHA256_WITHECDSA` (value: `"SHA256WITHECDSA"`)
+
+* `SHA384_WITHECDSA` (value: `"SHA384WITHECDSA"`)
+
+* `SHA512_WITHECDSA` (value: `"SHA512WITHECDSA"`)
+
+* `SHA256_WITHRSA` (value: `"SHA256WITHRSA"`)
+
+* `SHA384_WITHRSA` (value: `"SHA384WITHRSA"`)
+
+* `SHA512_WITHRSA` (value: `"SHA512WITHRSA"`)
+
+
+

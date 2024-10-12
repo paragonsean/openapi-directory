@@ -1,0 +1,15 @@
+
+
+# DBClusterSnapshotAttribute
+
+<p>Contains the name and values of a manual DB cluster snapshot attribute.</p> <p>Manual DB cluster snapshot attributes are used to authorize other Amazon accounts to restore a manual DB cluster snapshot. For more information, see the <a>ModifyDBClusterSnapshotAttribute</a> API action.</p>
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**attributeName** | [**String**](String.md) |  |  [optional] |
+|**attributeValues** | [**List**](List.md) |  |  [optional] |
+
+
+

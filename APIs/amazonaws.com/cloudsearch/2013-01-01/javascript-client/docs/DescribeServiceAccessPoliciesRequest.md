@@ -1,0 +1,10 @@
+# AmazonCloudSearch.DescribeServiceAccessPoliciesRequest
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**domainName** | **String** |  | 
+**deployed** | **Boolean** |  | [optional] 
+
+

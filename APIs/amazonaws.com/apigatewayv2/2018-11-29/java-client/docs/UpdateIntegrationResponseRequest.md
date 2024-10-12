@@ -1,0 +1,26 @@
+
+
+# UpdateIntegrationResponseRequest
+
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**contentHandlingStrategy** | [**ContentHandlingStrategyEnum**](#ContentHandlingStrategyEnum) | Specifies how to handle response payload content type conversions. Supported only for WebSocket APIs. |  [optional] |
+|**integrationResponseKey** | **String** | After evaluating a selection expression, the result is compared against one or more selection keys to find a matching key. See &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/apigateway/latest/developerguide/apigateway-websocket-api-selection-expressions.html#apigateway-websocket-api-apikey-selection-expressions\&quot;&gt;Selection Expressions&lt;/a&gt; for a list of expressions and each expression&#39;s associated selection key type. |  [optional] |
+|**responseParameters** | **Map&lt;String, String&gt;** | &lt;p&gt;For WebSocket APIs, a key-value map specifying request parameters that are passed from the method request to the backend. The key is an integration request parameter name and the associated value is a method request parameter value or static value that must be enclosed within single quotes and pre-encoded as required by the backend. The method request parameter value must match the pattern of method.request.&lt;replaceable&gt;{location}&lt;/replaceable&gt;.&lt;replaceable&gt;{name}&lt;/replaceable&gt;           , where              &lt;replaceable&gt;{location}&lt;/replaceable&gt;            is querystring, path, or header; and              &lt;replaceable&gt;{name}&lt;/replaceable&gt;            must be a valid and unique method request parameter name.&lt;/p&gt; &lt;p&gt;For HTTP API integrations with a specified integrationSubtype, request parameters are a key-value map specifying parameters that are passed to AWS_PROXY integrations. You can provide static values, or map request data, stage variables, or context variables that are evaluated at runtime. To learn more, see &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-develop-integrations-aws-services.html\&quot;&gt;Working with AWS service integrations for HTTP APIs&lt;/a&gt;.&lt;/p&gt; &lt;p&gt;For HTTP API integrations without a specified integrationSubtype request parameters are a key-value map specifying how to transform HTTP requests before sending them to the backend. The key should follow the pattern &amp;lt;action&amp;gt;:&amp;lt;header|querystring|path&amp;gt;.&amp;lt;location&amp;gt; where action can be append, overwrite or remove. For values, you can provide static values, or map request data, stage variables, or context variables that are evaluated at runtime. To learn more, see &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-parameter-mapping.html\&quot;&gt;Transforming API requests and responses&lt;/a&gt;.&lt;/p&gt; |  [optional] |
+|**responseTemplates** | **Map&lt;String, String&gt;** | A mapping of identifier keys to templates. The value is an actual template script. The key is typically a SelectionKey which is chosen based on evaluating a selection expression. |  [optional] |
+|**templateSelectionExpression** | **String** | An expression used to extract information at runtime. See &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/apigateway/latest/developerguide/apigateway-websocket-api-selection-expressions.html#apigateway-websocket-api-apikey-selection-expressions\&quot;&gt;Selection Expressions&lt;/a&gt; for more information. |  [optional] |
+
+
+
+## Enum: ContentHandlingStrategyEnum
+
+| Name | Value |
+|---- | -----|
+| BINARY | &quot;CONVERT_TO_BINARY&quot; |
+| TEXT | &quot;CONVERT_TO_TEXT&quot; |
+
+
+

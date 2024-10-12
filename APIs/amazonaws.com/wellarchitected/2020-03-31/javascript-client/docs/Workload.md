@@ -1,0 +1,35 @@
+# AwsWellArchitectedTool.Workload
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**workloadId** | **String** | The ID assigned to the workload. This ID is unique within an Amazon Web Services Region. | [optional] 
+**workloadArn** | **String** | The ARN for the workload. | [optional] 
+**workloadName** | **String** | &lt;p&gt;The name of the workload.&lt;/p&gt; &lt;p&gt;The name must be unique within an account within an Amazon Web Services Region. Spaces and capitalization are ignored when checking for uniqueness.&lt;/p&gt; | [optional] 
+**description** | **String** | The description for the workload. | [optional] 
+**environment** | [**WorkloadEnvironment**](WorkloadEnvironment.md) |  | [optional] 
+**updatedAt** | **Date** | The date and time recorded. | [optional] 
+**accountIds** | **[String]** | The list of Amazon Web Services account IDs associated with the workload. | [optional] 
+**awsRegions** | **[String]** | The list of Amazon Web Services Regions associated with the workload, for example, &lt;code&gt;us-east-2&lt;/code&gt;, or &lt;code&gt;ca-central-1&lt;/code&gt;. | [optional] 
+**nonAwsRegions** | **[String]** |  The list of non-Amazon Web Services Regions associated with the workload. | [optional] 
+**architecturalDesign** | **String** | The URL of the architectural design for the workload. | [optional] 
+**reviewOwner** | **String** | The review owner of the workload. The name, email address, or identifier for the primary group or individual that owns the workload review process. | [optional] 
+**reviewRestrictionDate** | **Date** | The date and time recorded. | [optional] 
+**isReviewOwnerUpdateAcknowledged** | **Boolean** |  | [optional] 
+**industryType** | **String** | &lt;p&gt;The industry type for the workload.&lt;/p&gt; &lt;p&gt;If specified, must be one of the following:&lt;/p&gt; &lt;ul&gt; &lt;li&gt; &lt;p&gt; &lt;code&gt;Agriculture&lt;/code&gt; &lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;code&gt;Automobile&lt;/code&gt; &lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;code&gt;Defense&lt;/code&gt; &lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;code&gt;Design and Engineering&lt;/code&gt; &lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;code&gt;Digital Advertising&lt;/code&gt; &lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;code&gt;Education&lt;/code&gt; &lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;code&gt;Environmental Protection&lt;/code&gt; &lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;code&gt;Financial Services&lt;/code&gt; &lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;code&gt;Gaming&lt;/code&gt; &lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;code&gt;General Public Services&lt;/code&gt; &lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;code&gt;Healthcare&lt;/code&gt; &lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;code&gt;Hospitality&lt;/code&gt; &lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;code&gt;InfoTech&lt;/code&gt; &lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;code&gt;Justice and Public Safety&lt;/code&gt; &lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;code&gt;Life Sciences&lt;/code&gt; &lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;code&gt;Manufacturing&lt;/code&gt; &lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;code&gt;Media &amp;amp; Entertainment&lt;/code&gt; &lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;code&gt;Mining &amp;amp; Resources&lt;/code&gt; &lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;code&gt;Oil &amp;amp; Gas&lt;/code&gt; &lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;code&gt;Power &amp;amp; Utilities&lt;/code&gt; &lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;code&gt;Professional Services&lt;/code&gt; &lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;code&gt;Real Estate &amp;amp; Construction&lt;/code&gt; &lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;code&gt;Retail &amp;amp; Wholesale&lt;/code&gt; &lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;code&gt;Social Protection&lt;/code&gt; &lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;code&gt;Telecommunications&lt;/code&gt; &lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;code&gt;Travel, Transportation &amp;amp; Logistics&lt;/code&gt; &lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;code&gt;Other&lt;/code&gt; &lt;/p&gt; &lt;/li&gt; &lt;/ul&gt; | [optional] 
+**industry** | **String** | The industry for the workload. | [optional] 
+**notes** | **String** | The notes associated with the workload. | [optional] 
+**improvementStatus** | [**WorkloadImprovementStatus**](WorkloadImprovementStatus.md) |  | [optional] 
+**riskCounts** | **{String: Number}** | A map from risk names to the count of how many questions have that rating. | [optional] 
+**pillarPriorities** | **[String]** | The priorities of the pillars, which are used to order items in the improvement plan. Each pillar is represented by its &lt;a&gt;PillarReviewSummary$PillarId&lt;/a&gt;. | [optional] 
+**lenses** | **[String]** | The list of lenses associated with the workload. Each lens is identified by its &lt;a&gt;LensSummary$LensAlias&lt;/a&gt;. | [optional] 
+**owner** | **String** | An Amazon Web Services account ID. | [optional] 
+**shareInvitationId** | **String** |  | [optional] 
+**tags** | **Object** |  | [optional] 
+**discoveryConfig** | [**WorkloadDiscoveryConfig**](WorkloadDiscoveryConfig.md) |  | [optional] 
+**applications** | **Array** |  | [optional] 
+**profiles** | **Array** |  | [optional] 
+**prioritizedRiskCounts** | **{String: Number}** | A map from risk names to the count of how many questions have that rating. | [optional] 
+
+

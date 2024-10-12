@@ -1,0 +1,22 @@
+# AwsCertificateManagerPrivateCertificateAuthority.RevocationReason
+
+## Enum
+
+
+* `UNSPECIFIED` (value: `"UNSPECIFIED"`)
+
+* `KEY_COMPROMISE` (value: `"KEY_COMPROMISE"`)
+
+* `CERTIFICATE_AUTHORITY_COMPROMISE` (value: `"CERTIFICATE_AUTHORITY_COMPROMISE"`)
+
+* `AFFILIATION_CHANGED` (value: `"AFFILIATION_CHANGED"`)
+
+* `SUPERSEDED` (value: `"SUPERSEDED"`)
+
+* `CESSATION_OF_OPERATION` (value: `"CESSATION_OF_OPERATION"`)
+
+* `PRIVILEGE_WITHDRAWN` (value: `"PRIVILEGE_WITHDRAWN"`)
+
+* `A_A_COMPROMISE` (value: `"A_A_COMPROMISE"`)
+
+

@@ -1,0 +1,25 @@
+
+
+# NsState
+
+## Enum
+
+
+* `INSTANTIATED` (value: `"INSTANTIATED"`)
+
+* `NOT_INSTANTIATED` (value: `"NOT_INSTANTIATED"`)
+
+* `IMPAIRED` (value: `"IMPAIRED"`)
+
+* `STOPPED` (value: `"STOPPED"`)
+
+* `DELETED` (value: `"DELETED"`)
+
+* `INSTANTIATE_IN_PROGRESS` (value: `"INSTANTIATE_IN_PROGRESS"`)
+
+* `UPDATE_IN_PROGRESS` (value: `"UPDATE_IN_PROGRESS"`)
+
+* `TERMINATE_IN_PROGRESS` (value: `"TERMINATE_IN_PROGRESS"`)
+
+
+

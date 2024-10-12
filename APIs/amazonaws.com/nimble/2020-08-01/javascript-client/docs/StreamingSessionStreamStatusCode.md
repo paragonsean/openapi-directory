@@ -1,0 +1,18 @@
+# AmazonNimbleStudio.StreamingSessionStreamStatusCode
+
+## Enum
+
+
+* `STREAM_CREATE_IN_PROGRESS` (value: `"STREAM_CREATE_IN_PROGRESS"`)
+
+* `STREAM_READY` (value: `"STREAM_READY"`)
+
+* `STREAM_DELETE_IN_PROGRESS` (value: `"STREAM_DELETE_IN_PROGRESS"`)
+
+* `STREAM_DELETED` (value: `"STREAM_DELETED"`)
+
+* `INTERNAL_ERROR` (value: `"INTERNAL_ERROR"`)
+
+* `NETWORK_CONNECTION_ERROR` (value: `"NETWORK_CONNECTION_ERROR"`)
+
+

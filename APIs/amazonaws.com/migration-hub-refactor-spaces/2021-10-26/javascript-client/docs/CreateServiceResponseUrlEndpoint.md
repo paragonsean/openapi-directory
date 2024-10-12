@@ -1,0 +1,10 @@
+# AwsMigrationHubRefactorSpaces.CreateServiceResponseUrlEndpoint
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**healthUrl** | **String** |  | [optional] 
+**url** | **String** |  | 
+
+

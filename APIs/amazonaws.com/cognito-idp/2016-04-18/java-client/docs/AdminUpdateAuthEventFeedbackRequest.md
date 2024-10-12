@@ -1,0 +1,16 @@
+
+
+# AdminUpdateAuthEventFeedbackRequest
+
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**userPoolId** | [**String**](String.md) |  |  |
+|**username** | [**String**](String.md) |  |  |
+|**eventId** | [**String**](String.md) |  |  |
+|**feedbackValue** | [**FeedbackValueType**](FeedbackValueType.md) |  |  |
+
+
+

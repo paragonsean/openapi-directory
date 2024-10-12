@@ -1,0 +1,17 @@
+
+
+# DataLakeSource
+
+Amazon Security Lake collects logs and events from supported Amazon Web Services and custom sources. For the list of supported Amazon Web Services, see the <a href=\"https://docs.aws.amazon.com/security-lake/latest/userguide/internal-sources.html\">Amazon Security Lake User Guide</a>.
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**account** | [**String**](String.md) |  |  [optional] |
+|**eventClasses** | [**List**](List.md) |  |  [optional] |
+|**sourceName** | [**String**](String.md) |  |  [optional] |
+|**sourceStatuses** | [**List**](List.md) |  |  [optional] |
+
+
+

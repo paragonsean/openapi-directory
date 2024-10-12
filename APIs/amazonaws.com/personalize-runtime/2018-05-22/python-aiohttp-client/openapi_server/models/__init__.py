@@ -1,0 +1,9 @@
+# coding: utf-8
+
+# import models into model package
+from openapi_server.models.get_personalized_ranking_request import GetPersonalizedRankingRequest
+from openapi_server.models.get_personalized_ranking_response import GetPersonalizedRankingResponse
+from openapi_server.models.get_recommendations_request import GetRecommendationsRequest
+from openapi_server.models.get_recommendations_response import GetRecommendationsResponse
+from openapi_server.models.predicted_item import PredictedItem
+from openapi_server.models.promotion import Promotion

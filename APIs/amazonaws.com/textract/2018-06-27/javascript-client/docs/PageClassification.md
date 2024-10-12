@@ -1,0 +1,10 @@
+# AmazonTextract.PageClassification
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**pageType** | **Array** |  | 
+**pageNumber** | **Array** |  | 
+
+

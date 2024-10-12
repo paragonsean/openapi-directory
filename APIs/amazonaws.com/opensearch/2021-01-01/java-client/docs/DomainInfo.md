@@ -1,0 +1,15 @@
+
+
+# DomainInfo
+
+Information about an OpenSearch Service domain.
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**domainName** | [**String**](String.md) |  |  [optional] |
+|**engineType** | [**EngineType**](EngineType.md) |  |  [optional] |
+
+
+

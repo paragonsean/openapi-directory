@@ -1,0 +1,17 @@
+
+
+# DeviceiSCSIAttributes
+
+Lists iSCSI information about a VTL device.
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**targetARN** | [**String**](String.md) |  |  [optional] |
+|**networkInterfaceId** | [**String**](String.md) |  |  [optional] |
+|**networkInterfacePort** | [**Integer**](Integer.md) |  |  [optional] |
+|**chapEnabled** | [**Boolean**](Boolean.md) |  |  [optional] |
+
+
+

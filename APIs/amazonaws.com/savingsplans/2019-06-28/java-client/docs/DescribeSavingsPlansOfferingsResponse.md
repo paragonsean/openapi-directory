@@ -1,0 +1,14 @@
+
+
+# DescribeSavingsPlansOfferingsResponse
+
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**searchResults** | [**List**](List.md) |  |  [optional] |
+|**nextToken** | [**String**](String.md) |  |  [optional] |
+
+
+

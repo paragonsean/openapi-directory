@@ -1,0 +1,10 @@
+# AwsIoTSiteWise.EncryptionType
+
+## Enum
+
+
+* `SITEWISE_DEFAULT_ENCRYPTION` (value: `"SITEWISE_DEFAULT_ENCRYPTION"`)
+
+* `KMS_BASED_ENCRYPTION` (value: `"KMS_BASED_ENCRYPTION"`)
+
+

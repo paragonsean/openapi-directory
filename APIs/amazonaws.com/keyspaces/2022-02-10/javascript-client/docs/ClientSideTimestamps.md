@@ -1,0 +1,9 @@
+# AmazonKeyspaces.ClientSideTimestamps
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**status** | [**ClientSideTimestampsStatus**](ClientSideTimestampsStatus.md) |  | 
+
+

@@ -1,0 +1,22 @@
+# AmazonRoute53Domains.DomainAvailability
+
+## Enum
+
+
+* `AVAILABLE` (value: `"AVAILABLE"`)
+
+* `AVAILABLE_RESERVED` (value: `"AVAILABLE_RESERVED"`)
+
+* `AVAILABLE_PREORDER` (value: `"AVAILABLE_PREORDER"`)
+
+* `UNAVAILABLE` (value: `"UNAVAILABLE"`)
+
+* `UNAVAILABLE_PREMIUM` (value: `"UNAVAILABLE_PREMIUM"`)
+
+* `UNAVAILABLE_RESTRICTED` (value: `"UNAVAILABLE_RESTRICTED"`)
+
+* `RESERVED` (value: `"RESERVED"`)
+
+* `DONT_KNOW` (value: `"DONT_KNOW"`)
+
+

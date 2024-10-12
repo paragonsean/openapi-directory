@@ -1,0 +1,9 @@
+# AmazonVpcLattice.CreateRuleRequestMatch
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**httpMatch** | [**CreateRuleRequestMatchHttpMatch**](CreateRuleRequestMatchHttpMatch.md) |  | [optional] 
+
+

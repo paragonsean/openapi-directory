@@ -1,0 +1,9 @@
+# AmazonPinpoint.CreateExportJobResponse
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**exportJobResponse** | [**ExportJobResponse**](ExportJobResponse.md) |  | 
+
+

@@ -1,0 +1,24 @@
+# AwsCertificateManagerPrivateCertificateAuthority.ExtendedKeyUsageType
+
+## Enum
+
+
+* `SERVER_AUTH` (value: `"SERVER_AUTH"`)
+
+* `CLIENT_AUTH` (value: `"CLIENT_AUTH"`)
+
+* `CODE_SIGNING` (value: `"CODE_SIGNING"`)
+
+* `EMAIL_PROTECTION` (value: `"EMAIL_PROTECTION"`)
+
+* `TIME_STAMPING` (value: `"TIME_STAMPING"`)
+
+* `OCSP_SIGNING` (value: `"OCSP_SIGNING"`)
+
+* `SMART_CARD_LOGIN` (value: `"SMART_CARD_LOGIN"`)
+
+* `DOCUMENT_SIGNING` (value: `"DOCUMENT_SIGNING"`)
+
+* `CERTIFICATE_TRANSPARENCY` (value: `"CERTIFICATE_TRANSPARENCY"`)
+
+

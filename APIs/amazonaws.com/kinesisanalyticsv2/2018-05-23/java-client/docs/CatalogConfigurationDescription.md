@@ -1,0 +1,14 @@
+
+
+# CatalogConfigurationDescription
+
+The configuration parameters for the default Amazon Glue database. You use this database for Apache Flink SQL queries and table API transforms that you write in a Kinesis Data Analytics Studio notebook.
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**glueDataCatalogConfigurationDescription** | [**CatalogConfigurationDescriptionGlueDataCatalogConfigurationDescription**](CatalogConfigurationDescriptionGlueDataCatalogConfigurationDescription.md) |  |  |
+
+
+

@@ -1,0 +1,21 @@
+
+
+# EventDataStoreStatus
+
+## Enum
+
+
+* `CREATED` (value: `"CREATED"`)
+
+* `ENABLED` (value: `"ENABLED"`)
+
+* `PENDING_DELETION` (value: `"PENDING_DELETION"`)
+
+* `STARTING_INGESTION` (value: `"STARTING_INGESTION"`)
+
+* `STOPPING_INGESTION` (value: `"STOPPING_INGESTION"`)
+
+* `STOPPED_INGESTION` (value: `"STOPPED_INGESTION"`)
+
+
+

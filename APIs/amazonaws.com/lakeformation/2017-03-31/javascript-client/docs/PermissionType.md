@@ -1,0 +1,14 @@
+# AwsLakeFormation.PermissionType
+
+## Enum
+
+
+* `COLUMN_PERMISSION` (value: `"COLUMN_PERMISSION"`)
+
+* `CELL_FILTER_PERMISSION` (value: `"CELL_FILTER_PERMISSION"`)
+
+* `NESTED_PERMISSION` (value: `"NESTED_PERMISSION"`)
+
+* `NESTED_CELL_PERMISSION` (value: `"NESTED_CELL_PERMISSION"`)
+
+

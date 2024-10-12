@@ -1,0 +1,87 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIDescribeVoicesOutput.h \
+    $${PWD}/OAIEngine.h \
+    $${PWD}/OAIGender.h \
+    $${PWD}/OAIGetLexiconOutput.h \
+    $${PWD}/OAIGetLexiconOutput_Lexicon.h \
+    $${PWD}/OAIGetLexiconOutput_LexiconAttributes.h \
+    $${PWD}/OAIGetSpeechSynthesisTaskOutput.h \
+    $${PWD}/OAIGetSpeechSynthesisTaskOutput_SynthesisTask.h \
+    $${PWD}/OAILanguageCode.h \
+    $${PWD}/OAILexicon.h \
+    $${PWD}/OAILexiconAttributes.h \
+    $${PWD}/OAILexiconDescription.h \
+    $${PWD}/OAILexiconDescription_Attributes.h \
+    $${PWD}/OAIListLexiconsOutput.h \
+    $${PWD}/OAIListSpeechSynthesisTasksOutput.h \
+    $${PWD}/OAIOutputFormat.h \
+    $${PWD}/OAIPutLexiconInput.h \
+    $${PWD}/OAIPutLexicon_request.h \
+    $${PWD}/OAISpeechMarkType.h \
+    $${PWD}/OAIStartSpeechSynthesisTaskInput.h \
+    $${PWD}/OAIStartSpeechSynthesisTaskOutput.h \
+    $${PWD}/OAIStartSpeechSynthesisTaskOutput_SynthesisTask.h \
+    $${PWD}/OAIStartSpeechSynthesisTask_request.h \
+    $${PWD}/OAISynthesisTask.h \
+    $${PWD}/OAISynthesizeSpeechInput.h \
+    $${PWD}/OAISynthesizeSpeechOutput.h \
+    $${PWD}/OAISynthesizeSpeech_request.h \
+    $${PWD}/OAITaskStatus.h \
+    $${PWD}/OAITextType.h \
+    $${PWD}/OAIVoice.h \
+    $${PWD}/OAIVoiceId.h \
+# APIs
+    $${PWD}/OAIDefaultApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIDescribeVoicesOutput.cpp \
+    $${PWD}/OAIEngine.cpp \
+    $${PWD}/OAIGender.cpp \
+    $${PWD}/OAIGetLexiconOutput.cpp \
+    $${PWD}/OAIGetLexiconOutput_Lexicon.cpp \
+    $${PWD}/OAIGetLexiconOutput_LexiconAttributes.cpp \
+    $${PWD}/OAIGetSpeechSynthesisTaskOutput.cpp \
+    $${PWD}/OAIGetSpeechSynthesisTaskOutput_SynthesisTask.cpp \
+    $${PWD}/OAILanguageCode.cpp \
+    $${PWD}/OAILexicon.cpp \
+    $${PWD}/OAILexiconAttributes.cpp \
+    $${PWD}/OAILexiconDescription.cpp \
+    $${PWD}/OAILexiconDescription_Attributes.cpp \
+    $${PWD}/OAIListLexiconsOutput.cpp \
+    $${PWD}/OAIListSpeechSynthesisTasksOutput.cpp \
+    $${PWD}/OAIOutputFormat.cpp \
+    $${PWD}/OAIPutLexiconInput.cpp \
+    $${PWD}/OAIPutLexicon_request.cpp \
+    $${PWD}/OAISpeechMarkType.cpp \
+    $${PWD}/OAIStartSpeechSynthesisTaskInput.cpp \
+    $${PWD}/OAIStartSpeechSynthesisTaskOutput.cpp \
+    $${PWD}/OAIStartSpeechSynthesisTaskOutput_SynthesisTask.cpp \
+    $${PWD}/OAIStartSpeechSynthesisTask_request.cpp \
+    $${PWD}/OAISynthesisTask.cpp \
+    $${PWD}/OAISynthesizeSpeechInput.cpp \
+    $${PWD}/OAISynthesizeSpeechOutput.cpp \
+    $${PWD}/OAISynthesizeSpeech_request.cpp \
+    $${PWD}/OAITaskStatus.cpp \
+    $${PWD}/OAITextType.cpp \
+    $${PWD}/OAIVoice.cpp \
+    $${PWD}/OAIVoiceId.cpp \
+# APIs
+    $${PWD}/OAIDefaultApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

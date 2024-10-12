@@ -1,0 +1,20 @@
+
+
+# ZonalShiftSummary
+
+<p>You start a zonal shift to temporarily move load balancer traffic away from an Availability Zone in a AWS Region. A zonal shift helps your application recover immediately, for example, from a developer's bad code deployment or from an AWS infrastructure failure in a single Availability Zone. You can start a zonal shift in Route 53 ARC only for managed resources in your account in an AWS Region. Supported AWS resources are automatically registered with Route 53 ARC.</p> <p>Zonal shifts are temporary. A zonal shift can be active for up to three days (72 hours).</p> <p>When you start a zonal shift, you specify how long you want it to be active, which Amazon Route 53 Application Recovery Controller converts to an expiry time (expiration time). You can cancel a zonal shift, for example, if you're ready to restore traffic to the Availability Zone. Or you can extend the zonal shift by updating the expiration so the zonal shift is active longer.</p>
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**awayFrom** | [**String**](String.md) |  |  |
+|**comment** | [**String**](String.md) |  |  |
+|**expiryTime** | [**OffsetDateTime**](OffsetDateTime.md) |  |  |
+|**resourceIdentifier** | [**String**](String.md) |  |  |
+|**startTime** | [**OffsetDateTime**](OffsetDateTime.md) |  |  |
+|**status** | [**ZonalShiftStatus**](ZonalShiftStatus.md) |  |  |
+|**zonalShiftId** | [**String**](String.md) |  |  |
+
+
+

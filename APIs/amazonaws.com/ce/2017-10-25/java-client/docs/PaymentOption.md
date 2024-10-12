@@ -1,0 +1,21 @@
+
+
+# PaymentOption
+
+## Enum
+
+
+* `NO_UPFRONT` (value: `"NO_UPFRONT"`)
+
+* `PARTIAL_UPFRONT` (value: `"PARTIAL_UPFRONT"`)
+
+* `ALL_UPFRONT` (value: `"ALL_UPFRONT"`)
+
+* `LIGHT_UTILIZATION` (value: `"LIGHT_UTILIZATION"`)
+
+* `MEDIUM_UTILIZATION` (value: `"MEDIUM_UTILIZATION"`)
+
+* `HEAVY_UTILIZATION` (value: `"HEAVY_UTILIZATION"`)
+
+
+

@@ -1,0 +1,22 @@
+# AwsShield.AttackPropertyIdentifier
+
+## Enum
+
+
+* `DESTINATION_URL` (value: `"DESTINATION_URL"`)
+
+* `REFERRER` (value: `"REFERRER"`)
+
+* `SOURCE_ASN` (value: `"SOURCE_ASN"`)
+
+* `SOURCE_COUNTRY` (value: `"SOURCE_COUNTRY"`)
+
+* `SOURCE_IP_ADDRESS` (value: `"SOURCE_IP_ADDRESS"`)
+
+* `SOURCE_USER_AGENT` (value: `"SOURCE_USER_AGENT"`)
+
+* `WORDPRESS_PINGBACK_REFLECTOR` (value: `"WORDPRESS_PINGBACK_REFLECTOR"`)
+
+* `WORDPRESS_PINGBACK_SOURCE` (value: `"WORDPRESS_PINGBACK_SOURCE"`)
+
+

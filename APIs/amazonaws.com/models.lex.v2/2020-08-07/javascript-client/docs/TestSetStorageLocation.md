@@ -1,0 +1,11 @@
+# AmazonLexModelBuildingV2.TestSetStorageLocation
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**s3BucketName** | **String** |  | 
+**s3Path** | **String** |  | 
+**kmsKeyArn** | **String** |  | [optional] 
+
+

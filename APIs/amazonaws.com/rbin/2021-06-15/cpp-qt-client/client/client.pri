@@ -1,0 +1,91 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAICreateRuleRequest.h \
+    $${PWD}/OAICreateRuleResponse.h \
+    $${PWD}/OAICreateRuleResponse_LockConfiguration.h \
+    $${PWD}/OAICreateRule_request.h \
+    $${PWD}/OAICreateRule_request_LockConfiguration.h \
+    $${PWD}/OAICreateRule_request_LockConfiguration_UnlockDelay.h \
+    $${PWD}/OAICreateRule_request_RetentionPeriod.h \
+    $${PWD}/OAIGetRuleResponse.h \
+    $${PWD}/OAIGetRuleResponse_RetentionPeriod.h \
+    $${PWD}/OAIListRulesRequest.h \
+    $${PWD}/OAIListRulesResponse.h \
+    $${PWD}/OAIListRules_request.h \
+    $${PWD}/OAIListTagsForResourceResponse.h \
+    $${PWD}/OAILockConfiguration.h \
+    $${PWD}/OAILockRuleRequest.h \
+    $${PWD}/OAILockRuleResponse.h \
+    $${PWD}/OAILockRule_request.h \
+    $${PWD}/OAILockState.h \
+    $${PWD}/OAIResourceTag.h \
+    $${PWD}/OAIResourceType.h \
+    $${PWD}/OAIRetentionPeriod.h \
+    $${PWD}/OAIRetentionPeriodUnit.h \
+    $${PWD}/OAIRuleStatus.h \
+    $${PWD}/OAIRuleSummary.h \
+    $${PWD}/OAITag.h \
+    $${PWD}/OAITagResourceRequest.h \
+    $${PWD}/OAITagResource_request.h \
+    $${PWD}/OAIUnlockDelay.h \
+    $${PWD}/OAIUnlockDelayUnit.h \
+    $${PWD}/OAIUnlockRuleResponse.h \
+    $${PWD}/OAIUpdateRuleRequest.h \
+    $${PWD}/OAIUpdateRuleResponse.h \
+    $${PWD}/OAIUpdateRule_request.h \
+# APIs
+    $${PWD}/OAIDefaultApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAICreateRuleRequest.cpp \
+    $${PWD}/OAICreateRuleResponse.cpp \
+    $${PWD}/OAICreateRuleResponse_LockConfiguration.cpp \
+    $${PWD}/OAICreateRule_request.cpp \
+    $${PWD}/OAICreateRule_request_LockConfiguration.cpp \
+    $${PWD}/OAICreateRule_request_LockConfiguration_UnlockDelay.cpp \
+    $${PWD}/OAICreateRule_request_RetentionPeriod.cpp \
+    $${PWD}/OAIGetRuleResponse.cpp \
+    $${PWD}/OAIGetRuleResponse_RetentionPeriod.cpp \
+    $${PWD}/OAIListRulesRequest.cpp \
+    $${PWD}/OAIListRulesResponse.cpp \
+    $${PWD}/OAIListRules_request.cpp \
+    $${PWD}/OAIListTagsForResourceResponse.cpp \
+    $${PWD}/OAILockConfiguration.cpp \
+    $${PWD}/OAILockRuleRequest.cpp \
+    $${PWD}/OAILockRuleResponse.cpp \
+    $${PWD}/OAILockRule_request.cpp \
+    $${PWD}/OAILockState.cpp \
+    $${PWD}/OAIResourceTag.cpp \
+    $${PWD}/OAIResourceType.cpp \
+    $${PWD}/OAIRetentionPeriod.cpp \
+    $${PWD}/OAIRetentionPeriodUnit.cpp \
+    $${PWD}/OAIRuleStatus.cpp \
+    $${PWD}/OAIRuleSummary.cpp \
+    $${PWD}/OAITag.cpp \
+    $${PWD}/OAITagResourceRequest.cpp \
+    $${PWD}/OAITagResource_request.cpp \
+    $${PWD}/OAIUnlockDelay.cpp \
+    $${PWD}/OAIUnlockDelayUnit.cpp \
+    $${PWD}/OAIUnlockRuleResponse.cpp \
+    $${PWD}/OAIUpdateRuleRequest.cpp \
+    $${PWD}/OAIUpdateRuleResponse.cpp \
+    $${PWD}/OAIUpdateRule_request.cpp \
+# APIs
+    $${PWD}/OAIDefaultApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

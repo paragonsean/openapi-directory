@@ -1,0 +1,9 @@
+# AmazonPinpoint.CreatePushTemplateResponse
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**createTemplateMessageBody** | [**CreateTemplateMessageBody**](CreateTemplateMessageBody.md) |  | 
+
+

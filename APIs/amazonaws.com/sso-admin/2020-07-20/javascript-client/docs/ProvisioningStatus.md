@@ -1,0 +1,10 @@
+# AwsSingleSignOnAdmin.ProvisioningStatus
+
+## Enum
+
+
+* `PROVISIONED` (value: `"LATEST_PERMISSION_SET_PROVISIONED"`)
+
+* `NOT_PROVISIONED` (value: `"LATEST_PERMISSION_SET_NOT_PROVISIONED"`)
+
+

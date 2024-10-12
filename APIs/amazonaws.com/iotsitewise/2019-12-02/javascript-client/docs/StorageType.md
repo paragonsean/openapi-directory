@@ -1,0 +1,10 @@
+# AwsIoTSiteWise.StorageType
+
+## Enum
+
+
+* `SITEWISE_DEFAULT_STORAGE` (value: `"SITEWISE_DEFAULT_STORAGE"`)
+
+* `MULTI_LAYER_STORAGE` (value: `"MULTI_LAYER_STORAGE"`)
+
+

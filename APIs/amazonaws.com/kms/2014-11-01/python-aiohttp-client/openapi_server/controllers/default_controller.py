@@ -1,0 +1,1561 @@
+from typing import List, Dict
+from aiohttp import web
+
+from openapi_server.models.cancel_key_deletion_request import CancelKeyDeletionRequest
+from openapi_server.models.cancel_key_deletion_response import CancelKeyDeletionResponse
+from openapi_server.models.connect_custom_key_store_request import ConnectCustomKeyStoreRequest
+from openapi_server.models.create_alias_request import CreateAliasRequest
+from openapi_server.models.create_custom_key_store_request import CreateCustomKeyStoreRequest
+from openapi_server.models.create_custom_key_store_response import CreateCustomKeyStoreResponse
+from openapi_server.models.create_grant_request import CreateGrantRequest
+from openapi_server.models.create_grant_response import CreateGrantResponse
+from openapi_server.models.create_key_request import CreateKeyRequest
+from openapi_server.models.create_key_response import CreateKeyResponse
+from openapi_server.models.decrypt_request import DecryptRequest
+from openapi_server.models.decrypt_response import DecryptResponse
+from openapi_server.models.delete_alias_request import DeleteAliasRequest
+from openapi_server.models.delete_custom_key_store_request import DeleteCustomKeyStoreRequest
+from openapi_server.models.delete_imported_key_material_request import DeleteImportedKeyMaterialRequest
+from openapi_server.models.describe_custom_key_stores_request import DescribeCustomKeyStoresRequest
+from openapi_server.models.describe_custom_key_stores_response import DescribeCustomKeyStoresResponse
+from openapi_server.models.describe_key_request import DescribeKeyRequest
+from openapi_server.models.describe_key_response import DescribeKeyResponse
+from openapi_server.models.disable_key_request import DisableKeyRequest
+from openapi_server.models.disable_key_rotation_request import DisableKeyRotationRequest
+from openapi_server.models.disconnect_custom_key_store_request import DisconnectCustomKeyStoreRequest
+from openapi_server.models.enable_key_request import EnableKeyRequest
+from openapi_server.models.enable_key_rotation_request import EnableKeyRotationRequest
+from openapi_server.models.encrypt_request import EncryptRequest
+from openapi_server.models.encrypt_response import EncryptResponse
+from openapi_server.models.generate_data_key_pair_request import GenerateDataKeyPairRequest
+from openapi_server.models.generate_data_key_pair_response import GenerateDataKeyPairResponse
+from openapi_server.models.generate_data_key_pair_without_plaintext_request import GenerateDataKeyPairWithoutPlaintextRequest
+from openapi_server.models.generate_data_key_pair_without_plaintext_response import GenerateDataKeyPairWithoutPlaintextResponse
+from openapi_server.models.generate_data_key_request import GenerateDataKeyRequest
+from openapi_server.models.generate_data_key_response import GenerateDataKeyResponse
+from openapi_server.models.generate_data_key_without_plaintext_request import GenerateDataKeyWithoutPlaintextRequest
+from openapi_server.models.generate_data_key_without_plaintext_response import GenerateDataKeyWithoutPlaintextResponse
+from openapi_server.models.generate_mac_request import GenerateMacRequest
+from openapi_server.models.generate_mac_response import GenerateMacResponse
+from openapi_server.models.generate_random_request import GenerateRandomRequest
+from openapi_server.models.generate_random_response import GenerateRandomResponse
+from openapi_server.models.get_key_policy_request import GetKeyPolicyRequest
+from openapi_server.models.get_key_policy_response import GetKeyPolicyResponse
+from openapi_server.models.get_key_rotation_status_request import GetKeyRotationStatusRequest
+from openapi_server.models.get_key_rotation_status_response import GetKeyRotationStatusResponse
+from openapi_server.models.get_parameters_for_import_request import GetParametersForImportRequest
+from openapi_server.models.get_parameters_for_import_response import GetParametersForImportResponse
+from openapi_server.models.get_public_key_request import GetPublicKeyRequest
+from openapi_server.models.get_public_key_response import GetPublicKeyResponse
+from openapi_server.models.import_key_material_request import ImportKeyMaterialRequest
+from openapi_server.models.list_aliases_request import ListAliasesRequest
+from openapi_server.models.list_aliases_response import ListAliasesResponse
+from openapi_server.models.list_grants_request import ListGrantsRequest
+from openapi_server.models.list_grants_response import ListGrantsResponse
+from openapi_server.models.list_key_policies_request import ListKeyPoliciesRequest
+from openapi_server.models.list_key_policies_response import ListKeyPoliciesResponse
+from openapi_server.models.list_keys_request import ListKeysRequest
+from openapi_server.models.list_keys_response import ListKeysResponse
+from openapi_server.models.list_resource_tags_request import ListResourceTagsRequest
+from openapi_server.models.list_resource_tags_response import ListResourceTagsResponse
+from openapi_server.models.list_retirable_grants_request import ListRetirableGrantsRequest
+from openapi_server.models.put_key_policy_request import PutKeyPolicyRequest
+from openapi_server.models.re_encrypt_request import ReEncryptRequest
+from openapi_server.models.re_encrypt_response import ReEncryptResponse
+from openapi_server.models.replicate_key_request import ReplicateKeyRequest
+from openapi_server.models.replicate_key_response import ReplicateKeyResponse
+from openapi_server.models.retire_grant_request import RetireGrantRequest
+from openapi_server.models.revoke_grant_request import RevokeGrantRequest
+from openapi_server.models.schedule_key_deletion_request import ScheduleKeyDeletionRequest
+from openapi_server.models.schedule_key_deletion_response import ScheduleKeyDeletionResponse
+from openapi_server.models.sign_request import SignRequest
+from openapi_server.models.sign_response import SignResponse
+from openapi_server.models.tag_resource_request import TagResourceRequest
+from openapi_server.models.untag_resource_request import UntagResourceRequest
+from openapi_server.models.update_alias_request import UpdateAliasRequest
+from openapi_server.models.update_custom_key_store_request import UpdateCustomKeyStoreRequest
+from openapi_server.models.update_key_description_request import UpdateKeyDescriptionRequest
+from openapi_server.models.update_primary_region_request import UpdatePrimaryRegionRequest
+from openapi_server.models.verify_mac_request import VerifyMacRequest
+from openapi_server.models.verify_mac_response import VerifyMacResponse
+from openapi_server.models.verify_request import VerifyRequest
+from openapi_server.models.verify_response import VerifyResponse
+from openapi_server import util
+
+
+async def cancel_key_deletion(request: web.Request, x_amz_target, body, x_amz_content_sha256=None, x_amz_date=None, x_amz_algorithm=None, x_amz_credential=None, x_amz_security_token=None, x_amz_signature=None, x_amz_signed_headers=None) -> web.Response:
+    """cancel_key_deletion
+
+    &lt;p&gt;Cancels the deletion of a KMS key. When this operation succeeds, the key state of the KMS key is &lt;code&gt;Disabled&lt;/code&gt;. To enable the KMS key, use &lt;a&gt;EnableKey&lt;/a&gt;. &lt;/p&gt; &lt;p&gt;For more information about scheduling and canceling deletion of a KMS key, see &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/deleting-keys.html\&quot;&gt;Deleting KMS keys&lt;/a&gt; in the &lt;i&gt;Key Management Service Developer Guide&lt;/i&gt;.&lt;/p&gt; &lt;p&gt;The KMS key that you use for this operation must be in a compatible key state. For details, see &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/key-state.html\&quot;&gt;Key states of KMS keys&lt;/a&gt; in the &lt;i&gt;Key Management Service Developer Guide&lt;/i&gt;.&lt;/p&gt; &lt;p&gt; &lt;b&gt;Cross-account use&lt;/b&gt;: No. You cannot perform this operation on a KMS key in a different Amazon Web Services account.&lt;/p&gt; &lt;p&gt; &lt;b&gt;Required permissions&lt;/b&gt;: &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/kms-api-permissions-reference.html\&quot;&gt;kms:CancelKeyDeletion&lt;/a&gt; (key policy)&lt;/p&gt; &lt;p&gt; &lt;b&gt;Related operations&lt;/b&gt;: &lt;a&gt;ScheduleKeyDeletion&lt;/a&gt; &lt;/p&gt;
+
+    :param x_amz_target: 
+    :type x_amz_target: str
+    :param body: 
+    :type body: dict | bytes
+    :param x_amz_content_sha256: 
+    :type x_amz_content_sha256: str
+    :param x_amz_date: 
+    :type x_amz_date: str
+    :param x_amz_algorithm: 
+    :type x_amz_algorithm: str
+    :param x_amz_credential: 
+    :type x_amz_credential: str
+    :param x_amz_security_token: 
+    :type x_amz_security_token: str
+    :param x_amz_signature: 
+    :type x_amz_signature: str
+    :param x_amz_signed_headers: 
+    :type x_amz_signed_headers: str
+
+    """
+    body = CancelKeyDeletionRequest.from_dict(body)
+    return web.Response(status=200)
+
+
+async def connect_custom_key_store(request: web.Request, x_amz_target, body, x_amz_content_sha256=None, x_amz_date=None, x_amz_algorithm=None, x_amz_credential=None, x_amz_security_token=None, x_amz_signature=None, x_amz_signed_headers=None) -> web.Response:
+    """connect_custom_key_store
+
+    &lt;p&gt;Connects or reconnects a &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/custom-key-store-overview.html\&quot;&gt;custom key store&lt;/a&gt; to its backing key store. For an CloudHSM key store, &lt;code&gt;ConnectCustomKeyStore&lt;/code&gt; connects the key store to its associated CloudHSM cluster. For an external key store, &lt;code&gt;ConnectCustomKeyStore&lt;/code&gt; connects the key store to the external key store proxy that communicates with your external key manager.&lt;/p&gt; &lt;p&gt;The custom key store must be connected before you can create KMS keys in the key store or use the KMS keys it contains. You can disconnect and reconnect a custom key store at any time.&lt;/p&gt; &lt;p&gt;The connection process for a custom key store can take an extended amount of time to complete. This operation starts the connection process, but it does not wait for it to complete. When it succeeds, this operation quickly returns an HTTP 200 response and a JSON object with no properties. However, this response does not indicate that the custom key store is connected. To get the connection state of the custom key store, use the &lt;a&gt;DescribeCustomKeyStores&lt;/a&gt; operation.&lt;/p&gt; &lt;p&gt; This operation is part of the &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/custom-key-store-overview.html\&quot;&gt;custom key stores&lt;/a&gt; feature in KMS, which combines the convenience and extensive integration of KMS with the isolation and control of a key store that you own and manage.&lt;/p&gt; &lt;p&gt;The &lt;code&gt;ConnectCustomKeyStore&lt;/code&gt; operation might fail for various reasons. To find the reason, use the &lt;a&gt;DescribeCustomKeyStores&lt;/a&gt; operation and see the &lt;code&gt;ConnectionErrorCode&lt;/code&gt; in the response. For help interpreting the &lt;code&gt;ConnectionErrorCode&lt;/code&gt;, see &lt;a&gt;CustomKeyStoresListEntry&lt;/a&gt;.&lt;/p&gt; &lt;p&gt;To fix the failure, use the &lt;a&gt;DisconnectCustomKeyStore&lt;/a&gt; operation to disconnect the custom key store, correct the error, use the &lt;a&gt;UpdateCustomKeyStore&lt;/a&gt; operation if necessary, and then use &lt;code&gt;ConnectCustomKeyStore&lt;/code&gt; again.&lt;/p&gt; &lt;p&gt; &lt;b&gt;CloudHSM key store&lt;/b&gt; &lt;/p&gt; &lt;p&gt;During the connection process for an CloudHSM key store, KMS finds the CloudHSM cluster that is associated with the custom key store, creates the connection infrastructure, connects to the cluster, logs into the CloudHSM client as the &lt;code&gt;kmsuser&lt;/code&gt; CU, and rotates its password.&lt;/p&gt; &lt;p&gt;To connect an CloudHSM key store, its associated CloudHSM cluster must have at least one active HSM. To get the number of active HSMs in a cluster, use the &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/cloudhsm/latest/APIReference/API_DescribeClusters.html\&quot;&gt;DescribeClusters&lt;/a&gt; operation. To add HSMs to the cluster, use the &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/cloudhsm/latest/APIReference/API_CreateHsm.html\&quot;&gt;CreateHsm&lt;/a&gt; operation. Also, the &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/key-store-concepts.html#concept-kmsuser\&quot;&gt; &lt;code&gt;kmsuser&lt;/code&gt; crypto user&lt;/a&gt; (CU) must not be logged into the cluster. This prevents KMS from using this account to log in.&lt;/p&gt; &lt;p&gt;If you are having trouble connecting or disconnecting a CloudHSM key store, see &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/fix-keystore.html\&quot;&gt;Troubleshooting an CloudHSM key store&lt;/a&gt; in the &lt;i&gt;Key Management Service Developer Guide&lt;/i&gt;.&lt;/p&gt; &lt;p&gt; &lt;b&gt;External key store&lt;/b&gt; &lt;/p&gt; &lt;p&gt;When you connect an external key store that uses public endpoint connectivity, KMS tests its ability to communicate with your external key manager by sending a request via the external key store proxy.&lt;/p&gt; &lt;p&gt;When you connect to an external key store that uses VPC endpoint service connectivity, KMS establishes the networking elements that it needs to communicate with your external key manager via the external key store proxy. This includes creating an interface endpoint to the VPC endpoint service and a private hosted zone for traffic between KMS and the VPC endpoint service.&lt;/p&gt; &lt;p&gt;To connect an external key store, KMS must be able to connect to the external key store proxy, the external key store proxy must be able to communicate with your external key manager, and the external key manager must be available for cryptographic operations.&lt;/p&gt; &lt;p&gt;If you are having trouble connecting or disconnecting an external key store, see &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/xks-troubleshooting.html\&quot;&gt;Troubleshooting an external key store&lt;/a&gt; in the &lt;i&gt;Key Management Service Developer Guide&lt;/i&gt;.&lt;/p&gt; &lt;p&gt; &lt;b&gt;Cross-account use&lt;/b&gt;: No. You cannot perform this operation on a custom key store in a different Amazon Web Services account.&lt;/p&gt; &lt;p&gt; &lt;b&gt;Required permissions&lt;/b&gt;: &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/kms-api-permissions-reference.html\&quot;&gt;kms:ConnectCustomKeyStore&lt;/a&gt; (IAM policy)&lt;/p&gt; &lt;p&gt; &lt;b&gt;Related operations&lt;/b&gt; &lt;/p&gt; &lt;ul&gt; &lt;li&gt; &lt;p&gt; &lt;a&gt;CreateCustomKeyStore&lt;/a&gt; &lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;a&gt;DeleteCustomKeyStore&lt;/a&gt; &lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;a&gt;DescribeCustomKeyStores&lt;/a&gt; &lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;a&gt;DisconnectCustomKeyStore&lt;/a&gt; &lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;a&gt;UpdateCustomKeyStore&lt;/a&gt; &lt;/p&gt; &lt;/li&gt; &lt;/ul&gt;
+
+    :param x_amz_target: 
+    :type x_amz_target: str
+    :param body: 
+    :type body: dict | bytes
+    :param x_amz_content_sha256: 
+    :type x_amz_content_sha256: str
+    :param x_amz_date: 
+    :type x_amz_date: str
+    :param x_amz_algorithm: 
+    :type x_amz_algorithm: str
+    :param x_amz_credential: 
+    :type x_amz_credential: str
+    :param x_amz_security_token: 
+    :type x_amz_security_token: str
+    :param x_amz_signature: 
+    :type x_amz_signature: str
+    :param x_amz_signed_headers: 
+    :type x_amz_signed_headers: str
+
+    """
+    body = ConnectCustomKeyStoreRequest.from_dict(body)
+    return web.Response(status=200)
+
+
+async def create_alias(request: web.Request, x_amz_target, body, x_amz_content_sha256=None, x_amz_date=None, x_amz_algorithm=None, x_amz_credential=None, x_amz_security_token=None, x_amz_signature=None, x_amz_signed_headers=None) -> web.Response:
+    """create_alias
+
+    &lt;p&gt;Creates a friendly name for a KMS key. &lt;/p&gt; &lt;note&gt; &lt;p&gt;Adding, deleting, or updating an alias can allow or deny permission to the KMS key. For details, see &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/abac.html\&quot;&gt;ABAC for KMS&lt;/a&gt; in the &lt;i&gt;Key Management Service Developer Guide&lt;/i&gt;.&lt;/p&gt; &lt;/note&gt; &lt;p&gt;You can use an alias to identify a KMS key in the KMS console, in the &lt;a&gt;DescribeKey&lt;/a&gt; operation and in &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#cryptographic-operations\&quot;&gt;cryptographic operations&lt;/a&gt;, such as &lt;a&gt;Encrypt&lt;/a&gt; and &lt;a&gt;GenerateDataKey&lt;/a&gt;. You can also change the KMS key that&#39;s associated with the alias (&lt;a&gt;UpdateAlias&lt;/a&gt;) or delete the alias (&lt;a&gt;DeleteAlias&lt;/a&gt;) at any time. These operations don&#39;t affect the underlying KMS key. &lt;/p&gt; &lt;p&gt;You can associate the alias with any customer managed key in the same Amazon Web Services Region. Each alias is associated with only one KMS key at a time, but a KMS key can have multiple aliases. A valid KMS key is required. You can&#39;t create an alias without a KMS key.&lt;/p&gt; &lt;p&gt;The alias must be unique in the account and Region, but you can have aliases with the same name in different Regions. For detailed information about aliases, see &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/kms-alias.html\&quot;&gt;Using aliases&lt;/a&gt; in the &lt;i&gt;Key Management Service Developer Guide&lt;/i&gt;.&lt;/p&gt; &lt;p&gt;This operation does not return a response. To get the alias that you created, use the &lt;a&gt;ListAliases&lt;/a&gt; operation.&lt;/p&gt; &lt;p&gt;The KMS key that you use for this operation must be in a compatible key state. For details, see &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/key-state.html\&quot;&gt;Key states of KMS keys&lt;/a&gt; in the &lt;i&gt;Key Management Service Developer Guide&lt;/i&gt;.&lt;/p&gt; &lt;p&gt; &lt;b&gt;Cross-account use&lt;/b&gt;: No. You cannot perform this operation on an alias in a different Amazon Web Services account.&lt;/p&gt; &lt;p&gt; &lt;b&gt;Required permissions&lt;/b&gt; &lt;/p&gt; &lt;ul&gt; &lt;li&gt; &lt;p&gt; &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/kms-api-permissions-reference.html\&quot;&gt;kms:CreateAlias&lt;/a&gt; on the alias (IAM policy).&lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/kms-api-permissions-reference.html\&quot;&gt;kms:CreateAlias&lt;/a&gt; on the KMS key (key policy).&lt;/p&gt; &lt;/li&gt; &lt;/ul&gt; &lt;p&gt;For details, see &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/kms-alias.html#alias-access\&quot;&gt;Controlling access to aliases&lt;/a&gt; in the &lt;i&gt;Key Management Service Developer Guide&lt;/i&gt;.&lt;/p&gt; &lt;p&gt; &lt;b&gt;Related operations:&lt;/b&gt; &lt;/p&gt; &lt;ul&gt; &lt;li&gt; &lt;p&gt; &lt;a&gt;DeleteAlias&lt;/a&gt; &lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;a&gt;ListAliases&lt;/a&gt; &lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;a&gt;UpdateAlias&lt;/a&gt; &lt;/p&gt; &lt;/li&gt; &lt;/ul&gt;
+
+    :param x_amz_target: 
+    :type x_amz_target: str
+    :param body: 
+    :type body: dict | bytes
+    :param x_amz_content_sha256: 
+    :type x_amz_content_sha256: str
+    :param x_amz_date: 
+    :type x_amz_date: str
+    :param x_amz_algorithm: 
+    :type x_amz_algorithm: str
+    :param x_amz_credential: 
+    :type x_amz_credential: str
+    :param x_amz_security_token: 
+    :type x_amz_security_token: str
+    :param x_amz_signature: 
+    :type x_amz_signature: str
+    :param x_amz_signed_headers: 
+    :type x_amz_signed_headers: str
+
+    """
+    body = CreateAliasRequest.from_dict(body)
+    return web.Response(status=200)
+
+
+async def create_custom_key_store(request: web.Request, x_amz_target, body, x_amz_content_sha256=None, x_amz_date=None, x_amz_algorithm=None, x_amz_credential=None, x_amz_security_token=None, x_amz_signature=None, x_amz_signed_headers=None) -> web.Response:
+    """create_custom_key_store
+
+    &lt;p&gt;Creates a &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/custom-key-store-overview.html\&quot;&gt;custom key store&lt;/a&gt; backed by a key store that you own and manage. When you use a KMS key in a custom key store for a cryptographic operation, the cryptographic operation is actually performed in your key store using your keys. KMS supports &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/keystore-cloudhsm.html\&quot;&gt;CloudHSM key stores&lt;/a&gt; backed by an &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/cloudhsm/latest/userguide/clusters.html\&quot;&gt;CloudHSM cluster&lt;/a&gt; and &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/keystore-external.html\&quot;&gt;external key stores&lt;/a&gt; backed by an external key store proxy and external key manager outside of Amazon Web Services.&lt;/p&gt; &lt;p&gt; This operation is part of the &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/custom-key-store-overview.html\&quot;&gt;custom key stores&lt;/a&gt; feature in KMS, which combines the convenience and extensive integration of KMS with the isolation and control of a key store that you own and manage.&lt;/p&gt; &lt;p&gt;Before you create the custom key store, the required elements must be in place and operational. We recommend that you use the test tools that KMS provides to verify the configuration your external key store proxy. For details about the required elements and verification tests, see &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/create-keystore.html#before-keystore\&quot;&gt;Assemble the prerequisites (for CloudHSM key stores)&lt;/a&gt; or &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/create-xks-keystore.html#xks-requirements\&quot;&gt;Assemble the prerequisites (for external key stores)&lt;/a&gt; in the &lt;i&gt;Key Management Service Developer Guide&lt;/i&gt;.&lt;/p&gt; &lt;p&gt;To create a custom key store, use the following parameters.&lt;/p&gt; &lt;ul&gt; &lt;li&gt; &lt;p&gt;To create an CloudHSM key store, specify the &lt;code&gt;CustomKeyStoreName&lt;/code&gt;, &lt;code&gt;CloudHsmClusterId&lt;/code&gt;, &lt;code&gt;KeyStorePassword&lt;/code&gt;, and &lt;code&gt;TrustAnchorCertificate&lt;/code&gt;. The &lt;code&gt;CustomKeyStoreType&lt;/code&gt; parameter is optional for CloudHSM key stores. If you include it, set it to the default value, &lt;code&gt;AWS_CLOUDHSM&lt;/code&gt;. For help with failures, see &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/fix-keystore.html\&quot;&gt;Troubleshooting an CloudHSM key store&lt;/a&gt; in the &lt;i&gt;Key Management Service Developer Guide&lt;/i&gt;.&lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt;To create an external key store, specify the &lt;code&gt;CustomKeyStoreName&lt;/code&gt; and a &lt;code&gt;CustomKeyStoreType&lt;/code&gt; of &lt;code&gt;EXTERNAL_KEY_STORE&lt;/code&gt;. Also, specify values for &lt;code&gt;XksProxyConnectivity&lt;/code&gt;, &lt;code&gt;XksProxyAuthenticationCredential&lt;/code&gt;, &lt;code&gt;XksProxyUriEndpoint&lt;/code&gt;, and &lt;code&gt;XksProxyUriPath&lt;/code&gt;. If your &lt;code&gt;XksProxyConnectivity&lt;/code&gt; value is &lt;code&gt;VPC_ENDPOINT_SERVICE&lt;/code&gt;, specify the &lt;code&gt;XksProxyVpcEndpointServiceName&lt;/code&gt; parameter. For help with failures, see &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/xks-troubleshooting.html\&quot;&gt;Troubleshooting an external key store&lt;/a&gt; in the &lt;i&gt;Key Management Service Developer Guide&lt;/i&gt;.&lt;/p&gt; &lt;/li&gt; &lt;/ul&gt; &lt;note&gt; &lt;p&gt;For external key stores:&lt;/p&gt; &lt;p&gt;Some external key managers provide a simpler method for creating an external key store. For details, see your external key manager documentation.&lt;/p&gt; &lt;p&gt;When creating an external key store in the KMS console, you can upload a JSON-based proxy configuration file with the desired values. You cannot use a proxy configuration with the &lt;code&gt;CreateCustomKeyStore&lt;/code&gt; operation. However, you can use the values in the file to help you determine the correct values for the &lt;code&gt;CreateCustomKeyStore&lt;/code&gt; parameters.&lt;/p&gt; &lt;/note&gt; &lt;p&gt;When the operation completes successfully, it returns the ID of the new custom key store. Before you can use your new custom key store, you need to use the &lt;a&gt;ConnectCustomKeyStore&lt;/a&gt; operation to connect a new CloudHSM key store to its CloudHSM cluster, or to connect a new external key store to the external key store proxy for your external key manager. Even if you are not going to use your custom key store immediately, you might want to connect it to verify that all settings are correct and then disconnect it until you are ready to use it.&lt;/p&gt; &lt;p&gt;For help with failures, see &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/fix-keystore.html\&quot;&gt;Troubleshooting a custom key store&lt;/a&gt; in the &lt;i&gt;Key Management Service Developer Guide&lt;/i&gt;.&lt;/p&gt; &lt;p&gt; &lt;b&gt;Cross-account use&lt;/b&gt;: No. You cannot perform this operation on a custom key store in a different Amazon Web Services account.&lt;/p&gt; &lt;p&gt; &lt;b&gt;Required permissions&lt;/b&gt;: &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/kms-api-permissions-reference.html\&quot;&gt;kms:CreateCustomKeyStore&lt;/a&gt; (IAM policy).&lt;/p&gt; &lt;p&gt; &lt;b&gt;Related operations:&lt;/b&gt; &lt;/p&gt; &lt;ul&gt; &lt;li&gt; &lt;p&gt; &lt;a&gt;ConnectCustomKeyStore&lt;/a&gt; &lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;a&gt;DeleteCustomKeyStore&lt;/a&gt; &lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;a&gt;DescribeCustomKeyStores&lt;/a&gt; &lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;a&gt;DisconnectCustomKeyStore&lt;/a&gt; &lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;a&gt;UpdateCustomKeyStore&lt;/a&gt; &lt;/p&gt; &lt;/li&gt; &lt;/ul&gt;
+
+    :param x_amz_target: 
+    :type x_amz_target: str
+    :param body: 
+    :type body: dict | bytes
+    :param x_amz_content_sha256: 
+    :type x_amz_content_sha256: str
+    :param x_amz_date: 
+    :type x_amz_date: str
+    :param x_amz_algorithm: 
+    :type x_amz_algorithm: str
+    :param x_amz_credential: 
+    :type x_amz_credential: str
+    :param x_amz_security_token: 
+    :type x_amz_security_token: str
+    :param x_amz_signature: 
+    :type x_amz_signature: str
+    :param x_amz_signed_headers: 
+    :type x_amz_signed_headers: str
+
+    """
+    body = CreateCustomKeyStoreRequest.from_dict(body)
+    return web.Response(status=200)
+
+
+async def create_grant(request: web.Request, x_amz_target, body, x_amz_content_sha256=None, x_amz_date=None, x_amz_algorithm=None, x_amz_credential=None, x_amz_security_token=None, x_amz_signature=None, x_amz_signed_headers=None) -> web.Response:
+    """create_grant
+
+    &lt;p&gt;Adds a grant to a KMS key. &lt;/p&gt; &lt;p&gt;A &lt;i&gt;grant&lt;/i&gt; is a policy instrument that allows Amazon Web Services principals to use KMS keys in cryptographic operations. It also can allow them to view a KMS key (&lt;a&gt;DescribeKey&lt;/a&gt;) and create and manage grants. When authorizing access to a KMS key, grants are considered along with key policies and IAM policies. Grants are often used for temporary permissions because you can create one, use its permissions, and delete it without changing your key policies or IAM policies. &lt;/p&gt; &lt;p&gt;For detailed information about grants, including grant terminology, see &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/grants.html\&quot;&gt;Grants in KMS&lt;/a&gt; in the &lt;i&gt; &lt;i&gt;Key Management Service Developer Guide&lt;/i&gt; &lt;/i&gt;. For examples of working with grants in several programming languages, see &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/programming-grants.html\&quot;&gt;Programming grants&lt;/a&gt;. &lt;/p&gt; &lt;p&gt;The &lt;code&gt;CreateGrant&lt;/code&gt; operation returns a &lt;code&gt;GrantToken&lt;/code&gt; and a &lt;code&gt;GrantId&lt;/code&gt;.&lt;/p&gt; &lt;ul&gt; &lt;li&gt; &lt;p&gt;When you create, retire, or revoke a grant, there might be a brief delay, usually less than five minutes, until the grant is available throughout KMS. This state is known as &lt;i&gt;eventual consistency&lt;/i&gt;. Once the grant has achieved eventual consistency, the grantee principal can use the permissions in the grant without identifying the grant. &lt;/p&gt; &lt;p&gt;However, to use the permissions in the grant immediately, use the &lt;code&gt;GrantToken&lt;/code&gt; that &lt;code&gt;CreateGrant&lt;/code&gt; returns. For details, see &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/grant-manage.html#using-grant-token\&quot;&gt;Using a grant token&lt;/a&gt; in the &lt;i&gt; &lt;i&gt;Key Management Service Developer Guide&lt;/i&gt; &lt;/i&gt;.&lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt;The &lt;code&gt;CreateGrant&lt;/code&gt; operation also returns a &lt;code&gt;GrantId&lt;/code&gt;. You can use the &lt;code&gt;GrantId&lt;/code&gt; and a key identifier to identify the grant in the &lt;a&gt;RetireGrant&lt;/a&gt; and &lt;a&gt;RevokeGrant&lt;/a&gt; operations. To find the grant ID, use the &lt;a&gt;ListGrants&lt;/a&gt; or &lt;a&gt;ListRetirableGrants&lt;/a&gt; operations.&lt;/p&gt; &lt;/li&gt; &lt;/ul&gt; &lt;p&gt;The KMS key that you use for this operation must be in a compatible key state. For details, see &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/key-state.html\&quot;&gt;Key states of KMS keys&lt;/a&gt; in the &lt;i&gt;Key Management Service Developer Guide&lt;/i&gt;.&lt;/p&gt; &lt;p&gt; &lt;b&gt;Cross-account use&lt;/b&gt;: Yes. To perform this operation on a KMS key in a different Amazon Web Services account, specify the key ARN in the value of the &lt;code&gt;KeyId&lt;/code&gt; parameter. &lt;/p&gt; &lt;p&gt; &lt;b&gt;Required permissions&lt;/b&gt;: &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/kms-api-permissions-reference.html\&quot;&gt;kms:CreateGrant&lt;/a&gt; (key policy)&lt;/p&gt; &lt;p&gt; &lt;b&gt;Related operations:&lt;/b&gt; &lt;/p&gt; &lt;ul&gt; &lt;li&gt; &lt;p&gt; &lt;a&gt;ListGrants&lt;/a&gt; &lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;a&gt;ListRetirableGrants&lt;/a&gt; &lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;a&gt;RetireGrant&lt;/a&gt; &lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;a&gt;RevokeGrant&lt;/a&gt; &lt;/p&gt; &lt;/li&gt; &lt;/ul&gt;
+
+    :param x_amz_target: 
+    :type x_amz_target: str
+    :param body: 
+    :type body: dict | bytes
+    :param x_amz_content_sha256: 
+    :type x_amz_content_sha256: str
+    :param x_amz_date: 
+    :type x_amz_date: str
+    :param x_amz_algorithm: 
+    :type x_amz_algorithm: str
+    :param x_amz_credential: 
+    :type x_amz_credential: str
+    :param x_amz_security_token: 
+    :type x_amz_security_token: str
+    :param x_amz_signature: 
+    :type x_amz_signature: str
+    :param x_amz_signed_headers: 
+    :type x_amz_signed_headers: str
+
+    """
+    body = CreateGrantRequest.from_dict(body)
+    return web.Response(status=200)
+
+
+async def create_key(request: web.Request, x_amz_target, body, x_amz_content_sha256=None, x_amz_date=None, x_amz_algorithm=None, x_amz_credential=None, x_amz_security_token=None, x_amz_signature=None, x_amz_signed_headers=None) -> web.Response:
+    """create_key
+
+    &lt;p&gt;Creates a unique customer managed &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#kms-keys\&quot;&gt;KMS key&lt;/a&gt; in your Amazon Web Services account and Region. You can use a KMS key in cryptographic operations, such as encryption and signing. Some Amazon Web Services services let you use KMS keys that you create and manage to protect your service resources.&lt;/p&gt; &lt;p&gt;A KMS key is a logical representation of a cryptographic key. In addition to the key material used in cryptographic operations, a KMS key includes metadata, such as the key ID, key policy, creation date, description, and key state. For details, see &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/getting-started.html\&quot;&gt;Managing keys&lt;/a&gt; in the &lt;i&gt;Key Management Service Developer Guide&lt;/i&gt; &lt;/p&gt; &lt;p&gt;Use the parameters of &lt;code&gt;CreateKey&lt;/code&gt; to specify the type of KMS key, the source of its key material, its key policy, description, tags, and other properties.&lt;/p&gt; &lt;note&gt; &lt;p&gt;KMS has replaced the term &lt;i&gt;customer master key (CMK)&lt;/i&gt; with &lt;i&gt;KMS key&lt;/i&gt; and &lt;i&gt;KMS key&lt;/i&gt;. The concept has not changed. To prevent breaking changes, KMS is keeping some variations of this term.&lt;/p&gt; &lt;/note&gt; &lt;p&gt;To create different types of KMS keys, use the following guidance:&lt;/p&gt; &lt;dl&gt; &lt;dt&gt;Symmetric encryption KMS key&lt;/dt&gt; &lt;dd&gt; &lt;p&gt;By default, &lt;code&gt;CreateKey&lt;/code&gt; creates a symmetric encryption KMS key with key material that KMS generates. This is the basic and most widely used type of KMS key, and provides the best performance.&lt;/p&gt; &lt;p&gt;To create a symmetric encryption KMS key, you don&#39;t need to specify any parameters. The default value for &lt;code&gt;KeySpec&lt;/code&gt;, &lt;code&gt;SYMMETRIC_DEFAULT&lt;/code&gt;, the default value for &lt;code&gt;KeyUsage&lt;/code&gt;, &lt;code&gt;ENCRYPT_DECRYPT&lt;/code&gt;, and the default value for &lt;code&gt;Origin&lt;/code&gt;, &lt;code&gt;AWS_KMS&lt;/code&gt;, create a symmetric encryption KMS key with KMS key material.&lt;/p&gt; &lt;p&gt;If you need a key for basic encryption and decryption or you are creating a KMS key to protect your resources in an Amazon Web Services service, create a symmetric encryption KMS key. The key material in a symmetric encryption key never leaves KMS unencrypted. You can use a symmetric encryption KMS key to encrypt and decrypt data up to 4,096 bytes, but they are typically used to generate data keys and data keys pairs. For details, see &lt;a&gt;GenerateDataKey&lt;/a&gt; and &lt;a&gt;GenerateDataKeyPair&lt;/a&gt;.&lt;/p&gt; &lt;p&gt; &lt;/p&gt; &lt;/dd&gt; &lt;dt&gt;Asymmetric KMS keys&lt;/dt&gt; &lt;dd&gt; &lt;p&gt;To create an asymmetric KMS key, use the &lt;code&gt;KeySpec&lt;/code&gt; parameter to specify the type of key material in the KMS key. Then, use the &lt;code&gt;KeyUsage&lt;/code&gt; parameter to determine whether the KMS key will be used to encrypt and decrypt or sign and verify. You can&#39;t change these properties after the KMS key is created.&lt;/p&gt; &lt;p&gt;Asymmetric KMS keys contain an RSA key pair, Elliptic Curve (ECC) key pair, or an SM2 key pair (China Regions only). The private key in an asymmetric KMS key never leaves KMS unencrypted. However, you can use the &lt;a&gt;GetPublicKey&lt;/a&gt; operation to download the public key so it can be used outside of KMS. KMS keys with RSA or SM2 key pairs can be used to encrypt or decrypt data or sign and verify messages (but not both). KMS keys with ECC key pairs can be used only to sign and verify messages. For information about asymmetric KMS keys, see &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/symmetric-asymmetric.html\&quot;&gt;Asymmetric KMS keys&lt;/a&gt; in the &lt;i&gt;Key Management Service Developer Guide&lt;/i&gt;.&lt;/p&gt; &lt;p&gt; &lt;/p&gt; &lt;/dd&gt; &lt;dt&gt;HMAC KMS key&lt;/dt&gt; &lt;dd&gt; &lt;p&gt;To create an HMAC KMS key, set the &lt;code&gt;KeySpec&lt;/code&gt; parameter to a key spec value for HMAC KMS keys. Then set the &lt;code&gt;KeyUsage&lt;/code&gt; parameter to &lt;code&gt;GENERATE_VERIFY_MAC&lt;/code&gt;. You must set the key usage even though &lt;code&gt;GENERATE_VERIFY_MAC&lt;/code&gt; is the only valid key usage value for HMAC KMS keys. You can&#39;t change these properties after the KMS key is created.&lt;/p&gt; &lt;p&gt;HMAC KMS keys are symmetric keys that never leave KMS unencrypted. You can use HMAC keys to generate (&lt;a&gt;GenerateMac&lt;/a&gt;) and verify (&lt;a&gt;VerifyMac&lt;/a&gt;) HMAC codes for messages up to 4096 bytes.&lt;/p&gt; &lt;p&gt; &lt;/p&gt; &lt;/dd&gt; &lt;dt&gt;Multi-Region primary keys&lt;/dt&gt; &lt;dt&gt;Imported key material&lt;/dt&gt; &lt;dd&gt; &lt;p&gt;To create a multi-Region &lt;i&gt;primary key&lt;/i&gt; in the local Amazon Web Services Region, use the &lt;code&gt;MultiRegion&lt;/code&gt; parameter with a value of &lt;code&gt;True&lt;/code&gt;. To create a multi-Region &lt;i&gt;replica key&lt;/i&gt;, that is, a KMS key with the same key ID and key material as a primary key, but in a different Amazon Web Services Region, use the &lt;a&gt;ReplicateKey&lt;/a&gt; operation. To change a replica key to a primary key, and its primary key to a replica key, use the &lt;a&gt;UpdatePrimaryRegion&lt;/a&gt; operation.&lt;/p&gt; &lt;p&gt;You can create multi-Region KMS keys for all supported KMS key types: symmetric encryption KMS keys, HMAC KMS keys, asymmetric encryption KMS keys, and asymmetric signing KMS keys. You can also create multi-Region keys with imported key material. However, you can&#39;t create multi-Region keys in a custom key store.&lt;/p&gt; &lt;p&gt;This operation supports &lt;i&gt;multi-Region keys&lt;/i&gt;, an KMS feature that lets you create multiple interoperable KMS keys in different Amazon Web Services Regions. Because these KMS keys have the same key ID, key material, and other metadata, you can use them interchangeably to encrypt data in one Amazon Web Services Region and decrypt it in a different Amazon Web Services Region without re-encrypting the data or making a cross-Region call. For more information about multi-Region keys, see &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/multi-region-keys-overview.html\&quot;&gt;Multi-Region keys in KMS&lt;/a&gt; in the &lt;i&gt;Key Management Service Developer Guide&lt;/i&gt;.&lt;/p&gt; &lt;p&gt; &lt;/p&gt; &lt;/dd&gt; &lt;dd&gt; &lt;p&gt;To import your own key material into a KMS key, begin by creating a KMS key with no key material. To do this, use the &lt;code&gt;Origin&lt;/code&gt; parameter of &lt;code&gt;CreateKey&lt;/code&gt; with a value of &lt;code&gt;EXTERNAL&lt;/code&gt;. Next, use &lt;a&gt;GetParametersForImport&lt;/a&gt; operation to get a public key and import token. Use the wrapping public key to encrypt your key material. Then, use &lt;a&gt;ImportKeyMaterial&lt;/a&gt; with your import token to import the key material. For step-by-step instructions, see &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/importing-keys.html\&quot;&gt;Importing Key Material&lt;/a&gt; in the &lt;i&gt; &lt;i&gt;Key Management Service Developer Guide&lt;/i&gt; &lt;/i&gt;.&lt;/p&gt; &lt;p&gt;You can import key material into KMS keys of all supported KMS key types: symmetric encryption KMS keys, HMAC KMS keys, asymmetric encryption KMS keys, and asymmetric signing KMS keys. You can also create multi-Region keys with imported key material. However, you can&#39;t import key material into a KMS key in a custom key store.&lt;/p&gt; &lt;p&gt;To create a multi-Region primary key with imported key material, use the &lt;code&gt;Origin&lt;/code&gt; parameter of &lt;code&gt;CreateKey&lt;/code&gt; with a value of &lt;code&gt;EXTERNAL&lt;/code&gt; and the &lt;code&gt;MultiRegion&lt;/code&gt; parameter with a value of &lt;code&gt;True&lt;/code&gt;. To create replicas of the multi-Region primary key, use the &lt;a&gt;ReplicateKey&lt;/a&gt; operation. For instructions, see &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/multi-region-keys-import.html \&quot;&gt;Importing key material into multi-Region keys&lt;/a&gt;. For more information about multi-Region keys, see &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/multi-region-keys-overview.html\&quot;&gt;Multi-Region keys in KMS&lt;/a&gt; in the &lt;i&gt;Key Management Service Developer Guide&lt;/i&gt;.&lt;/p&gt; &lt;p&gt; &lt;/p&gt; &lt;/dd&gt; &lt;dt&gt;Custom key store&lt;/dt&gt; &lt;dd&gt; &lt;p&gt;A &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/custom-key-store-overview.html\&quot;&gt;custom key store&lt;/a&gt; lets you protect your Amazon Web Services resources using keys in a backing key store that you own and manage. When you request a cryptographic operation with a KMS key in a custom key store, the operation is performed in the backing key store using its cryptographic keys.&lt;/p&gt; &lt;p&gt;KMS supports &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/keystore-cloudhsm.html\&quot;&gt;CloudHSM key stores&lt;/a&gt; backed by an CloudHSM cluster and &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/keystore-external.html\&quot;&gt;external key stores&lt;/a&gt; backed by an external key manager outside of Amazon Web Services. When you create a KMS key in an CloudHSM key store, KMS generates an encryption key in the CloudHSM cluster and associates it with the KMS key. When you create a KMS key in an external key store, you specify an existing encryption key in the external key manager.&lt;/p&gt; &lt;note&gt; &lt;p&gt;Some external key managers provide a simpler method for creating a KMS key in an external key store. For details, see your external key manager documentation.&lt;/p&gt; &lt;/note&gt; &lt;p&gt;Before you create a KMS key in a custom key store, the &lt;code&gt;ConnectionState&lt;/code&gt; of the key store must be &lt;code&gt;CONNECTED&lt;/code&gt;. To connect the custom key store, use the &lt;a&gt;ConnectCustomKeyStore&lt;/a&gt; operation. To find the &lt;code&gt;ConnectionState&lt;/code&gt;, use the &lt;a&gt;DescribeCustomKeyStores&lt;/a&gt; operation.&lt;/p&gt; &lt;p&gt;To create a KMS key in a custom key store, use the &lt;code&gt;CustomKeyStoreId&lt;/code&gt;. Use the default &lt;code&gt;KeySpec&lt;/code&gt; value, &lt;code&gt;SYMMETRIC_DEFAULT&lt;/code&gt;, and the default &lt;code&gt;KeyUsage&lt;/code&gt; value, &lt;code&gt;ENCRYPT_DECRYPT&lt;/code&gt; to create a symmetric encryption key. No other key type is supported in a custom key store.&lt;/p&gt; &lt;p&gt;To create a KMS key in an &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/keystore-cloudhsm.html\&quot;&gt;CloudHSM key store&lt;/a&gt;, use the &lt;code&gt;Origin&lt;/code&gt; parameter with a value of &lt;code&gt;AWS_CLOUDHSM&lt;/code&gt;. The CloudHSM cluster that is associated with the custom key store must have at least two active HSMs in different Availability Zones in the Amazon Web Services Region.&lt;/p&gt; &lt;p&gt;To create a KMS key in an &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/keystore-external.html\&quot;&gt;external key store&lt;/a&gt;, use the &lt;code&gt;Origin&lt;/code&gt; parameter with a value of &lt;code&gt;EXTERNAL_KEY_STORE&lt;/code&gt; and an &lt;code&gt;XksKeyId&lt;/code&gt; parameter that identifies an existing external key.&lt;/p&gt; &lt;note&gt; &lt;p&gt;Some external key managers provide a simpler method for creating a KMS key in an external key store. For details, see your external key manager documentation.&lt;/p&gt; &lt;/note&gt; &lt;/dd&gt; &lt;/dl&gt; &lt;p&gt; &lt;b&gt;Cross-account use&lt;/b&gt;: No. You cannot use this operation to create a KMS key in a different Amazon Web Services account.&lt;/p&gt; &lt;p&gt; &lt;b&gt;Required permissions&lt;/b&gt;: &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/kms-api-permissions-reference.html\&quot;&gt;kms:CreateKey&lt;/a&gt; (IAM policy). To use the &lt;code&gt;Tags&lt;/code&gt; parameter, &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/kms-api-permissions-reference.html\&quot;&gt;kms:TagResource&lt;/a&gt; (IAM policy). For examples and information about related permissions, see &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/iam-policies.html#iam-policy-example-create-key\&quot;&gt;Allow a user to create KMS keys&lt;/a&gt; in the &lt;i&gt;Key Management Service Developer Guide&lt;/i&gt;.&lt;/p&gt; &lt;p&gt; &lt;b&gt;Related operations:&lt;/b&gt; &lt;/p&gt; &lt;ul&gt; &lt;li&gt; &lt;p&gt; &lt;a&gt;DescribeKey&lt;/a&gt; &lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;a&gt;ListKeys&lt;/a&gt; &lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;a&gt;ScheduleKeyDeletion&lt;/a&gt; &lt;/p&gt; &lt;/li&gt; &lt;/ul&gt;
+
+    :param x_amz_target: 
+    :type x_amz_target: str
+    :param body: 
+    :type body: dict | bytes
+    :param x_amz_content_sha256: 
+    :type x_amz_content_sha256: str
+    :param x_amz_date: 
+    :type x_amz_date: str
+    :param x_amz_algorithm: 
+    :type x_amz_algorithm: str
+    :param x_amz_credential: 
+    :type x_amz_credential: str
+    :param x_amz_security_token: 
+    :type x_amz_security_token: str
+    :param x_amz_signature: 
+    :type x_amz_signature: str
+    :param x_amz_signed_headers: 
+    :type x_amz_signed_headers: str
+
+    """
+    body = CreateKeyRequest.from_dict(body)
+    return web.Response(status=200)
+
+
+async def decrypt(request: web.Request, x_amz_target, body, x_amz_content_sha256=None, x_amz_date=None, x_amz_algorithm=None, x_amz_credential=None, x_amz_security_token=None, x_amz_signature=None, x_amz_signed_headers=None) -> web.Response:
+    """decrypt
+
+    &lt;p&gt;Decrypts ciphertext that was encrypted by a KMS key using any of the following operations:&lt;/p&gt; &lt;ul&gt; &lt;li&gt; &lt;p&gt; &lt;a&gt;Encrypt&lt;/a&gt; &lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;a&gt;GenerateDataKey&lt;/a&gt; &lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;a&gt;GenerateDataKeyPair&lt;/a&gt; &lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;a&gt;GenerateDataKeyWithoutPlaintext&lt;/a&gt; &lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;a&gt;GenerateDataKeyPairWithoutPlaintext&lt;/a&gt; &lt;/p&gt; &lt;/li&gt; &lt;/ul&gt; &lt;p&gt;You can use this operation to decrypt ciphertext that was encrypted under a symmetric encryption KMS key or an asymmetric encryption KMS key. When the KMS key is asymmetric, you must specify the KMS key and the encryption algorithm that was used to encrypt the ciphertext. For information about asymmetric KMS keys, see &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/symmetric-asymmetric.html\&quot;&gt;Asymmetric KMS keys&lt;/a&gt; in the &lt;i&gt;Key Management Service Developer Guide&lt;/i&gt;.&lt;/p&gt; &lt;p&gt;The &lt;code&gt;Decrypt&lt;/code&gt; operation also decrypts ciphertext that was encrypted outside of KMS by the public key in an KMS asymmetric KMS key. However, it cannot decrypt symmetric ciphertext produced by other libraries, such as the &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/encryption-sdk/latest/developer-guide/\&quot;&gt;Amazon Web Services Encryption SDK&lt;/a&gt; or &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/AmazonS3/latest/dev/UsingClientSideEncryption.html\&quot;&gt;Amazon S3 client-side encryption&lt;/a&gt;. These libraries return a ciphertext format that is incompatible with KMS.&lt;/p&gt; &lt;p&gt;If the ciphertext was encrypted under a symmetric encryption KMS key, the &lt;code&gt;KeyId&lt;/code&gt; parameter is optional. KMS can get this information from metadata that it adds to the symmetric ciphertext blob. This feature adds durability to your implementation by ensuring that authorized users can decrypt ciphertext decades after it was encrypted, even if they&#39;ve lost track of the key ID. However, specifying the KMS key is always recommended as a best practice. When you use the &lt;code&gt;KeyId&lt;/code&gt; parameter to specify a KMS key, KMS only uses the KMS key you specify. If the ciphertext was encrypted under a different KMS key, the &lt;code&gt;Decrypt&lt;/code&gt; operation fails. This practice ensures that you use the KMS key that you intend.&lt;/p&gt; &lt;p&gt;Whenever possible, use key policies to give users permission to call the &lt;code&gt;Decrypt&lt;/code&gt; operation on a particular KMS key, instead of using &amp;amp;IAM; policies. Otherwise, you might create an &amp;amp;IAM; policy that gives the user &lt;code&gt;Decrypt&lt;/code&gt; permission on all KMS keys. This user could decrypt ciphertext that was encrypted by KMS keys in other accounts if the key policy for the cross-account KMS key permits it. If you must use an IAM policy for &lt;code&gt;Decrypt&lt;/code&gt; permissions, limit the user to particular KMS keys or particular trusted accounts. For details, see &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/iam-policies.html#iam-policies-best-practices\&quot;&gt;Best practices for IAM policies&lt;/a&gt; in the &lt;i&gt;Key Management Service Developer Guide&lt;/i&gt;.&lt;/p&gt; &lt;p&gt; &lt;code&gt;Decrypt&lt;/code&gt; also supports &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/nitro-enclave.html\&quot;&gt;Amazon Web Services Nitro Enclaves&lt;/a&gt;, which provide an isolated compute environment in Amazon EC2. To call &lt;code&gt;Decrypt&lt;/code&gt; for a Nitro enclave, use the &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/enclaves/latest/user/developing-applications.html#sdk\&quot;&gt;Amazon Web Services Nitro Enclaves SDK&lt;/a&gt; or any Amazon Web Services SDK. Use the &lt;code&gt;Recipient&lt;/code&gt; parameter to provide the attestation document for the enclave. Instead of the plaintext data, the response includes the plaintext data encrypted with the public key from the attestation document (&lt;code&gt;CiphertextForRecipient&lt;/code&gt;).For information about the interaction between KMS and Amazon Web Services Nitro Enclaves, see &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/services-nitro-enclaves.html\&quot;&gt;How Amazon Web Services Nitro Enclaves uses KMS&lt;/a&gt; in the &lt;i&gt;Key Management Service Developer Guide&lt;/i&gt;..&lt;/p&gt; &lt;p&gt;The KMS key that you use for this operation must be in a compatible key state. For details, see &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/key-state.html\&quot;&gt;Key states of KMS keys&lt;/a&gt; in the &lt;i&gt;Key Management Service Developer Guide&lt;/i&gt;.&lt;/p&gt; &lt;p&gt; &lt;b&gt;Cross-account use&lt;/b&gt;: Yes. If you use the &lt;code&gt;KeyId&lt;/code&gt; parameter to identify a KMS key in a different Amazon Web Services account, specify the key ARN or the alias ARN of the KMS key.&lt;/p&gt; &lt;p&gt; &lt;b&gt;Required permissions&lt;/b&gt;: &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/kms-api-permissions-reference.html\&quot;&gt;kms:Decrypt&lt;/a&gt; (key policy)&lt;/p&gt; &lt;p&gt; &lt;b&gt;Related operations:&lt;/b&gt; &lt;/p&gt; &lt;ul&gt; &lt;li&gt; &lt;p&gt; &lt;a&gt;Encrypt&lt;/a&gt; &lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;a&gt;GenerateDataKey&lt;/a&gt; &lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;a&gt;GenerateDataKeyPair&lt;/a&gt; &lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;a&gt;ReEncrypt&lt;/a&gt; &lt;/p&gt; &lt;/li&gt; &lt;/ul&gt;
+
+    :param x_amz_target: 
+    :type x_amz_target: str
+    :param body: 
+    :type body: dict | bytes
+    :param x_amz_content_sha256: 
+    :type x_amz_content_sha256: str
+    :param x_amz_date: 
+    :type x_amz_date: str
+    :param x_amz_algorithm: 
+    :type x_amz_algorithm: str
+    :param x_amz_credential: 
+    :type x_amz_credential: str
+    :param x_amz_security_token: 
+    :type x_amz_security_token: str
+    :param x_amz_signature: 
+    :type x_amz_signature: str
+    :param x_amz_signed_headers: 
+    :type x_amz_signed_headers: str
+
+    """
+    body = DecryptRequest.from_dict(body)
+    return web.Response(status=200)
+
+
+async def delete_alias(request: web.Request, x_amz_target, body, x_amz_content_sha256=None, x_amz_date=None, x_amz_algorithm=None, x_amz_credential=None, x_amz_security_token=None, x_amz_signature=None, x_amz_signed_headers=None) -> web.Response:
+    """delete_alias
+
+    &lt;p&gt;Deletes the specified alias. &lt;/p&gt; &lt;note&gt; &lt;p&gt;Adding, deleting, or updating an alias can allow or deny permission to the KMS key. For details, see &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/abac.html\&quot;&gt;ABAC for KMS&lt;/a&gt; in the &lt;i&gt;Key Management Service Developer Guide&lt;/i&gt;.&lt;/p&gt; &lt;/note&gt; &lt;p&gt;Because an alias is not a property of a KMS key, you can delete and change the aliases of a KMS key without affecting the KMS key. Also, aliases do not appear in the response from the &lt;a&gt;DescribeKey&lt;/a&gt; operation. To get the aliases of all KMS keys, use the &lt;a&gt;ListAliases&lt;/a&gt; operation. &lt;/p&gt; &lt;p&gt;Each KMS key can have multiple aliases. To change the alias of a KMS key, use &lt;a&gt;DeleteAlias&lt;/a&gt; to delete the current alias and &lt;a&gt;CreateAlias&lt;/a&gt; to create a new alias. To associate an existing alias with a different KMS key, call &lt;a&gt;UpdateAlias&lt;/a&gt;.&lt;/p&gt; &lt;p&gt; &lt;b&gt;Cross-account use&lt;/b&gt;: No. You cannot perform this operation on an alias in a different Amazon Web Services account.&lt;/p&gt; &lt;p&gt; &lt;b&gt;Required permissions&lt;/b&gt; &lt;/p&gt; &lt;ul&gt; &lt;li&gt; &lt;p&gt; &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/kms-api-permissions-reference.html\&quot;&gt;kms:DeleteAlias&lt;/a&gt; on the alias (IAM policy).&lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/kms-api-permissions-reference.html\&quot;&gt;kms:DeleteAlias&lt;/a&gt; on the KMS key (key policy).&lt;/p&gt; &lt;/li&gt; &lt;/ul&gt; &lt;p&gt;For details, see &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/kms-alias.html#alias-access\&quot;&gt;Controlling access to aliases&lt;/a&gt; in the &lt;i&gt;Key Management Service Developer Guide&lt;/i&gt;.&lt;/p&gt; &lt;p&gt; &lt;b&gt;Related operations:&lt;/b&gt; &lt;/p&gt; &lt;ul&gt; &lt;li&gt; &lt;p&gt; &lt;a&gt;CreateAlias&lt;/a&gt; &lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;a&gt;ListAliases&lt;/a&gt; &lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;a&gt;UpdateAlias&lt;/a&gt; &lt;/p&gt; &lt;/li&gt; &lt;/ul&gt;
+
+    :param x_amz_target: 
+    :type x_amz_target: str
+    :param body: 
+    :type body: dict | bytes
+    :param x_amz_content_sha256: 
+    :type x_amz_content_sha256: str
+    :param x_amz_date: 
+    :type x_amz_date: str
+    :param x_amz_algorithm: 
+    :type x_amz_algorithm: str
+    :param x_amz_credential: 
+    :type x_amz_credential: str
+    :param x_amz_security_token: 
+    :type x_amz_security_token: str
+    :param x_amz_signature: 
+    :type x_amz_signature: str
+    :param x_amz_signed_headers: 
+    :type x_amz_signed_headers: str
+
+    """
+    body = DeleteAliasRequest.from_dict(body)
+    return web.Response(status=200)
+
+
+async def delete_custom_key_store(request: web.Request, x_amz_target, body, x_amz_content_sha256=None, x_amz_date=None, x_amz_algorithm=None, x_amz_credential=None, x_amz_security_token=None, x_amz_signature=None, x_amz_signed_headers=None) -> web.Response:
+    """delete_custom_key_store
+
+    &lt;p&gt;Deletes a &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/custom-key-store-overview.html\&quot;&gt;custom key store&lt;/a&gt;. This operation does not affect any backing elements of the custom key store. It does not delete the CloudHSM cluster that is associated with an CloudHSM key store, or affect any users or keys in the cluster. For an external key store, it does not affect the external key store proxy, external key manager, or any external keys.&lt;/p&gt; &lt;p&gt; This operation is part of the &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/custom-key-store-overview.html\&quot;&gt;custom key stores&lt;/a&gt; feature in KMS, which combines the convenience and extensive integration of KMS with the isolation and control of a key store that you own and manage.&lt;/p&gt; &lt;p&gt;The custom key store that you delete cannot contain any &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#kms_keys\&quot;&gt;KMS keys&lt;/a&gt;. Before deleting the key store, verify that you will never need to use any of the KMS keys in the key store for any &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#cryptographic-operations\&quot;&gt;cryptographic operations&lt;/a&gt;. Then, use &lt;a&gt;ScheduleKeyDeletion&lt;/a&gt; to delete the KMS keys from the key store. After the required waiting period expires and all KMS keys are deleted from the custom key store, use &lt;a&gt;DisconnectCustomKeyStore&lt;/a&gt; to disconnect the key store from KMS. Then, you can delete the custom key store.&lt;/p&gt; &lt;p&gt;For keys in an CloudHSM key store, the &lt;code&gt;ScheduleKeyDeletion&lt;/code&gt; operation makes a best effort to delete the key material from the associated cluster. However, you might need to manually &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/fix-keystore.html#fix-keystore-orphaned-key\&quot;&gt;delete the orphaned key material&lt;/a&gt; from the cluster and its backups. KMS never creates, manages, or deletes cryptographic keys in the external key manager associated with an external key store. You must manage them using your external key manager tools.&lt;/p&gt; &lt;p&gt;Instead of deleting the custom key store, consider using the &lt;a&gt;DisconnectCustomKeyStore&lt;/a&gt; operation to disconnect the custom key store from its backing key store. While the key store is disconnected, you cannot create or use the KMS keys in the key store. But, you do not need to delete KMS keys and you can reconnect a disconnected custom key store at any time.&lt;/p&gt; &lt;p&gt;If the operation succeeds, it returns a JSON object with no properties.&lt;/p&gt; &lt;p&gt; &lt;b&gt;Cross-account use&lt;/b&gt;: No. You cannot perform this operation on a custom key store in a different Amazon Web Services account.&lt;/p&gt; &lt;p&gt; &lt;b&gt;Required permissions&lt;/b&gt;: &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/kms-api-permissions-reference.html\&quot;&gt;kms:DeleteCustomKeyStore&lt;/a&gt; (IAM policy)&lt;/p&gt; &lt;p&gt; &lt;b&gt;Related operations:&lt;/b&gt; &lt;/p&gt; &lt;ul&gt; &lt;li&gt; &lt;p&gt; &lt;a&gt;ConnectCustomKeyStore&lt;/a&gt; &lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;a&gt;CreateCustomKeyStore&lt;/a&gt; &lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;a&gt;DescribeCustomKeyStores&lt;/a&gt; &lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;a&gt;DisconnectCustomKeyStore&lt;/a&gt; &lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;a&gt;UpdateCustomKeyStore&lt;/a&gt; &lt;/p&gt; &lt;/li&gt; &lt;/ul&gt;
+
+    :param x_amz_target: 
+    :type x_amz_target: str
+    :param body: 
+    :type body: dict | bytes
+    :param x_amz_content_sha256: 
+    :type x_amz_content_sha256: str
+    :param x_amz_date: 
+    :type x_amz_date: str
+    :param x_amz_algorithm: 
+    :type x_amz_algorithm: str
+    :param x_amz_credential: 
+    :type x_amz_credential: str
+    :param x_amz_security_token: 
+    :type x_amz_security_token: str
+    :param x_amz_signature: 
+    :type x_amz_signature: str
+    :param x_amz_signed_headers: 
+    :type x_amz_signed_headers: str
+
+    """
+    body = DeleteCustomKeyStoreRequest.from_dict(body)
+    return web.Response(status=200)
+
+
+async def delete_imported_key_material(request: web.Request, x_amz_target, body, x_amz_content_sha256=None, x_amz_date=None, x_amz_algorithm=None, x_amz_credential=None, x_amz_security_token=None, x_amz_signature=None, x_amz_signed_headers=None) -> web.Response:
+    """delete_imported_key_material
+
+    &lt;p&gt;Deletes key material that was previously imported. This operation makes the specified KMS key temporarily unusable. To restore the usability of the KMS key, reimport the same key material. For more information about importing key material into KMS, see &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/importing-keys.html\&quot;&gt;Importing Key Material&lt;/a&gt; in the &lt;i&gt;Key Management Service Developer Guide&lt;/i&gt;.&lt;/p&gt; &lt;p&gt;When the specified KMS key is in the &lt;code&gt;PendingDeletion&lt;/code&gt; state, this operation does not change the KMS key&#39;s state. Otherwise, it changes the KMS key&#39;s state to &lt;code&gt;PendingImport&lt;/code&gt;.&lt;/p&gt; &lt;p&gt;The KMS key that you use for this operation must be in a compatible key state. For details, see &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/key-state.html\&quot;&gt;Key states of KMS keys&lt;/a&gt; in the &lt;i&gt;Key Management Service Developer Guide&lt;/i&gt;.&lt;/p&gt; &lt;p&gt; &lt;b&gt;Cross-account use&lt;/b&gt;: No. You cannot perform this operation on a KMS key in a different Amazon Web Services account.&lt;/p&gt; &lt;p&gt; &lt;b&gt;Required permissions&lt;/b&gt;: &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/kms-api-permissions-reference.html\&quot;&gt;kms:DeleteImportedKeyMaterial&lt;/a&gt; (key policy)&lt;/p&gt; &lt;p&gt; &lt;b&gt;Related operations:&lt;/b&gt; &lt;/p&gt; &lt;ul&gt; &lt;li&gt; &lt;p&gt; &lt;a&gt;GetParametersForImport&lt;/a&gt; &lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;a&gt;ImportKeyMaterial&lt;/a&gt; &lt;/p&gt; &lt;/li&gt; &lt;/ul&gt;
+
+    :param x_amz_target: 
+    :type x_amz_target: str
+    :param body: 
+    :type body: dict | bytes
+    :param x_amz_content_sha256: 
+    :type x_amz_content_sha256: str
+    :param x_amz_date: 
+    :type x_amz_date: str
+    :param x_amz_algorithm: 
+    :type x_amz_algorithm: str
+    :param x_amz_credential: 
+    :type x_amz_credential: str
+    :param x_amz_security_token: 
+    :type x_amz_security_token: str
+    :param x_amz_signature: 
+    :type x_amz_signature: str
+    :param x_amz_signed_headers: 
+    :type x_amz_signed_headers: str
+
+    """
+    body = DeleteImportedKeyMaterialRequest.from_dict(body)
+    return web.Response(status=200)
+
+
+async def describe_custom_key_stores(request: web.Request, x_amz_target, body, x_amz_content_sha256=None, x_amz_date=None, x_amz_algorithm=None, x_amz_credential=None, x_amz_security_token=None, x_amz_signature=None, x_amz_signed_headers=None, limit=None, marker=None) -> web.Response:
+    """describe_custom_key_stores
+
+    &lt;p&gt;Gets information about &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/custom-key-store-overview.html\&quot;&gt;custom key stores&lt;/a&gt; in the account and Region.&lt;/p&gt; &lt;p&gt; This operation is part of the &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/custom-key-store-overview.html\&quot;&gt;custom key stores&lt;/a&gt; feature in KMS, which combines the convenience and extensive integration of KMS with the isolation and control of a key store that you own and manage.&lt;/p&gt; &lt;p&gt;By default, this operation returns information about all custom key stores in the account and Region. To get only information about a particular custom key store, use either the &lt;code&gt;CustomKeyStoreName&lt;/code&gt; or &lt;code&gt;CustomKeyStoreId&lt;/code&gt; parameter (but not both).&lt;/p&gt; &lt;p&gt;To determine whether the custom key store is connected to its CloudHSM cluster or external key store proxy, use the &lt;code&gt;ConnectionState&lt;/code&gt; element in the response. If an attempt to connect the custom key store failed, the &lt;code&gt;ConnectionState&lt;/code&gt; value is &lt;code&gt;FAILED&lt;/code&gt; and the &lt;code&gt;ConnectionErrorCode&lt;/code&gt; element in the response indicates the cause of the failure. For help interpreting the &lt;code&gt;ConnectionErrorCode&lt;/code&gt;, see &lt;a&gt;CustomKeyStoresListEntry&lt;/a&gt;.&lt;/p&gt; &lt;p&gt;Custom key stores have a &lt;code&gt;DISCONNECTED&lt;/code&gt; connection state if the key store has never been connected or you used the &lt;a&gt;DisconnectCustomKeyStore&lt;/a&gt; operation to disconnect it. Otherwise, the connection state is CONNECTED. If your custom key store connection state is &lt;code&gt;CONNECTED&lt;/code&gt; but you are having trouble using it, verify that the backing store is active and available. For an CloudHSM key store, verify that the associated CloudHSM cluster is active and contains the minimum number of HSMs required for the operation, if any. For an external key store, verify that the external key store proxy and its associated external key manager are reachable and enabled.&lt;/p&gt; &lt;p&gt; For help repairing your CloudHSM key store, see the &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/fix-keystore.html\&quot;&gt;Troubleshooting CloudHSM key stores&lt;/a&gt;. For help repairing your external key store, see the &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/xks-troubleshooting.html\&quot;&gt;Troubleshooting external key stores&lt;/a&gt;. Both topics are in the &lt;i&gt;Key Management Service Developer Guide&lt;/i&gt;.&lt;/p&gt; &lt;p&gt; &lt;b&gt;Cross-account use&lt;/b&gt;: No. You cannot perform this operation on a custom key store in a different Amazon Web Services account.&lt;/p&gt; &lt;p&gt; &lt;b&gt;Required permissions&lt;/b&gt;: &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/kms-api-permissions-reference.html\&quot;&gt;kms:DescribeCustomKeyStores&lt;/a&gt; (IAM policy)&lt;/p&gt; &lt;p&gt; &lt;b&gt;Related operations:&lt;/b&gt; &lt;/p&gt; &lt;ul&gt; &lt;li&gt; &lt;p&gt; &lt;a&gt;ConnectCustomKeyStore&lt;/a&gt; &lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;a&gt;CreateCustomKeyStore&lt;/a&gt; &lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;a&gt;DeleteCustomKeyStore&lt;/a&gt; &lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;a&gt;DisconnectCustomKeyStore&lt;/a&gt; &lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;a&gt;UpdateCustomKeyStore&lt;/a&gt; &lt;/p&gt; &lt;/li&gt; &lt;/ul&gt;
+
+    :param x_amz_target: 
+    :type x_amz_target: str
+    :param body: 
+    :type body: dict | bytes
+    :param x_amz_content_sha256: 
+    :type x_amz_content_sha256: str
+    :param x_amz_date: 
+    :type x_amz_date: str
+    :param x_amz_algorithm: 
+    :type x_amz_algorithm: str
+    :param x_amz_credential: 
+    :type x_amz_credential: str
+    :param x_amz_security_token: 
+    :type x_amz_security_token: str
+    :param x_amz_signature: 
+    :type x_amz_signature: str
+    :param x_amz_signed_headers: 
+    :type x_amz_signed_headers: str
+    :param limit: Pagination limit
+    :type limit: str
+    :param marker: Pagination token
+    :type marker: str
+
+    """
+    body = DescribeCustomKeyStoresRequest.from_dict(body)
+    return web.Response(status=200)
+
+
+async def describe_key(request: web.Request, x_amz_target, body, x_amz_content_sha256=None, x_amz_date=None, x_amz_algorithm=None, x_amz_credential=None, x_amz_security_token=None, x_amz_signature=None, x_amz_signed_headers=None) -> web.Response:
+    """describe_key
+
+    &lt;p&gt;Provides detailed information about a KMS key. You can run &lt;code&gt;DescribeKey&lt;/code&gt; on a &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#customer-cmk\&quot;&gt;customer managed key&lt;/a&gt; or an &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#aws-managed-cmk\&quot;&gt;Amazon Web Services managed key&lt;/a&gt;.&lt;/p&gt; &lt;p&gt;This detailed information includes the key ARN, creation date (and deletion date, if applicable), the key state, and the origin and expiration date (if any) of the key material. It includes fields, like &lt;code&gt;KeySpec&lt;/code&gt;, that help you distinguish different types of KMS keys. It also displays the key usage (encryption, signing, or generating and verifying MACs) and the algorithms that the KMS key supports. &lt;/p&gt; &lt;p&gt;For &lt;a href&#x3D;\&quot;kms/latest/developerguide/multi-region-keys-overview.html\&quot;&gt;multi-Region keys&lt;/a&gt;, &lt;code&gt;DescribeKey&lt;/code&gt; displays the primary key and all related replica keys. For KMS keys in &lt;a href&#x3D;\&quot;kms/latest/developerguide/keystore-cloudhsm.html\&quot;&gt;CloudHSM key stores&lt;/a&gt;, it includes information about the key store, such as the key store ID and the CloudHSM cluster ID. For KMS keys in &lt;a href&#x3D;\&quot;kms/latest/developerguide/keystore-external.html\&quot;&gt;external key stores&lt;/a&gt;, it includes the custom key store ID and the ID of the external key.&lt;/p&gt; &lt;p&gt; &lt;code&gt;DescribeKey&lt;/code&gt; does not return the following information:&lt;/p&gt; &lt;ul&gt; &lt;li&gt; &lt;p&gt;Aliases associated with the KMS key. To get this information, use &lt;a&gt;ListAliases&lt;/a&gt;.&lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt;Whether automatic key rotation is enabled on the KMS key. To get this information, use &lt;a&gt;GetKeyRotationStatus&lt;/a&gt;. Also, some key states prevent a KMS key from being automatically rotated. For details, see &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/rotate-keys.html#rotate-keys-how-it-works\&quot;&gt;How Automatic Key Rotation Works&lt;/a&gt; in the &lt;i&gt;Key Management Service Developer Guide&lt;/i&gt;.&lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt;Tags on the KMS key. To get this information, use &lt;a&gt;ListResourceTags&lt;/a&gt;.&lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt;Key policies and grants on the KMS key. To get this information, use &lt;a&gt;GetKeyPolicy&lt;/a&gt; and &lt;a&gt;ListGrants&lt;/a&gt;.&lt;/p&gt; &lt;/li&gt; &lt;/ul&gt; &lt;p&gt;In general, &lt;code&gt;DescribeKey&lt;/code&gt; is a non-mutating operation. It returns data about KMS keys, but doesn&#39;t change them. However, Amazon Web Services services use &lt;code&gt;DescribeKey&lt;/code&gt; to create &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#aws-managed-cmk\&quot;&gt;Amazon Web Services managed keys&lt;/a&gt; from a &lt;i&gt;predefined Amazon Web Services alias&lt;/i&gt; with no key ID.&lt;/p&gt; &lt;p&gt; &lt;b&gt;Cross-account use&lt;/b&gt;: Yes. To perform this operation with a KMS key in a different Amazon Web Services account, specify the key ARN or alias ARN in the value of the &lt;code&gt;KeyId&lt;/code&gt; parameter.&lt;/p&gt; &lt;p&gt; &lt;b&gt;Required permissions&lt;/b&gt;: &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/kms-api-permissions-reference.html\&quot;&gt;kms:DescribeKey&lt;/a&gt; (key policy)&lt;/p&gt; &lt;p&gt; &lt;b&gt;Related operations:&lt;/b&gt; &lt;/p&gt; &lt;ul&gt; &lt;li&gt; &lt;p&gt; &lt;a&gt;GetKeyPolicy&lt;/a&gt; &lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;a&gt;GetKeyRotationStatus&lt;/a&gt; &lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;a&gt;ListAliases&lt;/a&gt; &lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;a&gt;ListGrants&lt;/a&gt; &lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;a&gt;ListKeys&lt;/a&gt; &lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;a&gt;ListResourceTags&lt;/a&gt; &lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;a&gt;ListRetirableGrants&lt;/a&gt; &lt;/p&gt; &lt;/li&gt; &lt;/ul&gt;
+
+    :param x_amz_target: 
+    :type x_amz_target: str
+    :param body: 
+    :type body: dict | bytes
+    :param x_amz_content_sha256: 
+    :type x_amz_content_sha256: str
+    :param x_amz_date: 
+    :type x_amz_date: str
+    :param x_amz_algorithm: 
+    :type x_amz_algorithm: str
+    :param x_amz_credential: 
+    :type x_amz_credential: str
+    :param x_amz_security_token: 
+    :type x_amz_security_token: str
+    :param x_amz_signature: 
+    :type x_amz_signature: str
+    :param x_amz_signed_headers: 
+    :type x_amz_signed_headers: str
+
+    """
+    body = DescribeKeyRequest.from_dict(body)
+    return web.Response(status=200)
+
+
+async def disable_key(request: web.Request, x_amz_target, body, x_amz_content_sha256=None, x_amz_date=None, x_amz_algorithm=None, x_amz_credential=None, x_amz_security_token=None, x_amz_signature=None, x_amz_signed_headers=None) -> web.Response:
+    """disable_key
+
+    &lt;p&gt;Sets the state of a KMS key to disabled. This change temporarily prevents use of the KMS key for &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#cryptographic-operations\&quot;&gt;cryptographic operations&lt;/a&gt;. &lt;/p&gt; &lt;p&gt;For more information about how key state affects the use of a KMS key, see &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/key-state.html\&quot;&gt;Key states of KMS keys&lt;/a&gt; in the &lt;i&gt; &lt;i&gt;Key Management Service Developer Guide&lt;/i&gt; &lt;/i&gt;.&lt;/p&gt; &lt;p&gt;The KMS key that you use for this operation must be in a compatible key state. For details, see &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/key-state.html\&quot;&gt;Key states of KMS keys&lt;/a&gt; in the &lt;i&gt;Key Management Service Developer Guide&lt;/i&gt;.&lt;/p&gt; &lt;p&gt; &lt;b&gt;Cross-account use&lt;/b&gt;: No. You cannot perform this operation on a KMS key in a different Amazon Web Services account.&lt;/p&gt; &lt;p&gt; &lt;b&gt;Required permissions&lt;/b&gt;: &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/kms-api-permissions-reference.html\&quot;&gt;kms:DisableKey&lt;/a&gt; (key policy)&lt;/p&gt; &lt;p&gt; &lt;b&gt;Related operations&lt;/b&gt;: &lt;a&gt;EnableKey&lt;/a&gt; &lt;/p&gt;
+
+    :param x_amz_target: 
+    :type x_amz_target: str
+    :param body: 
+    :type body: dict | bytes
+    :param x_amz_content_sha256: 
+    :type x_amz_content_sha256: str
+    :param x_amz_date: 
+    :type x_amz_date: str
+    :param x_amz_algorithm: 
+    :type x_amz_algorithm: str
+    :param x_amz_credential: 
+    :type x_amz_credential: str
+    :param x_amz_security_token: 
+    :type x_amz_security_token: str
+    :param x_amz_signature: 
+    :type x_amz_signature: str
+    :param x_amz_signed_headers: 
+    :type x_amz_signed_headers: str
+
+    """
+    body = DisableKeyRequest.from_dict(body)
+    return web.Response(status=200)
+
+
+async def disable_key_rotation(request: web.Request, x_amz_target, body, x_amz_content_sha256=None, x_amz_date=None, x_amz_algorithm=None, x_amz_credential=None, x_amz_security_token=None, x_amz_signature=None, x_amz_signed_headers=None) -> web.Response:
+    """disable_key_rotation
+
+    &lt;p&gt;Disables &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/rotate-keys.html\&quot;&gt;automatic rotation of the key material&lt;/a&gt; of the specified symmetric encryption KMS key.&lt;/p&gt; &lt;p&gt;Automatic key rotation is supported only on symmetric encryption KMS keys. You cannot enable automatic rotation of &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/symmetric-asymmetric.html\&quot;&gt;asymmetric KMS keys&lt;/a&gt;, &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/hmac.html\&quot;&gt;HMAC KMS keys&lt;/a&gt;, KMS keys with &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/importing-keys.html\&quot;&gt;imported key material&lt;/a&gt;, or KMS keys in a &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/custom-key-store-overview.html\&quot;&gt;custom key store&lt;/a&gt;. To enable or disable automatic rotation of a set of related &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/multi-region-keys-manage.html#multi-region-rotate\&quot;&gt;multi-Region keys&lt;/a&gt;, set the property on the primary key.&lt;/p&gt; &lt;p&gt;You can enable (&lt;a&gt;EnableKeyRotation&lt;/a&gt;) and disable automatic rotation of the key material in &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#customer-cmk\&quot;&gt;customer managed KMS keys&lt;/a&gt;. Key material rotation of &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#aws-managed-cmk\&quot;&gt;Amazon Web Services managed KMS keys&lt;/a&gt; is not configurable. KMS always rotates the key material for every year. Rotation of &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#aws-owned-cmk\&quot;&gt;Amazon Web Services owned KMS keys&lt;/a&gt; varies.&lt;/p&gt; &lt;note&gt; &lt;p&gt;In May 2022, KMS changed the rotation schedule for Amazon Web Services managed keys from every three years to every year. For details, see &lt;a&gt;EnableKeyRotation&lt;/a&gt;.&lt;/p&gt; &lt;/note&gt; &lt;p&gt;The KMS key that you use for this operation must be in a compatible key state. For details, see &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/key-state.html\&quot;&gt;Key states of KMS keys&lt;/a&gt; in the &lt;i&gt;Key Management Service Developer Guide&lt;/i&gt;.&lt;/p&gt; &lt;p&gt; &lt;b&gt;Cross-account use&lt;/b&gt;: No. You cannot perform this operation on a KMS key in a different Amazon Web Services account.&lt;/p&gt; &lt;p&gt; &lt;b&gt;Required permissions&lt;/b&gt;: &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/kms-api-permissions-reference.html\&quot;&gt;kms:DisableKeyRotation&lt;/a&gt; (key policy)&lt;/p&gt; &lt;p&gt; &lt;b&gt;Related operations:&lt;/b&gt; &lt;/p&gt; &lt;ul&gt; &lt;li&gt; &lt;p&gt; &lt;a&gt;EnableKeyRotation&lt;/a&gt; &lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;a&gt;GetKeyRotationStatus&lt;/a&gt; &lt;/p&gt; &lt;/li&gt; &lt;/ul&gt;
+
+    :param x_amz_target: 
+    :type x_amz_target: str
+    :param body: 
+    :type body: dict | bytes
+    :param x_amz_content_sha256: 
+    :type x_amz_content_sha256: str
+    :param x_amz_date: 
+    :type x_amz_date: str
+    :param x_amz_algorithm: 
+    :type x_amz_algorithm: str
+    :param x_amz_credential: 
+    :type x_amz_credential: str
+    :param x_amz_security_token: 
+    :type x_amz_security_token: str
+    :param x_amz_signature: 
+    :type x_amz_signature: str
+    :param x_amz_signed_headers: 
+    :type x_amz_signed_headers: str
+
+    """
+    body = DisableKeyRotationRequest.from_dict(body)
+    return web.Response(status=200)
+
+
+async def disconnect_custom_key_store(request: web.Request, x_amz_target, body, x_amz_content_sha256=None, x_amz_date=None, x_amz_algorithm=None, x_amz_credential=None, x_amz_security_token=None, x_amz_signature=None, x_amz_signed_headers=None) -> web.Response:
+    """disconnect_custom_key_store
+
+    &lt;p&gt;Disconnects the &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/custom-key-store-overview.html\&quot;&gt;custom key store&lt;/a&gt; from its backing key store. This operation disconnects an CloudHSM key store from its associated CloudHSM cluster or disconnects an external key store from the external key store proxy that communicates with your external key manager.&lt;/p&gt; &lt;p&gt; This operation is part of the &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/custom-key-store-overview.html\&quot;&gt;custom key stores&lt;/a&gt; feature in KMS, which combines the convenience and extensive integration of KMS with the isolation and control of a key store that you own and manage.&lt;/p&gt; &lt;p&gt;While a custom key store is disconnected, you can manage the custom key store and its KMS keys, but you cannot create or use its KMS keys. You can reconnect the custom key store at any time.&lt;/p&gt; &lt;note&gt; &lt;p&gt;While a custom key store is disconnected, all attempts to create KMS keys in the custom key store or to use existing KMS keys in &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#cryptographic-operations\&quot;&gt;cryptographic operations&lt;/a&gt; will fail. This action can prevent users from storing and accessing sensitive data.&lt;/p&gt; &lt;/note&gt; &lt;p&gt;When you disconnect a custom key store, its &lt;code&gt;ConnectionState&lt;/code&gt; changes to &lt;code&gt;Disconnected&lt;/code&gt;. To find the connection state of a custom key store, use the &lt;a&gt;DescribeCustomKeyStores&lt;/a&gt; operation. To reconnect a custom key store, use the &lt;a&gt;ConnectCustomKeyStore&lt;/a&gt; operation.&lt;/p&gt; &lt;p&gt;If the operation succeeds, it returns a JSON object with no properties.&lt;/p&gt; &lt;p&gt; &lt;b&gt;Cross-account use&lt;/b&gt;: No. You cannot perform this operation on a custom key store in a different Amazon Web Services account.&lt;/p&gt; &lt;p&gt; &lt;b&gt;Required permissions&lt;/b&gt;: &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/kms-api-permissions-reference.html\&quot;&gt;kms:DisconnectCustomKeyStore&lt;/a&gt; (IAM policy)&lt;/p&gt; &lt;p&gt; &lt;b&gt;Related operations:&lt;/b&gt; &lt;/p&gt; &lt;ul&gt; &lt;li&gt; &lt;p&gt; &lt;a&gt;ConnectCustomKeyStore&lt;/a&gt; &lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;a&gt;CreateCustomKeyStore&lt;/a&gt; &lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;a&gt;DeleteCustomKeyStore&lt;/a&gt; &lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;a&gt;DescribeCustomKeyStores&lt;/a&gt; &lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;a&gt;UpdateCustomKeyStore&lt;/a&gt; &lt;/p&gt; &lt;/li&gt; &lt;/ul&gt;
+
+    :param x_amz_target: 
+    :type x_amz_target: str
+    :param body: 
+    :type body: dict | bytes
+    :param x_amz_content_sha256: 
+    :type x_amz_content_sha256: str
+    :param x_amz_date: 
+    :type x_amz_date: str
+    :param x_amz_algorithm: 
+    :type x_amz_algorithm: str
+    :param x_amz_credential: 
+    :type x_amz_credential: str
+    :param x_amz_security_token: 
+    :type x_amz_security_token: str
+    :param x_amz_signature: 
+    :type x_amz_signature: str
+    :param x_amz_signed_headers: 
+    :type x_amz_signed_headers: str
+
+    """
+    body = DisconnectCustomKeyStoreRequest.from_dict(body)
+    return web.Response(status=200)
+
+
+async def enable_key(request: web.Request, x_amz_target, body, x_amz_content_sha256=None, x_amz_date=None, x_amz_algorithm=None, x_amz_credential=None, x_amz_security_token=None, x_amz_signature=None, x_amz_signed_headers=None) -> web.Response:
+    """enable_key
+
+    &lt;p&gt;Sets the key state of a KMS key to enabled. This allows you to use the KMS key for &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#cryptographic-operations\&quot;&gt;cryptographic operations&lt;/a&gt;. &lt;/p&gt; &lt;p&gt;The KMS key that you use for this operation must be in a compatible key state. For details, see &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/key-state.html\&quot;&gt;Key states of KMS keys&lt;/a&gt; in the &lt;i&gt;Key Management Service Developer Guide&lt;/i&gt;.&lt;/p&gt; &lt;p&gt; &lt;b&gt;Cross-account use&lt;/b&gt;: No. You cannot perform this operation on a KMS key in a different Amazon Web Services account.&lt;/p&gt; &lt;p&gt; &lt;b&gt;Required permissions&lt;/b&gt;: &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/kms-api-permissions-reference.html\&quot;&gt;kms:EnableKey&lt;/a&gt; (key policy)&lt;/p&gt; &lt;p&gt; &lt;b&gt;Related operations&lt;/b&gt;: &lt;a&gt;DisableKey&lt;/a&gt; &lt;/p&gt;
+
+    :param x_amz_target: 
+    :type x_amz_target: str
+    :param body: 
+    :type body: dict | bytes
+    :param x_amz_content_sha256: 
+    :type x_amz_content_sha256: str
+    :param x_amz_date: 
+    :type x_amz_date: str
+    :param x_amz_algorithm: 
+    :type x_amz_algorithm: str
+    :param x_amz_credential: 
+    :type x_amz_credential: str
+    :param x_amz_security_token: 
+    :type x_amz_security_token: str
+    :param x_amz_signature: 
+    :type x_amz_signature: str
+    :param x_amz_signed_headers: 
+    :type x_amz_signed_headers: str
+
+    """
+    body = EnableKeyRequest.from_dict(body)
+    return web.Response(status=200)
+
+
+async def enable_key_rotation(request: web.Request, x_amz_target, body, x_amz_content_sha256=None, x_amz_date=None, x_amz_algorithm=None, x_amz_credential=None, x_amz_security_token=None, x_amz_signature=None, x_amz_signed_headers=None) -> web.Response:
+    """enable_key_rotation
+
+    &lt;p&gt;Enables &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/rotate-keys.html\&quot;&gt;automatic rotation of the key material&lt;/a&gt; of the specified symmetric encryption KMS key. &lt;/p&gt; &lt;p&gt;When you enable automatic rotation of a&lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#customer-cmk\&quot;&gt;customer managed KMS key&lt;/a&gt;, KMS rotates the key material of the KMS key one year (approximately 365 days) from the enable date and every year thereafter. You can monitor rotation of the key material for your KMS keys in CloudTrail and Amazon CloudWatch. To disable rotation of the key material in a customer managed KMS key, use the &lt;a&gt;DisableKeyRotation&lt;/a&gt; operation.&lt;/p&gt; &lt;p&gt;Automatic key rotation is supported only on &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#symmetric-cmks\&quot;&gt;symmetric encryption KMS keys&lt;/a&gt;. You cannot enable automatic rotation of &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/symmetric-asymmetric.html\&quot;&gt;asymmetric KMS keys&lt;/a&gt;, &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/hmac.html\&quot;&gt;HMAC KMS keys&lt;/a&gt;, KMS keys with &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/importing-keys.html\&quot;&gt;imported key material&lt;/a&gt;, or KMS keys in a &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/custom-key-store-overview.html\&quot;&gt;custom key store&lt;/a&gt;. To enable or disable automatic rotation of a set of related &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/multi-region-keys-manage.html#multi-region-rotate\&quot;&gt;multi-Region keys&lt;/a&gt;, set the property on the primary key. &lt;/p&gt; &lt;p&gt;You cannot enable or disable automatic rotation &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#aws-managed-cmk\&quot;&gt;Amazon Web Services managed KMS keys&lt;/a&gt;. KMS always rotates the key material of Amazon Web Services managed keys every year. Rotation of &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#aws-owned-cmk\&quot;&gt;Amazon Web Services owned KMS keys&lt;/a&gt; varies.&lt;/p&gt; &lt;note&gt; &lt;p&gt;In May 2022, KMS changed the rotation schedule for Amazon Web Services managed keys from every three years (approximately 1,095 days) to every year (approximately 365 days).&lt;/p&gt; &lt;p&gt;New Amazon Web Services managed keys are automatically rotated one year after they are created, and approximately every year thereafter. &lt;/p&gt; &lt;p&gt;Existing Amazon Web Services managed keys are automatically rotated one year after their most recent rotation, and every year thereafter.&lt;/p&gt; &lt;/note&gt; &lt;p&gt;The KMS key that you use for this operation must be in a compatible key state. For details, see &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/key-state.html\&quot;&gt;Key states of KMS keys&lt;/a&gt; in the &lt;i&gt;Key Management Service Developer Guide&lt;/i&gt;.&lt;/p&gt; &lt;p&gt; &lt;b&gt;Cross-account use&lt;/b&gt;: No. You cannot perform this operation on a KMS key in a different Amazon Web Services account.&lt;/p&gt; &lt;p&gt; &lt;b&gt;Required permissions&lt;/b&gt;: &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/kms-api-permissions-reference.html\&quot;&gt;kms:EnableKeyRotation&lt;/a&gt; (key policy)&lt;/p&gt; &lt;p&gt; &lt;b&gt;Related operations:&lt;/b&gt; &lt;/p&gt; &lt;ul&gt; &lt;li&gt; &lt;p&gt; &lt;a&gt;DisableKeyRotation&lt;/a&gt; &lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;a&gt;GetKeyRotationStatus&lt;/a&gt; &lt;/p&gt; &lt;/li&gt; &lt;/ul&gt;
+
+    :param x_amz_target: 
+    :type x_amz_target: str
+    :param body: 
+    :type body: dict | bytes
+    :param x_amz_content_sha256: 
+    :type x_amz_content_sha256: str
+    :param x_amz_date: 
+    :type x_amz_date: str
+    :param x_amz_algorithm: 
+    :type x_amz_algorithm: str
+    :param x_amz_credential: 
+    :type x_amz_credential: str
+    :param x_amz_security_token: 
+    :type x_amz_security_token: str
+    :param x_amz_signature: 
+    :type x_amz_signature: str
+    :param x_amz_signed_headers: 
+    :type x_amz_signed_headers: str
+
+    """
+    body = EnableKeyRotationRequest.from_dict(body)
+    return web.Response(status=200)
+
+
+async def encrypt(request: web.Request, x_amz_target, body, x_amz_content_sha256=None, x_amz_date=None, x_amz_algorithm=None, x_amz_credential=None, x_amz_security_token=None, x_amz_signature=None, x_amz_signed_headers=None) -> web.Response:
+    """encrypt
+
+    &lt;p&gt;Encrypts plaintext of up to 4,096 bytes using a KMS key. You can use a symmetric or asymmetric KMS key with a &lt;code&gt;KeyUsage&lt;/code&gt; of &lt;code&gt;ENCRYPT_DECRYPT&lt;/code&gt;.&lt;/p&gt; &lt;p&gt;You can use this operation to encrypt small amounts of arbitrary data, such as a personal identifier or database password, or other sensitive information. You don&#39;t need to use the &lt;code&gt;Encrypt&lt;/code&gt; operation to encrypt a data key. The &lt;a&gt;GenerateDataKey&lt;/a&gt; and &lt;a&gt;GenerateDataKeyPair&lt;/a&gt; operations return a plaintext data key and an encrypted copy of that data key.&lt;/p&gt; &lt;p&gt;If you use a symmetric encryption KMS key, you can use an encryption context to add additional security to your encryption operation. If you specify an &lt;code&gt;EncryptionContext&lt;/code&gt; when encrypting data, you must specify the same encryption context (a case-sensitive exact match) when decrypting the data. Otherwise, the request to decrypt fails with an &lt;code&gt;InvalidCiphertextException&lt;/code&gt;. For more information, see &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#encrypt_context\&quot;&gt;Encryption Context&lt;/a&gt; in the &lt;i&gt;Key Management Service Developer Guide&lt;/i&gt;.&lt;/p&gt; &lt;p&gt;If you specify an asymmetric KMS key, you must also specify the encryption algorithm. The algorithm must be compatible with the KMS key spec.&lt;/p&gt; &lt;important&gt; &lt;p&gt;When you use an asymmetric KMS key to encrypt or reencrypt data, be sure to record the KMS key and encryption algorithm that you choose. You will be required to provide the same KMS key and encryption algorithm when you decrypt the data. If the KMS key and algorithm do not match the values used to encrypt the data, the decrypt operation fails.&lt;/p&gt; &lt;p&gt;You are not required to supply the key ID and encryption algorithm when you decrypt with symmetric encryption KMS keys because KMS stores this information in the ciphertext blob. KMS cannot store metadata in ciphertext generated with asymmetric keys. The standard format for asymmetric key ciphertext does not include configurable fields.&lt;/p&gt; &lt;/important&gt; &lt;p&gt;The maximum size of the data that you can encrypt varies with the type of KMS key and the encryption algorithm that you choose.&lt;/p&gt; &lt;ul&gt; &lt;li&gt; &lt;p&gt;Symmetric encryption KMS keys&lt;/p&gt; &lt;ul&gt; &lt;li&gt; &lt;p&gt; &lt;code&gt;SYMMETRIC_DEFAULT&lt;/code&gt;: 4096 bytes&lt;/p&gt; &lt;/li&gt; &lt;/ul&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;code&gt;RSA_2048&lt;/code&gt; &lt;/p&gt; &lt;ul&gt; &lt;li&gt; &lt;p&gt; &lt;code&gt;RSAES_OAEP_SHA_1&lt;/code&gt;: 214 bytes&lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;code&gt;RSAES_OAEP_SHA_256&lt;/code&gt;: 190 bytes&lt;/p&gt; &lt;/li&gt; &lt;/ul&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;code&gt;RSA_3072&lt;/code&gt; &lt;/p&gt; &lt;ul&gt; &lt;li&gt; &lt;p&gt; &lt;code&gt;RSAES_OAEP_SHA_1&lt;/code&gt;: 342 bytes&lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;code&gt;RSAES_OAEP_SHA_256&lt;/code&gt;: 318 bytes&lt;/p&gt; &lt;/li&gt; &lt;/ul&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;code&gt;RSA_4096&lt;/code&gt; &lt;/p&gt; &lt;ul&gt; &lt;li&gt; &lt;p&gt; &lt;code&gt;RSAES_OAEP_SHA_1&lt;/code&gt;: 470 bytes&lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;code&gt;RSAES_OAEP_SHA_256&lt;/code&gt;: 446 bytes&lt;/p&gt; &lt;/li&gt; &lt;/ul&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;code&gt;SM2PKE&lt;/code&gt;: 1024 bytes (China Regions only)&lt;/p&gt; &lt;/li&gt; &lt;/ul&gt; &lt;p&gt;The KMS key that you use for this operation must be in a compatible key state. For details, see &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/key-state.html\&quot;&gt;Key states of KMS keys&lt;/a&gt; in the &lt;i&gt;Key Management Service Developer Guide&lt;/i&gt;.&lt;/p&gt; &lt;p&gt; &lt;b&gt;Cross-account use&lt;/b&gt;: Yes. To perform this operation with a KMS key in a different Amazon Web Services account, specify the key ARN or alias ARN in the value of the &lt;code&gt;KeyId&lt;/code&gt; parameter.&lt;/p&gt; &lt;p&gt; &lt;b&gt;Required permissions&lt;/b&gt;: &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/kms-api-permissions-reference.html\&quot;&gt;kms:Encrypt&lt;/a&gt; (key policy)&lt;/p&gt; &lt;p&gt; &lt;b&gt;Related operations:&lt;/b&gt; &lt;/p&gt; &lt;ul&gt; &lt;li&gt; &lt;p&gt; &lt;a&gt;Decrypt&lt;/a&gt; &lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;a&gt;GenerateDataKey&lt;/a&gt; &lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;a&gt;GenerateDataKeyPair&lt;/a&gt; &lt;/p&gt; &lt;/li&gt; &lt;/ul&gt;
+
+    :param x_amz_target: 
+    :type x_amz_target: str
+    :param body: 
+    :type body: dict | bytes
+    :param x_amz_content_sha256: 
+    :type x_amz_content_sha256: str
+    :param x_amz_date: 
+    :type x_amz_date: str
+    :param x_amz_algorithm: 
+    :type x_amz_algorithm: str
+    :param x_amz_credential: 
+    :type x_amz_credential: str
+    :param x_amz_security_token: 
+    :type x_amz_security_token: str
+    :param x_amz_signature: 
+    :type x_amz_signature: str
+    :param x_amz_signed_headers: 
+    :type x_amz_signed_headers: str
+
+    """
+    body = EncryptRequest.from_dict(body)
+    return web.Response(status=200)
+
+
+async def generate_data_key(request: web.Request, x_amz_target, body, x_amz_content_sha256=None, x_amz_date=None, x_amz_algorithm=None, x_amz_credential=None, x_amz_security_token=None, x_amz_signature=None, x_amz_signed_headers=None) -> web.Response:
+    """generate_data_key
+
+    &lt;p&gt;Returns a unique symmetric data key for use outside of KMS. This operation returns a plaintext copy of the data key and a copy that is encrypted under a symmetric encryption KMS key that you specify. The bytes in the plaintext key are random; they are not related to the caller or the KMS key. You can use the plaintext key to encrypt your data outside of KMS and store the encrypted data key with the encrypted data.&lt;/p&gt; &lt;p&gt;To generate a data key, specify the symmetric encryption KMS key that will be used to encrypt the data key. You cannot use an asymmetric KMS key to encrypt data keys. To get the type of your KMS key, use the &lt;a&gt;DescribeKey&lt;/a&gt; operation.&lt;/p&gt; &lt;p&gt;You must also specify the length of the data key. Use either the &lt;code&gt;KeySpec&lt;/code&gt; or &lt;code&gt;NumberOfBytes&lt;/code&gt; parameters (but not both). For 128-bit and 256-bit data keys, use the &lt;code&gt;KeySpec&lt;/code&gt; parameter.&lt;/p&gt; &lt;p&gt;To generate a 128-bit SM4 data key (China Regions only), specify a &lt;code&gt;KeySpec&lt;/code&gt; value of &lt;code&gt;AES_128&lt;/code&gt; or a &lt;code&gt;NumberOfBytes&lt;/code&gt; value of &lt;code&gt;16&lt;/code&gt;. The symmetric encryption key used in China Regions to encrypt your data key is an SM4 encryption key.&lt;/p&gt; &lt;p&gt;To get only an encrypted copy of the data key, use &lt;a&gt;GenerateDataKeyWithoutPlaintext&lt;/a&gt;. To generate an asymmetric data key pair, use the &lt;a&gt;GenerateDataKeyPair&lt;/a&gt; or &lt;a&gt;GenerateDataKeyPairWithoutPlaintext&lt;/a&gt; operation. To get a cryptographically secure random byte string, use &lt;a&gt;GenerateRandom&lt;/a&gt;.&lt;/p&gt; &lt;p&gt;You can use an optional encryption context to add additional security to the encryption operation. If you specify an &lt;code&gt;EncryptionContext&lt;/code&gt;, you must specify the same encryption context (a case-sensitive exact match) when decrypting the encrypted data key. Otherwise, the request to decrypt fails with an &lt;code&gt;InvalidCiphertextException&lt;/code&gt;. For more information, see &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#encrypt_context\&quot;&gt;Encryption Context&lt;/a&gt; in the &lt;i&gt;Key Management Service Developer Guide&lt;/i&gt;.&lt;/p&gt; &lt;p&gt; &lt;code&gt;GenerateDataKey&lt;/code&gt; also supports &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/nitro-enclave.html\&quot;&gt;Amazon Web Services Nitro Enclaves&lt;/a&gt;, which provide an isolated compute environment in Amazon EC2. To call &lt;code&gt;GenerateDataKey&lt;/code&gt; for an Amazon Web Services Nitro enclave, use the &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/enclaves/latest/user/developing-applications.html#sdk\&quot;&gt;Amazon Web Services Nitro Enclaves SDK&lt;/a&gt; or any Amazon Web Services SDK. Use the &lt;code&gt;Recipient&lt;/code&gt; parameter to provide the attestation document for the enclave. &lt;code&gt;GenerateDataKey&lt;/code&gt; returns a copy of the data key encrypted under the specified KMS key, as usual. But instead of a plaintext copy of the data key, the response includes a copy of the data key encrypted under the public key from the attestation document (&lt;code&gt;CiphertextForRecipient&lt;/code&gt;). For information about the interaction between KMS and Amazon Web Services Nitro Enclaves, see &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/services-nitro-enclaves.html\&quot;&gt;How Amazon Web Services Nitro Enclaves uses KMS&lt;/a&gt; in the &lt;i&gt;Key Management Service Developer Guide&lt;/i&gt;..&lt;/p&gt; &lt;p&gt;The KMS key that you use for this operation must be in a compatible key state. For details, see &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/key-state.html\&quot;&gt;Key states of KMS keys&lt;/a&gt; in the &lt;i&gt;Key Management Service Developer Guide&lt;/i&gt;.&lt;/p&gt; &lt;p&gt; &lt;b&gt;How to use your data key&lt;/b&gt; &lt;/p&gt; &lt;p&gt;We recommend that you use the following pattern to encrypt data locally in your application. You can write your own code or use a client-side encryption library, such as the &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/encryption-sdk/latest/developer-guide/\&quot;&gt;Amazon Web Services Encryption SDK&lt;/a&gt;, the &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/dynamodb-encryption-client/latest/devguide/\&quot;&gt;Amazon DynamoDB Encryption Client&lt;/a&gt;, or &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/AmazonS3/latest/dev/UsingClientSideEncryption.html\&quot;&gt;Amazon S3 client-side encryption&lt;/a&gt; to do these tasks for you.&lt;/p&gt; &lt;p&gt;To encrypt data outside of KMS:&lt;/p&gt; &lt;ol&gt; &lt;li&gt; &lt;p&gt;Use the &lt;code&gt;GenerateDataKey&lt;/code&gt; operation to get a data key.&lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt;Use the plaintext data key (in the &lt;code&gt;Plaintext&lt;/code&gt; field of the response) to encrypt your data outside of KMS. Then erase the plaintext data key from memory.&lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt;Store the encrypted data key (in the &lt;code&gt;CiphertextBlob&lt;/code&gt; field of the response) with the encrypted data.&lt;/p&gt; &lt;/li&gt; &lt;/ol&gt; &lt;p&gt;To decrypt data outside of KMS:&lt;/p&gt; &lt;ol&gt; &lt;li&gt; &lt;p&gt;Use the &lt;a&gt;Decrypt&lt;/a&gt; operation to decrypt the encrypted data key. The operation returns a plaintext copy of the data key.&lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt;Use the plaintext data key to decrypt data outside of KMS, then erase the plaintext data key from memory.&lt;/p&gt; &lt;/li&gt; &lt;/ol&gt; &lt;p&gt; &lt;b&gt;Cross-account use&lt;/b&gt;: Yes. To perform this operation with a KMS key in a different Amazon Web Services account, specify the key ARN or alias ARN in the value of the &lt;code&gt;KeyId&lt;/code&gt; parameter.&lt;/p&gt; &lt;p&gt; &lt;b&gt;Required permissions&lt;/b&gt;: &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/kms-api-permissions-reference.html\&quot;&gt;kms:GenerateDataKey&lt;/a&gt; (key policy)&lt;/p&gt; &lt;p&gt; &lt;b&gt;Related operations:&lt;/b&gt; &lt;/p&gt; &lt;ul&gt; &lt;li&gt; &lt;p&gt; &lt;a&gt;Decrypt&lt;/a&gt; &lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;a&gt;Encrypt&lt;/a&gt; &lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;a&gt;GenerateDataKeyPair&lt;/a&gt; &lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;a&gt;GenerateDataKeyPairWithoutPlaintext&lt;/a&gt; &lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;a&gt;GenerateDataKeyWithoutPlaintext&lt;/a&gt; &lt;/p&gt; &lt;/li&gt; &lt;/ul&gt;
+
+    :param x_amz_target: 
+    :type x_amz_target: str
+    :param body: 
+    :type body: dict | bytes
+    :param x_amz_content_sha256: 
+    :type x_amz_content_sha256: str
+    :param x_amz_date: 
+    :type x_amz_date: str
+    :param x_amz_algorithm: 
+    :type x_amz_algorithm: str
+    :param x_amz_credential: 
+    :type x_amz_credential: str
+    :param x_amz_security_token: 
+    :type x_amz_security_token: str
+    :param x_amz_signature: 
+    :type x_amz_signature: str
+    :param x_amz_signed_headers: 
+    :type x_amz_signed_headers: str
+
+    """
+    body = GenerateDataKeyRequest.from_dict(body)
+    return web.Response(status=200)
+
+
+async def generate_data_key_pair(request: web.Request, x_amz_target, body, x_amz_content_sha256=None, x_amz_date=None, x_amz_algorithm=None, x_amz_credential=None, x_amz_security_token=None, x_amz_signature=None, x_amz_signed_headers=None) -> web.Response:
+    """generate_data_key_pair
+
+    &lt;p&gt;Returns a unique asymmetric data key pair for use outside of KMS. This operation returns a plaintext public key, a plaintext private key, and a copy of the private key that is encrypted under the symmetric encryption KMS key you specify. You can use the data key pair to perform asymmetric cryptography and implement digital signatures outside of KMS. The bytes in the keys are random; they not related to the caller or to the KMS key that is used to encrypt the private key. &lt;/p&gt; &lt;p&gt;You can use the public key that &lt;code&gt;GenerateDataKeyPair&lt;/code&gt; returns to encrypt data or verify a signature outside of KMS. Then, store the encrypted private key with the data. When you are ready to decrypt data or sign a message, you can use the &lt;a&gt;Decrypt&lt;/a&gt; operation to decrypt the encrypted private key.&lt;/p&gt; &lt;p&gt;To generate a data key pair, you must specify a symmetric encryption KMS key to encrypt the private key in a data key pair. You cannot use an asymmetric KMS key or a KMS key in a custom key store. To get the type and origin of your KMS key, use the &lt;a&gt;DescribeKey&lt;/a&gt; operation. &lt;/p&gt; &lt;p&gt;Use the &lt;code&gt;KeyPairSpec&lt;/code&gt; parameter to choose an RSA or Elliptic Curve (ECC) data key pair. In China Regions, you can also choose an SM2 data key pair. KMS recommends that you use ECC key pairs for signing, and use RSA and SM2 key pairs for either encryption or signing, but not both. However, KMS cannot enforce any restrictions on the use of data key pairs outside of KMS.&lt;/p&gt; &lt;p&gt;If you are using the data key pair to encrypt data, or for any operation where you don&#39;t immediately need a private key, consider using the &lt;a&gt;GenerateDataKeyPairWithoutPlaintext&lt;/a&gt; operation. &lt;code&gt;GenerateDataKeyPairWithoutPlaintext&lt;/code&gt; returns a plaintext public key and an encrypted private key, but omits the plaintext private key that you need only to decrypt ciphertext or sign a message. Later, when you need to decrypt the data or sign a message, use the &lt;a&gt;Decrypt&lt;/a&gt; operation to decrypt the encrypted private key in the data key pair.&lt;/p&gt; &lt;p&gt; &lt;code&gt;GenerateDataKeyPair&lt;/code&gt; returns a unique data key pair for each request. The bytes in the keys are random; they are not related to the caller or the KMS key that is used to encrypt the private key. The public key is a DER-encoded X.509 SubjectPublicKeyInfo, as specified in &lt;a href&#x3D;\&quot;https://tools.ietf.org/html/rfc5280\&quot;&gt;RFC 5280&lt;/a&gt;. The private key is a DER-encoded PKCS8 PrivateKeyInfo, as specified in &lt;a href&#x3D;\&quot;https://tools.ietf.org/html/rfc5958\&quot;&gt;RFC 5958&lt;/a&gt;.&lt;/p&gt; &lt;p&gt; &lt;code&gt;GenerateDataKeyPair&lt;/code&gt; also supports &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/nitro-enclave.html\&quot;&gt;Amazon Web Services Nitro Enclaves&lt;/a&gt;, which provide an isolated compute environment in Amazon EC2. To call &lt;code&gt;GenerateDataKeyPair&lt;/code&gt; for an Amazon Web Services Nitro enclave, use the &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/enclaves/latest/user/developing-applications.html#sdk\&quot;&gt;Amazon Web Services Nitro Enclaves SDK&lt;/a&gt; or any Amazon Web Services SDK. Use the &lt;code&gt;Recipient&lt;/code&gt; parameter to provide the attestation document for the enclave. &lt;code&gt;GenerateDataKeyPair&lt;/code&gt; returns the public data key and a copy of the private data key encrypted under the specified KMS key, as usual. But instead of a plaintext copy of the private data key (&lt;code&gt;PrivateKeyPlaintext&lt;/code&gt;), the response includes a copy of the private data key encrypted under the public key from the attestation document (&lt;code&gt;CiphertextForRecipient&lt;/code&gt;). For information about the interaction between KMS and Amazon Web Services Nitro Enclaves, see &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/services-nitro-enclaves.html\&quot;&gt;How Amazon Web Services Nitro Enclaves uses KMS&lt;/a&gt; in the &lt;i&gt;Key Management Service Developer Guide&lt;/i&gt;..&lt;/p&gt; &lt;p&gt;You can use an optional encryption context to add additional security to the encryption operation. If you specify an &lt;code&gt;EncryptionContext&lt;/code&gt;, you must specify the same encryption context (a case-sensitive exact match) when decrypting the encrypted data key. Otherwise, the request to decrypt fails with an &lt;code&gt;InvalidCiphertextException&lt;/code&gt;. For more information, see &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#encrypt_context\&quot;&gt;Encryption Context&lt;/a&gt; in the &lt;i&gt;Key Management Service Developer Guide&lt;/i&gt;.&lt;/p&gt; &lt;p&gt;The KMS key that you use for this operation must be in a compatible key state. For details, see &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/key-state.html\&quot;&gt;Key states of KMS keys&lt;/a&gt; in the &lt;i&gt;Key Management Service Developer Guide&lt;/i&gt;.&lt;/p&gt; &lt;p&gt; &lt;b&gt;Cross-account use&lt;/b&gt;: Yes. To perform this operation with a KMS key in a different Amazon Web Services account, specify the key ARN or alias ARN in the value of the &lt;code&gt;KeyId&lt;/code&gt; parameter.&lt;/p&gt; &lt;p&gt; &lt;b&gt;Required permissions&lt;/b&gt;: &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/kms-api-permissions-reference.html\&quot;&gt;kms:GenerateDataKeyPair&lt;/a&gt; (key policy)&lt;/p&gt; &lt;p&gt; &lt;b&gt;Related operations:&lt;/b&gt; &lt;/p&gt; &lt;ul&gt; &lt;li&gt; &lt;p&gt; &lt;a&gt;Decrypt&lt;/a&gt; &lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;a&gt;Encrypt&lt;/a&gt; &lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;a&gt;GenerateDataKey&lt;/a&gt; &lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;a&gt;GenerateDataKeyPairWithoutPlaintext&lt;/a&gt; &lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;a&gt;GenerateDataKeyWithoutPlaintext&lt;/a&gt; &lt;/p&gt; &lt;/li&gt; &lt;/ul&gt;
+
+    :param x_amz_target: 
+    :type x_amz_target: str
+    :param body: 
+    :type body: dict | bytes
+    :param x_amz_content_sha256: 
+    :type x_amz_content_sha256: str
+    :param x_amz_date: 
+    :type x_amz_date: str
+    :param x_amz_algorithm: 
+    :type x_amz_algorithm: str
+    :param x_amz_credential: 
+    :type x_amz_credential: str
+    :param x_amz_security_token: 
+    :type x_amz_security_token: str
+    :param x_amz_signature: 
+    :type x_amz_signature: str
+    :param x_amz_signed_headers: 
+    :type x_amz_signed_headers: str
+
+    """
+    body = GenerateDataKeyPairRequest.from_dict(body)
+    return web.Response(status=200)
+
+
+async def generate_data_key_pair_without_plaintext(request: web.Request, x_amz_target, body, x_amz_content_sha256=None, x_amz_date=None, x_amz_algorithm=None, x_amz_credential=None, x_amz_security_token=None, x_amz_signature=None, x_amz_signed_headers=None) -> web.Response:
+    """generate_data_key_pair_without_plaintext
+
+    &lt;p&gt;Returns a unique asymmetric data key pair for use outside of KMS. This operation returns a plaintext public key and a copy of the private key that is encrypted under the symmetric encryption KMS key you specify. Unlike &lt;a&gt;GenerateDataKeyPair&lt;/a&gt;, this operation does not return a plaintext private key. The bytes in the keys are random; they are not related to the caller or to the KMS key that is used to encrypt the private key. &lt;/p&gt; &lt;p&gt;You can use the public key that &lt;code&gt;GenerateDataKeyPairWithoutPlaintext&lt;/code&gt; returns to encrypt data or verify a signature outside of KMS. Then, store the encrypted private key with the data. When you are ready to decrypt data or sign a message, you can use the &lt;a&gt;Decrypt&lt;/a&gt; operation to decrypt the encrypted private key.&lt;/p&gt; &lt;p&gt;To generate a data key pair, you must specify a symmetric encryption KMS key to encrypt the private key in a data key pair. You cannot use an asymmetric KMS key or a KMS key in a custom key store. To get the type and origin of your KMS key, use the &lt;a&gt;DescribeKey&lt;/a&gt; operation. &lt;/p&gt; &lt;p&gt;Use the &lt;code&gt;KeyPairSpec&lt;/code&gt; parameter to choose an RSA or Elliptic Curve (ECC) data key pair. In China Regions, you can also choose an SM2 data key pair. KMS recommends that you use ECC key pairs for signing, and use RSA and SM2 key pairs for either encryption or signing, but not both. However, KMS cannot enforce any restrictions on the use of data key pairs outside of KMS.&lt;/p&gt; &lt;p&gt; &lt;code&gt;GenerateDataKeyPairWithoutPlaintext&lt;/code&gt; returns a unique data key pair for each request. The bytes in the key are not related to the caller or KMS key that is used to encrypt the private key. The public key is a DER-encoded X.509 SubjectPublicKeyInfo, as specified in &lt;a href&#x3D;\&quot;https://tools.ietf.org/html/rfc5280\&quot;&gt;RFC 5280&lt;/a&gt;.&lt;/p&gt; &lt;p&gt;You can use an optional encryption context to add additional security to the encryption operation. If you specify an &lt;code&gt;EncryptionContext&lt;/code&gt;, you must specify the same encryption context (a case-sensitive exact match) when decrypting the encrypted data key. Otherwise, the request to decrypt fails with an &lt;code&gt;InvalidCiphertextException&lt;/code&gt;. For more information, see &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#encrypt_context\&quot;&gt;Encryption Context&lt;/a&gt; in the &lt;i&gt;Key Management Service Developer Guide&lt;/i&gt;.&lt;/p&gt; &lt;p&gt;The KMS key that you use for this operation must be in a compatible key state. For details, see &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/key-state.html\&quot;&gt;Key states of KMS keys&lt;/a&gt; in the &lt;i&gt;Key Management Service Developer Guide&lt;/i&gt;.&lt;/p&gt; &lt;p&gt; &lt;b&gt;Cross-account use&lt;/b&gt;: Yes. To perform this operation with a KMS key in a different Amazon Web Services account, specify the key ARN or alias ARN in the value of the &lt;code&gt;KeyId&lt;/code&gt; parameter.&lt;/p&gt; &lt;p&gt; &lt;b&gt;Required permissions&lt;/b&gt;: &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/kms-api-permissions-reference.html\&quot;&gt;kms:GenerateDataKeyPairWithoutPlaintext&lt;/a&gt; (key policy)&lt;/p&gt; &lt;p&gt; &lt;b&gt;Related operations:&lt;/b&gt; &lt;/p&gt; &lt;ul&gt; &lt;li&gt; &lt;p&gt; &lt;a&gt;Decrypt&lt;/a&gt; &lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;a&gt;Encrypt&lt;/a&gt; &lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;a&gt;GenerateDataKey&lt;/a&gt; &lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;a&gt;GenerateDataKeyPair&lt;/a&gt; &lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;a&gt;GenerateDataKeyWithoutPlaintext&lt;/a&gt; &lt;/p&gt; &lt;/li&gt; &lt;/ul&gt;
+
+    :param x_amz_target: 
+    :type x_amz_target: str
+    :param body: 
+    :type body: dict | bytes
+    :param x_amz_content_sha256: 
+    :type x_amz_content_sha256: str
+    :param x_amz_date: 
+    :type x_amz_date: str
+    :param x_amz_algorithm: 
+    :type x_amz_algorithm: str
+    :param x_amz_credential: 
+    :type x_amz_credential: str
+    :param x_amz_security_token: 
+    :type x_amz_security_token: str
+    :param x_amz_signature: 
+    :type x_amz_signature: str
+    :param x_amz_signed_headers: 
+    :type x_amz_signed_headers: str
+
+    """
+    body = GenerateDataKeyPairWithoutPlaintextRequest.from_dict(body)
+    return web.Response(status=200)
+
+
+async def generate_data_key_without_plaintext(request: web.Request, x_amz_target, body, x_amz_content_sha256=None, x_amz_date=None, x_amz_algorithm=None, x_amz_credential=None, x_amz_security_token=None, x_amz_signature=None, x_amz_signed_headers=None) -> web.Response:
+    """generate_data_key_without_plaintext
+
+    &lt;p&gt;Returns a unique symmetric data key for use outside of KMS. This operation returns a data key that is encrypted under a symmetric encryption KMS key that you specify. The bytes in the key are random; they are not related to the caller or to the KMS key.&lt;/p&gt; &lt;p&gt; &lt;code&gt;GenerateDataKeyWithoutPlaintext&lt;/code&gt; is identical to the &lt;a&gt;GenerateDataKey&lt;/a&gt; operation except that it does not return a plaintext copy of the data key. &lt;/p&gt; &lt;p&gt;This operation is useful for systems that need to encrypt data at some point, but not immediately. When you need to encrypt the data, you call the &lt;a&gt;Decrypt&lt;/a&gt; operation on the encrypted copy of the key.&lt;/p&gt; &lt;p&gt;It&#39;s also useful in distributed systems with different levels of trust. For example, you might store encrypted data in containers. One component of your system creates new containers and stores an encrypted data key with each container. Then, a different component puts the data into the containers. That component first decrypts the data key, uses the plaintext data key to encrypt data, puts the encrypted data into the container, and then destroys the plaintext data key. In this system, the component that creates the containers never sees the plaintext data key.&lt;/p&gt; &lt;p&gt;To request an asymmetric data key pair, use the &lt;a&gt;GenerateDataKeyPair&lt;/a&gt; or &lt;a&gt;GenerateDataKeyPairWithoutPlaintext&lt;/a&gt; operations.&lt;/p&gt; &lt;p&gt;To generate a data key, you must specify the symmetric encryption KMS key that is used to encrypt the data key. You cannot use an asymmetric KMS key or a key in a custom key store to generate a data key. To get the type of your KMS key, use the &lt;a&gt;DescribeKey&lt;/a&gt; operation.&lt;/p&gt; &lt;p&gt;You must also specify the length of the data key. Use either the &lt;code&gt;KeySpec&lt;/code&gt; or &lt;code&gt;NumberOfBytes&lt;/code&gt; parameters (but not both). For 128-bit and 256-bit data keys, use the &lt;code&gt;KeySpec&lt;/code&gt; parameter.&lt;/p&gt; &lt;p&gt;To generate an SM4 data key (China Regions only), specify a &lt;code&gt;KeySpec&lt;/code&gt; value of &lt;code&gt;AES_128&lt;/code&gt; or &lt;code&gt;NumberOfBytes&lt;/code&gt; value of &lt;code&gt;16&lt;/code&gt;. The symmetric encryption key used in China Regions to encrypt your data key is an SM4 encryption key.&lt;/p&gt; &lt;p&gt;If the operation succeeds, you will find the encrypted copy of the data key in the &lt;code&gt;CiphertextBlob&lt;/code&gt; field.&lt;/p&gt; &lt;p&gt;You can use an optional encryption context to add additional security to the encryption operation. If you specify an &lt;code&gt;EncryptionContext&lt;/code&gt;, you must specify the same encryption context (a case-sensitive exact match) when decrypting the encrypted data key. Otherwise, the request to decrypt fails with an &lt;code&gt;InvalidCiphertextException&lt;/code&gt;. For more information, see &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#encrypt_context\&quot;&gt;Encryption Context&lt;/a&gt; in the &lt;i&gt;Key Management Service Developer Guide&lt;/i&gt;.&lt;/p&gt; &lt;p&gt;The KMS key that you use for this operation must be in a compatible key state. For details, see &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/key-state.html\&quot;&gt;Key states of KMS keys&lt;/a&gt; in the &lt;i&gt;Key Management Service Developer Guide&lt;/i&gt;.&lt;/p&gt; &lt;p&gt; &lt;b&gt;Cross-account use&lt;/b&gt;: Yes. To perform this operation with a KMS key in a different Amazon Web Services account, specify the key ARN or alias ARN in the value of the &lt;code&gt;KeyId&lt;/code&gt; parameter.&lt;/p&gt; &lt;p&gt; &lt;b&gt;Required permissions&lt;/b&gt;: &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/kms-api-permissions-reference.html\&quot;&gt;kms:GenerateDataKeyWithoutPlaintext&lt;/a&gt; (key policy)&lt;/p&gt; &lt;p&gt; &lt;b&gt;Related operations:&lt;/b&gt; &lt;/p&gt; &lt;ul&gt; &lt;li&gt; &lt;p&gt; &lt;a&gt;Decrypt&lt;/a&gt; &lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;a&gt;Encrypt&lt;/a&gt; &lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;a&gt;GenerateDataKey&lt;/a&gt; &lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;a&gt;GenerateDataKeyPair&lt;/a&gt; &lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;a&gt;GenerateDataKeyPairWithoutPlaintext&lt;/a&gt; &lt;/p&gt; &lt;/li&gt; &lt;/ul&gt;
+
+    :param x_amz_target: 
+    :type x_amz_target: str
+    :param body: 
+    :type body: dict | bytes
+    :param x_amz_content_sha256: 
+    :type x_amz_content_sha256: str
+    :param x_amz_date: 
+    :type x_amz_date: str
+    :param x_amz_algorithm: 
+    :type x_amz_algorithm: str
+    :param x_amz_credential: 
+    :type x_amz_credential: str
+    :param x_amz_security_token: 
+    :type x_amz_security_token: str
+    :param x_amz_signature: 
+    :type x_amz_signature: str
+    :param x_amz_signed_headers: 
+    :type x_amz_signed_headers: str
+
+    """
+    body = GenerateDataKeyWithoutPlaintextRequest.from_dict(body)
+    return web.Response(status=200)
+
+
+async def generate_mac(request: web.Request, x_amz_target, body, x_amz_content_sha256=None, x_amz_date=None, x_amz_algorithm=None, x_amz_credential=None, x_amz_security_token=None, x_amz_signature=None, x_amz_signed_headers=None) -> web.Response:
+    """generate_mac
+
+    &lt;p&gt;Generates a hash-based message authentication code (HMAC) for a message using an HMAC KMS key and a MAC algorithm that the key supports. HMAC KMS keys and the HMAC algorithms that KMS uses conform to industry standards defined in &lt;a href&#x3D;\&quot;https://datatracker.ietf.org/doc/html/rfc2104\&quot;&gt;RFC 2104&lt;/a&gt;.&lt;/p&gt; &lt;p&gt;You can use value that GenerateMac returns in the &lt;a&gt;VerifyMac&lt;/a&gt; operation to demonstrate that the original message has not changed. Also, because a secret key is used to create the hash, you can verify that the party that generated the hash has the required secret key. You can also use the raw result to implement HMAC-based algorithms such as key derivation functions. This operation is part of KMS support for HMAC KMS keys. For details, see &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/hmac.html\&quot;&gt;HMAC keys in KMS&lt;/a&gt; in the &lt;i&gt; &lt;i&gt;Key Management Service Developer Guide&lt;/i&gt; &lt;/i&gt;.&lt;/p&gt; &lt;note&gt; &lt;p&gt;Best practices recommend that you limit the time during which any signing mechanism, including an HMAC, is effective. This deters an attack where the actor uses a signed message to establish validity repeatedly or long after the message is superseded. HMAC tags do not include a timestamp, but you can include a timestamp in the token or message to help you detect when its time to refresh the HMAC. &lt;/p&gt; &lt;/note&gt; &lt;p&gt;The KMS key that you use for this operation must be in a compatible key state. For details, see &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/key-state.html\&quot;&gt;Key states of KMS keys&lt;/a&gt; in the &lt;i&gt;Key Management Service Developer Guide&lt;/i&gt;.&lt;/p&gt; &lt;p&gt; &lt;b&gt;Cross-account use&lt;/b&gt;: Yes. To perform this operation with a KMS key in a different Amazon Web Services account, specify the key ARN or alias ARN in the value of the &lt;code&gt;KeyId&lt;/code&gt; parameter. &lt;/p&gt; &lt;p&gt; &lt;b&gt;Required permissions&lt;/b&gt;: &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/kms-api-permissions-reference.html\&quot;&gt;kms:GenerateMac&lt;/a&gt; (key policy)&lt;/p&gt; &lt;p&gt; &lt;b&gt;Related operations&lt;/b&gt;: &lt;a&gt;VerifyMac&lt;/a&gt; &lt;/p&gt;
+
+    :param x_amz_target: 
+    :type x_amz_target: str
+    :param body: 
+    :type body: dict | bytes
+    :param x_amz_content_sha256: 
+    :type x_amz_content_sha256: str
+    :param x_amz_date: 
+    :type x_amz_date: str
+    :param x_amz_algorithm: 
+    :type x_amz_algorithm: str
+    :param x_amz_credential: 
+    :type x_amz_credential: str
+    :param x_amz_security_token: 
+    :type x_amz_security_token: str
+    :param x_amz_signature: 
+    :type x_amz_signature: str
+    :param x_amz_signed_headers: 
+    :type x_amz_signed_headers: str
+
+    """
+    body = GenerateMacRequest.from_dict(body)
+    return web.Response(status=200)
+
+
+async def generate_random(request: web.Request, x_amz_target, body, x_amz_content_sha256=None, x_amz_date=None, x_amz_algorithm=None, x_amz_credential=None, x_amz_security_token=None, x_amz_signature=None, x_amz_signed_headers=None) -> web.Response:
+    """generate_random
+
+    &lt;p&gt;Returns a random byte string that is cryptographically secure.&lt;/p&gt; &lt;p&gt;You must use the &lt;code&gt;NumberOfBytes&lt;/code&gt; parameter to specify the length of the random byte string. There is no default value for string length.&lt;/p&gt; &lt;p&gt;By default, the random byte string is generated in KMS. To generate the byte string in the CloudHSM cluster associated with an CloudHSM key store, use the &lt;code&gt;CustomKeyStoreId&lt;/code&gt; parameter.&lt;/p&gt; &lt;p&gt; &lt;code&gt;GenerateRandom&lt;/code&gt; also supports &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/nitro-enclave.html\&quot;&gt;Amazon Web Services Nitro Enclaves&lt;/a&gt;, which provide an isolated compute environment in Amazon EC2. To call &lt;code&gt;GenerateRandom&lt;/code&gt; for a Nitro enclave, use the &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/enclaves/latest/user/developing-applications.html#sdk\&quot;&gt;Amazon Web Services Nitro Enclaves SDK&lt;/a&gt; or any Amazon Web Services SDK. Use the &lt;code&gt;Recipient&lt;/code&gt; parameter to provide the attestation document for the enclave. Instead of plaintext bytes, the response includes the plaintext bytes encrypted under the public key from the attestation document (&lt;code&gt;CiphertextForRecipient&lt;/code&gt;).For information about the interaction between KMS and Amazon Web Services Nitro Enclaves, see &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/services-nitro-enclaves.html\&quot;&gt;How Amazon Web Services Nitro Enclaves uses KMS&lt;/a&gt; in the &lt;i&gt;Key Management Service Developer Guide&lt;/i&gt;.&lt;/p&gt; &lt;p&gt;For more information about entropy and random number generation, see &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/cryptographic-details/\&quot;&gt;Key Management Service Cryptographic Details&lt;/a&gt;.&lt;/p&gt; &lt;p&gt; &lt;b&gt;Cross-account use&lt;/b&gt;: Not applicable. &lt;code&gt;GenerateRandom&lt;/code&gt; does not use any account-specific resources, such as KMS keys.&lt;/p&gt; &lt;p&gt; &lt;b&gt;Required permissions&lt;/b&gt;: &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/kms-api-permissions-reference.html\&quot;&gt;kms:GenerateRandom&lt;/a&gt; (IAM policy)&lt;/p&gt;
+
+    :param x_amz_target: 
+    :type x_amz_target: str
+    :param body: 
+    :type body: dict | bytes
+    :param x_amz_content_sha256: 
+    :type x_amz_content_sha256: str
+    :param x_amz_date: 
+    :type x_amz_date: str
+    :param x_amz_algorithm: 
+    :type x_amz_algorithm: str
+    :param x_amz_credential: 
+    :type x_amz_credential: str
+    :param x_amz_security_token: 
+    :type x_amz_security_token: str
+    :param x_amz_signature: 
+    :type x_amz_signature: str
+    :param x_amz_signed_headers: 
+    :type x_amz_signed_headers: str
+
+    """
+    body = GenerateRandomRequest.from_dict(body)
+    return web.Response(status=200)
+
+
+async def get_key_policy(request: web.Request, x_amz_target, body, x_amz_content_sha256=None, x_amz_date=None, x_amz_algorithm=None, x_amz_credential=None, x_amz_security_token=None, x_amz_signature=None, x_amz_signed_headers=None) -> web.Response:
+    """get_key_policy
+
+    &lt;p&gt;Gets a key policy attached to the specified KMS key.&lt;/p&gt; &lt;p&gt; &lt;b&gt;Cross-account use&lt;/b&gt;: No. You cannot perform this operation on a KMS key in a different Amazon Web Services account.&lt;/p&gt; &lt;p&gt; &lt;b&gt;Required permissions&lt;/b&gt;: &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/kms-api-permissions-reference.html\&quot;&gt;kms:GetKeyPolicy&lt;/a&gt; (key policy)&lt;/p&gt; &lt;p&gt; &lt;b&gt;Related operations&lt;/b&gt;: &lt;a&gt;PutKeyPolicy&lt;/a&gt; &lt;/p&gt;
+
+    :param x_amz_target: 
+    :type x_amz_target: str
+    :param body: 
+    :type body: dict | bytes
+    :param x_amz_content_sha256: 
+    :type x_amz_content_sha256: str
+    :param x_amz_date: 
+    :type x_amz_date: str
+    :param x_amz_algorithm: 
+    :type x_amz_algorithm: str
+    :param x_amz_credential: 
+    :type x_amz_credential: str
+    :param x_amz_security_token: 
+    :type x_amz_security_token: str
+    :param x_amz_signature: 
+    :type x_amz_signature: str
+    :param x_amz_signed_headers: 
+    :type x_amz_signed_headers: str
+
+    """
+    body = GetKeyPolicyRequest.from_dict(body)
+    return web.Response(status=200)
+
+
+async def get_key_rotation_status(request: web.Request, x_amz_target, body, x_amz_content_sha256=None, x_amz_date=None, x_amz_algorithm=None, x_amz_credential=None, x_amz_security_token=None, x_amz_signature=None, x_amz_signed_headers=None) -> web.Response:
+    """get_key_rotation_status
+
+    &lt;p&gt;Gets a Boolean value that indicates whether &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/rotate-keys.html\&quot;&gt;automatic rotation of the key material&lt;/a&gt; is enabled for the specified KMS key.&lt;/p&gt; &lt;p&gt;When you enable automatic rotation for &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#customer-cmk\&quot;&gt;customer managed KMS keys&lt;/a&gt;, KMS rotates the key material of the KMS key one year (approximately 365 days) from the enable date and every year thereafter. You can monitor rotation of the key material for your KMS keys in CloudTrail and Amazon CloudWatch.&lt;/p&gt; &lt;p&gt;Automatic key rotation is supported only on &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#symmetric-cmks\&quot;&gt;symmetric encryption KMS keys&lt;/a&gt;. You cannot enable automatic rotation of &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/symmetric-asymmetric.html\&quot;&gt;asymmetric KMS keys&lt;/a&gt;, &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/hmac.html\&quot;&gt;HMAC KMS keys&lt;/a&gt;, KMS keys with &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/importing-keys.html\&quot;&gt;imported key material&lt;/a&gt;, or KMS keys in a &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/custom-key-store-overview.html\&quot;&gt;custom key store&lt;/a&gt;. To enable or disable automatic rotation of a set of related &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/multi-region-keys-manage.html#multi-region-rotate\&quot;&gt;multi-Region keys&lt;/a&gt;, set the property on the primary key..&lt;/p&gt; &lt;p&gt;You can enable (&lt;a&gt;EnableKeyRotation&lt;/a&gt;) and disable automatic rotation (&lt;a&gt;DisableKeyRotation&lt;/a&gt;) of the key material in customer managed KMS keys. Key material rotation of &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#aws-managed-cmk\&quot;&gt;Amazon Web Services managed KMS keys&lt;/a&gt; is not configurable. KMS always rotates the key material in Amazon Web Services managed KMS keys every year. The key rotation status for Amazon Web Services managed KMS keys is always &lt;code&gt;true&lt;/code&gt;.&lt;/p&gt; &lt;note&gt; &lt;p&gt;In May 2022, KMS changed the rotation schedule for Amazon Web Services managed keys from every three years to every year. For details, see &lt;a&gt;EnableKeyRotation&lt;/a&gt;.&lt;/p&gt; &lt;/note&gt; &lt;p&gt;The KMS key that you use for this operation must be in a compatible key state. For details, see &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/key-state.html\&quot;&gt;Key states of KMS keys&lt;/a&gt; in the &lt;i&gt;Key Management Service Developer Guide&lt;/i&gt;.&lt;/p&gt; &lt;ul&gt; &lt;li&gt; &lt;p&gt;Disabled: The key rotation status does not change when you disable a KMS key. However, while the KMS key is disabled, KMS does not rotate the key material. When you re-enable the KMS key, rotation resumes. If the key material in the re-enabled KMS key hasn&#39;t been rotated in one year, KMS rotates it immediately, and every year thereafter. If it&#39;s been less than a year since the key material in the re-enabled KMS key was rotated, the KMS key resumes its prior rotation schedule.&lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt;Pending deletion: While a KMS key is pending deletion, its key rotation status is &lt;code&gt;false&lt;/code&gt; and KMS does not rotate the key material. If you cancel the deletion, the original key rotation status returns to &lt;code&gt;true&lt;/code&gt;.&lt;/p&gt; &lt;/li&gt; &lt;/ul&gt; &lt;p&gt; &lt;b&gt;Cross-account use&lt;/b&gt;: Yes. To perform this operation on a KMS key in a different Amazon Web Services account, specify the key ARN in the value of the &lt;code&gt;KeyId&lt;/code&gt; parameter.&lt;/p&gt; &lt;p&gt; &lt;b&gt;Required permissions&lt;/b&gt;: &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/kms-api-permissions-reference.html\&quot;&gt;kms:GetKeyRotationStatus&lt;/a&gt; (key policy)&lt;/p&gt; &lt;p&gt; &lt;b&gt;Related operations:&lt;/b&gt; &lt;/p&gt; &lt;ul&gt; &lt;li&gt; &lt;p&gt; &lt;a&gt;DisableKeyRotation&lt;/a&gt; &lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;a&gt;EnableKeyRotation&lt;/a&gt; &lt;/p&gt; &lt;/li&gt; &lt;/ul&gt;
+
+    :param x_amz_target: 
+    :type x_amz_target: str
+    :param body: 
+    :type body: dict | bytes
+    :param x_amz_content_sha256: 
+    :type x_amz_content_sha256: str
+    :param x_amz_date: 
+    :type x_amz_date: str
+    :param x_amz_algorithm: 
+    :type x_amz_algorithm: str
+    :param x_amz_credential: 
+    :type x_amz_credential: str
+    :param x_amz_security_token: 
+    :type x_amz_security_token: str
+    :param x_amz_signature: 
+    :type x_amz_signature: str
+    :param x_amz_signed_headers: 
+    :type x_amz_signed_headers: str
+
+    """
+    body = GetKeyRotationStatusRequest.from_dict(body)
+    return web.Response(status=200)
+
+
+async def get_parameters_for_import(request: web.Request, x_amz_target, body, x_amz_content_sha256=None, x_amz_date=None, x_amz_algorithm=None, x_amz_credential=None, x_amz_security_token=None, x_amz_signature=None, x_amz_signed_headers=None) -> web.Response:
+    """get_parameters_for_import
+
+    &lt;p&gt;Returns the public key and an import token you need to import or reimport key material for a KMS key. &lt;/p&gt; &lt;p&gt;By default, KMS keys are created with key material that KMS generates. This operation supports &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/importing-keys.html\&quot;&gt;Importing key material&lt;/a&gt;, an advanced feature that lets you generate and import the cryptographic key material for a KMS key. For more information about importing key material into KMS, see &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/importing-keys.html\&quot;&gt;Importing key material&lt;/a&gt; in the &lt;i&gt;Key Management Service Developer Guide&lt;/i&gt;.&lt;/p&gt; &lt;p&gt;Before calling &lt;code&gt;GetParametersForImport&lt;/code&gt;, use the &lt;a&gt;CreateKey&lt;/a&gt; operation with an &lt;code&gt;Origin&lt;/code&gt; value of &lt;code&gt;EXTERNAL&lt;/code&gt; to create a KMS key with no key material. You can import key material for a symmetric encryption KMS key, HMAC KMS key, asymmetric encryption KMS key, or asymmetric signing KMS key. You can also import key material into a &lt;a href&#x3D;\&quot;kms/latest/developerguide/multi-region-keys-overview.html\&quot;&gt;multi-Region key&lt;/a&gt; of any supported type. However, you can&#39;t import key material into a KMS key in a &lt;a href&#x3D;\&quot;kms/latest/developerguide/custom-key-store-overview.html\&quot;&gt;custom key store&lt;/a&gt;. You can also use &lt;code&gt;GetParametersForImport&lt;/code&gt; to get a public key and import token to &lt;a href&#x3D;\&quot;kms/latest/developerguide/importing-keys.html#reimport-key-material\&quot;&gt;reimport the original key material&lt;/a&gt; into a KMS key whose key material expired or was deleted.&lt;/p&gt; &lt;p&gt; &lt;code&gt;GetParametersForImport&lt;/code&gt; returns the items that you need to import your key material.&lt;/p&gt; &lt;ul&gt; &lt;li&gt; &lt;p&gt;The public key (or \&quot;wrapping key\&quot;) of an RSA key pair that KMS generates.&lt;/p&gt; &lt;p&gt;You will use this public key to encrypt (\&quot;wrap\&quot;) your key material while it&#39;s in transit to KMS. &lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt;A import token that ensures that KMS can decrypt your key material and associate it with the correct KMS key.&lt;/p&gt; &lt;/li&gt; &lt;/ul&gt; &lt;p&gt;The public key and its import token are permanently linked and must be used together. Each public key and import token set is valid for 24 hours. The expiration date and time appear in the &lt;code&gt;ParametersValidTo&lt;/code&gt; field in the &lt;code&gt;GetParametersForImport&lt;/code&gt; response. You cannot use an expired public key or import token in an &lt;a&gt;ImportKeyMaterial&lt;/a&gt; request. If your key and token expire, send another &lt;code&gt;GetParametersForImport&lt;/code&gt; request.&lt;/p&gt; &lt;p&gt; &lt;code&gt;GetParametersForImport&lt;/code&gt; requires the following information:&lt;/p&gt; &lt;ul&gt; &lt;li&gt; &lt;p&gt;The key ID of the KMS key for which you are importing the key material.&lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt;The key spec of the public key (\&quot;wrapping key\&quot;) that you will use to encrypt your key material during import.&lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt;The wrapping algorithm that you will use with the public key to encrypt your key material.&lt;/p&gt; &lt;/li&gt; &lt;/ul&gt; &lt;p&gt;You can use the same or a different public key spec and wrapping algorithm each time you import or reimport the same key material. &lt;/p&gt; &lt;p&gt;The KMS key that you use for this operation must be in a compatible key state. For details, see &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/key-state.html\&quot;&gt;Key states of KMS keys&lt;/a&gt; in the &lt;i&gt;Key Management Service Developer Guide&lt;/i&gt;.&lt;/p&gt; &lt;p&gt; &lt;b&gt;Cross-account use&lt;/b&gt;: No. You cannot perform this operation on a KMS key in a different Amazon Web Services account.&lt;/p&gt; &lt;p&gt; &lt;b&gt;Required permissions&lt;/b&gt;: &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/kms-api-permissions-reference.html\&quot;&gt;kms:GetParametersForImport&lt;/a&gt; (key policy)&lt;/p&gt; &lt;p&gt; &lt;b&gt;Related operations:&lt;/b&gt; &lt;/p&gt; &lt;ul&gt; &lt;li&gt; &lt;p&gt; &lt;a&gt;ImportKeyMaterial&lt;/a&gt; &lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;a&gt;DeleteImportedKeyMaterial&lt;/a&gt; &lt;/p&gt; &lt;/li&gt; &lt;/ul&gt;
+
+    :param x_amz_target: 
+    :type x_amz_target: str
+    :param body: 
+    :type body: dict | bytes
+    :param x_amz_content_sha256: 
+    :type x_amz_content_sha256: str
+    :param x_amz_date: 
+    :type x_amz_date: str
+    :param x_amz_algorithm: 
+    :type x_amz_algorithm: str
+    :param x_amz_credential: 
+    :type x_amz_credential: str
+    :param x_amz_security_token: 
+    :type x_amz_security_token: str
+    :param x_amz_signature: 
+    :type x_amz_signature: str
+    :param x_amz_signed_headers: 
+    :type x_amz_signed_headers: str
+
+    """
+    body = GetParametersForImportRequest.from_dict(body)
+    return web.Response(status=200)
+
+
+async def get_public_key(request: web.Request, x_amz_target, body, x_amz_content_sha256=None, x_amz_date=None, x_amz_algorithm=None, x_amz_credential=None, x_amz_security_token=None, x_amz_signature=None, x_amz_signed_headers=None) -> web.Response:
+    """get_public_key
+
+    &lt;p&gt;Returns the public key of an asymmetric KMS key. Unlike the private key of a asymmetric KMS key, which never leaves KMS unencrypted, callers with &lt;code&gt;kms:GetPublicKey&lt;/code&gt; permission can download the public key of an asymmetric KMS key. You can share the public key to allow others to encrypt messages and verify signatures outside of KMS. For information about asymmetric KMS keys, see &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/symmetric-asymmetric.html\&quot;&gt;Asymmetric KMS keys&lt;/a&gt; in the &lt;i&gt;Key Management Service Developer Guide&lt;/i&gt;.&lt;/p&gt; &lt;p&gt;You do not need to download the public key. Instead, you can use the public key within KMS by calling the &lt;a&gt;Encrypt&lt;/a&gt;, &lt;a&gt;ReEncrypt&lt;/a&gt;, or &lt;a&gt;Verify&lt;/a&gt; operations with the identifier of an asymmetric KMS key. When you use the public key within KMS, you benefit from the authentication, authorization, and logging that are part of every KMS operation. You also reduce of risk of encrypting data that cannot be decrypted. These features are not effective outside of KMS.&lt;/p&gt; &lt;p&gt;To help you use the public key safely outside of KMS, &lt;code&gt;GetPublicKey&lt;/code&gt; returns important information about the public key in the response, including:&lt;/p&gt; &lt;ul&gt; &lt;li&gt; &lt;p&gt; &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/APIReference/API_GetPublicKey.html#KMS-GetPublicKey-response-KeySpec\&quot;&gt;KeySpec&lt;/a&gt;: The type of key material in the public key, such as &lt;code&gt;RSA_4096&lt;/code&gt; or &lt;code&gt;ECC_NIST_P521&lt;/code&gt;.&lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/APIReference/API_GetPublicKey.html#KMS-GetPublicKey-response-KeyUsage\&quot;&gt;KeyUsage&lt;/a&gt;: Whether the key is used for encryption or signing.&lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/APIReference/API_GetPublicKey.html#KMS-GetPublicKey-response-EncryptionAlgorithms\&quot;&gt;EncryptionAlgorithms&lt;/a&gt; or &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/APIReference/API_GetPublicKey.html#KMS-GetPublicKey-response-SigningAlgorithms\&quot;&gt;SigningAlgorithms&lt;/a&gt;: A list of the encryption algorithms or the signing algorithms for the key.&lt;/p&gt; &lt;/li&gt; &lt;/ul&gt; &lt;p&gt;Although KMS cannot enforce these restrictions on external operations, it is crucial that you use this information to prevent the public key from being used improperly. For example, you can prevent a public signing key from being used encrypt data, or prevent a public key from being used with an encryption algorithm that is not supported by KMS. You can also avoid errors, such as using the wrong signing algorithm in a verification operation.&lt;/p&gt; &lt;p&gt;To verify a signature outside of KMS with an SM2 public key (China Regions only), you must specify the distinguishing ID. By default, KMS uses &lt;code&gt;1234567812345678&lt;/code&gt; as the distinguishing ID. For more information, see &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/asymmetric-key-specs.html#key-spec-sm-offline-verification\&quot;&gt;Offline verification with SM2 key pairs&lt;/a&gt;.&lt;/p&gt; &lt;p&gt;The KMS key that you use for this operation must be in a compatible key state. For details, see &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/key-state.html\&quot;&gt;Key states of KMS keys&lt;/a&gt; in the &lt;i&gt;Key Management Service Developer Guide&lt;/i&gt;.&lt;/p&gt; &lt;p&gt; &lt;b&gt;Cross-account use&lt;/b&gt;: Yes. To perform this operation with a KMS key in a different Amazon Web Services account, specify the key ARN or alias ARN in the value of the &lt;code&gt;KeyId&lt;/code&gt; parameter.&lt;/p&gt; &lt;p&gt; &lt;b&gt;Required permissions&lt;/b&gt;: &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/kms-api-permissions-reference.html\&quot;&gt;kms:GetPublicKey&lt;/a&gt; (key policy)&lt;/p&gt; &lt;p&gt; &lt;b&gt;Related operations&lt;/b&gt;: &lt;a&gt;CreateKey&lt;/a&gt; &lt;/p&gt;
+
+    :param x_amz_target: 
+    :type x_amz_target: str
+    :param body: 
+    :type body: dict | bytes
+    :param x_amz_content_sha256: 
+    :type x_amz_content_sha256: str
+    :param x_amz_date: 
+    :type x_amz_date: str
+    :param x_amz_algorithm: 
+    :type x_amz_algorithm: str
+    :param x_amz_credential: 
+    :type x_amz_credential: str
+    :param x_amz_security_token: 
+    :type x_amz_security_token: str
+    :param x_amz_signature: 
+    :type x_amz_signature: str
+    :param x_amz_signed_headers: 
+    :type x_amz_signed_headers: str
+
+    """
+    body = GetPublicKeyRequest.from_dict(body)
+    return web.Response(status=200)
+
+
+async def import_key_material(request: web.Request, x_amz_target, body, x_amz_content_sha256=None, x_amz_date=None, x_amz_algorithm=None, x_amz_credential=None, x_amz_security_token=None, x_amz_signature=None, x_amz_signed_headers=None) -> web.Response:
+    """import_key_material
+
+    &lt;p&gt;Imports or reimports key material into an existing KMS key that was created without key material. &lt;code&gt;ImportKeyMaterial&lt;/code&gt; also sets the expiration model and expiration date of the imported key material.&lt;/p&gt; &lt;p&gt;By default, KMS keys are created with key material that KMS generates. This operation supports &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/importing-keys.html\&quot;&gt;Importing key material&lt;/a&gt;, an advanced feature that lets you generate and import the cryptographic key material for a KMS key. For more information about importing key material into KMS, see &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/importing-keys.html\&quot;&gt;Importing key material&lt;/a&gt; in the &lt;i&gt;Key Management Service Developer Guide&lt;/i&gt;.&lt;/p&gt; &lt;p&gt;After you successfully import key material into a KMS key, you can &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/importing-keys.html#reimport-key-material\&quot;&gt;reimport the same key material&lt;/a&gt; into that KMS key, but you cannot import different key material. You might reimport key material to replace key material that expired or key material that you deleted. You might also reimport key material to change the expiration model or expiration date of the key material. Before reimporting key material, if necessary, call &lt;a&gt;DeleteImportedKeyMaterial&lt;/a&gt; to delete the current imported key material. &lt;/p&gt; &lt;p&gt;Each time you import key material into KMS, you can determine whether (&lt;code&gt;ExpirationModel&lt;/code&gt;) and when (&lt;code&gt;ValidTo&lt;/code&gt;) the key material expires. To change the expiration of your key material, you must import it again, either by calling &lt;code&gt;ImportKeyMaterial&lt;/code&gt; or using the &lt;a href&#x3D;\&quot;kms/latest/developerguide/importing-keys-import-key-material.html#importing-keys-import-key-material-console\&quot;&gt;import features&lt;/a&gt; of the KMS console.&lt;/p&gt; &lt;p&gt;Before calling &lt;code&gt;ImportKeyMaterial&lt;/code&gt;:&lt;/p&gt; &lt;ul&gt; &lt;li&gt; &lt;p&gt;Create or identify a KMS key with no key material. The KMS key must have an &lt;code&gt;Origin&lt;/code&gt; value of &lt;code&gt;EXTERNAL&lt;/code&gt;, which indicates that the KMS key is designed for imported key material. &lt;/p&gt; &lt;p&gt;To create an new KMS key for imported key material, call the &lt;a&gt;CreateKey&lt;/a&gt; operation with an &lt;code&gt;Origin&lt;/code&gt; value of &lt;code&gt;EXTERNAL&lt;/code&gt;. You can create a symmetric encryption KMS key, HMAC KMS key, asymmetric encryption KMS key, or asymmetric signing KMS key. You can also import key material into a &lt;a href&#x3D;\&quot;kms/latest/developerguide/multi-region-keys-overview.html\&quot;&gt;multi-Region key&lt;/a&gt; of any supported type. However, you can&#39;t import key material into a KMS key in a &lt;a href&#x3D;\&quot;kms/latest/developerguide/custom-key-store-overview.html\&quot;&gt;custom key store&lt;/a&gt;.&lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt;Use the &lt;a&gt;DescribeKey&lt;/a&gt; operation to verify that the &lt;code&gt;KeyState&lt;/code&gt; of the KMS key is &lt;code&gt;PendingImport&lt;/code&gt;, which indicates that the KMS key has no key material. &lt;/p&gt; &lt;p&gt;If you are reimporting the same key material into an existing KMS key, you might need to call the &lt;a&gt;DeleteImportedKeyMaterial&lt;/a&gt; to delete its existing key material.&lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt;Call the &lt;a&gt;GetParametersForImport&lt;/a&gt; operation to get a public key and import token set for importing key material. &lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt;Use the public key in the &lt;a&gt;GetParametersForImport&lt;/a&gt; response to encrypt your key material.&lt;/p&gt; &lt;/li&gt; &lt;/ul&gt; &lt;p&gt; Then, in an &lt;code&gt;ImportKeyMaterial&lt;/code&gt; request, you submit your encrypted key material and import token. When calling this operation, you must specify the following values:&lt;/p&gt; &lt;ul&gt; &lt;li&gt; &lt;p&gt;The key ID or key ARN of the KMS key to associate with the imported key material. Its &lt;code&gt;Origin&lt;/code&gt; must be &lt;code&gt;EXTERNAL&lt;/code&gt; and its &lt;code&gt;KeyState&lt;/code&gt; must be &lt;code&gt;PendingImport&lt;/code&gt;. You cannot perform this operation on a KMS key in a &lt;a href&#x3D;\&quot;kms/latest/developerguide/custom-key-store-overview.html\&quot;&gt;custom key store&lt;/a&gt;, or on a KMS key in a different Amazon Web Services account. To get the &lt;code&gt;Origin&lt;/code&gt; and &lt;code&gt;KeyState&lt;/code&gt; of a KMS key, call &lt;a&gt;DescribeKey&lt;/a&gt;.&lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt;The encrypted key material. &lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt;The import token that &lt;a&gt;GetParametersForImport&lt;/a&gt; returned. You must use a public key and token from the same &lt;code&gt;GetParametersForImport&lt;/code&gt; response.&lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt;Whether the key material expires (&lt;code&gt;ExpirationModel&lt;/code&gt;) and, if so, when (&lt;code&gt;ValidTo&lt;/code&gt;). For help with this choice, see &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/en_us/kms/latest/developerguide/importing-keys.html#importing-keys-expiration\&quot;&gt;Setting an expiration time&lt;/a&gt; in the &lt;i&gt;Key Management Service Developer Guide&lt;/i&gt;.&lt;/p&gt; &lt;p&gt;If you set an expiration date, KMS deletes the key material from the KMS key on the specified date, making the KMS key unusable. To use the KMS key in cryptographic operations again, you must reimport the same key material. However, you can delete and reimport the key material at any time, including before the key material expires. Each time you reimport, you can eliminate or reset the expiration time.&lt;/p&gt; &lt;/li&gt; &lt;/ul&gt; &lt;p&gt;When this operation is successful, the key state of the KMS key changes from &lt;code&gt;PendingImport&lt;/code&gt; to &lt;code&gt;Enabled&lt;/code&gt;, and you can use the KMS key in cryptographic operations.&lt;/p&gt; &lt;p&gt;If this operation fails, use the exception to help determine the problem. If the error is related to the key material, the import token, or wrapping key, use &lt;a&gt;GetParametersForImport&lt;/a&gt; to get a new public key and import token for the KMS key and repeat the import procedure. For help, see &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/importing-keys.html#importing-keys-overview\&quot;&gt;How To Import Key Material&lt;/a&gt; in the &lt;i&gt;Key Management Service Developer Guide&lt;/i&gt;.&lt;/p&gt; &lt;p&gt;The KMS key that you use for this operation must be in a compatible key state. For details, see &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/key-state.html\&quot;&gt;Key states of KMS keys&lt;/a&gt; in the &lt;i&gt;Key Management Service Developer Guide&lt;/i&gt;.&lt;/p&gt; &lt;p&gt; &lt;b&gt;Cross-account use&lt;/b&gt;: No. You cannot perform this operation on a KMS key in a different Amazon Web Services account.&lt;/p&gt; &lt;p&gt; &lt;b&gt;Required permissions&lt;/b&gt;: &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/kms-api-permissions-reference.html\&quot;&gt;kms:ImportKeyMaterial&lt;/a&gt; (key policy)&lt;/p&gt; &lt;p&gt; &lt;b&gt;Related operations:&lt;/b&gt; &lt;/p&gt; &lt;ul&gt; &lt;li&gt; &lt;p&gt; &lt;a&gt;DeleteImportedKeyMaterial&lt;/a&gt; &lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;a&gt;GetParametersForImport&lt;/a&gt; &lt;/p&gt; &lt;/li&gt; &lt;/ul&gt;
+
+    :param x_amz_target: 
+    :type x_amz_target: str
+    :param body: 
+    :type body: dict | bytes
+    :param x_amz_content_sha256: 
+    :type x_amz_content_sha256: str
+    :param x_amz_date: 
+    :type x_amz_date: str
+    :param x_amz_algorithm: 
+    :type x_amz_algorithm: str
+    :param x_amz_credential: 
+    :type x_amz_credential: str
+    :param x_amz_security_token: 
+    :type x_amz_security_token: str
+    :param x_amz_signature: 
+    :type x_amz_signature: str
+    :param x_amz_signed_headers: 
+    :type x_amz_signed_headers: str
+
+    """
+    body = ImportKeyMaterialRequest.from_dict(body)
+    return web.Response(status=200)
+
+
+async def list_aliases(request: web.Request, x_amz_target, body, x_amz_content_sha256=None, x_amz_date=None, x_amz_algorithm=None, x_amz_credential=None, x_amz_security_token=None, x_amz_signature=None, x_amz_signed_headers=None, limit=None, marker=None) -> web.Response:
+    """list_aliases
+
+    &lt;p&gt;Gets a list of aliases in the caller&#39;s Amazon Web Services account and region. For more information about aliases, see &lt;a&gt;CreateAlias&lt;/a&gt;.&lt;/p&gt; &lt;p&gt;By default, the &lt;code&gt;ListAliases&lt;/code&gt; operation returns all aliases in the account and region. To get only the aliases associated with a particular KMS key, use the &lt;code&gt;KeyId&lt;/code&gt; parameter.&lt;/p&gt; &lt;p&gt;The &lt;code&gt;ListAliases&lt;/code&gt; response can include aliases that you created and associated with your customer managed keys, and aliases that Amazon Web Services created and associated with Amazon Web Services managed keys in your account. You can recognize Amazon Web Services aliases because their names have the format &lt;code&gt;aws/&amp;lt;service-name&amp;gt;&lt;/code&gt;, such as &lt;code&gt;aws/dynamodb&lt;/code&gt;.&lt;/p&gt; &lt;p&gt;The response might also include aliases that have no &lt;code&gt;TargetKeyId&lt;/code&gt; field. These are predefined aliases that Amazon Web Services has created but has not yet associated with a KMS key. Aliases that Amazon Web Services creates in your account, including predefined aliases, do not count against your &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/limits.html#aliases-limit\&quot;&gt;KMS aliases quota&lt;/a&gt;.&lt;/p&gt; &lt;p&gt; &lt;b&gt;Cross-account use&lt;/b&gt;: No. &lt;code&gt;ListAliases&lt;/code&gt; does not return aliases in other Amazon Web Services accounts.&lt;/p&gt; &lt;p&gt; &lt;b&gt;Required permissions&lt;/b&gt;: &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/kms-api-permissions-reference.html\&quot;&gt;kms:ListAliases&lt;/a&gt; (IAM policy)&lt;/p&gt; &lt;p&gt;For details, see &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/kms-alias.html#alias-access\&quot;&gt;Controlling access to aliases&lt;/a&gt; in the &lt;i&gt;Key Management Service Developer Guide&lt;/i&gt;.&lt;/p&gt; &lt;p&gt; &lt;b&gt;Related operations:&lt;/b&gt; &lt;/p&gt; &lt;ul&gt; &lt;li&gt; &lt;p&gt; &lt;a&gt;CreateAlias&lt;/a&gt; &lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;a&gt;DeleteAlias&lt;/a&gt; &lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;a&gt;UpdateAlias&lt;/a&gt; &lt;/p&gt; &lt;/li&gt; &lt;/ul&gt;
+
+    :param x_amz_target: 
+    :type x_amz_target: str
+    :param body: 
+    :type body: dict | bytes
+    :param x_amz_content_sha256: 
+    :type x_amz_content_sha256: str
+    :param x_amz_date: 
+    :type x_amz_date: str
+    :param x_amz_algorithm: 
+    :type x_amz_algorithm: str
+    :param x_amz_credential: 
+    :type x_amz_credential: str
+    :param x_amz_security_token: 
+    :type x_amz_security_token: str
+    :param x_amz_signature: 
+    :type x_amz_signature: str
+    :param x_amz_signed_headers: 
+    :type x_amz_signed_headers: str
+    :param limit: Pagination limit
+    :type limit: str
+    :param marker: Pagination token
+    :type marker: str
+
+    """
+    body = ListAliasesRequest.from_dict(body)
+    return web.Response(status=200)
+
+
+async def list_grants(request: web.Request, x_amz_target, body, x_amz_content_sha256=None, x_amz_date=None, x_amz_algorithm=None, x_amz_credential=None, x_amz_security_token=None, x_amz_signature=None, x_amz_signed_headers=None, limit=None, marker=None) -> web.Response:
+    """list_grants
+
+    &lt;p&gt;Gets a list of all grants for the specified KMS key. &lt;/p&gt; &lt;p&gt;You must specify the KMS key in all requests. You can filter the grant list by grant ID or grantee principal.&lt;/p&gt; &lt;p&gt;For detailed information about grants, including grant terminology, see &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/grants.html\&quot;&gt;Grants in KMS&lt;/a&gt; in the &lt;i&gt; &lt;i&gt;Key Management Service Developer Guide&lt;/i&gt; &lt;/i&gt;. For examples of working with grants in several programming languages, see &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/programming-grants.html\&quot;&gt;Programming grants&lt;/a&gt;. &lt;/p&gt; &lt;note&gt; &lt;p&gt;The &lt;code&gt;GranteePrincipal&lt;/code&gt; field in the &lt;code&gt;ListGrants&lt;/code&gt; response usually contains the user or role designated as the grantee principal in the grant. However, when the grantee principal in the grant is an Amazon Web Services service, the &lt;code&gt;GranteePrincipal&lt;/code&gt; field contains the &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_elements_principal.html#principal-services\&quot;&gt;service principal&lt;/a&gt;, which might represent several different grantee principals.&lt;/p&gt; &lt;/note&gt; &lt;p&gt; &lt;b&gt;Cross-account use&lt;/b&gt;: Yes. To perform this operation on a KMS key in a different Amazon Web Services account, specify the key ARN in the value of the &lt;code&gt;KeyId&lt;/code&gt; parameter.&lt;/p&gt; &lt;p&gt; &lt;b&gt;Required permissions&lt;/b&gt;: &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/kms-api-permissions-reference.html\&quot;&gt;kms:ListGrants&lt;/a&gt; (key policy)&lt;/p&gt; &lt;p&gt; &lt;b&gt;Related operations:&lt;/b&gt; &lt;/p&gt; &lt;ul&gt; &lt;li&gt; &lt;p&gt; &lt;a&gt;CreateGrant&lt;/a&gt; &lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;a&gt;ListRetirableGrants&lt;/a&gt; &lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;a&gt;RetireGrant&lt;/a&gt; &lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;a&gt;RevokeGrant&lt;/a&gt; &lt;/p&gt; &lt;/li&gt; &lt;/ul&gt;
+
+    :param x_amz_target: 
+    :type x_amz_target: str
+    :param body: 
+    :type body: dict | bytes
+    :param x_amz_content_sha256: 
+    :type x_amz_content_sha256: str
+    :param x_amz_date: 
+    :type x_amz_date: str
+    :param x_amz_algorithm: 
+    :type x_amz_algorithm: str
+    :param x_amz_credential: 
+    :type x_amz_credential: str
+    :param x_amz_security_token: 
+    :type x_amz_security_token: str
+    :param x_amz_signature: 
+    :type x_amz_signature: str
+    :param x_amz_signed_headers: 
+    :type x_amz_signed_headers: str
+    :param limit: Pagination limit
+    :type limit: str
+    :param marker: Pagination token
+    :type marker: str
+
+    """
+    body = ListGrantsRequest.from_dict(body)
+    return web.Response(status=200)
+
+
+async def list_key_policies(request: web.Request, x_amz_target, body, x_amz_content_sha256=None, x_amz_date=None, x_amz_algorithm=None, x_amz_credential=None, x_amz_security_token=None, x_amz_signature=None, x_amz_signed_headers=None, limit=None, marker=None) -> web.Response:
+    """list_key_policies
+
+    &lt;p&gt;Gets the names of the key policies that are attached to a KMS key. This operation is designed to get policy names that you can use in a &lt;a&gt;GetKeyPolicy&lt;/a&gt; operation. However, the only valid policy name is &lt;code&gt;default&lt;/code&gt;. &lt;/p&gt; &lt;p&gt; &lt;b&gt;Cross-account use&lt;/b&gt;: No. You cannot perform this operation on a KMS key in a different Amazon Web Services account.&lt;/p&gt; &lt;p&gt; &lt;b&gt;Required permissions&lt;/b&gt;: &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/kms-api-permissions-reference.html\&quot;&gt;kms:ListKeyPolicies&lt;/a&gt; (key policy)&lt;/p&gt; &lt;p&gt; &lt;b&gt;Related operations:&lt;/b&gt; &lt;/p&gt; &lt;ul&gt; &lt;li&gt; &lt;p&gt; &lt;a&gt;GetKeyPolicy&lt;/a&gt; &lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;a&gt;PutKeyPolicy&lt;/a&gt; &lt;/p&gt; &lt;/li&gt; &lt;/ul&gt;
+
+    :param x_amz_target: 
+    :type x_amz_target: str
+    :param body: 
+    :type body: dict | bytes
+    :param x_amz_content_sha256: 
+    :type x_amz_content_sha256: str
+    :param x_amz_date: 
+    :type x_amz_date: str
+    :param x_amz_algorithm: 
+    :type x_amz_algorithm: str
+    :param x_amz_credential: 
+    :type x_amz_credential: str
+    :param x_amz_security_token: 
+    :type x_amz_security_token: str
+    :param x_amz_signature: 
+    :type x_amz_signature: str
+    :param x_amz_signed_headers: 
+    :type x_amz_signed_headers: str
+    :param limit: Pagination limit
+    :type limit: str
+    :param marker: Pagination token
+    :type marker: str
+
+    """
+    body = ListKeyPoliciesRequest.from_dict(body)
+    return web.Response(status=200)
+
+
+async def list_keys(request: web.Request, x_amz_target, body, x_amz_content_sha256=None, x_amz_date=None, x_amz_algorithm=None, x_amz_credential=None, x_amz_security_token=None, x_amz_signature=None, x_amz_signed_headers=None, limit=None, marker=None) -> web.Response:
+    """list_keys
+
+    &lt;p&gt;Gets a list of all KMS keys in the caller&#39;s Amazon Web Services account and Region.&lt;/p&gt; &lt;p&gt; &lt;b&gt;Cross-account use&lt;/b&gt;: No. You cannot perform this operation on a KMS key in a different Amazon Web Services account.&lt;/p&gt; &lt;p&gt; &lt;b&gt;Required permissions&lt;/b&gt;: &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/kms-api-permissions-reference.html\&quot;&gt;kms:ListKeys&lt;/a&gt; (IAM policy)&lt;/p&gt; &lt;p&gt; &lt;b&gt;Related operations:&lt;/b&gt; &lt;/p&gt; &lt;ul&gt; &lt;li&gt; &lt;p&gt; &lt;a&gt;CreateKey&lt;/a&gt; &lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;a&gt;DescribeKey&lt;/a&gt; &lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;a&gt;ListAliases&lt;/a&gt; &lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;a&gt;ListResourceTags&lt;/a&gt; &lt;/p&gt; &lt;/li&gt; &lt;/ul&gt;
+
+    :param x_amz_target: 
+    :type x_amz_target: str
+    :param body: 
+    :type body: dict | bytes
+    :param x_amz_content_sha256: 
+    :type x_amz_content_sha256: str
+    :param x_amz_date: 
+    :type x_amz_date: str
+    :param x_amz_algorithm: 
+    :type x_amz_algorithm: str
+    :param x_amz_credential: 
+    :type x_amz_credential: str
+    :param x_amz_security_token: 
+    :type x_amz_security_token: str
+    :param x_amz_signature: 
+    :type x_amz_signature: str
+    :param x_amz_signed_headers: 
+    :type x_amz_signed_headers: str
+    :param limit: Pagination limit
+    :type limit: str
+    :param marker: Pagination token
+    :type marker: str
+
+    """
+    body = ListKeysRequest.from_dict(body)
+    return web.Response(status=200)
+
+
+async def list_resource_tags(request: web.Request, x_amz_target, body, x_amz_content_sha256=None, x_amz_date=None, x_amz_algorithm=None, x_amz_credential=None, x_amz_security_token=None, x_amz_signature=None, x_amz_signed_headers=None, limit=None, marker=None) -> web.Response:
+    """list_resource_tags
+
+    &lt;p&gt;Returns all tags on the specified KMS key.&lt;/p&gt; &lt;p&gt;For general information about tags, including the format and syntax, see &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/general/latest/gr/aws_tagging.html\&quot;&gt;Tagging Amazon Web Services resources&lt;/a&gt; in the &lt;i&gt;Amazon Web Services General Reference&lt;/i&gt;. For information about using tags in KMS, see &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/tagging-keys.html\&quot;&gt;Tagging keys&lt;/a&gt;.&lt;/p&gt; &lt;p&gt; &lt;b&gt;Cross-account use&lt;/b&gt;: No. You cannot perform this operation on a KMS key in a different Amazon Web Services account.&lt;/p&gt; &lt;p&gt; &lt;b&gt;Required permissions&lt;/b&gt;: &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/kms-api-permissions-reference.html\&quot;&gt;kms:ListResourceTags&lt;/a&gt; (key policy)&lt;/p&gt; &lt;p&gt; &lt;b&gt;Related operations:&lt;/b&gt; &lt;/p&gt; &lt;ul&gt; &lt;li&gt; &lt;p&gt; &lt;a&gt;CreateKey&lt;/a&gt; &lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;a&gt;ReplicateKey&lt;/a&gt; &lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;a&gt;TagResource&lt;/a&gt; &lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;a&gt;UntagResource&lt;/a&gt; &lt;/p&gt; &lt;/li&gt; &lt;/ul&gt;
+
+    :param x_amz_target: 
+    :type x_amz_target: str
+    :param body: 
+    :type body: dict | bytes
+    :param x_amz_content_sha256: 
+    :type x_amz_content_sha256: str
+    :param x_amz_date: 
+    :type x_amz_date: str
+    :param x_amz_algorithm: 
+    :type x_amz_algorithm: str
+    :param x_amz_credential: 
+    :type x_amz_credential: str
+    :param x_amz_security_token: 
+    :type x_amz_security_token: str
+    :param x_amz_signature: 
+    :type x_amz_signature: str
+    :param x_amz_signed_headers: 
+    :type x_amz_signed_headers: str
+    :param limit: Pagination limit
+    :type limit: str
+    :param marker: Pagination token
+    :type marker: str
+
+    """
+    body = ListResourceTagsRequest.from_dict(body)
+    return web.Response(status=200)
+
+
+async def list_retirable_grants(request: web.Request, x_amz_target, body, x_amz_content_sha256=None, x_amz_date=None, x_amz_algorithm=None, x_amz_credential=None, x_amz_security_token=None, x_amz_signature=None, x_amz_signed_headers=None, limit=None, marker=None) -> web.Response:
+    """list_retirable_grants
+
+    &lt;p&gt;Returns information about all grants in the Amazon Web Services account and Region that have the specified retiring principal. &lt;/p&gt; &lt;p&gt;You can specify any principal in your Amazon Web Services account. The grants that are returned include grants for KMS keys in your Amazon Web Services account and other Amazon Web Services accounts. You might use this operation to determine which grants you may retire. To retire a grant, use the &lt;a&gt;RetireGrant&lt;/a&gt; operation.&lt;/p&gt; &lt;p&gt;For detailed information about grants, including grant terminology, see &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/grants.html\&quot;&gt;Grants in KMS&lt;/a&gt; in the &lt;i&gt; &lt;i&gt;Key Management Service Developer Guide&lt;/i&gt; &lt;/i&gt;. For examples of working with grants in several programming languages, see &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/programming-grants.html\&quot;&gt;Programming grants&lt;/a&gt;. &lt;/p&gt; &lt;p&gt; &lt;b&gt;Cross-account use&lt;/b&gt;: You must specify a principal in your Amazon Web Services account. However, this operation can return grants in any Amazon Web Services account. You do not need &lt;code&gt;kms:ListRetirableGrants&lt;/code&gt; permission (or any other additional permission) in any Amazon Web Services account other than your own.&lt;/p&gt; &lt;p&gt; &lt;b&gt;Required permissions&lt;/b&gt;: &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/kms-api-permissions-reference.html\&quot;&gt;kms:ListRetirableGrants&lt;/a&gt; (IAM policy) in your Amazon Web Services account.&lt;/p&gt; &lt;p&gt; &lt;b&gt;Related operations:&lt;/b&gt; &lt;/p&gt; &lt;ul&gt; &lt;li&gt; &lt;p&gt; &lt;a&gt;CreateGrant&lt;/a&gt; &lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;a&gt;ListGrants&lt;/a&gt; &lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;a&gt;RetireGrant&lt;/a&gt; &lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;a&gt;RevokeGrant&lt;/a&gt; &lt;/p&gt; &lt;/li&gt; &lt;/ul&gt;
+
+    :param x_amz_target: 
+    :type x_amz_target: str
+    :param body: 
+    :type body: dict | bytes
+    :param x_amz_content_sha256: 
+    :type x_amz_content_sha256: str
+    :param x_amz_date: 
+    :type x_amz_date: str
+    :param x_amz_algorithm: 
+    :type x_amz_algorithm: str
+    :param x_amz_credential: 
+    :type x_amz_credential: str
+    :param x_amz_security_token: 
+    :type x_amz_security_token: str
+    :param x_amz_signature: 
+    :type x_amz_signature: str
+    :param x_amz_signed_headers: 
+    :type x_amz_signed_headers: str
+    :param limit: Pagination limit
+    :type limit: str
+    :param marker: Pagination token
+    :type marker: str
+
+    """
+    body = ListRetirableGrantsRequest.from_dict(body)
+    return web.Response(status=200)
+
+
+async def put_key_policy(request: web.Request, x_amz_target, body, x_amz_content_sha256=None, x_amz_date=None, x_amz_algorithm=None, x_amz_credential=None, x_amz_security_token=None, x_amz_signature=None, x_amz_signed_headers=None) -> web.Response:
+    """put_key_policy
+
+    &lt;p&gt;Attaches a key policy to the specified KMS key. &lt;/p&gt; &lt;p&gt;For more information about key policies, see &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/key-policies.html\&quot;&gt;Key Policies&lt;/a&gt; in the &lt;i&gt;Key Management Service Developer Guide&lt;/i&gt;. For help writing and formatting a JSON policy document, see the &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies.html\&quot;&gt;IAM JSON Policy Reference&lt;/a&gt; in the &lt;i&gt; &lt;i&gt;Identity and Access Management User Guide&lt;/i&gt; &lt;/i&gt;. For examples of adding a key policy in multiple programming languages, see &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/programming-key-policies.html#put-policy\&quot;&gt;Setting a key policy&lt;/a&gt; in the &lt;i&gt;Key Management Service Developer Guide&lt;/i&gt;.&lt;/p&gt; &lt;p&gt; &lt;b&gt;Cross-account use&lt;/b&gt;: No. You cannot perform this operation on a KMS key in a different Amazon Web Services account.&lt;/p&gt; &lt;p&gt; &lt;b&gt;Required permissions&lt;/b&gt;: &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/kms-api-permissions-reference.html\&quot;&gt;kms:PutKeyPolicy&lt;/a&gt; (key policy)&lt;/p&gt; &lt;p&gt; &lt;b&gt;Related operations&lt;/b&gt;: &lt;a&gt;GetKeyPolicy&lt;/a&gt; &lt;/p&gt;
+
+    :param x_amz_target: 
+    :type x_amz_target: str
+    :param body: 
+    :type body: dict | bytes
+    :param x_amz_content_sha256: 
+    :type x_amz_content_sha256: str
+    :param x_amz_date: 
+    :type x_amz_date: str
+    :param x_amz_algorithm: 
+    :type x_amz_algorithm: str
+    :param x_amz_credential: 
+    :type x_amz_credential: str
+    :param x_amz_security_token: 
+    :type x_amz_security_token: str
+    :param x_amz_signature: 
+    :type x_amz_signature: str
+    :param x_amz_signed_headers: 
+    :type x_amz_signed_headers: str
+
+    """
+    body = PutKeyPolicyRequest.from_dict(body)
+    return web.Response(status=200)
+
+
+async def re_encrypt(request: web.Request, x_amz_target, body, x_amz_content_sha256=None, x_amz_date=None, x_amz_algorithm=None, x_amz_credential=None, x_amz_security_token=None, x_amz_signature=None, x_amz_signed_headers=None) -> web.Response:
+    """re_encrypt
+
+    &lt;p&gt;Decrypts ciphertext and then reencrypts it entirely within KMS. You can use this operation to change the KMS key under which data is encrypted, such as when you &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/rotate-keys.html#rotate-keys-manually\&quot;&gt;manually rotate&lt;/a&gt; a KMS key or change the KMS key that protects a ciphertext. You can also use it to reencrypt ciphertext under the same KMS key, such as to change the &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#encrypt_context\&quot;&gt;encryption context&lt;/a&gt; of a ciphertext.&lt;/p&gt; &lt;p&gt;The &lt;code&gt;ReEncrypt&lt;/code&gt; operation can decrypt ciphertext that was encrypted by using a KMS key in an KMS operation, such as &lt;a&gt;Encrypt&lt;/a&gt; or &lt;a&gt;GenerateDataKey&lt;/a&gt;. It can also decrypt ciphertext that was encrypted by using the public key of an &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/symm-asymm-concepts.html#asymmetric-cmks\&quot;&gt;asymmetric KMS key&lt;/a&gt; outside of KMS. However, it cannot decrypt ciphertext produced by other libraries, such as the &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/encryption-sdk/latest/developer-guide/\&quot;&gt;Amazon Web Services Encryption SDK&lt;/a&gt; or &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/AmazonS3/latest/dev/UsingClientSideEncryption.html\&quot;&gt;Amazon S3 client-side encryption&lt;/a&gt;. These libraries return a ciphertext format that is incompatible with KMS.&lt;/p&gt; &lt;p&gt;When you use the &lt;code&gt;ReEncrypt&lt;/code&gt; operation, you need to provide information for the decrypt operation and the subsequent encrypt operation.&lt;/p&gt; &lt;ul&gt; &lt;li&gt; &lt;p&gt;If your ciphertext was encrypted under an asymmetric KMS key, you must use the &lt;code&gt;SourceKeyId&lt;/code&gt; parameter to identify the KMS key that encrypted the ciphertext. You must also supply the encryption algorithm that was used. This information is required to decrypt the data.&lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt;If your ciphertext was encrypted under a symmetric encryption KMS key, the &lt;code&gt;SourceKeyId&lt;/code&gt; parameter is optional. KMS can get this information from metadata that it adds to the symmetric ciphertext blob. This feature adds durability to your implementation by ensuring that authorized users can decrypt ciphertext decades after it was encrypted, even if they&#39;ve lost track of the key ID. However, specifying the source KMS key is always recommended as a best practice. When you use the &lt;code&gt;SourceKeyId&lt;/code&gt; parameter to specify a KMS key, KMS uses only the KMS key you specify. If the ciphertext was encrypted under a different KMS key, the &lt;code&gt;ReEncrypt&lt;/code&gt; operation fails. This practice ensures that you use the KMS key that you intend.&lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt;To reencrypt the data, you must use the &lt;code&gt;DestinationKeyId&lt;/code&gt; parameter to specify the KMS key that re-encrypts the data after it is decrypted. If the destination KMS key is an asymmetric KMS key, you must also provide the encryption algorithm. The algorithm that you choose must be compatible with the KMS key.&lt;/p&gt; &lt;important&gt; &lt;p&gt;When you use an asymmetric KMS key to encrypt or reencrypt data, be sure to record the KMS key and encryption algorithm that you choose. You will be required to provide the same KMS key and encryption algorithm when you decrypt the data. If the KMS key and algorithm do not match the values used to encrypt the data, the decrypt operation fails.&lt;/p&gt; &lt;p&gt;You are not required to supply the key ID and encryption algorithm when you decrypt with symmetric encryption KMS keys because KMS stores this information in the ciphertext blob. KMS cannot store metadata in ciphertext generated with asymmetric keys. The standard format for asymmetric key ciphertext does not include configurable fields.&lt;/p&gt; &lt;/important&gt; &lt;/li&gt; &lt;/ul&gt; &lt;p&gt;The KMS key that you use for this operation must be in a compatible key state. For details, see &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/key-state.html\&quot;&gt;Key states of KMS keys&lt;/a&gt; in the &lt;i&gt;Key Management Service Developer Guide&lt;/i&gt;.&lt;/p&gt; &lt;p&gt; &lt;b&gt;Cross-account use&lt;/b&gt;: Yes. The source KMS key and destination KMS key can be in different Amazon Web Services accounts. Either or both KMS keys can be in a different account than the caller. To specify a KMS key in a different account, you must use its key ARN or alias ARN.&lt;/p&gt; &lt;p&gt; &lt;b&gt;Required permissions&lt;/b&gt;:&lt;/p&gt; &lt;ul&gt; &lt;li&gt; &lt;p&gt; &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/kms-api-permissions-reference.html\&quot;&gt;kms:ReEncryptFrom&lt;/a&gt; permission on the source KMS key (key policy)&lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/kms-api-permissions-reference.html\&quot;&gt;kms:ReEncryptTo&lt;/a&gt; permission on the destination KMS key (key policy)&lt;/p&gt; &lt;/li&gt; &lt;/ul&gt; &lt;p&gt;To permit reencryption from or to a KMS key, include the &lt;code&gt;\&quot;kms:ReEncrypt*\&quot;&lt;/code&gt; permission in your &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/key-policies.html\&quot;&gt;key policy&lt;/a&gt;. This permission is automatically included in the key policy when you use the console to create a KMS key. But you must include it manually when you create a KMS key programmatically or when you use the &lt;a&gt;PutKeyPolicy&lt;/a&gt; operation to set a key policy.&lt;/p&gt; &lt;p&gt; &lt;b&gt;Related operations:&lt;/b&gt; &lt;/p&gt; &lt;ul&gt; &lt;li&gt; &lt;p&gt; &lt;a&gt;Decrypt&lt;/a&gt; &lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;a&gt;Encrypt&lt;/a&gt; &lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;a&gt;GenerateDataKey&lt;/a&gt; &lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;a&gt;GenerateDataKeyPair&lt;/a&gt; &lt;/p&gt; &lt;/li&gt; &lt;/ul&gt;
+
+    :param x_amz_target: 
+    :type x_amz_target: str
+    :param body: 
+    :type body: dict | bytes
+    :param x_amz_content_sha256: 
+    :type x_amz_content_sha256: str
+    :param x_amz_date: 
+    :type x_amz_date: str
+    :param x_amz_algorithm: 
+    :type x_amz_algorithm: str
+    :param x_amz_credential: 
+    :type x_amz_credential: str
+    :param x_amz_security_token: 
+    :type x_amz_security_token: str
+    :param x_amz_signature: 
+    :type x_amz_signature: str
+    :param x_amz_signed_headers: 
+    :type x_amz_signed_headers: str
+
+    """
+    body = ReEncryptRequest.from_dict(body)
+    return web.Response(status=200)
+
+
+async def replicate_key(request: web.Request, x_amz_target, body, x_amz_content_sha256=None, x_amz_date=None, x_amz_algorithm=None, x_amz_credential=None, x_amz_security_token=None, x_amz_signature=None, x_amz_signed_headers=None) -> web.Response:
+    """replicate_key
+
+    &lt;p&gt;Replicates a multi-Region key into the specified Region. This operation creates a multi-Region replica key based on a multi-Region primary key in a different Region of the same Amazon Web Services partition. You can create multiple replicas of a primary key, but each must be in a different Region. To create a multi-Region primary key, use the &lt;a&gt;CreateKey&lt;/a&gt; operation.&lt;/p&gt; &lt;p&gt;This operation supports &lt;i&gt;multi-Region keys&lt;/i&gt;, an KMS feature that lets you create multiple interoperable KMS keys in different Amazon Web Services Regions. Because these KMS keys have the same key ID, key material, and other metadata, you can use them interchangeably to encrypt data in one Amazon Web Services Region and decrypt it in a different Amazon Web Services Region without re-encrypting the data or making a cross-Region call. For more information about multi-Region keys, see &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/multi-region-keys-overview.html\&quot;&gt;Multi-Region keys in KMS&lt;/a&gt; in the &lt;i&gt;Key Management Service Developer Guide&lt;/i&gt;.&lt;/p&gt; &lt;p&gt;A &lt;i&gt;replica key&lt;/i&gt; is a fully-functional KMS key that can be used independently of its primary and peer replica keys. A primary key and its replica keys share properties that make them interoperable. They have the same &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#key-id-key-id\&quot;&gt;key ID&lt;/a&gt; and key material. They also have the same &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#key-spec\&quot;&gt;key spec&lt;/a&gt;, &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#key-usage\&quot;&gt;key usage&lt;/a&gt;, &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#key-origin\&quot;&gt;key material origin&lt;/a&gt;, and &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/rotate-keys.html\&quot;&gt;automatic key rotation status&lt;/a&gt;. KMS automatically synchronizes these shared properties among related multi-Region keys. All other properties of a replica key can differ, including its &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/key-policies.html\&quot;&gt;key policy&lt;/a&gt;, &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/tagging-keys.html\&quot;&gt;tags&lt;/a&gt;, &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/kms-alias.html\&quot;&gt;aliases&lt;/a&gt;, and &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/key-state.html\&quot;&gt;Key states of KMS keys&lt;/a&gt;. KMS pricing and quotas for KMS keys apply to each primary key and replica key.&lt;/p&gt; &lt;p&gt;When this operation completes, the new replica key has a transient key state of &lt;code&gt;Creating&lt;/code&gt;. This key state changes to &lt;code&gt;Enabled&lt;/code&gt; (or &lt;code&gt;PendingImport&lt;/code&gt;) after a few seconds when the process of creating the new replica key is complete. While the key state is &lt;code&gt;Creating&lt;/code&gt;, you can manage key, but you cannot yet use it in cryptographic operations. If you are creating and using the replica key programmatically, retry on &lt;code&gt;KMSInvalidStateException&lt;/code&gt; or call &lt;code&gt;DescribeKey&lt;/code&gt; to check its &lt;code&gt;KeyState&lt;/code&gt; value before using it. For details about the &lt;code&gt;Creating&lt;/code&gt; key state, see &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/key-state.html\&quot;&gt;Key states of KMS keys&lt;/a&gt; in the &lt;i&gt;Key Management Service Developer Guide&lt;/i&gt;.&lt;/p&gt; &lt;p&gt;You cannot create more than one replica of a primary key in any Region. If the Region already includes a replica of the key you&#39;re trying to replicate, &lt;code&gt;ReplicateKey&lt;/code&gt; returns an &lt;code&gt;AlreadyExistsException&lt;/code&gt; error. If the key state of the existing replica is &lt;code&gt;PendingDeletion&lt;/code&gt;, you can cancel the scheduled key deletion (&lt;a&gt;CancelKeyDeletion&lt;/a&gt;) or wait for the key to be deleted. The new replica key you create will have the same &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/multi-region-keys-overview.html#mrk-sync-properties\&quot;&gt;shared properties&lt;/a&gt; as the original replica key.&lt;/p&gt; &lt;p&gt;The CloudTrail log of a &lt;code&gt;ReplicateKey&lt;/code&gt; operation records a &lt;code&gt;ReplicateKey&lt;/code&gt; operation in the primary key&#39;s Region and a &lt;a&gt;CreateKey&lt;/a&gt; operation in the replica key&#39;s Region.&lt;/p&gt; &lt;p&gt;If you replicate a multi-Region primary key with imported key material, the replica key is created with no key material. You must import the same key material that you imported into the primary key. For details, see &lt;a href&#x3D;\&quot;kms/latest/developerguide/multi-region-keys-import.html\&quot;&gt;Importing key material into multi-Region keys&lt;/a&gt; in the &lt;i&gt;Key Management Service Developer Guide&lt;/i&gt;.&lt;/p&gt; &lt;p&gt;To convert a replica key to a primary key, use the &lt;a&gt;UpdatePrimaryRegion&lt;/a&gt; operation.&lt;/p&gt; &lt;note&gt; &lt;p&gt; &lt;code&gt;ReplicateKey&lt;/code&gt; uses different default values for the &lt;code&gt;KeyPolicy&lt;/code&gt; and &lt;code&gt;Tags&lt;/code&gt; parameters than those used in the KMS console. For details, see the parameter descriptions.&lt;/p&gt; &lt;/note&gt; &lt;p&gt; &lt;b&gt;Cross-account use&lt;/b&gt;: No. You cannot use this operation to create a replica key in a different Amazon Web Services account. &lt;/p&gt; &lt;p&gt; &lt;b&gt;Required permissions&lt;/b&gt;: &lt;/p&gt; &lt;ul&gt; &lt;li&gt; &lt;p&gt; &lt;code&gt;kms:ReplicateKey&lt;/code&gt; on the primary key (in the primary key&#39;s Region). Include this permission in the primary key&#39;s key policy.&lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;code&gt;kms:CreateKey&lt;/code&gt; in an IAM policy in the replica Region.&lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt;To use the &lt;code&gt;Tags&lt;/code&gt; parameter, &lt;code&gt;kms:TagResource&lt;/code&gt; in an IAM policy in the replica Region.&lt;/p&gt; &lt;/li&gt; &lt;/ul&gt; &lt;p&gt; &lt;b&gt;Related operations&lt;/b&gt; &lt;/p&gt; &lt;ul&gt; &lt;li&gt; &lt;p&gt; &lt;a&gt;CreateKey&lt;/a&gt; &lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;a&gt;UpdatePrimaryRegion&lt;/a&gt; &lt;/p&gt; &lt;/li&gt; &lt;/ul&gt;
+
+    :param x_amz_target: 
+    :type x_amz_target: str
+    :param body: 
+    :type body: dict | bytes
+    :param x_amz_content_sha256: 
+    :type x_amz_content_sha256: str
+    :param x_amz_date: 
+    :type x_amz_date: str
+    :param x_amz_algorithm: 
+    :type x_amz_algorithm: str
+    :param x_amz_credential: 
+    :type x_amz_credential: str
+    :param x_amz_security_token: 
+    :type x_amz_security_token: str
+    :param x_amz_signature: 
+    :type x_amz_signature: str
+    :param x_amz_signed_headers: 
+    :type x_amz_signed_headers: str
+
+    """
+    body = ReplicateKeyRequest.from_dict(body)
+    return web.Response(status=200)
+
+
+async def retire_grant(request: web.Request, x_amz_target, body, x_amz_content_sha256=None, x_amz_date=None, x_amz_algorithm=None, x_amz_credential=None, x_amz_security_token=None, x_amz_signature=None, x_amz_signed_headers=None) -> web.Response:
+    """retire_grant
+
+    &lt;p&gt;Deletes a grant. Typically, you retire a grant when you no longer need its permissions. To identify the grant to retire, use a &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/grants.html#grant_token\&quot;&gt;grant token&lt;/a&gt;, or both the grant ID and a key identifier (key ID or key ARN) of the KMS key. The &lt;a&gt;CreateGrant&lt;/a&gt; operation returns both values.&lt;/p&gt; &lt;p&gt;This operation can be called by the &lt;i&gt;retiring principal&lt;/i&gt; for a grant, by the &lt;i&gt;grantee principal&lt;/i&gt; if the grant allows the &lt;code&gt;RetireGrant&lt;/code&gt; operation, and by the Amazon Web Services account in which the grant is created. It can also be called by principals to whom permission for retiring a grant is delegated. For details, see &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/grant-manage.html#grant-delete\&quot;&gt;Retiring and revoking grants&lt;/a&gt; in the &lt;i&gt;Key Management Service Developer Guide&lt;/i&gt;.&lt;/p&gt; &lt;p&gt;For detailed information about grants, including grant terminology, see &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/grants.html\&quot;&gt;Grants in KMS&lt;/a&gt; in the &lt;i&gt; &lt;i&gt;Key Management Service Developer Guide&lt;/i&gt; &lt;/i&gt;. For examples of working with grants in several programming languages, see &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/programming-grants.html\&quot;&gt;Programming grants&lt;/a&gt;. &lt;/p&gt; &lt;p&gt; &lt;b&gt;Cross-account use&lt;/b&gt;: Yes. You can retire a grant on a KMS key in a different Amazon Web Services account.&lt;/p&gt; &lt;p&gt; &lt;b&gt;Required permissions:&lt;/b&gt;:Permission to retire a grant is determined primarily by the grant. For details, see &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/grant-manage.html#grant-delete\&quot;&gt;Retiring and revoking grants&lt;/a&gt; in the &lt;i&gt;Key Management Service Developer Guide&lt;/i&gt;.&lt;/p&gt; &lt;p&gt; &lt;b&gt;Related operations:&lt;/b&gt; &lt;/p&gt; &lt;ul&gt; &lt;li&gt; &lt;p&gt; &lt;a&gt;CreateGrant&lt;/a&gt; &lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;a&gt;ListGrants&lt;/a&gt; &lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;a&gt;ListRetirableGrants&lt;/a&gt; &lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;a&gt;RevokeGrant&lt;/a&gt; &lt;/p&gt; &lt;/li&gt; &lt;/ul&gt;
+
+    :param x_amz_target: 
+    :type x_amz_target: str
+    :param body: 
+    :type body: dict | bytes
+    :param x_amz_content_sha256: 
+    :type x_amz_content_sha256: str
+    :param x_amz_date: 
+    :type x_amz_date: str
+    :param x_amz_algorithm: 
+    :type x_amz_algorithm: str
+    :param x_amz_credential: 
+    :type x_amz_credential: str
+    :param x_amz_security_token: 
+    :type x_amz_security_token: str
+    :param x_amz_signature: 
+    :type x_amz_signature: str
+    :param x_amz_signed_headers: 
+    :type x_amz_signed_headers: str
+
+    """
+    body = RetireGrantRequest.from_dict(body)
+    return web.Response(status=200)
+
+
+async def revoke_grant(request: web.Request, x_amz_target, body, x_amz_content_sha256=None, x_amz_date=None, x_amz_algorithm=None, x_amz_credential=None, x_amz_security_token=None, x_amz_signature=None, x_amz_signed_headers=None) -> web.Response:
+    """revoke_grant
+
+    &lt;p&gt;Deletes the specified grant. You revoke a grant to terminate the permissions that the grant allows. For more information, see &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/managing-grants.html#grant-delete\&quot;&gt;Retiring and revoking grants&lt;/a&gt; in the &lt;i&gt; &lt;i&gt;Key Management Service Developer Guide&lt;/i&gt; &lt;/i&gt;.&lt;/p&gt; &lt;p&gt;When you create, retire, or revoke a grant, there might be a brief delay, usually less than five minutes, until the grant is available throughout KMS. This state is known as &lt;i&gt;eventual consistency&lt;/i&gt;. For details, see &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/grants.html#terms-eventual-consistency\&quot;&gt;Eventual consistency&lt;/a&gt; in the &lt;i&gt; &lt;i&gt;Key Management Service Developer Guide&lt;/i&gt; &lt;/i&gt;. &lt;/p&gt; &lt;p&gt;For detailed information about grants, including grant terminology, see &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/grants.html\&quot;&gt;Grants in KMS&lt;/a&gt; in the &lt;i&gt; &lt;i&gt;Key Management Service Developer Guide&lt;/i&gt; &lt;/i&gt;. For examples of working with grants in several programming languages, see &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/programming-grants.html\&quot;&gt;Programming grants&lt;/a&gt;. &lt;/p&gt; &lt;p&gt; &lt;b&gt;Cross-account use&lt;/b&gt;: Yes. To perform this operation on a KMS key in a different Amazon Web Services account, specify the key ARN in the value of the &lt;code&gt;KeyId&lt;/code&gt; parameter.&lt;/p&gt; &lt;p&gt; &lt;b&gt;Required permissions&lt;/b&gt;: &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/kms-api-permissions-reference.html\&quot;&gt;kms:RevokeGrant&lt;/a&gt; (key policy).&lt;/p&gt; &lt;p&gt; &lt;b&gt;Related operations:&lt;/b&gt; &lt;/p&gt; &lt;ul&gt; &lt;li&gt; &lt;p&gt; &lt;a&gt;CreateGrant&lt;/a&gt; &lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;a&gt;ListGrants&lt;/a&gt; &lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;a&gt;ListRetirableGrants&lt;/a&gt; &lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;a&gt;RetireGrant&lt;/a&gt; &lt;/p&gt; &lt;/li&gt; &lt;/ul&gt;
+
+    :param x_amz_target: 
+    :type x_amz_target: str
+    :param body: 
+    :type body: dict | bytes
+    :param x_amz_content_sha256: 
+    :type x_amz_content_sha256: str
+    :param x_amz_date: 
+    :type x_amz_date: str
+    :param x_amz_algorithm: 
+    :type x_amz_algorithm: str
+    :param x_amz_credential: 
+    :type x_amz_credential: str
+    :param x_amz_security_token: 
+    :type x_amz_security_token: str
+    :param x_amz_signature: 
+    :type x_amz_signature: str
+    :param x_amz_signed_headers: 
+    :type x_amz_signed_headers: str
+
+    """
+    body = RevokeGrantRequest.from_dict(body)
+    return web.Response(status=200)
+
+
+async def schedule_key_deletion(request: web.Request, x_amz_target, body, x_amz_content_sha256=None, x_amz_date=None, x_amz_algorithm=None, x_amz_credential=None, x_amz_security_token=None, x_amz_signature=None, x_amz_signed_headers=None) -> web.Response:
+    """schedule_key_deletion
+
+    &lt;p&gt;Schedules the deletion of a KMS key. By default, KMS applies a waiting period of 30 days, but you can specify a waiting period of 7-30 days. When this operation is successful, the key state of the KMS key changes to &lt;code&gt;PendingDeletion&lt;/code&gt; and the key can&#39;t be used in any cryptographic operations. It remains in this state for the duration of the waiting period. Before the waiting period ends, you can use &lt;a&gt;CancelKeyDeletion&lt;/a&gt; to cancel the deletion of the KMS key. After the waiting period ends, KMS deletes the KMS key, its key material, and all KMS data associated with it, including all aliases that refer to it.&lt;/p&gt; &lt;important&gt; &lt;p&gt;Deleting a KMS key is a destructive and potentially dangerous operation. When a KMS key is deleted, all data that was encrypted under the KMS key is unrecoverable. (The only exception is a &lt;a href&#x3D;\&quot;kms/latest/developerguide/multi-region-keys-delete.html\&quot;&gt;multi-Region replica key&lt;/a&gt;, or an &lt;a href&#x3D;\&quot;kms/latest/developerguide/importing-keys-managing.html#import-delete-key\&quot;&gt;asymmetric or HMAC KMS key with imported key material&lt;/a&gt;.) To prevent the use of a KMS key without deleting it, use &lt;a&gt;DisableKey&lt;/a&gt;. &lt;/p&gt; &lt;/important&gt; &lt;p&gt;You can schedule the deletion of a multi-Region primary key and its replica keys at any time. However, KMS will not delete a multi-Region primary key with existing replica keys. If you schedule the deletion of a primary key with replicas, its key state changes to &lt;code&gt;PendingReplicaDeletion&lt;/code&gt; and it cannot be replicated or used in cryptographic operations. This status can continue indefinitely. When the last of its replicas keys is deleted (not just scheduled), the key state of the primary key changes to &lt;code&gt;PendingDeletion&lt;/code&gt; and its waiting period (&lt;code&gt;PendingWindowInDays&lt;/code&gt;) begins. For details, see &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/multi-region-keys-delete.html\&quot;&gt;Deleting multi-Region keys&lt;/a&gt; in the &lt;i&gt;Key Management Service Developer Guide&lt;/i&gt;.&lt;/p&gt; &lt;p&gt;When KMS &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/delete-cmk-keystore.html\&quot;&gt;deletes a KMS key from an CloudHSM key store&lt;/a&gt;, it makes a best effort to delete the associated key material from the associated CloudHSM cluster. However, you might need to manually &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/fix-keystore.html#fix-keystore-orphaned-key\&quot;&gt;delete the orphaned key material&lt;/a&gt; from the cluster and its backups. &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/delete-xks-key.html\&quot;&gt;Deleting a KMS key from an external key store&lt;/a&gt; has no effect on the associated external key. However, for both types of custom key stores, deleting a KMS key is destructive and irreversible. You cannot decrypt ciphertext encrypted under the KMS key by using only its associated external key or CloudHSM key. Also, you cannot recreate a KMS key in an external key store by creating a new KMS key with the same key material.&lt;/p&gt; &lt;p&gt;For more information about scheduling a KMS key for deletion, see &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/deleting-keys.html\&quot;&gt;Deleting KMS keys&lt;/a&gt; in the &lt;i&gt;Key Management Service Developer Guide&lt;/i&gt;.&lt;/p&gt; &lt;p&gt;The KMS key that you use for this operation must be in a compatible key state. For details, see &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/key-state.html\&quot;&gt;Key states of KMS keys&lt;/a&gt; in the &lt;i&gt;Key Management Service Developer Guide&lt;/i&gt;.&lt;/p&gt; &lt;p&gt; &lt;b&gt;Cross-account use&lt;/b&gt;: No. You cannot perform this operation on a KMS key in a different Amazon Web Services account.&lt;/p&gt; &lt;p&gt; &lt;b&gt;Required permissions&lt;/b&gt;: kms:ScheduleKeyDeletion (key policy)&lt;/p&gt; &lt;p&gt; &lt;b&gt;Related operations&lt;/b&gt; &lt;/p&gt; &lt;ul&gt; &lt;li&gt; &lt;p&gt; &lt;a&gt;CancelKeyDeletion&lt;/a&gt; &lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;a&gt;DisableKey&lt;/a&gt; &lt;/p&gt; &lt;/li&gt; &lt;/ul&gt;
+
+    :param x_amz_target: 
+    :type x_amz_target: str
+    :param body: 
+    :type body: dict | bytes
+    :param x_amz_content_sha256: 
+    :type x_amz_content_sha256: str
+    :param x_amz_date: 
+    :type x_amz_date: str
+    :param x_amz_algorithm: 
+    :type x_amz_algorithm: str
+    :param x_amz_credential: 
+    :type x_amz_credential: str
+    :param x_amz_security_token: 
+    :type x_amz_security_token: str
+    :param x_amz_signature: 
+    :type x_amz_signature: str
+    :param x_amz_signed_headers: 
+    :type x_amz_signed_headers: str
+
+    """
+    body = ScheduleKeyDeletionRequest.from_dict(body)
+    return web.Response(status=200)
+
+
+async def sign(request: web.Request, x_amz_target, body, x_amz_content_sha256=None, x_amz_date=None, x_amz_algorithm=None, x_amz_credential=None, x_amz_security_token=None, x_amz_signature=None, x_amz_signed_headers=None) -> web.Response:
+    """sign
+
+    &lt;p&gt;Creates a &lt;a href&#x3D;\&quot;https://en.wikipedia.org/wiki/Digital_signature\&quot;&gt;digital signature&lt;/a&gt; for a message or message digest by using the private key in an asymmetric signing KMS key. To verify the signature, use the &lt;a&gt;Verify&lt;/a&gt; operation, or use the public key in the same asymmetric KMS key outside of KMS. For information about asymmetric KMS keys, see &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/symmetric-asymmetric.html\&quot;&gt;Asymmetric KMS keys&lt;/a&gt; in the &lt;i&gt;Key Management Service Developer Guide&lt;/i&gt;.&lt;/p&gt; &lt;p&gt;Digital signatures are generated and verified by using asymmetric key pair, such as an RSA or ECC pair that is represented by an asymmetric KMS key. The key owner (or an authorized user) uses their private key to sign a message. Anyone with the public key can verify that the message was signed with that particular private key and that the message hasn&#39;t changed since it was signed. &lt;/p&gt; &lt;p&gt;To use the &lt;code&gt;Sign&lt;/code&gt; operation, provide the following information:&lt;/p&gt; &lt;ul&gt; &lt;li&gt; &lt;p&gt;Use the &lt;code&gt;KeyId&lt;/code&gt; parameter to identify an asymmetric KMS key with a &lt;code&gt;KeyUsage&lt;/code&gt; value of &lt;code&gt;SIGN_VERIFY&lt;/code&gt;. To get the &lt;code&gt;KeyUsage&lt;/code&gt; value of a KMS key, use the &lt;a&gt;DescribeKey&lt;/a&gt; operation. The caller must have &lt;code&gt;kms:Sign&lt;/code&gt; permission on the KMS key.&lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt;Use the &lt;code&gt;Message&lt;/code&gt; parameter to specify the message or message digest to sign. You can submit messages of up to 4096 bytes. To sign a larger message, generate a hash digest of the message, and then provide the hash digest in the &lt;code&gt;Message&lt;/code&gt; parameter. To indicate whether the message is a full message or a digest, use the &lt;code&gt;MessageType&lt;/code&gt; parameter.&lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt;Choose a signing algorithm that is compatible with the KMS key. &lt;/p&gt; &lt;/li&gt; &lt;/ul&gt; &lt;important&gt; &lt;p&gt;When signing a message, be sure to record the KMS key and the signing algorithm. This information is required to verify the signature.&lt;/p&gt; &lt;/important&gt; &lt;note&gt; &lt;p&gt;Best practices recommend that you limit the time during which any signature is effective. This deters an attack where the actor uses a signed message to establish validity repeatedly or long after the message is superseded. Signatures do not include a timestamp, but you can include a timestamp in the signed message to help you detect when its time to refresh the signature. &lt;/p&gt; &lt;/note&gt; &lt;p&gt;To verify the signature that this operation generates, use the &lt;a&gt;Verify&lt;/a&gt; operation. Or use the &lt;a&gt;GetPublicKey&lt;/a&gt; operation to download the public key and then use the public key to verify the signature outside of KMS. &lt;/p&gt; &lt;p&gt;The KMS key that you use for this operation must be in a compatible key state. For details, see &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/key-state.html\&quot;&gt;Key states of KMS keys&lt;/a&gt; in the &lt;i&gt;Key Management Service Developer Guide&lt;/i&gt;.&lt;/p&gt; &lt;p&gt; &lt;b&gt;Cross-account use&lt;/b&gt;: Yes. To perform this operation with a KMS key in a different Amazon Web Services account, specify the key ARN or alias ARN in the value of the &lt;code&gt;KeyId&lt;/code&gt; parameter.&lt;/p&gt; &lt;p&gt; &lt;b&gt;Required permissions&lt;/b&gt;: &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/kms-api-permissions-reference.html\&quot;&gt;kms:Sign&lt;/a&gt; (key policy)&lt;/p&gt; &lt;p&gt; &lt;b&gt;Related operations&lt;/b&gt;: &lt;a&gt;Verify&lt;/a&gt; &lt;/p&gt;
+
+    :param x_amz_target: 
+    :type x_amz_target: str
+    :param body: 
+    :type body: dict | bytes
+    :param x_amz_content_sha256: 
+    :type x_amz_content_sha256: str
+    :param x_amz_date: 
+    :type x_amz_date: str
+    :param x_amz_algorithm: 
+    :type x_amz_algorithm: str
+    :param x_amz_credential: 
+    :type x_amz_credential: str
+    :param x_amz_security_token: 
+    :type x_amz_security_token: str
+    :param x_amz_signature: 
+    :type x_amz_signature: str
+    :param x_amz_signed_headers: 
+    :type x_amz_signed_headers: str
+
+    """
+    body = SignRequest.from_dict(body)
+    return web.Response(status=200)
+
+
+async def tag_resource(request: web.Request, x_amz_target, body, x_amz_content_sha256=None, x_amz_date=None, x_amz_algorithm=None, x_amz_credential=None, x_amz_security_token=None, x_amz_signature=None, x_amz_signed_headers=None) -> web.Response:
+    """tag_resource
+
+    &lt;p&gt;Adds or edits tags on a &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#customer-cmk\&quot;&gt;customer managed key&lt;/a&gt;.&lt;/p&gt; &lt;note&gt; &lt;p&gt;Tagging or untagging a KMS key can allow or deny permission to the KMS key. For details, see &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/abac.html\&quot;&gt;ABAC for KMS&lt;/a&gt; in the &lt;i&gt;Key Management Service Developer Guide&lt;/i&gt;.&lt;/p&gt; &lt;/note&gt; &lt;p&gt;Each tag consists of a tag key and a tag value, both of which are case-sensitive strings. The tag value can be an empty (null) string. To add a tag, specify a new tag key and a tag value. To edit a tag, specify an existing tag key and a new tag value.&lt;/p&gt; &lt;p&gt;You can use this operation to tag a &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#customer-cmk\&quot;&gt;customer managed key&lt;/a&gt;, but you cannot tag an &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#aws-managed-cmk\&quot;&gt;Amazon Web Services managed key&lt;/a&gt;, an &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#aws-owned-cmk\&quot;&gt;Amazon Web Services owned key&lt;/a&gt;, a &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#keystore-concept\&quot;&gt;custom key store&lt;/a&gt;, or an &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#alias-concept\&quot;&gt;alias&lt;/a&gt;.&lt;/p&gt; &lt;p&gt;You can also add tags to a KMS key while creating it (&lt;a&gt;CreateKey&lt;/a&gt;) or replicating it (&lt;a&gt;ReplicateKey&lt;/a&gt;).&lt;/p&gt; &lt;p&gt;For information about using tags in KMS, see &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/tagging-keys.html\&quot;&gt;Tagging keys&lt;/a&gt;. For general information about tags, including the format and syntax, see &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/general/latest/gr/aws_tagging.html\&quot;&gt;Tagging Amazon Web Services resources&lt;/a&gt; in the &lt;i&gt;Amazon Web Services General Reference&lt;/i&gt;. &lt;/p&gt; &lt;p&gt;The KMS key that you use for this operation must be in a compatible key state. For details, see &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/key-state.html\&quot;&gt;Key states of KMS keys&lt;/a&gt; in the &lt;i&gt;Key Management Service Developer Guide&lt;/i&gt;.&lt;/p&gt; &lt;p&gt; &lt;b&gt;Cross-account use&lt;/b&gt;: No. You cannot perform this operation on a KMS key in a different Amazon Web Services account. &lt;/p&gt; &lt;p&gt; &lt;b&gt;Required permissions&lt;/b&gt;: &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/kms-api-permissions-reference.html\&quot;&gt;kms:TagResource&lt;/a&gt; (key policy)&lt;/p&gt; &lt;p&gt; &lt;b&gt;Related operations&lt;/b&gt; &lt;/p&gt; &lt;ul&gt; &lt;li&gt; &lt;p&gt; &lt;a&gt;CreateKey&lt;/a&gt; &lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;a&gt;ListResourceTags&lt;/a&gt; &lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;a&gt;ReplicateKey&lt;/a&gt; &lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;a&gt;UntagResource&lt;/a&gt; &lt;/p&gt; &lt;/li&gt; &lt;/ul&gt;
+
+    :param x_amz_target: 
+    :type x_amz_target: str
+    :param body: 
+    :type body: dict | bytes
+    :param x_amz_content_sha256: 
+    :type x_amz_content_sha256: str
+    :param x_amz_date: 
+    :type x_amz_date: str
+    :param x_amz_algorithm: 
+    :type x_amz_algorithm: str
+    :param x_amz_credential: 
+    :type x_amz_credential: str
+    :param x_amz_security_token: 
+    :type x_amz_security_token: str
+    :param x_amz_signature: 
+    :type x_amz_signature: str
+    :param x_amz_signed_headers: 
+    :type x_amz_signed_headers: str
+
+    """
+    body = TagResourceRequest.from_dict(body)
+    return web.Response(status=200)
+
+
+async def untag_resource(request: web.Request, x_amz_target, body, x_amz_content_sha256=None, x_amz_date=None, x_amz_algorithm=None, x_amz_credential=None, x_amz_security_token=None, x_amz_signature=None, x_amz_signed_headers=None) -> web.Response:
+    """untag_resource
+
+    &lt;p&gt;Deletes tags from a &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#customer-cmk\&quot;&gt;customer managed key&lt;/a&gt;. To delete a tag, specify the tag key and the KMS key.&lt;/p&gt; &lt;note&gt; &lt;p&gt;Tagging or untagging a KMS key can allow or deny permission to the KMS key. For details, see &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/abac.html\&quot;&gt;ABAC for KMS&lt;/a&gt; in the &lt;i&gt;Key Management Service Developer Guide&lt;/i&gt;.&lt;/p&gt; &lt;/note&gt; &lt;p&gt;When it succeeds, the &lt;code&gt;UntagResource&lt;/code&gt; operation doesn&#39;t return any output. Also, if the specified tag key isn&#39;t found on the KMS key, it doesn&#39;t throw an exception or return a response. To confirm that the operation worked, use the &lt;a&gt;ListResourceTags&lt;/a&gt; operation.&lt;/p&gt; &lt;p&gt;For information about using tags in KMS, see &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/tagging-keys.html\&quot;&gt;Tagging keys&lt;/a&gt;. For general information about tags, including the format and syntax, see &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/general/latest/gr/aws_tagging.html\&quot;&gt;Tagging Amazon Web Services resources&lt;/a&gt; in the &lt;i&gt;Amazon Web Services General Reference&lt;/i&gt;. &lt;/p&gt; &lt;p&gt;The KMS key that you use for this operation must be in a compatible key state. For details, see &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/key-state.html\&quot;&gt;Key states of KMS keys&lt;/a&gt; in the &lt;i&gt;Key Management Service Developer Guide&lt;/i&gt;.&lt;/p&gt; &lt;p&gt; &lt;b&gt;Cross-account use&lt;/b&gt;: No. You cannot perform this operation on a KMS key in a different Amazon Web Services account.&lt;/p&gt; &lt;p&gt; &lt;b&gt;Required permissions&lt;/b&gt;: &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/kms-api-permissions-reference.html\&quot;&gt;kms:UntagResource&lt;/a&gt; (key policy)&lt;/p&gt; &lt;p&gt; &lt;b&gt;Related operations&lt;/b&gt; &lt;/p&gt; &lt;ul&gt; &lt;li&gt; &lt;p&gt; &lt;a&gt;CreateKey&lt;/a&gt; &lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;a&gt;ListResourceTags&lt;/a&gt; &lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;a&gt;ReplicateKey&lt;/a&gt; &lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;a&gt;TagResource&lt;/a&gt; &lt;/p&gt; &lt;/li&gt; &lt;/ul&gt;
+
+    :param x_amz_target: 
+    :type x_amz_target: str
+    :param body: 
+    :type body: dict | bytes
+    :param x_amz_content_sha256: 
+    :type x_amz_content_sha256: str
+    :param x_amz_date: 
+    :type x_amz_date: str
+    :param x_amz_algorithm: 
+    :type x_amz_algorithm: str
+    :param x_amz_credential: 
+    :type x_amz_credential: str
+    :param x_amz_security_token: 
+    :type x_amz_security_token: str
+    :param x_amz_signature: 
+    :type x_amz_signature: str
+    :param x_amz_signed_headers: 
+    :type x_amz_signed_headers: str
+
+    """
+    body = UntagResourceRequest.from_dict(body)
+    return web.Response(status=200)
+
+
+async def update_alias(request: web.Request, x_amz_target, body, x_amz_content_sha256=None, x_amz_date=None, x_amz_algorithm=None, x_amz_credential=None, x_amz_security_token=None, x_amz_signature=None, x_amz_signed_headers=None) -> web.Response:
+    """update_alias
+
+    &lt;p&gt;Associates an existing KMS alias with a different KMS key. Each alias is associated with only one KMS key at a time, although a KMS key can have multiple aliases. The alias and the KMS key must be in the same Amazon Web Services account and Region.&lt;/p&gt; &lt;note&gt; &lt;p&gt;Adding, deleting, or updating an alias can allow or deny permission to the KMS key. For details, see &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/abac.html\&quot;&gt;ABAC for KMS&lt;/a&gt; in the &lt;i&gt;Key Management Service Developer Guide&lt;/i&gt;.&lt;/p&gt; &lt;/note&gt; &lt;p&gt;The current and new KMS key must be the same type (both symmetric or both asymmetric or both HMAC), and they must have the same key usage. This restriction prevents errors in code that uses aliases. If you must assign an alias to a different type of KMS key, use &lt;a&gt;DeleteAlias&lt;/a&gt; to delete the old alias and &lt;a&gt;CreateAlias&lt;/a&gt; to create a new alias.&lt;/p&gt; &lt;p&gt;You cannot use &lt;code&gt;UpdateAlias&lt;/code&gt; to change an alias name. To change an alias name, use &lt;a&gt;DeleteAlias&lt;/a&gt; to delete the old alias and &lt;a&gt;CreateAlias&lt;/a&gt; to create a new alias.&lt;/p&gt; &lt;p&gt;Because an alias is not a property of a KMS key, you can create, update, and delete the aliases of a KMS key without affecting the KMS key. Also, aliases do not appear in the response from the &lt;a&gt;DescribeKey&lt;/a&gt; operation. To get the aliases of all KMS keys in the account, use the &lt;a&gt;ListAliases&lt;/a&gt; operation. &lt;/p&gt; &lt;p&gt;The KMS key that you use for this operation must be in a compatible key state. For details, see &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/key-state.html\&quot;&gt;Key states of KMS keys&lt;/a&gt; in the &lt;i&gt;Key Management Service Developer Guide&lt;/i&gt;.&lt;/p&gt; &lt;p&gt; &lt;b&gt;Cross-account use&lt;/b&gt;: No. You cannot perform this operation on a KMS key in a different Amazon Web Services account. &lt;/p&gt; &lt;p&gt; &lt;b&gt;Required permissions&lt;/b&gt; &lt;/p&gt; &lt;ul&gt; &lt;li&gt; &lt;p&gt; &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/kms-api-permissions-reference.html\&quot;&gt;kms:UpdateAlias&lt;/a&gt; on the alias (IAM policy).&lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/kms-api-permissions-reference.html\&quot;&gt;kms:UpdateAlias&lt;/a&gt; on the current KMS key (key policy).&lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/kms-api-permissions-reference.html\&quot;&gt;kms:UpdateAlias&lt;/a&gt; on the new KMS key (key policy).&lt;/p&gt; &lt;/li&gt; &lt;/ul&gt; &lt;p&gt;For details, see &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/kms-alias.html#alias-access\&quot;&gt;Controlling access to aliases&lt;/a&gt; in the &lt;i&gt;Key Management Service Developer Guide&lt;/i&gt;.&lt;/p&gt; &lt;p&gt; &lt;b&gt;Related operations:&lt;/b&gt; &lt;/p&gt; &lt;ul&gt; &lt;li&gt; &lt;p&gt; &lt;a&gt;CreateAlias&lt;/a&gt; &lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;a&gt;DeleteAlias&lt;/a&gt; &lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;a&gt;ListAliases&lt;/a&gt; &lt;/p&gt; &lt;/li&gt; &lt;/ul&gt;
+
+    :param x_amz_target: 
+    :type x_amz_target: str
+    :param body: 
+    :type body: dict | bytes
+    :param x_amz_content_sha256: 
+    :type x_amz_content_sha256: str
+    :param x_amz_date: 
+    :type x_amz_date: str
+    :param x_amz_algorithm: 
+    :type x_amz_algorithm: str
+    :param x_amz_credential: 
+    :type x_amz_credential: str
+    :param x_amz_security_token: 
+    :type x_amz_security_token: str
+    :param x_amz_signature: 
+    :type x_amz_signature: str
+    :param x_amz_signed_headers: 
+    :type x_amz_signed_headers: str
+
+    """
+    body = UpdateAliasRequest.from_dict(body)
+    return web.Response(status=200)
+
+
+async def update_custom_key_store(request: web.Request, x_amz_target, body, x_amz_content_sha256=None, x_amz_date=None, x_amz_algorithm=None, x_amz_credential=None, x_amz_security_token=None, x_amz_signature=None, x_amz_signed_headers=None) -> web.Response:
+    """update_custom_key_store
+
+    &lt;p&gt;Changes the properties of a custom key store. You can use this operation to change the properties of an CloudHSM key store or an external key store.&lt;/p&gt; &lt;p&gt;Use the required &lt;code&gt;CustomKeyStoreId&lt;/code&gt; parameter to identify the custom key store. Use the remaining optional parameters to change its properties. This operation does not return any property values. To verify the updated property values, use the &lt;a&gt;DescribeCustomKeyStores&lt;/a&gt; operation.&lt;/p&gt; &lt;p&gt; This operation is part of the &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/custom-key-store-overview.html\&quot;&gt;custom key stores&lt;/a&gt; feature in KMS, which combines the convenience and extensive integration of KMS with the isolation and control of a key store that you own and manage.&lt;/p&gt; &lt;important&gt; &lt;p&gt;When updating the properties of an external key store, verify that the updated settings connect your key store, via the external key store proxy, to the same external key manager as the previous settings, or to a backup or snapshot of the external key manager with the same cryptographic keys. If the updated connection settings fail, you can fix them and retry, although an extended delay might disrupt Amazon Web Services services. However, if KMS permanently loses its access to cryptographic keys, ciphertext encrypted under those keys is unrecoverable.&lt;/p&gt; &lt;/important&gt; &lt;note&gt; &lt;p&gt;For external key stores:&lt;/p&gt; &lt;p&gt;Some external key managers provide a simpler method for updating an external key store. For details, see your external key manager documentation.&lt;/p&gt; &lt;p&gt;When updating an external key store in the KMS console, you can upload a JSON-based proxy configuration file with the desired values. You cannot upload the proxy configuration file to the &lt;code&gt;UpdateCustomKeyStore&lt;/code&gt; operation. However, you can use the file to help you determine the correct values for the &lt;code&gt;UpdateCustomKeyStore&lt;/code&gt; parameters.&lt;/p&gt; &lt;/note&gt; &lt;p&gt;For an CloudHSM key store, you can use this operation to change the custom key store friendly name (&lt;code&gt;NewCustomKeyStoreName&lt;/code&gt;), to tell KMS about a change to the &lt;code&gt;kmsuser&lt;/code&gt; crypto user password (&lt;code&gt;KeyStorePassword&lt;/code&gt;), or to associate the custom key store with a different, but related, CloudHSM cluster (&lt;code&gt;CloudHsmClusterId&lt;/code&gt;). To update any property of an CloudHSM key store, the &lt;code&gt;ConnectionState&lt;/code&gt; of the CloudHSM key store must be &lt;code&gt;DISCONNECTED&lt;/code&gt;. &lt;/p&gt; &lt;p&gt;For an external key store, you can use this operation to change the custom key store friendly name (&lt;code&gt;NewCustomKeyStoreName&lt;/code&gt;), or to tell KMS about a change to the external key store proxy authentication credentials (&lt;code&gt;XksProxyAuthenticationCredential&lt;/code&gt;), connection method (&lt;code&gt;XksProxyConnectivity&lt;/code&gt;), external proxy endpoint (&lt;code&gt;XksProxyUriEndpoint&lt;/code&gt;) and path (&lt;code&gt;XksProxyUriPath&lt;/code&gt;). For external key stores with an &lt;code&gt;XksProxyConnectivity&lt;/code&gt; of &lt;code&gt;VPC_ENDPOINT_SERVICE&lt;/code&gt;, you can also update the Amazon VPC endpoint service name (&lt;code&gt;XksProxyVpcEndpointServiceName&lt;/code&gt;). To update most properties of an external key store, the &lt;code&gt;ConnectionState&lt;/code&gt; of the external key store must be &lt;code&gt;DISCONNECTED&lt;/code&gt;. However, you can update the &lt;code&gt;CustomKeyStoreName&lt;/code&gt;, &lt;code&gt;XksProxyAuthenticationCredential&lt;/code&gt;, and &lt;code&gt;XksProxyUriPath&lt;/code&gt; of an external key store when it is in the CONNECTED or DISCONNECTED state. &lt;/p&gt; &lt;p&gt;If your update requires a &lt;code&gt;DISCONNECTED&lt;/code&gt; state, before using &lt;code&gt;UpdateCustomKeyStore&lt;/code&gt;, use the &lt;a&gt;DisconnectCustomKeyStore&lt;/a&gt; operation to disconnect the custom key store. After the &lt;code&gt;UpdateCustomKeyStore&lt;/code&gt; operation completes, use the &lt;a&gt;ConnectCustomKeyStore&lt;/a&gt; to reconnect the custom key store. To find the &lt;code&gt;ConnectionState&lt;/code&gt; of the custom key store, use the &lt;a&gt;DescribeCustomKeyStores&lt;/a&gt; operation. &lt;/p&gt; &lt;p&gt; &lt;/p&gt; &lt;p&gt;Before updating the custom key store, verify that the new values allow KMS to connect the custom key store to its backing key store. For example, before you change the &lt;code&gt;XksProxyUriPath&lt;/code&gt; value, verify that the external key store proxy is reachable at the new path.&lt;/p&gt; &lt;p&gt;If the operation succeeds, it returns a JSON object with no properties.&lt;/p&gt; &lt;p&gt; &lt;b&gt;Cross-account use&lt;/b&gt;: No. You cannot perform this operation on a custom key store in a different Amazon Web Services account.&lt;/p&gt; &lt;p&gt; &lt;b&gt;Required permissions&lt;/b&gt;: &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/kms-api-permissions-reference.html\&quot;&gt;kms:UpdateCustomKeyStore&lt;/a&gt; (IAM policy)&lt;/p&gt; &lt;p&gt; &lt;b&gt;Related operations:&lt;/b&gt; &lt;/p&gt; &lt;ul&gt; &lt;li&gt; &lt;p&gt; &lt;a&gt;ConnectCustomKeyStore&lt;/a&gt; &lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;a&gt;CreateCustomKeyStore&lt;/a&gt; &lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;a&gt;DeleteCustomKeyStore&lt;/a&gt; &lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;a&gt;DescribeCustomKeyStores&lt;/a&gt; &lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;a&gt;DisconnectCustomKeyStore&lt;/a&gt; &lt;/p&gt; &lt;/li&gt; &lt;/ul&gt;
+
+    :param x_amz_target: 
+    :type x_amz_target: str
+    :param body: 
+    :type body: dict | bytes
+    :param x_amz_content_sha256: 
+    :type x_amz_content_sha256: str
+    :param x_amz_date: 
+    :type x_amz_date: str
+    :param x_amz_algorithm: 
+    :type x_amz_algorithm: str
+    :param x_amz_credential: 
+    :type x_amz_credential: str
+    :param x_amz_security_token: 
+    :type x_amz_security_token: str
+    :param x_amz_signature: 
+    :type x_amz_signature: str
+    :param x_amz_signed_headers: 
+    :type x_amz_signed_headers: str
+
+    """
+    body = UpdateCustomKeyStoreRequest.from_dict(body)
+    return web.Response(status=200)
+
+
+async def update_key_description(request: web.Request, x_amz_target, body, x_amz_content_sha256=None, x_amz_date=None, x_amz_algorithm=None, x_amz_credential=None, x_amz_security_token=None, x_amz_signature=None, x_amz_signed_headers=None) -> web.Response:
+    """update_key_description
+
+    &lt;p&gt;Updates the description of a KMS key. To see the description of a KMS key, use &lt;a&gt;DescribeKey&lt;/a&gt;. &lt;/p&gt; &lt;p&gt;The KMS key that you use for this operation must be in a compatible key state. For details, see &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/key-state.html\&quot;&gt;Key states of KMS keys&lt;/a&gt; in the &lt;i&gt;Key Management Service Developer Guide&lt;/i&gt;.&lt;/p&gt; &lt;p&gt; &lt;b&gt;Cross-account use&lt;/b&gt;: No. You cannot perform this operation on a KMS key in a different Amazon Web Services account. &lt;/p&gt; &lt;p&gt; &lt;b&gt;Required permissions&lt;/b&gt;: &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/kms-api-permissions-reference.html\&quot;&gt;kms:UpdateKeyDescription&lt;/a&gt; (key policy)&lt;/p&gt; &lt;p&gt; &lt;b&gt;Related operations&lt;/b&gt; &lt;/p&gt; &lt;ul&gt; &lt;li&gt; &lt;p&gt; &lt;a&gt;CreateKey&lt;/a&gt; &lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;a&gt;DescribeKey&lt;/a&gt; &lt;/p&gt; &lt;/li&gt; &lt;/ul&gt;
+
+    :param x_amz_target: 
+    :type x_amz_target: str
+    :param body: 
+    :type body: dict | bytes
+    :param x_amz_content_sha256: 
+    :type x_amz_content_sha256: str
+    :param x_amz_date: 
+    :type x_amz_date: str
+    :param x_amz_algorithm: 
+    :type x_amz_algorithm: str
+    :param x_amz_credential: 
+    :type x_amz_credential: str
+    :param x_amz_security_token: 
+    :type x_amz_security_token: str
+    :param x_amz_signature: 
+    :type x_amz_signature: str
+    :param x_amz_signed_headers: 
+    :type x_amz_signed_headers: str
+
+    """
+    body = UpdateKeyDescriptionRequest.from_dict(body)
+    return web.Response(status=200)
+
+
+async def update_primary_region(request: web.Request, x_amz_target, body, x_amz_content_sha256=None, x_amz_date=None, x_amz_algorithm=None, x_amz_credential=None, x_amz_security_token=None, x_amz_signature=None, x_amz_signed_headers=None) -> web.Response:
+    """update_primary_region
+
+    &lt;p&gt;Changes the primary key of a multi-Region key. &lt;/p&gt; &lt;p&gt;This operation changes the replica key in the specified Region to a primary key and changes the former primary key to a replica key. For example, suppose you have a primary key in &lt;code&gt;us-east-1&lt;/code&gt; and a replica key in &lt;code&gt;eu-west-2&lt;/code&gt;. If you run &lt;code&gt;UpdatePrimaryRegion&lt;/code&gt; with a &lt;code&gt;PrimaryRegion&lt;/code&gt; value of &lt;code&gt;eu-west-2&lt;/code&gt;, the primary key is now the key in &lt;code&gt;eu-west-2&lt;/code&gt;, and the key in &lt;code&gt;us-east-1&lt;/code&gt; becomes a replica key. For details, see &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/multi-region-keys-manage.html#multi-region-update\&quot;&gt;Updating the primary Region&lt;/a&gt; in the &lt;i&gt;Key Management Service Developer Guide&lt;/i&gt;.&lt;/p&gt; &lt;p&gt;This operation supports &lt;i&gt;multi-Region keys&lt;/i&gt;, an KMS feature that lets you create multiple interoperable KMS keys in different Amazon Web Services Regions. Because these KMS keys have the same key ID, key material, and other metadata, you can use them interchangeably to encrypt data in one Amazon Web Services Region and decrypt it in a different Amazon Web Services Region without re-encrypting the data or making a cross-Region call. For more information about multi-Region keys, see &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/multi-region-keys-overview.html\&quot;&gt;Multi-Region keys in KMS&lt;/a&gt; in the &lt;i&gt;Key Management Service Developer Guide&lt;/i&gt;.&lt;/p&gt; &lt;p&gt;The &lt;i&gt;primary key&lt;/i&gt; of a multi-Region key is the source for properties that are always shared by primary and replica keys, including the key material, &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#key-id-key-id\&quot;&gt;key ID&lt;/a&gt;, &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#key-spec\&quot;&gt;key spec&lt;/a&gt;, &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#key-usage\&quot;&gt;key usage&lt;/a&gt;, &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#key-origin\&quot;&gt;key material origin&lt;/a&gt;, and &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/rotate-keys.html\&quot;&gt;automatic key rotation&lt;/a&gt;. It&#39;s the only key that can be replicated. You cannot &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/APIReference/API_ScheduleKeyDeletion.html\&quot;&gt;delete the primary key&lt;/a&gt; until all replica keys are deleted.&lt;/p&gt; &lt;p&gt;The key ID and primary Region that you specify uniquely identify the replica key that will become the primary key. The primary Region must already have a replica key. This operation does not create a KMS key in the specified Region. To find the replica keys, use the &lt;a&gt;DescribeKey&lt;/a&gt; operation on the primary key or any replica key. To create a replica key, use the &lt;a&gt;ReplicateKey&lt;/a&gt; operation.&lt;/p&gt; &lt;p&gt;You can run this operation while using the affected multi-Region keys in cryptographic operations. This operation should not delay, interrupt, or cause failures in cryptographic operations. &lt;/p&gt; &lt;p&gt;Even after this operation completes, the process of updating the primary Region might still be in progress for a few more seconds. Operations such as &lt;code&gt;DescribeKey&lt;/code&gt; might display both the old and new primary keys as replicas. The old and new primary keys have a transient key state of &lt;code&gt;Updating&lt;/code&gt;. The original key state is restored when the update is complete. While the key state is &lt;code&gt;Updating&lt;/code&gt;, you can use the keys in cryptographic operations, but you cannot replicate the new primary key or perform certain management operations, such as enabling or disabling these keys. For details about the &lt;code&gt;Updating&lt;/code&gt; key state, see &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/key-state.html\&quot;&gt;Key states of KMS keys&lt;/a&gt; in the &lt;i&gt;Key Management Service Developer Guide&lt;/i&gt;.&lt;/p&gt; &lt;p&gt;This operation does not return any output. To verify that primary key is changed, use the &lt;a&gt;DescribeKey&lt;/a&gt; operation.&lt;/p&gt; &lt;p&gt; &lt;b&gt;Cross-account use&lt;/b&gt;: No. You cannot use this operation in a different Amazon Web Services account. &lt;/p&gt; &lt;p&gt; &lt;b&gt;Required permissions&lt;/b&gt;: &lt;/p&gt; &lt;ul&gt; &lt;li&gt; &lt;p&gt; &lt;code&gt;kms:UpdatePrimaryRegion&lt;/code&gt; on the current primary key (in the primary key&#39;s Region). Include this permission primary key&#39;s key policy.&lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;code&gt;kms:UpdatePrimaryRegion&lt;/code&gt; on the current replica key (in the replica key&#39;s Region). Include this permission in the replica key&#39;s key policy.&lt;/p&gt; &lt;/li&gt; &lt;/ul&gt; &lt;p&gt; &lt;b&gt;Related operations&lt;/b&gt; &lt;/p&gt; &lt;ul&gt; &lt;li&gt; &lt;p&gt; &lt;a&gt;CreateKey&lt;/a&gt; &lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;a&gt;ReplicateKey&lt;/a&gt; &lt;/p&gt; &lt;/li&gt; &lt;/ul&gt;
+
+    :param x_amz_target: 
+    :type x_amz_target: str
+    :param body: 
+    :type body: dict | bytes
+    :param x_amz_content_sha256: 
+    :type x_amz_content_sha256: str
+    :param x_amz_date: 
+    :type x_amz_date: str
+    :param x_amz_algorithm: 
+    :type x_amz_algorithm: str
+    :param x_amz_credential: 
+    :type x_amz_credential: str
+    :param x_amz_security_token: 
+    :type x_amz_security_token: str
+    :param x_amz_signature: 
+    :type x_amz_signature: str
+    :param x_amz_signed_headers: 
+    :type x_amz_signed_headers: str
+
+    """
+    body = UpdatePrimaryRegionRequest.from_dict(body)
+    return web.Response(status=200)
+
+
+async def verify(request: web.Request, x_amz_target, body, x_amz_content_sha256=None, x_amz_date=None, x_amz_algorithm=None, x_amz_credential=None, x_amz_security_token=None, x_amz_signature=None, x_amz_signed_headers=None) -> web.Response:
+    """verify
+
+    &lt;p&gt;Verifies a digital signature that was generated by the &lt;a&gt;Sign&lt;/a&gt; operation. &lt;/p&gt; &lt;p/&gt; &lt;p&gt;Verification confirms that an authorized user signed the message with the specified KMS key and signing algorithm, and the message hasn&#39;t changed since it was signed. If the signature is verified, the value of the &lt;code&gt;SignatureValid&lt;/code&gt; field in the response is &lt;code&gt;True&lt;/code&gt;. If the signature verification fails, the &lt;code&gt;Verify&lt;/code&gt; operation fails with an &lt;code&gt;KMSInvalidSignatureException&lt;/code&gt; exception.&lt;/p&gt; &lt;p&gt;A digital signature is generated by using the private key in an asymmetric KMS key. The signature is verified by using the public key in the same asymmetric KMS key. For information about asymmetric KMS keys, see &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/symmetric-asymmetric.html\&quot;&gt;Asymmetric KMS keys&lt;/a&gt; in the &lt;i&gt;Key Management Service Developer Guide&lt;/i&gt;.&lt;/p&gt; &lt;p&gt;To use the &lt;code&gt;Verify&lt;/code&gt; operation, specify the same asymmetric KMS key, message, and signing algorithm that were used to produce the signature. The message type does not need to be the same as the one used for signing, but it must indicate whether the value of the &lt;code&gt;Message&lt;/code&gt; parameter should be hashed as part of the verification process.&lt;/p&gt; &lt;p&gt;You can also verify the digital signature by using the public key of the KMS key outside of KMS. Use the &lt;a&gt;GetPublicKey&lt;/a&gt; operation to download the public key in the asymmetric KMS key and then use the public key to verify the signature outside of KMS. The advantage of using the &lt;code&gt;Verify&lt;/code&gt; operation is that it is performed within KMS. As a result, it&#39;s easy to call, the operation is performed within the FIPS boundary, it is logged in CloudTrail, and you can use key policy and IAM policy to determine who is authorized to use the KMS key to verify signatures.&lt;/p&gt; &lt;p&gt;To verify a signature outside of KMS with an SM2 public key (China Regions only), you must specify the distinguishing ID. By default, KMS uses &lt;code&gt;1234567812345678&lt;/code&gt; as the distinguishing ID. For more information, see &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/asymmetric-key-specs.html#key-spec-sm-offline-verification\&quot;&gt;Offline verification with SM2 key pairs&lt;/a&gt;.&lt;/p&gt; &lt;p&gt;The KMS key that you use for this operation must be in a compatible key state. For details, see &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/key-state.html\&quot;&gt;Key states of KMS keys&lt;/a&gt; in the &lt;i&gt;Key Management Service Developer Guide&lt;/i&gt;.&lt;/p&gt; &lt;p&gt; &lt;b&gt;Cross-account use&lt;/b&gt;: Yes. To perform this operation with a KMS key in a different Amazon Web Services account, specify the key ARN or alias ARN in the value of the &lt;code&gt;KeyId&lt;/code&gt; parameter. &lt;/p&gt; &lt;p&gt; &lt;b&gt;Required permissions&lt;/b&gt;: &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/kms-api-permissions-reference.html\&quot;&gt;kms:Verify&lt;/a&gt; (key policy)&lt;/p&gt; &lt;p&gt; &lt;b&gt;Related operations&lt;/b&gt;: &lt;a&gt;Sign&lt;/a&gt; &lt;/p&gt;
+
+    :param x_amz_target: 
+    :type x_amz_target: str
+    :param body: 
+    :type body: dict | bytes
+    :param x_amz_content_sha256: 
+    :type x_amz_content_sha256: str
+    :param x_amz_date: 
+    :type x_amz_date: str
+    :param x_amz_algorithm: 
+    :type x_amz_algorithm: str
+    :param x_amz_credential: 
+    :type x_amz_credential: str
+    :param x_amz_security_token: 
+    :type x_amz_security_token: str
+    :param x_amz_signature: 
+    :type x_amz_signature: str
+    :param x_amz_signed_headers: 
+    :type x_amz_signed_headers: str
+
+    """
+    body = VerifyRequest.from_dict(body)
+    return web.Response(status=200)
+
+
+async def verify_mac(request: web.Request, x_amz_target, body, x_amz_content_sha256=None, x_amz_date=None, x_amz_algorithm=None, x_amz_credential=None, x_amz_security_token=None, x_amz_signature=None, x_amz_signed_headers=None) -> web.Response:
+    """verify_mac
+
+    &lt;p&gt;Verifies the hash-based message authentication code (HMAC) for a specified message, HMAC KMS key, and MAC algorithm. To verify the HMAC, &lt;code&gt;VerifyMac&lt;/code&gt; computes an HMAC using the message, HMAC KMS key, and MAC algorithm that you specify, and compares the computed HMAC to the HMAC that you specify. If the HMACs are identical, the verification succeeds; otherwise, it fails. Verification indicates that the message hasn&#39;t changed since the HMAC was calculated, and the specified key was used to generate and verify the HMAC.&lt;/p&gt; &lt;p&gt;HMAC KMS keys and the HMAC algorithms that KMS uses conform to industry standards defined in &lt;a href&#x3D;\&quot;https://datatracker.ietf.org/doc/html/rfc2104\&quot;&gt;RFC 2104&lt;/a&gt;.&lt;/p&gt; &lt;p&gt;This operation is part of KMS support for HMAC KMS keys. For details, see &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/hmac.html\&quot;&gt;HMAC keys in KMS&lt;/a&gt; in the &lt;i&gt;Key Management Service Developer Guide&lt;/i&gt;.&lt;/p&gt; &lt;p&gt;The KMS key that you use for this operation must be in a compatible key state. For details, see &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/key-state.html\&quot;&gt;Key states of KMS keys&lt;/a&gt; in the &lt;i&gt;Key Management Service Developer Guide&lt;/i&gt;.&lt;/p&gt; &lt;p&gt; &lt;b&gt;Cross-account use&lt;/b&gt;: Yes. To perform this operation with a KMS key in a different Amazon Web Services account, specify the key ARN or alias ARN in the value of the &lt;code&gt;KeyId&lt;/code&gt; parameter. &lt;/p&gt; &lt;p&gt; &lt;b&gt;Required permissions&lt;/b&gt;: &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/kms/latest/developerguide/kms-api-permissions-reference.html\&quot;&gt;kms:VerifyMac&lt;/a&gt; (key policy)&lt;/p&gt; &lt;p&gt; &lt;b&gt;Related operations&lt;/b&gt;: &lt;a&gt;GenerateMac&lt;/a&gt; &lt;/p&gt;
+
+    :param x_amz_target: 
+    :type x_amz_target: str
+    :param body: 
+    :type body: dict | bytes
+    :param x_amz_content_sha256: 
+    :type x_amz_content_sha256: str
+    :param x_amz_date: 
+    :type x_amz_date: str
+    :param x_amz_algorithm: 
+    :type x_amz_algorithm: str
+    :param x_amz_credential: 
+    :type x_amz_credential: str
+    :param x_amz_security_token: 
+    :type x_amz_security_token: str
+    :param x_amz_signature: 
+    :type x_amz_signature: str
+    :param x_amz_signed_headers: 
+    :type x_amz_signed_headers: str
+
+    """
+    body = VerifyMacRequest.from_dict(body)
+    return web.Response(status=200)

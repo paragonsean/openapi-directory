@@ -1,0 +1,10 @@
+# AmazonRoute53Domains.Tag
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**key** | **String** |  | [optional] 
+**value** | **String** |  | [optional] 
+
+

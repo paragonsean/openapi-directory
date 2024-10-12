@@ -1,0 +1,14 @@
+# AmazonApiGatewayV2.Cors
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**allowCredentials** | **Boolean** |  | [optional] 
+**allowHeaders** | **Array** |  | [optional] 
+**allowMethods** | **Array** |  | [optional] 
+**allowOrigins** | **Array** |  | [optional] 
+**exposeHeaders** | **Array** |  | [optional] 
+**maxAge** | **Number** |  | [optional] 
+
+

@@ -1,0 +1,21 @@
+
+
+# ImportJobRequest
+
+Specifies the settings for a job that imports endpoint definitions from an Amazon Simple Storage Service (Amazon S3) bucket.
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**defineSegment** | [**Boolean**](Boolean.md) |  |  [optional] |
+|**externalId** | [**String**](String.md) |  |  [optional] |
+|**format** | [**Format**](Format.md) |  |  |
+|**registerEndpoints** | [**Boolean**](Boolean.md) |  |  [optional] |
+|**roleArn** | [**String**](String.md) |  |  |
+|**s3Url** | [**String**](String.md) |  |  |
+|**segmentId** | [**String**](String.md) |  |  [optional] |
+|**segmentName** | [**String**](String.md) |  |  [optional] |
+
+
+

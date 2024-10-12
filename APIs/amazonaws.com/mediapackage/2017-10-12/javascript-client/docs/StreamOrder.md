@@ -1,0 +1,12 @@
+# AwsElementalMediaPackage.StreamOrder
+
+## Enum
+
+
+* `ORIGINAL` (value: `"ORIGINAL"`)
+
+* `VIDEO_BITRATE_ASCENDING` (value: `"VIDEO_BITRATE_ASCENDING"`)
+
+* `VIDEO_BITRATE_DESCENDING` (value: `"VIDEO_BITRATE_DESCENDING"`)
+
+

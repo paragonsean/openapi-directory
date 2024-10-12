@@ -1,0 +1,25 @@
+
+
+# ErrorCategory
+
+## Enum
+
+
+* `VALIDATION` (value: `"VALIDATION"`)
+
+* `SERVICE_QUOTA_EXCEEDED` (value: `"SERVICE_QUOTA_EXCEEDED"`)
+
+* `ACCESS_DENIED` (value: `"ACCESS_DENIED"`)
+
+* `RESOURCE_NOT_FOUND` (value: `"RESOURCE_NOT_FOUND"`)
+
+* `THROTTLING` (value: `"THROTTLING"`)
+
+* `INTERNAL_SERVICE_EXCEPTION` (value: `"INTERNAL_SERVICE_EXCEPTION"`)
+
+* `CANCELLED` (value: `"CANCELLED"`)
+
+* `USER_RECOVERABLE` (value: `"USER_RECOVERABLE"`)
+
+
+

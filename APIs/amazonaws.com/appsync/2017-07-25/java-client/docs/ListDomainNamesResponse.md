@@ -1,0 +1,14 @@
+
+
+# ListDomainNamesResponse
+
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**domainNameConfigs** | [**List**](List.md) |  |  [optional] |
+|**nextToken** | [**String**](String.md) |  |  [optional] |
+
+
+

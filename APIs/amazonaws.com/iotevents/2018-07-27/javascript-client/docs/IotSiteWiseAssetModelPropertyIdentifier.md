@@ -1,0 +1,10 @@
+# AwsIoTEvents.IotSiteWiseAssetModelPropertyIdentifier
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**assetModelId** | **String** |  | 
+**propertyId** | **String** |  | 
+
+

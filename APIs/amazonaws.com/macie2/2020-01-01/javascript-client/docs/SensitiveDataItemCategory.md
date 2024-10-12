@@ -1,0 +1,14 @@
+# AmazonMacie2.SensitiveDataItemCategory
+
+## Enum
+
+
+* `FINANCIAL_INFORMATION` (value: `"FINANCIAL_INFORMATION"`)
+
+* `PERSONAL_INFORMATION` (value: `"PERSONAL_INFORMATION"`)
+
+* `CREDENTIALS` (value: `"CREDENTIALS"`)
+
+* `CUSTOM_IDENTIFIER` (value: `"CUSTOM_IDENTIFIER"`)
+
+

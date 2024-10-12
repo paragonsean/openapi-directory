@@ -1,0 +1,25 @@
+
+
+# SourceApiAssociationStatus
+
+## Enum
+
+
+* `MERGE_SCHEDULED` (value: `"MERGE_SCHEDULED"`)
+
+* `MERGE_FAILED` (value: `"MERGE_FAILED"`)
+
+* `MERGE_SUCCESS` (value: `"MERGE_SUCCESS"`)
+
+* `MERGE_IN_PROGRESS` (value: `"MERGE_IN_PROGRESS"`)
+
+* `AUTO_MERGE_SCHEDULE_FAILED` (value: `"AUTO_MERGE_SCHEDULE_FAILED"`)
+
+* `DELETION_SCHEDULED` (value: `"DELETION_SCHEDULED"`)
+
+* `DELETION_IN_PROGRESS` (value: `"DELETION_IN_PROGRESS"`)
+
+* `DELETION_FAILED` (value: `"DELETION_FAILED"`)
+
+
+

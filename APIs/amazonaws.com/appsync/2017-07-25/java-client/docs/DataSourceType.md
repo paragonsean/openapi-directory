@@ -1,0 +1,25 @@
+
+
+# DataSourceType
+
+## Enum
+
+
+* `AWS_LAMBDA` (value: `"AWS_LAMBDA"`)
+
+* `AMAZON_DYNAMODB` (value: `"AMAZON_DYNAMODB"`)
+
+* `AMAZON_ELASTICSEARCH` (value: `"AMAZON_ELASTICSEARCH"`)
+
+* `NONE` (value: `"NONE"`)
+
+* `HTTP` (value: `"HTTP"`)
+
+* `RELATIONAL_DATABASE` (value: `"RELATIONAL_DATABASE"`)
+
+* `AMAZON_OPENSEARCH_SERVICE` (value: `"AMAZON_OPENSEARCH_SERVICE"`)
+
+* `AMAZON_EVENTBRIDGE` (value: `"AMAZON_EVENTBRIDGE"`)
+
+
+

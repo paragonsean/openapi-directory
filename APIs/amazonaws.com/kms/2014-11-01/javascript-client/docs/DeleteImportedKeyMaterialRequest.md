@@ -1,0 +1,9 @@
+# AwsKeyManagementService.DeleteImportedKeyMaterialRequest
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**keyId** | **String** |  | 
+
+

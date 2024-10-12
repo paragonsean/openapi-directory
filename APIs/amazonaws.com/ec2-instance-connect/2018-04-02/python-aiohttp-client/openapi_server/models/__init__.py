@@ -1,0 +1,7 @@
+# coding: utf-8
+
+# import models into model package
+from openapi_server.models.send_ssh_public_key_request import SendSSHPublicKeyRequest
+from openapi_server.models.send_ssh_public_key_response import SendSSHPublicKeyResponse
+from openapi_server.models.send_serial_console_ssh_public_key_request import SendSerialConsoleSSHPublicKeyRequest
+from openapi_server.models.send_serial_console_ssh_public_key_response import SendSerialConsoleSSHPublicKeyResponse

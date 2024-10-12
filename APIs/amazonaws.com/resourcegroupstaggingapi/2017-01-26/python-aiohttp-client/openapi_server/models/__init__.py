@@ -1,0 +1,27 @@
+# coding: utf-8
+
+# import models into model package
+from openapi_server.models.compliance_details import ComplianceDetails
+from openapi_server.models.describe_report_creation_output import DescribeReportCreationOutput
+from openapi_server.models.error_code import ErrorCode
+from openapi_server.models.failure_info import FailureInfo
+from openapi_server.models.get_compliance_summary_input import GetComplianceSummaryInput
+from openapi_server.models.get_compliance_summary_output import GetComplianceSummaryOutput
+from openapi_server.models.get_resources_input import GetResourcesInput
+from openapi_server.models.get_resources_output import GetResourcesOutput
+from openapi_server.models.get_tag_keys_input import GetTagKeysInput
+from openapi_server.models.get_tag_keys_output import GetTagKeysOutput
+from openapi_server.models.get_tag_values_input import GetTagValuesInput
+from openapi_server.models.get_tag_values_output import GetTagValuesOutput
+from openapi_server.models.group_by_attribute import GroupByAttribute
+from openapi_server.models.resource_tag_mapping import ResourceTagMapping
+from openapi_server.models.resource_tag_mapping_compliance_details import ResourceTagMappingComplianceDetails
+from openapi_server.models.start_report_creation_input import StartReportCreationInput
+from openapi_server.models.summary import Summary
+from openapi_server.models.tag import Tag
+from openapi_server.models.tag_filter import TagFilter
+from openapi_server.models.tag_resources_input import TagResourcesInput
+from openapi_server.models.tag_resources_output import TagResourcesOutput
+from openapi_server.models.target_id_type import TargetIdType
+from openapi_server.models.untag_resources_input import UntagResourcesInput
+from openapi_server.models.untag_resources_output import UntagResourcesOutput

@@ -1,0 +1,14 @@
+
+
+# ListApplicationVersionsResponse
+
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**applicationVersionSummaries** | [**List**](List.md) |  |  [optional] |
+|**nextToken** | [**String**](String.md) |  |  [optional] |
+
+
+

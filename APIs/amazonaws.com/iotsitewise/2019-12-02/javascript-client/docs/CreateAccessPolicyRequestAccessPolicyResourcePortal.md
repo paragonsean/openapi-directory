@@ -1,0 +1,9 @@
+# AwsIoTSiteWise.CreateAccessPolicyRequestAccessPolicyResourcePortal
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**id** | **String** |  | 
+
+

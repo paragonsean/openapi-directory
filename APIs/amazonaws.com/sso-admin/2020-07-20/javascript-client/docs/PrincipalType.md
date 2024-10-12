@@ -1,0 +1,10 @@
+# AwsSingleSignOnAdmin.PrincipalType
+
+## Enum
+
+
+* `USER` (value: `"USER"`)
+
+* `GROUP` (value: `"GROUP"`)
+
+

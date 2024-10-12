@@ -1,0 +1,24 @@
+
+
+# CreatePlatformVersionResultPlatformSummary
+
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**platformArn** | [**String**](String.md) |  |  [optional] |
+|**platformOwner** | [**String**](String.md) |  |  [optional] |
+|**platformStatus** | [**PlatformStatus**](PlatformStatus.md) |  |  [optional] |
+|**platformCategory** | [**String**](String.md) |  |  [optional] |
+|**operatingSystemName** | [**String**](String.md) |  |  [optional] |
+|**operatingSystemVersion** | [**String**](String.md) |  |  [optional] |
+|**supportedTierList** | [**List**](List.md) |  |  [optional] |
+|**supportedAddonList** | [**List**](List.md) |  |  [optional] |
+|**platformLifecycleState** | [**String**](String.md) |  |  [optional] |
+|**platformVersion** | [**String**](String.md) |  |  [optional] |
+|**platformBranchName** | [**String**](String.md) |  |  [optional] |
+|**platformBranchLifecycleState** | [**String**](String.md) |  |  [optional] |
+
+
+

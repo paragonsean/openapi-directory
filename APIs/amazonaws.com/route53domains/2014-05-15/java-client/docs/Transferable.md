@@ -1,0 +1,21 @@
+
+
+# Transferable
+
+## Enum
+
+
+* `TRANSFERABLE` (value: `"TRANSFERABLE"`)
+
+* `UNTRANSFERABLE` (value: `"UNTRANSFERABLE"`)
+
+* `DONT_KNOW` (value: `"DONT_KNOW"`)
+
+* `DOMAIN_IN_OWN_ACCOUNT` (value: `"DOMAIN_IN_OWN_ACCOUNT"`)
+
+* `DOMAIN_IN_ANOTHER_ACCOUNT` (value: `"DOMAIN_IN_ANOTHER_ACCOUNT"`)
+
+* `PREMIUM_DOMAIN` (value: `"PREMIUM_DOMAIN"`)
+
+
+

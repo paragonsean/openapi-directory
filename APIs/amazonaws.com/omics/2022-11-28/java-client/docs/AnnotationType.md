@@ -1,0 +1,23 @@
+
+
+# AnnotationType
+
+## Enum
+
+
+* `GENERIC` (value: `"GENERIC"`)
+
+* `CHR_POS` (value: `"CHR_POS"`)
+
+* `CHR_POS_REF_ALT` (value: `"CHR_POS_REF_ALT"`)
+
+* `CHR_START_END_ONE_BASE` (value: `"CHR_START_END_ONE_BASE"`)
+
+* `CHR_START_END_REF_ALT_ONE_BASE` (value: `"CHR_START_END_REF_ALT_ONE_BASE"`)
+
+* `CHR_START_END_ZERO_BASE` (value: `"CHR_START_END_ZERO_BASE"`)
+
+* `CHR_START_END_REF_ALT_ZERO_BASE` (value: `"CHR_START_END_REF_ALT_ZERO_BASE"`)
+
+
+

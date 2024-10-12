@@ -1,0 +1,10 @@
+# AwsWellArchitectedTool.DiscoveryIntegrationStatus
+
+## Enum
+
+
+* `ENABLED` (value: `"ENABLED"`)
+
+* `DISABLED` (value: `"DISABLED"`)
+
+

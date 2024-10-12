@@ -1,0 +1,14 @@
+
+
+# PushDomainRequest
+
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**domainName** | [**String**](String.md) |  |  |
+|**target** | [**String**](String.md) |  |  |
+
+
+

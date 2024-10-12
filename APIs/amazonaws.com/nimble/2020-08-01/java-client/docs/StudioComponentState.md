@@ -1,0 +1,25 @@
+
+
+# StudioComponentState
+
+## Enum
+
+
+* `CREATE_IN_PROGRESS` (value: `"CREATE_IN_PROGRESS"`)
+
+* `READY` (value: `"READY"`)
+
+* `UPDATE_IN_PROGRESS` (value: `"UPDATE_IN_PROGRESS"`)
+
+* `DELETE_IN_PROGRESS` (value: `"DELETE_IN_PROGRESS"`)
+
+* `DELETED` (value: `"DELETED"`)
+
+* `DELETE_FAILED` (value: `"DELETE_FAILED"`)
+
+* `CREATE_FAILED` (value: `"CREATE_FAILED"`)
+
+* `UPDATE_FAILED` (value: `"UPDATE_FAILED"`)
+
+
+

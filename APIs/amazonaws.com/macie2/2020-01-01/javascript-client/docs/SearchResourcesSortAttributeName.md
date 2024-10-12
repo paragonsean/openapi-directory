@@ -1,0 +1,14 @@
+# AmazonMacie2.SearchResourcesSortAttributeName
+
+## Enum
+
+
+* `ACCOUNT_ID` (value: `"ACCOUNT_ID"`)
+
+* `RESOURCE_NAME` (value: `"RESOURCE_NAME"`)
+
+* `S3_CLASSIFIABLE_OBJECT_COUNT` (value: `"S3_CLASSIFIABLE_OBJECT_COUNT"`)
+
+* `S3_CLASSIFIABLE_SIZE_IN_BYTES` (value: `"S3_CLASSIFIABLE_SIZE_IN_BYTES"`)
+
+

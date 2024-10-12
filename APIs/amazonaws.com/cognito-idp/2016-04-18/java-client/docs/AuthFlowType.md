@@ -1,0 +1,23 @@
+
+
+# AuthFlowType
+
+## Enum
+
+
+* `USER_SRP_AUTH` (value: `"USER_SRP_AUTH"`)
+
+* `REFRESH_TOKEN_AUTH` (value: `"REFRESH_TOKEN_AUTH"`)
+
+* `REFRESH_TOKEN` (value: `"REFRESH_TOKEN"`)
+
+* `CUSTOM_AUTH` (value: `"CUSTOM_AUTH"`)
+
+* `ADMIN_NO_SRP_AUTH` (value: `"ADMIN_NO_SRP_AUTH"`)
+
+* `USER_PASSWORD_AUTH` (value: `"USER_PASSWORD_AUTH"`)
+
+* `ADMIN_USER_PASSWORD_AUTH` (value: `"ADMIN_USER_PASSWORD_AUTH"`)
+
+
+

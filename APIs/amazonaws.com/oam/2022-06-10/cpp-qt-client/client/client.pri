@@ -1,0 +1,107 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAICreateLinkInput.h \
+    $${PWD}/OAICreateLinkOutput.h \
+    $${PWD}/OAICreateLink_request.h \
+    $${PWD}/OAICreateSinkInput.h \
+    $${PWD}/OAICreateSinkOutput.h \
+    $${PWD}/OAICreateSink_request.h \
+    $${PWD}/OAIDeleteLinkInput.h \
+    $${PWD}/OAIDeleteLink_request.h \
+    $${PWD}/OAIDeleteSinkInput.h \
+    $${PWD}/OAIDeleteSink_request.h \
+    $${PWD}/OAIGetLinkInput.h \
+    $${PWD}/OAIGetLinkOutput.h \
+    $${PWD}/OAIGetLink_request.h \
+    $${PWD}/OAIGetSinkInput.h \
+    $${PWD}/OAIGetSinkOutput.h \
+    $${PWD}/OAIGetSinkPolicyInput.h \
+    $${PWD}/OAIGetSinkPolicyOutput.h \
+    $${PWD}/OAIGetSinkPolicy_request.h \
+    $${PWD}/OAIGetSink_request.h \
+    $${PWD}/OAIListAttachedLinksInput.h \
+    $${PWD}/OAIListAttachedLinksItem.h \
+    $${PWD}/OAIListAttachedLinksOutput.h \
+    $${PWD}/OAIListAttachedLinks_request.h \
+    $${PWD}/OAIListLinksInput.h \
+    $${PWD}/OAIListLinksItem.h \
+    $${PWD}/OAIListLinksOutput.h \
+    $${PWD}/OAIListLinks_request.h \
+    $${PWD}/OAIListSinksInput.h \
+    $${PWD}/OAIListSinksItem.h \
+    $${PWD}/OAIListSinksOutput.h \
+    $${PWD}/OAIListSinks_request.h \
+    $${PWD}/OAIListTagsForResourceOutput.h \
+    $${PWD}/OAIPutSinkPolicyInput.h \
+    $${PWD}/OAIPutSinkPolicyOutput.h \
+    $${PWD}/OAIPutSinkPolicy_request.h \
+    $${PWD}/OAIResourceType.h \
+    $${PWD}/OAITagResourceInput.h \
+    $${PWD}/OAITagResource_request.h \
+    $${PWD}/OAIUpdateLinkInput.h \
+    $${PWD}/OAIUpdateLinkOutput.h \
+    $${PWD}/OAIUpdateLink_request.h \
+# APIs
+    $${PWD}/OAIDefaultApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAICreateLinkInput.cpp \
+    $${PWD}/OAICreateLinkOutput.cpp \
+    $${PWD}/OAICreateLink_request.cpp \
+    $${PWD}/OAICreateSinkInput.cpp \
+    $${PWD}/OAICreateSinkOutput.cpp \
+    $${PWD}/OAICreateSink_request.cpp \
+    $${PWD}/OAIDeleteLinkInput.cpp \
+    $${PWD}/OAIDeleteLink_request.cpp \
+    $${PWD}/OAIDeleteSinkInput.cpp \
+    $${PWD}/OAIDeleteSink_request.cpp \
+    $${PWD}/OAIGetLinkInput.cpp \
+    $${PWD}/OAIGetLinkOutput.cpp \
+    $${PWD}/OAIGetLink_request.cpp \
+    $${PWD}/OAIGetSinkInput.cpp \
+    $${PWD}/OAIGetSinkOutput.cpp \
+    $${PWD}/OAIGetSinkPolicyInput.cpp \
+    $${PWD}/OAIGetSinkPolicyOutput.cpp \
+    $${PWD}/OAIGetSinkPolicy_request.cpp \
+    $${PWD}/OAIGetSink_request.cpp \
+    $${PWD}/OAIListAttachedLinksInput.cpp \
+    $${PWD}/OAIListAttachedLinksItem.cpp \
+    $${PWD}/OAIListAttachedLinksOutput.cpp \
+    $${PWD}/OAIListAttachedLinks_request.cpp \
+    $${PWD}/OAIListLinksInput.cpp \
+    $${PWD}/OAIListLinksItem.cpp \
+    $${PWD}/OAIListLinksOutput.cpp \
+    $${PWD}/OAIListLinks_request.cpp \
+    $${PWD}/OAIListSinksInput.cpp \
+    $${PWD}/OAIListSinksItem.cpp \
+    $${PWD}/OAIListSinksOutput.cpp \
+    $${PWD}/OAIListSinks_request.cpp \
+    $${PWD}/OAIListTagsForResourceOutput.cpp \
+    $${PWD}/OAIPutSinkPolicyInput.cpp \
+    $${PWD}/OAIPutSinkPolicyOutput.cpp \
+    $${PWD}/OAIPutSinkPolicy_request.cpp \
+    $${PWD}/OAIResourceType.cpp \
+    $${PWD}/OAITagResourceInput.cpp \
+    $${PWD}/OAITagResource_request.cpp \
+    $${PWD}/OAIUpdateLinkInput.cpp \
+    $${PWD}/OAIUpdateLinkOutput.cpp \
+    $${PWD}/OAIUpdateLink_request.cpp \
+# APIs
+    $${PWD}/OAIDefaultApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

@@ -1,0 +1,15 @@
+
+
+# DnsEntry
+
+Describes the DNS information of a service.
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**domainName** | [**String**](String.md) |  |  [optional] |
+|**hostedZoneId** | [**String**](String.md) |  |  [optional] |
+
+
+

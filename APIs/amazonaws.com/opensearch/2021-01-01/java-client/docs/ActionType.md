@@ -1,0 +1,15 @@
+
+
+# ActionType
+
+## Enum
+
+
+* `SERVICE_SOFTWARE_UPDATE` (value: `"SERVICE_SOFTWARE_UPDATE"`)
+
+* `JVM_HEAP_SIZE_TUNING` (value: `"JVM_HEAP_SIZE_TUNING"`)
+
+* `JVM_YOUNG_GEN_TUNING` (value: `"JVM_YOUNG_GEN_TUNING"`)
+
+
+

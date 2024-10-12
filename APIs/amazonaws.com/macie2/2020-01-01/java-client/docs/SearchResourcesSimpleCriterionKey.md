@@ -1,0 +1,17 @@
+
+
+# SearchResourcesSimpleCriterionKey
+
+## Enum
+
+
+* `ACCOUNT_ID` (value: `"ACCOUNT_ID"`)
+
+* `S3_BUCKET_NAME` (value: `"S3_BUCKET_NAME"`)
+
+* `S3_BUCKET_EFFECTIVE_PERMISSION` (value: `"S3_BUCKET_EFFECTIVE_PERMISSION"`)
+
+* `S3_BUCKET_SHARED_ACCESS` (value: `"S3_BUCKET_SHARED_ACCESS"`)
+
+
+

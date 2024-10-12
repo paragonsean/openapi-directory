@@ -1,0 +1,13 @@
+
+
+# AttackVolumePacketsPerSecond
+
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**max** | [**Double**](Double.md) |  |  |
+
+
+

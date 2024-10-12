@@ -1,0 +1,19 @@
+
+
+# LaunchProfileValidationState
+
+## Enum
+
+
+* `NOT_STARTED` (value: `"VALIDATION_NOT_STARTED"`)
+
+* `IN_PROGRESS` (value: `"VALIDATION_IN_PROGRESS"`)
+
+* `SUCCESS` (value: `"VALIDATION_SUCCESS"`)
+
+* `FAILED` (value: `"VALIDATION_FAILED"`)
+
+* `FAILED_INTERNAL_SERVER_ERROR` (value: `"VALIDATION_FAILED_INTERNAL_SERVER_ERROR"`)
+
+
+

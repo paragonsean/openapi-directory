@@ -1,0 +1,13 @@
+
+
+# FindingsFilterAction
+
+## Enum
+
+
+* `ARCHIVE` (value: `"ARCHIVE"`)
+
+* `NOOP` (value: `"NOOP"`)
+
+
+

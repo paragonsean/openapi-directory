@@ -1,0 +1,14 @@
+# AwsBudgets.ExecutionType
+
+## Enum
+
+
+* `APPROVE_BUDGET_ACTION` (value: `"APPROVE_BUDGET_ACTION"`)
+
+* `RETRY_BUDGET_ACTION` (value: `"RETRY_BUDGET_ACTION"`)
+
+* `REVERSE_BUDGET_ACTION` (value: `"REVERSE_BUDGET_ACTION"`)
+
+* `RESET_BUDGET_ACTION` (value: `"RESET_BUDGET_ACTION"`)
+
+

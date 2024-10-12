@@ -1,0 +1,20 @@
+# AwsAppRunner.CustomDomainAssociationStatus
+
+## Enum
+
+
+* `CREATING` (value: `"CREATING"`)
+
+* `CREATE_FAILED` (value: `"CREATE_FAILED"`)
+
+* `ACTIVE` (value: `"ACTIVE"`)
+
+* `DELETING` (value: `"DELETING"`)
+
+* `DELETE_FAILED` (value: `"DELETE_FAILED"`)
+
+* `PENDING_CERTIFICATE_DNS_VALIDATION` (value: `"PENDING_CERTIFICATE_DNS_VALIDATION"`)
+
+* `BINDING_CERTIFICATE` (value: `"BINDING_CERTIFICATE"`)
+
+

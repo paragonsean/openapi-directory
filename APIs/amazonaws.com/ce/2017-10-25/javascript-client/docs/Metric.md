@@ -1,0 +1,20 @@
+# AwsCostExplorerService.Metric
+
+## Enum
+
+
+* `BLENDED_COST` (value: `"BLENDED_COST"`)
+
+* `UNBLENDED_COST` (value: `"UNBLENDED_COST"`)
+
+* `AMORTIZED_COST` (value: `"AMORTIZED_COST"`)
+
+* `NET_UNBLENDED_COST` (value: `"NET_UNBLENDED_COST"`)
+
+* `NET_AMORTIZED_COST` (value: `"NET_AMORTIZED_COST"`)
+
+* `USAGE_QUANTITY` (value: `"USAGE_QUANTITY"`)
+
+* `NORMALIZED_USAGE_AMOUNT` (value: `"NORMALIZED_USAGE_AMOUNT"`)
+
+

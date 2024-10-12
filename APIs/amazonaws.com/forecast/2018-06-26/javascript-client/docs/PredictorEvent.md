@@ -1,0 +1,10 @@
+# AmazonForecastService.PredictorEvent
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**detail** | **String** |  | [optional] 
+**datetime** | **Date** |  | [optional] 
+
+

@@ -1,0 +1,10 @@
+# AwsIoTSiteWise.ListAssetsResponse
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**assetSummaries** | **Array** |  | 
+**nextToken** | **String** |  | [optional] 
+
+

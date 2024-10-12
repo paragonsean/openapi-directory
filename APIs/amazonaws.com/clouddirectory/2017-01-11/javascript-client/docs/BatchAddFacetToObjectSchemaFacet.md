@@ -1,0 +1,10 @@
+# AmazonCloudDirectory.BatchAddFacetToObjectSchemaFacet
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**schemaArn** | **String** |  | [optional] 
+**facetName** | **String** |  | [optional] 
+
+

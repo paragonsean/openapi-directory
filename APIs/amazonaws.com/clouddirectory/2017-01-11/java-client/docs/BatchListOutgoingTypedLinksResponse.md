@@ -1,0 +1,15 @@
+
+
+# BatchListOutgoingTypedLinksResponse
+
+Represents the output of a <a>ListOutgoingTypedLinks</a> response operation.
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**typedLinkSpecifiers** | [**List**](List.md) |  |  [optional] |
+|**nextToken** | [**String**](String.md) |  |  [optional] |
+
+
+

@@ -1,0 +1,29 @@
+
+
+# ChallengeNameType
+
+## Enum
+
+
+* `SMS_MFA` (value: `"SMS_MFA"`)
+
+* `SOFTWARE_TOKEN_MFA` (value: `"SOFTWARE_TOKEN_MFA"`)
+
+* `SELECT_MFA_TYPE` (value: `"SELECT_MFA_TYPE"`)
+
+* `MFA_SETUP` (value: `"MFA_SETUP"`)
+
+* `PASSWORD_VERIFIER` (value: `"PASSWORD_VERIFIER"`)
+
+* `CUSTOM_CHALLENGE` (value: `"CUSTOM_CHALLENGE"`)
+
+* `DEVICE_SRP_AUTH` (value: `"DEVICE_SRP_AUTH"`)
+
+* `DEVICE_PASSWORD_VERIFIER` (value: `"DEVICE_PASSWORD_VERIFIER"`)
+
+* `ADMIN_NO_SRP_AUTH` (value: `"ADMIN_NO_SRP_AUTH"`)
+
+* `NEW_PASSWORD_REQUIRED` (value: `"NEW_PASSWORD_REQUIRED"`)
+
+
+
