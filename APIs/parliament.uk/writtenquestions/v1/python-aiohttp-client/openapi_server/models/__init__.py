@@ -1,0 +1,22 @@
+# coding: utf-8
+
+# import models into model package
+from openapi_server.models.answered import Answered
+from openapi_server.models.attachment_view_model import AttachmentViewModel
+from openapi_server.models.daily_report_view_model import DailyReportViewModel
+from openapi_server.models.daily_report_view_model_item import DailyReportViewModelItem
+from openapi_server.models.daily_report_view_model_search_result import DailyReportViewModelSearchResult
+from openapi_server.models.grouped_question_view_model import GroupedQuestionViewModel
+from openapi_server.models.house_enum import HouseEnum
+from openapi_server.models.link import Link
+from openapi_server.models.linked_statements import LinkedStatements
+from openapi_server.models.member_view_model import MemberViewModel
+from openapi_server.models.problem_details import ProblemDetails
+from openapi_server.models.question_status_enum import QuestionStatusEnum
+from openapi_server.models.questions_view_model import QuestionsViewModel
+from openapi_server.models.questions_view_model_item import QuestionsViewModelItem
+from openapi_server.models.questions_view_model_search_result import QuestionsViewModelSearchResult
+from openapi_server.models.statement_link_type_enum import StatementLinkTypeEnum
+from openapi_server.models.statements_view_model import StatementsViewModel
+from openapi_server.models.statements_view_model_item import StatementsViewModelItem
+from openapi_server.models.statements_view_model_search_result import StatementsViewModelSearchResult

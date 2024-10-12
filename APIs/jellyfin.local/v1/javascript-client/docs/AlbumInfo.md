@@ -1,0 +1,21 @@
+# JellyfinApi.AlbumInfo
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**albumArtists** | **[String]** | Gets or sets the album artist. | [optional] 
+**artistProviderIds** | **{String: String}** | Gets or sets the artist provider ids. | [optional] 
+**indexNumber** | **Number** |  | [optional] 
+**isAutomated** | **Boolean** |  | [optional] 
+**metadataCountryCode** | **String** | Gets or sets the metadata country code. | [optional] 
+**metadataLanguage** | **String** | Gets or sets the metadata language. | [optional] 
+**name** | **String** | Gets or sets the name. | [optional] 
+**parentIndexNumber** | **Number** |  | [optional] 
+**path** | **String** | Gets or sets the path. | [optional] 
+**premiereDate** | **Date** |  | [optional] 
+**providerIds** | **{String: String}** | Gets or sets the provider ids. | [optional] 
+**songInfos** | [**[SongInfo]**](SongInfo.md) |  | [optional] 
+**year** | **Number** | Gets or sets the year. | [optional] 
+
+

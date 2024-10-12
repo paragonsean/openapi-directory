@@ -1,0 +1,39 @@
+# coding: utf-8
+
+import sys
+from setuptools import setup, find_packages
+
+NAME = "openapi_server"
+VERSION = "1.0.0"
+
+# To install the library, run the following
+#
+# python setup.py install
+#
+# prerequisite: setuptools
+# http://pypi.python.org/pypi/setuptools
+
+REQUIRES = [
+    "connexion==2.14.1",
+    "swagger-ui-bundle==0.0.9",
+    "aiohttp_jinja2==1.5.0",
+]
+
+setup(
+    name=NAME,
+    version=VERSION,
+    description="VisibleThread API",
+    author_email="",
+    url="",
+    keywords=["OpenAPI", "VisibleThread API"],
+    install_requires=REQUIRES,
+    packages=find_packages(),
+    package_data={'': ['openapi/openapi.yaml']},
+    include_package_data=True,
+    entry_points={
+        'console_scripts': ['openapi_server=openapi_server.__main__:main']},
+    long_description="""\
+    ## Introduction The VisibleThread b API provides services for analyzing/searching documents and web pages. To use the service you need an API key.   **Contact us at support@visiblethread.com to request an API key**.   The services are split into **Documents** and **Webscans**.  ### Documents Upload documents and dictionaries so you can : - Measure the readability of your document - search a document for all terms from a dictionary - retrieve all paragraphs from a document or only matching paragraphs  ### Webscans Analyze web pages so you can:  - Measure the readability of your web content - Identify &amp; highlight content issues e.g. long sentences, passive voice  The VisibleThread API allows you to programatially submit webpage urls to be scanned,  check on the results of a scan, and view a list of previous scans you have performed.      -------------  The VisibleThread API is a HTTP-based JSON API, accessible at https://api.visiblethread.com  Each request to the service requires your API key to be successful.  ## Getting Started With Webscans  Steps: 1. Enter your API key above and hit **Explore**.  2. Run a new scan by submitting a **POST to /webscans** (title and some webUrls are required).    The scan runs asynchronously in the background but returns immediately with a JSON response containing an \&quot;id\&quot; that represents your scan. 3. Check on the status of a scan by submitting **GET /webscans/{scanId}**, if the scan is still in progress it will return a HTTP 503. If     it is complete it will return a HTTP 200 with the appropriate JSON outlining the urls scanned and the summary statistics for each url. 4. Retrieve all your previous scan results by submitting **GET /webscans**.   5. Retrieve detailed results for a url within a scan (readability, long sentence and passive language instances) by submitting     **GET /webscans/{scanId}/webUrls/{urlId}** (scanId and urlId are required)  ## Getting Started With Document scans:  Steps: 1. Enter your API key above and hit **Explore** 2. Run a new scan by submitting a **POST to /documents** (document required). The scan runs asynchronously in the background but returns    immediately with a JSON response containins an \&quot;id\&quot; that represents your scan 3. Check on the status of a scan by submitting **GET /documents/{scanId}**, if the scan is still in progress it will return a HTTP 503. If     it is complete it will return a HTTP 200 with the appropriate JSON outlining the document readability results. It will contain detailed    analysis of each paragraph in the document 4. Retrieve all your previous scan results by submitting **GET /documents**  ### Searching a document for keywords  The VisibleThread API allows you to upload a set of keywords or a &#39;dictionary&#39;. You can then perform a search of a already uploaded document  using that dictionary  Steps (Assuming you have uploaded your document using the steps above): 1. Upload a csv file to use as a keyword dictionary by submitting a **POST to /dictionaries** (csv file required). This returns a JSON     response with the dictionary Id  2. Search a document with the dictionary by submitting a **POST to /searches** (document id and dictionary id required).  3. Get the resuhlts of the search by submitting  **GET /searches/{docId}/{dictionaryId}\&quot; . This will return JSON response containing     detailed results of searching the document using the dictionary. 4. To view the list of all searches you have performed submit a **GET /searches**.   Below is a list of the available API endpoints, documentation &amp; a form to try out each operation.
+    """
+)
+

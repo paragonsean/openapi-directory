@@ -1,0 +1,685 @@
+openapi: 3.0.1
+info:
+  contact:
+    name: Work Data Initiative
+    url: http://www.dataatwork.org
+  description: "A complete and standard data store for canonical and emerging skills,\
+    \ knowledge, abilities, tools, technolgies, and how they relate to jobs."
+  title: Open Skills API
+  version: "1.0"
+  x-apisguru-categories:
+  - open_data
+  x-logo:
+    url: https://pbs.twimg.com/profile_images/593962900408008704/WT7rcPhZ_400x400.jpg
+  x-origin:
+  - format: swagger
+    url: http://api.dataatwork.org/v1/spec/skills-api.json
+    version: "2.0"
+  x-providerName: dataatwork.org
+servers:
+- url: http://api.dataatwork.org/v1
+paths:
+  /jobs:
+    get:
+      description: "Retrieves the names, descriptions, and UUIDs of all job titles."
+      parameters:
+      - description: Pagination offset. Default is 0.
+        in: query
+        name: offset
+        schema:
+          type: integer
+      - description: Maximum number of items per page. Default is 20 and cannot exceed
+          500.
+        in: query
+        name: limit
+        schema:
+          type: integer
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Jobs'
+          description: A collection of jobs
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Unexpected error
+      summary: Job Titles and Descriptions
+      x-accepts:
+      - application/json
+  /jobs/autocomplete:
+    get:
+      description: "Retrieves the names, descriptions, and UUIDs of all job titles\
+        \ matching a given search criteria."
+      parameters:
+      - description: Find job titles beginning with the given text fragment
+        in: query
+        name: begins_with
+        schema:
+          type: string
+      - description: Find job titles containing the given text fragment
+        in: query
+        name: contains
+        schema:
+          type: string
+      - description: Find job titles ending with the given text fragment
+        in: query
+        name: ends_with
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Jobs'
+          description: A collection of jobs
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Unexpected error
+      summary: Job Title Autocomplete
+      x-accepts:
+      - application/json
+  /jobs/normalize:
+    get:
+      description: Retrieves the canonical job title for a synonymous job title
+      parameters:
+      - description: Find the canonical job title(s) for jobs matching the given text
+          fragment
+        in: query
+        name: job_title
+        required: true
+        schema:
+          type: string
+      - description: Maximumn number of job title synonyms to return. Default is 1
+          and cannot exceed 10.
+        in: query
+        name: limit
+        schema:
+          type: integer
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NormalizedJobs'
+          description: A collection of normalized jobs
+      summary: Job Title Normalization
+      x-accepts:
+      - application/json
+  /jobs/unusual_titles:
+    get:
+      description: Retrieves a list of unusual job titles and the UUIDs of their canonical
+        jobs.
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NormalizedJobs'
+          description: A collection of normalized jobs
+      summary: Unusual Job Titles
+      x-accepts:
+      - application/json
+  /jobs/{id}:
+    get:
+      description: "Retrieves the name, description, and UUID of a job by specifying\
+        \ its O*NET SOC Code or UUID."
+      parameters:
+      - description: The O*NET SOC Code or UUID of the job title to retrieve
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: The FIPS Code of a Core-Based Statistical Area. Only return the
+          job if present in this area
+        in: query
+        name: fips
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Job'
+          description: A job
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Unexpected error
+      summary: Job Title and Description
+      x-accepts:
+      - application/json
+  /jobs/{id}/related_jobs:
+    get:
+      description: Retrieves a collection of jobs associated with a specified job.
+      parameters:
+      - description: The UUID of the job to retrieve related jobs for
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JobRelatedJobs'
+          description: A job and its related jobs
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Unexpected error
+      summary: Jobs Associated with a Job
+      x-accepts:
+      - application/json
+  /jobs/{id}/related_skills:
+    get:
+      description: Retrieves a collection of skills associated with a specified job.
+      parameters:
+      - description: The UUID of the job to retrieve skills for
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JobSkills'
+          description: A job and its related skills
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Unexpected error
+      summary: Skills Associated with a Job
+      x-accepts:
+      - application/json
+  /skills:
+    get:
+      description: "Retrieve the names, descriptions, and UUIDs of all skills."
+      parameters:
+      - description: Pagination offset. Default is 0.
+        in: query
+        name: offset
+        schema:
+          type: integer
+      - description: Maximum number of items per page. Default is 20 and cannot exceed
+          500.
+        in: query
+        name: limit
+        schema:
+          type: integer
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Skills'
+          description: A collection of skills
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Unexpected error
+      summary: Skill Names and Descriptions
+      x-accepts:
+      - application/json
+  /skills/autocomplete:
+    get:
+      description: "Retrieves the names, descriptions, and UUIDs of all skills matching\
+        \ a given search criteria."
+      parameters:
+      - description: Find skill names beginning with the given text fragment
+        in: query
+        name: begins_with
+        schema:
+          type: string
+      - description: Find skill names containing the given text fragment
+        in: query
+        name: contains
+        schema:
+          type: string
+      - description: Find skill names ending with the given text fragment
+        in: query
+        name: ends_with
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SkillJobs'
+          description: A collection of skills
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Unexpected error
+      summary: Skill Name Autocomplete
+      x-accepts:
+      - application/json
+  /skills/normalize:
+    get:
+      description: Retrieves the canonical skill name for a synonymous skill name
+      parameters:
+      - description: Find the canonical skill name(s) for skills matching the given
+          text fragment
+        in: query
+        name: skill_name
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NormalizedSkills'
+          description: A collection of normalized skills
+      summary: Skill Name Normalization
+      x-accepts:
+      - application/json
+  /skills/{id}:
+    get:
+      description: "Retrieves the name, description, and UUID of a job by specifying\
+        \ its UUID."
+      parameters:
+      - description: The UUID of the skill name to retrieve
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Skill'
+          description: A skill
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Unexpected error
+      summary: Skill Name and Description
+      x-accepts:
+      - application/json
+  /skills/{id}/related_jobs:
+    get:
+      description: Retrieves a collection of jobs associated with a specified skill.
+      parameters:
+      - description: The UUID of the skill to retrieve jobs for
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SkillJobs'
+          description: A skill and its related jobs
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Unexpected error
+      summary: Jobs Associated with a Skill
+      x-accepts:
+      - application/json
+  /skills/{id}/related_skills:
+    get:
+      description: Retrieves a collection of skills associated with a specified skill.
+      parameters:
+      - description: The UUID of the skill to retrieve related skills for
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SkillRelatedSkills'
+          description: A skill and its related skills
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Unexpected error
+      summary: Skills Associated with a Skill
+      x-accepts:
+      - application/json
+components:
+  schemas:
+    Error:
+      example:
+        code: 0
+        message: message
+      properties:
+        code:
+          format: int32
+          type: integer
+        message:
+          type: string
+      type: object
+    Job:
+      example:
+        normalized_job_title: normalized_job_title
+        parent_uuid: parent_uuid
+        title: title
+        uuid: uuid
+      properties:
+        normalized_job_title:
+          description: Normalized job title
+          type: string
+        parent_uuid:
+          description: UUID for the job's parent job category
+          type: string
+        title:
+          description: Job title
+          type: string
+        uuid:
+          description: Universally Unique Identifier for the job
+          type: string
+      type: object
+    JobRelatedJob:
+      example:
+        parent_uuid: parent_uuid
+        title: title
+        uuid: uuid
+      properties:
+        parent_uuid:
+          description: Universally Unique Identifier for the job's canonical job title
+          type: string
+        title:
+          description: Job title
+          type: string
+        uuid:
+          description: Universally Unique Identifier for the job
+          type: string
+      type: object
+    JobRelatedJobs:
+      example:
+        related_job_titles:
+        - parent_uuid: parent_uuid
+          title: title
+          uuid: uuid
+        - parent_uuid: parent_uuid
+          title: title
+          uuid: uuid
+        uuid: uuid
+      properties:
+        related_job_titles:
+          items:
+            $ref: '#/components/schemas/JobRelatedJob'
+          type: array
+        uuid:
+          description: Universally Unique Identifier for the job
+          type: string
+      type: object
+    JobSkill:
+      example:
+        job_uuid: job_uuid
+        normalized_job_title: normalized_job_title
+        level: 6.027456183070403
+        importance: 0.8008281904610115
+        job_title: job_title
+      properties:
+        importance:
+          description: O*NET importance score indicating how important skill is to
+            job.
+          type: number
+        job_title:
+          description: Job title
+          type: string
+        job_uuid:
+          description: Universally Unique Identifier for the job
+          type: string
+        level:
+          description: O*NET level score indicating the skill level required for the
+            job.
+          type: number
+        normalized_job_title:
+          description: Normalized job title
+          type: string
+      type: object
+    JobSkills:
+      example:
+        skills:
+        - level: 6.027456183070403
+          importance: 0.8008281904610115
+          skill_name: skill_name
+          skill_uuid: skill_uuid
+          description: description
+          normalized_skill_name: normalized_skill_name
+        - level: 6.027456183070403
+          importance: 0.8008281904610115
+          skill_name: skill_name
+          skill_uuid: skill_uuid
+          description: description
+          normalized_skill_name: normalized_skill_name
+        job_uuid: job_uuid
+        normalized_job_title: normalized_job_title
+        job_title: job_title
+      properties:
+        job_title:
+          description: Title of the job associated with the UUID
+          type: string
+        job_uuid:
+          description: Universally Unique Identifier for the job
+          type: string
+        normalized_job_title:
+          description: Normalized title of the job associated with the UUID
+          type: string
+        skills:
+          items:
+            $ref: '#/components/schemas/SkillJob'
+          type: array
+      type: object
+    Jobs:
+      items:
+        $ref: '#/components/schemas/Job'
+      properties:
+        links:
+          items:
+            $ref: '#/components/schemas/PageLink'
+          type: array
+      type: array
+    NormalizedJob:
+      example:
+        parent_uuid: parent_uuid
+        title: title
+        uuid: uuid
+        relevance_score: relevance_score
+      properties:
+        parent_uuid:
+          description: Universal Unique Identifier for the canonical job title
+          type: string
+        relevance_score:
+          description: Relevance score for job title.
+          type: string
+        title:
+          description: Job title for the synonymous job title
+          type: string
+        uuid:
+          description: Universally Unique Identifier for the synonymous job title
+          type: string
+      type: object
+    NormalizedJobs:
+      items:
+        $ref: '#/components/schemas/NormalizedJob'
+      type: array
+    NormalizedSkill:
+      example:
+        skill_name: skill_name
+        uuid: uuid
+      properties:
+        skill_name:
+          description: Canonical skill name
+          type: string
+        uuid:
+          description: Universally Unique Identifier for the canonical skill name
+          type: string
+      type: object
+    NormalizedSkills:
+      items:
+        $ref: '#/components/schemas/NormalizedSkill'
+      type: array
+    PageLink:
+      properties:
+        href:
+          description: Link URI
+          type: string
+        rel:
+          description: "Link descriptor (e.g. self, first, prev, next, last)"
+          type: string
+      type: object
+    Skill:
+      example:
+        name: name
+        normalized_skill_name: normalized_skill_name
+        onet_element_id: onet_element_id
+        uuid: uuid
+      properties:
+        name:
+          description: Skill name
+          type: string
+        normalized_skill_name:
+          description: Normalized skill name
+          type: string
+        onet_element_id:
+          description: O*NET Element Identifier
+          type: string
+        uuid:
+          description: Universally Unique Identifier for the skill
+          type: string
+      type: object
+    SkillJob:
+      example:
+        level: 6.027456183070403
+        importance: 0.8008281904610115
+        skill_name: skill_name
+        skill_uuid: skill_uuid
+        description: description
+        normalized_skill_name: normalized_skill_name
+      properties:
+        description:
+          description: Description of the skill
+          type: string
+        importance:
+          description: O*NET importance score
+          type: number
+        level:
+          description: O*NET level score
+          type: number
+        normalized_skill_name:
+          description: Normalized skill name
+          type: string
+        skill_name:
+          description: Name of the skill
+          type: string
+        skill_uuid:
+          description: Universally Unique Identifier for the skill
+          type: string
+      type: object
+    SkillJobs:
+      example:
+        normalized_job_title: normalized_job_title
+        jobs:
+        - job_uuid: job_uuid
+          normalized_job_title: normalized_job_title
+          level: 6.027456183070403
+          importance: 0.8008281904610115
+          job_title: job_title
+        - job_uuid: job_uuid
+          normalized_job_title: normalized_job_title
+          level: 6.027456183070403
+          importance: 0.8008281904610115
+          job_title: job_title
+        skill_name: skill_name
+        skill_uuid: skill_uuid
+      properties:
+        jobs:
+          items:
+            $ref: '#/components/schemas/JobSkill'
+          type: array
+        normalized_job_title:
+          description: Normalized title of the job associated with the UUID
+          type: string
+        skill_name:
+          description: Title of the job associated with the UUID
+          type: string
+        skill_uuid:
+          description: Universally Unique Identifier for the job
+          type: string
+      type: object
+    SkillRelatedSkill:
+      example:
+        skill_name: skill_name
+        uuid: uuid
+      properties:
+        skill_name:
+          description: Skill name
+          type: string
+        uuid:
+          description: Universally Unique Identifier for the skill
+          type: string
+      type: object
+    SkillRelatedSkills:
+      example:
+        related_skill_name:
+        - skill_name: skill_name
+          uuid: uuid
+        - skill_name: skill_name
+          uuid: uuid
+        uuid: uuid
+      properties:
+        related_skill_name:
+          items:
+            $ref: '#/components/schemas/SkillRelatedSkill'
+          type: array
+        uuid:
+          description: Universally Unique Identifier for the skills
+          type: string
+      type: object
+    Skills:
+      items:
+        $ref: '#/components/schemas/Skill'
+      properties:
+        links:
+          items:
+            $ref: '#/components/schemas/PageLink'
+          type: array
+      type: array
+x-original-swagger-version: "2.0"
+

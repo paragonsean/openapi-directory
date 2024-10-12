@@ -1,0 +1,103 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIAccess_tokens_inner.h \
+    $${PWD}/OAIAccount_merge_inner.h \
+    $${PWD}/OAIAnswers_inner.h \
+    $${PWD}/OAIAnswers_inner_last_editor.h \
+    $${PWD}/OAIAnswers_inner_last_editor_badge_counts.h \
+    $${PWD}/OAIBadges_inner.h \
+    $${PWD}/OAIComments_inner.h \
+    $${PWD}/OAICreated_comment.h \
+    $${PWD}/OAIError.h \
+    $${PWD}/OAIErrors_inner.h \
+    $${PWD}/OAIEvents_inner.h \
+    $${PWD}/OAIFilters_inner.h \
+    $${PWD}/OAIInbox_items_inner.h \
+    $${PWD}/OAIInbox_items_inner_site.h \
+    $${PWD}/OAIInbox_items_inner_site_styling.h \
+    $${PWD}/OAIInfo_object.h \
+    $${PWD}/OAINetwork_users_inner.h \
+    $${PWD}/OAINotifications_inner.h \
+    $${PWD}/OAIPosts_inner.h \
+    $${PWD}/OAIPrivileges_inner.h \
+    $${PWD}/OAIQuestion_timeline_events_inner.h \
+    $${PWD}/OAIQuestions_inner.h \
+    $${PWD}/OAIQuestions_inner_closed_details.h \
+    $${PWD}/OAIQuestions_inner_migrated_from.h \
+    $${PWD}/OAIQuestions_inner_notice.h \
+    $${PWD}/OAIReputation_changes_inner.h \
+    $${PWD}/OAIReputation_history_inner.h \
+    $${PWD}/OAIRevisions_inner.h \
+    $${PWD}/OAISingle_filter.h \
+    $${PWD}/OAISuggested_edits_inner.h \
+    $${PWD}/OAITag_score_objects_inner.h \
+    $${PWD}/OAITag_synonyms_inner.h \
+    $${PWD}/OAITag_wikis_inner.h \
+    $${PWD}/OAITags_inner.h \
+    $${PWD}/OAITop_tag_objects_inner.h \
+    $${PWD}/OAIUser.h \
+    $${PWD}/OAIUser_timeline_objects_inner.h \
+    $${PWD}/OAIUsers_inner.h \
+    $${PWD}/OAIWrite_permissions_inner.h \
+# APIs
+    $${PWD}/OAIDefaultApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIAccess_tokens_inner.cpp \
+    $${PWD}/OAIAccount_merge_inner.cpp \
+    $${PWD}/OAIAnswers_inner.cpp \
+    $${PWD}/OAIAnswers_inner_last_editor.cpp \
+    $${PWD}/OAIAnswers_inner_last_editor_badge_counts.cpp \
+    $${PWD}/OAIBadges_inner.cpp \
+    $${PWD}/OAIComments_inner.cpp \
+    $${PWD}/OAICreated_comment.cpp \
+    $${PWD}/OAIError.cpp \
+    $${PWD}/OAIErrors_inner.cpp \
+    $${PWD}/OAIEvents_inner.cpp \
+    $${PWD}/OAIFilters_inner.cpp \
+    $${PWD}/OAIInbox_items_inner.cpp \
+    $${PWD}/OAIInbox_items_inner_site.cpp \
+    $${PWD}/OAIInbox_items_inner_site_styling.cpp \
+    $${PWD}/OAIInfo_object.cpp \
+    $${PWD}/OAINetwork_users_inner.cpp \
+    $${PWD}/OAINotifications_inner.cpp \
+    $${PWD}/OAIPosts_inner.cpp \
+    $${PWD}/OAIPrivileges_inner.cpp \
+    $${PWD}/OAIQuestion_timeline_events_inner.cpp \
+    $${PWD}/OAIQuestions_inner.cpp \
+    $${PWD}/OAIQuestions_inner_closed_details.cpp \
+    $${PWD}/OAIQuestions_inner_migrated_from.cpp \
+    $${PWD}/OAIQuestions_inner_notice.cpp \
+    $${PWD}/OAIReputation_changes_inner.cpp \
+    $${PWD}/OAIReputation_history_inner.cpp \
+    $${PWD}/OAIRevisions_inner.cpp \
+    $${PWD}/OAISingle_filter.cpp \
+    $${PWD}/OAISuggested_edits_inner.cpp \
+    $${PWD}/OAITag_score_objects_inner.cpp \
+    $${PWD}/OAITag_synonyms_inner.cpp \
+    $${PWD}/OAITag_wikis_inner.cpp \
+    $${PWD}/OAITags_inner.cpp \
+    $${PWD}/OAITop_tag_objects_inner.cpp \
+    $${PWD}/OAIUser.cpp \
+    $${PWD}/OAIUser_timeline_objects_inner.cpp \
+    $${PWD}/OAIUsers_inner.cpp \
+    $${PWD}/OAIWrite_permissions_inner.cpp \
+# APIs
+    $${PWD}/OAIDefaultApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

@@ -1,0 +1,81 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAI401Response.h \
+    $${PWD}/OAI403Response.h \
+    $${PWD}/OAIAccountResponse.h \
+    $${PWD}/OAICreateMessengerAccount_400_response.h \
+    $${PWD}/OAICreateMessengerAccount_400_response_invalid_params_inner.h \
+    $${PWD}/OAICreateMessengerAccount_request.h \
+    $${PWD}/OAIGetAllAccountResponse.h \
+    $${PWD}/OAIGetAllAccounts_200_response.h \
+    $${PWD}/OAIGetAllAccounts_200_response__links.h \
+    $${PWD}/OAIGetAllAccounts_200_response__links_first.h \
+    $${PWD}/OAIGetAllAccounts_200_response__links_last.h \
+    $${PWD}/OAIGetAllAccounts_200_response__links_next.h \
+    $${PWD}/OAILinkApplication_403_response.h \
+    $${PWD}/OAILinkApplication_409_response.h \
+    $${PWD}/OAILinkApplication_request.h \
+    $${PWD}/OAIMessengerAccountResponse.h \
+    $${PWD}/OAIUnliWithoutApplicationnkApplication_403_response.h \
+    $${PWD}/OAIUnliWithoutApplicationnkApplication_409_response.h \
+    $${PWD}/OAIUpdateMessengerAccount_200_response.h \
+    $${PWD}/OAIUpdateMessengerAccount_400_response.h \
+    $${PWD}/OAIUpdateMessengerAccount_400_response_invalid_params_inner.h \
+    $${PWD}/OAIUpdateMessengerAccount_request.h \
+    $${PWD}/OAIVSMAccountResponse.h \
+    $${PWD}/OAIWAAccountResponse.h \
+# APIs
+    $${PWD}/OAIAccountApi.h \
+    $${PWD}/OAIApplicationApi.h \
+    $${PWD}/OAIFacebookMessengerApi.h \
+    $${PWD}/OAIViberServiceMessageApi.h \
+    $${PWD}/OAIWhatsAppApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAI401Response.cpp \
+    $${PWD}/OAI403Response.cpp \
+    $${PWD}/OAIAccountResponse.cpp \
+    $${PWD}/OAICreateMessengerAccount_400_response.cpp \
+    $${PWD}/OAICreateMessengerAccount_400_response_invalid_params_inner.cpp \
+    $${PWD}/OAICreateMessengerAccount_request.cpp \
+    $${PWD}/OAIGetAllAccountResponse.cpp \
+    $${PWD}/OAIGetAllAccounts_200_response.cpp \
+    $${PWD}/OAIGetAllAccounts_200_response__links.cpp \
+    $${PWD}/OAIGetAllAccounts_200_response__links_first.cpp \
+    $${PWD}/OAIGetAllAccounts_200_response__links_last.cpp \
+    $${PWD}/OAIGetAllAccounts_200_response__links_next.cpp \
+    $${PWD}/OAILinkApplication_403_response.cpp \
+    $${PWD}/OAILinkApplication_409_response.cpp \
+    $${PWD}/OAILinkApplication_request.cpp \
+    $${PWD}/OAIMessengerAccountResponse.cpp \
+    $${PWD}/OAIUnliWithoutApplicationnkApplication_403_response.cpp \
+    $${PWD}/OAIUnliWithoutApplicationnkApplication_409_response.cpp \
+    $${PWD}/OAIUpdateMessengerAccount_200_response.cpp \
+    $${PWD}/OAIUpdateMessengerAccount_400_response.cpp \
+    $${PWD}/OAIUpdateMessengerAccount_400_response_invalid_params_inner.cpp \
+    $${PWD}/OAIUpdateMessengerAccount_request.cpp \
+    $${PWD}/OAIVSMAccountResponse.cpp \
+    $${PWD}/OAIWAAccountResponse.cpp \
+# APIs
+    $${PWD}/OAIAccountApi.cpp \
+    $${PWD}/OAIApplicationApi.cpp \
+    $${PWD}/OAIFacebookMessengerApi.cpp \
+    $${PWD}/OAIViberServiceMessageApi.cpp \
+    $${PWD}/OAIWhatsAppApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

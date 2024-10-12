@@ -1,0 +1,107 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIAddUserToAccount_request.h \
+    $${PWD}/OAIAddUserToAccount_request_users_inner.h \
+    $${PWD}/OAIAddUserToAccount_request_users_inner_identification.h \
+    $${PWD}/OAIDeleteAccount_202_response.h \
+    $${PWD}/OAIDeleteAccount_202_response_allOf_meta.h \
+    $${PWD}/OAIDeleteAccount_400_response.h \
+    $${PWD}/OAIDeleteAccount_400_response_allOf_errors.h \
+    $${PWD}/OAIDeleteAccount_400_response_allOf_errors_parameters.h \
+    $${PWD}/OAIDeleteAccount_request.h \
+    $${PWD}/OAIDeleteAccount_request_identification.h \
+    $${PWD}/OAIDeleteUser_request.h \
+    $${PWD}/OAIGetAccountProperties_200_response.h \
+    $${PWD}/OAIGetAccountProperties_200_response_allOf_data_inner.h \
+    $${PWD}/OAIGetAccountProperties_200_response_allOf_data_inner_group.h \
+    $${PWD}/OAIGetAccountSegments_200_response.h \
+    $${PWD}/OAIGetAccountSegments_200_response_allOf_data_inner.h \
+    $${PWD}/OAIGetEvents_200_response.h \
+    $${PWD}/OAIGetEvents_200_response_allOf_data_inner.h \
+    $${PWD}/OAIGetEvents_200_response_allOf_data_inner_group.h \
+    $${PWD}/OAIGetTrackingSnippet_200_response.h \
+    $${PWD}/OAIGetTrackingSnippet_200_response_allOf_data.h \
+    $${PWD}/OAIGetValidity_200_response.h \
+    $${PWD}/OAIGetValidity_200_response_allOf_data.h \
+    $${PWD}/OAILink_request.h \
+    $${PWD}/OAITrackEvent_request.h \
+    $${PWD}/OAITrackEvent_request_metadata_value.h \
+    $${PWD}/OAITrackJourneyEvent_request.h \
+    $${PWD}/OAITrackJourneyEvent_request_identification.h \
+    $${PWD}/OAITrackJourneyEvent_request_metadata_value.h \
+    $${PWD}/OAIUpsertAccount_201_response.h \
+    $${PWD}/OAIUpsertAccount_request.h \
+    $${PWD}/OAIUpsertAccount_request_properties_value.h \
+    $${PWD}/OAIUpsertUser_201_response.h \
+    $${PWD}/OAIUpsertUser_request.h \
+# APIs
+    $${PWD}/OAIAccountsApi.h \
+    $${PWD}/OAIEventsApi.h \
+    $${PWD}/OAIPropertiesApi.h \
+    $${PWD}/OAISegmentsApi.h \
+    $${PWD}/OAITrackApi.h \
+    $${PWD}/OAIUsersApi.h \
+    $${PWD}/OAIValidationApi.h \
+    $${PWD}/OAIWebsitesApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIAddUserToAccount_request.cpp \
+    $${PWD}/OAIAddUserToAccount_request_users_inner.cpp \
+    $${PWD}/OAIAddUserToAccount_request_users_inner_identification.cpp \
+    $${PWD}/OAIDeleteAccount_202_response.cpp \
+    $${PWD}/OAIDeleteAccount_202_response_allOf_meta.cpp \
+    $${PWD}/OAIDeleteAccount_400_response.cpp \
+    $${PWD}/OAIDeleteAccount_400_response_allOf_errors.cpp \
+    $${PWD}/OAIDeleteAccount_400_response_allOf_errors_parameters.cpp \
+    $${PWD}/OAIDeleteAccount_request.cpp \
+    $${PWD}/OAIDeleteAccount_request_identification.cpp \
+    $${PWD}/OAIDeleteUser_request.cpp \
+    $${PWD}/OAIGetAccountProperties_200_response.cpp \
+    $${PWD}/OAIGetAccountProperties_200_response_allOf_data_inner.cpp \
+    $${PWD}/OAIGetAccountProperties_200_response_allOf_data_inner_group.cpp \
+    $${PWD}/OAIGetAccountSegments_200_response.cpp \
+    $${PWD}/OAIGetAccountSegments_200_response_allOf_data_inner.cpp \
+    $${PWD}/OAIGetEvents_200_response.cpp \
+    $${PWD}/OAIGetEvents_200_response_allOf_data_inner.cpp \
+    $${PWD}/OAIGetEvents_200_response_allOf_data_inner_group.cpp \
+    $${PWD}/OAIGetTrackingSnippet_200_response.cpp \
+    $${PWD}/OAIGetTrackingSnippet_200_response_allOf_data.cpp \
+    $${PWD}/OAIGetValidity_200_response.cpp \
+    $${PWD}/OAIGetValidity_200_response_allOf_data.cpp \
+    $${PWD}/OAILink_request.cpp \
+    $${PWD}/OAITrackEvent_request.cpp \
+    $${PWD}/OAITrackEvent_request_metadata_value.cpp \
+    $${PWD}/OAITrackJourneyEvent_request.cpp \
+    $${PWD}/OAITrackJourneyEvent_request_identification.cpp \
+    $${PWD}/OAITrackJourneyEvent_request_metadata_value.cpp \
+    $${PWD}/OAIUpsertAccount_201_response.cpp \
+    $${PWD}/OAIUpsertAccount_request.cpp \
+    $${PWD}/OAIUpsertAccount_request_properties_value.cpp \
+    $${PWD}/OAIUpsertUser_201_response.cpp \
+    $${PWD}/OAIUpsertUser_request.cpp \
+# APIs
+    $${PWD}/OAIAccountsApi.cpp \
+    $${PWD}/OAIEventsApi.cpp \
+    $${PWD}/OAIPropertiesApi.cpp \
+    $${PWD}/OAISegmentsApi.cpp \
+    $${PWD}/OAITrackApi.cpp \
+    $${PWD}/OAIUsersApi.cpp \
+    $${PWD}/OAIValidationApi.cpp \
+    $${PWD}/OAIWebsitesApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

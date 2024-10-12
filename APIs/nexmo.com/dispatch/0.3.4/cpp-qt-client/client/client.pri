@@ -1,0 +1,85 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIAudioProperty.h \
+    $${PWD}/OAICreateWorkflow.h \
+    $${PWD}/OAICreateWorkflow_workflow_inner.h \
+    $${PWD}/OAIError.h \
+    $${PWD}/OAIError_invalid_parameters.h \
+    $${PWD}/OAIFailoverProperty.h \
+    $${PWD}/OAIFileProperty.h \
+    $${PWD}/OAIFinalReport.h \
+    $${PWD}/OAIFinalReport__links.h \
+    $${PWD}/OAIFinalReport__links_messages_inner.h \
+    $${PWD}/OAIFinalReport_usage.h \
+    $${PWD}/OAIFromProperty.h \
+    $${PWD}/OAIImageProperty.h \
+    $${PWD}/OAIMessageProperty.h \
+    $${PWD}/OAIMessageProperty_content.h \
+    $${PWD}/OAIMessageProperty_messenger.h \
+    $${PWD}/OAIMessageProperty_viber_service_msg.h \
+    $${PWD}/OAIMessageProperty_whatsapp.h \
+    $${PWD}/OAIMessageStatus.h \
+    $${PWD}/OAIMessageStatus__links.h \
+    $${PWD}/OAIMessageStatus__links_workflow.h \
+    $${PWD}/OAIMessageStatus_error.h \
+    $${PWD}/OAIMessageStatus_usage.h \
+    $${PWD}/OAIResponse.h \
+    $${PWD}/OAISendMessage.h \
+    $${PWD}/OAISendWithFailoverMessage.h \
+    $${PWD}/OAITemplateProperty.h \
+    $${PWD}/OAITemplateProperty_parameters_inner.h \
+    $${PWD}/OAIToProperty.h \
+    $${PWD}/OAIVideoProperty.h \
+# APIs
+    $${PWD}/OAIDefaultApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIAudioProperty.cpp \
+    $${PWD}/OAICreateWorkflow.cpp \
+    $${PWD}/OAICreateWorkflow_workflow_inner.cpp \
+    $${PWD}/OAIError.cpp \
+    $${PWD}/OAIError_invalid_parameters.cpp \
+    $${PWD}/OAIFailoverProperty.cpp \
+    $${PWD}/OAIFileProperty.cpp \
+    $${PWD}/OAIFinalReport.cpp \
+    $${PWD}/OAIFinalReport__links.cpp \
+    $${PWD}/OAIFinalReport__links_messages_inner.cpp \
+    $${PWD}/OAIFinalReport_usage.cpp \
+    $${PWD}/OAIFromProperty.cpp \
+    $${PWD}/OAIImageProperty.cpp \
+    $${PWD}/OAIMessageProperty.cpp \
+    $${PWD}/OAIMessageProperty_content.cpp \
+    $${PWD}/OAIMessageProperty_messenger.cpp \
+    $${PWD}/OAIMessageProperty_viber_service_msg.cpp \
+    $${PWD}/OAIMessageProperty_whatsapp.cpp \
+    $${PWD}/OAIMessageStatus.cpp \
+    $${PWD}/OAIMessageStatus__links.cpp \
+    $${PWD}/OAIMessageStatus__links_workflow.cpp \
+    $${PWD}/OAIMessageStatus_error.cpp \
+    $${PWD}/OAIMessageStatus_usage.cpp \
+    $${PWD}/OAIResponse.cpp \
+    $${PWD}/OAISendMessage.cpp \
+    $${PWD}/OAISendWithFailoverMessage.cpp \
+    $${PWD}/OAITemplateProperty.cpp \
+    $${PWD}/OAITemplateProperty_parameters_inner.cpp \
+    $${PWD}/OAIToProperty.cpp \
+    $${PWD}/OAIVideoProperty.cpp \
+# APIs
+    $${PWD}/OAIDefaultApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

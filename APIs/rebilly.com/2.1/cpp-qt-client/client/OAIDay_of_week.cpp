@@ -1,0 +1,191 @@
+/**
+ * Rebilly REST API
+ * # Introduction The Rebilly API is built on HTTP.  Our API is RESTful.  It has predictable resource URLs.  It returns HTTP response codes to indicate errors.  It also accepts and returns JSON in the HTTP body.  You can use your favorite HTTP/REST library for your programming language to use Rebilly's API, or you can use one of our SDKs (currently available in [PHP](https://github.com/Rebilly/rebilly-php) and [Javascript](https://github.com/Rebilly/rebilly-js-sdk)).  We have other APIs that are also available.  Every action from our [app](https://app.rebilly.com) is supported by an API which is documented and available for use so that you may automate any workflows necessary.  This document contains the most commonly integrated resources.  # Authentication  When you sign up for an account, you are given your first secret API key. You can generate additional API keys, and delete API keys (as you may need to rotate your keys in the future). You authenticate to the Rebilly API by providing your secret key in the request header.  Rebilly offers three forms of authentication:  secret key, publishable key, JSON Web Tokens, and public signature key. - [Secret API key](#section/Authentication/SecretApiKey): used for requests made   from the server side. Never share these keys. Keep them guarded and secure. - [Publishable API key](#section/Authentication/PublishableApiKey): used for    requests from the client side. For now can only be used to create    a [Payment Token](#operation/PostToken) and    a [File token](#operation/PostFile). - [JWT](#section/Authentication/JWT): short lifetime tokens that can be assigned a specific expiration time.  Never share your secret keys. Keep them guarded and secure.  &lt;!-- ReDoc-Inject: &lt;security-definitions&gt; --&gt;  # Errors Rebilly follow's the error response format proposed in [RFC 7807](https://tools.ietf.org/html/rfc7807) also known as Problem Details for HTTP APIs.  As with our normal API responses, your client must be prepared to gracefully handle additional members of the response.  ## Forbidden &lt;RedocResponse pointer={\"#/components/responses/Forbidden\"} /&gt;  ## Conflict &lt;RedocResponse pointer={\"#/components/responses/Conflict\"} /&gt;  ## NotFound &lt;RedocResponse pointer={\"#/components/responses/NotFound\"} /&gt;  ## Unauthorized &lt;RedocResponse pointer={\"#/components/responses/Unauthorized\"} /&gt;  ## ValidationError &lt;RedocResponse pointer={\"#/components/responses/ValidationError\"} /&gt;  # SDKs  Rebilly offers a Javascript SDK and a PHP SDK to help interact with the API.  However, no SDK is required to use the API.  Rebilly also offers [FramePay](https://docs.rebilly.com/docs/developer-docs/framepay/),  a client-side iFrame-based solution to help create payment tokens while minimizing PCI DSS compliance burdens and maximizing the customizability. [FramePay](https://docs.rebilly.com/docs/developer-docs/framepay/) is interacting with the [payment tokens creation operation](#operation/PostToken).  ## Javascript SDK  Installation and usage instructions can be found [here](https://docs.rebilly.com/docs/developer-docs/sdks). SDK code examples are included in these docs.  ## PHP SDK For all PHP SDK examples provided in these docs you will need to configure the `$client`. You may do it like this:  ```php $client = new Rebilly\\Client([     'apiKey' =&gt; 'YourApiKeyHere',     'baseUrl' =&gt; 'https://api.rebilly.com', ]); ```  # Using filter with collections Rebilly provides collections filtering. You can use `?filter` param on collections to define which records should be shown in the response.  Here is filter format description:  - Fields and values in filter are separated with `:`: `?filter=firstName:John`.  - Sub-fields are separated with `.`: `?filter=billingAddress.country:US`.  - Multiple filters are separated with `;`: `?filter=firstName:John;lastName:Doe`. They will be joined with `AND` logic. In this example: `firstName:John` AND `lastName:Doe`.  - You can use multiple values using `,` as values separator: `?filter=firstName:John,Bob`. Multiple values specified for a field will be joined with `OR` logic. In this example: `firstName:John` OR `firstName:Bob`.  - To negate the filter use `!`: `?filter=firstName:!John`. Note that you can negate multiple values like this: `?filter=firstName:!John,!Bob`. This filter rule will exclude all Johns and Bobs from the response.  - You can use range filters like this: `?filter=amount:1..10`.  - You can use gte (greater than or equals) filter like this: `?filter=amount:1..`, or lte (less than or equals) than filter like this: `?filter=amount:..10`. This also works for datetime-based fields.  - You can create some [predefined values lists](https://user-api-docs.rebilly.com/#tag/Lists) and use them in filter: `?filter=firstName:@yourListName`. You can also exclude list values: `?filter=firstName:!@yourListName`.  - Datetime-based fields accept values formatted using RFC 3339 like this: `?filter=createdTime:2021-02-14T13:30:00Z`.   # Expand to include embedded objects Rebilly provides the ability to pre-load additional  objects with a request.   You can use `?expand` param on most requests to expand and include embedded objects within the `_embedded` property of the response.  The `_embedded` property contains an array of  objects keyed by the expand parameter value(s).  You may expand multiple objects by passing them as comma-separated to the expand value like so:  ``` ?expand=recentInvoice,customer ```  And in the response, you would see:  ``` \"_embedded\": [     \"recentInvoice\": {...},     \"customer\": {...} ] ``` Expand may be utilitized not only on `GET` requests but also on `PATCH`, `POST`, `PUT` requests too.   # Getting started guide  Rebilly's API has over 300 operations.  That's more than you'll  need to implement your use cases.  If you have a use  case you would like to implement, please consult us for feedback on the best API operations for the task.  Our getting started guide will demonstrate a basic order form use case.  It will allow us to highlight core resources in Rebilly that will be helpful for many other use cases too.  Within 25 minutes, you'll have sent API requests (via our console) to create a subscription order. 
+ *
+ * The version of the OpenAPI document: 2.1
+ * Contact: integrations@rebilly.com
+ *
+ * NOTE: This class is auto generated by OpenAPI Generator (https://openapi-generator.tech).
+ * https://openapi-generator.tech
+ * Do not edit the class manually.
+ */
+
+#include "OAIDay_of_week.h"
+
+#include <QDebug>
+#include <QJsonArray>
+#include <QJsonDocument>
+#include <QObject>
+
+#include "OAIHelpers.h"
+
+namespace OpenAPI {
+
+OAIDay_of_week::OAIDay_of_week(QString json) {
+    this->initializeModel();
+    this->fromJson(json);
+}
+
+OAIDay_of_week::OAIDay_of_week() {
+    this->initializeModel();
+}
+
+OAIDay_of_week::~OAIDay_of_week() {}
+
+void OAIDay_of_week::initializeModel() {
+
+    m_method_isSet = false;
+    m_method_isValid = false;
+
+    m_day_isSet = false;
+    m_day_isValid = false;
+
+    m_time_isSet = false;
+    m_time_isValid = false;
+
+    m_week_isSet = false;
+    m_week_isValid = false;
+}
+
+void OAIDay_of_week::fromJson(QString jsonString) {
+    QByteArray array(jsonString.toStdString().c_str());
+    QJsonDocument doc = QJsonDocument::fromJson(array);
+    QJsonObject jsonObject = doc.object();
+    this->fromJsonObject(jsonObject);
+}
+
+void OAIDay_of_week::fromJsonObject(QJsonObject json) {
+
+    m_method_isValid = ::OpenAPI::fromJsonValue(m_method, json[QString("method")]);
+    m_method_isSet = !json[QString("method")].isNull() && m_method_isValid;
+
+    m_day_isValid = ::OpenAPI::fromJsonValue(m_day, json[QString("day")]);
+    m_day_isSet = !json[QString("day")].isNull() && m_day_isValid;
+
+    m_time_isValid = ::OpenAPI::fromJsonValue(m_time, json[QString("time")]);
+    m_time_isSet = !json[QString("time")].isNull() && m_time_isValid;
+
+    m_week_isValid = ::OpenAPI::fromJsonValue(m_week, json[QString("week")]);
+    m_week_isSet = !json[QString("week")].isNull() && m_week_isValid;
+}
+
+QString OAIDay_of_week::asJson() const {
+    QJsonObject obj = this->asJsonObject();
+    QJsonDocument doc(obj);
+    QByteArray bytes = doc.toJson();
+    return QString(bytes);
+}
+
+QJsonObject OAIDay_of_week::asJsonObject() const {
+    QJsonObject obj;
+    if (m_method_isSet) {
+        obj.insert(QString("method"), ::OpenAPI::toJsonValue(m_method));
+    }
+    if (m_day.isSet()) {
+        obj.insert(QString("day"), ::OpenAPI::toJsonValue(m_day));
+    }
+    if (m_time_isSet) {
+        obj.insert(QString("time"), ::OpenAPI::toJsonValue(m_time));
+    }
+    if (m_week_isSet) {
+        obj.insert(QString("week"), ::OpenAPI::toJsonValue(m_week));
+    }
+    return obj;
+}
+
+QString OAIDay_of_week::getMethod() const {
+    return m_method;
+}
+void OAIDay_of_week::setMethod(const QString &method) {
+    m_method = method;
+    m_method_isSet = true;
+}
+
+bool OAIDay_of_week::is_method_Set() const{
+    return m_method_isSet;
+}
+
+bool OAIDay_of_week::is_method_Valid() const{
+    return m_method_isValid;
+}
+
+OAIDayOfWeekLong OAIDay_of_week::getDay() const {
+    return m_day;
+}
+void OAIDay_of_week::setDay(const OAIDayOfWeekLong &day) {
+    m_day = day;
+    m_day_isSet = true;
+}
+
+bool OAIDay_of_week::is_day_Set() const{
+    return m_day_isSet;
+}
+
+bool OAIDay_of_week::is_day_Valid() const{
+    return m_day_isValid;
+}
+
+QString OAIDay_of_week::getTime() const {
+    return m_time;
+}
+void OAIDay_of_week::setTime(const QString &time) {
+    m_time = time;
+    m_time_isSet = true;
+}
+
+bool OAIDay_of_week::is_time_Set() const{
+    return m_time_isSet;
+}
+
+bool OAIDay_of_week::is_time_Valid() const{
+    return m_time_isValid;
+}
+
+QString OAIDay_of_week::getWeek() const {
+    return m_week;
+}
+void OAIDay_of_week::setWeek(const QString &week) {
+    m_week = week;
+    m_week_isSet = true;
+}
+
+bool OAIDay_of_week::is_week_Set() const{
+    return m_week_isSet;
+}
+
+bool OAIDay_of_week::is_week_Valid() const{
+    return m_week_isValid;
+}
+
+bool OAIDay_of_week::isSet() const {
+    bool isObjectUpdated = false;
+    do {
+        if (m_method_isSet) {
+            isObjectUpdated = true;
+            break;
+        }
+
+        if (m_day.isSet()) {
+            isObjectUpdated = true;
+            break;
+        }
+
+        if (m_time_isSet) {
+            isObjectUpdated = true;
+            break;
+        }
+
+        if (m_week_isSet) {
+            isObjectUpdated = true;
+            break;
+        }
+    } while (false);
+    return isObjectUpdated;
+}
+
+bool OAIDay_of_week::isValid() const {
+    // only required properties are required for the object to be considered valid
+    return m_method_isValid && m_day_isValid && true;
+}
+
+} // namespace OpenAPI

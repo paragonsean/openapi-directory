@@ -1,0 +1,596 @@
+openapi: 3.0.3
+info:
+  contact: {}
+  description: "The [Okta User API](/docs/api/rest/users.html) provides operations\
+    \ to manage users in your organization."
+  title: Users (Okta API)
+  version: 1.0.0
+  x-apisguru-categories:
+  - security
+  x-origin:
+  - format: postman
+    url: https://www.postman.com/collections/1755573c5cf5fbf7968b
+    version: "1.0"
+  x-providerName: okta.local
+servers:
+- url: http://okta.local
+- url: ","
+tags:
+- name: Create User
+- name: Credential Operations
+- name: Lifecycle Operations
+- name: List Users
+paths:
+  /api/v1/users:
+    get:
+      description: Find User
+      operationId: findUser
+      parameters:
+      - explode: true
+        in: query
+        name: q
+        required: false
+        schema:
+          example: user
+          type: string
+        style: form
+      requestBody:
+        content:
+          application/octet-stream: {}
+      responses:
+        "200":
+          description: ""
+      summary: Find User
+      x-accepts:
+      - application/json
+    post:
+      description: Create User in Group
+      operationId: createUserInGroup
+      parameters:
+      - explode: true
+        in: query
+        name: activate
+        required: false
+        schema:
+          example: "false"
+          type: string
+        style: form
+      requestBody:
+        content:
+          application/json:
+            example:
+              groupIds:
+              - "{{groupId}}"
+              profile:
+                email: "isaac@{{email-suffix}}"
+                firstName: Isaac
+                lastName: Brock
+                login: "isaac@{{email-suffix}}"
+            schema:
+              $ref: '#/components/schemas/createUserInGroup_request'
+      responses:
+        "200":
+          description: ""
+      summary: Create User in Group
+      tags:
+      - Create User
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+  /api/v1/users/me:
+    get:
+      description: Get Current User
+      operationId: getCurrentUser
+      requestBody:
+        content:
+          application/octet-stream: {}
+      responses:
+        "200":
+          description: ""
+      summary: Get Current User
+      x-accepts:
+      - application/json
+  /api/v1/users/{userId}:
+    get:
+      description: Get User
+      operationId: getUser
+      parameters:
+      - explode: false
+        in: path
+        name: userId
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/octet-stream: {}
+      responses:
+        "200":
+          description: ""
+      summary: Get User
+      x-accepts:
+      - application/json
+    put:
+      description: Set Recovery Credential
+      operationId: setRecoveryCredential
+      parameters:
+      - explode: false
+        in: path
+        name: userId
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            example:
+              credentials:
+                recovery_question:
+                  answer: Annie Oakley
+                  question: Who's a major player in the cowboy scene?
+            schema:
+              $ref: '#/components/schemas/setRecoveryCredential_request'
+      responses:
+        "200":
+          description: ""
+      summary: Set Recovery Credential
+      tags:
+      - Credential Operations
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+  /api/v1/users/{userId}/appLinks:
+    get:
+      description: Get Assigned App Links
+      operationId: getAssignedAppLinks
+      parameters:
+      - explode: false
+        in: path
+        name: userId
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/octet-stream: {}
+      responses:
+        "200":
+          description: ""
+      summary: Get Assigned App Links
+      x-accepts:
+      - application/json
+  /api/v1/users/{userId}/credentials/change_password:
+    post:
+      description: Change Password
+      operationId: changePassword
+      parameters:
+      - explode: false
+        in: path
+        name: userId
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            example:
+              newPassword:
+                value: "uTVM,TPw55"
+              oldPassword:
+                value: "{{password}}"
+            schema:
+              $ref: '#/components/schemas/changePassword_request'
+      responses:
+        "200":
+          description: ""
+      summary: Change Password
+      tags:
+      - Credential Operations
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+  /api/v1/users/{userId}/credentials/change_recovery_question:
+    post:
+      description: Change Recovery Question
+      operationId: changeRecoveryQuestion
+      parameters:
+      - explode: false
+        in: path
+        name: userId
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            example:
+              password:
+                value: "{{password}}"
+              recovery_question:
+                answer: My recovery credentials are updated
+                question: What happens when I update my question
+            schema:
+              $ref: '#/components/schemas/changeRecoveryQuestion_request'
+      responses:
+        "200":
+          description: ""
+      summary: Change Recovery Question
+      tags:
+      - Credential Operations
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+  /api/v1/users/{userId}/credentials/forgot_password:
+    post:
+      description: Forgot Password (One Time Code)
+      operationId: forgotPassword(oneTimeCode)
+      parameters:
+      - explode: false
+        in: path
+        name: userId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: true
+        in: query
+        name: sendEmail
+        required: false
+        schema:
+          example: "false"
+          type: string
+        style: form
+      requestBody:
+        content:
+          text/plain:
+            example: ""
+      responses:
+        "200":
+          description: ""
+      summary: Forgot Password (One Time Code)
+      tags:
+      - Credential Operations
+      x-accepts:
+      - application/json
+  /api/v1/users/{userId}/groups:
+    get:
+      description: Get Groups for User
+      operationId: getGroupsForUser
+      parameters:
+      - explode: false
+        in: path
+        name: userId
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/octet-stream: {}
+      responses:
+        "200":
+          description: ""
+      summary: Get Groups for User
+      x-accepts:
+      - application/json
+  /api/v1/users/{userId}/lifecycle/activate:
+    post:
+      description: Activate User
+      operationId: activateUser
+      parameters:
+      - explode: false
+        in: path
+        name: userId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: true
+        in: query
+        name: sendEmail
+        required: false
+        schema:
+          example: "false"
+          type: string
+        style: form
+      requestBody:
+        content:
+          text/plain:
+            example: ""
+      responses:
+        "200":
+          description: ""
+      summary: Activate User
+      tags:
+      - Lifecycle Operations
+      x-accepts:
+      - application/json
+  /api/v1/users/{userId}/lifecycle/deactivate:
+    post:
+      description: Deactivate User
+      operationId: deactivateUser
+      parameters:
+      - explode: false
+        in: path
+        name: userId
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          text/plain:
+            example: ""
+      responses:
+        "200":
+          description: ""
+      summary: Deactivate User
+      tags:
+      - Lifecycle Operations
+      x-accepts:
+      - application/json
+  /api/v1/users/{userId}/lifecycle/expire_password:
+    post:
+      description: Set Temp Password
+      operationId: setTempPassword
+      parameters:
+      - explode: false
+        in: path
+        name: userId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: true
+        in: query
+        name: tempPassword
+        required: false
+        schema:
+          example: "true"
+          type: string
+        style: form
+      requestBody:
+        content:
+          text/plain:
+            example: ""
+      responses:
+        "200":
+          description: ""
+      summary: Set Temp Password
+      tags:
+      - Lifecycle Operations
+      x-accepts:
+      - application/json
+  /api/v1/users/{userId}/lifecycle/reset_factors:
+    post:
+      description: Reset Factors
+      operationId: resetFactors
+      parameters:
+      - explode: false
+        in: path
+        name: userId
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/octet-stream: {}
+      responses:
+        "200":
+          description: ""
+      summary: Reset Factors
+      x-accepts:
+      - application/json
+  /api/v1/users/{userId}/lifecycle/reset_password:
+    post:
+      description: Reset Password
+      operationId: resetPassword
+      parameters:
+      - explode: false
+        in: path
+        name: userId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: true
+        in: query
+        name: sendEmail
+        required: false
+        schema:
+          example: "false"
+          type: string
+        style: form
+      requestBody:
+        content:
+          text/plain:
+            example: ""
+      responses:
+        "200":
+          description: ""
+      summary: Reset Password
+      tags:
+      - Lifecycle Operations
+      x-accepts:
+      - application/json
+  /api/v1/users/{userId}/lifecycle/suspend:
+    post:
+      description: Suspend User
+      operationId: suspendUser
+      parameters:
+      - explode: false
+        in: path
+        name: userId
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          text/plain:
+            example: ""
+      responses:
+        "200":
+          description: ""
+      summary: Suspend User
+      tags:
+      - Lifecycle Operations
+      x-accepts:
+      - application/json
+  /api/v1/users/{userId}/lifecycle/unlock:
+    post:
+      description: Unlock User
+      operationId: unlockUser
+      parameters:
+      - explode: false
+        in: path
+        name: userId
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          text/plain:
+            example: ""
+      responses:
+        "200":
+          description: ""
+      summary: Unlock User
+      tags:
+      - Lifecycle Operations
+      x-accepts:
+      - application/json
+  /api/v1/users/{userId}/lifecycle/unsuspend:
+    post:
+      description: Unsuspend User
+      operationId: unsuspendUser
+      parameters:
+      - explode: false
+        in: path
+        name: userId
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          text/plain:
+            example: ""
+      responses:
+        "200":
+          description: ""
+      summary: Unsuspend User
+      tags:
+      - Lifecycle Operations
+      x-accepts:
+      - application/json
+  /api/v1/users/{userId}/sessions:
+    delete:
+      description: Clear User Sessions
+      operationId: clearUserSessions
+      parameters:
+      - explode: false
+        in: path
+        name: userId
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/octet-stream: {}
+      responses:
+        "200":
+          description: ""
+      summary: Clear User Sessions
+      x-accepts:
+      - application/json
+components:
+  schemas:
+    createUserInGroup_request:
+      properties:
+        groupIds:
+          items:
+            example: "{{groupId}}"
+            type: string
+          type: array
+        profile:
+          $ref: '#/components/schemas/createUserInGroup_request_profile'
+      type: object
+    changePassword_request:
+      properties:
+        newPassword:
+          $ref: '#/components/schemas/changePassword_request_newPassword'
+        oldPassword:
+          $ref: '#/components/schemas/changePassword_request_oldPassword'
+      type: object
+    changeRecoveryQuestion_request_recovery_question:
+      properties:
+        answer:
+          example: My recovery credentials are updated
+          type: string
+        question:
+          example: What happens when I update my question
+          type: string
+      type: object
+    changePassword_request_newPassword:
+      properties:
+        value:
+          example: "uTVM,TPw55"
+          type: string
+      type: object
+    setRecoveryCredential_request_credentials_recovery_question:
+      properties:
+        answer:
+          example: Annie Oakley
+          type: string
+        question:
+          example: Who's a major player in the cowboy scene?
+          type: string
+      type: object
+    setRecoveryCredential_request_credentials:
+      properties:
+        recovery_question:
+          $ref: '#/components/schemas/setRecoveryCredential_request_credentials_recovery_question'
+      type: object
+    setRecoveryCredential_request:
+      properties:
+        credentials:
+          $ref: '#/components/schemas/setRecoveryCredential_request_credentials'
+      type: object
+    createUserInGroup_request_profile:
+      properties:
+        email:
+          example: "isaac@{{email-suffix}}"
+          type: string
+        firstName:
+          example: Isaac
+          type: string
+        lastName:
+          example: Brock
+          type: string
+        login:
+          example: "isaac@{{email-suffix}}"
+          type: string
+      type: object
+    changePassword_request_oldPassword:
+      properties:
+        value:
+          example: "{{password}}"
+          type: string
+      type: object
+    changeRecoveryQuestion_request:
+      properties:
+        password:
+          $ref: '#/components/schemas/changePassword_request_oldPassword'
+        recovery_question:
+          $ref: '#/components/schemas/changeRecoveryQuestion_request_recovery_question'
+      type: object
+

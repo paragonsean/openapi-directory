@@ -1,0 +1,364 @@
+openapi: 3.0.0
+info:
+  contact:
+    email: devrel@vonage.com
+    name: Vonage DevRel
+    url: https://developer.nexmo.com/
+  description: "The [Redact API](/redact/overview) helps organisations meet their\
+    \ privacy compliance obligations. It provides controlled, on-demand redaction\
+    \ of private information from transactional records in the long-term storage.\
+    \ Note, Redact API does not have the capability to redact the short-lived server\
+    \ logs that are retained for a few weeks. For SMS customers that need immediate\
+    \ redaction, Vonage suggests using [Advanced Auto-redact](/redact/overview#auto-redact-vs-redact-api)."
+  title: Redact API
+  version: 1.0.6
+  x-logo:
+    url: https://www.vonage.com/content/dam/vonage/us-en/api/illustrations/Mobile_APIs_Services.svg
+  x-origin:
+  - format: openapi
+    url: https://raw.githubusercontent.com/nexmo/api-specification/master/definitions/redact.yml
+    version: "3.0"
+  x-providerName: nexmo.com
+  x-serviceName: redact
+servers:
+- url: https://api.nexmo.com/v1/redact
+paths:
+  /transaction:
+    post:
+      description: ""
+      operationId: redact_message
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RedactTransaction'
+        required: true
+        x-body-name: body
+      responses:
+        "204":
+          description: Success
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorUnauthorized'
+          description: Authentication failure
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/redact_message_403_response'
+          description: Authorisation denied
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorInvalidId'
+          description: No such record
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/redact_message_422_response'
+          description: Invalid JSON body
+        "429":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorThrottled'
+          description: Rate Limited
+      security:
+      - basicAuth: []
+      summary: Redact a specific message
+      x-openapi-router-controller: openapi_server.controllers.default_controller
+      x-codegen-request-body-name: body
+components:
+  schemas:
+    ErrorInvalidId:
+      example:
+        instance: bf0ca0bf927b3b52e3cb03217e1a1ddf
+        detail: ID '0A000000B0C9A1234' could not be found (type=MT)
+        title: Invalid ID
+        type: https://developer.nexmo.com/api-errors#invalid-id
+      properties:
+        detail:
+          description: Additional information about the error
+          example: ID '0A000000B0C9A1234' could not be found (type=MT)
+          title: detail
+          type: string
+        instance:
+          description: Internal Trace ID
+          example: bf0ca0bf927b3b52e3cb03217e1a1ddf
+          title: instance
+          type: string
+        title:
+          description: Generic error message
+          example: Invalid ID
+          title: title
+          type: string
+        type:
+          description: Link to error / remediation options
+          example: https://developer.nexmo.com/api-errors#invalid-id
+          title: type
+          type: string
+      required:
+      - detail
+      - instance
+      - title
+      - type
+      title: ErrorInvalidId
+      type: object
+    ErrorInvalidJson:
+      description: Invalid JSON
+      example:
+        instance: bf0ca0bf927b3b52e3cb03217e1a1ddf
+        detail: "Unexpected character ('\"' (code 34)): was expecting comma to separate\
+          \ Object entries"
+        title: Invalid JSON
+        type: https://developer.nexmo.com/api-errors#invalid-json
+      properties:
+        detail:
+          description: Additional information about the error
+          example: "Unexpected character ('\"' (code 34)): was expecting comma to\
+            \ separate Object entries"
+          title: detail
+          type: string
+        instance:
+          description: Internal Trace ID
+          example: bf0ca0bf927b3b52e3cb03217e1a1ddf
+          title: instance
+          type: string
+        title:
+          description: Generic error message
+          example: Invalid JSON
+          title: title
+          type: string
+        type:
+          description: Link to error / remediation options
+          example: https://developer.nexmo.com/api-errors#invalid-json
+          title: type
+          type: string
+      required:
+      - detail
+      - instance
+      - title
+      - type
+      title: ErrorInvalidJson
+      type: object
+    ErrorPrematureRedaction:
+      description: Premature Redaction
+      example:
+        instance: bf0ca0bf927b3b52e3cb03217e1a1ddf
+        detail: You must wait 60 minutes before redacting ID '0A000000B0C9A1234'
+        title: Premature Redaction
+        type: https://developer.nexmo.com/api-errors/redact#premature-redaction
+      properties:
+        detail:
+          description: Additional information about the error
+          example: You must wait 60 minutes before redacting ID '0A000000B0C9A1234'
+          title: detail
+          type: string
+        instance:
+          description: Internal Trace ID
+          example: bf0ca0bf927b3b52e3cb03217e1a1ddf
+          title: instance
+          type: string
+        title:
+          description: Generic error message
+          example: Premature Redaction
+          title: title
+          type: string
+        type:
+          description: Link to error / remediation options
+          example: https://developer.nexmo.com/api-errors/redact#premature-redaction
+          title: type
+          type: string
+      required:
+      - detail
+      - instance
+      - title
+      - type
+      title: ErrorPrematureRedaction
+      type: object
+    ErrorThrottled:
+      example:
+        instance: bf0ca0bf927b3b52e3cb03217e1a1ddf
+        detail: "Please wait, then retry your request"
+        title: Rate Limit Hit
+        type: https://developer.nexmo.com/api-errors/redact#rate-limit
+      properties:
+        detail:
+          description: Additional information about the error
+          example: "Please wait, then retry your request"
+          title: detail
+          type: string
+        instance:
+          description: Internal Trace ID
+          example: bf0ca0bf927b3b52e3cb03217e1a1ddf
+          title: instance
+          type: string
+        title:
+          description: Generic error message
+          example: Rate Limit Hit
+          title: title
+          type: string
+        type:
+          description: Link to error / remediation options
+          example: https://developer.nexmo.com/api-errors/redact#rate-limit
+          title: type
+          type: string
+      required:
+      - detail
+      - instance
+      - title
+      - type
+      title: ErrorThrottled
+      type: object
+    ErrorUnauthorized:
+      example:
+        error_title: Unauthorized
+        type: UNAUTHORIZED
+      properties:
+        error_title:
+          description: Error title
+          example: Unauthorized
+          title: error_title
+          type: string
+        type:
+          description: Machine readable error type
+          example: UNAUTHORIZED
+          title: type
+          type: string
+      required:
+      - error_title
+      - type
+      title: ErrorUnauthorized
+      type: object
+    ErrorUnprovisioned:
+      description: Unprovisioned
+      properties:
+        detail:
+          description: Additional information about the error
+          example: User=ABC123 is not provisioned to redact product=SMS
+          title: detail
+          type: string
+        instance:
+          description: Internal Trace ID
+          example: bf0ca0bf927b3b52e3cb03217e1a1ddf
+          title: instance
+          type: string
+        title:
+          description: Generic error message
+          example: Authorisation error
+          title: title
+          type: string
+        type:
+          description: Link to error / remediation options
+          example: https://developer.nexmo.com/api-errors#unprovisioned
+          title: type
+          type: string
+      required:
+      - detail
+      - instance
+      - title
+      - type
+      title: ErrorUnprovisioned
+      type: object
+    ErrorUnsupportedProduct:
+      description: Unsupported Product
+      properties:
+        detail:
+          description: Additional information about the error
+          example: No product corresponding to supplied string sms2!
+          title: detail
+          type: string
+        instance:
+          description: Internal Trace ID
+          example: bf0ca0bf927b3b52e3cb03217e1a1ddf
+          title: instance
+          type: string
+        title:
+          description: Generic error message
+          example: Invalid Product
+          title: title
+          type: string
+        type:
+          description: Link to error / remediation options
+          example: https://developer.nexmo.com/api-errors/redact#invalid-product
+          title: type
+          type: string
+      required:
+      - detail
+      - instance
+      - title
+      - type
+      title: ErrorUnsupportedProduct
+      type: object
+    RedactTransaction:
+      example:
+        product: sms
+        id: 209ab3c7536542b91e8b5aef032f6861
+        type: outbound
+      properties:
+        id:
+          description: The transaction ID to redact
+          example: 209ab3c7536542b91e8b5aef032f6861
+          title: id
+          type: string
+        product:
+          description: Product name that the ID provided relates to
+          enum:
+          - sms
+          - voice
+          - number-insight
+          - verify
+          - verify-sdk
+          - messages
+          example: sms
+          title: product
+          type: string
+        type:
+          default: outbound
+          description: Required if redacting SMS data
+          enum:
+          - inbound
+          - outbound
+          example: outbound
+          title: type
+          type: string
+      required:
+      - id
+      - product
+      - type
+      title: RedactTransaction
+      type: object
+    redact_message_403_response:
+      oneOf:
+      - $ref: '#/components/schemas/ErrorPrematureRedaction'
+      - $ref: '#/components/schemas/ErrorUnprovisioned'
+      title: redact_message_403_response
+    redact_message_422_response:
+      oneOf:
+      - $ref: '#/components/schemas/ErrorInvalidJson'
+      - $ref: '#/components/schemas/ErrorUnsupportedProduct'
+      title: redact_message_422_response
+  securitySchemes:
+    basicAuth:
+      scheme: basic
+      type: http
+      x-basicInfoFunc: openapi_server.controllers.security_controller.info_from_basicAuth
+x-errors:
+  invalid-product:
+    description: The provided product is invalid
+    link:
+      text: View API reference
+      url: /api/redact#transaction
+    resolution: Modify your request to provide a valid product
+  premature-redaction:
+    description: There is a 1 hour time period before data can be redacted to allow
+      for all data to propagate through the Vonage system
+    resolution: Wait until the data becomes valid for redaction
+  rate-limit:
+    description: The request was rate limited
+    resolution: The Redact API supports 170 requests per second. Slow down your request
+      rate

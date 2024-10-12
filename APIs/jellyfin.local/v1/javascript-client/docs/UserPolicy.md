@@ -1,0 +1,47 @@
+# JellyfinApi.UserPolicy
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**accessSchedules** | [**[AccessSchedule]**](AccessSchedule.md) |  | [optional] 
+**authenticationProviderId** | **String** |  | [optional] 
+**blockUnratedItems** | [**[UnratedItem]**](UnratedItem.md) |  | [optional] 
+**blockedChannels** | **[String]** |  | [optional] 
+**blockedMediaFolders** | **[String]** |  | [optional] 
+**blockedTags** | **[String]** |  | [optional] 
+**enableAllChannels** | **Boolean** |  | [optional] 
+**enableAllDevices** | **Boolean** |  | [optional] 
+**enableAllFolders** | **Boolean** |  | [optional] 
+**enableAudioPlaybackTranscoding** | **Boolean** |  | [optional] 
+**enableContentDeletion** | **Boolean** |  | [optional] 
+**enableContentDeletionFromFolders** | **[String]** |  | [optional] 
+**enableContentDownloading** | **Boolean** |  | [optional] 
+**enableLiveTvAccess** | **Boolean** |  | [optional] 
+**enableLiveTvManagement** | **Boolean** |  | [optional] 
+**enableMediaConversion** | **Boolean** |  | [optional] 
+**enableMediaPlayback** | **Boolean** |  | [optional] 
+**enablePlaybackRemuxing** | **Boolean** |  | [optional] 
+**enablePublicSharing** | **Boolean** |  | [optional] 
+**enableRemoteAccess** | **Boolean** |  | [optional] 
+**enableRemoteControlOfOtherUsers** | **Boolean** |  | [optional] 
+**enableSharedDeviceControl** | **Boolean** |  | [optional] 
+**enableSyncTranscoding** | **Boolean** | Gets or sets a value indicating whether [enable synchronize]. | [optional] 
+**enableUserPreferenceAccess** | **Boolean** |  | [optional] 
+**enableVideoPlaybackTranscoding** | **Boolean** |  | [optional] 
+**enabledChannels** | **[String]** |  | [optional] 
+**enabledDevices** | **[String]** |  | [optional] 
+**enabledFolders** | **[String]** |  | [optional] 
+**forceRemoteSourceTranscoding** | **Boolean** |  | [optional] 
+**invalidLoginAttemptCount** | **Number** |  | [optional] 
+**isAdministrator** | **Boolean** | Gets or sets a value indicating whether this instance is administrator. | [optional] 
+**isDisabled** | **Boolean** | Gets or sets a value indicating whether this instance is disabled. | [optional] 
+**isHidden** | **Boolean** | Gets or sets a value indicating whether this instance is hidden. | [optional] 
+**loginAttemptsBeforeLockout** | **Number** |  | [optional] 
+**maxActiveSessions** | **Number** |  | [optional] 
+**maxParentalRating** | **Number** | Gets or sets the max parental rating. | [optional] 
+**passwordResetProviderId** | **String** |  | [optional] 
+**remoteClientBitrateLimit** | **Number** |  | [optional] 
+**syncPlayAccess** | [**SyncPlayUserAccessType**](SyncPlayUserAccessType.md) |  | [optional] 
+
+

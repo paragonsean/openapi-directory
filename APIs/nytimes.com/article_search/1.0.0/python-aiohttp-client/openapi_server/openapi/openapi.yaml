@@ -1,0 +1,616 @@
+openapi: 3.0.0
+info:
+  description: "With the Article Search API, you can search New York Times articles\
+    \ from Sept. 18, 1851 to today, retrieving headlines, abstracts, lead paragraphs,\
+    \ links to associated multimedia and other article metadata.  \n\n Note: In URI\
+    \ examples and field names, italics indicate placeholders for variables or values.\
+    \ Brackets [ ] indicate optional items. Parentheses ( ) are not a convention —\
+    \ when URIs include parentheses, interpret them literally."
+  termsOfService: http://developer.nytimes.com/tou
+  title: Article Search API
+  version: 1.0.0
+  x-apiClientRegistration:
+    url: http://developer.nytimes.com/signup
+  x-apisguru-categories:
+  - media
+  - open_data
+  x-logo:
+    url: https://static01.nyt.com/images/icons/t_logo_291_black.png
+  x-origin:
+  - format: openapi
+    url: https://raw.githubusercontent.com/nytimes/public_api_specs/master/article_search/article_search_v2.json
+    version: "3.0"
+  x-providerName: nytimes.com
+  x-serviceName: article_search
+externalDocs:
+  url: http://developer.nytimes.com/
+servers:
+- url: http://api.nytimes.com/svc/search/v2
+- url: https://api.nytimes.com/svc/search/v2
+security:
+- apikey: []
+paths:
+  /articlesearch.json:
+    get:
+      description: |
+        Article Search requests use the following URI structure:
+      operationId: articlesearch_json_get
+      parameters:
+      - description: |
+          Search query term. Search is performed on the article body, headline and byline.
+        explode: true
+        in: query
+        name: q
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: "\"Filtered search query using standard Lucene syntax. \n\nThe\
+          \ filter query can be specified with or without a limiting field: label.\
+          \ \n\nSee Filtering Your Search for more information about filtering.\"\n"
+        explode: true
+        in: query
+        name: fq
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: "\"Format: YYYYMMDD \n\nRestricts responses to results with publication\
+          \ dates of the date specified or later.\"\n"
+        explode: true
+        in: query
+        name: begin_date
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: "\"Format: YYYYMMDD \n\nRestricts responses to results with publication\
+          \ dates of the date specified or earlier.\"\n"
+        explode: true
+        in: query
+        name: end_date
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: |
+          "By default, search results are sorted by their relevance to the query term (q). Use the sort parameter to sort by pub_date."
+        explode: true
+        in: query
+        name: sort
+        required: false
+        schema:
+          enum:
+          - newest
+          - oldest
+          type: string
+        style: form
+      - description: "\"Comma-delimited list of fields (no limit)\n\n  Limits the\
+          \ fields returned in your search results. By default (unless you include\
+          \ an fl list in your request), the following fields are returned: \n  \n\
+          \  web_url\n  \n  snippet\n  \n  lead_paragraph\n  \n  abstract\n  \n  print_page\n\
+          \  \n  blog\n  \n  source\n  \n  multimedia\n  \n  headline\n  \n  keywords\n\
+          \  \n  pub_date\n  \n  document_type\n  \n  news_desk\n  \n  byline\n  \n\
+          \  type_of_material\n  \n  _id\n  \n  word_count\"\n"
+        explode: true
+        in: query
+        name: fl
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: |
+          Enables highlighting in search results. When set to true, the query term (q) is highlighted in the headline and lead_paragraph fields.
+
+          Note: If highlighting is enabled, snippet will be returned even if it is not specified in your fl list."
+        explode: true
+        in: query
+        name: hl
+        required: false
+        schema:
+          default: false
+          type: boolean
+        style: form
+      - description: |
+          "The value of page corresponds to a set of 10 results (it does not indicate the starting number of the result set). For example, page=0 corresponds to records 0-9. To return records 10-19, set page to 1, not 10."
+        explode: true
+        in: query
+        name: page
+        required: false
+        schema:
+          default: 0
+          maximum: 10
+          minimum: 0
+          type: integer
+        style: form
+      - description: |
+          Comma-delimited list of facets
+
+          Specifies the sets of facet values to include in the facets array at the end of response, which collects the facet values from all the search results. By default no facet fields will be returned. Below is the list of valid facets:
+
+          section_name
+
+          document_type
+
+          type_of_material
+
+          source
+
+          day_of_week
+
+          To learn more about using facets, see Using Facets.
+        explode: true
+        in: query
+        name: facet_field
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: |
+          When set to true, facet counts will respect any applied filters (fq, date range, etc.) in addition to the main query term. To filter facet counts, specifying at least one facet_field is required. To learn more about using facets, see Using Facets.
+        explode: true
+        in: query
+        name: facet_filter
+        required: false
+        schema:
+          default: false
+          type: boolean
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/_articlesearch_json_get_200_response'
+          description: The docs requested by the article search.
+      summary: Article Search
+      tags:
+      - Stories
+      x-openapi-router-controller: openapi_server.controllers.stories_controller
+components:
+  schemas:
+    Doc:
+      example:
+        snippet: snippet
+        slideshow_credits: slideshow_credits
+        keywords:
+          name: name
+          rank: rank
+          value: value
+        print_page: print_page
+        section_name: section_name
+        abstract: abstract
+        source: source
+        blog:
+        - ""
+        - ""
+        news_desk: news_desk
+        pub_date: pub_date
+        multimedia:
+        - copyright: copyright
+          subtype: subtype
+          format: format
+          width: 6
+          caption: caption
+          type: type
+          url: url
+          height: 0
+        - copyright: copyright
+          subtype: subtype
+          format: format
+          width: 6
+          caption: caption
+          type: type
+          url: url
+          height: 0
+        word_count: word_count
+        lead_paragraph: lead_paragraph
+        type_of_material: type_of_material
+        web_url: web_url
+        _id: _id
+        subsection_name: subsection_name
+        byline:
+          original: original
+          person:
+          - ""
+          - ""
+          organization: organization
+        headline:
+          main: main
+          kicker: kicker
+        document_type: document_type
+      properties:
+        _id:
+          title: _id
+          type: string
+        abstract:
+          title: abstract
+          type: string
+        blog:
+          items: {}
+          title: blog
+          type: array
+        byline:
+          $ref: '#/components/schemas/Doc_byline'
+        document_type:
+          title: document_type
+          type: string
+        headline:
+          $ref: '#/components/schemas/Doc_headline'
+        keywords:
+          $ref: '#/components/schemas/Doc_keywords'
+        lead_paragraph:
+          title: lead_paragraph
+          type: string
+        multimedia:
+          items:
+            $ref: '#/components/schemas/Doc_multimedia_inner'
+          title: multimedia
+          type: array
+        news_desk:
+          title: news_desk
+          type: string
+        print_page:
+          title: print_page
+          type: string
+        pub_date:
+          title: pub_date
+          type: string
+        section_name:
+          title: section_name
+          type: string
+        slideshow_credits:
+          title: slideshow_credits
+          type: string
+        snippet:
+          title: snippet
+          type: string
+        source:
+          title: source
+          type: string
+        subsection_name:
+          title: subsection_name
+          type: string
+        type_of_material:
+          title: type_of_material
+          type: string
+        web_url:
+          title: web_url
+          type: string
+        word_count:
+          title: word_count
+          type: string
+      title: Doc
+      type: object
+    _articlesearch_json_get_200_response_response_meta:
+      example:
+        hits: 1
+        offset: 5
+        time: 5
+      properties:
+        hits:
+          title: hits
+          type: integer
+        offset:
+          title: offset
+          type: integer
+        time:
+          title: time
+          type: integer
+      title: _articlesearch_json_get_200_response_response_meta
+      type: object
+    _articlesearch_json_get_200_response_response:
+      example:
+        docs:
+        - snippet: snippet
+          slideshow_credits: slideshow_credits
+          keywords:
+            name: name
+            rank: rank
+            value: value
+          print_page: print_page
+          section_name: section_name
+          abstract: abstract
+          source: source
+          blog:
+          - ""
+          - ""
+          news_desk: news_desk
+          pub_date: pub_date
+          multimedia:
+          - copyright: copyright
+            subtype: subtype
+            format: format
+            width: 6
+            caption: caption
+            type: type
+            url: url
+            height: 0
+          - copyright: copyright
+            subtype: subtype
+            format: format
+            width: 6
+            caption: caption
+            type: type
+            url: url
+            height: 0
+          word_count: word_count
+          lead_paragraph: lead_paragraph
+          type_of_material: type_of_material
+          web_url: web_url
+          _id: _id
+          subsection_name: subsection_name
+          byline:
+            original: original
+            person:
+            - ""
+            - ""
+            organization: organization
+          headline:
+            main: main
+            kicker: kicker
+          document_type: document_type
+        - snippet: snippet
+          slideshow_credits: slideshow_credits
+          keywords:
+            name: name
+            rank: rank
+            value: value
+          print_page: print_page
+          section_name: section_name
+          abstract: abstract
+          source: source
+          blog:
+          - ""
+          - ""
+          news_desk: news_desk
+          pub_date: pub_date
+          multimedia:
+          - copyright: copyright
+            subtype: subtype
+            format: format
+            width: 6
+            caption: caption
+            type: type
+            url: url
+            height: 0
+          - copyright: copyright
+            subtype: subtype
+            format: format
+            width: 6
+            caption: caption
+            type: type
+            url: url
+            height: 0
+          word_count: word_count
+          lead_paragraph: lead_paragraph
+          type_of_material: type_of_material
+          web_url: web_url
+          _id: _id
+          subsection_name: subsection_name
+          byline:
+            original: original
+            person:
+            - ""
+            - ""
+            organization: organization
+          headline:
+            main: main
+            kicker: kicker
+          document_type: document_type
+        meta:
+          hits: 1
+          offset: 5
+          time: 5
+      properties:
+        docs:
+          items:
+            $ref: '#/components/schemas/Doc'
+          title: docs
+          type: array
+        meta:
+          $ref: '#/components/schemas/_articlesearch_json_get_200_response_response_meta'
+      title: _articlesearch_json_get_200_response_response
+      type: object
+    _articlesearch_json_get_200_response:
+      example:
+        response:
+          docs:
+          - snippet: snippet
+            slideshow_credits: slideshow_credits
+            keywords:
+              name: name
+              rank: rank
+              value: value
+            print_page: print_page
+            section_name: section_name
+            abstract: abstract
+            source: source
+            blog:
+            - ""
+            - ""
+            news_desk: news_desk
+            pub_date: pub_date
+            multimedia:
+            - copyright: copyright
+              subtype: subtype
+              format: format
+              width: 6
+              caption: caption
+              type: type
+              url: url
+              height: 0
+            - copyright: copyright
+              subtype: subtype
+              format: format
+              width: 6
+              caption: caption
+              type: type
+              url: url
+              height: 0
+            word_count: word_count
+            lead_paragraph: lead_paragraph
+            type_of_material: type_of_material
+            web_url: web_url
+            _id: _id
+            subsection_name: subsection_name
+            byline:
+              original: original
+              person:
+              - ""
+              - ""
+              organization: organization
+            headline:
+              main: main
+              kicker: kicker
+            document_type: document_type
+          - snippet: snippet
+            slideshow_credits: slideshow_credits
+            keywords:
+              name: name
+              rank: rank
+              value: value
+            print_page: print_page
+            section_name: section_name
+            abstract: abstract
+            source: source
+            blog:
+            - ""
+            - ""
+            news_desk: news_desk
+            pub_date: pub_date
+            multimedia:
+            - copyright: copyright
+              subtype: subtype
+              format: format
+              width: 6
+              caption: caption
+              type: type
+              url: url
+              height: 0
+            - copyright: copyright
+              subtype: subtype
+              format: format
+              width: 6
+              caption: caption
+              type: type
+              url: url
+              height: 0
+            word_count: word_count
+            lead_paragraph: lead_paragraph
+            type_of_material: type_of_material
+            web_url: web_url
+            _id: _id
+            subsection_name: subsection_name
+            byline:
+              original: original
+              person:
+              - ""
+              - ""
+              organization: organization
+            headline:
+              main: main
+              kicker: kicker
+            document_type: document_type
+          meta:
+            hits: 1
+            offset: 5
+            time: 5
+      properties:
+        response:
+          $ref: '#/components/schemas/_articlesearch_json_get_200_response_response'
+      title: _articlesearch_json_get_200_response
+      type: object
+    Doc_byline:
+      example:
+        original: original
+        person:
+        - ""
+        - ""
+        organization: organization
+      properties:
+        organization:
+          title: organization
+          type: string
+        original:
+          title: original
+          type: string
+        person:
+          items: {}
+          title: person
+          type: array
+      title: Doc_byline
+      type: object
+    Doc_headline:
+      example:
+        main: main
+        kicker: kicker
+      properties:
+        kicker:
+          title: kicker
+          type: string
+        main:
+          title: main
+          type: string
+      title: Doc_headline
+      type: object
+    Doc_keywords:
+      example:
+        name: name
+        rank: rank
+        value: value
+      properties:
+        name:
+          title: name
+          type: string
+        rank:
+          title: rank
+          type: string
+        value:
+          title: value
+          type: string
+      title: Doc_keywords
+      type: object
+    Doc_multimedia_inner:
+      example:
+        copyright: copyright
+        subtype: subtype
+        format: format
+        width: 6
+        caption: caption
+        type: type
+        url: url
+        height: 0
+      properties:
+        caption:
+          title: caption
+          type: string
+        copyright:
+          title: copyright
+          type: string
+        format:
+          title: format
+          type: string
+        height:
+          title: height
+          type: integer
+        subtype:
+          title: subtype
+          type: string
+        type:
+          title: type
+          type: string
+        url:
+          title: url
+          type: string
+        width:
+          title: width
+          type: integer
+      title: Doc_multimedia_inner
+      type: object
+  securitySchemes:
+    apikey:
+      in: query
+      name: api-key
+      type: apiKey
+      x-apikeyInfoFunc: openapi_server.controllers.security_controller.info_from_apikey

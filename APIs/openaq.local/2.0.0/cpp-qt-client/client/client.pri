@@ -1,0 +1,101 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAICitiesOrder.h \
+    $${PWD}/OAICitiesRow.h \
+    $${PWD}/OAICountriesOrder.h \
+    $${PWD}/OAICountriesRow.h \
+    $${PWD}/OAIDate_From.h \
+    $${PWD}/OAIDate_To.h \
+    $${PWD}/OAIDatefrom.h \
+    $${PWD}/OAIDateto.h \
+    $${PWD}/OAIEntityTypes.h \
+    $${PWD}/OAIHTTPValidationError.h \
+    $${PWD}/OAILastupdatedfrom.h \
+    $${PWD}/OAILastupdatedto.h \
+    $${PWD}/OAILocation_inner.h \
+    $${PWD}/OAILocationsOrder.h \
+    $${PWD}/OAIMeasOrder.h \
+    $${PWD}/OAIMeta.h \
+    $${PWD}/OAIOpenAQCitiesResult.h \
+    $${PWD}/OAIOpenAQCountriesResult.h \
+    $${PWD}/OAIOpenAQParametersResult.h \
+    $${PWD}/OAIOpenAQProjectsResult.h \
+    $${PWD}/OAIOpenAQResult.h \
+    $${PWD}/OAIOrder_By.h \
+    $${PWD}/OAIParameter.h \
+    $${PWD}/OAIParameter_inner.h \
+    $${PWD}/OAIParametersRow.h \
+    $${PWD}/OAIProjectParameterDetails.h \
+    $${PWD}/OAIProjectsOrder.h \
+    $${PWD}/OAIProjectsRow.h \
+    $${PWD}/OAISensorTypes.h \
+    $${PWD}/OAISort.h \
+    $${PWD}/OAISourcesOrder.h \
+    $${PWD}/OAISourcesV1Order.h \
+    $${PWD}/OAISpatial.h \
+    $${PWD}/OAITemporal.h \
+    $${PWD}/OAITileJSON.h \
+    $${PWD}/OAIValidationError.h \
+# APIs
+    $${PWD}/OAIDefaultApi.h \
+    $${PWD}/OAIV1Api.h \
+    $${PWD}/OAIV2Api.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAICitiesOrder.cpp \
+    $${PWD}/OAICitiesRow.cpp \
+    $${PWD}/OAICountriesOrder.cpp \
+    $${PWD}/OAICountriesRow.cpp \
+    $${PWD}/OAIDate_From.cpp \
+    $${PWD}/OAIDate_To.cpp \
+    $${PWD}/OAIDatefrom.cpp \
+    $${PWD}/OAIDateto.cpp \
+    $${PWD}/OAIEntityTypes.cpp \
+    $${PWD}/OAIHTTPValidationError.cpp \
+    $${PWD}/OAILastupdatedfrom.cpp \
+    $${PWD}/OAILastupdatedto.cpp \
+    $${PWD}/OAILocation_inner.cpp \
+    $${PWD}/OAILocationsOrder.cpp \
+    $${PWD}/OAIMeasOrder.cpp \
+    $${PWD}/OAIMeta.cpp \
+    $${PWD}/OAIOpenAQCitiesResult.cpp \
+    $${PWD}/OAIOpenAQCountriesResult.cpp \
+    $${PWD}/OAIOpenAQParametersResult.cpp \
+    $${PWD}/OAIOpenAQProjectsResult.cpp \
+    $${PWD}/OAIOpenAQResult.cpp \
+    $${PWD}/OAIOrder_By.cpp \
+    $${PWD}/OAIParameter.cpp \
+    $${PWD}/OAIParameter_inner.cpp \
+    $${PWD}/OAIParametersRow.cpp \
+    $${PWD}/OAIProjectParameterDetails.cpp \
+    $${PWD}/OAIProjectsOrder.cpp \
+    $${PWD}/OAIProjectsRow.cpp \
+    $${PWD}/OAISensorTypes.cpp \
+    $${PWD}/OAISort.cpp \
+    $${PWD}/OAISourcesOrder.cpp \
+    $${PWD}/OAISourcesV1Order.cpp \
+    $${PWD}/OAISpatial.cpp \
+    $${PWD}/OAITemporal.cpp \
+    $${PWD}/OAITileJSON.cpp \
+    $${PWD}/OAIValidationError.cpp \
+# APIs
+    $${PWD}/OAIDefaultApi.cpp \
+    $${PWD}/OAIV1Api.cpp \
+    $${PWD}/OAIV2Api.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

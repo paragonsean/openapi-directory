@@ -1,0 +1,926 @@
+openapi: 3.0.0
+info:
+  description: "Work with Qualtrics surveys, distributions and response events"
+  title: Qualtrics API
+  version: "0.2"
+  x-apisguru-categories:
+  - forms
+  x-logo:
+    url: https://qualtrics.com/apple-touch-icon.png
+  x-origin:
+  - format: swagger
+    url: https://raw.githubusercontent.com/microsoft/powerplatform-qualtrics-api/main/Qualtrics%20Connector%20Spec%20-%20Swagger%202.0.json
+    version: "2.0"
+  x-providerName: qualtrics.com
+servers:
+- url: https://fra1.qualtrics.com/API/v3
+paths:
+  /directories/{DirectoryId}/mailinglists/{MailingListId}/contacts:
+    post:
+      description: Creates a contact in a given mailing list
+      operationId: create_contact_in_mailinglist
+      parameters:
+      - description: ID of the qualtrics directory to create the contact to
+        explode: false
+        in: path
+        name: DirectoryId
+        required: true
+        schema:
+          type: string
+        style: simple
+        x-ms-summary: Directory ID
+      - description: ID of the mailing list
+        explode: false
+        in: path
+        name: MailingListId
+        required: true
+        schema:
+          type: string
+        style: simple
+        x-ms-summary: Mailing list ID
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateContactInMailingList'
+        description: Contact data
+        required: true
+        x-ms-summary: Contact data
+        x-body-name: body
+      responses:
+        "200":
+          description: OK - Contact created
+      summary: Create contact in mailing list
+      x-openapi-router-controller: openapi_server.controllers.default_controller
+      x-codegen-request-body-name: body
+  /distributions:
+    get:
+      description: Gets all distributions for a given survey
+      operationId: get_distributions
+      parameters:
+      - description: The survey for which to load the distributions
+        explode: true
+        in: query
+        name: surveyId
+        required: true
+        schema:
+          type: string
+        style: form
+        x-ms-summary: Survey ID
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DistributionsResponse'
+          description: Distributions
+      summary: Get distributions for survey
+      x-openapi-router-controller: openapi_server.controllers.default_controller
+    post:
+      description: Geneates links for individual distribution
+      operationId: generate_distribution_links
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateDistributionLinks'
+        description: Parameters for the link generation
+        required: true
+        x-ms-summary: Link options
+        x-body-name: body
+      responses:
+        "200":
+          description: OK
+      summary: Generate distribution links
+      x-openapi-router-controller: openapi_server.controllers.default_controller
+      x-codegen-request-body-name: body
+  /distributions/{DistributionId}/links:
+    get:
+      description: Retrieves all the individual links for a given distribution
+      operationId: retrievedistributionlinks
+      parameters:
+      - description: "ID of the survey (eg: SV_123)"
+        explode: true
+        in: query
+        name: surveyId
+        required: true
+        schema:
+          type: string
+        style: form
+        x-ms-summary: Survey ID
+      - description: ID of the distribution list
+        explode: false
+        in: path
+        name: DistributionId
+        required: true
+        schema:
+          type: string
+        style: simple
+        x-ms-summary: Distribution ID
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RetrieveDistributionLinksResponse'
+          description: Generated list of links
+      summary: Retrieve distribution links
+      x-openapi-router-controller: openapi_server.controllers.default_controller
+  /eventsubscriptions/:
+    delete:
+      description: Remove event subscription
+      operationId: webhook_delete
+      requestBody:
+        $ref: '#/components/requestBodies/SubscribeToEventBody'
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventSubscriptionsResponse'
+          description: ""
+      summary: Remove subscription to response event
+      x-openapi-router-controller: openapi_server.controllers.default_controller
+      x-codegen-request-body-name: body
+    post:
+      description: Subscribe to response event
+      operationId: when_a_response_is_received
+      requestBody:
+        $ref: '#/components/requestBodies/SubscribeToEventBody'
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventSubscriptionsResponse'
+          description: OK - web hook registered
+      summary: Triggers when a response is submitted to a qualtrics survey
+      x-ms-trigger: single
+      x-openapi-router-controller: openapi_server.controllers.default_controller
+      x-codegen-request-body-name: body
+    x-ms-notification-content:
+      description: WebHook registration response
+      schema:
+        $ref: '#/components/schemas/EventSubscriptionHookSchema'
+  /eventsubscriptions/{SubscriptionId}:
+    get:
+      description: Get event subscriptions
+      operationId: get_event_subscriptions
+      parameters:
+      - description: ID of event subscription - can be obtained from web hook response
+        explode: false
+        in: path
+        name: SubscriptionId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventSubscriptionsResponse'
+          description: Event subscriptions
+      summary: Get event subscriptions
+      x-openapi-router-controller: openapi_server.controllers.default_controller
+  /survey-definitions/{SurveyId}:
+    get:
+      description: Gets a single Qualtrics survey speficied by its ID
+      operationId: get_survey
+      parameters:
+      - description: ID of survey (eg. SV_123)
+        explode: false
+        in: path
+        name: SurveyId
+        required: true
+        schema:
+          type: string
+        style: simple
+        x-ms-summary: Survey ID
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SurveyResponse'
+          description: Survey data
+        default:
+          description: Operation Failed.
+      summary: Get survey
+      x-openapi-router-controller: openapi_server.controllers.default_controller
+components:
+  requestBodies:
+    SubscribeToEventBody:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/SubscribeToEventBody'
+      description: This is the request body of the webhook
+      required: true
+  schemas:
+    CreateContactInMailingList:
+      example:
+        firstName: firstName
+        lastName: lastName
+        unsubscribed: true
+        email: email
+      properties:
+        email:
+          title: email
+          type: string
+        firstName:
+          title: firstName
+          type: string
+        lastName:
+          title: lastName
+          type: string
+        unsubscribed:
+          title: unsubscribed
+          type: boolean
+      title: CreateContactInMailingList
+      type: object
+    CreateDistributionLinks:
+      example:
+        mailingListId: mailingListId
+        surveyId: surveyId
+        action: CreateDistribution
+        description: description
+        linkType: linkType
+        expirationDate: 2021-01-21 00:00:00
+      properties:
+        action:
+          default: CreateDistribution
+          title: action
+          type: string
+        description:
+          title: description
+          type: string
+        expirationDate:
+          example: 2021-01-21 00:00:00
+          title: expirationDate
+          type: string
+        linkType:
+          title: linkType
+          type: string
+        mailingListId:
+          title: mailingListId
+          type: string
+        surveyId:
+          title: surveyId
+          type: string
+      title: CreateDistributionLinks
+      type: object
+    DistributionsResponse:
+      example:
+        result:
+          nextPage: ""
+          elements:
+          - headers:
+              fromName: ""
+              replyToEmail: ""
+              fromEmail: ""
+            requestType: requestType
+            surveyLink:
+              surveyId: surveyId
+              linkType: linkType
+              expirationDate: expirationDate
+            sendDate: sendDate
+            embeddedData: ""
+            message:
+              messageText: ""
+              libraryId: ""
+              messageId: ""
+            ownerId: ownerId
+            parentDistributionId: ""
+            organizationId: organizationId
+            createdDate: createdDate
+            stats:
+              blocked: 0
+              complaints: 1
+              finished: 5
+              opened: 2
+              started: 3
+              failed: 5
+              bounced: 6
+              sent: 7
+              skipped: 9
+            recipients:
+              mailingListId: mailingListId
+              contactId: ""
+              sampleId: ""
+              libraryId: libraryId
+            modifiedDate: modifiedDate
+            id: id
+            customHeaders: "{}"
+            requestStatus: requestStatus
+          - headers:
+              fromName: ""
+              replyToEmail: ""
+              fromEmail: ""
+            requestType: requestType
+            surveyLink:
+              surveyId: surveyId
+              linkType: linkType
+              expirationDate: expirationDate
+            sendDate: sendDate
+            embeddedData: ""
+            message:
+              messageText: ""
+              libraryId: ""
+              messageId: ""
+            ownerId: ownerId
+            parentDistributionId: ""
+            organizationId: organizationId
+            createdDate: createdDate
+            stats:
+              blocked: 0
+              complaints: 1
+              finished: 5
+              opened: 2
+              started: 3
+              failed: 5
+              bounced: 6
+              sent: 7
+              skipped: 9
+            recipients:
+              mailingListId: mailingListId
+              contactId: ""
+              sampleId: ""
+              libraryId: libraryId
+            modifiedDate: modifiedDate
+            id: id
+            customHeaders: "{}"
+            requestStatus: requestStatus
+        meta:
+          requestId: requestId
+          httpStatus: httpStatus
+      properties:
+        meta:
+          $ref: '#/components/schemas/DistributionsResponse_meta'
+        result:
+          $ref: '#/components/schemas/DistributionsResponse_result'
+      title: DistributionsResponse
+      type: object
+    EventSubscriptionHookSchema:
+      properties:
+        $content:
+          default: x
+          type: string
+          x-ms-summary: Content
+          x-ms-visibility: internal
+        $content-type:
+          default: application/x-www-form-urlencoded
+          type: string
+          x-ms-summary: Content type
+          x-ms-visibility: internal
+        $formdata:
+          items:
+            $ref: '#/components/schemas/EventSubscriptionHookSchema__formdata_inner'
+          type: array
+          x-ms-summary: Questions and answers
+      required:
+      - $content
+      - $content-type
+      type: object
+    EventSubscriptionsResponse:
+      example:
+        result:
+          result:
+            id: id
+          meta:
+            httpStatus: httpStatus
+        meta:
+          requestId: requestId
+          httpStatus: httpStatus
+      properties:
+        meta:
+          $ref: '#/components/schemas/DistributionsResponse_meta'
+        result:
+          $ref: '#/components/schemas/EventSubscriptionsResponse_result'
+      title: EventSubscriptionsResponse
+      type: object
+    RetrieveDistributionLinksResponse:
+      example:
+        result:
+          nextPage: ""
+          elements:
+          - firstName: firstName
+            lastName: lastName
+            unsubscribed: true
+            contactId: contactId
+            exceededContactFrequency: true
+            link: link
+            linkExpiration: linkExpiration
+            externalDataReference: ""
+            email: email
+            transactionId: ""
+            status: status
+          - firstName: firstName
+            lastName: lastName
+            unsubscribed: true
+            contactId: contactId
+            exceededContactFrequency: true
+            link: link
+            linkExpiration: linkExpiration
+            externalDataReference: ""
+            email: email
+            transactionId: ""
+            status: status
+        meta:
+          requestId: requestId
+          httpStatus: httpStatus
+      properties:
+        meta:
+          $ref: '#/components/schemas/DistributionsResponse_meta'
+        result:
+          $ref: '#/components/schemas/RetrieveDistributionLinksResponse_result'
+      title: RetrieveDistributionLinksResponse
+      type: object
+    SubscribeToEventBody:
+      example:
+        encrypt: true
+        topics: surveyengine.completedResponse.<Insert SurveyID>
+        publicationUrl: publicationUrl
+      properties:
+        encrypt:
+          title: encrypt
+          type: boolean
+        publicationUrl:
+          description: The internal publication URL - will be generated by PowerAutomate
+          title: publicationUrl
+          type: string
+          x-ms-notification-url: true
+          x-ms-visibility: internal
+        topics:
+          default: surveyengine.completedResponse.<Insert SurveyID>
+          description: "The topics to subscribe to. Must follow the format surveyengine.completedResponse.[SurveyID]"
+          title: topics
+          type: string
+      required:
+      - publicationUrl
+      - topics
+      title: SubscribeToEventBody
+      type: object
+    SurveyResponse:
+      properties: {}
+      type: object
+    DistributionsResponse_meta:
+      example:
+        requestId: requestId
+        httpStatus: httpStatus
+      properties:
+        httpStatus:
+          title: httpStatus
+          type: string
+        requestId:
+          title: requestId
+          type: string
+      title: DistributionsResponse_meta
+      type: object
+    DistributionsResponse_result_elements_inner_headers:
+      example:
+        fromName: ""
+        replyToEmail: ""
+        fromEmail: ""
+      properties:
+        fromEmail:
+          title: fromEmail
+        fromName:
+          title: fromName
+        replyToEmail:
+          title: replyToEmail
+      title: DistributionsResponse_result_elements_inner_headers
+      type: object
+    DistributionsResponse_result_elements_inner_message:
+      example:
+        messageText: ""
+        libraryId: ""
+        messageId: ""
+      properties:
+        libraryId:
+          title: libraryId
+        messageId:
+          title: messageId
+        messageText:
+          title: messageText
+      title: DistributionsResponse_result_elements_inner_message
+      type: object
+    DistributionsResponse_result_elements_inner_recipients:
+      example:
+        mailingListId: mailingListId
+        contactId: ""
+        sampleId: ""
+        libraryId: libraryId
+      properties:
+        contactId:
+          title: contactId
+        libraryId:
+          title: libraryId
+          type: string
+        mailingListId:
+          title: mailingListId
+          type: string
+        sampleId:
+          title: sampleId
+      title: DistributionsResponse_result_elements_inner_recipients
+      type: object
+    DistributionsResponse_result_elements_inner_stats:
+      example:
+        blocked: 0
+        complaints: 1
+        finished: 5
+        opened: 2
+        started: 3
+        failed: 5
+        bounced: 6
+        sent: 7
+        skipped: 9
+      properties:
+        blocked:
+          title: blocked
+          type: integer
+        bounced:
+          title: bounced
+          type: integer
+        complaints:
+          title: complaints
+          type: integer
+        failed:
+          title: failed
+          type: integer
+        finished:
+          title: finished
+          type: integer
+        opened:
+          title: opened
+          type: integer
+        sent:
+          title: sent
+          type: integer
+        skipped:
+          title: skipped
+          type: integer
+        started:
+          title: started
+          type: integer
+      title: DistributionsResponse_result_elements_inner_stats
+      type: object
+    DistributionsResponse_result_elements_inner_surveyLink:
+      example:
+        surveyId: surveyId
+        linkType: linkType
+        expirationDate: expirationDate
+      properties:
+        expirationDate:
+          title: expirationDate
+          type: string
+        linkType:
+          title: linkType
+          type: string
+        surveyId:
+          title: surveyId
+          type: string
+      title: DistributionsResponse_result_elements_inner_surveyLink
+      type: object
+    DistributionsResponse_result_elements_inner:
+      example:
+        headers:
+          fromName: ""
+          replyToEmail: ""
+          fromEmail: ""
+        requestType: requestType
+        surveyLink:
+          surveyId: surveyId
+          linkType: linkType
+          expirationDate: expirationDate
+        sendDate: sendDate
+        embeddedData: ""
+        message:
+          messageText: ""
+          libraryId: ""
+          messageId: ""
+        ownerId: ownerId
+        parentDistributionId: ""
+        organizationId: organizationId
+        createdDate: createdDate
+        stats:
+          blocked: 0
+          complaints: 1
+          finished: 5
+          opened: 2
+          started: 3
+          failed: 5
+          bounced: 6
+          sent: 7
+          skipped: 9
+        recipients:
+          mailingListId: mailingListId
+          contactId: ""
+          sampleId: ""
+          libraryId: libraryId
+        modifiedDate: modifiedDate
+        id: id
+        customHeaders: "{}"
+        requestStatus: requestStatus
+      properties:
+        createdDate:
+          title: createdDate
+          type: string
+        customHeaders:
+          properties: {}
+          title: customHeaders
+          type: object
+        embeddedData:
+          title: embeddedData
+        headers:
+          $ref: '#/components/schemas/DistributionsResponse_result_elements_inner_headers'
+        id:
+          title: id
+          type: string
+        message:
+          $ref: '#/components/schemas/DistributionsResponse_result_elements_inner_message'
+        modifiedDate:
+          title: modifiedDate
+          type: string
+        organizationId:
+          title: organizationId
+          type: string
+        ownerId:
+          title: ownerId
+          type: string
+        parentDistributionId:
+          title: parentDistributionId
+        recipients:
+          $ref: '#/components/schemas/DistributionsResponse_result_elements_inner_recipients'
+        requestStatus:
+          title: requestStatus
+          type: string
+        requestType:
+          title: requestType
+          type: string
+        sendDate:
+          title: sendDate
+          type: string
+        stats:
+          $ref: '#/components/schemas/DistributionsResponse_result_elements_inner_stats'
+        surveyLink:
+          $ref: '#/components/schemas/DistributionsResponse_result_elements_inner_surveyLink'
+      required:
+      - createdDate
+      - customHeaders
+      - embeddedData
+      - headers
+      - id
+      - message
+      - modifiedDate
+      - organizationId
+      - ownerId
+      - parentDistributionId
+      - recipients
+      - requestStatus
+      - requestType
+      - sendDate
+      - stats
+      - surveyLink
+      title: DistributionsResponse_result_elements_inner
+      type: object
+    DistributionsResponse_result:
+      example:
+        nextPage: ""
+        elements:
+        - headers:
+            fromName: ""
+            replyToEmail: ""
+            fromEmail: ""
+          requestType: requestType
+          surveyLink:
+            surveyId: surveyId
+            linkType: linkType
+            expirationDate: expirationDate
+          sendDate: sendDate
+          embeddedData: ""
+          message:
+            messageText: ""
+            libraryId: ""
+            messageId: ""
+          ownerId: ownerId
+          parentDistributionId: ""
+          organizationId: organizationId
+          createdDate: createdDate
+          stats:
+            blocked: 0
+            complaints: 1
+            finished: 5
+            opened: 2
+            started: 3
+            failed: 5
+            bounced: 6
+            sent: 7
+            skipped: 9
+          recipients:
+            mailingListId: mailingListId
+            contactId: ""
+            sampleId: ""
+            libraryId: libraryId
+          modifiedDate: modifiedDate
+          id: id
+          customHeaders: "{}"
+          requestStatus: requestStatus
+        - headers:
+            fromName: ""
+            replyToEmail: ""
+            fromEmail: ""
+          requestType: requestType
+          surveyLink:
+            surveyId: surveyId
+            linkType: linkType
+            expirationDate: expirationDate
+          sendDate: sendDate
+          embeddedData: ""
+          message:
+            messageText: ""
+            libraryId: ""
+            messageId: ""
+          ownerId: ownerId
+          parentDistributionId: ""
+          organizationId: organizationId
+          createdDate: createdDate
+          stats:
+            blocked: 0
+            complaints: 1
+            finished: 5
+            opened: 2
+            started: 3
+            failed: 5
+            bounced: 6
+            sent: 7
+            skipped: 9
+          recipients:
+            mailingListId: mailingListId
+            contactId: ""
+            sampleId: ""
+            libraryId: libraryId
+          modifiedDate: modifiedDate
+          id: id
+          customHeaders: "{}"
+          requestStatus: requestStatus
+      properties:
+        elements:
+          items:
+            $ref: '#/components/schemas/DistributionsResponse_result_elements_inner'
+          title: elements
+          type: array
+        nextPage:
+          title: nextPage
+      title: DistributionsResponse_result
+      type: object
+    EventSubscriptionHookSchema__formdata_inner:
+      properties:
+        key:
+          title: key
+          type: string
+          x-ms-summary: " : Question"
+        value:
+          title: value
+          type: string
+          x-ms-summary: ": Answer"
+      required:
+      - key
+      - value
+      title: EventSubscriptionHookSchema__formdata_inner
+      type: object
+    EventSubscriptionsResponse_result_meta:
+      example:
+        httpStatus: httpStatus
+      properties:
+        httpStatus:
+          title: httpStatus
+          type: string
+      title: EventSubscriptionsResponse_result_meta
+      type: object
+    EventSubscriptionsResponse_result_result:
+      example:
+        id: id
+      properties:
+        id:
+          title: id
+          type: string
+      title: EventSubscriptionsResponse_result_result
+      type: object
+    EventSubscriptionsResponse_result:
+      example:
+        result:
+          id: id
+        meta:
+          httpStatus: httpStatus
+      properties:
+        meta:
+          $ref: '#/components/schemas/EventSubscriptionsResponse_result_meta'
+        result:
+          $ref: '#/components/schemas/EventSubscriptionsResponse_result_result'
+      title: EventSubscriptionsResponse_result
+      type: object
+    RetrieveDistributionLinksResponse_result_elements_inner:
+      example:
+        firstName: firstName
+        lastName: lastName
+        unsubscribed: true
+        contactId: contactId
+        exceededContactFrequency: true
+        link: link
+        linkExpiration: linkExpiration
+        externalDataReference: ""
+        email: email
+        transactionId: ""
+        status: status
+      properties:
+        contactId:
+          title: contactId
+          type: string
+        email:
+          title: email
+          type: string
+        exceededContactFrequency:
+          title: exceededContactFrequency
+          type: boolean
+        externalDataReference:
+          title: externalDataReference
+        firstName:
+          title: firstName
+          type: string
+        lastName:
+          title: lastName
+          type: string
+        link:
+          title: link
+          type: string
+        linkExpiration:
+          title: linkExpiration
+          type: string
+        status:
+          title: status
+          type: string
+        transactionId:
+          title: transactionId
+        unsubscribed:
+          title: unsubscribed
+          type: boolean
+      required:
+      - contactId
+      - email
+      - exceededContactFrequency
+      - externalDataReference
+      - firstName
+      - lastName
+      - link
+      - linkExpiration
+      - status
+      - transactionId
+      - unsubscribed
+      title: RetrieveDistributionLinksResponse_result_elements_inner
+      type: object
+    RetrieveDistributionLinksResponse_result:
+      example:
+        nextPage: ""
+        elements:
+        - firstName: firstName
+          lastName: lastName
+          unsubscribed: true
+          contactId: contactId
+          exceededContactFrequency: true
+          link: link
+          linkExpiration: linkExpiration
+          externalDataReference: ""
+          email: email
+          transactionId: ""
+          status: status
+        - firstName: firstName
+          lastName: lastName
+          unsubscribed: true
+          contactId: contactId
+          exceededContactFrequency: true
+          link: link
+          linkExpiration: linkExpiration
+          externalDataReference: ""
+          email: email
+          transactionId: ""
+          status: status
+      properties:
+        elements:
+          items:
+            $ref: '#/components/schemas/RetrieveDistributionLinksResponse_result_elements_inner'
+          title: elements
+          type: array
+        nextPage:
+          title: nextPage
+      title: RetrieveDistributionLinksResponse_result
+      type: object
+  securitySchemes:
+    api_key:
+      in: header
+      name: X-API-TOKEN
+      type: apiKey
+      x-apikeyInfoFunc: openapi_server.controllers.security_controller.info_from_api_key

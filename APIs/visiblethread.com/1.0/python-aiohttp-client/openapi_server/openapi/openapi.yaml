@@ -1,0 +1,1633 @@
+openapi: 3.0.1
+info:
+  contact: {}
+  description: "## Introduction\nThe VisibleThread b API provides services for analyzing/searching\
+    \ documents and web pages.\nTo use the service you need an API key. \n\n**Contact\
+    \ us at support@visiblethread.com to request an API key**. \n\nThe services are\
+    \ split into **Documents** and **Webscans**.\n\n### Documents\nUpload documents\
+    \ and dictionaries so you can :\n- Measure the readability of your document\n\
+    - search a document for all terms from a dictionary\n- retrieve all paragraphs\
+    \ from a document or only matching paragraphs\n\n### Webscans\nAnalyze web pages\
+    \ so you can: \n- Measure the readability of your web content\n- Identify & highlight\
+    \ content issues e.g. long sentences, passive voice\n\nThe VisibleThread API allows\
+    \ you to programatially submit webpage urls to be scanned, \ncheck on the results\
+    \ of a scan, and view a list of previous scans you have performed.\n    \n-------------\n\
+    \nThe VisibleThread API is a HTTP-based JSON API, accessible at https://api.visiblethread.com\
+    \ \nEach request to the service requires your API key to be successful.\n\n##\
+    \ Getting Started With Webscans\n\nSteps:\n1. Enter your API key above and hit\
+    \ **Explore**. \n2. Run a new scan by submitting a **POST to /webscans** (title\
+    \ and some webUrls are required).\n   The scan runs asynchronously in the background\
+    \ but returns immediately with a JSON response containing an \"id\" that represents\
+    \ your scan.\n3. Check on the status of a scan by submitting **GET /webscans/{scanId}**,\
+    \ if the scan is still in progress it will return a HTTP 503. If \n   it is complete\
+    \ it will return a HTTP 200 with the appropriate JSON outlining the urls scanned\
+    \ and the summary statistics for each url.\n4. Retrieve all your previous scan\
+    \ results by submitting **GET /webscans**.  \n5. Retrieve detailed results for\
+    \ a url within a scan (readability, long sentence and passive language instances)\
+    \ by submitting \n   **GET /webscans/{scanId}/webUrls/{urlId}** (scanId and urlId\
+    \ are required)\n\n## Getting Started With Document scans:\n\nSteps:\n1. Enter\
+    \ your API key above and hit **Explore**\n2. Run a new scan by submitting a **POST\
+    \ to /documents** (document required). The scan runs asynchronously in the background\
+    \ but returns\n   immediately with a JSON response containins an \"id\" that represents\
+    \ your scan\n3. Check on the status of a scan by submitting **GET /documents/{scanId}**,\
+    \ if the scan is still in progress it will return a HTTP 503. If \n   it is complete\
+    \ it will return a HTTP 200 with the appropriate JSON outlining the document readability\
+    \ results. It will contain detailed\n   analysis of each paragraph in the document\n\
+    4. Retrieve all your previous scan results by submitting **GET /documents**\n\n\
+    ### Searching a document for keywords\n\nThe VisibleThread API allows you to upload\
+    \ a set of keywords or a 'dictionary'. You can then perform a search of a already\
+    \ uploaded document \nusing that dictionary\n\nSteps (Assuming you have uploaded\
+    \ your document using the steps above):\n1. Upload a csv file to use as a keyword\
+    \ dictionary by submitting a **POST to /dictionaries** (csv file required). This\
+    \ returns a JSON \n   response with the dictionary Id \n2. Search a document with\
+    \ the dictionary by submitting a **POST to /searches** (document id and dictionary\
+    \ id required). \n3. Get the resuhlts of the search by submitting  **GET /searches/{docId}/{dictionaryId}\"\
+    \ . This will return JSON response containing \n   detailed results of searching\
+    \ the document using the dictionary.\n4. To view the list of all searches you\
+    \ have performed submit a **GET /searches**. \n\nBelow is a list of the available\
+    \ API endpoints, documentation & a form to try out each operation."
+  title: VisibleThread API
+  version: "1.0"
+  x-apisguru-categories:
+  - text
+  x-logo:
+    url: https://twitter.com/VisibleThread/profile_image?size=original
+  x-origin:
+  - format: swagger
+    url: https://api.visiblethread.com/example/vt.yaml
+    version: "2.0"
+  x-providerName: visiblethread.com
+servers:
+- url: https://api.visiblethread.com/api/v1
+security:
+- api_key: []
+paths:
+  /dictionaries:
+    get:
+      description: Get your list of dictionaries
+      operationId: dictionaries_get
+      responses:
+        "200":
+          content: {}
+          description: Successful response
+      summary: Get your list of dictionaries
+      tags:
+      - Documents
+      x-openapi-router-controller: openapi_server.controllers.documents_controller
+    post:
+      description: 'Upload a dictionary (CSV format) to your VisibleThread account. '
+      operationId: upload_dictionary
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/uploadDictionary_request'
+        required: true
+        x-body-name: body
+      responses:
+        "200":
+          content: {}
+          description: Successful response
+        "405":
+          content: {}
+          description: Invalid input
+      summary: Upload a dictionary (CSV)
+      tags:
+      - Documents
+      x-openapi-router-controller: openapi_server.controllers.documents_controller
+      x-codegen-request-body-name: body
+  /documents:
+    get:
+      description: Get your list of documents
+      operationId: documents_get
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/DocumentListSummary'
+                title: Documents
+                type: array
+          description: Successful response
+      summary: Get your list of documents
+      tags:
+      - Documents
+      x-openapi-router-controller: openapi_server.controllers.documents_controller
+    post:
+      description: "Upload a document to your VisibleThread account. \nWe return a\
+        \ JSON response that contains a \"docId\" that represents your document. \
+        \       \nYou can use this id in other requests to check on the analysis status\
+        \ for the document and run a dictionary search and retrieve search\nresults. "
+      operationId: upload_doc
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/uploadDoc_request'
+        required: true
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NewDocumentResponse'
+          description: Successful response
+        "405":
+          content: {}
+          description: Invalid input
+        "413":
+          content: {}
+          description: The document exceeds the maximum supported file size (15mb)
+      summary: Upload a document
+      tags:
+      - Documents
+      x-openapi-router-controller: openapi_server.controllers.documents_controller
+      x-codegen-request-body-name: body
+  /documents/{docId}:
+    get:
+      description: Get data from a previously submitted document identified by ***docId***
+      operationId: get_doc_by_id
+      parameters:
+      - description: Id of document to fetch
+        in: path
+        name: docId
+        required: true
+        schema:
+          format: int64
+          type: integer
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DocumentResponseDetailed'
+          description: document response contained readability details for the document
+        "404":
+          content: {}
+          description: document not found
+        "415":
+          content: {}
+          description: the document is an unsupported file type
+        "500":
+          content: {}
+          description: an unknown error occurred processing the document
+        "503":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DocumentResponseNotReady'
+          description: "the document analysis has not yet completed, try again later"
+      summary: Get data from a previously submitted document
+      tags:
+      - Documents
+      x-openapi-router-controller: openapi_server.controllers.documents_controller
+  /searches:
+    get:
+      description: Get your list of searches
+      operationId: searches_get
+      responses:
+        "200":
+          content: {}
+          description: Successful response
+      summary: Get your list of searches
+      tags:
+      - Documents
+      x-openapi-router-controller: openapi_server.controllers.documents_controller
+    post:
+      description: 'Run a search on document **docId** using dictionary **dictId** '
+      operationId: run_search
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Search'
+        description: Run a search on document **docId** using dictionary**dictId**
+        required: true
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            text/plain:
+              schema:
+                type: object
+          description: Successful response
+        "405":
+          content: {}
+          description: Invalid input
+      summary: Run a search
+      tags:
+      - Documents
+      x-codegen-request-body-name: body
+      x-openapi-router-controller: openapi_server.controllers.documents_controller
+  /searches/{docId}/{dictionaryId}:
+    get:
+      description: "Get detailed results for a scan/url (readability, long sentence\
+        \ and passive language instances), identified by **scanId** & **urlId**"
+      operationId: get_search_results
+      parameters:
+      - description: Id of document
+        in: path
+        name: docId
+        required: true
+        schema:
+          format: int64
+          type: integer
+      - description: Id of dictionary
+        in: path
+        name: dictionaryId
+        required: true
+        schema:
+          format: int64
+          type: integer
+      - description: Only returning paragraphs containing a match
+        in: query
+        name: matchingOnly
+        required: true
+        schema:
+          type: boolean
+      responses:
+        "200":
+          content: {}
+          description: scan response
+      summary: Gets search results for a particular document/dictionary
+      tags:
+      - Documents
+      x-openapi-router-controller: openapi_server.controllers.documents_controller
+  /webscans:
+    get:
+      description: Get your list of scans
+      operationId: webscans_get
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/ScanResponseSummary'
+                title: Scans
+                type: array
+          description: Successful response
+      summary: Get your list of scans
+      tags:
+      - Webscans
+      x-openapi-router-controller: openapi_server.controllers.webscans_controller
+    post:
+      description: "The scan runs in the background but returns immediately with a\
+        \ JSON response containing an \"id\" that represents your scan.        \n\
+        You can use this id in other requests to retrieve your scan result. \n\nAlso,\
+        \ an \"id\" is returned for each url which can be used to retrieve detailed\
+        \ results for individual scan urls. "
+      operationId: run_scan
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewScan'
+        description: Scan title and webUrls to analyze
+        required: true
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NewScanResponse'
+          description: Successful response
+        "405":
+          content: {}
+          description: Invalid input
+      summary: Run a new scan
+      tags:
+      - Webscans
+      x-codegen-request-body-name: body
+      x-openapi-router-controller: openapi_server.controllers.webscans_controller
+  /webscans/{scanId}:
+    get:
+      description: "Get data from a previously run scan, identified by **scanId**"
+      operationId: get_scan_by_id
+      parameters:
+      - description: Id of scan to fetch
+        in: path
+        name: scanId
+        required: true
+        schema:
+          format: int64
+          type: integer
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScanResponseDetailed'
+          description: scan response
+        "404":
+          content: {}
+          description: webscan not found
+        "503":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebResponseNotReady'
+          description: "the web analysis has not yet completed, try again later"
+      summary: Get data from a previously run scan
+      tags:
+      - Webscans
+      x-openapi-router-controller: openapi_server.controllers.webscans_controller
+  /webscans/{scanId}/webUrls/{urlId}:
+    get:
+      description: "Get detailed results for a scan/url (readability, long sentence\
+        \ and passive language instances), identified by **scanId** & **urlId**"
+      operationId: get_scan_url_by_id
+      parameters:
+      - description: Id of scan
+        in: path
+        name: scanId
+        required: true
+        schema:
+          format: int64
+          type: integer
+      - description: Id of url to fetch
+        in: path
+        name: urlId
+        required: true
+        schema:
+          format: int64
+          type: integer
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebUrlDetail'
+          description: scan response
+        "404":
+          content: {}
+          description: scan url not found
+      summary: Gets data for a particular scan/webUrl
+      tags:
+      - Webscans
+      x-openapi-router-controller: openapi_server.controllers.webscans_controller
+components:
+  schemas:
+    Adverbs:
+      items:
+        $ref: '#/components/schemas/Adverbs_inner'
+      title: Adverbs
+      type: array
+    Analysis:
+      example:
+        stats:
+          longSentenceCount: 5
+          fleschKincaidGradeLevel: 1.4658129
+          fleschReadingLevel: 5
+          avgSentenceLength: 6
+          wordCount: 9
+          passiveSentenceCount: 2
+          sentenceCount: 7
+        title: My funky scan title
+      properties:
+        stats:
+          $ref: '#/components/schemas/Stats'
+        title:
+          example: My funky scan title
+          title: title
+          type: string
+      title: Analysis
+      type: object
+    DocumentListSummary:
+      example:
+        name: My Document.pdf
+        id: 0
+      properties:
+        id:
+          format: int64
+          title: id
+          type: integer
+        name:
+          example: My Document.pdf
+          title: name
+          type: string
+      title: DocumentListSummary
+      type: object
+    DocumentResponseDetailed:
+      example:
+        eta: 2000-01-23T04:56:07.000+00:00
+        stats:
+          longSentenceCount: 5
+          fleschKincaidGradeLevel: 1.4658129
+          fleschReadingLevel: 5
+          avgSentenceLength: 6
+          wordCount: 9
+          passiveSentenceCount: 2
+          sentenceCount: 7
+        scanSettings:
+          longSentenceWordCount: 6
+          veryLongSentenceWordCount: 1
+        started: 2000-01-23T04:56:07.000+00:00
+        completed: 2000-01-23T04:56:07.000+00:00
+        id: 0
+        paragraphs:
+        - paragraphCounter: 12
+          stats:
+            longSentences:
+            - - wordCount: 22
+                start: 0
+                end: 130
+              - wordCount: 22
+                start: 0
+                end: 130
+            - - wordCount: 22
+                start: 0
+                end: 130
+              - wordCount: 22
+                start: 0
+                end: 130
+            hiddenVerbs:
+            - - start: 185
+                noun: investment
+                end: 210
+                text: investment in intangibles
+              - start: 185
+                noun: investment
+                end: 210
+                text: investment in intangibles
+            - - start: 185
+                noun: investment
+                end: 210
+                text: investment in intangibles
+              - start: 185
+                noun: investment
+                end: 210
+                text: investment in intangibles
+            veryLongSentences:
+            - - wordCount: 34
+                start: 0
+                end: 130
+              - wordCount: 34
+                start: 0
+                end: 130
+            - - wordCount: 34
+                start: 0
+                end: 130
+              - wordCount: 34
+                start: 0
+                end: 130
+            adverbs:
+            - - start: 386
+                end: 399
+                text: exceptionally
+              - start: 386
+                end: 399
+                text: exceptionally
+            - - start: 386
+                end: 399
+                text: exceptionally
+              - start: 386
+                end: 399
+                text: exceptionally
+            passives:
+            - - start: 34
+                verb: extracted
+                end: 47
+                passivePiece: was extracted
+              - start: 34
+                verb: extracted
+                end: 47
+                passivePiece: was extracted
+            - - start: 34
+                verb: extracted
+                end: 47
+                passivePiece: was extracted
+              - start: 34
+                verb: extracted
+                end: 47
+                passivePiece: was extracted
+          paragraphIndex: 22
+          text: "This is an exmaple sentence which was extracted from a web page during\
+            \ a scan previously run using the VisibleThread API service. This is a\
+            \ short, simple sentence."
+        - paragraphCounter: 12
+          stats:
+            longSentences:
+            - - wordCount: 22
+                start: 0
+                end: 130
+              - wordCount: 22
+                start: 0
+                end: 130
+            - - wordCount: 22
+                start: 0
+                end: 130
+              - wordCount: 22
+                start: 0
+                end: 130
+            hiddenVerbs:
+            - - start: 185
+                noun: investment
+                end: 210
+                text: investment in intangibles
+              - start: 185
+                noun: investment
+                end: 210
+                text: investment in intangibles
+            - - start: 185
+                noun: investment
+                end: 210
+                text: investment in intangibles
+              - start: 185
+                noun: investment
+                end: 210
+                text: investment in intangibles
+            veryLongSentences:
+            - - wordCount: 34
+                start: 0
+                end: 130
+              - wordCount: 34
+                start: 0
+                end: 130
+            - - wordCount: 34
+                start: 0
+                end: 130
+              - wordCount: 34
+                start: 0
+                end: 130
+            adverbs:
+            - - start: 386
+                end: 399
+                text: exceptionally
+              - start: 386
+                end: 399
+                text: exceptionally
+            - - start: 386
+                end: 399
+                text: exceptionally
+              - start: 386
+                end: 399
+                text: exceptionally
+            passives:
+            - - start: 34
+                verb: extracted
+                end: 47
+                passivePiece: was extracted
+              - start: 34
+                verb: extracted
+                end: 47
+                passivePiece: was extracted
+            - - start: 34
+                verb: extracted
+                end: 47
+                passivePiece: was extracted
+              - start: 34
+                verb: extracted
+                end: 47
+                passivePiece: was extracted
+          paragraphIndex: 22
+          text: "This is an exmaple sentence which was extracted from a web page during\
+            \ a scan previously run using the VisibleThread API service. This is a\
+            \ short, simple sentence."
+        title: title
+      properties:
+        completed:
+          format: date-time
+          title: completed
+          type: string
+        eta:
+          format: date-time
+          title: eta
+          type: string
+        id:
+          format: int64
+          title: id
+          type: integer
+        paragraphs:
+          items:
+            $ref: '#/components/schemas/DocumentResponseDetailed_paragraphs_inner'
+          title: paragraphs
+          type: array
+        scanSettings:
+          $ref: '#/components/schemas/DocumentResponseDetailed_scanSettings'
+        started:
+          format: date-time
+          title: started
+          type: string
+        stats:
+          $ref: '#/components/schemas/Stats'
+        title:
+          title: title
+          type: string
+      title: DocumentResponseDetailed
+      type: object
+    DocumentResponseNotReady:
+      example:
+        eta: 2000-01-23T04:56:07.000+00:00
+        started: 2000-01-23T04:56:07.000+00:00
+        id: 3
+      properties:
+        eta:
+          format: date-time
+          title: eta
+          type: string
+        id:
+          format: int64
+          title: id
+          type: integer
+        started:
+          format: date-time
+          title: started
+          type: string
+      title: DocumentResponseNotReady
+      type: object
+    HiddenVerbs:
+      items:
+        $ref: '#/components/schemas/HiddenVerbs_inner'
+      title: HiddenVerbs
+      type: array
+    LongSentences:
+      items:
+        $ref: '#/components/schemas/LongSentences_inner'
+      title: LongSentences
+      type: array
+    NewDocumentResponse:
+      example:
+        task: parse
+        docId: 0
+        scanSettings:
+          longSentenceWordCount: 6
+          veryLongSentenceWordCount: 1
+      properties:
+        docId:
+          format: int64
+          title: docId
+          type: integer
+        scanSettings:
+          $ref: '#/components/schemas/DocumentResponseDetailed_scanSettings'
+        task:
+          example: parse
+          title: task
+          type: string
+      required:
+      - docId
+      - scanSettings
+      - task
+      title: NewDocumentResponse
+      type: object
+    NewScan:
+      example:
+        webUrls:
+        - url: http://visiblethread.com
+        - url: http://visiblethread.com
+        scanSettings:
+          longSentenceWordCount: 20
+          veryLongSentenceWordCount: 30
+        title: My fancy scan title
+      properties:
+        scanSettings:
+          $ref: '#/components/schemas/NewScan_scanSettings'
+        title:
+          example: My fancy scan title
+          title: title
+          type: string
+        webUrls:
+          items:
+            $ref: '#/components/schemas/NewScan_webUrls_inner'
+          title: webUrls
+          type: array
+      required:
+      - title
+      - webUrls
+      title: NewScan
+      type: object
+    NewScanResponse:
+      example:
+        webUrls:
+        - id: 88596
+          url: http://visiblethread.com
+        - id: 88596
+          url: http://visiblethread.com
+        id: 56487
+        title: My fancy scan title
+      properties:
+        id:
+          example: 56487
+          format: int64
+          title: id
+          type: integer
+        title:
+          example: My fancy scan title
+          title: title
+          type: string
+        webUrls:
+          items:
+            $ref: '#/components/schemas/NewScanResponse_webUrls_inner'
+          title: webUrls
+          type: array
+      required:
+      - id
+      - title
+      - webUrls
+      title: NewScanResponse
+      type: object
+    Passives:
+      items:
+        $ref: '#/components/schemas/Passives_inner'
+      title: Passives
+      type: array
+    ScanDetailed:
+      example:
+        webUrls:
+        - id: 6
+          analysis:
+            stats:
+              longSentenceCount: 5
+              fleschKincaidGradeLevel: 1.4658129
+              fleschReadingLevel: 5
+              avgSentenceLength: 6
+              wordCount: 9
+              passiveSentenceCount: 2
+              sentenceCount: 7
+            title: My funky scan title
+          url: http://visiblethread.com
+        - id: 6
+          analysis:
+            stats:
+              longSentenceCount: 5
+              fleschKincaidGradeLevel: 1.4658129
+              fleschReadingLevel: 5
+              avgSentenceLength: 6
+              wordCount: 9
+              passiveSentenceCount: 2
+              sentenceCount: 7
+            title: My funky scan title
+          url: http://visiblethread.com
+        stats:
+          longSentenceCount: 5
+          fleschKincaidGradeLevel: 1.4658129
+          fleschReadingLevel: 5
+          avgSentenceLength: 6
+          wordCount: 9
+          passiveSentenceCount: 2
+          sentenceCount: 7
+        title: My fancy scan title
+      properties:
+        stats:
+          $ref: '#/components/schemas/Stats'
+        title:
+          example: My fancy scan title
+          title: title
+          type: string
+        webUrls:
+          items:
+            $ref: '#/components/schemas/WebUrl'
+          title: webUrls
+          type: array
+      required:
+      - stats
+      - title
+      - webUrls
+      title: ScanDetailed
+      type: object
+    ScanResponseDetailed:
+      example:
+        eta: 2000-01-23T04:56:07.000+00:00
+        scan:
+          webUrls:
+          - id: 6
+            analysis:
+              stats:
+                longSentenceCount: 5
+                fleschKincaidGradeLevel: 1.4658129
+                fleschReadingLevel: 5
+                avgSentenceLength: 6
+                wordCount: 9
+                passiveSentenceCount: 2
+                sentenceCount: 7
+              title: My funky scan title
+            url: http://visiblethread.com
+          - id: 6
+            analysis:
+              stats:
+                longSentenceCount: 5
+                fleschKincaidGradeLevel: 1.4658129
+                fleschReadingLevel: 5
+                avgSentenceLength: 6
+                wordCount: 9
+                passiveSentenceCount: 2
+                sentenceCount: 7
+              title: My funky scan title
+            url: http://visiblethread.com
+          stats:
+            longSentenceCount: 5
+            fleschKincaidGradeLevel: 1.4658129
+            fleschReadingLevel: 5
+            avgSentenceLength: 6
+            wordCount: 9
+            passiveSentenceCount: 2
+            sentenceCount: 7
+          title: My fancy scan title
+        started: 2000-01-23T04:56:07.000+00:00
+        completed: 2000-01-23T04:56:07.000+00:00
+        id: 0
+      properties:
+        completed:
+          format: date-time
+          title: completed
+          type: string
+        eta:
+          format: date-time
+          title: eta
+          type: string
+        id:
+          format: int64
+          title: id
+          type: integer
+        scan:
+          $ref: '#/components/schemas/ScanDetailed'
+        started:
+          format: date-time
+          title: started
+          type: string
+      title: ScanResponseDetailed
+      type: object
+    ScanResponseSummary:
+      example:
+        eta: 2000-01-23T04:56:07.000+00:00
+        scan:
+          webUrls:
+          - id: 6
+            url: http://visiblethread.com
+          - id: 6
+            url: http://visiblethread.com
+          title: My fancy scan title
+        started: 2000-01-23T04:56:07.000+00:00
+        completed: 2000-01-23T04:56:07.000+00:00
+        id: 0
+      properties:
+        completed:
+          format: date-time
+          title: completed
+          type: string
+        eta:
+          format: date-time
+          title: eta
+          type: string
+        id:
+          format: int64
+          title: id
+          type: integer
+        scan:
+          $ref: '#/components/schemas/ScanSummary'
+        started:
+          format: date-time
+          title: started
+          type: string
+      title: ScanResponseSummary
+      type: object
+    ScanSummary:
+      example:
+        webUrls:
+        - id: 6
+          url: http://visiblethread.com
+        - id: 6
+          url: http://visiblethread.com
+        title: My fancy scan title
+      properties:
+        title:
+          example: My fancy scan title
+          title: title
+          type: string
+        webUrls:
+          items:
+            $ref: '#/components/schemas/WebUrlHeader'
+          title: webUrls
+          type: array
+      required:
+      - title
+      - webUrls
+      title: ScanSummary
+      type: object
+    Search:
+      example:
+        docId: 56487
+        dictId: 47364
+      properties:
+        dictId:
+          example: 47364
+          format: int64
+          title: dictId
+          type: integer
+        docId:
+          example: 56487
+          format: int64
+          title: docId
+          type: integer
+      required:
+      - dictId
+      - docId
+      title: Search
+      type: object
+    Stats:
+      example:
+        longSentenceCount: 5
+        fleschKincaidGradeLevel: 1.4658129
+        fleschReadingLevel: 5
+        avgSentenceLength: 6
+        wordCount: 9
+        passiveSentenceCount: 2
+        sentenceCount: 7
+      properties:
+        avgSentenceLength:
+          title: avgSentenceLength
+          type: integer
+        fleschKincaidGradeLevel:
+          format: float
+          title: fleschKincaidGradeLevel
+          type: number
+        fleschReadingLevel:
+          title: fleschReadingLevel
+          type: integer
+        longSentenceCount:
+          title: longSentenceCount
+          type: integer
+        passiveSentenceCount:
+          title: passiveSentenceCount
+          type: integer
+        sentenceCount:
+          title: sentenceCount
+          type: integer
+        wordCount:
+          title: wordCount
+          type: integer
+      title: Stats
+      type: object
+    VeryLongSentences:
+      items:
+        $ref: '#/components/schemas/VeryLongSentences_inner'
+      title: VeryLongSentences
+      type: array
+    WebResponseNotReady:
+      example:
+        eta: 2000-01-23T04:56:07.000+00:00
+        started: 2000-01-23T04:56:07.000+00:00
+        id: 1
+      properties:
+        eta:
+          format: date-time
+          title: eta
+          type: string
+        id:
+          format: int64
+          title: id
+          type: integer
+        started:
+          format: date-time
+          title: started
+          type: string
+      title: WebResponseNotReady
+      type: object
+    WebUrl:
+      allOf:
+      - $ref: '#/components/schemas/WebUrlHeader'
+      - properties:
+          analysis:
+            $ref: '#/components/schemas/Analysis'
+        required:
+        - analysis
+        type: object
+      example:
+        id: 6
+        analysis:
+          stats:
+            longSentenceCount: 5
+            fleschKincaidGradeLevel: 1.4658129
+            fleschReadingLevel: 5
+            avgSentenceLength: 6
+            wordCount: 9
+            passiveSentenceCount: 2
+            sentenceCount: 7
+          title: My funky scan title
+        url: http://visiblethread.com
+      title: WebUrl
+    WebUrlDetail:
+      example:
+        stats:
+          longSentenceCount: 5
+          fleschKincaidGradeLevel: 1.4658129
+          fleschReadingLevel: 5
+          avgSentenceLength: 6
+          wordCount: 9
+          passiveSentenceCount: 2
+          sentenceCount: 7
+        paragraphs:
+        - paragraphCounter: 12
+          stats:
+            longSentences:
+            - - wordCount: 22
+                start: 0
+                end: 130
+              - wordCount: 22
+                start: 0
+                end: 130
+            - - wordCount: 22
+                start: 0
+                end: 130
+              - wordCount: 22
+                start: 0
+                end: 130
+            hiddenVerbs:
+            - - start: 185
+                noun: investment
+                end: 210
+                text: investment in intangibles
+              - start: 185
+                noun: investment
+                end: 210
+                text: investment in intangibles
+            - - start: 185
+                noun: investment
+                end: 210
+                text: investment in intangibles
+              - start: 185
+                noun: investment
+                end: 210
+                text: investment in intangibles
+            veryLongSentences:
+            - - wordCount: 34
+                start: 0
+                end: 130
+              - wordCount: 34
+                start: 0
+                end: 130
+            - - wordCount: 34
+                start: 0
+                end: 130
+              - wordCount: 34
+                start: 0
+                end: 130
+            adverbs:
+            - - start: 386
+                end: 399
+                text: exceptionally
+              - start: 386
+                end: 399
+                text: exceptionally
+            - - start: 386
+                end: 399
+                text: exceptionally
+              - start: 386
+                end: 399
+                text: exceptionally
+            passives:
+            - - start: 34
+                verb: extracted
+                end: 47
+                passivePiece: was extracted
+              - start: 34
+                verb: extracted
+                end: 47
+                passivePiece: was extracted
+            - - start: 34
+                verb: extracted
+                end: 47
+                passivePiece: was extracted
+              - start: 34
+                verb: extracted
+                end: 47
+                passivePiece: was extracted
+          paragraphIndex: 22
+          text: "This is an exmaple sentence which was extracted from a web page during\
+            \ a scan previously run using the VisibleThread API service. This is a\
+            \ short, simple sentence."
+        - paragraphCounter: 12
+          stats:
+            longSentences:
+            - - wordCount: 22
+                start: 0
+                end: 130
+              - wordCount: 22
+                start: 0
+                end: 130
+            - - wordCount: 22
+                start: 0
+                end: 130
+              - wordCount: 22
+                start: 0
+                end: 130
+            hiddenVerbs:
+            - - start: 185
+                noun: investment
+                end: 210
+                text: investment in intangibles
+              - start: 185
+                noun: investment
+                end: 210
+                text: investment in intangibles
+            - - start: 185
+                noun: investment
+                end: 210
+                text: investment in intangibles
+              - start: 185
+                noun: investment
+                end: 210
+                text: investment in intangibles
+            veryLongSentences:
+            - - wordCount: 34
+                start: 0
+                end: 130
+              - wordCount: 34
+                start: 0
+                end: 130
+            - - wordCount: 34
+                start: 0
+                end: 130
+              - wordCount: 34
+                start: 0
+                end: 130
+            adverbs:
+            - - start: 386
+                end: 399
+                text: exceptionally
+              - start: 386
+                end: 399
+                text: exceptionally
+            - - start: 386
+                end: 399
+                text: exceptionally
+              - start: 386
+                end: 399
+                text: exceptionally
+            passives:
+            - - start: 34
+                verb: extracted
+                end: 47
+                passivePiece: was extracted
+              - start: 34
+                verb: extracted
+                end: 47
+                passivePiece: was extracted
+            - - start: 34
+                verb: extracted
+                end: 47
+                passivePiece: was extracted
+              - start: 34
+                verb: extracted
+                end: 47
+                passivePiece: was extracted
+          paragraphIndex: 22
+          text: "This is an exmaple sentence which was extracted from a web page during\
+            \ a scan previously run using the VisibleThread API service. This is a\
+            \ short, simple sentence."
+        title: My fancy scan title
+        url: http://visiblethread.com
+      properties:
+        paragraphs:
+          items:
+            $ref: '#/components/schemas/DocumentResponseDetailed_paragraphs_inner'
+          title: paragraphs
+          type: array
+        stats:
+          $ref: '#/components/schemas/Stats'
+        title:
+          example: My fancy scan title
+          title: title
+          type: string
+        url:
+          example: http://visiblethread.com
+          title: url
+          type: string
+      required:
+      - stats
+      - title
+      - url
+      title: WebUrlDetail
+      type: object
+    WebUrlHeader:
+      example:
+        id: 6
+        url: http://visiblethread.com
+      properties:
+        id:
+          format: int64
+          title: id
+          type: integer
+        url:
+          example: http://visiblethread.com
+          title: url
+          type: string
+      required:
+      - id
+      - url
+      title: WebUrlHeader
+      type: object
+    uploadDictionary_request:
+      properties:
+        file:
+          description: The uploaded CSV dictionary
+          format: binary
+          type: string
+      required:
+      - file
+      type: object
+    uploadDoc_request:
+      properties:
+        file:
+          description: The uploaded file data
+          format: binary
+          type: string
+        longSentenceWordCount:
+          description: Optional setting what constitutes a long sentence (default
+            25)
+          format: int32
+          type: integer
+        veryLongSentenceWordCount:
+          description: Optional setting what constitutes a very long sentence (default
+            30)
+          format: int32
+          type: integer
+      required:
+      - file
+      type: object
+    Adverbs_inner:
+      example:
+        start: 386
+        end: 399
+        text: exceptionally
+      properties:
+        end:
+          example: 399
+          title: end
+          type: integer
+        start:
+          example: 386
+          title: start
+          type: integer
+        text:
+          example: exceptionally
+          title: text
+          type: string
+      title: Adverbs_inner
+      type: object
+    DocumentResponseDetailed_paragraphs_inner_stats:
+      example:
+        longSentences:
+        - - wordCount: 22
+            start: 0
+            end: 130
+          - wordCount: 22
+            start: 0
+            end: 130
+        - - wordCount: 22
+            start: 0
+            end: 130
+          - wordCount: 22
+            start: 0
+            end: 130
+        hiddenVerbs:
+        - - start: 185
+            noun: investment
+            end: 210
+            text: investment in intangibles
+          - start: 185
+            noun: investment
+            end: 210
+            text: investment in intangibles
+        - - start: 185
+            noun: investment
+            end: 210
+            text: investment in intangibles
+          - start: 185
+            noun: investment
+            end: 210
+            text: investment in intangibles
+        veryLongSentences:
+        - - wordCount: 34
+            start: 0
+            end: 130
+          - wordCount: 34
+            start: 0
+            end: 130
+        - - wordCount: 34
+            start: 0
+            end: 130
+          - wordCount: 34
+            start: 0
+            end: 130
+        adverbs:
+        - - start: 386
+            end: 399
+            text: exceptionally
+          - start: 386
+            end: 399
+            text: exceptionally
+        - - start: 386
+            end: 399
+            text: exceptionally
+          - start: 386
+            end: 399
+            text: exceptionally
+        passives:
+        - - start: 34
+            verb: extracted
+            end: 47
+            passivePiece: was extracted
+          - start: 34
+            verb: extracted
+            end: 47
+            passivePiece: was extracted
+        - - start: 34
+            verb: extracted
+            end: 47
+            passivePiece: was extracted
+          - start: 34
+            verb: extracted
+            end: 47
+            passivePiece: was extracted
+      properties:
+        adverbs:
+          items:
+            $ref: '#/components/schemas/Adverbs'
+          title: adverbs
+          type: array
+        hiddenVerbs:
+          items:
+            $ref: '#/components/schemas/HiddenVerbs'
+          title: hiddenVerbs
+          type: array
+        longSentences:
+          items:
+            $ref: '#/components/schemas/LongSentences'
+          title: longSentences
+          type: array
+        passives:
+          items:
+            $ref: '#/components/schemas/Passives'
+          title: passives
+          type: array
+        veryLongSentences:
+          items:
+            $ref: '#/components/schemas/VeryLongSentences'
+          title: veryLongSentences
+          type: array
+      title: DocumentResponseDetailed_paragraphs_inner_stats
+      type: object
+    DocumentResponseDetailed_paragraphs_inner:
+      example:
+        paragraphCounter: 12
+        stats:
+          longSentences:
+          - - wordCount: 22
+              start: 0
+              end: 130
+            - wordCount: 22
+              start: 0
+              end: 130
+          - - wordCount: 22
+              start: 0
+              end: 130
+            - wordCount: 22
+              start: 0
+              end: 130
+          hiddenVerbs:
+          - - start: 185
+              noun: investment
+              end: 210
+              text: investment in intangibles
+            - start: 185
+              noun: investment
+              end: 210
+              text: investment in intangibles
+          - - start: 185
+              noun: investment
+              end: 210
+              text: investment in intangibles
+            - start: 185
+              noun: investment
+              end: 210
+              text: investment in intangibles
+          veryLongSentences:
+          - - wordCount: 34
+              start: 0
+              end: 130
+            - wordCount: 34
+              start: 0
+              end: 130
+          - - wordCount: 34
+              start: 0
+              end: 130
+            - wordCount: 34
+              start: 0
+              end: 130
+          adverbs:
+          - - start: 386
+              end: 399
+              text: exceptionally
+            - start: 386
+              end: 399
+              text: exceptionally
+          - - start: 386
+              end: 399
+              text: exceptionally
+            - start: 386
+              end: 399
+              text: exceptionally
+          passives:
+          - - start: 34
+              verb: extracted
+              end: 47
+              passivePiece: was extracted
+            - start: 34
+              verb: extracted
+              end: 47
+              passivePiece: was extracted
+          - - start: 34
+              verb: extracted
+              end: 47
+              passivePiece: was extracted
+            - start: 34
+              verb: extracted
+              end: 47
+              passivePiece: was extracted
+        paragraphIndex: 22
+        text: "This is an exmaple sentence which was extracted from a web page during\
+          \ a scan previously run using the VisibleThread API service. This is a short,\
+          \ simple sentence."
+      properties:
+        paragraphCounter:
+          example: 12
+          title: paragraphCounter
+          type: integer
+        paragraphIndex:
+          example: 22
+          title: paragraphIndex
+          type: integer
+        stats:
+          $ref: '#/components/schemas/DocumentResponseDetailed_paragraphs_inner_stats'
+        text:
+          example: "This is an exmaple sentence which was extracted from a web page\
+            \ during a scan previously run using the VisibleThread API service. This\
+            \ is a short, simple sentence."
+          title: text
+          type: string
+      title: DocumentResponseDetailed_paragraphs_inner
+      type: object
+    DocumentResponseDetailed_scanSettings:
+      example:
+        longSentenceWordCount: 6
+        veryLongSentenceWordCount: 1
+      properties:
+        longSentenceWordCount:
+          format: int32
+          title: longSentenceWordCount
+          type: integer
+        veryLongSentenceWordCount:
+          format: int32
+          title: veryLongSentenceWordCount
+          type: integer
+      title: DocumentResponseDetailed_scanSettings
+      type: object
+    HiddenVerbs_inner:
+      example:
+        start: 185
+        noun: investment
+        end: 210
+        text: investment in intangibles
+      properties:
+        end:
+          example: 210
+          title: end
+          type: integer
+        noun:
+          example: investment
+          title: noun
+          type: string
+        start:
+          example: 185
+          title: start
+          type: integer
+        text:
+          example: investment in intangibles
+          title: text
+          type: string
+      title: HiddenVerbs_inner
+      type: object
+    LongSentences_inner:
+      example:
+        wordCount: 22
+        start: 0
+        end: 130
+      properties:
+        end:
+          example: 130
+          title: end
+          type: integer
+        start:
+          example: 0
+          title: start
+          type: integer
+        wordCount:
+          example: 22
+          title: wordCount
+          type: integer
+      title: LongSentences_inner
+      type: object
+    NewScan_scanSettings:
+      example:
+        longSentenceWordCount: 20
+        veryLongSentenceWordCount: 30
+      properties:
+        longSentenceWordCount:
+          example: 20
+          format: int32
+          title: longSentenceWordCount
+          type: integer
+        veryLongSentenceWordCount:
+          example: 30
+          format: int32
+          title: veryLongSentenceWordCount
+          type: integer
+      title: NewScan_scanSettings
+      type: object
+    NewScan_webUrls_inner:
+      example:
+        url: http://visiblethread.com
+      properties:
+        url:
+          example: http://visiblethread.com
+          title: url
+          type: string
+      required:
+      - url
+      title: NewScan_webUrls_inner
+      type: object
+    NewScanResponse_webUrls_inner:
+      example:
+        id: 88596
+        url: http://visiblethread.com
+      properties:
+        id:
+          example: 88596
+          format: int64
+          title: id
+          type: integer
+        url:
+          example: http://visiblethread.com
+          title: url
+          type: string
+      required:
+      - id
+      - url
+      title: NewScanResponse_webUrls_inner
+      type: object
+    Passives_inner:
+      example:
+        start: 34
+        verb: extracted
+        end: 47
+        passivePiece: was extracted
+      properties:
+        end:
+          example: 47
+          title: end
+          type: integer
+        passivePiece:
+          example: was extracted
+          title: passivePiece
+          type: string
+        start:
+          example: 34
+          title: start
+          type: integer
+        verb:
+          example: extracted
+          title: verb
+          type: string
+      title: Passives_inner
+      type: object
+    VeryLongSentences_inner:
+      example:
+        wordCount: 34
+        start: 0
+        end: 130
+      properties:
+        end:
+          example: 130
+          title: end
+          type: integer
+        start:
+          example: 0
+          title: start
+          type: integer
+        wordCount:
+          example: 34
+          title: wordCount
+          type: integer
+      title: VeryLongSentences_inner
+      type: object
+  securitySchemes:
+    api_key:
+      in: header
+      name: apiKey
+      type: apiKey
+      x-apikeyInfoFunc: openapi_server.controllers.security_controller.info_from_api_key
+x-original-swagger-version: "2.0"

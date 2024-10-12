@@ -1,0 +1,16 @@
+# SquareConnectApi.SubscriptionEventInfoCode
+
+## Enum
+
+
+* `LOCATION_NOT_ACTIVE` (value: `"LOCATION_NOT_ACTIVE"`)
+
+* `LOCATION_CANNOT_ACCEPT_PAYMENT` (value: `"LOCATION_CANNOT_ACCEPT_PAYMENT"`)
+
+* `CUSTOMER_DELETED` (value: `"CUSTOMER_DELETED"`)
+
+* `CUSTOMER_NO_EMAIL` (value: `"CUSTOMER_NO_EMAIL"`)
+
+* `CUSTOMER_NO_NAME` (value: `"CUSTOMER_NO_NAME"`)
+
+

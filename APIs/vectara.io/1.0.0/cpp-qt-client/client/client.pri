@@ -1,0 +1,111 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIAdminCorpus.h \
+    $${PWD}/OAIAdminCreateCorpusRequest.h \
+    $${PWD}/OAIAdminCreateCorpusResponse.h \
+    $${PWD}/OAIAdminDeleteCorpusRequest.h \
+    $${PWD}/OAIAdminDeleteCorpusResponse.h \
+    $${PWD}/OAIAdminDimension.h \
+    $${PWD}/OAIAdminFilterAttribute.h \
+    $${PWD}/OAIAdminFilterAttributeLevel.h \
+    $${PWD}/OAIAdminFilterAttributeType.h \
+    $${PWD}/OAIAdminListCorporaRequest.h \
+    $${PWD}/OAIAdminListCorporaResponse.h \
+    $${PWD}/OAIAdminResetCorpusRequest.h \
+    $${PWD}/OAIAdminResetCorpusResponse.h \
+    $${PWD}/OAIComvectaraStatus.h \
+    $${PWD}/OAICorpusKeySemantics.h \
+    $${PWD}/OAIFileUpload_200_response.h \
+    $${PWD}/OAIFileUpload_200_response_response.h \
+    $${PWD}/OAIFileUpload_200_response_response_quotaConsumed.h \
+    $${PWD}/OAIFileUpload_400_response.h \
+    $${PWD}/OAIGooglerpcStatus.h \
+    $${PWD}/OAIIndexingSection.h \
+    $${PWD}/OAIProtobufAny.h \
+    $${PWD}/OAIQueryRequestRerankingConfig.h \
+    $${PWD}/OAIServingAttribute.h \
+    $${PWD}/OAIServingBatchQueryRequest.h \
+    $${PWD}/OAIServingBatchQueryResponse.h \
+    $${PWD}/OAIServingCorpusKey.h \
+    $${PWD}/OAIServingPerformanceMetrics.h \
+    $${PWD}/OAIServingQueryRequest.h \
+    $${PWD}/OAIServingResponse.h \
+    $${PWD}/OAIServingResponseSet.h \
+    $${PWD}/OAIServingResponseSetDocument.h \
+    $${PWD}/OAIStream_result_of_servingResponseSet.h \
+    $${PWD}/OAIVectaraDeleteDocumentRequest.h \
+    $${PWD}/OAIVectaraIndexDocumentRequest.h \
+    $${PWD}/OAIVectaraIndexDocumentResponse.h \
+    $${PWD}/OAIVectaraStatusCode.h \
+    $${PWD}/OAIVectaraStorageQuota.h \
+    $${PWD}/OAIVectaraindexingCustomDimension.h \
+    $${PWD}/OAIVectaraindexingDocument.h \
+    $${PWD}/OAIVectaraservingCustomDimension.h \
+# APIs
+    $${PWD}/OAIAdminServiceApi.h \
+    $${PWD}/OAIIndexServiceApi.h \
+    $${PWD}/OAIQueryServiceApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIAdminCorpus.cpp \
+    $${PWD}/OAIAdminCreateCorpusRequest.cpp \
+    $${PWD}/OAIAdminCreateCorpusResponse.cpp \
+    $${PWD}/OAIAdminDeleteCorpusRequest.cpp \
+    $${PWD}/OAIAdminDeleteCorpusResponse.cpp \
+    $${PWD}/OAIAdminDimension.cpp \
+    $${PWD}/OAIAdminFilterAttribute.cpp \
+    $${PWD}/OAIAdminFilterAttributeLevel.cpp \
+    $${PWD}/OAIAdminFilterAttributeType.cpp \
+    $${PWD}/OAIAdminListCorporaRequest.cpp \
+    $${PWD}/OAIAdminListCorporaResponse.cpp \
+    $${PWD}/OAIAdminResetCorpusRequest.cpp \
+    $${PWD}/OAIAdminResetCorpusResponse.cpp \
+    $${PWD}/OAIComvectaraStatus.cpp \
+    $${PWD}/OAICorpusKeySemantics.cpp \
+    $${PWD}/OAIFileUpload_200_response.cpp \
+    $${PWD}/OAIFileUpload_200_response_response.cpp \
+    $${PWD}/OAIFileUpload_200_response_response_quotaConsumed.cpp \
+    $${PWD}/OAIFileUpload_400_response.cpp \
+    $${PWD}/OAIGooglerpcStatus.cpp \
+    $${PWD}/OAIIndexingSection.cpp \
+    $${PWD}/OAIProtobufAny.cpp \
+    $${PWD}/OAIQueryRequestRerankingConfig.cpp \
+    $${PWD}/OAIServingAttribute.cpp \
+    $${PWD}/OAIServingBatchQueryRequest.cpp \
+    $${PWD}/OAIServingBatchQueryResponse.cpp \
+    $${PWD}/OAIServingCorpusKey.cpp \
+    $${PWD}/OAIServingPerformanceMetrics.cpp \
+    $${PWD}/OAIServingQueryRequest.cpp \
+    $${PWD}/OAIServingResponse.cpp \
+    $${PWD}/OAIServingResponseSet.cpp \
+    $${PWD}/OAIServingResponseSetDocument.cpp \
+    $${PWD}/OAIStream_result_of_servingResponseSet.cpp \
+    $${PWD}/OAIVectaraDeleteDocumentRequest.cpp \
+    $${PWD}/OAIVectaraIndexDocumentRequest.cpp \
+    $${PWD}/OAIVectaraIndexDocumentResponse.cpp \
+    $${PWD}/OAIVectaraStatusCode.cpp \
+    $${PWD}/OAIVectaraStorageQuota.cpp \
+    $${PWD}/OAIVectaraindexingCustomDimension.cpp \
+    $${PWD}/OAIVectaraindexingDocument.cpp \
+    $${PWD}/OAIVectaraservingCustomDimension.cpp \
+# APIs
+    $${PWD}/OAIAdminServiceApi.cpp \
+    $${PWD}/OAIIndexServiceApi.cpp \
+    $${PWD}/OAIQueryServiceApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

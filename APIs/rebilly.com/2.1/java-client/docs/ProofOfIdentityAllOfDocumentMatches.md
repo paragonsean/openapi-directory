@@ -1,0 +1,14 @@
+
+
+# ProofOfIdentityAllOfDocumentMatches
+
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**data** | [**IdentityMatches**](IdentityMatches.md) |  |  [optional] |
+|**score** | **Double** | The calculated score that represents the % of confidence that this ID represents the given customer. |  [optional] |
+
+
+
