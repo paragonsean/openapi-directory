@@ -1,0 +1,40 @@
+# NetworkManagementClient.ApplicationGatewayBackendAddressPoolPropertiesFormatBackendIPConfigurationsInnerProperties
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**applicationGatewayBackendAddressPools** | [**[ApplicationGatewayBackendAddressPoolPropertiesFormatBackendIPConfigurationsInnerPropertiesApplicationGatewayBackendAddressPoolsInner]**](ApplicationGatewayBackendAddressPoolPropertiesFormatBackendIPConfigurationsInnerPropertiesApplicationGatewayBackendAddressPoolsInner.md) | The reference of ApplicationGatewayBackendAddressPool resource. | [optional] 
+**loadBalancerBackendAddressPools** | [**[ApplicationGatewayBackendAddressPoolPropertiesFormatBackendIPConfigurationsInnerPropertiesLoadBalancerBackendAddressPoolsInner]**](ApplicationGatewayBackendAddressPoolPropertiesFormatBackendIPConfigurationsInnerPropertiesLoadBalancerBackendAddressPoolsInner.md) | The reference of LoadBalancerBackendAddressPool resource. | [optional] 
+**loadBalancerInboundNatRules** | [**[ApplicationGatewayBackendAddressPoolPropertiesFormatBackendIPConfigurationsInnerPropertiesLoadBalancerInboundNatRulesInner]**](ApplicationGatewayBackendAddressPoolPropertiesFormatBackendIPConfigurationsInnerPropertiesLoadBalancerInboundNatRulesInner.md) | A list of references of LoadBalancerInboundNatRules. | [optional] 
+**primary** | **Boolean** | Gets whether this is a primary customer address on the network interface. | [optional] 
+**privateIPAddress** | **String** |  | [optional] 
+**privateIPAddressVersion** | **String** | Available from Api-Version 2016-03-30 onwards, it represents whether the specific ipconfiguration is IPv4 or IPv6. Default is taken as IPv4.  Possible values are: &#39;IPv4&#39; and &#39;IPv6&#39;. | [optional] 
+**privateIPAllocationMethod** | **String** | Defines how a private IP address is assigned. Possible values are: &#39;Static&#39; and &#39;Dynamic&#39;. | [optional] 
+**provisioningState** | **String** |  | [optional] 
+**publicIPAddress** | [**ApplicationGatewayBackendAddressPoolPropertiesFormatBackendIPConfigurationsInnerPropertiesPublicIPAddress**](ApplicationGatewayBackendAddressPoolPropertiesFormatBackendIPConfigurationsInnerPropertiesPublicIPAddress.md) |  | [optional] 
+**subnet** | [**ApplicationGatewayBackendAddressPoolPropertiesFormatBackendIPConfigurationsInnerPropertiesSubnet**](ApplicationGatewayBackendAddressPoolPropertiesFormatBackendIPConfigurationsInnerPropertiesSubnet.md) |  | [optional] 
+
+
+
+## Enum: PrivateIPAddressVersionEnum
+
+
+* `IPv4` (value: `"IPv4"`)
+
+* `IPv6` (value: `"IPv6"`)
+
+
+
+
+
+## Enum: PrivateIPAllocationMethodEnum
+
+
+* `Static` (value: `"Static"`)
+
+* `Dynamic` (value: `"Dynamic"`)
+
+
+
+

@@ -1,0 +1,34 @@
+
+
+# A2AProtectedDiskDetails
+
+A2A protected disk details.
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**allowedDiskLevelOperation** | **List&lt;String&gt;** | The disk level operations list. |  [optional] |
+|**dataPendingAtSourceAgentInMB** | **Double** | The data pending at source virtual machine in MB. |  [optional] |
+|**dataPendingInStagingStorageAccountInMB** | **Double** | The data pending for replication in MB at staging account. |  [optional] |
+|**dekKeyVaultArmId** | **String** | The KeyVault resource id for secret (BEK). |  [optional] |
+|**diskCapacityInBytes** | **Long** | The disk capacity in bytes. |  [optional] |
+|**diskName** | **String** | The disk name. |  [optional] |
+|**diskState** | **String** | The disk state. |  [optional] |
+|**diskType** | **String** | The type of disk. |  [optional] |
+|**diskUri** | **String** | The disk uri. |  [optional] |
+|**isDiskEncrypted** | **Boolean** | A value indicating whether vm has encrypted os disk or not. |  [optional] |
+|**isDiskKeyEncrypted** | **Boolean** | A value indicating whether disk key got encrypted or not. |  [optional] |
+|**kekKeyVaultArmId** | **String** | The KeyVault resource id for key (KEK). |  [optional] |
+|**keyIdentifier** | **String** | The key URL / identifier (KEK). |  [optional] |
+|**monitoringJobType** | **String** | The type of the monitoring job. The progress is contained in MonitoringPercentageCompletion property. |  [optional] |
+|**monitoringPercentageCompletion** | **Integer** | The percentage of the monitoring job. The type of the monitoring job is defined by MonitoringJobType property. |  [optional] |
+|**primaryDiskAzureStorageAccountId** | **String** | The primary disk storage account. |  [optional] |
+|**primaryStagingAzureStorageAccountId** | **String** | The primary staging storage account. |  [optional] |
+|**recoveryAzureStorageAccountId** | **String** | The recovery disk storage account. |  [optional] |
+|**recoveryDiskUri** | **String** | Recovery disk uri. |  [optional] |
+|**resyncRequired** | **Boolean** | A value indicating whether resync is required for this disk. |  [optional] |
+|**secretIdentifier** | **String** | The secret URL / identifier (BEK). |  [optional] |
+
+
+
