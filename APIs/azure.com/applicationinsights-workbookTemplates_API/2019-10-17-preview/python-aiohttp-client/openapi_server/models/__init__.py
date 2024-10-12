@@ -1,0 +1,12 @@
+# coding: utf-8
+
+# import models into model package
+from openapi_server.models.error_field_contract import ErrorFieldContract
+from openapi_server.models.workbook_error import WorkbookError
+from openapi_server.models.workbook_template import WorkbookTemplate
+from openapi_server.models.workbook_template_gallery import WorkbookTemplateGallery
+from openapi_server.models.workbook_template_localized_gallery import WorkbookTemplateLocalizedGallery
+from openapi_server.models.workbook_template_properties import WorkbookTemplateProperties
+from openapi_server.models.workbook_template_resource import WorkbookTemplateResource
+from openapi_server.models.workbook_template_update_parameters import WorkbookTemplateUpdateParameters
+from openapi_server.models.workbook_templates_list_result import WorkbookTemplatesListResult

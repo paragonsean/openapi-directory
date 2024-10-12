@@ -1,0 +1,107 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAICatalogItem.h \
+    $${PWD}/OAICatalogItemList.h \
+    $${PWD}/OAIDataLakeAnalyticsCatalogSecretCreateOrUpdateParameters.h \
+    $${PWD}/OAIDdlName.h \
+    $${PWD}/OAIEntityId.h \
+    $${PWD}/OAIExternalTable.h \
+    $${PWD}/OAITypeFieldInfo.h \
+    $${PWD}/OAIUSqlAssembly.h \
+    $${PWD}/OAIUSqlAssemblyClr.h \
+    $${PWD}/OAIUSqlAssemblyDependencyInfo.h \
+    $${PWD}/OAIUSqlAssemblyFileInfo.h \
+    $${PWD}/OAIUSqlAssemblyList.h \
+    $${PWD}/OAIUSqlCredential.h \
+    $${PWD}/OAIUSqlCredentialList.h \
+    $${PWD}/OAIUSqlDatabase.h \
+    $${PWD}/OAIUSqlDatabaseList.h \
+    $${PWD}/OAIUSqlDirectedColumn.h \
+    $${PWD}/OAIUSqlDistributionInfo.h \
+    $${PWD}/OAIUSqlExternalDataSource.h \
+    $${PWD}/OAIUSqlExternalDataSourceList.h \
+    $${PWD}/OAIUSqlIndex.h \
+    $${PWD}/OAIUSqlProcedure.h \
+    $${PWD}/OAIUSqlProcedureList.h \
+    $${PWD}/OAIUSqlSchema.h \
+    $${PWD}/OAIUSqlSchemaList.h \
+    $${PWD}/OAIUSqlSecret.h \
+    $${PWD}/OAIUSqlTable.h \
+    $${PWD}/OAIUSqlTableColumn.h \
+    $${PWD}/OAIUSqlTableList.h \
+    $${PWD}/OAIUSqlTablePartition.h \
+    $${PWD}/OAIUSqlTablePartitionList.h \
+    $${PWD}/OAIUSqlTableStatistics.h \
+    $${PWD}/OAIUSqlTableStatisticsList.h \
+    $${PWD}/OAIUSqlTableType.h \
+    $${PWD}/OAIUSqlTableTypeList.h \
+    $${PWD}/OAIUSqlTableValuedFunction.h \
+    $${PWD}/OAIUSqlTableValuedFunctionList.h \
+    $${PWD}/OAIUSqlType.h \
+    $${PWD}/OAIUSqlTypeList.h \
+    $${PWD}/OAIUSqlView.h \
+    $${PWD}/OAIUSqlViewList.h \
+# APIs
+    $${PWD}/OAICatalogApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAICatalogItem.cpp \
+    $${PWD}/OAICatalogItemList.cpp \
+    $${PWD}/OAIDataLakeAnalyticsCatalogSecretCreateOrUpdateParameters.cpp \
+    $${PWD}/OAIDdlName.cpp \
+    $${PWD}/OAIEntityId.cpp \
+    $${PWD}/OAIExternalTable.cpp \
+    $${PWD}/OAITypeFieldInfo.cpp \
+    $${PWD}/OAIUSqlAssembly.cpp \
+    $${PWD}/OAIUSqlAssemblyClr.cpp \
+    $${PWD}/OAIUSqlAssemblyDependencyInfo.cpp \
+    $${PWD}/OAIUSqlAssemblyFileInfo.cpp \
+    $${PWD}/OAIUSqlAssemblyList.cpp \
+    $${PWD}/OAIUSqlCredential.cpp \
+    $${PWD}/OAIUSqlCredentialList.cpp \
+    $${PWD}/OAIUSqlDatabase.cpp \
+    $${PWD}/OAIUSqlDatabaseList.cpp \
+    $${PWD}/OAIUSqlDirectedColumn.cpp \
+    $${PWD}/OAIUSqlDistributionInfo.cpp \
+    $${PWD}/OAIUSqlExternalDataSource.cpp \
+    $${PWD}/OAIUSqlExternalDataSourceList.cpp \
+    $${PWD}/OAIUSqlIndex.cpp \
+    $${PWD}/OAIUSqlProcedure.cpp \
+    $${PWD}/OAIUSqlProcedureList.cpp \
+    $${PWD}/OAIUSqlSchema.cpp \
+    $${PWD}/OAIUSqlSchemaList.cpp \
+    $${PWD}/OAIUSqlSecret.cpp \
+    $${PWD}/OAIUSqlTable.cpp \
+    $${PWD}/OAIUSqlTableColumn.cpp \
+    $${PWD}/OAIUSqlTableList.cpp \
+    $${PWD}/OAIUSqlTablePartition.cpp \
+    $${PWD}/OAIUSqlTablePartitionList.cpp \
+    $${PWD}/OAIUSqlTableStatistics.cpp \
+    $${PWD}/OAIUSqlTableStatisticsList.cpp \
+    $${PWD}/OAIUSqlTableType.cpp \
+    $${PWD}/OAIUSqlTableTypeList.cpp \
+    $${PWD}/OAIUSqlTableValuedFunction.cpp \
+    $${PWD}/OAIUSqlTableValuedFunctionList.cpp \
+    $${PWD}/OAIUSqlType.cpp \
+    $${PWD}/OAIUSqlTypeList.cpp \
+    $${PWD}/OAIUSqlView.cpp \
+    $${PWD}/OAIUSqlViewList.cpp \
+# APIs
+    $${PWD}/OAICatalogApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

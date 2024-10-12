@@ -1,0 +1,11 @@
+# coding: utf-8
+
+# import models into model package
+from openapi_server.models.instance_view_status import InstanceViewStatus
+from openapi_server.models.run_command_document import RunCommandDocument
+from openapi_server.models.run_command_document_base import RunCommandDocumentBase
+from openapi_server.models.run_command_input import RunCommandInput
+from openapi_server.models.run_command_input_parameter import RunCommandInputParameter
+from openapi_server.models.run_command_list_result import RunCommandListResult
+from openapi_server.models.run_command_parameter_definition import RunCommandParameterDefinition
+from openapi_server.models.run_command_result import RunCommandResult
