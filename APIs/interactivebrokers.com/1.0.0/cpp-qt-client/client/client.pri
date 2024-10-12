@@ -1,0 +1,97 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIOrderState.h \
+    $${PWD}/OAIOrderStatus.h \
+    $${PWD}/OAIOrderType.h \
+    $${PWD}/OAITimeInForce.h \
+    $${PWD}/OAI_accounts__account__order_impact_post_200_response.h \
+    $${PWD}/OAI_accounts__account__order_impact_post_request.h \
+    $${PWD}/OAI_accounts__account__orders__CustomerOrderId__put_200_response_inner.h \
+    $${PWD}/OAI_accounts__account__orders__CustomerOrderId__put_request.h \
+    $${PWD}/OAI_accounts__account__orders_post_request.h \
+    $${PWD}/OAI_accounts__account__positions_get_200_response_inner.h \
+    $${PWD}/OAI_accounts__account__summary_get_200_response.h \
+    $${PWD}/OAI_accounts__account__summary_get_200_response_Info.h \
+    $${PWD}/OAI_accounts__account__summary_get_200_response_Ledger_inner.h \
+    $${PWD}/OAI_accounts__account__summary_get_200_response_Summary.h \
+    $${PWD}/OAI_accounts__account__trades_get_200_response_inner.h \
+    $${PWD}/OAI_accounts_get_200_response.h \
+    $${PWD}/OAI_marketdata_exchange_components_get_200_response_inner.h \
+    $${PWD}/OAI_marketdata_exchange_components_get_200_response_inner_mapping_inner.h \
+    $${PWD}/OAI_marketdata_snapshot_get_200_response_inner.h \
+    $${PWD}/OAI_marketdata_snapshot_get_200_response_inner_Bid.h \
+    $${PWD}/OAI_marketdata_snapshot_get_200_response_inner_Closing.h \
+    $${PWD}/OAI_marketdata_snapshot_get_200_response_inner_Trade.h \
+    $${PWD}/OAI_marketdata_snapshot_get_request_inner.h \
+    $${PWD}/OAI_oauth_access_token_post_200_response.h \
+    $${PWD}/OAI_oauth_access_token_post_request.h \
+    $${PWD}/OAI_oauth_live_session_token_post_200_response.h \
+    $${PWD}/OAI_oauth_live_session_token_post_request.h \
+    $${PWD}/OAI_oauth_request_token_post_200_response.h \
+    $${PWD}/OAI_oauth_request_token_post_request.h \
+    $${PWD}/OAI_secdef_get_200_response_inner.h \
+# APIs
+    $${PWD}/OAIAccountPortfolioApi.h \
+    $${PWD}/OAIFinancialInstrumentDefinitionsApi.h \
+    $${PWD}/OAIMarketDataApi.h \
+    $${PWD}/OAIOAuthApi.h \
+    $${PWD}/OAIOrderMarginRequirementsApi.h \
+    $${PWD}/OAIOrdersApi.h \
+    $${PWD}/OAITradesApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIOrderState.cpp \
+    $${PWD}/OAIOrderStatus.cpp \
+    $${PWD}/OAIOrderType.cpp \
+    $${PWD}/OAITimeInForce.cpp \
+    $${PWD}/OAI_accounts__account__order_impact_post_200_response.cpp \
+    $${PWD}/OAI_accounts__account__order_impact_post_request.cpp \
+    $${PWD}/OAI_accounts__account__orders__CustomerOrderId__put_200_response_inner.cpp \
+    $${PWD}/OAI_accounts__account__orders__CustomerOrderId__put_request.cpp \
+    $${PWD}/OAI_accounts__account__orders_post_request.cpp \
+    $${PWD}/OAI_accounts__account__positions_get_200_response_inner.cpp \
+    $${PWD}/OAI_accounts__account__summary_get_200_response.cpp \
+    $${PWD}/OAI_accounts__account__summary_get_200_response_Info.cpp \
+    $${PWD}/OAI_accounts__account__summary_get_200_response_Ledger_inner.cpp \
+    $${PWD}/OAI_accounts__account__summary_get_200_response_Summary.cpp \
+    $${PWD}/OAI_accounts__account__trades_get_200_response_inner.cpp \
+    $${PWD}/OAI_accounts_get_200_response.cpp \
+    $${PWD}/OAI_marketdata_exchange_components_get_200_response_inner.cpp \
+    $${PWD}/OAI_marketdata_exchange_components_get_200_response_inner_mapping_inner.cpp \
+    $${PWD}/OAI_marketdata_snapshot_get_200_response_inner.cpp \
+    $${PWD}/OAI_marketdata_snapshot_get_200_response_inner_Bid.cpp \
+    $${PWD}/OAI_marketdata_snapshot_get_200_response_inner_Closing.cpp \
+    $${PWD}/OAI_marketdata_snapshot_get_200_response_inner_Trade.cpp \
+    $${PWD}/OAI_marketdata_snapshot_get_request_inner.cpp \
+    $${PWD}/OAI_oauth_access_token_post_200_response.cpp \
+    $${PWD}/OAI_oauth_access_token_post_request.cpp \
+    $${PWD}/OAI_oauth_live_session_token_post_200_response.cpp \
+    $${PWD}/OAI_oauth_live_session_token_post_request.cpp \
+    $${PWD}/OAI_oauth_request_token_post_200_response.cpp \
+    $${PWD}/OAI_oauth_request_token_post_request.cpp \
+    $${PWD}/OAI_secdef_get_200_response_inner.cpp \
+# APIs
+    $${PWD}/OAIAccountPortfolioApi.cpp \
+    $${PWD}/OAIFinancialInstrumentDefinitionsApi.cpp \
+    $${PWD}/OAIMarketDataApi.cpp \
+    $${PWD}/OAIOAuthApi.cpp \
+    $${PWD}/OAIOrderMarginRequirementsApi.cpp \
+    $${PWD}/OAIOrdersApi.cpp \
+    $${PWD}/OAITradesApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

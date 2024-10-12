@@ -1,0 +1,87 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIAccount.h \
+    $${PWD}/OAIAccount_bidderLocation_inner.h \
+    $${PWD}/OAIAccountsList.h \
+    $${PWD}/OAIBillingInfo.h \
+    $${PWD}/OAIBillingInfoList.h \
+    $${PWD}/OAIBudget.h \
+    $${PWD}/OAICreative.h \
+    $${PWD}/OAICreative_adTechnologyProviders.h \
+    $${PWD}/OAICreative_corrections_inner.h \
+    $${PWD}/OAICreative_disapprovalReasons_inner.h \
+    $${PWD}/OAICreative_filteringReasons.h \
+    $${PWD}/OAICreative_filteringReasons_reasons_inner.h \
+    $${PWD}/OAICreative_nativeAd.h \
+    $${PWD}/OAICreative_nativeAd_appIcon.h \
+    $${PWD}/OAICreative_nativeAd_image.h \
+    $${PWD}/OAICreative_nativeAd_logo.h \
+    $${PWD}/OAICreativesList.h \
+    $${PWD}/OAIDirectDeal.h \
+    $${PWD}/OAIDirectDealsList.h \
+    $${PWD}/OAIPerformanceReport.h \
+    $${PWD}/OAIPerformanceReportList.h \
+    $${PWD}/OAIPretargetingConfig.h \
+    $${PWD}/OAIPretargetingConfigList.h \
+    $${PWD}/OAIPretargetingConfig_dimensions_inner.h \
+    $${PWD}/OAIPretargetingConfig_excludedPlacements_inner.h \
+# APIs
+    $${PWD}/OAIAccountsApi.h \
+    $${PWD}/OAIBillingInfoApi.h \
+    $${PWD}/OAIBudgetApi.h \
+    $${PWD}/OAICreativesApi.h \
+    $${PWD}/OAIDirectDealsApi.h \
+    $${PWD}/OAIPerformanceReportApi.h \
+    $${PWD}/OAIPretargetingConfigApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIAccount.cpp \
+    $${PWD}/OAIAccount_bidderLocation_inner.cpp \
+    $${PWD}/OAIAccountsList.cpp \
+    $${PWD}/OAIBillingInfo.cpp \
+    $${PWD}/OAIBillingInfoList.cpp \
+    $${PWD}/OAIBudget.cpp \
+    $${PWD}/OAICreative.cpp \
+    $${PWD}/OAICreative_adTechnologyProviders.cpp \
+    $${PWD}/OAICreative_corrections_inner.cpp \
+    $${PWD}/OAICreative_disapprovalReasons_inner.cpp \
+    $${PWD}/OAICreative_filteringReasons.cpp \
+    $${PWD}/OAICreative_filteringReasons_reasons_inner.cpp \
+    $${PWD}/OAICreative_nativeAd.cpp \
+    $${PWD}/OAICreative_nativeAd_appIcon.cpp \
+    $${PWD}/OAICreative_nativeAd_image.cpp \
+    $${PWD}/OAICreative_nativeAd_logo.cpp \
+    $${PWD}/OAICreativesList.cpp \
+    $${PWD}/OAIDirectDeal.cpp \
+    $${PWD}/OAIDirectDealsList.cpp \
+    $${PWD}/OAIPerformanceReport.cpp \
+    $${PWD}/OAIPerformanceReportList.cpp \
+    $${PWD}/OAIPretargetingConfig.cpp \
+    $${PWD}/OAIPretargetingConfigList.cpp \
+    $${PWD}/OAIPretargetingConfig_dimensions_inner.cpp \
+    $${PWD}/OAIPretargetingConfig_excludedPlacements_inner.cpp \
+# APIs
+    $${PWD}/OAIAccountsApi.cpp \
+    $${PWD}/OAIBillingInfoApi.cpp \
+    $${PWD}/OAIBudgetApi.cpp \
+    $${PWD}/OAICreativesApi.cpp \
+    $${PWD}/OAIDirectDealsApi.cpp \
+    $${PWD}/OAIPerformanceReportApi.cpp \
+    $${PWD}/OAIPretargetingConfigApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

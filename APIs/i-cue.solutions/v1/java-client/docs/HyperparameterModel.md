@@ -1,0 +1,36 @@
+
+
+# HyperparameterModel
+
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**abcClassificationThresholdA** | **Double** |  |  [optional] |
+|**abcClassificationThresholdB** | **Double** |  |  [optional] |
+|**abcClassificationThresholdC** | **Double** |  |  [optional] |
+|**discardData** | **Boolean** |  |  [optional] |
+|**errorType** | [**ErrorTypeEnum**](#ErrorTypeEnum) |  |  [optional] |
+|**holdOutPeriod** | **Integer** |  |  [optional] |
+|**noFcst** | **Integer** |  |  [optional] |
+|**outlierDetection** | **Boolean** |  |  [optional] |
+|**periodicity** | **Integer** |  |  [optional] |
+|**xyzClassificationThresholdX** | **Double** |  |  [optional] |
+|**xyzClassificationThresholdY** | **Double** |  |  [optional] |
+|**xyzClassificationThresholdZ** | **Double** |  |  [optional] |
+
+
+
+## Enum: ErrorTypeEnum
+
+| Name | Value |
+|---- | -----|
+| MEAN_ABSOLUTE_PERCENTAGE_ERROR | &quot;MeanAbsolutePercentageError&quot; |
+| MEAN_SQUARED_ERROR | &quot;MeanSquaredError&quot; |
+| MEAN_ABSOLUTE_ERROR | &quot;MeanAbsoluteError&quot; |
+| MEDIAN_ABSOLUTE_DEVIATION | &quot;MedianAbsoluteDeviation&quot; |
+| NONE | &quot;None&quot; |
+
+
+

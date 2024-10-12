@@ -1,0 +1,103 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAICalibrateImuPayload.h \
+    $${PWD}/OAICreatePoiPayload.h \
+    $${PWD}/OAIError.h \
+    $${PWD}/OAIModifyAntennaConfigConfigPayload.h \
+    $${PWD}/OAIModifyConfigPayload.h \
+    $${PWD}/OAIModifyIPConfigPayload.h \
+    $${PWD}/OAIModifyReceiverConfigPayload.h \
+    $${PWD}/OAIModifyWIFIConfigPayload.h \
+    $${PWD}/OAISetDepthExternalPayload.h \
+    $${PWD}/OAISetMasterExternalPayload.h \
+    $${PWD}/OAISetNorthImuPayload.h \
+    $${PWD}/OAISetOrientationExternalPayload.h \
+    $${PWD}/OAISetVehicleIMUExternalPayload.h \
+    $${PWD}/OAIUpdatePoiPayload.h \
+    $${PWD}/OAIWaterlinkedAbout.h \
+    $${PWD}/OAIWaterlinkedAccousticPosition.h \
+    $${PWD}/OAIWaterlinkedAntenna_config.h \
+    $${PWD}/OAIWaterlinkedConfiguration.h \
+    $${PWD}/OAIWaterlinkedImu.h \
+    $${PWD}/OAIWaterlinkedIp_config.h \
+    $${PWD}/OAIWaterlinkedOperation_response.h \
+    $${PWD}/OAIWaterlinkedPoi.h \
+    $${PWD}/OAIWaterlinkedReceiver.h \
+    $${PWD}/OAIWaterlinkedStatus.h \
+    $${PWD}/OAIWaterlinkedTemperature.h \
+    $${PWD}/OAIWaterlinkedWifi_config.h \
+    $${PWD}/OAIWlExternalLocatorOrientation.h \
+    $${PWD}/OAIWlExternalVehicleImu.h \
+    $${PWD}/OAIWlSatellitePosition.h \
+    $${PWD}/OAIWlStatusGroup.h \
+    $${PWD}/OAIWlWarning.h \
+    $${PWD}/OAIWupdaterApiversion.h \
+# APIs
+    $${PWD}/OAIAboutApi.h \
+    $${PWD}/OAIConfigApi.h \
+    $${PWD}/OAIExternalApi.h \
+    $${PWD}/OAIImuApi.h \
+    $${PWD}/OAIPoiApi.h \
+    $${PWD}/OAIPositionApi.h \
+    $${PWD}/OAIStatusReportApi.h \
+    $${PWD}/OAIWarningsApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAICalibrateImuPayload.cpp \
+    $${PWD}/OAICreatePoiPayload.cpp \
+    $${PWD}/OAIError.cpp \
+    $${PWD}/OAIModifyAntennaConfigConfigPayload.cpp \
+    $${PWD}/OAIModifyConfigPayload.cpp \
+    $${PWD}/OAIModifyIPConfigPayload.cpp \
+    $${PWD}/OAIModifyReceiverConfigPayload.cpp \
+    $${PWD}/OAIModifyWIFIConfigPayload.cpp \
+    $${PWD}/OAISetDepthExternalPayload.cpp \
+    $${PWD}/OAISetMasterExternalPayload.cpp \
+    $${PWD}/OAISetNorthImuPayload.cpp \
+    $${PWD}/OAISetOrientationExternalPayload.cpp \
+    $${PWD}/OAISetVehicleIMUExternalPayload.cpp \
+    $${PWD}/OAIUpdatePoiPayload.cpp \
+    $${PWD}/OAIWaterlinkedAbout.cpp \
+    $${PWD}/OAIWaterlinkedAccousticPosition.cpp \
+    $${PWD}/OAIWaterlinkedAntenna_config.cpp \
+    $${PWD}/OAIWaterlinkedConfiguration.cpp \
+    $${PWD}/OAIWaterlinkedImu.cpp \
+    $${PWD}/OAIWaterlinkedIp_config.cpp \
+    $${PWD}/OAIWaterlinkedOperation_response.cpp \
+    $${PWD}/OAIWaterlinkedPoi.cpp \
+    $${PWD}/OAIWaterlinkedReceiver.cpp \
+    $${PWD}/OAIWaterlinkedStatus.cpp \
+    $${PWD}/OAIWaterlinkedTemperature.cpp \
+    $${PWD}/OAIWaterlinkedWifi_config.cpp \
+    $${PWD}/OAIWlExternalLocatorOrientation.cpp \
+    $${PWD}/OAIWlExternalVehicleImu.cpp \
+    $${PWD}/OAIWlSatellitePosition.cpp \
+    $${PWD}/OAIWlStatusGroup.cpp \
+    $${PWD}/OAIWlWarning.cpp \
+    $${PWD}/OAIWupdaterApiversion.cpp \
+# APIs
+    $${PWD}/OAIAboutApi.cpp \
+    $${PWD}/OAIConfigApi.cpp \
+    $${PWD}/OAIExternalApi.cpp \
+    $${PWD}/OAIImuApi.cpp \
+    $${PWD}/OAIPoiApi.cpp \
+    $${PWD}/OAIPositionApi.cpp \
+    $${PWD}/OAIStatusReportApi.cpp \
+    $${PWD}/OAIWarningsApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

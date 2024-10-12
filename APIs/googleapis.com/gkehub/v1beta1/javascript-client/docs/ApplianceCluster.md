@@ -1,0 +1,9 @@
+# GkeHubApi.ApplianceCluster
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**resourceLink** | **String** | Immutable. Self-link of the GCP resource for the Appliance Cluster. For example: //transferappliance.googleapis.com/projects/my-project/locations/us-west1-a/appliances/my-appliance | [optional] 
+
+

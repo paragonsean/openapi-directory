@@ -1,0 +1,91 @@
+# SensitiveDataProtectionDlp.InfoTypesApi
+
+All URIs are relative to *https://dlp.googleapis.com*
+
+Method | HTTP request | Description
+------------- | ------------- | -------------
+[**dlpInfoTypesList**](InfoTypesApi.md#dlpInfoTypesList) | **GET** /v2/infoTypes | 
+
+
+
+## dlpInfoTypesList
+
+> GooglePrivacyDlpV2ListInfoTypesResponse dlpInfoTypesList(opts)
+
+
+
+Returns a list of the sensitive information types that DLP API supports. See https://cloud.google.com/sensitive-data-protection/docs/infotypes-reference to learn more.
+
+### Example
+
+```javascript
+import SensitiveDataProtectionDlp from 'sensitive_data_protection__dlp';
+let defaultClient = SensitiveDataProtectionDlp.ApiClient.instance;
+// Configure OAuth2 access token for authorization: Oauth2c
+let Oauth2c = defaultClient.authentications['Oauth2c'];
+Oauth2c.accessToken = 'YOUR ACCESS TOKEN';
+// Configure OAuth2 access token for authorization: Oauth2
+let Oauth2 = defaultClient.authentications['Oauth2'];
+Oauth2.accessToken = 'YOUR ACCESS TOKEN';
+
+let apiInstance = new SensitiveDataProtectionDlp.InfoTypesApi();
+let opts = {
+  'xgafv': "xgafv_example", // String | V1 error format.
+  'accessToken': "accessToken_example", // String | OAuth access token.
+  'alt': "alt_example", // String | Data format for response.
+  'callback': "callback_example", // String | JSONP
+  'fields': "fields_example", // String | Selector specifying which fields to include in a partial response.
+  'key': "key_example", // String | API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.
+  'oauthToken': "oauthToken_example", // String | OAuth 2.0 token for the current user.
+  'prettyPrint': true, // Boolean | Returns response with indentations and line breaks.
+  'quotaUser': "quotaUser_example", // String | Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters.
+  'uploadProtocol': "uploadProtocol_example", // String | Upload protocol for media (e.g. \"raw\", \"multipart\").
+  'uploadType': "uploadType_example", // String | Legacy upload protocol for media (e.g. \"media\", \"multipart\").
+  'filter': "filter_example", // String | filter to only return infoTypes supported by certain parts of the API. Defaults to supported_by=INSPECT.
+  'languageCode': "languageCode_example", // String | BCP-47 language code for localized infoType friendly names. If omitted, or if localized strings are not available, en-US strings will be returned.
+  'locationId': "locationId_example", // String | Deprecated. This field has no effect.
+  'parent': "parent_example" // String | The parent resource name. The format of this value is as follows: locations/ LOCATION_ID
+};
+apiInstance.dlpInfoTypesList(opts, (error, data, response) => {
+  if (error) {
+    console.error(error);
+  } else {
+    console.log('API called successfully. Returned data: ' + data);
+  }
+});
+```
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **xgafv** | **String**| V1 error format. | [optional] 
+ **accessToken** | **String**| OAuth access token. | [optional] 
+ **alt** | **String**| Data format for response. | [optional] 
+ **callback** | **String**| JSONP | [optional] 
+ **fields** | **String**| Selector specifying which fields to include in a partial response. | [optional] 
+ **key** | **String**| API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token. | [optional] 
+ **oauthToken** | **String**| OAuth 2.0 token for the current user. | [optional] 
+ **prettyPrint** | **Boolean**| Returns response with indentations and line breaks. | [optional] 
+ **quotaUser** | **String**| Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters. | [optional] 
+ **uploadProtocol** | **String**| Upload protocol for media (e.g. \&quot;raw\&quot;, \&quot;multipart\&quot;). | [optional] 
+ **uploadType** | **String**| Legacy upload protocol for media (e.g. \&quot;media\&quot;, \&quot;multipart\&quot;). | [optional] 
+ **filter** | **String**| filter to only return infoTypes supported by certain parts of the API. Defaults to supported_by&#x3D;INSPECT. | [optional] 
+ **languageCode** | **String**| BCP-47 language code for localized infoType friendly names. If omitted, or if localized strings are not available, en-US strings will be returned. | [optional] 
+ **locationId** | **String**| Deprecated. This field has no effect. | [optional] 
+ **parent** | **String**| The parent resource name. The format of this value is as follows: locations/ LOCATION_ID | [optional] 
+
+### Return type
+
+[**GooglePrivacyDlpV2ListInfoTypesResponse**](GooglePrivacyDlpV2ListInfoTypesResponse.md)
+
+### Authorization
+
+[Oauth2c](../README.md#Oauth2c), [Oauth2](../README.md#Oauth2)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+

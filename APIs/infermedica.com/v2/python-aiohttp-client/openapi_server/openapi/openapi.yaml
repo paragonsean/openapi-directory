@@ -1,0 +1,2213 @@
+openapi: 3.0.1
+info:
+  contact: {}
+  description: Empower your healthcare services with intelligent diagnostic insights
+    of Infermedica API.
+  title: Infermedica API
+  version: v2
+  x-logo:
+    backgroundColor: '#1576D1'
+    url: https://twitter.com/Infermedica/profile_image?size=original
+  x-origin:
+  - format: swagger
+    url: https://api.infermedica.com/v2/swagger.json
+    version: "2.0"
+  x-providerName: infermedica.com
+servers:
+- url: https://api.infermedica.com/v2
+tags:
+- name: info
+- name: diagnosis
+- name: explain
+- name: conditions
+- name: symptoms
+- name: lab_tests
+- name: risk_factors
+- name: search
+- name: parse
+- name: lookup
+- name: concepts
+- name: rationale
+- name: recommend_specialist
+- name: red_flags
+- name: triage
+- name: suggest
+paths:
+  /concepts:
+    get:
+      operationId: get_concepts
+      parameters:
+      - description: ids
+        in: query
+        name: ids
+        schema:
+          type: string
+      - description: types
+        in: query
+        name: types
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/ConceptItemModel_Public'
+                type: array
+                uniqueItems: true
+          description: successful operation
+      tags:
+      - concepts
+      x-openapi-router-controller: openapi_server.controllers.concepts_controller
+  /concepts/{id}:
+    get:
+      operationId: get_concept
+      parameters:
+      - description: concept id
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConceptItemModel_Public'
+          description: successful operation
+      tags:
+      - concepts
+      x-openapi-router-controller: openapi_server.controllers.concepts_controller
+  /conditions:
+    get:
+      description: Returns a list of all available conditions.
+      operationId: get_all_conditions
+      parameters:
+      - description: age value
+        example: 18
+        in: query
+        name: age.value
+        schema:
+          format: int32
+          type: integer
+      - description: unit in which age value was provided
+        example: year
+        in: query
+        name: age.unit
+        schema:
+          default: year
+          enum:
+          - year
+          - month
+          type: string
+      - description: enable 5-level triage values
+        in: query
+        name: enable_triage_5
+        schema:
+          type: boolean
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/Condition_Public'
+                type: array
+          description: successful operation
+      summary: List all conditions
+      tags:
+      - conditions
+      x-openapi-router-controller: openapi_server.controllers.conditions_controller
+  /conditions/{id}:
+    get:
+      description: Returns details of a single condition specified by id parameter.
+      operationId: get_condition
+      parameters:
+      - description: condition id
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: age value
+        example: 18
+        in: query
+        name: age.value
+        schema:
+          format: int32
+          type: integer
+      - description: unit in which age value was provided
+        example: year
+        in: query
+        name: age.unit
+        schema:
+          default: year
+          enum:
+          - year
+          - month
+          type: string
+      - description: enable 5-level triage values
+        in: query
+        name: enable_triage_5
+        schema:
+          type: boolean
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Condition_Details'
+          description: successful operation
+        "400":
+          content: {}
+          description: Invalid id specified
+        "404":
+          content: {}
+          description: Condition not found
+      summary: Get condition by id
+      tags:
+      - conditions
+      x-openapi-router-controller: openapi_server.controllers.conditions_controller
+  /diagnosis:
+    post:
+      description: Suggests possible diagnoses and relevant observations based on
+        provided patient information.
+      operationId: compute_diagnosis
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DiagnosisRequest'
+        required: true
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DiagnosisResponse_Public'
+          description: successful operation
+      summary: Query diagnostic engine
+      tags:
+      - diagnosis
+      x-codegen-request-body-name: body
+      x-openapi-router-controller: openapi_server.controllers.diagnosis_controller
+  /explain:
+    post:
+      description: Explains which evidence impact probability of selected condition.
+      operationId: compute_explanation
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ExplanationRequest'
+        required: true
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExplanationResponse'
+          description: successful operation
+      summary: Query diagnostic engine for explanation
+      tags:
+      - explain
+      x-codegen-request-body-name: body
+      x-openapi-router-controller: openapi_server.controllers.explain_controller
+  /info:
+    get:
+      description: Returns information about data used by diagnostic engine.
+      operationId: get_database_info
+      parameters:
+      - description: age value
+        example: 18
+        in: query
+        name: age.value
+        schema:
+          format: int32
+          type: integer
+      - description: unit in which age value was provided
+        example: year
+        in: query
+        name: age.unit
+        schema:
+          default: year
+          enum:
+          - year
+          - month
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Info_Public'
+          description: successful operation
+      summary: Get database information
+      tags:
+      - info
+      x-openapi-router-controller: openapi_server.controllers.info_controller
+  /lab_tests:
+    get:
+      description: Returns a list of all available lab tests.
+      operationId: get_all_lab_tests
+      parameters:
+      - description: age value
+        example: 18
+        in: query
+        name: age.value
+        schema:
+          format: int32
+          type: integer
+      - description: unit in which age value was provided
+        example: year
+        in: query
+        name: age.unit
+        schema:
+          default: year
+          enum:
+          - year
+          - month
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/LabTest_Public'
+                type: array
+          description: successful operation
+      summary: List all lab tests
+      tags:
+      - lab_tests
+      x-openapi-router-controller: openapi_server.controllers.lab_tests_controller
+  /lab_tests/{id}:
+    get:
+      description: Returns details of a single lab test specified by id parameter.
+      operationId: get_lab_test
+      parameters:
+      - description: lab test id
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: age value
+        example: 18
+        in: query
+        name: age.value
+        schema:
+          format: int32
+          type: integer
+      - description: unit in which age value was provided
+        example: year
+        in: query
+        name: age.unit
+        schema:
+          default: year
+          enum:
+          - year
+          - month
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LabTest_Details'
+          description: successful operation
+        "400":
+          content: {}
+          description: Invalid id specified
+        "404":
+          content: {}
+          description: Lab test not found
+      summary: Get lab test by id
+      tags:
+      - lab_tests
+      x-openapi-router-controller: openapi_server.controllers.lab_tests_controller
+  /lookup:
+    get:
+      description: Returns a single observation matching given phrase.
+      operationId: get_matching_observation
+      parameters:
+      - description: phrase to match
+        in: query
+        name: phrase
+        required: true
+        schema:
+          type: string
+      - description: sex filter
+        in: query
+        name: sex
+        schema:
+          enum:
+          - male
+          - female
+          type: string
+      - description: age value
+        example: 18
+        in: query
+        name: age.value
+        schema:
+          format: int32
+          type: integer
+      - description: unit in which age value was provided
+        example: year
+        in: query
+        name: age.unit
+        schema:
+          default: year
+          enum:
+          - year
+          - month
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchResult'
+          description: successful operation
+        "400":
+          content: {}
+          description: Phrase missing or invalid sex specified
+        "404":
+          content: {}
+          description: No observation matches given phrase
+      summary: Find observation matching given phrase
+      tags:
+      - lookup
+      x-openapi-router-controller: openapi_server.controllers.lookup_controller
+  /parse:
+    post:
+      description: Returns list of mentions of observation found in given text.
+      operationId: get_mentions
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ParseRequest'
+        required: true
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ParseResponse'
+          description: successful operation
+        "400":
+          content: {}
+          description: Text too long
+      summary: Find mentions of observations in given text
+      tags:
+      - parse
+      x-codegen-request-body-name: body
+      x-openapi-router-controller: openapi_server.controllers.parse_controller
+  /rationale:
+    post:
+      description: Returns rationale behind the question asked by the system.
+      operationId: compute_rationale
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RationaleRequest'
+        required: true
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RationaleResponse'
+          description: successful operation
+      summary: Query diagnostic engine for question rationale
+      tags:
+      - rationale
+      x-codegen-request-body-name: body
+      x-openapi-router-controller: openapi_server.controllers.rationale_controller
+  /red_flags:
+    post:
+      description: Suggests possible red flag symptoms based on provided patient information.
+      operationId: compute_red_flags
+      parameters:
+      - description: maximum number of results
+        in: query
+        name: max_results
+        schema:
+          default: 8
+          format: int32
+          type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DiagnosisRequest'
+        required: true
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/SuggestResult'
+                type: array
+          description: successful operation
+      summary: Query the diagnostic engine for possible red flag symptoms
+      tags:
+      - red_flags
+      x-codegen-request-body-name: body
+      x-openapi-router-controller: openapi_server.controllers.red_flags_controller
+  /risk_factors:
+    get:
+      description: Returns a list of all available risk factors.
+      operationId: get_all_risk_factors
+      parameters:
+      - description: age value
+        example: 18
+        in: query
+        name: age.value
+        schema:
+          format: int32
+          type: integer
+      - description: unit in which age value was provided
+        example: year
+        in: query
+        name: age.unit
+        schema:
+          default: year
+          enum:
+          - year
+          - month
+          type: string
+      - description: enable 5-level triage values
+        in: query
+        name: enable_triage_5
+        schema:
+          type: boolean
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/RiskFactor_Public'
+                type: array
+          description: successful operation
+      summary: List all risk factors
+      tags:
+      - risk_factors
+      x-openapi-router-controller: openapi_server.controllers.risk_factors_controller
+  /risk_factors/{id}:
+    get:
+      description: Returns details of a single risk factor specified by id parameter.
+      operationId: get_risk_factor
+      parameters:
+      - description: risk factor id
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: age value
+        example: 18
+        in: query
+        name: age.value
+        schema:
+          format: int32
+          type: integer
+      - description: unit in which age value was provided
+        example: year
+        in: query
+        name: age.unit
+        schema:
+          default: year
+          enum:
+          - year
+          - month
+          type: string
+      - description: enable 5-level triage values
+        in: query
+        name: enable_triage_5
+        schema:
+          type: boolean
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RiskFactor_Details'
+          description: successful operation
+        "400":
+          content: {}
+          description: Invalid id specified
+        "404":
+          content: {}
+          description: Risk factor not found
+      summary: Get risk factor by id
+      tags:
+      - risk_factors
+      x-openapi-router-controller: openapi_server.controllers.risk_factors_controller
+  /search:
+    get:
+      description: Returns list of observations matching the given phrase.
+      operationId: get_matching_observations
+      parameters:
+      - description: phrase to match
+        in: query
+        name: phrase
+        required: true
+        schema:
+          type: string
+      - description: sex filter
+        in: query
+        name: sex
+        schema:
+          enum:
+          - male
+          - female
+          type: string
+      - description: age value
+        example: 18
+        in: query
+        name: age.value
+        schema:
+          format: int32
+          type: integer
+      - description: unit in which age value was provided
+        example: year
+        in: query
+        name: age.unit
+        schema:
+          default: year
+          enum:
+          - year
+          - month
+          type: string
+      - description: maximum number of results
+        in: query
+        name: max_results
+        schema:
+          default: 8
+          format: int32
+          type: integer
+      - description: type of results
+        explode: true
+        in: query
+        name: type
+        schema:
+          items:
+            enum:
+            - symptom
+            - risk_factor
+            - lab_test
+            type: string
+          type: array
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/SearchResult'
+                type: array
+          description: successful operation
+        "400":
+          content: {}
+          description: Phrase missing or invalid sex specified
+      summary: Find observations matching given phrase
+      tags:
+      - search
+      x-openapi-router-controller: openapi_server.controllers.search_controller
+  /suggest:
+    post:
+      description: Suggests possible symptoms based on provided patient information.
+      operationId: get_suggestions
+      parameters:
+      - description: maximum number of results
+        in: query
+        name: max_results
+        schema:
+          default: 8
+          format: int32
+          type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SuggestRequest'
+        required: true
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/SuggestResult'
+                type: array
+          description: successful operation
+      summary: Query diagnostic engine for related symptoms
+      tags:
+      - suggest
+      x-codegen-request-body-name: body
+      x-openapi-router-controller: openapi_server.controllers.suggest_controller
+  /symptoms:
+    get:
+      description: Returns a list of all available symptoms.
+      operationId: get_all_symptoms
+      parameters:
+      - description: age value
+        example: 18
+        in: query
+        name: age.value
+        schema:
+          format: int32
+          type: integer
+      - description: unit in which age value was provided
+        example: year
+        in: query
+        name: age.unit
+        schema:
+          default: year
+          enum:
+          - year
+          - month
+          type: string
+      - description: enable 5-level triage values
+        in: query
+        name: enable_triage_5
+        schema:
+          type: boolean
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/Symptom_Public'
+                type: array
+          description: successful operation
+      summary: List all symptoms
+      tags:
+      - symptoms
+      x-openapi-router-controller: openapi_server.controllers.symptoms_controller
+  /symptoms/{id}:
+    get:
+      description: Returns details of a single symptom specified by id parameter.
+      operationId: get_symptom
+      parameters:
+      - description: symptoms id
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: age value
+        example: 18
+        in: query
+        name: age.value
+        schema:
+          format: int32
+          type: integer
+      - description: unit in which age value was provided
+        example: year
+        in: query
+        name: age.unit
+        schema:
+          default: year
+          enum:
+          - year
+          - month
+          type: string
+      - description: enable 5-level triage values
+        in: query
+        name: enable_triage_5
+        schema:
+          type: boolean
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Symptom_Details'
+          description: successful operation
+        "400":
+          content: {}
+          description: Invalid id specified
+        "404":
+          content: {}
+          description: symptom not found
+      summary: Get symptoms by id
+      tags:
+      - symptoms
+      x-openapi-router-controller: openapi_server.controllers.symptoms_controller
+  /triage:
+    post:
+      description: Estimates triage level based on provided patient information.
+      operationId: compute_triage
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DiagnosisRequest'
+        required: true
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TriageResponse'
+          description: successful operation
+      summary: Query diagnostic engine for triage level
+      tags:
+      - triage
+      x-codegen-request-body-name: body
+      x-openapi-router-controller: openapi_server.controllers.triage_controller
+components:
+  schemas:
+    Choice_Public:
+      example:
+        id: present
+        label: label
+      properties:
+        id:
+          enum:
+          - present
+          - absent
+          - unknown
+          title: id
+          type: string
+        label:
+          title: label
+          type: string
+      required:
+      - id
+      - label
+      title: Choice_Public
+      type: object
+    ConceptItemModel_Public:
+      example:
+        name: name
+        id: id
+        common_name: common_name
+        type: condition
+      properties:
+        common_name:
+          title: common_name
+          type: string
+        id:
+          title: id
+          type: string
+        name:
+          title: name
+          type: string
+        type:
+          enum:
+          - condition
+          - symptom
+          - risk_factor
+          - lab_test
+          title: type
+          type: string
+      title: ConceptItemModel_Public
+      type: object
+    ConditionProbability_Public:
+      example:
+        probability: 0.8008281904610115
+        name: name
+        id: id
+        common_name: common_name
+      properties:
+        common_name:
+          description: condition common name
+          title: common_name
+          type: string
+        id:
+          description: condition id
+          title: id
+          type: string
+        name:
+          description: condition name
+          title: name
+          type: string
+        probability:
+          format: double
+          title: probability
+          type: number
+      required:
+      - id
+      - name
+      - probability
+      title: ConditionProbability_Public
+      type: object
+    Condition_Details:
+      example:
+        severity: mild
+        prevalence: very_rare
+        sex_filter: both
+        name: name
+        extras:
+          key: "{}"
+        triage_level: emergency_ambulance
+        acuteness: chronic
+        categories:
+        - categories
+        - categories
+        id: id
+        common_name: common_name
+      properties:
+        acuteness:
+          enum:
+          - chronic
+          - chronic_with_exacerbations
+          - acute_potentially_chronic
+          - acute
+          title: acuteness
+          type: string
+        categories:
+          items:
+            type: string
+          title: categories
+          type: array
+        common_name:
+          title: common_name
+          type: string
+        extras:
+          additionalProperties:
+            properties: {}
+            type: object
+          description: "additional content, like custom properties or images"
+          title: extras
+          type: object
+        id:
+          title: id
+          type: string
+        name:
+          title: name
+          type: string
+        prevalence:
+          enum:
+          - very_rare
+          - rare
+          - moderate
+          - common
+          title: prevalence
+          type: string
+        severity:
+          enum:
+          - mild
+          - moderate
+          - severe
+          title: severity
+          type: string
+        sex_filter:
+          enum:
+          - both
+          - male
+          - female
+          title: sex_filter
+          type: string
+        triage_level:
+          enum:
+          - emergency_ambulance
+          - emergency
+          - consultation_24
+          - consultation
+          - self_care
+          title: triage_level
+          type: string
+      required:
+      - categories
+      - id
+      - name
+      - sex_filter
+      title: Condition_Details
+      type: object
+    Condition_Public:
+      example:
+        severity: mild
+        prevalence: very_rare
+        sex_filter: both
+        name: name
+        extras:
+          key: "{}"
+        triage_level: emergency_ambulance
+        acuteness: chronic
+        categories:
+        - categories
+        - categories
+        id: id
+        common_name: common_name
+      properties:
+        acuteness:
+          enum:
+          - chronic
+          - chronic_with_exacerbations
+          - acute_potentially_chronic
+          - acute
+          title: acuteness
+          type: string
+        categories:
+          items:
+            type: string
+          title: categories
+          type: array
+        common_name:
+          title: common_name
+          type: string
+        extras:
+          additionalProperties:
+            properties: {}
+            type: object
+          description: "additional content, like custom properties or images"
+          title: extras
+          type: object
+        id:
+          title: id
+          type: string
+        name:
+          title: name
+          type: string
+        prevalence:
+          enum:
+          - very_rare
+          - rare
+          - moderate
+          - common
+          title: prevalence
+          type: string
+        severity:
+          enum:
+          - mild
+          - moderate
+          - severe
+          title: severity
+          type: string
+        sex_filter:
+          enum:
+          - both
+          - male
+          - female
+          title: sex_filter
+          type: string
+        triage_level:
+          enum:
+          - emergency_ambulance
+          - emergency
+          - consultation_24
+          - consultation
+          - self_care
+          title: triage_level
+          type: string
+      required:
+      - categories
+      - id
+      - name
+      - sex_filter
+      title: Condition_Public
+      type: object
+    DiagnosisRequest:
+      example:
+        evidence:
+        - observed_at: 2020-06-02
+          id: s_1
+          source: initial
+          choice_id: present
+        - observed_at: 2020-06-02
+          id: s_1
+          source: initial
+          choice_id: present
+        sex: male
+        extras:
+          key: "{}"
+        age: "18"
+        evaluated_at: 2020-06-02
+      properties:
+        age:
+          example: "18"
+          properties: {}
+          title: age
+          type: object
+        evaluated_at:
+          description: time when diagnosis was evaluated in ISO 8601 format
+          example: 2020-06-02
+          readOnly: true
+          title: evaluated_at
+          type: string
+        evidence:
+          items:
+            $ref: '#/components/schemas/Evidence'
+          title: evidence
+          type: array
+        extras:
+          additionalProperties:
+            properties: {}
+            type: object
+          title: extras
+          type: object
+        sex:
+          enum:
+          - male
+          - female
+          title: sex
+          type: string
+      required:
+      - age
+      - sex
+      title: DiagnosisRequest
+      type: object
+    DiagnosisResponse_Public:
+      example:
+        should_stop: true
+        question:
+          extras:
+            key: "{}"
+          text: text
+          type: single
+          items:
+          - name: name
+            id: id
+            choices:
+            - id: present
+              label: label
+            - id: present
+              label: label
+          - name: name
+            id: id
+            choices:
+            - id: present
+              label: label
+            - id: present
+              label: label
+        extras:
+          key: "{}"
+        conditions:
+        - probability: 0.8008281904610115
+          name: name
+          id: id
+          common_name: common_name
+        - probability: 0.8008281904610115
+          name: name
+          id: id
+          common_name: common_name
+      properties:
+        conditions:
+          items:
+            $ref: '#/components/schemas/ConditionProbability_Public'
+          title: conditions
+          type: array
+        extras:
+          additionalProperties:
+            properties: {}
+            type: object
+          title: extras
+          type: object
+        question:
+          $ref: '#/components/schemas/Question_Public'
+        should_stop:
+          title: should_stop
+          type: boolean
+      title: DiagnosisResponse_Public
+      type: object
+    Evidence:
+      example:
+        observed_at: 2020-06-02
+        id: s_1
+        source: initial
+        choice_id: present
+      properties:
+        choice_id:
+          enum:
+          - present
+          - absent
+          - unknown
+          title: choice_id
+          type: string
+        id:
+          description: id of observation or condition
+          example: s_1
+          title: id
+          type: string
+        observed_at:
+          description: time when evidence was observed in ISO 8601 format
+          example: 2020-06-02
+          title: observed_at
+          type: string
+        source:
+          description: Flag describing evidence origin
+          enum:
+          - initial
+          - suggest
+          - predefined
+          - red_flags
+          title: source
+          type: string
+      required:
+      - choice_id
+      - id
+      title: Evidence
+      type: object
+    ExplanationEvidence:
+      example:
+        name: name
+        id: id
+        common_name: common_name
+      properties:
+        common_name:
+          description: observation common name
+          title: common_name
+          type: string
+        id:
+          description: observation id
+          title: id
+          type: string
+        name:
+          description: observation name
+          title: name
+          type: string
+      required:
+      - id
+      - name
+      title: ExplanationEvidence
+      type: object
+    ExplanationRequest:
+      example:
+        evidence:
+        - observed_at: 2020-06-02
+          id: s_1
+          source: initial
+          choice_id: present
+        - observed_at: 2020-06-02
+          id: s_1
+          source: initial
+          choice_id: present
+        sex: male
+        extras:
+          key: "{}"
+        age: "18"
+        evaluated_at: 2020-06-02
+        target: c_1
+      properties:
+        age:
+          example: "18"
+          properties: {}
+          title: age
+          type: object
+        evaluated_at:
+          description: time when diagnosis was evaluated in ISO 8601 format
+          example: 2020-06-02
+          readOnly: true
+          title: evaluated_at
+          type: string
+        evidence:
+          items:
+            $ref: '#/components/schemas/Evidence'
+          title: evidence
+          type: array
+        extras:
+          additionalProperties:
+            properties: {}
+            type: object
+          title: extras
+          type: object
+        sex:
+          enum:
+          - male
+          - female
+          title: sex
+          type: string
+        target:
+          description: target condition id
+          example: c_1
+          title: target
+          type: string
+      required:
+      - age
+      - sex
+      - target
+      title: ExplanationRequest
+      type: object
+    ExplanationResponse:
+      example:
+        conflicting_evidence:
+        - name: name
+          id: id
+          common_name: common_name
+        - name: name
+          id: id
+          common_name: common_name
+        supporting_evidence:
+        - name: name
+          id: id
+          common_name: common_name
+        - name: name
+          id: id
+          common_name: common_name
+        unconfirmed_evidence:
+        - name: name
+          id: id
+          common_name: common_name
+        - name: name
+          id: id
+          common_name: common_name
+      properties:
+        conflicting_evidence:
+          description: conflicting evidence
+          items:
+            $ref: '#/components/schemas/ExplanationEvidence'
+          title: conflicting_evidence
+          type: array
+        supporting_evidence:
+          description: supporting evidence
+          items:
+            $ref: '#/components/schemas/ExplanationEvidence'
+          title: supporting_evidence
+          type: array
+        unconfirmed_evidence:
+          description: unconfirmed evidence
+          items:
+            $ref: '#/components/schemas/ExplanationEvidence'
+          title: unconfirmed_evidence
+          type: array
+      required:
+      - conflicting_evidence
+      - supporting_evidence
+      - unconfirmed_evidence
+      title: ExplanationResponse
+      type: object
+    Info_Public:
+      example:
+        updated_at: updated_at
+        conditions_count: 0
+        api_version: api_version
+        lab_tests_count: 6
+        risk_factors_count: 1
+        symptoms_count: 5
+      properties:
+        api_version:
+          description: version of api release
+          title: api_version
+          type: string
+        conditions_count:
+          format: int32
+          title: conditions_count
+          type: integer
+        lab_tests_count:
+          format: int32
+          title: lab_tests_count
+          type: integer
+        risk_factors_count:
+          format: int32
+          title: risk_factors_count
+          type: integer
+        symptoms_count:
+          format: int32
+          title: symptoms_count
+          type: integer
+        updated_at:
+          description: time of last model update in ISO 8601 format
+          title: updated_at
+          type: string
+      required:
+      - conditions_count
+      - lab_tests_count
+      - risk_factors_count
+      - symptoms_count
+      - updated_at
+      title: Info_Public
+      type: object
+    LabTestResult_Details:
+      example:
+        id: id
+        type: very_low
+      properties:
+        id:
+          title: id
+          type: string
+        type:
+          enum:
+          - very_low
+          - low
+          - normal
+          - high
+          - very_high
+          - absent
+          - present
+          title: type
+          type: string
+      required:
+      - id
+      - type
+      title: LabTestResult_Details
+      type: object
+    LabTestResult_Public:
+      example:
+        id: id
+        type: very_low
+      properties:
+        id:
+          title: id
+          type: string
+        type:
+          enum:
+          - very_low
+          - low
+          - normal
+          - high
+          - very_high
+          - absent
+          - present
+          title: type
+          type: string
+      required:
+      - id
+      - type
+      title: LabTestResult_Public
+      type: object
+    LabTest_Details:
+      example:
+        name: name
+        id: id
+        category: category
+        common_name: common_name
+        results:
+        - id: id
+          type: very_low
+        - id: id
+          type: very_low
+      properties:
+        category:
+          title: category
+          type: string
+        common_name:
+          title: common_name
+          type: string
+        id:
+          title: id
+          type: string
+        name:
+          title: name
+          type: string
+        results:
+          items:
+            $ref: '#/components/schemas/LabTestResult_Details'
+          title: results
+          type: array
+      required:
+      - id
+      - name
+      title: LabTest_Details
+      type: object
+    LabTest_Public:
+      example:
+        name: name
+        id: id
+        category: category
+        common_name: common_name
+        results:
+        - id: id
+          type: very_low
+        - id: id
+          type: very_low
+      properties:
+        category:
+          title: category
+          type: string
+        common_name:
+          title: common_name
+          type: string
+        id:
+          title: id
+          type: string
+        name:
+          title: name
+          type: string
+        results:
+          items:
+            $ref: '#/components/schemas/LabTestResult_Public'
+          title: results
+          type: array
+      required:
+      - id
+      - name
+      title: LabTest_Public
+      type: object
+    ObservationMention:
+      example:
+        orth: orth
+        head_position: 0
+        name: name
+        positions:
+        - 6
+        - 6
+        id: id
+        common_name: common_name
+        choice_id: present
+      properties:
+        choice_id:
+          enum:
+          - present
+          - absent
+          - unknown
+          title: choice_id
+          type: string
+        common_name:
+          description: observation common name
+          title: common_name
+          type: string
+        head_position:
+          format: int32
+          title: head_position
+          type: integer
+        id:
+          description: observation id
+          title: id
+          type: string
+        name:
+          description: observation name
+          title: name
+          type: string
+        orth:
+          title: orth
+          type: string
+        positions:
+          items:
+            format: int32
+            type: integer
+          title: positions
+          type: array
+      required:
+      - choice_id
+      - head_position
+      - id
+      - name
+      - orth
+      - positions
+      title: ObservationMention
+      type: object
+    ParseRequest:
+      example:
+        correct_spelling: true
+        include_tokens: true
+        context:
+        - context
+        - context
+        concept_types:
+        - symptom
+        - symptom
+        text: text
+      properties:
+        concept_types:
+          description: list of concept types that should be captured
+          items:
+            enum:
+            - symptom
+            - risk_factor
+            type: string
+          title: concept_types
+          type: array
+        context:
+          description: ordered list of ids of present symptoms that were already captured
+            and can be used as context
+          items:
+            type: string
+          title: context
+          type: array
+        correct_spelling:
+          description: correct spelling of input text before proper analysis
+          title: correct_spelling
+          type: boolean
+        include_tokens:
+          description: include tokenization details in output
+          title: include_tokens
+          type: boolean
+        text:
+          description: user text to process
+          title: text
+          type: string
+      required:
+      - text
+      title: ParseRequest
+      type: object
+    ParseResponse:
+      example:
+        mentions:
+        - orth: orth
+          head_position: 0
+          name: name
+          positions:
+          - 6
+          - 6
+          id: id
+          common_name: common_name
+          choice_id: present
+        - orth: orth
+          head_position: 0
+          name: name
+          positions:
+          - 6
+          - 6
+          id: id
+          common_name: common_name
+          choice_id: present
+        obvious: true
+        tokens:
+        - tokens
+        - tokens
+      properties:
+        mentions:
+          description: list of recognized symptom or risk factor mentions
+          items:
+            $ref: '#/components/schemas/ObservationMention'
+          title: mentions
+          type: array
+        obvious:
+          description: indicates that entire input text has been parsed successfully
+            and unambiguously
+          title: obvious
+          type: boolean
+        tokens:
+          items:
+            type: string
+          title: tokens
+          type: array
+      required:
+      - mentions
+      - obvious
+      title: ParseResponse
+      type: object
+    QuestionItem_Public:
+      example:
+        name: name
+        id: id
+        choices:
+        - id: present
+          label: label
+        - id: present
+          label: label
+      properties:
+        choices:
+          description: list of available answer choices
+          items:
+            $ref: '#/components/schemas/Choice_Public'
+          title: choices
+          type: array
+        id:
+          description: observation id
+          title: id
+          type: string
+        name:
+          description: name or alias of observation
+          title: name
+          type: string
+      required:
+      - choices
+      - id
+      - name
+      title: QuestionItem_Public
+      type: object
+    Question_Public:
+      example:
+        extras:
+          key: "{}"
+        text: text
+        type: single
+        items:
+        - name: name
+          id: id
+          choices:
+          - id: present
+            label: label
+          - id: present
+            label: label
+        - name: name
+          id: id
+          choices:
+          - id: present
+            label: label
+          - id: present
+            label: label
+      properties:
+        extras:
+          additionalProperties:
+            properties: {}
+            type: object
+          description: "additional content, like images or HTML"
+          title: extras
+          type: object
+        items:
+          description: one or more observations to evaluate
+          items:
+            $ref: '#/components/schemas/QuestionItem_Public'
+          title: items
+          type: array
+        text:
+          description: question text
+          title: text
+          type: string
+        type:
+          enum:
+          - single
+          - group_single
+          - group_multiple
+          title: type
+          type: string
+      required:
+      - items
+      - text
+      title: Question_Public
+      type: object
+    RationaleParam:
+      example:
+        name: name
+        id: id
+        common_name: common_name
+      properties:
+        common_name:
+          description: observation or condition common name
+          title: common_name
+          type: string
+        id:
+          description: observation or condition id
+          title: id
+          type: string
+        name:
+          description: observation or condition name
+          title: name
+          type: string
+      required:
+      - id
+      - name
+      title: RationaleParam
+      type: object
+    RationaleRequest:
+      example:
+        evidence:
+        - observed_at: 2020-06-02
+          id: s_1
+          source: initial
+          choice_id: present
+        - observed_at: 2020-06-02
+          id: s_1
+          source: initial
+          choice_id: present
+        sex: male
+        extras:
+          key: "{}"
+        age: "18"
+        evaluated_at: 2020-06-02
+      properties:
+        age:
+          example: "18"
+          properties: {}
+          title: age
+          type: object
+        evaluated_at:
+          description: time when diagnosis was evaluated in ISO 8601 format
+          example: 2020-06-02
+          readOnly: true
+          title: evaluated_at
+          type: string
+        evidence:
+          items:
+            $ref: '#/components/schemas/Evidence'
+          title: evidence
+          type: array
+        extras:
+          additionalProperties:
+            properties: {}
+            type: object
+          title: extras
+          type: object
+        sex:
+          enum:
+          - male
+          - female
+          title: sex
+          type: string
+      required:
+      - age
+      - sex
+      title: RationaleRequest
+      type: object
+    RationaleResponse:
+      example:
+        condition_params:
+        - name: name
+          id: id
+          common_name: common_name
+        - name: name
+          id: id
+          common_name: common_name
+        observation_params:
+        - name: name
+          id: id
+          common_name: common_name
+        - name: name
+          id: id
+          common_name: common_name
+        type: r0
+      properties:
+        condition_params:
+          description: condition params
+          items:
+            $ref: '#/components/schemas/RationaleParam'
+          title: condition_params
+          type: array
+        observation_params:
+          description: observation params
+          items:
+            $ref: '#/components/schemas/RationaleParam'
+          title: observation_params
+          type: array
+        type:
+          description: type
+          enum:
+          - r0
+          - r1
+          - r2
+          - r3
+          - r4
+          - r5
+          - r6
+          title: type
+          type: string
+      required:
+      - type
+      title: RationaleResponse
+      type: object
+    RiskFactor_Details:
+      example:
+        sex_filter: both
+        question: question
+        image_url: image_url
+        name: name
+        extras:
+          key: "{}"
+        id: id
+        category: category
+        common_name: common_name
+        image_source: image_source
+      properties:
+        category:
+          title: category
+          type: string
+        common_name:
+          title: common_name
+          type: string
+        extras:
+          additionalProperties:
+            properties: {}
+            type: object
+          description: "additional content, like custom properties or images"
+          title: extras
+          type: object
+        id:
+          title: id
+          type: string
+        image_source:
+          title: image_source
+          type: string
+        image_url:
+          title: image_url
+          type: string
+        name:
+          title: name
+          type: string
+        question:
+          description: "only available in object details, not in listing"
+          title: question
+          type: string
+        sex_filter:
+          enum:
+          - both
+          - male
+          - female
+          title: sex_filter
+          type: string
+      required:
+      - id
+      - name
+      - question
+      - sex_filter
+      title: RiskFactor_Details
+      type: object
+    RiskFactor_Public:
+      example:
+        sex_filter: both
+        image_url: image_url
+        name: name
+        extras:
+          key: "{}"
+        id: id
+        category: category
+        common_name: common_name
+        image_source: image_source
+      properties:
+        category:
+          title: category
+          type: string
+        common_name:
+          title: common_name
+          type: string
+        extras:
+          additionalProperties:
+            properties: {}
+            type: object
+          description: "additional content, like custom properties or images"
+          title: extras
+          type: object
+        id:
+          title: id
+          type: string
+        image_source:
+          title: image_source
+          type: string
+        image_url:
+          title: image_url
+          type: string
+        name:
+          title: name
+          type: string
+        sex_filter:
+          enum:
+          - both
+          - male
+          - female
+          title: sex_filter
+          type: string
+      required:
+      - id
+      - name
+      - sex_filter
+      title: RiskFactor_Public
+      type: object
+    SearchResult:
+      example:
+        id: id
+        label: label
+      properties:
+        id:
+          title: id
+          type: string
+        label:
+          description: "matched phrase, name or its synonym"
+          title: label
+          type: string
+      required:
+      - id
+      - label
+      title: SearchResult
+      type: object
+    SeriousObservation:
+      example:
+        name: name
+        id: id
+        common_name: common_name
+        is_emergency: true
+      properties:
+        common_name:
+          description: observation common name
+          title: common_name
+          type: string
+        id:
+          description: observation id
+          title: id
+          type: string
+        is_emergency:
+          title: is_emergency
+          type: boolean
+        name:
+          description: observation name
+          title: name
+          type: string
+      required:
+      - id
+      - name
+      title: SeriousObservation
+      type: object
+    SuggestRequest:
+      example:
+        evidence:
+        - observed_at: 2020-06-02
+          id: s_1
+          source: initial
+          choice_id: present
+        - observed_at: 2020-06-02
+          id: s_1
+          source: initial
+          choice_id: present
+        sex: male
+        extras:
+          key: "{}"
+        age: "18"
+        evaluated_at: 2020-06-02
+      properties:
+        age:
+          example: "18"
+          properties: {}
+          title: age
+          type: object
+        evaluated_at:
+          description: time when diagnosis was evaluated in ISO 8601 format
+          example: 2020-06-02
+          readOnly: true
+          title: evaluated_at
+          type: string
+        evidence:
+          items:
+            $ref: '#/components/schemas/Evidence'
+          title: evidence
+          type: array
+        extras:
+          additionalProperties:
+            properties: {}
+            type: object
+          title: extras
+          type: object
+        sex:
+          enum:
+          - male
+          - female
+          title: sex
+          type: string
+      title: SuggestRequest
+      type: object
+    SuggestResult:
+      example:
+        name: name
+        id: id
+        common_name: common_name
+      properties:
+        common_name:
+          title: common_name
+          type: string
+        id:
+          title: id
+          type: string
+        name:
+          title: name
+          type: string
+      required:
+      - id
+      - name
+      title: SuggestResult
+      type: object
+    Symptom_Details:
+      example:
+        sex_filter: both
+        question: question
+        children: "{}"
+        image_url: image_url
+        parent_id: parent_id
+        name: name
+        extras:
+          key: "{}"
+        id: id
+        category: category
+        common_name: common_name
+        parent_relation: base
+        image_source: image_source
+      properties:
+        category:
+          title: category
+          type: string
+        children:
+          description: list of child symptoms
+          properties: {}
+          title: children
+          type: object
+        common_name:
+          title: common_name
+          type: string
+        extras:
+          additionalProperties:
+            properties: {}
+            type: object
+          description: "additional content, like custom properties or images"
+          title: extras
+          type: object
+        id:
+          title: id
+          type: string
+        image_source:
+          title: image_source
+          type: string
+        image_url:
+          title: image_url
+          type: string
+        name:
+          title: name
+          type: string
+        parent_id:
+          description: id of parent symptom
+          title: parent_id
+          type: string
+        parent_relation:
+          description: type of relation with parent symptom
+          enum:
+          - base
+          - duration
+          - severity
+          - character
+          - exacerbating_factor
+          - diminishing_factor
+          - location
+          - radiation
+          title: parent_relation
+          type: string
+        question:
+          description: "only available in object details, not in listing"
+          title: question
+          type: string
+        sex_filter:
+          enum:
+          - both
+          - male
+          - female
+          title: sex_filter
+          type: string
+      required:
+      - id
+      - name
+      - question
+      - sex_filter
+      title: Symptom_Details
+      type: object
+    Symptom_Public:
+      example:
+        sex_filter: both
+        children: "{}"
+        image_url: image_url
+        parent_id: parent_id
+        name: name
+        extras:
+          key: "{}"
+        id: id
+        category: category
+        common_name: common_name
+        parent_relation: base
+        image_source: image_source
+      properties:
+        category:
+          title: category
+          type: string
+        children:
+          description: list of child symptoms
+          properties: {}
+          title: children
+          type: object
+        common_name:
+          title: common_name
+          type: string
+        extras:
+          additionalProperties:
+            properties: {}
+            type: object
+          description: "additional content, like custom properties or images"
+          title: extras
+          type: object
+        id:
+          title: id
+          type: string
+        image_source:
+          title: image_source
+          type: string
+        image_url:
+          title: image_url
+          type: string
+        name:
+          title: name
+          type: string
+        parent_id:
+          description: id of parent symptom
+          title: parent_id
+          type: string
+        parent_relation:
+          description: type of relation with parent symptom
+          enum:
+          - base
+          - duration
+          - severity
+          - character
+          - exacerbating_factor
+          - diminishing_factor
+          - location
+          - radiation
+          title: parent_relation
+          type: string
+        sex_filter:
+          enum:
+          - both
+          - male
+          - female
+          title: sex_filter
+          type: string
+      required:
+      - id
+      - name
+      - sex_filter
+      title: Symptom_Public
+      type: object
+    TriageResponse:
+      example:
+        teleconsultation_applicable: true
+        serious:
+        - name: name
+          id: id
+          common_name: common_name
+          is_emergency: true
+        - name: name
+          id: id
+          common_name: common_name
+          is_emergency: true
+        triage_level: emergency_ambulance
+        root_cause: r1
+      properties:
+        root_cause:
+          enum:
+          - r1
+          - r2
+          - r3
+          - r4
+          - r5
+          - r6
+          - r7
+          - r8
+          - r9
+          - r10
+          - r11
+          - r12
+          title: root_cause
+          type: string
+        serious:
+          items:
+            $ref: '#/components/schemas/SeriousObservation'
+          title: serious
+          type: array
+          uniqueItems: true
+        teleconsultation_applicable:
+          title: teleconsultation_applicable
+          type: boolean
+        triage_level:
+          enum:
+          - emergency_ambulance
+          - emergency
+          - consultation_24
+          - consultation
+          - self_care
+          title: triage_level
+          type: string
+      title: TriageResponse
+      type: object
+x-original-swagger-version: "2.0"

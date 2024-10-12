@@ -1,0 +1,107 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIAttachment.h \
+    $${PWD}/OAICollaborator.h \
+    $${PWD}/OAICollaboratorEditable.h \
+    $${PWD}/OAICollaboratorInvitation.h \
+    $${PWD}/OAICollaboratorInvitationCreate.h \
+    $${PWD}/OAIComment.h \
+    $${PWD}/OAICommentEditable.h \
+    $${PWD}/OAIEvent.h \
+    $${PWD}/OAIEventCounts.h \
+    $${PWD}/OAIEventEditable.h \
+    $${PWD}/OAIMap.h \
+    $${PWD}/OAIMapCounts.h \
+    $${PWD}/OAIMapEditable.h \
+    $${PWD}/OAIMapRelation.h \
+    $${PWD}/OAIMapSettings.h \
+    $${PWD}/OAIMapWithAuthToken.h \
+    $${PWD}/OAIMapWithRelation.h \
+    $${PWD}/OAIRespot.h \
+    $${PWD}/OAISpot.h \
+    $${PWD}/OAISpotCounts.h \
+    $${PWD}/OAISpotEditable.h \
+    $${PWD}/OAISubscription.h \
+    $${PWD}/OAIUser.h \
+    $${PWD}/OAIUserAuthentication.h \
+    $${PWD}/OAIUserEditable.h \
+    $${PWD}/OAIUserFullProfile.h \
+    $${PWD}/OAIUser_counts.h \
+# APIs
+    $${PWD}/OAIAccountApi.h \
+    $${PWD}/OAIAttachmentsApi.h \
+    $${PWD}/OAIAuthenticationApi.h \
+    $${PWD}/OAICollaboratorInvitationsApi.h \
+    $${PWD}/OAICollaboratorsApi.h \
+    $${PWD}/OAICommentsApi.h \
+    $${PWD}/OAIEventsApi.h \
+    $${PWD}/OAIMapsApi.h \
+    $${PWD}/OAIRespotsApi.h \
+    $${PWD}/OAISearchApi.h \
+    $${PWD}/OAIShareApi.h \
+    $${PWD}/OAISpotsApi.h \
+    $${PWD}/OAISubscriptionsApi.h \
+    $${PWD}/OAITrendsApi.h \
+    $${PWD}/OAIUsersApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIAttachment.cpp \
+    $${PWD}/OAICollaborator.cpp \
+    $${PWD}/OAICollaboratorEditable.cpp \
+    $${PWD}/OAICollaboratorInvitation.cpp \
+    $${PWD}/OAICollaboratorInvitationCreate.cpp \
+    $${PWD}/OAIComment.cpp \
+    $${PWD}/OAICommentEditable.cpp \
+    $${PWD}/OAIEvent.cpp \
+    $${PWD}/OAIEventCounts.cpp \
+    $${PWD}/OAIEventEditable.cpp \
+    $${PWD}/OAIMap.cpp \
+    $${PWD}/OAIMapCounts.cpp \
+    $${PWD}/OAIMapEditable.cpp \
+    $${PWD}/OAIMapRelation.cpp \
+    $${PWD}/OAIMapSettings.cpp \
+    $${PWD}/OAIMapWithAuthToken.cpp \
+    $${PWD}/OAIMapWithRelation.cpp \
+    $${PWD}/OAIRespot.cpp \
+    $${PWD}/OAISpot.cpp \
+    $${PWD}/OAISpotCounts.cpp \
+    $${PWD}/OAISpotEditable.cpp \
+    $${PWD}/OAISubscription.cpp \
+    $${PWD}/OAIUser.cpp \
+    $${PWD}/OAIUserAuthentication.cpp \
+    $${PWD}/OAIUserEditable.cpp \
+    $${PWD}/OAIUserFullProfile.cpp \
+    $${PWD}/OAIUser_counts.cpp \
+# APIs
+    $${PWD}/OAIAccountApi.cpp \
+    $${PWD}/OAIAttachmentsApi.cpp \
+    $${PWD}/OAIAuthenticationApi.cpp \
+    $${PWD}/OAICollaboratorInvitationsApi.cpp \
+    $${PWD}/OAICollaboratorsApi.cpp \
+    $${PWD}/OAICommentsApi.cpp \
+    $${PWD}/OAIEventsApi.cpp \
+    $${PWD}/OAIMapsApi.cpp \
+    $${PWD}/OAIRespotsApi.cpp \
+    $${PWD}/OAISearchApi.cpp \
+    $${PWD}/OAIShareApi.cpp \
+    $${PWD}/OAISpotsApi.cpp \
+    $${PWD}/OAISubscriptionsApi.cpp \
+    $${PWD}/OAITrendsApi.cpp \
+    $${PWD}/OAIUsersApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

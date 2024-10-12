@@ -1,0 +1,99 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIBalance.h \
+    $${PWD}/OAIComponentsh0.h \
+    $${PWD}/OAIDispatchLocation.h \
+    $${PWD}/OAIEasee_charger.h \
+    $${PWD}/OAIForecastItem.h \
+    $${PWD}/OAIGsiDispatch_200_response.h \
+    $${PWD}/OAIGsiDispatch_200_response_timeframe.h \
+    $${PWD}/OAIGsiMarketdata_200_response.h \
+    $${PWD}/OAIGsiPrediction_200_response.h \
+    $${PWD}/OAIGsiPrediction_200_response_location.h \
+    $${PWD}/OAIGsiPrediction_200_response_matrix.h \
+    $${PWD}/OAIGsiPrediction_200_response_matrix_h0.h \
+    $${PWD}/OAIMarketData.h \
+    $${PWD}/OAIMeteringGet_200_response.h \
+    $${PWD}/OAIMeteringPost_200_response.h \
+    $${PWD}/OAIMeteringPost_request.h \
+    $${PWD}/OAIOmmeters.h \
+    $${PWD}/OAIPrepareTransaction_request.h \
+    $${PWD}/OAIQuittungComit_request.h \
+    $${PWD}/OAIQuittungCreate_request.h \
+    $${PWD}/OAIQuittungTSE_200_response.h \
+    $${PWD}/OAIStromkontoLogin_200_response.h \
+    $${PWD}/OAIStromkontoRegister_request.h \
+    $${PWD}/OAITariffh0.h \
+    $${PWD}/OAITransactions.h \
+    $${PWD}/OAIWimstatus_200_response.h \
+# APIs
+    $${PWD}/OAIDispatchGreenEnergyDistributionAPIApi.h \
+    $${PWD}/OAIEaseeApi.h \
+    $${PWD}/OAIGreenPowerIndexGrnstromIndexApi.h \
+    $${PWD}/OAIMeteringDecoratorApi.h \
+    $${PWD}/OAIOCPPApi.h \
+    $${PWD}/OAIOpenMETERApi.h \
+    $${PWD}/OAISmartHomeApi.h \
+    $${PWD}/OAIStromQuittungApi.h \
+    $${PWD}/OAIStromkontoLedgerApi.h \
+    $${PWD}/OAITSEApi.h \
+    $${PWD}/OAITariffPriceAPIApi.h \
+    $${PWD}/OAIWiMWechselprozesseImMesswesenStromStatusAPIApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIBalance.cpp \
+    $${PWD}/OAIComponentsh0.cpp \
+    $${PWD}/OAIDispatchLocation.cpp \
+    $${PWD}/OAIEasee_charger.cpp \
+    $${PWD}/OAIForecastItem.cpp \
+    $${PWD}/OAIGsiDispatch_200_response.cpp \
+    $${PWD}/OAIGsiDispatch_200_response_timeframe.cpp \
+    $${PWD}/OAIGsiMarketdata_200_response.cpp \
+    $${PWD}/OAIGsiPrediction_200_response.cpp \
+    $${PWD}/OAIGsiPrediction_200_response_location.cpp \
+    $${PWD}/OAIGsiPrediction_200_response_matrix.cpp \
+    $${PWD}/OAIGsiPrediction_200_response_matrix_h0.cpp \
+    $${PWD}/OAIMarketData.cpp \
+    $${PWD}/OAIMeteringGet_200_response.cpp \
+    $${PWD}/OAIMeteringPost_200_response.cpp \
+    $${PWD}/OAIMeteringPost_request.cpp \
+    $${PWD}/OAIOmmeters.cpp \
+    $${PWD}/OAIPrepareTransaction_request.cpp \
+    $${PWD}/OAIQuittungComit_request.cpp \
+    $${PWD}/OAIQuittungCreate_request.cpp \
+    $${PWD}/OAIQuittungTSE_200_response.cpp \
+    $${PWD}/OAIStromkontoLogin_200_response.cpp \
+    $${PWD}/OAIStromkontoRegister_request.cpp \
+    $${PWD}/OAITariffh0.cpp \
+    $${PWD}/OAITransactions.cpp \
+    $${PWD}/OAIWimstatus_200_response.cpp \
+# APIs
+    $${PWD}/OAIDispatchGreenEnergyDistributionAPIApi.cpp \
+    $${PWD}/OAIEaseeApi.cpp \
+    $${PWD}/OAIGreenPowerIndexGrnstromIndexApi.cpp \
+    $${PWD}/OAIMeteringDecoratorApi.cpp \
+    $${PWD}/OAIOCPPApi.cpp \
+    $${PWD}/OAIOpenMETERApi.cpp \
+    $${PWD}/OAISmartHomeApi.cpp \
+    $${PWD}/OAIStromQuittungApi.cpp \
+    $${PWD}/OAIStromkontoLedgerApi.cpp \
+    $${PWD}/OAITSEApi.cpp \
+    $${PWD}/OAITariffPriceAPIApi.cpp \
+    $${PWD}/OAIWiMWechselprozesseImMesswesenStromStatusAPIApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

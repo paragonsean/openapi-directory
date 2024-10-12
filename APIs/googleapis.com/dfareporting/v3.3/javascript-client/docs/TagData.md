@@ -1,0 +1,60 @@
+# CampaignManager360Api.TagData
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**adId** | **String** | Ad associated with this placement tag. Applicable only when format is PLACEMENT_TAG_TRACKING. | [optional] 
+**clickTag** | **String** | Tag string to record a click. | [optional] 
+**creativeId** | **String** | Creative associated with this placement tag. Applicable only when format is PLACEMENT_TAG_TRACKING. | [optional] 
+**format** | **String** | TagData tag format of this tag. | [optional] 
+**impressionTag** | **String** | Tag string for serving an ad. | [optional] 
+
+
+
+## Enum: FormatEnum
+
+
+* `STANDARD` (value: `"PLACEMENT_TAG_STANDARD"`)
+
+* `IFRAME_JAVASCRIPT` (value: `"PLACEMENT_TAG_IFRAME_JAVASCRIPT"`)
+
+* `IFRAME_ILAYER` (value: `"PLACEMENT_TAG_IFRAME_ILAYER"`)
+
+* `INTERNAL_REDIRECT` (value: `"PLACEMENT_TAG_INTERNAL_REDIRECT"`)
+
+* `JAVASCRIPT` (value: `"PLACEMENT_TAG_JAVASCRIPT"`)
+
+* `INTERSTITIAL_IFRAME_JAVASCRIPT` (value: `"PLACEMENT_TAG_INTERSTITIAL_IFRAME_JAVASCRIPT"`)
+
+* `INTERSTITIAL_INTERNAL_REDIRECT` (value: `"PLACEMENT_TAG_INTERSTITIAL_INTERNAL_REDIRECT"`)
+
+* `INTERSTITIAL_JAVASCRIPT` (value: `"PLACEMENT_TAG_INTERSTITIAL_JAVASCRIPT"`)
+
+* `CLICK_COMMANDS` (value: `"PLACEMENT_TAG_CLICK_COMMANDS"`)
+
+* `INSTREAM_VIDEO_PREFETCH` (value: `"PLACEMENT_TAG_INSTREAM_VIDEO_PREFETCH"`)
+
+* `TRACKING` (value: `"PLACEMENT_TAG_TRACKING"`)
+
+* `TRACKING_IFRAME` (value: `"PLACEMENT_TAG_TRACKING_IFRAME"`)
+
+* `TRACKING_JAVASCRIPT` (value: `"PLACEMENT_TAG_TRACKING_JAVASCRIPT"`)
+
+* `INSTREAM_VIDEO_PREFETCH_VAST_3` (value: `"PLACEMENT_TAG_INSTREAM_VIDEO_PREFETCH_VAST_3"`)
+
+* `IFRAME_JAVASCRIPT_LEGACY` (value: `"PLACEMENT_TAG_IFRAME_JAVASCRIPT_LEGACY"`)
+
+* `JAVASCRIPT_LEGACY` (value: `"PLACEMENT_TAG_JAVASCRIPT_LEGACY"`)
+
+* `INTERSTITIAL_IFRAME_JAVASCRIPT_LEGACY` (value: `"PLACEMENT_TAG_INTERSTITIAL_IFRAME_JAVASCRIPT_LEGACY"`)
+
+* `INTERSTITIAL_JAVASCRIPT_LEGACY` (value: `"PLACEMENT_TAG_INTERSTITIAL_JAVASCRIPT_LEGACY"`)
+
+* `INSTREAM_VIDEO_PREFETCH_VAST_4` (value: `"PLACEMENT_TAG_INSTREAM_VIDEO_PREFETCH_VAST_4"`)
+
+* `TRACKING_THIRD_PARTY_MEASUREMENT` (value: `"PLACEMENT_TAG_TRACKING_THIRD_PARTY_MEASUREMENT"`)
+
+
+
+

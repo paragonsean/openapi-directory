@@ -1,0 +1,1549 @@
+openapi: 3.0.2
+info:
+  contact:
+    email: dev@stromdao.com
+    url: https://stromdao.de/kontakt
+  description: |
+    *Corrently - from italian corrente, which is energy*
+    # Introduction
+    The Corrently ecosystem gets maintained by [STROMDAO GmbH](https://www.stromdao.de/) to support green energy services for prosumers, grid operators, regulators, integrators or any other party with an emerging need of consensus driven management.
+    As the [energy product Corrently](https://www.corrently.de/) got first launched in Germany parts of this documentation provide simple translations for better understanding.
+    [Released SKDs for Download](https://github.com/energychain/corrently-api/releases)
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: https://corrently.io/terms/
+  title: Corrently.io
+  version: 2.0.0
+  x-apisguru-categories:
+  - open_data
+  x-logo:
+    url: https://corrently.de/assets/img/Corrently_1000x252.png
+  x-origin:
+  - format: openapi
+    url: https://corrently.io/dist.yaml
+    version: "3.0"
+  x-providerName: corrently.io
+servers:
+- url: https://api.corrently.io/v2.0
+tags:
+- description: |
+    Managing accounts and balances for market partners (eq. households, grid operators, traders,..) Stromkonto is based on distributed ledger technology (AKA Blockchain). Instead of using the REST Api to access any energy ledger, you might act as a blockchain node and use the published ABI definitions to get the same results and/or run transactions directly.
+  name: Stromkonto (Ledger)
+- description: |
+    Green Power Index (GrünstromIndex), an AI based service to forecast energy sources in the grid (regionale Stromherkunft).
+    Further Details and sample implementation is available at [gruenstromindex.de](https://www.gruenstromindex.de/).
+  name: GreenPowerIndex (GrünstromIndex)
+- description: |
+    Provides latest dispatch information of green energy at a specific location in Germany (Herkunft/GrünstromMix). It allows to do schedule management (Fahrplanmanagement) of green energy generation facilities, demand and resilience management for grid operators. The public version (OpenAPI) is always post fact. If you are interessted in pre fact (forecast) data, you might get in contact with STROMDAO GmbH.
+  name: Dispatch (Green Energy Distribution API)
+- description: |
+    Allows to virtualy act as an Meter Point Operator by decorating meter readings with GreenPowerIndex (GrünstromIndex) handles. In principal this service decorates meter [OBIS Code](https://de.wikipedia.org/wiki/OBIS-Kennzahlen) 1.8.0 values to 1.8.1 and 1.8.2 according to the local and actual GSI value. A signature gets applied to the reading and all three OBIS values get hashed into the Energychain for consensus (e.q. creating balancing groups). CO2 footprint of a meter gets provided (as of first reading pushed).This works in conjunction with German Smart Meter Gateways (as of March 2020).
+  name: Metering (Decorator)
+- description: "Tariff information for the German market region. Provides base price\
+    \ and energy price information for private households (Standardlastprofil H0,\
+    \ SLP H0 Tarifinformation)."
+  name: Tariff (Price API)
+- description: Access to status information of an existing metering change and allocation
+    process.
+  name: WiM (Wechselprozesse im Messwesen Strom - Status API)
+- description: Helper services and endpoints for smarthome and home automation systems.
+  name: SmartHome
+- description: Alternative access to OpenMeter Data.
+  name: OpenMETER
+- description: Alternative access to EASEE.cloud Data.
+  name: easee
+- description: Alternative access to Corrently OCPP Data (hosted cloud backend).
+  name: OCPP
+- description: |
+    Self-Service to create a full receipt (Quittung) for energy delivery in case of submetering. Please refer to [Strom-Quittung](http://strom-quittung.de) for a sample usage.
+  name: Strom-Quittung
+- description: Technische Sicherheitseinrichtung - use in context of strom-quittungen
+    to get digitaly signed receipts.
+  name: TSE
+paths:
+  /alternative/easee/lastSessions:
+    get:
+      description: |
+        Refer to easee.cloud API for details.
+      operationId: easee_sessions
+      parameters:
+      - description: Username as used on easy.cloud
+        explode: true
+        in: query
+        name: username
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Password as used on easy.cloud
+        explode: true
+        in: query
+        name: password
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/easee-charger'
+                type: array
+          description: Success
+      summary: Returns lastSession info for all easee wallboxes (chargers) given user
+        has access to.
+      tags:
+      - easee
+      x-openapi-router-controller: openapi_server.controllers.easee_controller
+  /alternative/ocpp/lastSessions:
+    get:
+      description: |
+        Returns lastSession info of OCCP Cloud service for clearing in corrently ecosystem. Might be tested via [OCPP cloud simulator](https://ocpp.corrently.cloud).
+        Last session Info of managed EV charging stations connected to the correnty ecosystem.
+      operationId: ocpp_sessions
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/easee-charger'
+                type: array
+          description: Success
+      summary: Last Session Info
+      tags:
+      - OCPP
+      x-openapi-router-controller: openapi_server.controllers.ocpp_controller
+  /alternative/openmeter/activities:
+    get:
+      description: |
+        Provides a list of available meterrs in the OpenMETER project ( https://www.openmeter.de/ ) which grants access for analytics as data discovery.
+      operationId: om_activities
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/ommeters'
+                type: array
+          description: Success
+      summary: Public shared smart meters installed in Germany and available for subservices
+        and exploration.
+      tags:
+      - OpenMETER
+      x-openapi-router-controller: openapi_server.controllers.open_meter_controller
+  /alternative/openmeter/meters:
+    get:
+      description: |
+        Provides a list of available meterrs in the OpenMETER project ( https://www.openmeter.de/ ) which grants access for analytics as data discovery.
+      operationId: om_meters
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/ommeters'
+                type: array
+          description: Success
+      summary: Public shared smart meters installed in Germany and available for subservices
+        and exploration.
+      tags:
+      - OpenMETER
+      x-openapi-router-controller: openapi_server.controllers.open_meter_controller
+  /alternative/openmeter/readings:
+    get:
+      description: |
+        Provides a list of available meterrs in the OpenMETER project ( https://www.openmeter.de/ ) which grants access for analytics as data discovery.
+      operationId: om_readings
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/ommeters'
+                type: array
+          description: Success
+      summary: Public shared smart meters installed in Germany and available for subservices
+        and exploration.
+      tags:
+      - OpenMETER
+      x-openapi-router-controller: openapi_server.controllers.open_meter_controller
+  /gsi/bestHour:
+    get:
+      description: |
+        Simple Wrapper around the GreenPowerIndex for easy integration into almost any SmartHome system that allows access to a JSON/REST Service This endpoint is designed to indicate if a device should be turned on or off. (Switch state).
+      operationId: gsi_besthour
+      parameters:
+      - description: Zipcode (Postleitzahl) of a city in Germany.
+        explode: true
+        in: query
+        name: zip
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Any valid Stromkonto account (address).
+        explode: true
+        in: query
+        name: key
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Number of hours to check (default 24 hours from now).
+        explode: true
+        in: query
+        name: timeframe
+        required: false
+        schema:
+          type: integer
+        style: form
+      - description: How many hours in row do you need the device turned on?
+        explode: true
+        in: query
+        name: hours
+        required: false
+        schema:
+          type: integer
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                description: true if device should be turned on now. false if not.
+                type: boolean
+          description: Success
+      summary: Get best hour (with most regional green energy) in a given timeframe.
+      tags:
+      - GreenPowerIndex (GrünstromIndex)
+      - SmartHome
+      x-openapi-router-controller: openapi_server.controllers.green_power_index_(grünstrom_index)controller
+  /gsi/dispatch:
+    get:
+      description: |
+        Dispatch of green energy has two aspects to consider:
+          - Availability of gerneration facility (depends on weather and installed capacity)
+          - Demand of energy
+        Using the green power index (GrünstromIndex) we have received a tool to automate distribution of energy in order to prevent redispatch situations. Doing this alows to opimize resource usage (tactical) and leverage data for investment planning (strategic).
+      operationId: gsi_dispatch
+      parameters:
+      - description: Zipcode (Postleitzahl) of a city in Germany.
+        explode: true
+        in: query
+        name: zip
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Any valid Stromkonto account (address).
+        explode: true
+        in: query
+        name: key
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/gsiDispatch_200_response'
+          description: Success
+      summary: Dispatch (Green Energy Distribution Schedule)
+      tags:
+      - GreenPowerIndex (GrünstromIndex)
+      - Dispatch (Green Energy Distribution API)
+      x-openapi-router-controller: openapi_server.controllers.green_power_index_(grünstrom_index)controller
+  /gsi/marketdata:
+    get:
+      description: |
+        Compatible to awattar (https://api.awattar.de/v1/marketdata) API interface but data comes from GreenPowerIndex instead of EPEXSpot.
+      operationId: gsi_marketdata
+      parameters:
+      - description: Zipcode (Postleitzahl) of a city in Germany.
+        explode: true
+        in: query
+        name: zip
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/gsiMarketdata_200_response'
+          description: Success
+      summary: Marketdata
+      tags:
+      - GreenPowerIndex (GrünstromIndex)
+      x-openapi-router-controller: openapi_server.controllers.green_power_index_(grünstrom_index)controller
+  /gsi/prediction:
+    get:
+      description: |
+        Retrieval the GreenPowerIndex (GrünstromIndex) for a given city (by zipcode) in Germany.
+      operationId: gsi_prediction
+      parameters:
+      - description: Zipcode (Postleitzahl) of a city in Germany.
+        explode: true
+        in: query
+        name: zip
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Any valid Stromkonto account (address).
+        explode: true
+        in: query
+        name: key
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/gsiPrediction_200_response'
+          description: Success
+      summary: Prediction
+      tags:
+      - GreenPowerIndex (GrünstromIndex)
+      x-openapi-router-controller: openapi_server.controllers.green_power_index_(grünstrom_index)controller
+  /metering/reading:
+    get:
+      description: |
+        Retrieves a metered reading using account (Stromkonto).
+      operationId: metering_get
+      parameters:
+      - description: Account/Address (Stromkonto) to retrieve reading for.
+        explode: true
+        in: query
+        name: account
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/meteringGet_200_response'
+          description: Success
+      summary: Meter Reading
+      tags:
+      - Metering (Decorator)
+      x-openapi-router-controller: openapi_server.controllers.metering_(decorator)controller
+    post:
+      description: |
+        Post meter reading and get it decorated. Best practice is to first create a new Stromkonto with the register method and choose a nice secret to protect updates. Now regularly send updates to get readings (consumption) split into green power (1.8.1) and grey power (1.8.2).
+      operationId: metering_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/meteringPost_request'
+        required: true
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/meteringPost_200_response'
+          description: Success
+      summary: Meter Reading
+      tags:
+      - Metering (Decorator)
+      x-openapi-router-controller: openapi_server.controllers.metering_(decorator)controller
+      x-codegen-request-body-name: body
+  /quittung/commit:
+    post:
+      description: |
+        Uses collected fields or provided fields to create a final receipt (Strom-Quittung).
+      operationId: quittung_comit
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/quittungComit_request'
+        required: false
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                description: Unique ID of a receipt. It might be used via https://api.corrently.io/v2.0/quittung/pdf?token=
+                  to retrieve a PDF version of receipt or via   https://corrently.de/service/quittung.html?token=
+                  to get online version.
+                type: string
+          description: Success
+      summary: Finishs a collection of data and finalizes receipt. Use this method
+        after collecting all data via quittung/prepare
+      tags:
+      - Strom-Quittung
+      x-openapi-router-controller: openapi_server.controllers.strom_quittung_controller
+      x-codegen-request-body-name: body
+  /quittung/create:
+    post:
+      description: |
+        Creates a full featured receipt (Quittung) for an energy delivery as it appears on a charging session or similar events. Allows to embed receipt generation directly into external services.
+      operationId: quittung_create
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/quittungCreate_request'
+        required: true
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                description: "Token for this receipt. It might be extended as 'token'\
+                  \ parameter to retrieve actual receipt [sample](https://corrently.de/service/quittung.html?token=0x3C4750bf93aa96e55A0d60be334B6b6E14DCe5bc)"
+                type: string
+          description: Success
+      summary: Create a receipt for an energy delivery (only valid in Germany).
+      tags:
+      - Strom-Quittung
+      x-openapi-router-controller: openapi_server.controllers.strom_quittung_controller
+      x-codegen-request-body-name: body
+  /quittung/prepare:
+    post:
+      description: |
+        During the first call an account parameter will be returned within the result object. Any other parameter will be set inside the preperation. If account is put into body/request in following requests, the existing collection will be extended/updated with the provided body parameters/values.
+      operationId: quittung_prepare
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/quittungComit_request'
+        required: false
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                description: All collected values for an account (eq. session).
+                type: string
+          description: Success
+      summary: Allows to collect data with several requests (or a single) for a receipt.
+      tags:
+      - Strom-Quittung
+      x-openapi-router-controller: openapi_server.controllers.strom_quittung_controller
+      x-codegen-request-body-name: body
+  /quittung/tse:
+    post:
+      description: |
+        Allows to retrieve all relevant data assiciated to a TSE service call. E.q. Input parameters, public key and signature.
+      operationId: quittung_tse
+      parameters:
+      - description: Quittung Identifier  (serialnumber generated during receipt generation
+          process)
+        explode: true
+        in: query
+        name: account
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/quittungTSE_200_response'
+          description: Success
+      summary: Retrieve TSE (Technische Sicherheitseinrichtung) Data for a given receipt
+        (Strom-Quittung).
+      tags:
+      - Strom-Quittung
+      - TSE
+      x-openapi-router-controller: openapi_server.controllers.strom_quittung_controller
+  /quittung/tsedata:
+    post:
+      description: |
+        Allows to retrieve input string for a signing process.
+      operationId: quittung_tse_data
+      parameters:
+      - description: Quittung Identifier  (serialnumber generated during receipt generation
+          process)
+        explode: true
+        in: query
+        name: account
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          description: Success
+      summary: Retrieve TSE (Technische Sicherheitseinrichtung) raw data  only for
+        a given receipt (Strom-Quittung).
+      tags:
+      - Strom-Quittung
+      - TSE
+      x-openapi-router-controller: openapi_server.controllers.strom_quittung_controller
+  /quittung/tsesignature:
+    post:
+      description: |
+        Allows to retrieve digital signature for a given receipt.
+      operationId: quittung_ts_esignature
+      parameters:
+      - description: Quittung Identifier  (serialnumber generated during receipt generation
+          process)
+        explode: true
+        in: query
+        name: account
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          description: Success
+      summary: Retrieve TSE (Technische Sicherheitseinrichtung) Signature only for
+        a given receipt (Strom-Quittung).
+      tags:
+      - Strom-Quittung
+      - TSE
+      x-openapi-router-controller: openapi_server.controllers.strom_quittung_controller
+  /quittung/zugferd:
+    get:
+      description: |
+        Allows to retrieve XML of the zugferd invoice.
+      operationId: quittung_zugferd
+      parameters:
+      - description: Quittung Identifier  (serialnumber generated during receipt generation
+          process)
+        explode: true
+        in: query
+        name: account
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          description: Success
+      summary: Retrieve Zugferd XML for a given receipt (Strom-Quittung).
+      tags:
+      - Strom-Quittung
+      - TSE
+      x-openapi-router-controller: openapi_server.controllers.strom_quittung_controller
+  /stromkonto/balances:
+    get:
+      description: |
+        Stromkonto represents a core component of the Corrently Ecosystem. It is a ledger for green energy related transactions and gets heavily used by the public Web-UI on www.stromkonto.net . Beside of some decoration and reformating operations all data is backed by the [Energychain blockchain](https://github.com/energychain/) to provide consensus of balances and transactions. Use this API Endppoint if you prefere not to work with low level Distributed Ledger Technology (Blockchain).
+      operationId: stromkonto_balances
+      parameters:
+      - description: Ethereum style address referencing a valid account (AKA Stromkonto).
+        explode: true
+        in: query
+        name: account
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/Balance'
+                type: array
+          description: Success
+      summary: Balances
+      tags:
+      - Stromkonto (Ledger)
+      x-openapi-router-controller: openapi_server.controllers.stromkonto_(ledger)controller
+  /stromkonto/choices:
+    get:
+      description: |
+        Signable choices (contract changes) for customer.
+      operationId: stromkonto_choices
+      parameters:
+      - description: Ethereum style address referencing a valid account alias (never
+          use Stromkonto directly!).
+        explode: true
+        in: query
+        name: account
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/Balance'
+                type: array
+          description: Success
+      summary: Selectable Choices for customer
+      tags:
+      - Stromkonto (Ledger)
+      x-openapi-router-controller: openapi_server.controllers.stromkonto_(ledger)controller
+  /stromkonto/login:
+    post:
+      description: |
+        Sends a mail to a given email address to login this user. This function makes life a bit easier in order to not having to deal with private key protection on the user side as a shared key is used to sign transactions onbehalf of a particular account.  However viewing consensus information (balances) are public and *might move* from account to account without prior notification. Best practice for third party uses is to always start a session with the login RESP call and only create a user in case the response indicates an `unregistered` status.
+      operationId: stromkonto_login
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/quittungCreate_request'
+        required: true
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stromkontoLogin_200_response'
+          description: Success
+      summary: Login (via Mail)
+      tags:
+      - Stromkonto (Ledger)
+      x-openapi-router-controller: openapi_server.controllers.stromkonto_(ledger)controller
+      x-codegen-request-body-name: body
+  /stromkonto/prepareTransaction:
+    post:
+      description: |
+        Prepares and inques a transaction (transfer) between two accounts (Stromkonten). This might be used to send any balanced entity. Using this endpoint will only prepare the transaction and enques it for signing and countersigning. This is done from within the user UI using validation process. Note: This API method does not validate any transations. In other words authentication, authorization, validation and actual transfer of value is done using a smart contract during processing in the energy blockchain.
+      operationId: prepare_transaction
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/prepareTransaction_request'
+        required: true
+        x-body-name: body
+      responses:
+        "200":
+          description: Success
+      summary: Prepare Transaction
+      tags:
+      - Stromkonto (Ledger)
+      x-openapi-router-controller: openapi_server.controllers.stromkonto_(ledger)controller
+      x-codegen-request-body-name: body
+  /stromkonto/register:
+    post:
+      description: |
+        Calling this method with an unregistered (new) email will create a new account (Stromkonto) with all balances having a value of `0` and no transaction history. In addition some basic properties like region and zipcode are set to allow further operation of account.
+      operationId: stromkonto_register
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/stromkontoRegister_request'
+        required: true
+        x-body-name: body
+      responses:
+        "200":
+          description: Success
+      summary: Register (new Stromkonto)
+      tags:
+      - Stromkonto (Ledger)
+      x-openapi-router-controller: openapi_server.controllers.stromkonto_(ledger)controller
+      x-codegen-request-body-name: body
+  /tariff/components:
+    get:
+      description: |
+        Provides insides into the different cost components of energy for a private household.
+        Sample Request: https://api.corrently.io/v2.0/tariff/components?email=demo%40corrently.io&zip=69168&kwha=3300
+      operationId: tariffcomponents
+      parameters:
+      - description: Zipcode (Postzleitzahl) of a city in Germany.
+        explode: true
+        in: query
+        name: zipcode
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Valid email address to assign request to (pre offer generation).
+          Ensure GDPR (DSGVO) at any time
+        explode: true
+        in: query
+        name: email
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Total amount of energy in kilo-watt-hours per year. (sample 2100)
+        explode: true
+        in: query
+        name: kwha
+        required: false
+        schema:
+          type: integer
+        style: form
+      - description: If provided all results will be scaled to this timeframe
+        explode: true
+        in: query
+        name: milliseconds
+        required: false
+        schema:
+          type: integer
+        style: form
+      - description: "If provided together with milliseconds, a cost component stament\
+          \ for a particular event (like charging a car) will be created."
+        explode: true
+        in: query
+        name: wh
+        required: false
+        schema:
+          type: integer
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/componentsh0'
+          description: Success
+      summary: Energy Tariff price components
+      tags:
+      - Tariff (Price API)
+      x-openapi-router-controller: openapi_server.controllers.tariff_(price_api)controller
+  /tariff/slph0:
+    get:
+      description: |
+        Provides pricing data for private households with standard load profiles (Standardlastprofil H0).
+      operationId: tariff_slph0
+      parameters:
+      - description: Zipcode (Postzleitzahl) of a city in Germany.
+        explode: true
+        in: query
+        name: zipcode
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/Tariffh0'
+                type: array
+          description: Success
+      summary: Energy Tariff information
+      tags:
+      - Tariff (Price API)
+      x-openapi-router-controller: openapi_server.controllers.tariff_(price_api)controller
+  /wim/status:
+    get:
+      description: |
+        Access to status information of an existing metering change and allocation process.
+      operationId: wimstatus
+      parameters:
+      - description: VID key of the process.
+        explode: true
+        in: query
+        name: vid
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/wimstatus_200_response'
+          description: Success
+      summary: WiM Proess Informtion
+      tags:
+      - WiM (Wechselprozesse im Messwesen Strom - Status API)
+      x-openapi-router-controller: openapi_server.controllers.wi_m_(wechselprozesse_im_messwesen_strom__status_api)controller
+components:
+  schemas:
+    Balance:
+      example:
+        balance: 20
+        haben: 20
+        soll: 20
+        txs:
+        - timeStamp: 1606777200000
+          cashier: Miller
+          txid: 722d30b2-b46f-4ed4-a8cd-16d262180d37
+          txtype: bank.incGSB
+          value: 1337
+        - timeStamp: 1606777200000
+          cashier: Miller
+          txid: 722d30b2-b46f-4ed4-a8cd-16d262180d37
+          txtype: bank.incGSB
+          value: 1337
+        variation: gsb
+      properties:
+        balance:
+          description: Sum owned - sum due by account
+          example: 20
+          title: balance
+          type: integer
+        haben:
+          description: Sum owned by account
+          example: 20
+          title: haben
+          type: integer
+        soll:
+          description: Sum due by account
+          example: 20
+          title: soll
+          type: integer
+        txs:
+          items:
+            $ref: '#/components/schemas/Transactions'
+          title: txs
+          type: array
+        variation:
+          description: Type of subbalance (sub account)
+          enum:
+          - gsb
+          - erzeugung
+          - eigenstrom
+          - co2
+          - baeume
+          title: variation
+          type: string
+      title: Balance
+      type: object
+    DispatchLocation:
+      example:
+        location: "{}"
+        energy: 0.2345677
+      properties:
+        energy:
+          description: Percentage of energy
+          example: 0.2345677
+          title: energy
+          type: number
+        location:
+          description: GeoJSON encoded location of target or source of green energy.
+          title: location
+          type: object
+      title: DispatchLocation
+      type: object
+    ForecastItem:
+      example:
+        epochtime: 1609293600
+        timeStamp: 1609293600000
+        scaled: true
+        sci: 43
+        co2_g_oekostrom: 23
+        energyprice: -0.219
+        gsi: 43
+      properties:
+        co2_g_oekostrom:
+          description: CO2 footprint in Gramm per kwh (only Green Power)
+          example: 23
+          title: co2_g_oekostrom
+          type: integer
+        energyprice:
+          description: Local/regional energyprice modification (cent per kWh or euro
+            per MWh).
+          example: -0.219
+          title: energyprice
+          type: number
+        epochtime:
+          description: Timestamps in Seconds
+          example: 1609293600
+          title: epochtime
+          type: integer
+        gsi:
+          description: Actual GreenPowerIndex for given Timestamp (between 0-100)
+          example: 43
+          title: gsi
+          type: integer
+        scaled:
+          description: Indicates if scaling is in operation to predict values
+          title: scaled
+          type: boolean
+        sci:
+          description: Subindex just for Solar Energy
+          example: 43
+          title: sci
+          type: integer
+        timeStamp:
+          description: Timestamp in Standard Milliseconds
+          example: 1609293600000
+          title: timeStamp
+          type: integer
+      title: ForecastItem
+      type: object
+    MarketData:
+      example:
+        end_timestamp: 1609293600000
+        start_timestamp: 1609293600000
+        marketprice: 43
+      properties:
+        end_timestamp:
+          description: Timestamp in Standard Milliseconds
+          example: 1609293600000
+          title: end_timestamp
+          type: integer
+        marketprice:
+          description: Actual Marketprice for regional green power in EUR per MWh
+          example: 43
+          title: marketprice
+          type: number
+        start_timestamp:
+          description: Timestamp in Standard Milliseconds
+          example: 1609293600000
+          title: start_timestamp
+          type: integer
+      title: MarketData
+      type: object
+    Tariffh0:
+      example:
+        gp: 6
+        ap: 0
+      properties:
+        ap:
+          description: Energy price in cent per kwh. (Arbeitspreis) including all
+            taxes and fees.
+          title: ap
+          type: integer
+        gp:
+          description: Base price in euro per montah (Grundpreis) including all taxes
+            and fees.
+          title: gp
+          type: integer
+      title: Tariffh0
+      type: object
+    Transactions:
+      example:
+        timeStamp: 1606777200000
+        cashier: Miller
+        txid: 722d30b2-b46f-4ed4-a8cd-16d262180d37
+        txtype: bank.incGSB
+        value: 1337
+      properties:
+        cashier:
+          description: Pretty print of counter signing party
+          example: Miller
+          title: cashier
+          type: string
+        timeStamp:
+          description: Cross signed timestamp of transaction
+          example: 1606777200000
+          title: timeStamp
+          type: integer
+        txid:
+          description: Unique hash of this transaction as provided by counter signing
+            party
+          example: 722d30b2-b46f-4ed4-a8cd-16d262180d37
+          title: txid
+          type: string
+        txtype:
+          description: Type of transaction per cashier implementation and schema
+          example: bank.incGSB
+          title: txtype
+          type: string
+        value:
+          description: Amount covered by transaction
+          example: 1337
+          title: value
+          type: integer
+      title: Transactions
+      type: object
+    componentsh0:
+      example:
+        components:
+        - null
+        - null
+        mutlityplier: month
+        sum: 22.12
+        per: 0.012
+        describtion: Grundgebühr
+      properties:
+        components:
+          description: Sub components of this price
+          items:
+            $ref: '#/components/schemas/componentsh0'
+          title: components
+          type: array
+        describtion:
+          description: What is this price component about
+          example: Grundgebühr
+          title: describtion
+          type: string
+        mutlityplier:
+          description: Frequency/dependency of component
+          example: month
+          title: mutlityplier
+          type: string
+        per:
+          description: Single unit price multiyplier is based on
+          example: 0.012
+          format: double
+          title: per
+          type: number
+        sum:
+          description: Total sum in Euro for this price component.
+          example: 22.12
+          format: double
+          title: sum
+          type: number
+      title: componentsh0
+      type: object
+    easee-charger:
+      example:
+        name: name
+        id: EH780684
+        lastSession: lastSession
+      properties:
+        id:
+          description: Given ID by easee api
+          example: EH780684
+          title: id
+          type: string
+        lastSession:
+          description: lastSession Info as given by easee API
+          title: lastSession
+          type: string
+        name:
+          description: Name set for charger
+          title: name
+          type: string
+      title: easee-charger
+      type: object
+    ommeters:
+      example:
+        voltageScalingFactor: 1
+        meta: meta
+        meterId: gAAAAABgsYVSfcCjJZV5w2wGBTzOXCihY7dMaDyypwcbJzAELvxeCDaXiy65H2QwtY-7usSOfoqEIomTJjQb1yyIXZfFnTY2pmLgIu_DVw1rjppFte56yWBD5Fgrmbh2KyOkMNUr8zxO
+        manufacturerId: manufacturerId
+        measurementType: measurementType
+        scalingFactor: 6
+        location: location
+        loadProfileType: loadProfileType
+        type: type
+        currentScalingFactor: 0
+      properties:
+        currentScalingFactor:
+          description: Factor imposed on metered current by a transducer
+          title: currentScalingFactor
+          type: integer
+        loadProfileType:
+          description: Metering load profile type associated with the meter
+          title: loadProfileType
+          type: string
+        location:
+          description: Basic address information for geo coding
+          title: location
+          type: string
+        manufacturerId:
+          description: DLMS manufacturerId
+          title: manufacturerId
+          type: string
+        measurementType:
+          description: Physical quantity being measured by the meter
+          title: measurementType
+          type: string
+        meta:
+          description: Statistical metadata for this household
+          title: meta
+          type: string
+        meterId:
+          description: identifier to be used in other methods like readings or activities.
+          example: gAAAAABgsYVSfcCjJZV5w2wGBTzOXCihY7dMaDyypwcbJzAELvxeCDaXiy65H2QwtY-7usSOfoqEIomTJjQb1yyIXZfFnTY2pmLgIu_DVw1rjppFte56yWBD5Fgrmbh2KyOkMNUr8zxO
+          title: meterId
+          type: string
+        scalingFactor:
+          description: Factor imposed on metered current AND voltage by a transducer
+          title: scalingFactor
+          type: integer
+        type:
+          description: Device type of the meter
+          title: type
+          type: string
+        voltageScalingFactor:
+          description: Factor imposed on metered voltage by a transducer
+          title: voltageScalingFactor
+          type: integer
+      title: ommeters
+      type: object
+    gsiDispatch_200_response_timeframe:
+      description: Evaluated timeframe for this request
+      example:
+        start: 1
+        end: 6
+      properties:
+        end:
+          description: Ending time of window evaluated for this request/dispatches.
+          title: end
+          type: integer
+        start:
+          description: Starting time of window evaluated in order to get dispatches
+          title: start
+          type: integer
+      title: gsiDispatch_200_response_timeframe
+      type: object
+    gsiDispatch_200_response:
+      example:
+        timeframe:
+          start: 1
+          end: 6
+        postmix: "{}"
+        dispatch_from:
+        - location: "{}"
+          energy: 0.2345677
+        - location: "{}"
+          energy: 0.2345677
+        dispatch_target:
+        - location: "{}"
+          energy: 0.2345677
+        - location: "{}"
+          energy: 0.2345677
+        premix: "{}"
+        avg_distance_km: 0.8008281904610115
+      properties:
+        avg_distance_km:
+          description: Averaged geospatial distance in kilometers between energy generation
+            and usage at requested location.
+          title: avg_distance_km
+          type: number
+        dispatch_from:
+          description: List of current sources of green energy (into requested location)
+          items:
+            $ref: '#/components/schemas/DispatchLocation'
+          title: dispatch_from
+          type: array
+        dispatch_target:
+          description: List of current targets of green energy (out of requested location)
+          items:
+            $ref: '#/components/schemas/DispatchLocation'
+          title: dispatch_target
+          type: array
+        postmix:
+          description: Green Energy Mix after dispatch of given city
+          title: postmix
+          type: object
+        premix:
+          description: Green Energy Mix prior to dispatch of given city
+          title: premix
+          type: object
+        timeframe:
+          $ref: '#/components/schemas/gsiDispatch_200_response_timeframe'
+      title: gsiDispatch_200_response
+      type: object
+    gsiMarketdata_200_response:
+      example:
+        data:
+        - end_timestamp: 1609293600000
+          start_timestamp: 1609293600000
+          marketprice: 43
+        - end_timestamp: 1609293600000
+          start_timestamp: 1609293600000
+          marketprice: 43
+      properties:
+        data:
+          description: Energyprice for the upcomming hours
+          items:
+            $ref: '#/components/schemas/MarketData'
+          title: data
+          type: array
+      title: gsiMarketdata_200_response
+      type: object
+    gsiPrediction_200_response_location:
+      description: Standarized location info sourced for prediction
+      example:
+        zip: zip
+        city: city
+      properties:
+        city:
+          description: Pretty Print city name
+          title: city
+          type: string
+        zip:
+          description: Zipcode (Postleitzahl)
+          title: zip
+          type: string
+      title: gsiPrediction_200_response_location
+      type: object
+    gsiPrediction_200_response_matrix_h0:
+      description: Indicates number of hours a device should run
+      example:
+        avg_3: avg_3
+        avg_1: avg_1
+        avg_2: avg_2
+      properties:
+        avg_1:
+          description: device should run in 1 hour
+          title: avg_1
+          type: string
+        avg_2:
+          description: device should run in 2 hours
+          title: avg_2
+          type: string
+        avg_3:
+          description: device should run in 3 hour
+          title: avg_3
+          type: string
+      title: gsiPrediction_200_response_matrix_h0
+      type: object
+    gsiPrediction_200_response_matrix:
+      description: Device switching recommendation.
+      example:
+        h0:
+          avg_3: avg_3
+          avg_1: avg_1
+          avg_2: avg_2
+      properties:
+        h0:
+          $ref: '#/components/schemas/gsiPrediction_200_response_matrix_h0'
+      title: gsiPrediction_200_response_matrix
+      type: object
+    gsiPrediction_200_response:
+      example:
+        forecast:
+        - epochtime: 1609293600
+          timeStamp: 1609293600000
+          scaled: true
+          sci: 43
+          co2_g_oekostrom: 23
+          energyprice: -0.219
+          gsi: 43
+        - epochtime: 1609293600
+          timeStamp: 1609293600000
+          scaled: true
+          sci: 43
+          co2_g_oekostrom: 23
+          energyprice: -0.219
+          gsi: 43
+        location:
+          zip: zip
+          city: city
+        matrix:
+          h0:
+            avg_3: avg_3
+            avg_1: avg_1
+            avg_2: avg_2
+      properties:
+        forecast:
+          description: Prediction for the upcomming hours
+          items:
+            $ref: '#/components/schemas/ForecastItem'
+          title: forecast
+          type: array
+        location:
+          $ref: '#/components/schemas/gsiPrediction_200_response_location'
+        matrix:
+          $ref: '#/components/schemas/gsiPrediction_200_response_matrix'
+      title: gsiPrediction_200_response
+      type: object
+    meteringGet_200_response:
+      example:
+        timeStamp: 7
+        "1.8.0": 0
+        _processingTime: 5
+        credits: ""
+        "1.8.1": 6
+        "1.8.2": 1
+        co2_g_standard: 2
+        co2_g_oekostrom: 5
+        ttl: 9
+        account: account
+      properties:
+        "1.8.0":
+          description: Reading as provided as input in Wh
+          title: 1.8.0
+          type: integer
+        "1.8.1":
+          description: Green energy calculated using Green Power Index (GrünstromIndex)
+            in Wh
+          title: 1.8.1
+          type: integer
+        "1.8.2":
+          description: Grey energy calculated using Green Power Index (GrünstromIndex)
+            in Wh
+          title: 1.8.2
+          type: integer
+        _processingTime:
+          description: Time this reading got imported into consensus (e.q. signed
+            timestamp).
+          title: _processingTime
+          type: integer
+        account:
+          description: Stromkonto/Metering address allocated (this is not the MELOID!)
+          title: account
+          type: string
+        co2_g_oekostrom:
+          description: CO2 Emission of metered energy in a green energy mix (e.q.
+            Ökostromtarif)
+          title: co2_g_oekostrom
+          type: integer
+        co2_g_standard:
+          description: CO2 Emission of metered energy in a standard mix
+          title: co2_g_standard
+          type: integer
+        credits:
+          description: Update credits this meter has. Gets refilled automtically to
+            prevent too frequent updates
+          title: credits
+        timeStamp:
+          description: API Consensus time this reading was fully received
+          title: timeStamp
+          type: integer
+        ttl:
+          description: Time to Live for this reader. If no update is provided it gets
+            decommissioned.
+          title: ttl
+          type: integer
+      title: meteringGet_200_response
+      type: object
+    meteringPost_request:
+      properties:
+        "1.8.0":
+          description: Meter Reading (prefered in Wh)
+          title: 1.8.0
+          type: integer
+        account:
+          description: Stromkonto account (address) associated with this metering.
+          title: account
+          type: string
+        energy:
+          description: Alias for 1.8.0
+          title: energy
+          type: integer
+        secret:
+          description: Some private password you might choose on first update. However
+            you need to use the same secret on every further posts.
+          title: secret
+          type: string
+        value:
+          description: Alias for 1.8.0
+          title: value
+          type: integer
+        zip:
+          description: Zipcode (Postleitzahl) of metered location
+          title: zip
+          type: string
+      title: meteringPost_request
+      type: object
+    meteringPost_200_response:
+      example:
+        timeStamp: 7
+        "1.8.0": 0
+        _processingTime: 5
+        "1.8.1": 6
+        "1.8.2": 1
+        co2_g_standard: 2
+        co2_g_oekostrom: 5
+        account: account
+      properties:
+        "1.8.0":
+          description: Reading as provided as input in Wh
+          title: 1.8.0
+          type: integer
+        "1.8.1":
+          description: Green energy calculated using Green Power Index (GrünstromIndex)
+            in Wh
+          title: 1.8.1
+          type: integer
+        "1.8.2":
+          description: Grey energy calculated using Green Power Index (GrünstromIndex)
+            in Wh
+          title: 1.8.2
+          type: integer
+        _processingTime:
+          description: Time this reading got imported into consensus (e.q. signed
+            timestamp).
+          title: _processingTime
+          type: integer
+        account:
+          description: Stromkonto/Metering address allocated (this is not the MELOID!)
+          title: account
+          type: string
+        co2_g_oekostrom:
+          description: CO2 Emission of metered energy in a green energy mix (e.q.
+            Ökostromtarif)
+          title: co2_g_oekostrom
+          type: integer
+        co2_g_standard:
+          description: CO2 Emission of metered energy in a standard mix
+          title: co2_g_standard
+          type: integer
+        timeStamp:
+          description: API Consensus time this reading was fully received
+          title: timeStamp
+          type: integer
+      title: meteringPost_200_response
+      type: object
+    quittungComit_request:
+      properties:
+        account:
+          title: account
+          type: string
+      title: quittungComit_request
+      type: object
+    quittungCreate_request:
+      properties:
+        email:
+          title: email
+          type: string
+      title: quittungCreate_request
+      type: object
+    quittungTSE_200_response:
+      example:
+        data: ""
+        signature: signature
+        publickey: publickey
+        raw: raw
+      properties:
+        data:
+          description: JSON object that got signed by TSE.
+          title: data
+          x-schema:
+            properties:
+              algorithmus:
+                description: Standard used for signing and hashing of input values
+                example: RSA-SHA512
+                type: string
+              clientid:
+                description: Digital Identity of transaction system.
+                example: 1D2323CDEF
+                type: string
+              end:
+                description: Finishing timestamp of signature process by TSE service
+                  in UTC ISO Format.
+                example: 2021-07-12T18:43:05.582Z
+                type: string
+              serialnumber:
+                description: Quittung Identifier  (serialnumber generated during receipt
+                  generation process)
+                example: 0x29fB5aeE3Ca29f239E7f771280cf4e2fD3999DF3
+                type: string
+              signaturecnt:
+                description: Sequential number of signed transactions by TSE service.
+                example: 2
+                type: integer
+              start:
+                description: Starting timestamp of signature process by TSE service
+                  in UTC ISO Format.
+                example: 2021-07-12T18:43:05.582Z
+                type: string
+              timeformat:
+                description: Format of Timestamp to aply to  KassenSichV regulation
+                example: utcTime
+                type: string
+              txcnt:
+                description: Sequential number of this transaction (requester)
+                example: 1
+                type: integer
+            type: object
+        publickey:
+          description: Public Key of TSE
+          title: publickey
+          type: string
+        raw:
+          description: Datastring of JSON Object as it got used to create signature.
+          title: raw
+          type: string
+        signature:
+          description: Resulting signature by signing raw datastring using private
+            key of TSE.
+          title: signature
+          type: string
+      title: quittungTSE_200_response
+      type: object
+    stromkontoLogin_200_response:
+      example:
+        status: registered
+      properties:
+        status:
+          description: Registration status of a user. In case unregistered gets returned
+            use the `register` endpoint to (re-)register.
+          enum:
+          - registered
+          - unregistered
+          title: status
+          type: string
+      title: stromkontoLogin_200_response
+      type: object
+    prepareTransaction_request:
+      properties:
+        account:
+          description: Stromkonto account address of sender
+          title: account
+          type: string
+        signature:
+          description: Signature per Stromkonto setting (might be simple email confirmation
+            link)
+          title: signature
+          type: string
+        to:
+          description: Stromkonto account address of reciever
+          title: to
+          type: string
+        value:
+          description: "Amount to transfer (in Watthours for electricity, or pcs for\
+            \ trees)"
+          title: value
+          type: integer
+        variation:
+          enum:
+          - gsb
+          - erzeugung
+          - eigenstrom
+          - co2
+          - baeume
+          title: variation
+          type: string
+      title: prepareTransaction_request
+      type: object
+    stromkontoRegister_request:
+      properties:
+        email:
+          title: email
+          type: string
+        first_name:
+          title: first_name
+          type: string
+        last_name:
+          title: last_name
+          type: string
+        zipcode:
+          title: zipcode
+          type: string
+      title: stromkontoRegister_request
+      type: object
+    wimstatus_200_response:
+      example:
+        wim_started: 1615914297977
+        wim_status: Erfolgreiche Prüfung
+      properties:
+        wim_started:
+          description: Starting time of process
+          example: 1615914297977
+          title: wim_started
+          type: integer
+        wim_status:
+          description: Latest Status
+          example: Erfolgreiche Prüfung
+          title: wim_status
+          type: string
+      title: wimstatus_200_response
+      type: object

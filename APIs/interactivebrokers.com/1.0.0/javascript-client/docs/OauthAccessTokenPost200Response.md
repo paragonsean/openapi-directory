@@ -1,0 +1,10 @@
+# Ibkr3rdPartyWebApi.OauthAccessTokenPost200Response
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**oauthToken** | **String** |  | [optional] 
+**oauthTokenSecret** | **String** |  | [optional] 
+
+

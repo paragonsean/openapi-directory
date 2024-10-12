@@ -1,0 +1,15 @@
+
+
+# ConnectAgentResource
+
+ConnectAgentResource represents a Kubernetes resource manifest for Connect Agent deployment.
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**manifest** | **String** | YAML manifest of the resource. |  [optional] |
+|**type** | [**TypeMeta**](TypeMeta.md) |  |  [optional] |
+
+
+

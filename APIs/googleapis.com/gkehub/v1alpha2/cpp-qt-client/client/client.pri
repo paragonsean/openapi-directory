@@ -1,0 +1,91 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIApplianceCluster.h \
+    $${PWD}/OAIAuditConfig.h \
+    $${PWD}/OAIAuditLogConfig.h \
+    $${PWD}/OAIAuthority.h \
+    $${PWD}/OAIBinding.h \
+    $${PWD}/OAIConnectAgentResource.h \
+    $${PWD}/OAIEdgeCluster.h \
+    $${PWD}/OAIExpr.h \
+    $${PWD}/OAIGenerateConnectManifestResponse.h \
+    $${PWD}/OAIGkeCluster.h \
+    $${PWD}/OAIGoogleRpcStatus.h \
+    $${PWD}/OAIInitializeHubResponse.h \
+    $${PWD}/OAIKubernetesMetadata.h \
+    $${PWD}/OAIKubernetesResource.h \
+    $${PWD}/OAIListLocationsResponse.h \
+    $${PWD}/OAIListMembershipsResponse.h \
+    $${PWD}/OAIListOperationsResponse.h \
+    $${PWD}/OAILocation.h \
+    $${PWD}/OAIMembership.h \
+    $${PWD}/OAIMembershipEndpoint.h \
+    $${PWD}/OAIMembershipState.h \
+    $${PWD}/OAIMonitoringConfig.h \
+    $${PWD}/OAIMultiCloudCluster.h \
+    $${PWD}/OAIOnPremCluster.h \
+    $${PWD}/OAIOperation.h \
+    $${PWD}/OAIOperationMetadata.h \
+    $${PWD}/OAIPolicy.h \
+    $${PWD}/OAIResourceManifest.h \
+    $${PWD}/OAIResourceOptions.h \
+    $${PWD}/OAISetIamPolicyRequest.h \
+    $${PWD}/OAITestIamPermissionsRequest.h \
+    $${PWD}/OAITestIamPermissionsResponse.h \
+    $${PWD}/OAITypeMeta.h \
+# APIs
+    $${PWD}/OAIProjectsApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIApplianceCluster.cpp \
+    $${PWD}/OAIAuditConfig.cpp \
+    $${PWD}/OAIAuditLogConfig.cpp \
+    $${PWD}/OAIAuthority.cpp \
+    $${PWD}/OAIBinding.cpp \
+    $${PWD}/OAIConnectAgentResource.cpp \
+    $${PWD}/OAIEdgeCluster.cpp \
+    $${PWD}/OAIExpr.cpp \
+    $${PWD}/OAIGenerateConnectManifestResponse.cpp \
+    $${PWD}/OAIGkeCluster.cpp \
+    $${PWD}/OAIGoogleRpcStatus.cpp \
+    $${PWD}/OAIInitializeHubResponse.cpp \
+    $${PWD}/OAIKubernetesMetadata.cpp \
+    $${PWD}/OAIKubernetesResource.cpp \
+    $${PWD}/OAIListLocationsResponse.cpp \
+    $${PWD}/OAIListMembershipsResponse.cpp \
+    $${PWD}/OAIListOperationsResponse.cpp \
+    $${PWD}/OAILocation.cpp \
+    $${PWD}/OAIMembership.cpp \
+    $${PWD}/OAIMembershipEndpoint.cpp \
+    $${PWD}/OAIMembershipState.cpp \
+    $${PWD}/OAIMonitoringConfig.cpp \
+    $${PWD}/OAIMultiCloudCluster.cpp \
+    $${PWD}/OAIOnPremCluster.cpp \
+    $${PWD}/OAIOperation.cpp \
+    $${PWD}/OAIOperationMetadata.cpp \
+    $${PWD}/OAIPolicy.cpp \
+    $${PWD}/OAIResourceManifest.cpp \
+    $${PWD}/OAIResourceOptions.cpp \
+    $${PWD}/OAISetIamPolicyRequest.cpp \
+    $${PWD}/OAITestIamPermissionsRequest.cpp \
+    $${PWD}/OAITestIamPermissionsResponse.cpp \
+    $${PWD}/OAITypeMeta.cpp \
+# APIs
+    $${PWD}/OAIProjectsApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

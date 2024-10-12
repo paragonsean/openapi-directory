@@ -1,0 +1,544 @@
+# CreativesApi
+
+All URIs are relative to *https://www.googleapis.com/adexchangebuyer/v1.4*
+
+| Method | HTTP request | Description |
+|------------- | ------------- | -------------|
+| [**adexchangebuyerCreativesAddDeal**](CreativesApi.md#adexchangebuyerCreativesAddDeal) | **POST** /creatives/{accountId}/{buyerCreativeId}/addDeal/{dealId} |  |
+| [**adexchangebuyerCreativesGet**](CreativesApi.md#adexchangebuyerCreativesGet) | **GET** /creatives/{accountId}/{buyerCreativeId} |  |
+| [**adexchangebuyerCreativesInsert**](CreativesApi.md#adexchangebuyerCreativesInsert) | **POST** /creatives |  |
+| [**adexchangebuyerCreativesList**](CreativesApi.md#adexchangebuyerCreativesList) | **GET** /creatives |  |
+| [**adexchangebuyerCreativesListDeals**](CreativesApi.md#adexchangebuyerCreativesListDeals) | **GET** /creatives/{accountId}/{buyerCreativeId}/listDeals |  |
+| [**adexchangebuyerCreativesRemoveDeal**](CreativesApi.md#adexchangebuyerCreativesRemoveDeal) | **POST** /creatives/{accountId}/{buyerCreativeId}/removeDeal/{dealId} |  |
+
+
+<a id="adexchangebuyerCreativesAddDeal"></a>
+# **adexchangebuyerCreativesAddDeal**
+> adexchangebuyerCreativesAddDeal(accountId, buyerCreativeId, dealId, alt, fields, key, oauthToken, prettyPrint, quotaUser, userIp)
+
+
+
+Add a deal id association for the creative.
+
+### Example
+```java
+// Import classes:
+import org.openapitools.client.ApiClient;
+import org.openapitools.client.ApiException;
+import org.openapitools.client.Configuration;
+import org.openapitools.client.auth.*;
+import org.openapitools.client.models.*;
+import org.openapitools.client.api.CreativesApi;
+
+public class Example {
+  public static void main(String[] args) {
+    ApiClient defaultClient = Configuration.getDefaultApiClient();
+    defaultClient.setBasePath("https://www.googleapis.com/adexchangebuyer/v1.4");
+    
+    // Configure OAuth2 access token for authorization: Oauth2c
+    OAuth Oauth2c = (OAuth) defaultClient.getAuthentication("Oauth2c");
+    Oauth2c.setAccessToken("YOUR ACCESS TOKEN");
+
+    // Configure OAuth2 access token for authorization: Oauth2
+    OAuth Oauth2 = (OAuth) defaultClient.getAuthentication("Oauth2");
+    Oauth2.setAccessToken("YOUR ACCESS TOKEN");
+
+    CreativesApi apiInstance = new CreativesApi(defaultClient);
+    Integer accountId = 56; // Integer | The id for the account that will serve this creative.
+    String buyerCreativeId = "buyerCreativeId_example"; // String | The buyer-specific id for this creative.
+    String dealId = "dealId_example"; // String | The id of the deal id to associate with this creative.
+    String alt = "json"; // String | Data format for the response.
+    String fields = "fields_example"; // String | Selector specifying which fields to include in a partial response.
+    String key = "key_example"; // String | API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.
+    String oauthToken = "oauthToken_example"; // String | OAuth 2.0 token for the current user.
+    Boolean prettyPrint = true; // Boolean | Returns response with indentations and line breaks.
+    String quotaUser = "quotaUser_example"; // String | An opaque string that represents a user for quota purposes. Must not exceed 40 characters.
+    String userIp = "userIp_example"; // String | Deprecated. Please use quotaUser instead.
+    try {
+      apiInstance.adexchangebuyerCreativesAddDeal(accountId, buyerCreativeId, dealId, alt, fields, key, oauthToken, prettyPrint, quotaUser, userIp);
+    } catch (ApiException e) {
+      System.err.println("Exception when calling CreativesApi#adexchangebuyerCreativesAddDeal");
+      System.err.println("Status code: " + e.getCode());
+      System.err.println("Reason: " + e.getResponseBody());
+      System.err.println("Response headers: " + e.getResponseHeaders());
+      e.printStackTrace();
+    }
+  }
+}
+```
+
+### Parameters
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **accountId** | **Integer**| The id for the account that will serve this creative. | |
+| **buyerCreativeId** | **String**| The buyer-specific id for this creative. | |
+| **dealId** | **String**| The id of the deal id to associate with this creative. | |
+| **alt** | **String**| Data format for the response. | [optional] [enum: json] |
+| **fields** | **String**| Selector specifying which fields to include in a partial response. | [optional] |
+| **key** | **String**| API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token. | [optional] |
+| **oauthToken** | **String**| OAuth 2.0 token for the current user. | [optional] |
+| **prettyPrint** | **Boolean**| Returns response with indentations and line breaks. | [optional] |
+| **quotaUser** | **String**| An opaque string that represents a user for quota purposes. Must not exceed 40 characters. | [optional] |
+| **userIp** | **String**| Deprecated. Please use quotaUser instead. | [optional] |
+
+### Return type
+
+null (empty response body)
+
+### Authorization
+
+[Oauth2c](../README.md#Oauth2c), [Oauth2](../README.md#Oauth2)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: Not defined
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | Successful response |  -  |
+
+<a id="adexchangebuyerCreativesGet"></a>
+# **adexchangebuyerCreativesGet**
+> Creative adexchangebuyerCreativesGet(accountId, buyerCreativeId, alt, fields, key, oauthToken, prettyPrint, quotaUser, userIp)
+
+
+
+Gets the status for a single creative. A creative will be available 30-40 minutes after submission.
+
+### Example
+```java
+// Import classes:
+import org.openapitools.client.ApiClient;
+import org.openapitools.client.ApiException;
+import org.openapitools.client.Configuration;
+import org.openapitools.client.auth.*;
+import org.openapitools.client.models.*;
+import org.openapitools.client.api.CreativesApi;
+
+public class Example {
+  public static void main(String[] args) {
+    ApiClient defaultClient = Configuration.getDefaultApiClient();
+    defaultClient.setBasePath("https://www.googleapis.com/adexchangebuyer/v1.4");
+    
+    // Configure OAuth2 access token for authorization: Oauth2c
+    OAuth Oauth2c = (OAuth) defaultClient.getAuthentication("Oauth2c");
+    Oauth2c.setAccessToken("YOUR ACCESS TOKEN");
+
+    // Configure OAuth2 access token for authorization: Oauth2
+    OAuth Oauth2 = (OAuth) defaultClient.getAuthentication("Oauth2");
+    Oauth2.setAccessToken("YOUR ACCESS TOKEN");
+
+    CreativesApi apiInstance = new CreativesApi(defaultClient);
+    Integer accountId = 56; // Integer | The id for the account that will serve this creative.
+    String buyerCreativeId = "buyerCreativeId_example"; // String | The buyer-specific id for this creative.
+    String alt = "json"; // String | Data format for the response.
+    String fields = "fields_example"; // String | Selector specifying which fields to include in a partial response.
+    String key = "key_example"; // String | API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.
+    String oauthToken = "oauthToken_example"; // String | OAuth 2.0 token for the current user.
+    Boolean prettyPrint = true; // Boolean | Returns response with indentations and line breaks.
+    String quotaUser = "quotaUser_example"; // String | An opaque string that represents a user for quota purposes. Must not exceed 40 characters.
+    String userIp = "userIp_example"; // String | Deprecated. Please use quotaUser instead.
+    try {
+      Creative result = apiInstance.adexchangebuyerCreativesGet(accountId, buyerCreativeId, alt, fields, key, oauthToken, prettyPrint, quotaUser, userIp);
+      System.out.println(result);
+    } catch (ApiException e) {
+      System.err.println("Exception when calling CreativesApi#adexchangebuyerCreativesGet");
+      System.err.println("Status code: " + e.getCode());
+      System.err.println("Reason: " + e.getResponseBody());
+      System.err.println("Response headers: " + e.getResponseHeaders());
+      e.printStackTrace();
+    }
+  }
+}
+```
+
+### Parameters
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **accountId** | **Integer**| The id for the account that will serve this creative. | |
+| **buyerCreativeId** | **String**| The buyer-specific id for this creative. | |
+| **alt** | **String**| Data format for the response. | [optional] [enum: json] |
+| **fields** | **String**| Selector specifying which fields to include in a partial response. | [optional] |
+| **key** | **String**| API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token. | [optional] |
+| **oauthToken** | **String**| OAuth 2.0 token for the current user. | [optional] |
+| **prettyPrint** | **Boolean**| Returns response with indentations and line breaks. | [optional] |
+| **quotaUser** | **String**| An opaque string that represents a user for quota purposes. Must not exceed 40 characters. | [optional] |
+| **userIp** | **String**| Deprecated. Please use quotaUser instead. | [optional] |
+
+### Return type
+
+[**Creative**](Creative.md)
+
+### Authorization
+
+[Oauth2c](../README.md#Oauth2c), [Oauth2](../README.md#Oauth2)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | Successful response |  -  |
+
+<a id="adexchangebuyerCreativesInsert"></a>
+# **adexchangebuyerCreativesInsert**
+> Creative adexchangebuyerCreativesInsert(alt, fields, key, oauthToken, prettyPrint, quotaUser, userIp, creative)
+
+
+
+Submit a new creative.
+
+### Example
+```java
+// Import classes:
+import org.openapitools.client.ApiClient;
+import org.openapitools.client.ApiException;
+import org.openapitools.client.Configuration;
+import org.openapitools.client.auth.*;
+import org.openapitools.client.models.*;
+import org.openapitools.client.api.CreativesApi;
+
+public class Example {
+  public static void main(String[] args) {
+    ApiClient defaultClient = Configuration.getDefaultApiClient();
+    defaultClient.setBasePath("https://www.googleapis.com/adexchangebuyer/v1.4");
+    
+    // Configure OAuth2 access token for authorization: Oauth2c
+    OAuth Oauth2c = (OAuth) defaultClient.getAuthentication("Oauth2c");
+    Oauth2c.setAccessToken("YOUR ACCESS TOKEN");
+
+    // Configure OAuth2 access token for authorization: Oauth2
+    OAuth Oauth2 = (OAuth) defaultClient.getAuthentication("Oauth2");
+    Oauth2.setAccessToken("YOUR ACCESS TOKEN");
+
+    CreativesApi apiInstance = new CreativesApi(defaultClient);
+    String alt = "json"; // String | Data format for the response.
+    String fields = "fields_example"; // String | Selector specifying which fields to include in a partial response.
+    String key = "key_example"; // String | API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.
+    String oauthToken = "oauthToken_example"; // String | OAuth 2.0 token for the current user.
+    Boolean prettyPrint = true; // Boolean | Returns response with indentations and line breaks.
+    String quotaUser = "quotaUser_example"; // String | An opaque string that represents a user for quota purposes. Must not exceed 40 characters.
+    String userIp = "userIp_example"; // String | Deprecated. Please use quotaUser instead.
+    Creative creative = new Creative(); // Creative | 
+    try {
+      Creative result = apiInstance.adexchangebuyerCreativesInsert(alt, fields, key, oauthToken, prettyPrint, quotaUser, userIp, creative);
+      System.out.println(result);
+    } catch (ApiException e) {
+      System.err.println("Exception when calling CreativesApi#adexchangebuyerCreativesInsert");
+      System.err.println("Status code: " + e.getCode());
+      System.err.println("Reason: " + e.getResponseBody());
+      System.err.println("Response headers: " + e.getResponseHeaders());
+      e.printStackTrace();
+    }
+  }
+}
+```
+
+### Parameters
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **alt** | **String**| Data format for the response. | [optional] [enum: json] |
+| **fields** | **String**| Selector specifying which fields to include in a partial response. | [optional] |
+| **key** | **String**| API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token. | [optional] |
+| **oauthToken** | **String**| OAuth 2.0 token for the current user. | [optional] |
+| **prettyPrint** | **Boolean**| Returns response with indentations and line breaks. | [optional] |
+| **quotaUser** | **String**| An opaque string that represents a user for quota purposes. Must not exceed 40 characters. | [optional] |
+| **userIp** | **String**| Deprecated. Please use quotaUser instead. | [optional] |
+| **creative** | [**Creative**](Creative.md)|  | [optional] |
+
+### Return type
+
+[**Creative**](Creative.md)
+
+### Authorization
+
+[Oauth2c](../README.md#Oauth2c), [Oauth2](../README.md#Oauth2)
+
+### HTTP request headers
+
+ - **Content-Type**: application/json
+ - **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | Successful response |  -  |
+
+<a id="adexchangebuyerCreativesList"></a>
+# **adexchangebuyerCreativesList**
+> CreativesList adexchangebuyerCreativesList(alt, fields, key, oauthToken, prettyPrint, quotaUser, userIp, accountId, buyerCreativeId, dealsStatusFilter, maxResults, openAuctionStatusFilter, pageToken)
+
+
+
+Retrieves a list of the authenticated user&#39;s active creatives. A creative will be available 30-40 minutes after submission.
+
+### Example
+```java
+// Import classes:
+import org.openapitools.client.ApiClient;
+import org.openapitools.client.ApiException;
+import org.openapitools.client.Configuration;
+import org.openapitools.client.auth.*;
+import org.openapitools.client.models.*;
+import org.openapitools.client.api.CreativesApi;
+
+public class Example {
+  public static void main(String[] args) {
+    ApiClient defaultClient = Configuration.getDefaultApiClient();
+    defaultClient.setBasePath("https://www.googleapis.com/adexchangebuyer/v1.4");
+    
+    // Configure OAuth2 access token for authorization: Oauth2c
+    OAuth Oauth2c = (OAuth) defaultClient.getAuthentication("Oauth2c");
+    Oauth2c.setAccessToken("YOUR ACCESS TOKEN");
+
+    // Configure OAuth2 access token for authorization: Oauth2
+    OAuth Oauth2 = (OAuth) defaultClient.getAuthentication("Oauth2");
+    Oauth2.setAccessToken("YOUR ACCESS TOKEN");
+
+    CreativesApi apiInstance = new CreativesApi(defaultClient);
+    String alt = "json"; // String | Data format for the response.
+    String fields = "fields_example"; // String | Selector specifying which fields to include in a partial response.
+    String key = "key_example"; // String | API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.
+    String oauthToken = "oauthToken_example"; // String | OAuth 2.0 token for the current user.
+    Boolean prettyPrint = true; // Boolean | Returns response with indentations and line breaks.
+    String quotaUser = "quotaUser_example"; // String | An opaque string that represents a user for quota purposes. Must not exceed 40 characters.
+    String userIp = "userIp_example"; // String | Deprecated. Please use quotaUser instead.
+    List<Integer> accountId = Arrays.asList(); // List<Integer> | When specified, only creatives for the given account ids are returned.
+    List<String> buyerCreativeId = Arrays.asList(); // List<String> | When specified, only creatives for the given buyer creative ids are returned.
+    String dealsStatusFilter = "approved"; // String | When specified, only creatives having the given deals status are returned.
+    Integer maxResults = 56; // Integer | Maximum number of entries returned on one result page. If not set, the default is 100. Optional.
+    String openAuctionStatusFilter = "approved"; // String | When specified, only creatives having the given open auction status are returned.
+    String pageToken = "pageToken_example"; // String | A continuation token, used to page through ad clients. To retrieve the next page, set this parameter to the value of \"nextPageToken\" from the previous response. Optional.
+    try {
+      CreativesList result = apiInstance.adexchangebuyerCreativesList(alt, fields, key, oauthToken, prettyPrint, quotaUser, userIp, accountId, buyerCreativeId, dealsStatusFilter, maxResults, openAuctionStatusFilter, pageToken);
+      System.out.println(result);
+    } catch (ApiException e) {
+      System.err.println("Exception when calling CreativesApi#adexchangebuyerCreativesList");
+      System.err.println("Status code: " + e.getCode());
+      System.err.println("Reason: " + e.getResponseBody());
+      System.err.println("Response headers: " + e.getResponseHeaders());
+      e.printStackTrace();
+    }
+  }
+}
+```
+
+### Parameters
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **alt** | **String**| Data format for the response. | [optional] [enum: json] |
+| **fields** | **String**| Selector specifying which fields to include in a partial response. | [optional] |
+| **key** | **String**| API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token. | [optional] |
+| **oauthToken** | **String**| OAuth 2.0 token for the current user. | [optional] |
+| **prettyPrint** | **Boolean**| Returns response with indentations and line breaks. | [optional] |
+| **quotaUser** | **String**| An opaque string that represents a user for quota purposes. Must not exceed 40 characters. | [optional] |
+| **userIp** | **String**| Deprecated. Please use quotaUser instead. | [optional] |
+| **accountId** | [**List&lt;Integer&gt;**](Integer.md)| When specified, only creatives for the given account ids are returned. | [optional] |
+| **buyerCreativeId** | [**List&lt;String&gt;**](String.md)| When specified, only creatives for the given buyer creative ids are returned. | [optional] |
+| **dealsStatusFilter** | **String**| When specified, only creatives having the given deals status are returned. | [optional] [enum: approved, conditionally_approved, disapproved, not_checked] |
+| **maxResults** | **Integer**| Maximum number of entries returned on one result page. If not set, the default is 100. Optional. | [optional] |
+| **openAuctionStatusFilter** | **String**| When specified, only creatives having the given open auction status are returned. | [optional] [enum: approved, conditionally_approved, disapproved, not_checked] |
+| **pageToken** | **String**| A continuation token, used to page through ad clients. To retrieve the next page, set this parameter to the value of \&quot;nextPageToken\&quot; from the previous response. Optional. | [optional] |
+
+### Return type
+
+[**CreativesList**](CreativesList.md)
+
+### Authorization
+
+[Oauth2c](../README.md#Oauth2c), [Oauth2](../README.md#Oauth2)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | Successful response |  -  |
+
+<a id="adexchangebuyerCreativesListDeals"></a>
+# **adexchangebuyerCreativesListDeals**
+> CreativeDealIds adexchangebuyerCreativesListDeals(accountId, buyerCreativeId, alt, fields, key, oauthToken, prettyPrint, quotaUser, userIp)
+
+
+
+Lists the external deal ids associated with the creative.
+
+### Example
+```java
+// Import classes:
+import org.openapitools.client.ApiClient;
+import org.openapitools.client.ApiException;
+import org.openapitools.client.Configuration;
+import org.openapitools.client.auth.*;
+import org.openapitools.client.models.*;
+import org.openapitools.client.api.CreativesApi;
+
+public class Example {
+  public static void main(String[] args) {
+    ApiClient defaultClient = Configuration.getDefaultApiClient();
+    defaultClient.setBasePath("https://www.googleapis.com/adexchangebuyer/v1.4");
+    
+    // Configure OAuth2 access token for authorization: Oauth2c
+    OAuth Oauth2c = (OAuth) defaultClient.getAuthentication("Oauth2c");
+    Oauth2c.setAccessToken("YOUR ACCESS TOKEN");
+
+    // Configure OAuth2 access token for authorization: Oauth2
+    OAuth Oauth2 = (OAuth) defaultClient.getAuthentication("Oauth2");
+    Oauth2.setAccessToken("YOUR ACCESS TOKEN");
+
+    CreativesApi apiInstance = new CreativesApi(defaultClient);
+    Integer accountId = 56; // Integer | The id for the account that will serve this creative.
+    String buyerCreativeId = "buyerCreativeId_example"; // String | The buyer-specific id for this creative.
+    String alt = "json"; // String | Data format for the response.
+    String fields = "fields_example"; // String | Selector specifying which fields to include in a partial response.
+    String key = "key_example"; // String | API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.
+    String oauthToken = "oauthToken_example"; // String | OAuth 2.0 token for the current user.
+    Boolean prettyPrint = true; // Boolean | Returns response with indentations and line breaks.
+    String quotaUser = "quotaUser_example"; // String | An opaque string that represents a user for quota purposes. Must not exceed 40 characters.
+    String userIp = "userIp_example"; // String | Deprecated. Please use quotaUser instead.
+    try {
+      CreativeDealIds result = apiInstance.adexchangebuyerCreativesListDeals(accountId, buyerCreativeId, alt, fields, key, oauthToken, prettyPrint, quotaUser, userIp);
+      System.out.println(result);
+    } catch (ApiException e) {
+      System.err.println("Exception when calling CreativesApi#adexchangebuyerCreativesListDeals");
+      System.err.println("Status code: " + e.getCode());
+      System.err.println("Reason: " + e.getResponseBody());
+      System.err.println("Response headers: " + e.getResponseHeaders());
+      e.printStackTrace();
+    }
+  }
+}
+```
+
+### Parameters
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **accountId** | **Integer**| The id for the account that will serve this creative. | |
+| **buyerCreativeId** | **String**| The buyer-specific id for this creative. | |
+| **alt** | **String**| Data format for the response. | [optional] [enum: json] |
+| **fields** | **String**| Selector specifying which fields to include in a partial response. | [optional] |
+| **key** | **String**| API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token. | [optional] |
+| **oauthToken** | **String**| OAuth 2.0 token for the current user. | [optional] |
+| **prettyPrint** | **Boolean**| Returns response with indentations and line breaks. | [optional] |
+| **quotaUser** | **String**| An opaque string that represents a user for quota purposes. Must not exceed 40 characters. | [optional] |
+| **userIp** | **String**| Deprecated. Please use quotaUser instead. | [optional] |
+
+### Return type
+
+[**CreativeDealIds**](CreativeDealIds.md)
+
+### Authorization
+
+[Oauth2c](../README.md#Oauth2c), [Oauth2](../README.md#Oauth2)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | Successful response |  -  |
+
+<a id="adexchangebuyerCreativesRemoveDeal"></a>
+# **adexchangebuyerCreativesRemoveDeal**
+> adexchangebuyerCreativesRemoveDeal(accountId, buyerCreativeId, dealId, alt, fields, key, oauthToken, prettyPrint, quotaUser, userIp)
+
+
+
+Remove a deal id associated with the creative.
+
+### Example
+```java
+// Import classes:
+import org.openapitools.client.ApiClient;
+import org.openapitools.client.ApiException;
+import org.openapitools.client.Configuration;
+import org.openapitools.client.auth.*;
+import org.openapitools.client.models.*;
+import org.openapitools.client.api.CreativesApi;
+
+public class Example {
+  public static void main(String[] args) {
+    ApiClient defaultClient = Configuration.getDefaultApiClient();
+    defaultClient.setBasePath("https://www.googleapis.com/adexchangebuyer/v1.4");
+    
+    // Configure OAuth2 access token for authorization: Oauth2c
+    OAuth Oauth2c = (OAuth) defaultClient.getAuthentication("Oauth2c");
+    Oauth2c.setAccessToken("YOUR ACCESS TOKEN");
+
+    // Configure OAuth2 access token for authorization: Oauth2
+    OAuth Oauth2 = (OAuth) defaultClient.getAuthentication("Oauth2");
+    Oauth2.setAccessToken("YOUR ACCESS TOKEN");
+
+    CreativesApi apiInstance = new CreativesApi(defaultClient);
+    Integer accountId = 56; // Integer | The id for the account that will serve this creative.
+    String buyerCreativeId = "buyerCreativeId_example"; // String | The buyer-specific id for this creative.
+    String dealId = "dealId_example"; // String | The id of the deal id to disassociate with this creative.
+    String alt = "json"; // String | Data format for the response.
+    String fields = "fields_example"; // String | Selector specifying which fields to include in a partial response.
+    String key = "key_example"; // String | API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.
+    String oauthToken = "oauthToken_example"; // String | OAuth 2.0 token for the current user.
+    Boolean prettyPrint = true; // Boolean | Returns response with indentations and line breaks.
+    String quotaUser = "quotaUser_example"; // String | An opaque string that represents a user for quota purposes. Must not exceed 40 characters.
+    String userIp = "userIp_example"; // String | Deprecated. Please use quotaUser instead.
+    try {
+      apiInstance.adexchangebuyerCreativesRemoveDeal(accountId, buyerCreativeId, dealId, alt, fields, key, oauthToken, prettyPrint, quotaUser, userIp);
+    } catch (ApiException e) {
+      System.err.println("Exception when calling CreativesApi#adexchangebuyerCreativesRemoveDeal");
+      System.err.println("Status code: " + e.getCode());
+      System.err.println("Reason: " + e.getResponseBody());
+      System.err.println("Response headers: " + e.getResponseHeaders());
+      e.printStackTrace();
+    }
+  }
+}
+```
+
+### Parameters
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **accountId** | **Integer**| The id for the account that will serve this creative. | |
+| **buyerCreativeId** | **String**| The buyer-specific id for this creative. | |
+| **dealId** | **String**| The id of the deal id to disassociate with this creative. | |
+| **alt** | **String**| Data format for the response. | [optional] [enum: json] |
+| **fields** | **String**| Selector specifying which fields to include in a partial response. | [optional] |
+| **key** | **String**| API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token. | [optional] |
+| **oauthToken** | **String**| OAuth 2.0 token for the current user. | [optional] |
+| **prettyPrint** | **Boolean**| Returns response with indentations and line breaks. | [optional] |
+| **quotaUser** | **String**| An opaque string that represents a user for quota purposes. Must not exceed 40 characters. | [optional] |
+| **userIp** | **String**| Deprecated. Please use quotaUser instead. | [optional] |
+
+### Return type
+
+null (empty response body)
+
+### Authorization
+
+[Oauth2c](../README.md#Oauth2c), [Oauth2](../README.md#Oauth2)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: Not defined
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | Successful response |  -  |
+

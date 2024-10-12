@@ -1,0 +1,16 @@
+
+
+# GoogleClassroomSubmission
+
+A coursework submission on Google Classroom
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**alternateLink** | **String** | Absolute link to this coursework in the Classroom web UI |  [optional] |
+|**id** | **String** | Identifier of the coursework submission assigned by Classroom |  [optional] |
+|**state** | **String** | State of the submission on Google Classroom |  [optional] |
+
+
+

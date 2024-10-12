@@ -1,0 +1,518 @@
+openapi: 3.0.1
+info:
+  title: AltoroJ REST API
+  version: 1.0.2
+  x-apisguru-categories:
+  - security
+  x-origin:
+  - format: swagger
+    url: https://demo.testfire.net/swagger/properties.json
+    version: "2.0"
+  x-providerName: testfire.net
+  x-serviceName: altoroj
+servers:
+- url: /api
+tags:
+- description: Login mechanism
+  name: 1. Login
+- description: View account information
+  name: 2. Account
+- description: Transfer funds between accounts
+  name: 3. Transfer
+- description: Submit and review feedback
+  name: 4. Feedback
+- description: Add and change user details
+  name: 5. Admin
+- description: Logout mechanism
+  name: 6. Logout
+paths:
+  /account:
+    get:
+      description: Returns a list of all the accounts owned by the user
+      operationId: get_account
+      parameters:
+      - description: Authorization token (provided upon successful login)
+        in: header
+        name: Authorization
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content: {}
+          description: Successful operation
+        "401":
+          content: {}
+          description: Unauthorized request
+        "500":
+          content: {}
+          description: Internal server error
+      tags:
+      - 2. Account
+      x-openapi-router-controller: openapi_server.controllers.2_account_controller
+  /account/{accountNo}:
+    get:
+      description: Returns details about a specific account
+      operationId: get_account_balance
+      parameters:
+      - description: Authorization token (provided upon successful login)
+        in: header
+        name: Authorization
+        required: true
+        schema:
+          type: string
+      - description: Account id
+        in: path
+        name: accountNo
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content: {}
+          description: Successful operation
+        "401":
+          content: {}
+          description: Unauthorized request
+        "500":
+          content: {}
+          description: Internal server error
+      tags:
+      - 2. Account
+      x-openapi-router-controller: openapi_server.controllers.2_account_controller
+  /account/{accountNo}/transactions:
+    get:
+      description: Returns the last 10 transactions attached to an account
+      operationId: show_last_ten_transactions
+      parameters:
+      - description: Authorization token (provided upon successful login)
+        in: header
+        name: Authorization
+        required: true
+        schema:
+          type: string
+      - description: Account id
+        in: path
+        name: accountNo
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content: {}
+          description: Successful operation
+        "401":
+          content: {}
+          description: Unauthorized request
+        "500":
+          content: {}
+          description: Internal server error
+      tags:
+      - 2. Account
+      x-openapi-router-controller: openapi_server.controllers.2_account_controller
+    post:
+      description: Return transactions between 2 specific dates
+      operationId: get_transactions
+      parameters:
+      - description: Authorization token (provided upon successful login)
+        in: header
+        name: Authorization
+        required: true
+        schema:
+          type: string
+      - description: Account id
+        in: path
+        name: accountNo
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/dates'
+        description: A start date and an end date
+        required: true
+        x-body-name: body
+      responses:
+        "200":
+          content: {}
+          description: Successful operation
+        "400":
+          content: {}
+          description: "Bad parameters: Please check provided values"
+        "401":
+          content: {}
+          description: Unauthorized request
+        "501":
+          content: {}
+          description: Internal server error
+      tags:
+      - 2. Account
+      x-codegen-request-body-name: body
+      x-openapi-router-controller: openapi_server.controllers.2_account_controller
+  /admin/addUser:
+    post:
+      description: Add new user
+      operationId: add_user
+      parameters:
+      - description: Authorization token (provided upon successful login)
+        in: header
+        name: Authorization
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/newUser'
+        description: "Details of a new user including first name, last name, desired\
+          \ username and a password"
+        required: true
+        x-body-name: body
+      responses:
+        "200":
+          content: {}
+          description: Successful operation
+        "400":
+          content: {}
+          description: Unauthorized request
+        "401":
+          content: {}
+          description: Unauthorized request
+        "500":
+          content: {}
+          description: Error creating user
+      tags:
+      - 5. Admin
+      x-codegen-request-body-name: body
+      x-openapi-router-controller: openapi_server.controllers.5_admin_controller
+  /admin/changePassword:
+    post:
+      description: Change user password
+      operationId: change_password
+      parameters:
+      - description: Authorization token (provided upon successful login)
+        in: header
+        name: Authorization
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/changePassword'
+        description: Information about the user password to be changed including id
+          and new password
+        required: true
+        x-body-name: body
+      responses:
+        "200":
+          content: {}
+          description: Successful operation
+        "400":
+          content: {}
+          description: Unauthorized request
+        "401":
+          content: {}
+          description: Unauthorized request
+        "500":
+          content: {}
+          description: Error in changing the username password
+      tags:
+      - 5. Admin
+      x-codegen-request-body-name: body
+      x-openapi-router-controller: openapi_server.controllers.5_admin_controller
+  /feedback/submit:
+    post:
+      description: Submit feedback for the bank
+      operationId: send_feedback
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/feedback'
+        description: "Feedback details including name, email the subject and complete\
+          \ message"
+        required: true
+        x-body-name: body
+      responses:
+        "200":
+          content: {}
+          description: Successful operation
+        "401":
+          content: {}
+          description: Unauthorized request
+        "500":
+          content: {}
+          description: Internal server error
+      tags:
+      - 4. Feedback
+      x-codegen-request-body-name: body
+      x-openapi-router-controller: openapi_server.controllers.4_feedback_controller
+  /feedback/{feedbackId}:
+    get:
+      description: Retrieve feedback
+      operationId: get_feedback
+      parameters:
+      - description: Authorization token (provided upon successful login)
+        in: header
+        name: Authorization
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: feedbackId
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content: {}
+          description: Successful operation
+        "400":
+          content: {}
+          description: "Bad parameters: Please check provided values"
+        "401":
+          content: {}
+          description: Unauthorized request
+        "500":
+          content: {}
+          description: Internal server error
+      tags:
+      - 4. Feedback
+      x-openapi-router-controller: openapi_server.controllers.4_feedback_controller
+  /login:
+    get:
+      description: If a user is loggedin the username will be returned
+      operationId: check_login
+      parameters:
+      - description: Authorization token (provided upon successful login)
+        in: header
+        name: Authorization
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content: {}
+          description: Logged in
+        "401":
+          content: {}
+          description: Logged out
+      summary: Check if any user is logged in
+      tags:
+      - 1. Login
+      x-openapi-router-controller: openapi_server.controllers.1_login_controller
+    post:
+      description: After a successful login a token is returned. This is a Bearer
+        token. To authenticate with it use the Authorization header and set value
+        to Bearer empty space and the token value.
+      operationId: login
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/login'
+        description: Username and password combination to allow users to log-in
+        required: true
+        x-body-name: body
+      responses:
+        "200":
+          content: {}
+          description: Success message when login is complete
+        "400":
+          content: {}
+          description: "Bad parameters: Please check provided values"
+        "500":
+          content: {}
+          description: "Internal server error: Please see error message or logs for\
+            \ details"
+      summary: Login method
+      tags:
+      - 1. Login
+      x-codegen-request-body-name: body
+      x-openapi-router-controller: openapi_server.controllers.1_login_controller
+  /logout:
+    get:
+      description: Logout from the bank
+      operationId: do_log_out
+      responses:
+        "200":
+          content: {}
+          description: Successful operation
+        "500":
+          content: {}
+          description: 'Unauthorized request '
+      tags:
+      - 6. Logout
+      x-openapi-router-controller: openapi_server.controllers.6_logout_controller
+  /transfer:
+    post:
+      description: Transfer money between two accounts
+      operationId: trasnfer
+      parameters:
+      - description: Authorization token (provided upon successful login)
+        in: header
+        name: Authorization
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/transfer'
+        description: "Transfer details including ammount, sender and receiver"
+        required: true
+        x-body-name: body
+      responses:
+        "200":
+          content: {}
+          description: Successful operation
+        "400":
+          content: {}
+          description: "Bad parameters: Please check provided values"
+        "501":
+          content: {}
+          description: Internal server error
+      tags:
+      - 3. Transfer
+      x-codegen-request-body-name: body
+      x-openapi-router-controller: openapi_server.controllers.3_transfer_controller
+components:
+  schemas:
+    changePassword:
+      properties:
+        password1:
+          example: Th1s!sz3nu3Passv0rd
+          format: password
+          title: password1
+          type: string
+        password2:
+          example: Th1s!sz3nu3Passv0rd
+          format: password
+          title: password2
+          type: string
+        username:
+          example: jdoe
+          title: username
+          type: string
+      required:
+      - password2
+      - username
+      title: changePassword
+      type: object
+    dates:
+      properties:
+        endDate:
+          example: 2012-03-17
+          format: date
+          title: endDate
+          type: string
+        startDate:
+          example: 2012-03-12
+          format: date
+          title: startDate
+          type: string
+      required:
+      - endDate
+      - startDate
+      title: dates
+      type: object
+    feedback:
+      properties:
+        email:
+          example: jsmtih@altoromutual.com
+          format: email
+          title: email
+          type: string
+        message:
+          example: I like the new look of your applicaiton
+          title: message
+          type: string
+        name:
+          example: J Smith
+          title: name
+          type: string
+        subject:
+          example: Amazing web design
+          title: subject
+          type: string
+      required:
+      - email
+      - message
+      - name
+      - subject
+      title: feedback
+      type: object
+    login:
+      properties:
+        password:
+          example: demo1234
+          title: password
+          type: string
+        username:
+          example: jsmith
+          title: username
+          type: string
+      required:
+      - password
+      - username
+      title: login
+      type: object
+    newUser:
+      properties:
+        firstname:
+          example: Bilbo
+          title: firstname
+          type: string
+        lastname:
+          example: Baggins
+          title: lastname
+          type: string
+        password1:
+          example: S3l3ctS0methingStr0ng5AsP@ssword
+          format: password
+          title: password1
+          type: string
+        password2:
+          example: S3l3ctS0methingStr0ng5AsP@ssword
+          format: password
+          title: password2
+          type: string
+        username:
+          example: bilbob
+          title: username
+          type: string
+      required:
+      - firstname
+      - lastname
+      - password1
+      - password2
+      - username
+      title: newUser
+      type: object
+    transfer:
+      properties:
+        fromAccount:
+          example: "800003"
+          title: fromAccount
+          type: string
+        toAccount:
+          example: "800002"
+          title: toAccount
+          type: string
+        transferAmount:
+          example: "200"
+          title: transferAmount
+          type: string
+      required:
+      - fromAccount
+      - toAccount
+      - transferAmount
+      title: transfer
+      type: object
+x-original-swagger-version: "2.0"

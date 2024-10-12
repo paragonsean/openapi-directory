@@ -1,0 +1,93 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIErrors.h \
+    $${PWD}/OAIErrors_errors_inner.h \
+    $${PWD}/OAIGet_distance_200_response.h \
+    $${PWD}/OAIGet_distance_200_response_data.h \
+    $${PWD}/OAIGet_distance_200_response_links.h \
+    $${PWD}/OAIGet_msagroups_200_response.h \
+    $${PWD}/OAIGet_msagroups_200_response_data_inner.h \
+    $${PWD}/OAIGet_msagroups_200_response_data_inner_states_inner.h \
+    $${PWD}/OAIGet_msagroups_200_response_data_inner_states_inner_counties_inner.h \
+    $${PWD}/OAIGet_msagroups_200_response_links.h \
+    $${PWD}/OAIGet_msagroups_200_response_meta.h \
+    $${PWD}/OAIGet_msagroups_msacode_200_response.h \
+    $${PWD}/OAIGet_msagroups_msacode_200_response_data.h \
+    $${PWD}/OAIGet_msagroups_msacode_200_response_data_states_inner.h \
+    $${PWD}/OAIGet_msagroups_msacode_200_response_data_states_inner_counties_inner.h \
+    $${PWD}/OAIGet_msagroups_msacode_200_response_links.h \
+    $${PWD}/OAIGet_msagroups_msacode_200_response_meta.h \
+    $${PWD}/OAIGet_radius_200_response.h \
+    $${PWD}/OAIGet_radius_200_response_data_inner.h \
+    $${PWD}/OAIGet_radius_200_response_links.h \
+    $${PWD}/OAIGet_radius_200_response_meta.h \
+    $${PWD}/OAIGet_radius_400_response.h \
+    $${PWD}/OAIGet_radius_400_response_errors_inner.h \
+    $${PWD}/OAIGet_radius_401_response.h \
+    $${PWD}/OAIGet_zipc_v1_401_response.h \
+    $${PWD}/OAIGet_zipcode_200_response.h \
+    $${PWD}/OAIGet_zipcode_401_response.h \
+    $${PWD}/OAIGet_zipcode_403_response.h \
+    $${PWD}/OAILinks.h \
+    $${PWD}/OAIMeta.h \
+    $${PWD}/OAIZipCodeResponse.h \
+    $${PWD}/OAIZipcode.h \
+    $${PWD}/OAIZipcode_cityAliases_inner.h \
+    $${PWD}/OAIZipcode_zipCodeStatistics_inner.h \
+# APIs
+    $${PWD}/OAIDefaultApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIErrors.cpp \
+    $${PWD}/OAIErrors_errors_inner.cpp \
+    $${PWD}/OAIGet_distance_200_response.cpp \
+    $${PWD}/OAIGet_distance_200_response_data.cpp \
+    $${PWD}/OAIGet_distance_200_response_links.cpp \
+    $${PWD}/OAIGet_msagroups_200_response.cpp \
+    $${PWD}/OAIGet_msagroups_200_response_data_inner.cpp \
+    $${PWD}/OAIGet_msagroups_200_response_data_inner_states_inner.cpp \
+    $${PWD}/OAIGet_msagroups_200_response_data_inner_states_inner_counties_inner.cpp \
+    $${PWD}/OAIGet_msagroups_200_response_links.cpp \
+    $${PWD}/OAIGet_msagroups_200_response_meta.cpp \
+    $${PWD}/OAIGet_msagroups_msacode_200_response.cpp \
+    $${PWD}/OAIGet_msagroups_msacode_200_response_data.cpp \
+    $${PWD}/OAIGet_msagroups_msacode_200_response_data_states_inner.cpp \
+    $${PWD}/OAIGet_msagroups_msacode_200_response_data_states_inner_counties_inner.cpp \
+    $${PWD}/OAIGet_msagroups_msacode_200_response_links.cpp \
+    $${PWD}/OAIGet_msagroups_msacode_200_response_meta.cpp \
+    $${PWD}/OAIGet_radius_200_response.cpp \
+    $${PWD}/OAIGet_radius_200_response_data_inner.cpp \
+    $${PWD}/OAIGet_radius_200_response_links.cpp \
+    $${PWD}/OAIGet_radius_200_response_meta.cpp \
+    $${PWD}/OAIGet_radius_400_response.cpp \
+    $${PWD}/OAIGet_radius_400_response_errors_inner.cpp \
+    $${PWD}/OAIGet_radius_401_response.cpp \
+    $${PWD}/OAIGet_zipc_v1_401_response.cpp \
+    $${PWD}/OAIGet_zipcode_200_response.cpp \
+    $${PWD}/OAIGet_zipcode_401_response.cpp \
+    $${PWD}/OAIGet_zipcode_403_response.cpp \
+    $${PWD}/OAILinks.cpp \
+    $${PWD}/OAIMeta.cpp \
+    $${PWD}/OAIZipCodeResponse.cpp \
+    $${PWD}/OAIZipcode.cpp \
+    $${PWD}/OAIZipcode_cityAliases_inner.cpp \
+    $${PWD}/OAIZipcode_zipCodeStatistics_inner.cpp \
+# APIs
+    $${PWD}/OAIDefaultApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

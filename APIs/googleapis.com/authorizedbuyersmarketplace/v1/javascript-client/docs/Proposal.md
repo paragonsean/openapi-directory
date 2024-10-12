@@ -1,0 +1,87 @@
+# AuthorizedBuyersMarketplaceApi.Proposal
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**billedBuyer** | **String** | Output only. When the client field is populated, this field refers to the buyer who creates and manages the client buyer and gets billed on behalf of the client buyer; when the buyer field is populated, this field is the same value as buyer. Format : &#x60;buyers/{buyerAccountId}&#x60; | [optional] [readonly] 
+**buyer** | **String** | Output only. Refers to a buyer in The Realtime-bidding API. Format: &#x60;buyers/{buyerAccountId}&#x60; | [optional] [readonly] 
+**buyerContacts** | [**[Contact]**](Contact.md) | Contact information for the buyer. | [optional] 
+**buyerPrivateData** | [**PrivateData**](PrivateData.md) |  | [optional] 
+**client** | **String** | Output only. Refers to a Client. Format: &#x60;buyers/{buyerAccountId}/clients/{clientAccountid}&#x60; | [optional] [readonly] 
+**dealType** | **String** | Output only. Type of deal the proposal contains. | [optional] [readonly] 
+**displayName** | **String** | Output only. The descriptive name for the proposal. Maximum length of 255 unicode characters is allowed. Control characters are not allowed. Buyers cannot update this field. Note: Not to be confused with name, which is a unique identifier of the proposal. | [optional] [readonly] 
+**isRenegotiating** | **Boolean** | Output only. True if the proposal was previously finalized and is now being renegotiated. | [optional] [readonly] 
+**lastUpdaterOrCommentorRole** | **String** | Output only. The role of the last user that either updated the proposal or left a comment. | [optional] [readonly] 
+**name** | **String** | Immutable. The name of the proposal serving as a unique identifier. Format: buyers/{accountId}/proposals/{proposalId} | [optional] 
+**notes** | [**[Note]**](Note.md) | A list of notes from the buyer and the seller attached to this proposal. | [optional] 
+**originatorRole** | **String** | Output only. Indicates whether the buyer/seller created the proposal. | [optional] [readonly] 
+**pausingConsented** | **Boolean** | Whether pausing is allowed for the proposal. This is a negotiable term between buyers and publishers. | [optional] 
+**proposalRevision** | **String** | Output only. The revision number for the proposal. Each update to the proposal or deal causes the proposal revision number to auto-increment. The buyer keeps track of the last revision number they know of and pass it in when making an update. If the head revision number on the server has since incremented, then an ABORTED error is returned during the update operation to let the buyer know that a subsequent update was made. | [optional] [readonly] 
+**publisherProfile** | **String** | Immutable. Reference to the seller on the proposal. Format: &#x60;buyers/{buyerAccountId}/publisherProfiles/{publisherProfileId}&#x60; Note: This field may be set only when creating the resource. Modifying this field while updating the resource will result in an error. | [optional] 
+**sellerContacts** | [**[Contact]**](Contact.md) | Output only. Contact information for the seller. | [optional] [readonly] 
+**state** | **String** | Output only. Indicates the state of the proposal. | [optional] [readonly] 
+**termsAndConditions** | **String** | Output only. The terms and conditions associated with this proposal. Accepting a proposal implies acceptance of this field. This is created by the seller, the buyer can only view it. | [optional] [readonly] 
+**updateTime** | **String** | Output only. The time when the proposal was last revised. | [optional] [readonly] 
+
+
+
+## Enum: DealTypeEnum
+
+
+* `DEAL_TYPE_UNSPECIFIED` (value: `"DEAL_TYPE_UNSPECIFIED"`)
+
+* `PREFERRED_DEAL` (value: `"PREFERRED_DEAL"`)
+
+* `PRIVATE_AUCTION` (value: `"PRIVATE_AUCTION"`)
+
+* `PROGRAMMATIC_GUARANTEED` (value: `"PROGRAMMATIC_GUARANTEED"`)
+
+
+
+
+
+## Enum: LastUpdaterOrCommentorRoleEnum
+
+
+* `BUYER_SELLER_ROLE_UNSPECIFIED` (value: `"BUYER_SELLER_ROLE_UNSPECIFIED"`)
+
+* `BUYER` (value: `"BUYER"`)
+
+* `SELLER` (value: `"SELLER"`)
+
+
+
+
+
+## Enum: OriginatorRoleEnum
+
+
+* `BUYER_SELLER_ROLE_UNSPECIFIED` (value: `"BUYER_SELLER_ROLE_UNSPECIFIED"`)
+
+* `BUYER` (value: `"BUYER"`)
+
+* `SELLER` (value: `"SELLER"`)
+
+
+
+
+
+## Enum: StateEnum
+
+
+* `STATE_UNSPECIFIED` (value: `"STATE_UNSPECIFIED"`)
+
+* `BUYER_REVIEW_REQUESTED` (value: `"BUYER_REVIEW_REQUESTED"`)
+
+* `SELLER_REVIEW_REQUESTED` (value: `"SELLER_REVIEW_REQUESTED"`)
+
+* `BUYER_ACCEPTANCE_REQUESTED` (value: `"BUYER_ACCEPTANCE_REQUESTED"`)
+
+* `FINALIZED` (value: `"FINALIZED"`)
+
+* `TERMINATED` (value: `"TERMINATED"`)
+
+
+
+
