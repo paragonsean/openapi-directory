@@ -1,0 +1,6 @@
+# coding: utf-8
+
+# import models into model package
+from openapi_server.models.server_communication_link import ServerCommunicationLink
+from openapi_server.models.server_communication_link_list_result import ServerCommunicationLinkListResult
+from openapi_server.models.server_communication_link_properties import ServerCommunicationLinkProperties

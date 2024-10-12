@@ -1,0 +1,111 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIAdmCredential.h \
+    $${PWD}/OAIAdmCredentialProperties.h \
+    $${PWD}/OAIApnsCredential.h \
+    $${PWD}/OAIApnsCredentialProperties.h \
+    $${PWD}/OAIBaiduCredential.h \
+    $${PWD}/OAIBaiduCredentialProperties.h \
+    $${PWD}/OAICheckAvailabilityParameters.h \
+    $${PWD}/OAICheckAvailabilityResult.h \
+    $${PWD}/OAIDebugSendResponse.h \
+    $${PWD}/OAIDebugSendResult.h \
+    $${PWD}/OAIErrorResponse.h \
+    $${PWD}/OAIGcmCredential.h \
+    $${PWD}/OAIGcmCredentialProperties.h \
+    $${PWD}/OAIMpnsCredential.h \
+    $${PWD}/OAIMpnsCredentialProperties.h \
+    $${PWD}/OAINamespaceCreateOrUpdateParameters.h \
+    $${PWD}/OAINamespaceListResult.h \
+    $${PWD}/OAINamespacePatchParameters.h \
+    $${PWD}/OAINamespaceProperties.h \
+    $${PWD}/OAINamespaceResource.h \
+    $${PWD}/OAINotificationHubCreateOrUpdateParameters.h \
+    $${PWD}/OAINotificationHubListResult.h \
+    $${PWD}/OAINotificationHubPatchParameters.h \
+    $${PWD}/OAINotificationHubProperties.h \
+    $${PWD}/OAINotificationHubResource.h \
+    $${PWD}/OAIOperation.h \
+    $${PWD}/OAIOperationListResult.h \
+    $${PWD}/OAIOperation_display.h \
+    $${PWD}/OAIPnsCredentialsProperties.h \
+    $${PWD}/OAIPnsCredentialsResource.h \
+    $${PWD}/OAIPolicykeyResource.h \
+    $${PWD}/OAIResource.h \
+    $${PWD}/OAIResourceListKeys.h \
+    $${PWD}/OAISharedAccessAuthorizationRuleCreateOrUpdateParameters.h \
+    $${PWD}/OAISharedAccessAuthorizationRuleListResult.h \
+    $${PWD}/OAISharedAccessAuthorizationRuleProperties.h \
+    $${PWD}/OAISharedAccessAuthorizationRuleResource.h \
+    $${PWD}/OAISku.h \
+    $${PWD}/OAISubResource.h \
+    $${PWD}/OAIWnsCredential.h \
+    $${PWD}/OAIWnsCredentialProperties.h \
+# APIs
+    $${PWD}/OAINamespacesApi.h \
+    $${PWD}/OAINotificationHubsApi.h \
+    $${PWD}/OAIOperationsApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIAdmCredential.cpp \
+    $${PWD}/OAIAdmCredentialProperties.cpp \
+    $${PWD}/OAIApnsCredential.cpp \
+    $${PWD}/OAIApnsCredentialProperties.cpp \
+    $${PWD}/OAIBaiduCredential.cpp \
+    $${PWD}/OAIBaiduCredentialProperties.cpp \
+    $${PWD}/OAICheckAvailabilityParameters.cpp \
+    $${PWD}/OAICheckAvailabilityResult.cpp \
+    $${PWD}/OAIDebugSendResponse.cpp \
+    $${PWD}/OAIDebugSendResult.cpp \
+    $${PWD}/OAIErrorResponse.cpp \
+    $${PWD}/OAIGcmCredential.cpp \
+    $${PWD}/OAIGcmCredentialProperties.cpp \
+    $${PWD}/OAIMpnsCredential.cpp \
+    $${PWD}/OAIMpnsCredentialProperties.cpp \
+    $${PWD}/OAINamespaceCreateOrUpdateParameters.cpp \
+    $${PWD}/OAINamespaceListResult.cpp \
+    $${PWD}/OAINamespacePatchParameters.cpp \
+    $${PWD}/OAINamespaceProperties.cpp \
+    $${PWD}/OAINamespaceResource.cpp \
+    $${PWD}/OAINotificationHubCreateOrUpdateParameters.cpp \
+    $${PWD}/OAINotificationHubListResult.cpp \
+    $${PWD}/OAINotificationHubPatchParameters.cpp \
+    $${PWD}/OAINotificationHubProperties.cpp \
+    $${PWD}/OAINotificationHubResource.cpp \
+    $${PWD}/OAIOperation.cpp \
+    $${PWD}/OAIOperationListResult.cpp \
+    $${PWD}/OAIOperation_display.cpp \
+    $${PWD}/OAIPnsCredentialsProperties.cpp \
+    $${PWD}/OAIPnsCredentialsResource.cpp \
+    $${PWD}/OAIPolicykeyResource.cpp \
+    $${PWD}/OAIResource.cpp \
+    $${PWD}/OAIResourceListKeys.cpp \
+    $${PWD}/OAISharedAccessAuthorizationRuleCreateOrUpdateParameters.cpp \
+    $${PWD}/OAISharedAccessAuthorizationRuleListResult.cpp \
+    $${PWD}/OAISharedAccessAuthorizationRuleProperties.cpp \
+    $${PWD}/OAISharedAccessAuthorizationRuleResource.cpp \
+    $${PWD}/OAISku.cpp \
+    $${PWD}/OAISubResource.cpp \
+    $${PWD}/OAIWnsCredential.cpp \
+    $${PWD}/OAIWnsCredentialProperties.cpp \
+# APIs
+    $${PWD}/OAINamespacesApi.cpp \
+    $${PWD}/OAINotificationHubsApi.cpp \
+    $${PWD}/OAIOperationsApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

@@ -1,0 +1,33 @@
+
+
+# NamespaceProperties
+
+Namespace properties.
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**createdAt** | **OffsetDateTime** | The time the namespace was created. |  [optional] |
+|**critical** | **Boolean** | Whether or not the namespace is set as Critical. |  [optional] |
+|**enabled** | **Boolean** | Whether or not the namespace is currently enabled. |  [optional] |
+|**name** | **String** | The name of the namespace. |  [optional] |
+|**namespaceType** | [**NamespaceTypeEnum**](#NamespaceTypeEnum) | Gets or sets the namespace type. |  [optional] |
+|**provisioningState** | **String** | Gets or sets provisioning state of the Namespace. |  [optional] |
+|**region** | **String** | Specifies the targeted region in which the namespace should be created. It can be any of the following values: Australia East, Australia Southeast, Central US, East US, East US 2, West US, North Central US, South Central US, East Asia, Southeast Asia, Brazil South, Japan East, Japan West, North Europe, West Europe |  [optional] |
+|**scaleUnit** | **String** | ScaleUnit where the namespace gets created |  [optional] |
+|**serviceBusEndpoint** | **String** | Endpoint you can use to perform NotificationHub operations. |  [optional] |
+|**status** | **String** | Status of the namespace. It can be any of these values:1 &#x3D; Created/Active2 &#x3D; Creating3 &#x3D; Suspended4 &#x3D; Deleting |  [optional] |
+|**subscriptionId** | **String** | The Id of the Azure subscription associated with the namespace. |  [optional] |
+
+
+
+## Enum: NamespaceTypeEnum
+
+| Name | Value |
+|---- | -----|
+| MESSAGING | &quot;Messaging&quot; |
+| NOTIFICATION_HUB | &quot;NotificationHub&quot; |
+
+
+

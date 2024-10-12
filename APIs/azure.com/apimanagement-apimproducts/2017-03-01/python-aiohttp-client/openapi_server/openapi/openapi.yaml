@@ -1,0 +1,1803 @@
+openapi: 3.0.1
+info:
+  description: "Use these REST APIs for performing operations on Product entity associated\
+    \ with your Azure API Management deployment. The Product entity represents a product\
+    \ in API Management. Products include one or more APIs and their associated terms\
+    \ of use. Once a product is published, developers can subscribe to the product\
+    \ and begin to use the product’s APIs."
+  title: ApiManagementClient
+  version: 2017-03-01
+  x-apisguru-categories:
+  - cloud
+  x-logo:
+    url: https://assets.onestore.ms/cdnfiles/onestorerolling-1606-01000/shell/v3/images/logo/microsoft.png
+  x-origin:
+  - format: swagger
+    url: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/apimanagement/control-plane/Microsoft.ApiManagement/preview/2017-03-01/apimproducts.json
+    version: "2.0"
+  x-preferred: false
+  x-providerName: azure.com
+  x-serviceName: apimanagement-apimproducts
+  x-tags:
+  - Azure
+  - Microsoft
+servers:
+- url: https://azure.local/
+security:
+- apim_key: []
+paths:
+  /products:
+    get:
+      description: Lists a collection of products in the specified service instance.
+      operationId: product_list
+      parameters:
+      - description: |-
+          | Field       | Supported operators    | Supported functions                         |
+          |-------------|------------------------|---------------------------------------------|
+          | id          | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+          | name        | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+          | description | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+          | terms       | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+          | state       | eq                     |                                             |
+        in: query
+        name: $filter
+        schema:
+          type: string
+      - description: Number of records to return.
+        in: query
+        name: $top
+        schema:
+          format: int32
+          minimum: 1
+          type: integer
+          x-ms-parameter-location: method
+        x-ms-parameter-location: method
+      - description: Number of records to skip.
+        in: query
+        name: $skip
+        schema:
+          format: int32
+          minimum: 0
+          type: integer
+          x-ms-parameter-location: method
+        x-ms-parameter-location: method
+      - description: "When set to true, the response contains an array of groups that\
+          \ have visibility to the product. The default is false."
+        in: query
+        name: expandGroups
+        schema:
+          type: boolean
+      - description: Version of the API to be used with the client request.
+        in: query
+        name: api-version
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductCollection'
+          description: A Collection of the Product entities for the specified API
+            Management service instance.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product_List_default_response'
+          description: Error response describing why the operation failed.
+      tags:
+      - Products
+      x-ms-examples:
+        ApiManagementListProducts:
+          parameters:
+            $skip: 0
+            $top: 10000
+            Accept: application/json
+            api-version: 2017-03-01
+            apimBaseUrl: apimservice1.management.azure-api.net
+            expandGroups: false
+          responses:
+            "200":
+              body:
+                count: 2
+                value:
+                - approvalRequired: true
+                  description: product_description_5a58badca40f7ef2e05bcd26
+                  id: /products/5a58badca40f7ef2e05bcd24
+                  name: product_5a58badca40f7ef2e05bcd25
+                  state: published
+                  subscriptionRequired: true
+                  subscriptionsLimit: 1
+                - approvalRequired: false
+                  description: product_description_5a58bae0a40f7ef2e05bcd3f
+                  id: /products/5a58bae0a40f7ef2e05bcd3d
+                  name: product_5a58bae0a40f7ef2e05bcd3e
+                  state: published
+                  subscriptionRequired: true
+                  subscriptionsLimit: 1
+      x-ms-odata: '#/definitions/ProductContract'
+      x-ms-pageable:
+        nextLinkName: nextLink
+      x-openapi-router-controller: openapi_server.controllers.products_controller
+  /products/{productId}:
+    delete:
+      description: Delete product.
+      operationId: product_delete
+      parameters:
+      - description: Product identifier. Must be unique in the current API Management
+          service instance.
+        in: path
+        name: product_id
+        required: true
+        schema:
+          maxLength: 256
+          minLength: 1
+          pattern: "^[^*#&+:<>?]+$"
+          type: string
+          x-ms-parameter-location: method
+        x-ms-parameter-location: method
+      - description: Delete existing subscriptions to the product or not.
+        in: query
+        name: deleteSubscriptions
+        schema:
+          type: boolean
+      - description: ETag of the Product Entity. ETag should match the current entity
+          state from the header response of the GET request or it should be * for
+          unconditional update.
+        in: header
+        name: If-Match
+        required: true
+        schema:
+          type: string
+      - description: Version of the API to be used with the client request.
+        in: query
+        name: api-version
+        required: true
+        schema:
+          type: string
+      responses:
+        "204":
+          content: {}
+          description: The product was successfully deleted.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product_List_default_response'
+          description: Error response describing why the operation failed.
+      tags:
+      - Products
+      x-ms-examples:
+        ApiManagementDeleteProducts:
+          parameters:
+            If-Match: '"AAAAAAAADJg="'
+            api-version: 2017-03-01
+            apimBaseUrl: apimservice1.management.azure-api.net
+            deleteSubscriptions: true
+            productId: 5a58bb0ea40f7ef2e05bd40e
+          responses:
+            "204": {}
+      x-openapi-router-controller: openapi_server.controllers.products_controller
+    get:
+      description: Gets the details of the product specified by its identifier.
+      operationId: product_get
+      parameters:
+      - description: Product identifier. Must be unique in the current API Management
+          service instance.
+        in: path
+        name: productId
+        required: true
+        schema:
+          maxLength: 256
+          minLength: 1
+          pattern: "^[^*#&+:<>?]+$"
+          type: string
+          x-ms-parameter-location: method
+        x-ms-parameter-location: method
+      - description: Version of the API to be used with the client request.
+        in: query
+        name: api-version
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductContract'
+          description: The response body contains the specified Product entity.
+          headers:
+            ETag:
+              description: Current entity state version. Should be treated as opaque
+                and used to make conditional HTTP requests.
+              schema:
+                type: string
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product_List_default_response'
+          description: Error response describing why the operation failed.
+      tags:
+      - Products
+      x-ms-examples:
+        ApiManagementGetProducts:
+          parameters:
+            Accept: application/json
+            api-version: 2017-03-01
+            apimBaseUrl: apimservice1.management.azure-api.net
+            productId: 5a58bac9a40f7ef2e05bcc98
+          responses:
+            "200":
+              body:
+                approvalRequired: false
+                description: product_description_5a58bac9a40f7ef2e05bcc9a
+                id: /products/5a58bac9a40f7ef2e05bcc98
+                name: product_5a58bac9a40f7ef2e05bcc99
+                state: notPublished
+                subscriptionRequired: true
+      x-openapi-router-controller: openapi_server.controllers.products_controller
+    patch:
+      description: Update product.
+      operationId: product_update
+      parameters:
+      - description: Product identifier. Must be unique in the current API Management
+          service instance.
+        in: path
+        name: product_id
+        required: true
+        schema:
+          maxLength: 256
+          minLength: 1
+          pattern: "^[^*#&+:<>?]+$"
+          type: string
+          x-ms-parameter-location: method
+        x-ms-parameter-location: method
+      - description: ETag of the Product Entity. ETag should match the current entity
+          state from the header response of the GET request or it should be * for
+          unconditional update.
+        in: header
+        name: If-Match
+        required: true
+        schema:
+          type: string
+      - description: Version of the API to be used with the client request.
+        in: query
+        name: api-version
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductUpdateParameters'
+        description: Update parameters.
+        required: true
+        x-body-name: parameters
+      responses:
+        "204":
+          content: {}
+          description: No Content in case of Update Successful.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product_List_default_response'
+          description: Error response describing why the operation failed.
+      tags:
+      - Products
+      x-ms-examples:
+        ApiManagementPatchProducts:
+          parameters:
+            If-Match: '"AAAAAAAACdk="'
+            api-version: 2017-03-01
+            apimBaseUrl: apimservice1.management.azure-api.net
+            parameters:
+              state: notPublished
+              subscriptionsLimit: 1
+            productId: 5a58badca40f7ef2e05bcd24
+          responses:
+            "204": {}
+      x-codegen-request-body-name: parameters
+      x-openapi-router-controller: openapi_server.controllers.products_controller
+    put:
+      description: Creates or Updates a product.
+      operationId: product_create_or_update
+      parameters:
+      - description: Product identifier. Must be unique in the current API Management
+          service instance.
+        in: path
+        name: product_id
+        required: true
+        schema:
+          maxLength: 256
+          minLength: 1
+          pattern: "^[^*#&+:<>?]+$"
+          type: string
+          x-ms-parameter-location: method
+        x-ms-parameter-location: method
+      - description: Version of the API to be used with the client request.
+        in: query
+        name: api-version
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductContract'
+        description: Create or update parameters.
+        required: true
+        x-body-name: parameters
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductContract'
+          description: Product was successfully updated.
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductContract'
+          description: Product was successfully created.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product_List_default_response'
+          description: Error response describing why the operation failed.
+      tags:
+      - Products
+      x-ms-examples:
+        ApiManagementPutProducts:
+          parameters:
+            api-version: 2017-03-01
+            apimBaseUrl: apimservice1.management.azure-api.net
+            parameters:
+              approvalRequired: false
+              description: product_description_5a58bab1a40f7ef2e05bc761
+              name: product_5a58bab1a40f7ef2e05bc760
+              state: notPublished
+            productId: 5a58bab1a40f7ef2e05bc75f
+          responses:
+            "200":
+              body:
+                approvalRequired: false
+                description: product_description_5a58bab1a40f7ef2e05bc761
+                id: /products/5a58bab1a40f7ef2e05bc75f
+                name: product_5a58bab1a40f7ef2e05bc760
+                state: notPublished
+                subscriptionRequired: true
+            "201":
+              body:
+                approvalRequired: false
+                description: product_description_5a58bab1a40f7ef2e05bc761
+                id: /products/5a58bab1a40f7ef2e05bc75f
+                name: product_5a58bab1a40f7ef2e05bc760
+                state: notPublished
+                subscriptionRequired: true
+      x-codegen-request-body-name: parameters
+      x-openapi-router-controller: openapi_server.controllers.products_controller
+  /products/{productId}/apis:
+    get:
+      description: Lists a collection of the APIs associated with a product.
+      operationId: product_api_list_by_product
+      parameters:
+      - description: Product identifier. Must be unique in the current API Management
+          service instance.
+        in: path
+        name: product_id
+        required: true
+        schema:
+          maxLength: 256
+          minLength: 1
+          pattern: "^[^*#&+:<>?]+$"
+          type: string
+          x-ms-parameter-location: method
+        x-ms-parameter-location: method
+      - description: |
+          | Field       | Supported operators    | Supported functions                         |
+          |-------------|------------------------|---------------------------------------------|
+          | id          | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+          | name        | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+          | description | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+          | serviceUrl  | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+          | path        | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+        in: query
+        name: $filter
+        schema:
+          type: string
+      - description: Number of records to return.
+        in: query
+        name: $top
+        schema:
+          format: int32
+          minimum: 1
+          type: integer
+          x-ms-parameter-location: method
+        x-ms-parameter-location: method
+      - description: Number of records to skip.
+        in: query
+        name: $skip
+        schema:
+          format: int32
+          minimum: 0
+          type: integer
+          x-ms-parameter-location: method
+        x-ms-parameter-location: method
+      - description: Version of the API to be used with the client request.
+        in: query
+        name: api-version
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductApi_ListByProduct_200_response'
+          description: The response body contains a collection of Api entities in
+            the product.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product_List_default_response'
+          description: Error response describing why the operation failed.
+      tags:
+      - ProductApis
+      x-ms-examples:
+        ApiManagementListProductsApis:
+          parameters:
+            Accept: application/json
+            api-version: 2017-03-01
+            apimBaseUrl: apimservice1.management.azure-api.net
+            productId: 5a58bdf3a40f7e104892acb8
+          responses:
+            "200":
+              body:
+                count: 1
+                value:
+                - apiRevision: "1"
+                  description: description_5a58bdf3a40f7e104892acc0
+                  id: /apis/5a58bdf3a40f7e104892acbe
+                  isCurrent: true
+                  name: api_5a58bdf3a40f7e104892acbf
+                  path: suffix_5a58bdf3a40f7e104892acc2
+                  protocols:
+                  - https
+                  serviceUrl: http://contoso/5a58bdf3a40f7e104892acc1
+      x-ms-odata: ./apimapis.json#/definitions/ApiContract
+      x-ms-pageable:
+        nextLinkName: nextLink
+      x-openapi-router-controller: openapi_server.controllers.product_apis_controller
+  /products/{productId}/apis/{apiId}:
+    delete:
+      description: Deletes the specified API from the specified product.
+      operationId: product_api_delete
+      parameters:
+      - description: Product identifier. Must be unique in the current API Management
+          service instance.
+        in: path
+        name: product_id
+        required: true
+        schema:
+          maxLength: 256
+          minLength: 1
+          pattern: "^[^*#&+:<>?]+$"
+          type: string
+          x-ms-parameter-location: method
+        x-ms-parameter-location: method
+      - description: API identifier. Must be unique in the current API Management
+          service instance.
+        in: path
+        name: apiId
+        required: true
+        schema:
+          maxLength: 256
+          minLength: 1
+          pattern: "^[^*#&+:<>?]+$"
+          type: string
+          x-ms-parameter-location: method
+        x-ms-parameter-location: method
+      - description: Version of the API to be used with the client request.
+        in: query
+        name: api-version
+        required: true
+        schema:
+          type: string
+      responses:
+        "204":
+          content: {}
+          description: The API was successfully removed from the product.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product_List_default_response'
+          description: Error response describing why the operation failed.
+      tags:
+      - ProductApis
+      x-ms-examples:
+        ApiManagementDeleteProductsApis:
+          parameters:
+            api-version: 2017-03-01
+            apiId: 5a58bd5aa40f7e104892a541
+            apimBaseUrl: apimservice1.management.azure-api.net
+            productId: 5a58bd5aa40f7e104892a53c
+          responses:
+            "204": {}
+      x-openapi-router-controller: openapi_server.controllers.product_apis_controller
+    put:
+      description: Adds an API to the specified product.
+      operationId: product_api_create_or_update
+      parameters:
+      - description: Product identifier. Must be unique in the current API Management
+          service instance.
+        in: path
+        name: product_id
+        required: true
+        schema:
+          maxLength: 256
+          minLength: 1
+          pattern: "^[^*#&+:<>?]+$"
+          type: string
+          x-ms-parameter-location: method
+        x-ms-parameter-location: method
+      - description: API identifier. Must be unique in the current API Management
+          service instance.
+        in: path
+        name: apiId
+        required: true
+        schema:
+          maxLength: 256
+          minLength: 1
+          pattern: "^[^*#&+:<>?]+$"
+          type: string
+          x-ms-parameter-location: method
+        x-ms-parameter-location: method
+      - description: Version of the API to be used with the client request.
+        in: query
+        name: api-version
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductApi_CreateOrUpdate_200_response'
+          description: The specified API is already added to the product.
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductApi_CreateOrUpdate_200_response'
+          description: The API was successfully added to the product.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product_List_default_response'
+          description: Error response describing why the operation failed.
+      tags:
+      - ProductApis
+      x-ms-examples:
+        ApiManagementPutProductsApis:
+          parameters:
+            api-version: 2017-03-01
+            apiId: 5a58bac7a40f7ef2e05bcb05
+            apimBaseUrl: apimservice1.management.azure-api.net
+            productId: 5a58bac7a40f7ef2e05bcafb
+          responses:
+            "200":
+              body:
+                apiRevision: "1"
+                description: description_5a58bac7a40f7ef2e05bcb07
+                id: /apis/5a58bac7a40f7ef2e05bcb05
+                isCurrent: true
+                name: api_5a58bac7a40f7ef2e05bcb06
+                path: suffix_5a58bac7a40f7ef2e05bcb09
+                serviceUrl: http://contoso/5a58bac7a40f7ef2e05bcb08
+            "201":
+              body:
+                apiRevision: "1"
+                description: description_5a58bac7a40f7ef2e05bcb07
+                id: /apis/5a58bac7a40f7ef2e05bcb05
+                isCurrent: true
+                name: api_5a58bac7a40f7ef2e05bcb06
+                path: suffix_5a58bac7a40f7ef2e05bcb09
+                serviceUrl: http://contoso/5a58bac7a40f7ef2e05bcb08
+      x-openapi-router-controller: openapi_server.controllers.product_apis_controller
+  /products/{productId}/groups:
+    get:
+      description: Lists the collection of developer groups associated with the specified
+        product.
+      operationId: product_group_list_by_product
+      parameters:
+      - description: Product identifier. Must be unique in the current API Management
+          service instance.
+        in: path
+        name: product_id
+        required: true
+        schema:
+          maxLength: 256
+          minLength: 1
+          pattern: "^[^*#&+:<>?]+$"
+          type: string
+          x-ms-parameter-location: method
+        x-ms-parameter-location: method
+      - description: |-
+          | Field       | Supported operators    | Supported functions                         |
+          |-------------|------------------------|---------------------------------------------|
+          | id          | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+          | name        | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+          | description | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+          | type        | eq, ne                 | N/A                                         |
+        in: query
+        name: $filter
+        schema:
+          type: string
+      - description: Number of records to return.
+        in: query
+        name: $top
+        schema:
+          format: int32
+          minimum: 1
+          type: integer
+          x-ms-parameter-location: method
+        x-ms-parameter-location: method
+      - description: Number of records to skip.
+        in: query
+        name: $skip
+        schema:
+          format: int32
+          minimum: 0
+          type: integer
+          x-ms-parameter-location: method
+        x-ms-parameter-location: method
+      - description: Version of the API to be used with the client request.
+        in: query
+        name: api-version
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductGroup_ListByProduct_200_response'
+          description: Lists a collection of Group entities.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product_List_default_response'
+          description: Error response describing why the operation failed.
+      tags:
+      - ProductGroups
+      x-ms-examples:
+        ApiManagementListProductsGroups:
+          parameters:
+            Accept: application/json
+            api-version: 2017-03-01
+            apimBaseUrl: apimservice1.management.azure-api.net
+            productId: 5a58bafca40f7ef2e05bd22d
+          responses:
+            "200":
+              body:
+                count: 2
+                value:
+                - builtIn: false
+                  id: /groups/5a58bafca40f7ef2e05bd232
+                  name: 5a58bafca40f7ef2e05bd233
+                  type: custom
+                - builtIn: true
+                  description: Administrators is a built-in group. Its membership
+                    is managed by the system. Microsoft Azure subscription administrators
+                    fall into this group.
+                  id: /groups/administrators
+                  name: Administrators
+                  type: system
+      x-ms-odata: ./apimgroups.json#/definitions/GroupContract
+      x-ms-pageable:
+        nextLinkName: nextLink
+      x-openapi-router-controller: openapi_server.controllers.product_groups_controller
+  /products/{productId}/groups/{groupId}:
+    delete:
+      description: Deletes the association between the specified group and product.
+      operationId: product_group_delete
+      parameters:
+      - description: Product identifier. Must be unique in the current API Management
+          service instance.
+        in: path
+        name: product_id
+        required: true
+        schema:
+          maxLength: 256
+          minLength: 1
+          pattern: "^[^*#&+:<>?]+$"
+          type: string
+          x-ms-parameter-location: method
+        x-ms-parameter-location: method
+      - description: Group identifier. Must be unique in the current API Management
+          service instance.
+        in: path
+        name: groupId
+        required: true
+        schema:
+          maxLength: 256
+          minLength: 1
+          pattern: "^[^*#&+:<>?]+$"
+          type: string
+          x-ms-parameter-location: method
+        x-ms-parameter-location: method
+      - description: Version of the API to be used with the client request.
+        in: query
+        name: api-version
+        required: true
+        schema:
+          type: string
+      responses:
+        "204":
+          content: {}
+          description: The group was successfully disassociated with the product.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product_List_default_response'
+          description: Error response describing why the operation failed.
+      tags:
+      - ProductGroups
+      x-ms-examples:
+        ApiManagementDeleteProductsGroups:
+          parameters:
+            api-version: 2017-03-01
+            apimBaseUrl: apimservice1.management.azure-api.net
+            groupId: 5a58bbf3a40f7e1048928f6c
+            productId: 5a58bbf3a40f7e1048928f67
+          responses:
+            "204": {}
+      x-openapi-router-controller: openapi_server.controllers.product_groups_controller
+    put:
+      description: Adds the association between the specified developer group with
+        the specified product.
+      operationId: product_group_create_or_update
+      parameters:
+      - description: Product identifier. Must be unique in the current API Management
+          service instance.
+        in: path
+        name: product_id
+        required: true
+        schema:
+          maxLength: 256
+          minLength: 1
+          pattern: "^[^*#&+:<>?]+$"
+          type: string
+          x-ms-parameter-location: method
+        x-ms-parameter-location: method
+      - description: Group identifier. Must be unique in the current API Management
+          service instance.
+        in: path
+        name: groupId
+        required: true
+        schema:
+          maxLength: 256
+          minLength: 1
+          pattern: "^[^*#&+:<>?]+$"
+          type: string
+          x-ms-parameter-location: method
+        x-ms-parameter-location: method
+      - description: Version of the API to be used with the client request.
+        in: query
+        name: api-version
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductGroup_CreateOrUpdate_200_response'
+          description: The specified group is already associated with the product.
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductGroup_CreateOrUpdate_200_response'
+          description: The group was successfully associated with the product.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product_List_default_response'
+          description: Error response describing why the operation failed.
+      tags:
+      - ProductGroups
+      x-ms-examples:
+        ApiManagementPutProductsGroups:
+          parameters:
+            api-version: 2017-03-01
+            apimBaseUrl: apimservice1.management.azure-api.net
+            groupId: 5a58bac8a40f7ef2e05bcc63
+            productId: 5a58bac8a40f7ef2e05bcc5e
+          responses:
+            "200":
+              body:
+                builtIn: false
+                id: /groups/5a58bac8a40f7ef2e05bcc63
+                name: 5a58bac8a40f7ef2e05bcc64
+                type: custom
+            "201":
+              body:
+                builtIn: false
+                id: /groups/5a58bac8a40f7ef2e05bcc63
+                name: 5a58bac8a40f7ef2e05bcc64
+                type: custom
+      x-openapi-router-controller: openapi_server.controllers.product_groups_controller
+  /products/{productId}/policies:
+    get:
+      description: Get the policy configuration at the Product level.
+      operationId: product_policy_list_by_product
+      parameters:
+      - description: Version of the API to be used with the client request.
+        in: query
+        name: api-version
+        required: true
+        schema:
+          type: string
+      - description: Product identifier. Must be unique in the current API Management
+          service instance.
+        in: path
+        name: product_id
+        required: true
+        schema:
+          maxLength: 256
+          minLength: 1
+          pattern: "^[^*#&+:<>?]+$"
+          type: string
+          x-ms-parameter-location: method
+        x-ms-parameter-location: method
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductPolicy_ListByProduct_200_response'
+          description: Product Policy information.
+          headers:
+            ETag:
+              description: Current entity state version. Should be treated as opaque
+                and used to make conditional HTTP requests.
+              schema:
+                type: string
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product_List_default_response'
+          description: Error response describing why the operation failed.
+      tags:
+      - ProductPolicy
+      x-ms-examples:
+        ApiManagementListProductsPolicies:
+          parameters:
+            $skip: 0
+            $top: 10000
+            Accept: application/json
+            api-version: 2017-03-01
+            apimBaseUrl: apimservice1.management.azure-api.net
+            productId: starter
+          responses:
+            "200":
+              body:
+                count: 1
+                value:
+                - id: /policies/policy
+                  policyContent: "<!--\r\n    IMPORTANT:\r\n    - Policy elements\
+                    \ can appear only within the <inbound>, <outbound>, <backend>\
+                    \ section elements.\r\n    - Only the <forward-request> policy\
+                    \ element can appear within the <backend> section element.\r\n\
+                    \    - To apply a policy to the incoming request (before it is\
+                    \ forwarded to the backend service), place a corresponding policy\
+                    \ element within the <inbound> section element.\r\n    - To apply\
+                    \ a policy to the outgoing response (before it is sent back to\
+                    \ the caller), place a corresponding policy element within the\
+                    \ <outbound> section element.\r\n    - To add a policy position\
+                    \ the cursor at the desired insertion point and click on the round\
+                    \ button associated with the policy.\r\n    - To remove a policy,\
+                    \ delete the corresponding policy statement from the policy document.\r\
+                    \n    - Policies are applied in the order of their appearance,\
+                    \ from the top down.\r\n-->\r\n<policies>\r\n  <inbound />\r\n\
+                    \  <backend>\r\n    <forward-request />\r\n  </backend>\r\n  <outbound\
+                    \ />\r\n</policies>"
+      x-openapi-router-controller: openapi_server.controllers.product_policy_controller
+  /products/{productId}/policies/{policyId}:
+    delete:
+      description: Deletes the policy configuration at the Product.
+      operationId: product_policy_delete
+      parameters:
+      - description: Product identifier. Must be unique in the current API Management
+          service instance.
+        in: path
+        name: product_id
+        required: true
+        schema:
+          maxLength: 256
+          minLength: 1
+          pattern: "^[^*#&+:<>?]+$"
+          type: string
+          x-ms-parameter-location: method
+        x-ms-parameter-location: method
+      - description: The identifier of the Policy.
+        in: path
+        name: policyId
+        required: true
+        schema:
+          enum:
+          - policy
+          type: string
+          x-ms-enum:
+            modelAsString: true
+            name: PolicyIdName
+          x-ms-parameter-location: method
+        x-ms-enum:
+          modelAsString: true
+          name: PolicyIdName
+        x-ms-parameter-location: method
+      - description: The entity state (Etag) version of the product policy to update.
+          A value of "*" can be used for If-Match to unconditionally apply the operation.
+        in: header
+        name: If-Match
+        required: true
+        schema:
+          type: string
+      - description: Version of the API to be used with the client request.
+        in: query
+        name: api-version
+        required: true
+        schema:
+          type: string
+      responses:
+        "204":
+          content: {}
+          description: Successfully deleted the policy configuration at the Product
+            level.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product_List_default_response'
+          description: Error response describing why the operation failed.
+      tags:
+      - ProductPolicy
+      x-ms-examples:
+        ApiManagementDeleteProductsPolicies:
+          parameters:
+            If-Match: '*'
+            api-version: 2017-03-01
+            apimBaseUrl: apimservice1.management.azure-api.net
+            policyId: policy
+            productId: starter
+          responses:
+            "204": {}
+      x-openapi-router-controller: openapi_server.controllers.product_policy_controller
+    get:
+      description: Get the policy configuration at the Product level.
+      operationId: product_policy_get
+      parameters:
+      - description: Version of the API to be used with the client request.
+        in: query
+        name: api-version
+        required: true
+        schema:
+          type: string
+      - description: Product identifier. Must be unique in the current API Management
+          service instance.
+        in: path
+        name: product_id
+        required: true
+        schema:
+          maxLength: 256
+          minLength: 1
+          pattern: "^[^*#&+:<>?]+$"
+          type: string
+          x-ms-parameter-location: method
+        x-ms-parameter-location: method
+      - description: The identifier of the Policy.
+        in: path
+        name: policyId
+        required: true
+        schema:
+          enum:
+          - policy
+          type: string
+          x-ms-enum:
+            modelAsString: true
+            name: PolicyIdName
+          x-ms-parameter-location: method
+        x-ms-enum:
+          modelAsString: true
+          name: PolicyIdName
+        x-ms-parameter-location: method
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductPolicy_ListByProduct_200_response_value_inner'
+            application/vnd.ms-azure-apim.policy+xml:
+              schema:
+                $ref: '#/components/schemas/ProductPolicy_ListByProduct_200_response_value_inner'
+            application/vnd.ms-azure-apim.policy.raw+xml:
+              schema:
+                $ref: '#/components/schemas/ProductPolicy_ListByProduct_200_response_value_inner'
+          description: Product Policy information.
+          headers:
+            ETag:
+              description: Current entity state version. Should be treated as opaque
+                and used to make conditional HTTP requests.
+              schema:
+                type: string
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product_List_default_response'
+            application/vnd.ms-azure-apim.policy+xml:
+              schema:
+                $ref: '#/components/schemas/Product_List_default_response'
+            application/vnd.ms-azure-apim.policy.raw+xml:
+              schema:
+                $ref: '#/components/schemas/Product_List_default_response'
+          description: Error response describing why the operation failed.
+      tags:
+      - ProductPolicy
+      x-ms-examples:
+        ApiManagementGetProductsPolicies:
+          parameters:
+            Accept: application/json
+            api-version: 2017-03-01
+            apimBaseUrl: apimservice1.management.azure-api.net
+            policyId: policy
+            productId: 5a58bf61a40f7e104892bda4
+          responses:
+            "200":
+              body:
+                id: /products/5a58bf61a40f7e104892bda4/policies/policy
+                policyContent: "<policies>\r\n  <inbound>\r\n    <rate-limit calls=\"\
+                  5\" renewal-period=\"60\" />\r\n    <quota calls=\"100\" renewal-period=\"\
+                  604800\" />\r\n    <base />\r\n  </inbound>\r\n  <backend>\r\n \
+                  \   <base />\r\n  </backend>\r\n  <outbound>\r\n    <base />\r\n\
+                  \  </outbound>\r\n</policies>"
+      x-openapi-router-controller: openapi_server.controllers.product_policy_controller
+    put:
+      description: Creates or updates policy configuration for the Product.
+      operationId: product_policy_create_or_update
+      parameters:
+      - description: Product identifier. Must be unique in the current API Management
+          service instance.
+        in: path
+        name: product_id
+        required: true
+        schema:
+          maxLength: 256
+          minLength: 1
+          pattern: "^[^*#&+:<>?]+$"
+          type: string
+          x-ms-parameter-location: method
+        x-ms-parameter-location: method
+      - description: The identifier of the Policy.
+        in: path
+        name: policyId
+        required: true
+        schema:
+          enum:
+          - policy
+          type: string
+          x-ms-enum:
+            modelAsString: true
+            name: PolicyIdName
+          x-ms-parameter-location: method
+        x-ms-enum:
+          modelAsString: true
+          name: PolicyIdName
+        x-ms-parameter-location: method
+      - description: Version of the API to be used with the client request.
+        in: query
+        name: api-version
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductPolicy_ListByProduct_200_response_value_inner'
+          application/vnd.ms-azure-apim.policy+xml:
+            schema:
+              $ref: '#/components/schemas/ProductPolicy_ListByProduct_200_response_value_inner'
+          application/vnd.ms-azure-apim.policy.raw+xml:
+            schema:
+              $ref: '#/components/schemas/ProductPolicy_ListByProduct_200_response_value_inner'
+        description: The policy contents to apply.
+        required: true
+        x-body-name: parameters
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductPolicy_ListByProduct_200_response_value_inner'
+          description: Product policy configuration of the tenant was successfully
+            updated.
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductPolicy_ListByProduct_200_response_value_inner'
+          description: Product policy configuration was successfully created.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product_List_default_response'
+          description: Error response describing why the operation failed.
+      tags:
+      - ProductPolicy
+      x-ms-examples:
+        ApiManagementPutProductsPolicies:
+          parameters:
+            api-version: 2017-03-01
+            apimBaseUrl: apimservice1.management.azure-api.net
+            parameters:
+              policyContent: "<policies>\r\n  <inbound>\r\n    <rate-limit calls=\"\
+                5\" renewal-period=\"60\" />\r\n    <quota calls=\"100\" renewal-period=\"\
+                604800\" />\r\n    <base />\r\n  </inbound>\r\n  <backend>\r\n   \
+                \ <base />\r\n  </backend>\r\n  <outbound>\r\n    <base />\r\n  </outbound>\r\
+                \n</policies>"
+            policyId: policy
+            productId: 5a58be7ba40f7e104892b23a
+          responses:
+            "200":
+              body:
+                id: /products/5a58be7ba40f7e104892b23a/policies/policy
+                policyContent: "<policies>\r\n  <inbound>\r\n    <rate-limit calls=\"\
+                  5\" renewal-period=\"60\" version=\"2\" />\r\n    <quota calls=\"\
+                  100\" renewal-period=\"604800\" version=\"2\" />\r\n    <base />\r\
+                  \n  </inbound>\r\n  <backend>\r\n    <base />\r\n  </backend>\r\n\
+                  \  <outbound>\r\n    <base />\r\n  </outbound>\r\n</policies>"
+            "201":
+              body:
+                id: /products/5a58be7ba40f7e104892b23a/policies/policy
+                policyContent: "<policies>\r\n  <inbound>\r\n    <rate-limit calls=\"\
+                  5\" renewal-period=\"60\" version=\"2\" />\r\n    <quota calls=\"\
+                  100\" renewal-period=\"604800\" version=\"2\" />\r\n    <base />\r\
+                  \n  </inbound>\r\n  <backend>\r\n    <base />\r\n  </backend>\r\n\
+                  \  <outbound>\r\n    <base />\r\n  </outbound>\r\n</policies>"
+      x-codegen-request-body-name: parameters
+      x-openapi-router-controller: openapi_server.controllers.product_policy_controller
+  /products/{productId}/subscriptions:
+    get:
+      description: Lists the collection of subscriptions to the specified product.
+      operationId: product_subscriptions_list
+      parameters:
+      - description: Product identifier. Must be unique in the current API Management
+          service instance.
+        in: path
+        name: product_id
+        required: true
+        schema:
+          maxLength: 256
+          minLength: 1
+          pattern: "^[^*#&+:<>?]+$"
+          type: string
+          x-ms-parameter-location: method
+        x-ms-parameter-location: method
+      - description: |-
+          | Field        | Supported operators    | Supported functions                         |
+          |--------------|------------------------|---------------------------------------------|
+          | id           | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+          | name         | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+          | stateComment | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+          | userId       | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+          | productId    | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+          | state        | eq                     |                                             |
+        in: query
+        name: $filter
+        schema:
+          type: string
+      - description: Number of records to return.
+        in: query
+        name: $top
+        schema:
+          format: int32
+          minimum: 1
+          type: integer
+          x-ms-parameter-location: method
+        x-ms-parameter-location: method
+      - description: Number of records to skip.
+        in: query
+        name: $skip
+        schema:
+          format: int32
+          minimum: 0
+          type: integer
+          x-ms-parameter-location: method
+        x-ms-parameter-location: method
+      - description: Version of the API to be used with the client request.
+        in: query
+        name: api-version
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductSubscriptions_List_200_response'
+          description: Lists a collection of subscription entities.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product_List_default_response'
+          description: Error response describing why the operation failed.
+      tags:
+      - ProductSubscriptions
+      x-ms-examples:
+        ApiManagementListProductsSubscriptions:
+          parameters:
+            Accept: application/json
+            api-version: 2017-03-01
+            apimBaseUrl: apimservice1.management.azure-api.net
+            productId: 5a58bb65a40f7ef2e05bdc25
+          responses:
+            "200":
+              body:
+                count: 1
+                value:
+                - createdDate: 2018-01-12T13:43:01.113Z
+                  id: /subscriptions/5a58bb65a40f7ef2e05bdc28
+                  primaryKey: 2f3af2e4d2e64691bc221f8c4b93d7fd
+                  productId: /products/5a58bb65a40f7ef2e05bdc25
+                  secondaryKey: e48feb2c5e9045228cd4edca4ad49bfe
+                  startDate: 2018-01-12T00:00:00Z
+                  state: active
+                  userId: /users/1
+      x-ms-odata: ./apimsubscriptions.json#/definitions/SubscriptionContract
+      x-ms-pageable:
+        nextLinkName: nextLink
+      x-openapi-router-controller: openapi_server.controllers.product_subscriptions_controller
+components:
+  parameters:
+    ProductIdParameter:
+      description: Product identifier. Must be unique in the current API Management
+        service instance.
+      in: path
+      name: productId
+      required: true
+      schema:
+        maxLength: 256
+        minLength: 1
+        pattern: "^[^*#&+:<>?]+$"
+        type: string
+        x-ms-parameter-location: method
+      x-ms-parameter-location: method
+  schemas:
+    ProductCollection:
+      description: Paged Products list representation.
+      example:
+        count: 0
+        value:
+        - id: id
+        - id: id
+        nextLink: nextLink
+      properties:
+        count:
+          description: Total number of entities
+          title: count
+          type: integer
+        nextLink:
+          description: Next page link if any.
+          title: nextLink
+          type: string
+        value:
+          description: Page values.
+          items:
+            $ref: '#/components/schemas/ProductContract'
+          title: value
+          type: array
+      title: ProductCollection
+      type: object
+    ProductContract:
+      allOf:
+      - $ref: '#/components/schemas/ProductContractProperties'
+      description: Product details.
+      example:
+        id: id
+      properties:
+        id:
+          description: Identifier of the Product entity.
+          title: id
+          type: string
+      title: ProductContract
+    ProductContractProperties:
+      allOf:
+      - $ref: '#/components/schemas/ProductEntityBaseParameters'
+      description: Product profile.
+      properties:
+        name:
+          description: Product name.
+          maxLength: 300
+          minLength: 1
+          title: name
+          type: string
+      required:
+      - name
+      title: ProductContractProperties
+    ProductEntityBaseParameters:
+      description: Product Entity Base Parameters
+      properties:
+        approvalRequired:
+          description: "whether subscription approval is required. If\_false, new\
+            \ subscriptions will be approved automatically enabling developers to\
+            \ call the product’s APIs immediately after subscribing. If\_true, administrators\
+            \ must manually approve the subscription before the developer can any\
+            \ of the product’s APIs. Can be present only if subscriptionRequired property\
+            \ is present and has a value of true."
+          title: approvalRequired
+          type: boolean
+        description:
+          description: Product description. May include HTML formatting tags.
+          maxLength: 1000
+          minLength: 1
+          title: description
+          type: string
+        state:
+          description: whether product is published or not. Published products are
+            discoverable by users of developer portal. Non published products are
+            visible only to administrators. Default state of Product is notPublished.
+          enum:
+          - notPublished
+          - published
+          title: state
+          type: string
+          x-ms-enum:
+            modelAsString: false
+            name: ProductState
+        subscriptionRequired:
+          description: "Whether a product subscription is required for accessing APIs\
+            \ included in this product. If true, the product is referred to as \"\
+            protected\" and a valid subscription key is required for a request to\
+            \ an API included in the product to succeed. If false, the product is\
+            \ referred to as \"open\" and requests to an API included in the product\
+            \ can be made without a subscription key. If property is omitted when\
+            \ creating a new product it's value is assumed to be true."
+          title: subscriptionRequired
+          type: boolean
+        subscriptionsLimit:
+          description: Whether the number of subscriptions a user can have to this
+            product at the same time. Set to null or omit to allow unlimited per user
+            subscriptions. Can be present only if subscriptionRequired property is
+            present and has a value of true.
+          format: int32
+          title: subscriptionsLimit
+          type: integer
+        terms:
+          description: Product terms of use. Developers trying to subscribe to the
+            product will be presented and required to accept these terms before they
+            can complete the subscription process.
+          title: terms
+          type: string
+      title: ProductEntityBaseParameters
+      type: object
+    ProductUpdateParameters:
+      allOf:
+      - $ref: '#/components/schemas/ProductEntityBaseParameters'
+      description: Parameters supplied to the Update Product operation.
+      example:
+        name: name
+      properties:
+        name:
+          description: Product name.
+          maxLength: 300
+          minLength: 1
+          title: name
+          type: string
+      title: ProductUpdateParameters
+    Product_List_default_response_details_inner:
+      description: Error Field contract.
+      example:
+        code: code
+        message: message
+        target: target
+      properties:
+        code:
+          description: Property level error code.
+          title: code
+          type: string
+        message:
+          description: Human-readable representation of property-level error.
+          title: message
+          type: string
+        target:
+          description: Property name.
+          title: target
+          type: string
+      title: Product_List_default_response_details_inner
+      type: object
+    Product_List_default_response:
+      description: Error Body contract.
+      example:
+        code: code
+        details:
+        - code: code
+          message: message
+          target: target
+        - code: code
+          message: message
+          target: target
+        message: message
+      properties:
+        code:
+          description: Service-defined error code. This code serves as a sub-status
+            for the HTTP error code specified in the response.
+          title: code
+          type: string
+        details:
+          description: "The list of invalid fields send in request, in case of validation\
+            \ error."
+          items:
+            $ref: '#/components/schemas/Product_List_default_response_details_inner'
+          title: details
+          type: array
+        message:
+          description: Human-readable representation of the error.
+          title: message
+          type: string
+      title: Product_List_default_response
+      type: object
+    ProductApi_ListByProduct_200_response_value_inner:
+      description: Api Contract Details
+      example:
+        id: id
+      properties:
+        id:
+          description: Identifier of the Entity
+          title: id
+          type: string
+      title: ProductApi_ListByProduct_200_response_value_inner
+      type: object
+    ProductApi_ListByProduct_200_response:
+      description: Paged Api list representation.
+      example:
+        count: 0
+        value:
+        - id: id
+        - id: id
+        nextLink: nextLink
+      properties:
+        count:
+          description: Total number of entities
+          title: count
+          type: integer
+        nextLink:
+          description: Next page link if any.
+          title: nextLink
+          type: string
+        value:
+          items:
+            $ref: '#/components/schemas/ProductApi_ListByProduct_200_response_value_inner'
+          title: value
+          type: array
+      title: ProductApi_ListByProduct_200_response
+      type: object
+    ProductApi_CreateOrUpdate_200_response_allOf_allOf_authenticationSettings_oAuth2:
+      description: API OAuth2 Authentication settings details.
+      properties:
+        authorizationServerId:
+          description: OAuth authorization server identifier.
+          title: authorizationServerId
+          type: string
+        scope:
+          description: operations scope.
+          title: scope
+          type: string
+      title: ProductApi_CreateOrUpdate_200_response_allOf_allOf_authenticationSettings_oAuth2
+      type: object
+    ProductApi_CreateOrUpdate_200_response_allOf_allOf_authenticationSettings:
+      description: API Authentication Settings.
+      properties:
+        oAuth2:
+          $ref: '#/components/schemas/ProductApi_CreateOrUpdate_200_response_allOf_allOf_authenticationSettings_oAuth2'
+      title: ProductApi_CreateOrUpdate_200_response_allOf_allOf_authenticationSettings
+      type: object
+    ProductApi_CreateOrUpdate_200_response_allOf_allOf_subscriptionKeyParameterNames:
+      description: Subscription key parameter names details.
+      example:
+        subscriptionKeyParameterNames:
+          header: customHeaderParameterName
+          query: customQueryParameterName
+      properties:
+        header:
+          description: Subscription key header name.
+          type: string
+        query:
+          description: Subscription key query string parameter name.
+          type: string
+      title: ProductApi_CreateOrUpdate_200_response_allOf_allOf_subscriptionKeyParameterNames
+      type: object
+    ProductApi_CreateOrUpdate_200_response:
+      allOf:
+      - allOf:
+        - description: API base contract details.
+          properties:
+            apiRevision:
+              description: "Describes the Revision of the Api. If no value is provided,\
+                \ default revision 1 is created"
+              maxLength: 100
+              minLength: 1
+              type: string
+            authenticationSettings:
+              $ref: '#/components/schemas/ProductApi_CreateOrUpdate_200_response_allOf_allOf_authenticationSettings'
+            description:
+              description: Description of the API. May include HTML formatting tags.
+              type: string
+            isCurrent:
+              description: Indicates if API revision is current api revision.
+              type: boolean
+            isOnline:
+              description: Indicates if API revision is accessible via the gateway.
+              type: boolean
+            subscriptionKeyParameterNames:
+              $ref: '#/components/schemas/ProductApi_CreateOrUpdate_200_response_allOf_allOf_subscriptionKeyParameterNames'
+            type:
+              description: Type of API.
+              enum:
+              - http
+              - soap
+              type: string
+              x-ms-client-name: ApiType
+              x-ms-enum:
+                modelAsString: true
+                name: ApiType
+          type: object
+        description: Api Entity Properties
+        properties:
+          name:
+            description: API name.
+            maxLength: 300
+            minLength: 1
+            type: string
+          path:
+            description: Relative URL uniquely identifying this API and all of its
+              resource paths within the API Management service instance. It is appended
+              to the API endpoint base URL specified during the service instance creation
+              to form a public URL for this API.
+            maxLength: 400
+            minLength: 0
+            type: string
+          protocols:
+            description: Describes on which protocols the operations in this API can
+              be invoked.
+            items:
+              enum:
+              - http
+              - https
+              type: string
+              x-ms-enum:
+                modelAsString: false
+                name: Protocol
+            type: array
+          serviceUrl:
+            description: Absolute URL of the backend service implementing this API.
+            maxLength: 2000
+            minLength: 1
+            type: string
+        required:
+        - path
+      description: Api Contract Details
+      example:
+        id: id
+      properties:
+        id:
+          description: Identifier of the Entity
+          title: id
+          type: string
+      title: ProductApi_CreateOrUpdate_200_response
+    ProductGroup_ListByProduct_200_response_value_inner:
+      description: Contract details.
+      example:
+        id: id
+      properties:
+        id:
+          description: Identifier of the Group entity.
+          title: id
+          type: string
+      title: ProductGroup_ListByProduct_200_response_value_inner
+      type: object
+    ProductGroup_ListByProduct_200_response:
+      description: Paged Group list representation.
+      example:
+        count: 0
+        value:
+        - id: id
+        - id: id
+        nextLink: nextLink
+      properties:
+        count:
+          description: Total number of entities
+          title: count
+          type: integer
+        nextLink:
+          description: Next page link if any.
+          title: nextLink
+          type: string
+        value:
+          description: Page values.
+          items:
+            $ref: '#/components/schemas/ProductGroup_ListByProduct_200_response_value_inner'
+          title: value
+          type: array
+      title: ProductGroup_ListByProduct_200_response
+      type: object
+    ProductGroup_CreateOrUpdate_200_response:
+      allOf:
+      - description: Developer group.
+        properties:
+          builtIn:
+            description: "true if the group is one of the three system groups (Administrators,\
+              \ Developers, or Guests); otherwise false."
+            readOnly: true
+            type: boolean
+          description:
+            description: Group description. Can contain HTML formatting tags.
+            maxLength: 1000
+            type: string
+          externalId:
+            description: "For external groups, this property contains the id of the\
+              \ group from the external identity provider, e.g. for Azure Active Directory\
+              \ aad://<tenant>.onmicrosoft.com/groups/<group object id>; otherwise\
+              \ the value is null."
+            type: string
+          name:
+            description: Group name.
+            maxLength: 300
+            minLength: 1
+            type: string
+          type:
+            description: Group type.
+            enum:
+            - custom
+            - system
+            - external
+            type: string
+            x-ms-enum:
+              modelAsString: false
+              name: GroupType
+        required:
+        - name
+        type: object
+      description: Contract details.
+      example:
+        id: id
+      properties:
+        id:
+          description: Identifier of the Group entity.
+          title: id
+          type: string
+      title: ProductGroup_CreateOrUpdate_200_response
+    ProductPolicy_ListByProduct_200_response_value_inner:
+      description: Policy contract Properties.
+      example:
+        id: id
+        policyContent: policyContent
+      properties:
+        id:
+          description: Policy identifier.
+          title: id
+          type: string
+        policyContent:
+          description: Json escaped Xml Encoded contents of the Policy.
+          title: policyContent
+          type: string
+      required:
+      - policyContent
+      title: ProductPolicy_ListByProduct_200_response_value_inner
+      type: object
+    ProductPolicy_ListByProduct_200_response:
+      description: The response of the list policy operation.
+      example:
+        count: 0
+        value:
+        - id: id
+          policyContent: policyContent
+        - id: id
+          policyContent: policyContent
+        nextLink: nextLink
+      properties:
+        count:
+          description: Total number of records
+          title: count
+          type: integer
+        nextLink:
+          description: Next page link if any.
+          title: nextLink
+          type: string
+        value:
+          description: Policy Contract value.
+          items:
+            $ref: '#/components/schemas/ProductPolicy_ListByProduct_200_response_value_inner'
+          title: value
+          type: array
+      title: ProductPolicy_ListByProduct_200_response
+      type: object
+    ProductSubscriptions_List_200_response_value_inner:
+      description: Subscription details.
+      example:
+        id: id
+      properties:
+        id:
+          description: Identifier of the Subscription.
+          title: id
+          type: string
+      title: ProductSubscriptions_List_200_response_value_inner
+      type: object
+    ProductSubscriptions_List_200_response:
+      description: Paged Subscriptions list representation.
+      example:
+        count: 0
+        value:
+        - id: id
+        - id: id
+        nextLink: nextLink
+      properties:
+        count:
+          description: Total number of entities
+          title: count
+          type: integer
+        nextLink:
+          description: Next page link if any.
+          title: nextLink
+          type: string
+        value:
+          description: Page values.
+          items:
+            $ref: '#/components/schemas/ProductSubscriptions_List_200_response_value_inner'
+          title: value
+          type: array
+      title: ProductSubscriptions_List_200_response
+      type: object
+  securitySchemes:
+    apim_key:
+      in: header
+      name: Authorization
+      type: apiKey
+      x-apikeyInfoFunc: openapi_server.controllers.security_controller.info_from_apim_key
+x-ms-parameterized-host:
+  hostTemplate: "{apimBaseUrl}"
+  parameters:
+  - description: "The management endpoint of the API Management service, for example\
+      \ https://myapimservice.management.azure-api.net."
+    in: path
+    name: apimBaseUrl
+    required: true
+    type: string
+    x-ms-skip-url-encoding: true
+  positionInOperation: first
+  useSchemePrefix: false
+x-original-swagger-version: "2.0"

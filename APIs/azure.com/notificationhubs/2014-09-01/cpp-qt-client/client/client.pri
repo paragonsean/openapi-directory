@@ -1,0 +1,85 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIAdmCredential.h \
+    $${PWD}/OAIAdmCredentialProperties.h \
+    $${PWD}/OAIApnsCredential.h \
+    $${PWD}/OAIApnsCredentialProperties.h \
+    $${PWD}/OAIBaiduCredential.h \
+    $${PWD}/OAIBaiduCredentialProperties.h \
+    $${PWD}/OAICheckAvailabilityParameters.h \
+    $${PWD}/OAICheckAvailabilityResource.h \
+    $${PWD}/OAIGcmCredential.h \
+    $${PWD}/OAIGcmCredentialProperties.h \
+    $${PWD}/OAIMpnsCredential.h \
+    $${PWD}/OAIMpnsCredentialProperties.h \
+    $${PWD}/OAINamespaceCreateOrUpdateParameters.h \
+    $${PWD}/OAINamespaceListResult.h \
+    $${PWD}/OAINamespaceProperties.h \
+    $${PWD}/OAINamespaceResource.h \
+    $${PWD}/OAINotificationHubCreateOrUpdateParameters.h \
+    $${PWD}/OAINotificationHubListResult.h \
+    $${PWD}/OAINotificationHubProperties.h \
+    $${PWD}/OAINotificationHubResource.h \
+    $${PWD}/OAIResource.h \
+    $${PWD}/OAIResourceListKeys.h \
+    $${PWD}/OAISharedAccessAuthorizationRuleCreateOrUpdateParameters.h \
+    $${PWD}/OAISharedAccessAuthorizationRuleListResult.h \
+    $${PWD}/OAISharedAccessAuthorizationRuleProperties.h \
+    $${PWD}/OAISharedAccessAuthorizationRuleResource.h \
+    $${PWD}/OAISubResource.h \
+    $${PWD}/OAIWnsCredential.h \
+    $${PWD}/OAIWnsCredentialProperties.h \
+# APIs
+    $${PWD}/OAINamespacesApi.h \
+    $${PWD}/OAINotificationHubsApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIAdmCredential.cpp \
+    $${PWD}/OAIAdmCredentialProperties.cpp \
+    $${PWD}/OAIApnsCredential.cpp \
+    $${PWD}/OAIApnsCredentialProperties.cpp \
+    $${PWD}/OAIBaiduCredential.cpp \
+    $${PWD}/OAIBaiduCredentialProperties.cpp \
+    $${PWD}/OAICheckAvailabilityParameters.cpp \
+    $${PWD}/OAICheckAvailabilityResource.cpp \
+    $${PWD}/OAIGcmCredential.cpp \
+    $${PWD}/OAIGcmCredentialProperties.cpp \
+    $${PWD}/OAIMpnsCredential.cpp \
+    $${PWD}/OAIMpnsCredentialProperties.cpp \
+    $${PWD}/OAINamespaceCreateOrUpdateParameters.cpp \
+    $${PWD}/OAINamespaceListResult.cpp \
+    $${PWD}/OAINamespaceProperties.cpp \
+    $${PWD}/OAINamespaceResource.cpp \
+    $${PWD}/OAINotificationHubCreateOrUpdateParameters.cpp \
+    $${PWD}/OAINotificationHubListResult.cpp \
+    $${PWD}/OAINotificationHubProperties.cpp \
+    $${PWD}/OAINotificationHubResource.cpp \
+    $${PWD}/OAIResource.cpp \
+    $${PWD}/OAIResourceListKeys.cpp \
+    $${PWD}/OAISharedAccessAuthorizationRuleCreateOrUpdateParameters.cpp \
+    $${PWD}/OAISharedAccessAuthorizationRuleListResult.cpp \
+    $${PWD}/OAISharedAccessAuthorizationRuleProperties.cpp \
+    $${PWD}/OAISharedAccessAuthorizationRuleResource.cpp \
+    $${PWD}/OAISubResource.cpp \
+    $${PWD}/OAIWnsCredential.cpp \
+    $${PWD}/OAIWnsCredentialProperties.cpp \
+# APIs
+    $${PWD}/OAINamespacesApi.cpp \
+    $${PWD}/OAINotificationHubsApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

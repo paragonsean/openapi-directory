@@ -1,0 +1,45 @@
+# AdHybridHealthService.ExportError
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**aadDisplayName** | **String** | The AAD side display name | [optional] 
+**aadDistinguishedName** | **String** | The AAD side distinguished name for the object. | [optional] 
+**aadMail** | **String** | The AAD side email for the object. | [optional] 
+**aadObjectGuid** | **String** | The AAD side object guid. | [optional] 
+**aadObjectType** | **String** | The AAD side object type. | [optional] 
+**aadSourceOfAuthority** | **String** | The AAD side source of authority for the object. | [optional] 
+**aadUserPrincipalName** | **String** | The AAD side user principal name. | [optional] 
+**adDisplayName** | **String** | The display name for the AD object. | [optional] 
+**adDistinguishedName** | **String** | The distinguished name for the AD object. | [optional] 
+**adMail** | **String** | The email for the AD object. | [optional] 
+**adObjectGuid** | **String** | The AD object guid. | [optional] 
+**adObjectType** | **String** | The AD object type | [optional] 
+**adSourceAnchor** | **String** | The AD source anchor. | [optional] 
+**adSourceOfAuthority** | **String** | The source of authority for the AD object. | [optional] 
+**adUserPrincipalName** | **String** | The user principal name for the AD object. | [optional] 
+**attributeMultiValue** | **Boolean** | Indicates if the attribute is multi valued or not. | [optional] 
+**attributeName** | **String** | The attribute name. | [optional] 
+**attributeValue** | **String** | The attribute value. | [optional] 
+**cloudAnchor** | **String** | The name of the cloud anchor. | [optional] 
+**connectorId** | **String** | The connector Id. | [optional] 
+**csObjectId** | **String** | The cloud object Id. | [optional] 
+**dn** | **String** | The distinguished name. | [optional] 
+**errorCode** | **String** | The error code. | [optional] 
+**id** | **String** | The error Id. | [optional] 
+**lastDirSyncTime** | **Date** | The date and time of last sync run. | [optional] 
+**maxLimit** | **String** | The maximum limit. | [optional] 
+**message** | **String** | The export error message. | [optional] 
+**minLimit** | **String** | The minimum limit. | [optional] 
+**modifiedAttributeValue** | **String** | The modified attribute value. | [optional] 
+**objectIdConflict** | **String** | The object Id with which there was an attribute conflict. | [optional] 
+**retryCount** | **Number** | The retry count. | [optional] 
+**runStepResultId** | **String** | The run step result Id. | [optional] 
+**samAccountName** | **String** | The SAM account name. | [optional] 
+**serverErrorDetail** | **String** | The server error detail. | [optional] 
+**timeFirstOccured** | **Date** | The date and time when the export error first occurred. | [optional] 
+**timeOccured** | **Date** | The date and time of occurrence. | [optional] 
+**type** | **String** | The type of error. | [optional] 
+
+

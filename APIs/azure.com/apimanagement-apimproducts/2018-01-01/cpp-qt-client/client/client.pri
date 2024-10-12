@@ -1,0 +1,83 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIProductApi_CreateOrUpdate_200_response.h \
+    $${PWD}/OAIProductApi_ListByProduct_200_response.h \
+    $${PWD}/OAIProductApi_ListByProduct_200_response_value_inner.h \
+    $${PWD}/OAIProductApi_ListByProduct_200_response_value_inner_properties.h \
+    $${PWD}/OAIProductApi_ListByProduct_200_response_value_inner_properties_apiVersionSet.h \
+    $${PWD}/OAIProductCollection.h \
+    $${PWD}/OAIProductContract.h \
+    $${PWD}/OAIProductContractProperties.h \
+    $${PWD}/OAIProductEntityBaseParameters.h \
+    $${PWD}/OAIProductGroup_CreateOrUpdate_200_response.h \
+    $${PWD}/OAIProductGroup_ListByProduct_200_response.h \
+    $${PWD}/OAIProductGroup_ListByProduct_200_response_value_inner.h \
+    $${PWD}/OAIProductGroup_ListByProduct_200_response_value_inner_properties.h \
+    $${PWD}/OAIProductPolicy_Get_200_response.h \
+    $${PWD}/OAIProductPolicy_ListByProduct_200_response.h \
+    $${PWD}/OAIProductPolicy_ListByProduct_200_response_value_inner.h \
+    $${PWD}/OAIProductPolicy_ListByProduct_200_response_value_inner_properties.h \
+    $${PWD}/OAIProductSubscriptions_List_200_response.h \
+    $${PWD}/OAIProductSubscriptions_List_200_response_value_inner.h \
+    $${PWD}/OAIProductSubscriptions_List_200_response_value_inner_properties.h \
+    $${PWD}/OAIProductUpdateParameters.h \
+    $${PWD}/OAIProductUpdateProperties.h \
+    $${PWD}/OAIProduct_ListByService_default_response.h \
+    $${PWD}/OAIProduct_ListByService_default_response_error.h \
+    $${PWD}/OAIProduct_ListByService_default_response_error_details_inner.h \
+# APIs
+    $${PWD}/OAIProductApisApi.h \
+    $${PWD}/OAIProductGroupsApi.h \
+    $${PWD}/OAIProductPolicyApi.h \
+    $${PWD}/OAIProductSubscriptionsApi.h \
+    $${PWD}/OAIProductsApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIProductApi_CreateOrUpdate_200_response.cpp \
+    $${PWD}/OAIProductApi_ListByProduct_200_response.cpp \
+    $${PWD}/OAIProductApi_ListByProduct_200_response_value_inner.cpp \
+    $${PWD}/OAIProductApi_ListByProduct_200_response_value_inner_properties.cpp \
+    $${PWD}/OAIProductApi_ListByProduct_200_response_value_inner_properties_apiVersionSet.cpp \
+    $${PWD}/OAIProductCollection.cpp \
+    $${PWD}/OAIProductContract.cpp \
+    $${PWD}/OAIProductContractProperties.cpp \
+    $${PWD}/OAIProductEntityBaseParameters.cpp \
+    $${PWD}/OAIProductGroup_CreateOrUpdate_200_response.cpp \
+    $${PWD}/OAIProductGroup_ListByProduct_200_response.cpp \
+    $${PWD}/OAIProductGroup_ListByProduct_200_response_value_inner.cpp \
+    $${PWD}/OAIProductGroup_ListByProduct_200_response_value_inner_properties.cpp \
+    $${PWD}/OAIProductPolicy_Get_200_response.cpp \
+    $${PWD}/OAIProductPolicy_ListByProduct_200_response.cpp \
+    $${PWD}/OAIProductPolicy_ListByProduct_200_response_value_inner.cpp \
+    $${PWD}/OAIProductPolicy_ListByProduct_200_response_value_inner_properties.cpp \
+    $${PWD}/OAIProductSubscriptions_List_200_response.cpp \
+    $${PWD}/OAIProductSubscriptions_List_200_response_value_inner.cpp \
+    $${PWD}/OAIProductSubscriptions_List_200_response_value_inner_properties.cpp \
+    $${PWD}/OAIProductUpdateParameters.cpp \
+    $${PWD}/OAIProductUpdateProperties.cpp \
+    $${PWD}/OAIProduct_ListByService_default_response.cpp \
+    $${PWD}/OAIProduct_ListByService_default_response_error.cpp \
+    $${PWD}/OAIProduct_ListByService_default_response_error_details_inner.cpp \
+# APIs
+    $${PWD}/OAIProductApisApi.cpp \
+    $${PWD}/OAIProductGroupsApi.cpp \
+    $${PWD}/OAIProductPolicyApi.cpp \
+    $${PWD}/OAIProductSubscriptionsApi.cpp \
+    $${PWD}/OAIProductsApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

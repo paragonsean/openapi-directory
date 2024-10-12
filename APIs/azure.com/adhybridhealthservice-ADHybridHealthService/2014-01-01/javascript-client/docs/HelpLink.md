@@ -1,0 +1,10 @@
+# AdHybridHealthService.HelpLink
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**title** | **String** | The title for the link. | [optional] 
+**url** | **String** | The url for the help document. | [optional] 
+
+
