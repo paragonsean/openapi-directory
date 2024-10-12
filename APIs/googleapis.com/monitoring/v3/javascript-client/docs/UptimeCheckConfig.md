@@ -1,0 +1,59 @@
+# CloudMonitoringApi.UptimeCheckConfig
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**checkerType** | **String** | The type of checkers to use to execute the Uptime check. | [optional] 
+**contentMatchers** | [**[ContentMatcher]**](ContentMatcher.md) | The content that is expected to appear in the data returned by the target server against which the check is run. Currently, only the first entry in the content_matchers list is supported, and additional entries will be ignored. This field is optional and should only be specified if a content match is required as part of the/ Uptime check. | [optional] 
+**displayName** | **String** | A human-friendly name for the Uptime check configuration. The display name should be unique within a Cloud Monitoring Workspace in order to make it easier to identify; however, uniqueness is not enforced. Required. | [optional] 
+**httpCheck** | [**HttpCheck**](HttpCheck.md) |  | [optional] 
+**internalCheckers** | [**[InternalChecker]**](InternalChecker.md) | The internal checkers that this check will egress from. If is_internal is true and this list is empty, the check will egress from all the InternalCheckers configured for the project that owns this UptimeCheckConfig. | [optional] 
+**isInternal** | **Boolean** | If this is true, then checks are made only from the &#39;internal_checkers&#39;. If it is false, then checks are made only from the &#39;selected_regions&#39;. It is an error to provide &#39;selected_regions&#39; when is_internal is true, or to provide &#39;internal_checkers&#39; when is_internal is false. | [optional] 
+**monitoredResource** | [**MonitoredResource**](MonitoredResource.md) |  | [optional] 
+**name** | **String** | Identifier. A unique resource name for this Uptime check configuration. The format is: projects/[PROJECT_ID_OR_NUMBER]/uptimeCheckConfigs/[UPTIME_CHECK_ID] [PROJECT_ID_OR_NUMBER] is the Workspace host project associated with the Uptime check.This field should be omitted when creating the Uptime check configuration; on create, the resource name is assigned by the server and included in the response. | [optional] 
+**period** | **String** | How often, in seconds, the Uptime check is performed. Currently, the only supported values are 60s (1 minute), 300s (5 minutes), 600s (10 minutes), and 900s (15 minutes). Optional, defaults to 60s. | [optional] 
+**resourceGroup** | [**ResourceGroup**](ResourceGroup.md) |  | [optional] 
+**selectedRegions** | **[String]** | The list of regions from which the check will be run. Some regions contain one location, and others contain more than one. If this field is specified, enough regions must be provided to include a minimum of 3 locations. Not specifying this field will result in Uptime checks running from all available regions. | [optional] 
+**syntheticMonitor** | [**SyntheticMonitorTarget**](SyntheticMonitorTarget.md) |  | [optional] 
+**tcpCheck** | [**TcpCheck**](TcpCheck.md) |  | [optional] 
+**timeout** | **String** | The maximum amount of time to wait for the request to complete (must be between 1 and 60 seconds). Required. | [optional] 
+**userLabels** | **{String: String}** | User-supplied key/value data to be used for organizing and identifying the UptimeCheckConfig objects.The field can contain up to 64 entries. Each key and value is limited to 63 Unicode characters or 128 bytes, whichever is smaller. Labels and values can contain only lowercase letters, numerals, underscores, and dashes. Keys must begin with a letter. | [optional] 
+
+
+
+## Enum: CheckerTypeEnum
+
+
+* `CHECKER_TYPE_UNSPECIFIED` (value: `"CHECKER_TYPE_UNSPECIFIED"`)
+
+* `STATIC_IP_CHECKERS` (value: `"STATIC_IP_CHECKERS"`)
+
+* `VPC_CHECKERS` (value: `"VPC_CHECKERS"`)
+
+
+
+
+
+## Enum: [SelectedRegionsEnum]
+
+
+* `REGION_UNSPECIFIED` (value: `"REGION_UNSPECIFIED"`)
+
+* `USA` (value: `"USA"`)
+
+* `EUROPE` (value: `"EUROPE"`)
+
+* `SOUTH_AMERICA` (value: `"SOUTH_AMERICA"`)
+
+* `ASIA_PACIFIC` (value: `"ASIA_PACIFIC"`)
+
+* `USA_OREGON` (value: `"USA_OREGON"`)
+
+* `USA_IOWA` (value: `"USA_IOWA"`)
+
+* `USA_VIRGINIA` (value: `"USA_VIRGINIA"`)
+
+
+
+

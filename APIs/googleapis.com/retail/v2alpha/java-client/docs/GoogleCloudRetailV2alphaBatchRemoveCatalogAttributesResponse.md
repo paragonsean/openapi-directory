@@ -1,0 +1,15 @@
+
+
+# GoogleCloudRetailV2alphaBatchRemoveCatalogAttributesResponse
+
+Response of the CatalogService.BatchRemoveCatalogAttributes.
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**deletedCatalogAttributes** | **List&lt;String&gt;** | Catalog attributes that were deleted. Only pre-loaded catalog attributes that are neither in use by products nor predefined can be deleted. |  [optional] |
+|**resetCatalogAttributes** | **List&lt;String&gt;** | Catalog attributes that were reset. Catalog attributes that are either in use by products or are predefined attributes cannot be deleted; however, their configuration properties will reset to default values upon removal request. |  [optional] |
+
+
+

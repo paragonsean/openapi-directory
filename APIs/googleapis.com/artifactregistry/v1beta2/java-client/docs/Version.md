@@ -1,0 +1,19 @@
+
+
+# Version
+
+The body of a version resource. A version resource represents a collection of components, such as files and other data. This may correspond to a version in many package management schemes.
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**createTime** | **String** | The time when the version was created. |  [optional] |
+|**description** | **String** | Optional. Description of the version, as specified in its metadata. |  [optional] |
+|**metadata** | **Map&lt;String, Object&gt;** | Output only. Repository-specific Metadata stored against this version. The fields returned are defined by the underlying repository-specific resource. Currently, the resources could be: DockerImage MavenArtifact |  [optional] [readonly] |
+|**name** | **String** | The name of the version, for example: \&quot;projects/p1/locations/us-central1/repositories/repo1/packages/pkg1/versions/art1\&quot;. If the package or version ID parts contain slashes, the slashes are escaped. |  [optional] |
+|**relatedTags** | [**List&lt;Tag&gt;**](Tag.md) | Output only. A list of related tags. Will contain up to 100 tags that reference this version. |  [optional] |
+|**updateTime** | **String** | The time when the version was last updated. |  [optional] |
+
+
+

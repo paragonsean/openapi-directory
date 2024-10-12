@@ -1,0 +1,99 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIAptArtifact.h \
+    $${PWD}/OAIBinding.h \
+    $${PWD}/OAIExpr.h \
+    $${PWD}/OAIGoogleDevtoolsArtifactregistryV1beta2File.h \
+    $${PWD}/OAIHash.h \
+    $${PWD}/OAIImportAptArtifactsErrorInfo.h \
+    $${PWD}/OAIImportAptArtifactsGcsSource.h \
+    $${PWD}/OAIImportAptArtifactsRequest.h \
+    $${PWD}/OAIImportAptArtifactsResponse.h \
+    $${PWD}/OAIImportYumArtifactsErrorInfo.h \
+    $${PWD}/OAIImportYumArtifactsGcsSource.h \
+    $${PWD}/OAIImportYumArtifactsRequest.h \
+    $${PWD}/OAIImportYumArtifactsResponse.h \
+    $${PWD}/OAIListFilesResponse.h \
+    $${PWD}/OAIListLocationsResponse.h \
+    $${PWD}/OAIListPackagesResponse.h \
+    $${PWD}/OAIListRepositoriesResponse.h \
+    $${PWD}/OAIListTagsResponse.h \
+    $${PWD}/OAIListVersionsResponse.h \
+    $${PWD}/OAILocation.h \
+    $${PWD}/OAIMavenRepositoryConfig.h \
+    $${PWD}/OAIOperation.h \
+    $${PWD}/OAIPackage.h \
+    $${PWD}/OAIPolicy.h \
+    $${PWD}/OAIProjectSettings.h \
+    $${PWD}/OAIRepository.h \
+    $${PWD}/OAISetIamPolicyRequest.h \
+    $${PWD}/OAIStatus.h \
+    $${PWD}/OAITag.h \
+    $${PWD}/OAITestIamPermissionsRequest.h \
+    $${PWD}/OAITestIamPermissionsResponse.h \
+    $${PWD}/OAIUploadAptArtifactMediaResponse.h \
+    $${PWD}/OAIUploadAptArtifactResponse.h \
+    $${PWD}/OAIUploadYumArtifactMediaResponse.h \
+    $${PWD}/OAIUploadYumArtifactResponse.h \
+    $${PWD}/OAIVersion.h \
+    $${PWD}/OAIYumArtifact.h \
+# APIs
+    $${PWD}/OAIProjectsApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIAptArtifact.cpp \
+    $${PWD}/OAIBinding.cpp \
+    $${PWD}/OAIExpr.cpp \
+    $${PWD}/OAIGoogleDevtoolsArtifactregistryV1beta2File.cpp \
+    $${PWD}/OAIHash.cpp \
+    $${PWD}/OAIImportAptArtifactsErrorInfo.cpp \
+    $${PWD}/OAIImportAptArtifactsGcsSource.cpp \
+    $${PWD}/OAIImportAptArtifactsRequest.cpp \
+    $${PWD}/OAIImportAptArtifactsResponse.cpp \
+    $${PWD}/OAIImportYumArtifactsErrorInfo.cpp \
+    $${PWD}/OAIImportYumArtifactsGcsSource.cpp \
+    $${PWD}/OAIImportYumArtifactsRequest.cpp \
+    $${PWD}/OAIImportYumArtifactsResponse.cpp \
+    $${PWD}/OAIListFilesResponse.cpp \
+    $${PWD}/OAIListLocationsResponse.cpp \
+    $${PWD}/OAIListPackagesResponse.cpp \
+    $${PWD}/OAIListRepositoriesResponse.cpp \
+    $${PWD}/OAIListTagsResponse.cpp \
+    $${PWD}/OAIListVersionsResponse.cpp \
+    $${PWD}/OAILocation.cpp \
+    $${PWD}/OAIMavenRepositoryConfig.cpp \
+    $${PWD}/OAIOperation.cpp \
+    $${PWD}/OAIPackage.cpp \
+    $${PWD}/OAIPolicy.cpp \
+    $${PWD}/OAIProjectSettings.cpp \
+    $${PWD}/OAIRepository.cpp \
+    $${PWD}/OAISetIamPolicyRequest.cpp \
+    $${PWD}/OAIStatus.cpp \
+    $${PWD}/OAITag.cpp \
+    $${PWD}/OAITestIamPermissionsRequest.cpp \
+    $${PWD}/OAITestIamPermissionsResponse.cpp \
+    $${PWD}/OAIUploadAptArtifactMediaResponse.cpp \
+    $${PWD}/OAIUploadAptArtifactResponse.cpp \
+    $${PWD}/OAIUploadYumArtifactMediaResponse.cpp \
+    $${PWD}/OAIUploadYumArtifactResponse.cpp \
+    $${PWD}/OAIVersion.cpp \
+    $${PWD}/OAIYumArtifact.cpp \
+# APIs
+    $${PWD}/OAIProjectsApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

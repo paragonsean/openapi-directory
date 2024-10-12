@@ -1,0 +1,20 @@
+# coding: utf-8
+
+# import models into model package
+from openapi_server.models.address_verification_data import AddressVerificationData
+from openapi_server.models.complete_verification_request import CompleteVerificationRequest
+from openapi_server.models.complete_verification_response import CompleteVerificationResponse
+from openapi_server.models.comply_with_guidelines import ComplyWithGuidelines
+from openapi_server.models.email_verification_data import EmailVerificationData
+from openapi_server.models.fetch_verification_options_request import FetchVerificationOptionsRequest
+from openapi_server.models.fetch_verification_options_response import FetchVerificationOptionsResponse
+from openapi_server.models.list_verifications_response import ListVerificationsResponse
+from openapi_server.models.postal_address import PostalAddress
+from openapi_server.models.service_business_context import ServiceBusinessContext
+from openapi_server.models.verification import Verification
+from openapi_server.models.verification_option import VerificationOption
+from openapi_server.models.verification_token import VerificationToken
+from openapi_server.models.verify import Verify
+from openapi_server.models.verify_location_request import VerifyLocationRequest
+from openapi_server.models.verify_location_response import VerifyLocationResponse
+from openapi_server.models.voice_of_merchant_state import VoiceOfMerchantState

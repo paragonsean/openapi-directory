@@ -1,0 +1,15 @@
+# DatastreamApi.OracleProfile
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**connectionAttributes** | **{String: String}** | Connection string attributes | [optional] 
+**databaseService** | **String** | Required. Database for the Oracle connection. | [optional] 
+**hostname** | **String** | Required. Hostname for the Oracle connection. | [optional] 
+**oracleSslConfig** | [**OracleSslConfig**](OracleSslConfig.md) |  | [optional] 
+**password** | **String** | Required. Password for the Oracle connection. | [optional] 
+**port** | **Number** | Port for the Oracle connection, default value is 1521. | [optional] 
+**username** | **String** | Required. Username for the Oracle connection. | [optional] 
+
+

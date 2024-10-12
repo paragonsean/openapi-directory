@@ -1,0 +1,9 @@
+# BigQueryApi.EncryptionConfiguration
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**kmsKeyName** | **String** | Optional. Describes the Cloud KMS encryption key that will be used to protect destination BigQuery table. The BigQuery Service Account associated with your project requires access to this encryption key. | [optional] 
+
+

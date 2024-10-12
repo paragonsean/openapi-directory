@@ -1,0 +1,89 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIApi.h \
+    $${PWD}/OAIApiDeployment.h \
+    $${PWD}/OAIApiSpec.h \
+    $${PWD}/OAIApiVersion.h \
+    $${PWD}/OAIArtifact.h \
+    $${PWD}/OAIBinding.h \
+    $${PWD}/OAIBuild.h \
+    $${PWD}/OAIConfig.h \
+    $${PWD}/OAIExpr.h \
+    $${PWD}/OAIHttpBody.h \
+    $${PWD}/OAIInstance.h \
+    $${PWD}/OAIListApiDeploymentRevisionsResponse.h \
+    $${PWD}/OAIListApiDeploymentsResponse.h \
+    $${PWD}/OAIListApiSpecRevisionsResponse.h \
+    $${PWD}/OAIListApiSpecsResponse.h \
+    $${PWD}/OAIListApiVersionsResponse.h \
+    $${PWD}/OAIListApisResponse.h \
+    $${PWD}/OAIListArtifactsResponse.h \
+    $${PWD}/OAIListLocationsResponse.h \
+    $${PWD}/OAIListOperationsResponse.h \
+    $${PWD}/OAILocation.h \
+    $${PWD}/OAIOperation.h \
+    $${PWD}/OAIOperationMetadata.h \
+    $${PWD}/OAIPolicy.h \
+    $${PWD}/OAIRollbackApiDeploymentRequest.h \
+    $${PWD}/OAIRollbackApiSpecRequest.h \
+    $${PWD}/OAISetIamPolicyRequest.h \
+    $${PWD}/OAIStatus.h \
+    $${PWD}/OAITagApiDeploymentRevisionRequest.h \
+    $${PWD}/OAITagApiSpecRevisionRequest.h \
+    $${PWD}/OAITestIamPermissionsRequest.h \
+    $${PWD}/OAITestIamPermissionsResponse.h \
+# APIs
+    $${PWD}/OAIProjectsApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIApi.cpp \
+    $${PWD}/OAIApiDeployment.cpp \
+    $${PWD}/OAIApiSpec.cpp \
+    $${PWD}/OAIApiVersion.cpp \
+    $${PWD}/OAIArtifact.cpp \
+    $${PWD}/OAIBinding.cpp \
+    $${PWD}/OAIBuild.cpp \
+    $${PWD}/OAIConfig.cpp \
+    $${PWD}/OAIExpr.cpp \
+    $${PWD}/OAIHttpBody.cpp \
+    $${PWD}/OAIInstance.cpp \
+    $${PWD}/OAIListApiDeploymentRevisionsResponse.cpp \
+    $${PWD}/OAIListApiDeploymentsResponse.cpp \
+    $${PWD}/OAIListApiSpecRevisionsResponse.cpp \
+    $${PWD}/OAIListApiSpecsResponse.cpp \
+    $${PWD}/OAIListApiVersionsResponse.cpp \
+    $${PWD}/OAIListApisResponse.cpp \
+    $${PWD}/OAIListArtifactsResponse.cpp \
+    $${PWD}/OAIListLocationsResponse.cpp \
+    $${PWD}/OAIListOperationsResponse.cpp \
+    $${PWD}/OAILocation.cpp \
+    $${PWD}/OAIOperation.cpp \
+    $${PWD}/OAIOperationMetadata.cpp \
+    $${PWD}/OAIPolicy.cpp \
+    $${PWD}/OAIRollbackApiDeploymentRequest.cpp \
+    $${PWD}/OAIRollbackApiSpecRequest.cpp \
+    $${PWD}/OAISetIamPolicyRequest.cpp \
+    $${PWD}/OAIStatus.cpp \
+    $${PWD}/OAITagApiDeploymentRevisionRequest.cpp \
+    $${PWD}/OAITagApiSpecRevisionRequest.cpp \
+    $${PWD}/OAITestIamPermissionsRequest.cpp \
+    $${PWD}/OAITestIamPermissionsResponse.cpp \
+# APIs
+    $${PWD}/OAIProjectsApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

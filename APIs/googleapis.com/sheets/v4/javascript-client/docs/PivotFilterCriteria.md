@@ -1,0 +1,11 @@
+# GoogleSheetsApi.PivotFilterCriteria
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**condition** | [**BooleanCondition**](BooleanCondition.md) |  | [optional] 
+**visibleByDefault** | **Boolean** | Whether values are visible by default. If true, the visible_values are ignored, all values that meet condition (if specified) are shown. If false, values that are both in visible_values and meet condition are shown. | [optional] 
+**visibleValues** | **[String]** | Values that should be included. Values not listed here are excluded. | [optional] 
+
+
