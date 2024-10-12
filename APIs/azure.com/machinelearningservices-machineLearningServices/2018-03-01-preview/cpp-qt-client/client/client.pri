@@ -1,0 +1,105 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIAKS.h \
+    $${PWD}/OAIAKS_allOf_properties.h \
+    $${PWD}/OAIAksComputeSecrets.h \
+    $${PWD}/OAIBatchAI.h \
+    $${PWD}/OAIBatchAI_allOf_properties.h \
+    $${PWD}/OAICompute.h \
+    $${PWD}/OAIComputeResource.h \
+    $${PWD}/OAIComputeSecrets.h \
+    $${PWD}/OAIComputeType.h \
+    $${PWD}/OAIDataFactory.h \
+    $${PWD}/OAIErrorDetail.h \
+    $${PWD}/OAIErrorResponse.h \
+    $${PWD}/OAIHDInsight.h \
+    $${PWD}/OAIHDInsight_allOf_properties.h \
+    $${PWD}/OAIIdentity.h \
+    $${PWD}/OAIListWorkspaceKeysResult.h \
+    $${PWD}/OAIMachineLearningServiceError.h \
+    $${PWD}/OAIOperation.h \
+    $${PWD}/OAIOperationListResult.h \
+    $${PWD}/OAIOperation_display.h \
+    $${PWD}/OAIPaginatedComputeResourcesList.h \
+    $${PWD}/OAIPassword.h \
+    $${PWD}/OAIRegistryListCredentialsResult.h \
+    $${PWD}/OAIResource.h \
+    $${PWD}/OAIScaleSettings.h \
+    $${PWD}/OAIServicePrincipalCredentials.h \
+    $${PWD}/OAISslConfiguration.h \
+    $${PWD}/OAISystemService.h \
+    $${PWD}/OAIVirtualMachine.h \
+    $${PWD}/OAIVirtualMachineSecrets.h \
+    $${PWD}/OAIVirtualMachineSshCredentials.h \
+    $${PWD}/OAIVirtualMachine_allOf_properties.h \
+    $${PWD}/OAIWorkspace.h \
+    $${PWD}/OAIWorkspaceListResult.h \
+    $${PWD}/OAIWorkspaceProperties.h \
+    $${PWD}/OAIWorkspacePropertiesUpdateParameters.h \
+    $${PWD}/OAIWorkspaceUpdateParameters.h \
+# APIs
+    $${PWD}/OAIMachineLearningComputesApi.h \
+    $${PWD}/OAIOperationApi.h \
+    $${PWD}/OAIOperationalizationClustersApi.h \
+    $${PWD}/OAIWorkspacesApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIAKS.cpp \
+    $${PWD}/OAIAKS_allOf_properties.cpp \
+    $${PWD}/OAIAksComputeSecrets.cpp \
+    $${PWD}/OAIBatchAI.cpp \
+    $${PWD}/OAIBatchAI_allOf_properties.cpp \
+    $${PWD}/OAICompute.cpp \
+    $${PWD}/OAIComputeResource.cpp \
+    $${PWD}/OAIComputeSecrets.cpp \
+    $${PWD}/OAIComputeType.cpp \
+    $${PWD}/OAIDataFactory.cpp \
+    $${PWD}/OAIErrorDetail.cpp \
+    $${PWD}/OAIErrorResponse.cpp \
+    $${PWD}/OAIHDInsight.cpp \
+    $${PWD}/OAIHDInsight_allOf_properties.cpp \
+    $${PWD}/OAIIdentity.cpp \
+    $${PWD}/OAIListWorkspaceKeysResult.cpp \
+    $${PWD}/OAIMachineLearningServiceError.cpp \
+    $${PWD}/OAIOperation.cpp \
+    $${PWD}/OAIOperationListResult.cpp \
+    $${PWD}/OAIOperation_display.cpp \
+    $${PWD}/OAIPaginatedComputeResourcesList.cpp \
+    $${PWD}/OAIPassword.cpp \
+    $${PWD}/OAIRegistryListCredentialsResult.cpp \
+    $${PWD}/OAIResource.cpp \
+    $${PWD}/OAIScaleSettings.cpp \
+    $${PWD}/OAIServicePrincipalCredentials.cpp \
+    $${PWD}/OAISslConfiguration.cpp \
+    $${PWD}/OAISystemService.cpp \
+    $${PWD}/OAIVirtualMachine.cpp \
+    $${PWD}/OAIVirtualMachineSecrets.cpp \
+    $${PWD}/OAIVirtualMachineSshCredentials.cpp \
+    $${PWD}/OAIVirtualMachine_allOf_properties.cpp \
+    $${PWD}/OAIWorkspace.cpp \
+    $${PWD}/OAIWorkspaceListResult.cpp \
+    $${PWD}/OAIWorkspaceProperties.cpp \
+    $${PWD}/OAIWorkspacePropertiesUpdateParameters.cpp \
+    $${PWD}/OAIWorkspaceUpdateParameters.cpp \
+# APIs
+    $${PWD}/OAIMachineLearningComputesApi.cpp \
+    $${PWD}/OAIOperationApi.cpp \
+    $${PWD}/OAIOperationalizationClustersApi.cpp \
+    $${PWD}/OAIWorkspacesApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

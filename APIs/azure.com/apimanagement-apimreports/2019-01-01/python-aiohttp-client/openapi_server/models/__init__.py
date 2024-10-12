@@ -1,0 +1,7 @@
+# coding: utf-8
+
+# import models into model package
+from openapi_server.models.reports_list_by_api200_response import ReportsListByApi200Response
+from openapi_server.models.reports_list_by_api200_response_value_inner import ReportsListByApi200ResponseValueInner
+from openapi_server.models.reports_list_by_request200_response import ReportsListByRequest200Response
+from openapi_server.models.reports_list_by_request200_response_value_inner import ReportsListByRequest200ResponseValueInner

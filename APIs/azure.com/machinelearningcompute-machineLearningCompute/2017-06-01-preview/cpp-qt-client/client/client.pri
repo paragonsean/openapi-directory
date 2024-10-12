@@ -1,0 +1,85 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIAcsClusterProperties.h \
+    $${PWD}/OAIAppInsightsCredentials.h \
+    $${PWD}/OAIAsyncOperationErrorInfo.h \
+    $${PWD}/OAIAsyncOperationStatus.h \
+    $${PWD}/OAIAutoScaleConfiguration.h \
+    $${PWD}/OAIAvailableOperations.h \
+    $${PWD}/OAICheckUpdateResponse.h \
+    $${PWD}/OAIContainerRegistryCredentials.h \
+    $${PWD}/OAIContainerRegistryProperties.h \
+    $${PWD}/OAIContainerServiceCredentials.h \
+    $${PWD}/OAIErrorDetail.h \
+    $${PWD}/OAIErrorResponse.h \
+    $${PWD}/OAIGlobalServiceConfiguration.h \
+    $${PWD}/OAIKubernetesClusterProperties.h \
+    $${PWD}/OAIOperationalizationCluster.h \
+    $${PWD}/OAIOperationalizationClusterCredentials.h \
+    $${PWD}/OAIOperationalizationClusterProperties.h \
+    $${PWD}/OAIOperationalizationClusterUpdateParameters.h \
+    $${PWD}/OAIPaginatedOperationalizationClustersList.h \
+    $${PWD}/OAIResource.h \
+    $${PWD}/OAIResourceOperation.h \
+    $${PWD}/OAIResourceOperation_display.h \
+    $${PWD}/OAIServiceAuthConfiguration.h \
+    $${PWD}/OAIServicePrincipalProperties.h \
+    $${PWD}/OAISslConfiguration.h \
+    $${PWD}/OAIStorageAccountCredentials.h \
+    $${PWD}/OAIStorageAccountProperties.h \
+    $${PWD}/OAISystemServices.h \
+    $${PWD}/OAIUpdateSystemResponse.h \
+# APIs
+    $${PWD}/OAIMachineLearningComputeOperationsApi.h \
+    $${PWD}/OAIOperationalizationClustersApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIAcsClusterProperties.cpp \
+    $${PWD}/OAIAppInsightsCredentials.cpp \
+    $${PWD}/OAIAsyncOperationErrorInfo.cpp \
+    $${PWD}/OAIAsyncOperationStatus.cpp \
+    $${PWD}/OAIAutoScaleConfiguration.cpp \
+    $${PWD}/OAIAvailableOperations.cpp \
+    $${PWD}/OAICheckUpdateResponse.cpp \
+    $${PWD}/OAIContainerRegistryCredentials.cpp \
+    $${PWD}/OAIContainerRegistryProperties.cpp \
+    $${PWD}/OAIContainerServiceCredentials.cpp \
+    $${PWD}/OAIErrorDetail.cpp \
+    $${PWD}/OAIErrorResponse.cpp \
+    $${PWD}/OAIGlobalServiceConfiguration.cpp \
+    $${PWD}/OAIKubernetesClusterProperties.cpp \
+    $${PWD}/OAIOperationalizationCluster.cpp \
+    $${PWD}/OAIOperationalizationClusterCredentials.cpp \
+    $${PWD}/OAIOperationalizationClusterProperties.cpp \
+    $${PWD}/OAIOperationalizationClusterUpdateParameters.cpp \
+    $${PWD}/OAIPaginatedOperationalizationClustersList.cpp \
+    $${PWD}/OAIResource.cpp \
+    $${PWD}/OAIResourceOperation.cpp \
+    $${PWD}/OAIResourceOperation_display.cpp \
+    $${PWD}/OAIServiceAuthConfiguration.cpp \
+    $${PWD}/OAIServicePrincipalProperties.cpp \
+    $${PWD}/OAISslConfiguration.cpp \
+    $${PWD}/OAIStorageAccountCredentials.cpp \
+    $${PWD}/OAIStorageAccountProperties.cpp \
+    $${PWD}/OAISystemServices.cpp \
+    $${PWD}/OAIUpdateSystemResponse.cpp \
+# APIs
+    $${PWD}/OAIMachineLearningComputeOperationsApi.cpp \
+    $${PWD}/OAIOperationalizationClustersApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

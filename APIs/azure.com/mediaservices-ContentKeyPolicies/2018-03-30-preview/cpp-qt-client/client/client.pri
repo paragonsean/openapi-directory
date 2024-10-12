@@ -1,0 +1,79 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIContentKeyPolicies_List_default_response.h \
+    $${PWD}/OAIContentKeyPolicies_List_default_response_error.h \
+    $${PWD}/OAIContentKeyPolicy.h \
+    $${PWD}/OAIContentKeyPolicyClearKeyConfiguration.h \
+    $${PWD}/OAIContentKeyPolicyCollection.h \
+    $${PWD}/OAIContentKeyPolicyConfiguration.h \
+    $${PWD}/OAIContentKeyPolicyFairPlayConfiguration.h \
+    $${PWD}/OAIContentKeyPolicyOpenRestriction.h \
+    $${PWD}/OAIContentKeyPolicyOption.h \
+    $${PWD}/OAIContentKeyPolicyPlayReadyConfiguration.h \
+    $${PWD}/OAIContentKeyPolicyPlayReadyContentEncryptionKeyFromHeader.h \
+    $${PWD}/OAIContentKeyPolicyPlayReadyContentEncryptionKeyFromKeyIdentifier.h \
+    $${PWD}/OAIContentKeyPolicyPlayReadyContentKeyLocation.h \
+    $${PWD}/OAIContentKeyPolicyPlayReadyExplicitAnalogTelevisionRestriction.h \
+    $${PWD}/OAIContentKeyPolicyPlayReadyLicense.h \
+    $${PWD}/OAIContentKeyPolicyPlayReadyPlayRight.h \
+    $${PWD}/OAIContentKeyPolicyProperties.h \
+    $${PWD}/OAIContentKeyPolicyRestriction.h \
+    $${PWD}/OAIContentKeyPolicyRestrictionTokenKey.h \
+    $${PWD}/OAIContentKeyPolicyRsaTokenKey.h \
+    $${PWD}/OAIContentKeyPolicySymmetricTokenKey.h \
+    $${PWD}/OAIContentKeyPolicyTokenClaim.h \
+    $${PWD}/OAIContentKeyPolicyTokenRestriction.h \
+    $${PWD}/OAIContentKeyPolicyUnknownConfiguration.h \
+    $${PWD}/OAIContentKeyPolicyUnknownRestriction.h \
+    $${PWD}/OAIContentKeyPolicyWidevineConfiguration.h \
+    $${PWD}/OAIContentKeyPolicyX509CertificateTokenKey.h \
+# APIs
+    $${PWD}/OAIDefaultApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIContentKeyPolicies_List_default_response.cpp \
+    $${PWD}/OAIContentKeyPolicies_List_default_response_error.cpp \
+    $${PWD}/OAIContentKeyPolicy.cpp \
+    $${PWD}/OAIContentKeyPolicyClearKeyConfiguration.cpp \
+    $${PWD}/OAIContentKeyPolicyCollection.cpp \
+    $${PWD}/OAIContentKeyPolicyConfiguration.cpp \
+    $${PWD}/OAIContentKeyPolicyFairPlayConfiguration.cpp \
+    $${PWD}/OAIContentKeyPolicyOpenRestriction.cpp \
+    $${PWD}/OAIContentKeyPolicyOption.cpp \
+    $${PWD}/OAIContentKeyPolicyPlayReadyConfiguration.cpp \
+    $${PWD}/OAIContentKeyPolicyPlayReadyContentEncryptionKeyFromHeader.cpp \
+    $${PWD}/OAIContentKeyPolicyPlayReadyContentEncryptionKeyFromKeyIdentifier.cpp \
+    $${PWD}/OAIContentKeyPolicyPlayReadyContentKeyLocation.cpp \
+    $${PWD}/OAIContentKeyPolicyPlayReadyExplicitAnalogTelevisionRestriction.cpp \
+    $${PWD}/OAIContentKeyPolicyPlayReadyLicense.cpp \
+    $${PWD}/OAIContentKeyPolicyPlayReadyPlayRight.cpp \
+    $${PWD}/OAIContentKeyPolicyProperties.cpp \
+    $${PWD}/OAIContentKeyPolicyRestriction.cpp \
+    $${PWD}/OAIContentKeyPolicyRestrictionTokenKey.cpp \
+    $${PWD}/OAIContentKeyPolicyRsaTokenKey.cpp \
+    $${PWD}/OAIContentKeyPolicySymmetricTokenKey.cpp \
+    $${PWD}/OAIContentKeyPolicyTokenClaim.cpp \
+    $${PWD}/OAIContentKeyPolicyTokenRestriction.cpp \
+    $${PWD}/OAIContentKeyPolicyUnknownConfiguration.cpp \
+    $${PWD}/OAIContentKeyPolicyUnknownRestriction.cpp \
+    $${PWD}/OAIContentKeyPolicyWidevineConfiguration.cpp \
+    $${PWD}/OAIContentKeyPolicyX509CertificateTokenKey.cpp \
+# APIs
+    $${PWD}/OAIDefaultApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp
