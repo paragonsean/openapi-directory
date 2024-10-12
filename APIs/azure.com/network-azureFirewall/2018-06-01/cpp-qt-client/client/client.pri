@@ -1,0 +1,61 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIAzureFirewall.h \
+    $${PWD}/OAIAzureFirewallApplicationRule.h \
+    $${PWD}/OAIAzureFirewallApplicationRuleCollection.h \
+    $${PWD}/OAIAzureFirewallApplicationRuleCollectionPropertiesFormat.h \
+    $${PWD}/OAIAzureFirewallApplicationRuleProtocol.h \
+    $${PWD}/OAIAzureFirewallApplicationRuleProtocolType.h \
+    $${PWD}/OAIAzureFirewallIPConfiguration.h \
+    $${PWD}/OAIAzureFirewallIPConfigurationPropertiesFormat.h \
+    $${PWD}/OAIAzureFirewallIPConfigurationPropertiesFormat_internalPublicIpAddress.h \
+    $${PWD}/OAIAzureFirewallListResult.h \
+    $${PWD}/OAIAzureFirewallNetworkRule.h \
+    $${PWD}/OAIAzureFirewallNetworkRuleCollection.h \
+    $${PWD}/OAIAzureFirewallNetworkRuleCollectionPropertiesFormat.h \
+    $${PWD}/OAIAzureFirewallNetworkRuleProtocol.h \
+    $${PWD}/OAIAzureFirewallPropertiesFormat.h \
+    $${PWD}/OAIAzureFirewallRCAction.h \
+    $${PWD}/OAIAzureFirewallRCActionType.h \
+    $${PWD}/OAIProvisioningState.h \
+# APIs
+    $${PWD}/OAIAzureFirewallsApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIAzureFirewall.cpp \
+    $${PWD}/OAIAzureFirewallApplicationRule.cpp \
+    $${PWD}/OAIAzureFirewallApplicationRuleCollection.cpp \
+    $${PWD}/OAIAzureFirewallApplicationRuleCollectionPropertiesFormat.cpp \
+    $${PWD}/OAIAzureFirewallApplicationRuleProtocol.cpp \
+    $${PWD}/OAIAzureFirewallApplicationRuleProtocolType.cpp \
+    $${PWD}/OAIAzureFirewallIPConfiguration.cpp \
+    $${PWD}/OAIAzureFirewallIPConfigurationPropertiesFormat.cpp \
+    $${PWD}/OAIAzureFirewallIPConfigurationPropertiesFormat_internalPublicIpAddress.cpp \
+    $${PWD}/OAIAzureFirewallListResult.cpp \
+    $${PWD}/OAIAzureFirewallNetworkRule.cpp \
+    $${PWD}/OAIAzureFirewallNetworkRuleCollection.cpp \
+    $${PWD}/OAIAzureFirewallNetworkRuleCollectionPropertiesFormat.cpp \
+    $${PWD}/OAIAzureFirewallNetworkRuleProtocol.cpp \
+    $${PWD}/OAIAzureFirewallPropertiesFormat.cpp \
+    $${PWD}/OAIAzureFirewallRCAction.cpp \
+    $${PWD}/OAIAzureFirewallRCActionType.cpp \
+    $${PWD}/OAIProvisioningState.cpp \
+# APIs
+    $${PWD}/OAIAzureFirewallsApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

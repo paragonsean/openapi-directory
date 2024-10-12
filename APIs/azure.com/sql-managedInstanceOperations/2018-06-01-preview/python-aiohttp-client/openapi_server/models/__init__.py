@@ -1,0 +1,8 @@
+# coding: utf-8
+
+# import models into model package
+from openapi_server.models.managed_instance_operation import ManagedInstanceOperation
+from openapi_server.models.managed_instance_operation_list_result import ManagedInstanceOperationListResult
+from openapi_server.models.managed_instance_operation_properties import ManagedInstanceOperationProperties
+from openapi_server.models.proxy_resource import ProxyResource
+from openapi_server.models.resource import Resource

@@ -1,0 +1,10 @@
+# coding: utf-8
+
+# import models into model package
+from openapi_server.models.instance_failover_group import InstanceFailoverGroup
+from openapi_server.models.instance_failover_group_list_result import InstanceFailoverGroupListResult
+from openapi_server.models.instance_failover_group_properties import InstanceFailoverGroupProperties
+from openapi_server.models.instance_failover_group_read_only_endpoint import InstanceFailoverGroupReadOnlyEndpoint
+from openapi_server.models.instance_failover_group_read_write_endpoint import InstanceFailoverGroupReadWriteEndpoint
+from openapi_server.models.managed_instance_pair_info import ManagedInstancePairInfo
+from openapi_server.models.partner_region_info import PartnerRegionInfo

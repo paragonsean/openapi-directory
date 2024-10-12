@@ -1,0 +1,9 @@
+# coding: utf-8
+
+# import models into model package
+from openapi_server.models.permission import Permission
+from openapi_server.models.permission_get_result import PermissionGetResult
+from openapi_server.models.role_definition import RoleDefinition
+from openapi_server.models.role_definition_filter import RoleDefinitionFilter
+from openapi_server.models.role_definition_list_result import RoleDefinitionListResult
+from openapi_server.models.role_definition_properties import RoleDefinitionProperties

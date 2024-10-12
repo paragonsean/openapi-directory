@@ -1,0 +1,19 @@
+# coding: utf-8
+
+# import models into model package
+from openapi_server.models.generate_credentials_parameters import GenerateCredentialsParameters
+from openapi_server.models.generate_credentials_result import GenerateCredentialsResult
+from openapi_server.models.proxy_resource import ProxyResource
+from openapi_server.models.scope_map import ScopeMap
+from openapi_server.models.scope_map_list_result import ScopeMapListResult
+from openapi_server.models.scope_map_properties import ScopeMapProperties
+from openapi_server.models.scope_map_properties_update_parameters import ScopeMapPropertiesUpdateParameters
+from openapi_server.models.scope_map_update_parameters import ScopeMapUpdateParameters
+from openapi_server.models.token import Token
+from openapi_server.models.token_certificate import TokenCertificate
+from openapi_server.models.token_credentials_properties import TokenCredentialsProperties
+from openapi_server.models.token_list_result import TokenListResult
+from openapi_server.models.token_password import TokenPassword
+from openapi_server.models.token_properties import TokenProperties
+from openapi_server.models.token_update_parameters import TokenUpdateParameters
+from openapi_server.models.token_update_properties import TokenUpdateProperties
