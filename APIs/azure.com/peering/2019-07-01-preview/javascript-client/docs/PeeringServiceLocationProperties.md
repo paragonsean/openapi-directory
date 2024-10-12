@@ -1,0 +1,11 @@
+# PeeringManagementClient.PeeringServiceLocationProperties
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**azureRegion** | **String** | Azure region for the location | [optional] 
+**country** | **String** | Country of the customer | [optional] 
+**state** | **String** | State of the customer | [optional] 
+
+

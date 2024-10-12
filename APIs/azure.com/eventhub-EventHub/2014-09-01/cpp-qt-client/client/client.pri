@@ -1,0 +1,87 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAICheckNameAvailabilityParameter.h \
+    $${PWD}/OAICheckNameAvailabilityResult.h \
+    $${PWD}/OAIConsumerGroupCreateOrUpdateParameters.h \
+    $${PWD}/OAIConsumerGroupListResult.h \
+    $${PWD}/OAIConsumerGroupProperties.h \
+    $${PWD}/OAIConsumerGroupResource.h \
+    $${PWD}/OAIEventHubCreateOrUpdateParameters.h \
+    $${PWD}/OAIEventHubListResult.h \
+    $${PWD}/OAIEventHubProperties.h \
+    $${PWD}/OAIEventHubResource.h \
+    $${PWD}/OAINamespaceCreateOrUpdateParameters.h \
+    $${PWD}/OAINamespaceListResult.h \
+    $${PWD}/OAINamespaceProperties.h \
+    $${PWD}/OAINamespaceResource.h \
+    $${PWD}/OAINamespaceUpdateParameter.h \
+    $${PWD}/OAIOperation.h \
+    $${PWD}/OAIOperationListResult.h \
+    $${PWD}/OAIOperation_display.h \
+    $${PWD}/OAIResource.h \
+    $${PWD}/OAISharedAccessAuthorizationRuleCreateOrUpdateParameters.h \
+    $${PWD}/OAISharedAccessAuthorizationRuleListResult.h \
+    $${PWD}/OAISharedAccessAuthorizationRulePostProperties.h \
+    $${PWD}/OAISharedAccessAuthorizationRulePostResource.h \
+    $${PWD}/OAISharedAccessAuthorizationRuleProperties.h \
+    $${PWD}/OAISharedAccessAuthorizationRuleResource.h \
+    $${PWD}/OAISku.h \
+    $${PWD}/OAITrackedResource.h \
+    $${PWD}/OAIUnavailableReason.h \
+# APIs
+    $${PWD}/OAIConsumerGroupsApi.h \
+    $${PWD}/OAIEventHubsApi.h \
+    $${PWD}/OAINamespacesApi.h \
+    $${PWD}/OAIOperationsApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAICheckNameAvailabilityParameter.cpp \
+    $${PWD}/OAICheckNameAvailabilityResult.cpp \
+    $${PWD}/OAIConsumerGroupCreateOrUpdateParameters.cpp \
+    $${PWD}/OAIConsumerGroupListResult.cpp \
+    $${PWD}/OAIConsumerGroupProperties.cpp \
+    $${PWD}/OAIConsumerGroupResource.cpp \
+    $${PWD}/OAIEventHubCreateOrUpdateParameters.cpp \
+    $${PWD}/OAIEventHubListResult.cpp \
+    $${PWD}/OAIEventHubProperties.cpp \
+    $${PWD}/OAIEventHubResource.cpp \
+    $${PWD}/OAINamespaceCreateOrUpdateParameters.cpp \
+    $${PWD}/OAINamespaceListResult.cpp \
+    $${PWD}/OAINamespaceProperties.cpp \
+    $${PWD}/OAINamespaceResource.cpp \
+    $${PWD}/OAINamespaceUpdateParameter.cpp \
+    $${PWD}/OAIOperation.cpp \
+    $${PWD}/OAIOperationListResult.cpp \
+    $${PWD}/OAIOperation_display.cpp \
+    $${PWD}/OAIResource.cpp \
+    $${PWD}/OAISharedAccessAuthorizationRuleCreateOrUpdateParameters.cpp \
+    $${PWD}/OAISharedAccessAuthorizationRuleListResult.cpp \
+    $${PWD}/OAISharedAccessAuthorizationRulePostProperties.cpp \
+    $${PWD}/OAISharedAccessAuthorizationRulePostResource.cpp \
+    $${PWD}/OAISharedAccessAuthorizationRuleProperties.cpp \
+    $${PWD}/OAISharedAccessAuthorizationRuleResource.cpp \
+    $${PWD}/OAISku.cpp \
+    $${PWD}/OAITrackedResource.cpp \
+    $${PWD}/OAIUnavailableReason.cpp \
+# APIs
+    $${PWD}/OAIConsumerGroupsApi.cpp \
+    $${PWD}/OAIEventHubsApi.cpp \
+    $${PWD}/OAINamespacesApi.cpp \
+    $${PWD}/OAIOperationsApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

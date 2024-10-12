@@ -1,0 +1,31 @@
+# coding: utf-8
+
+# import models into model package
+from openapi_server.models.bgp_session import BgpSession
+from openapi_server.models.contact_info import ContactInfo
+from openapi_server.models.direct_connection import DirectConnection
+from openapi_server.models.direct_peering_facility import DirectPeeringFacility
+from openapi_server.models.error_response import ErrorResponse
+from openapi_server.models.exchange_connection import ExchangeConnection
+from openapi_server.models.exchange_peering_facility import ExchangePeeringFacility
+from openapi_server.models.operation import Operation
+from openapi_server.models.operation_display_info import OperationDisplayInfo
+from openapi_server.models.operation_list_result import OperationListResult
+from openapi_server.models.peer_asn import PeerAsn
+from openapi_server.models.peer_asn_list_result import PeerAsnListResult
+from openapi_server.models.peer_asn_properties import PeerAsnProperties
+from openapi_server.models.peering import Peering
+from openapi_server.models.peering_bandwidth_offer import PeeringBandwidthOffer
+from openapi_server.models.peering_list_result import PeeringListResult
+from openapi_server.models.peering_location import PeeringLocation
+from openapi_server.models.peering_location_list_result import PeeringLocationListResult
+from openapi_server.models.peering_location_properties import PeeringLocationProperties
+from openapi_server.models.peering_location_properties_direct import PeeringLocationPropertiesDirect
+from openapi_server.models.peering_location_properties_exchange import PeeringLocationPropertiesExchange
+from openapi_server.models.peering_properties import PeeringProperties
+from openapi_server.models.peering_properties_direct import PeeringPropertiesDirect
+from openapi_server.models.peering_properties_exchange import PeeringPropertiesExchange
+from openapi_server.models.peering_sku import PeeringSku
+from openapi_server.models.resource import Resource
+from openapi_server.models.resource_tags import ResourceTags
+from openapi_server.models.sub_resource import SubResource

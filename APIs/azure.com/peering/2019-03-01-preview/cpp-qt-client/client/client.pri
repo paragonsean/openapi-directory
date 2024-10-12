@@ -1,0 +1,89 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIBgpSession.h \
+    $${PWD}/OAIContactInfo.h \
+    $${PWD}/OAIDirectConnection.h \
+    $${PWD}/OAIDirectPeeringFacility.h \
+    $${PWD}/OAIErrorResponse.h \
+    $${PWD}/OAIExchangeConnection.h \
+    $${PWD}/OAIExchangePeeringFacility.h \
+    $${PWD}/OAIOperation.h \
+    $${PWD}/OAIOperationDisplayInfo.h \
+    $${PWD}/OAIOperationListResult.h \
+    $${PWD}/OAIPeerAsn.h \
+    $${PWD}/OAIPeerAsnListResult.h \
+    $${PWD}/OAIPeerAsnProperties.h \
+    $${PWD}/OAIPeering.h \
+    $${PWD}/OAIPeeringBandwidthOffer.h \
+    $${PWD}/OAIPeeringListResult.h \
+    $${PWD}/OAIPeeringLocation.h \
+    $${PWD}/OAIPeeringLocationListResult.h \
+    $${PWD}/OAIPeeringLocationProperties.h \
+    $${PWD}/OAIPeeringLocationPropertiesDirect.h \
+    $${PWD}/OAIPeeringLocationPropertiesExchange.h \
+    $${PWD}/OAIPeeringProperties.h \
+    $${PWD}/OAIPeeringPropertiesDirect.h \
+    $${PWD}/OAIPeeringPropertiesExchange.h \
+    $${PWD}/OAIPeeringSku.h \
+    $${PWD}/OAIResource.h \
+    $${PWD}/OAIResourceTags.h \
+    $${PWD}/OAISubResource.h \
+# APIs
+    $${PWD}/OAILegacyPeeringsApi.h \
+    $${PWD}/OAIOperationsApi.h \
+    $${PWD}/OAIPeerAsnsApi.h \
+    $${PWD}/OAIPeeringLocationsApi.h \
+    $${PWD}/OAIPeeringsApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIBgpSession.cpp \
+    $${PWD}/OAIContactInfo.cpp \
+    $${PWD}/OAIDirectConnection.cpp \
+    $${PWD}/OAIDirectPeeringFacility.cpp \
+    $${PWD}/OAIErrorResponse.cpp \
+    $${PWD}/OAIExchangeConnection.cpp \
+    $${PWD}/OAIExchangePeeringFacility.cpp \
+    $${PWD}/OAIOperation.cpp \
+    $${PWD}/OAIOperationDisplayInfo.cpp \
+    $${PWD}/OAIOperationListResult.cpp \
+    $${PWD}/OAIPeerAsn.cpp \
+    $${PWD}/OAIPeerAsnListResult.cpp \
+    $${PWD}/OAIPeerAsnProperties.cpp \
+    $${PWD}/OAIPeering.cpp \
+    $${PWD}/OAIPeeringBandwidthOffer.cpp \
+    $${PWD}/OAIPeeringListResult.cpp \
+    $${PWD}/OAIPeeringLocation.cpp \
+    $${PWD}/OAIPeeringLocationListResult.cpp \
+    $${PWD}/OAIPeeringLocationProperties.cpp \
+    $${PWD}/OAIPeeringLocationPropertiesDirect.cpp \
+    $${PWD}/OAIPeeringLocationPropertiesExchange.cpp \
+    $${PWD}/OAIPeeringProperties.cpp \
+    $${PWD}/OAIPeeringPropertiesDirect.cpp \
+    $${PWD}/OAIPeeringPropertiesExchange.cpp \
+    $${PWD}/OAIPeeringSku.cpp \
+    $${PWD}/OAIResource.cpp \
+    $${PWD}/OAIResourceTags.cpp \
+    $${PWD}/OAISubResource.cpp \
+# APIs
+    $${PWD}/OAILegacyPeeringsApi.cpp \
+    $${PWD}/OAIOperationsApi.cpp \
+    $${PWD}/OAIPeerAsnsApi.cpp \
+    $${PWD}/OAIPeeringLocationsApi.cpp \
+    $${PWD}/OAIPeeringsApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

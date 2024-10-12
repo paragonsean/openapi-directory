@@ -1,0 +1,184 @@
+openapi: 3.0.1
+info:
+  description: The Microsoft Azure Network management API provides a RESTful set of
+    web services that interact with Microsoft Azure Networks service to manage your
+    network resources. The API has entities that capture the relationship between
+    an end user and the Microsoft Azure Networks service.
+  title: NetworkManagementClient
+  version: 2017-03-01
+  x-apisguru-categories:
+  - cloud
+  x-logo:
+    url: https://assets.onestore.ms/cdnfiles/onestorerolling-1606-01000/shell/v3/images/logo/microsoft.png
+  x-origin:
+  - format: swagger
+    url: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/network/resource-manager/Microsoft.Network/stable/2017-03-01/usage.json
+    version: "2.0"
+  x-preferred: false
+  x-providerName: azure.com
+  x-serviceName: network-usage
+  x-tags:
+  - Azure
+  - Microsoft
+servers:
+- url: https://management.azure.com/
+security:
+- azure_auth:
+  - user_impersonation
+paths:
+  /subscriptions/{subscriptionId}/providers/Microsoft.Network/locations/{location}/usages:
+    get:
+      description: Lists compute usages for a subscription.
+      operationId: usages_list
+      parameters:
+      - description: The location where resource usage is queried.
+        in: path
+        name: location
+        required: true
+        schema:
+          pattern: "^[-\\w\\._]+$"
+          type: string
+      - description: Client API version.
+        in: query
+        name: api-version
+        required: true
+        schema:
+          type: string
+      - description: The subscription credentials which uniquely identify the Microsoft
+          Azure subscription. The subscription ID forms part of the URI for every
+          service call.
+        in: path
+        name: subscriptionId
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UsagesListResult'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/UsagesListResult'
+          description: Request successful. The operation returns a list of Usage resources.
+      tags:
+      - Usages
+      x-ms-pageable:
+        nextLinkName: nextLink
+      x-openapi-router-controller: openapi_server.controllers.usages_controller
+components:
+  parameters:
+    ApiVersionParameter:
+      description: Client API version.
+      in: query
+      name: api-version
+      required: true
+      schema:
+        type: string
+    SubscriptionIdParameter:
+      description: The subscription credentials which uniquely identify the Microsoft
+        Azure subscription. The subscription ID forms part of the URI for every service
+        call.
+      in: path
+      name: subscriptionId
+      required: true
+      schema:
+        type: string
+  schemas:
+    Usage:
+      description: Describes network resource usage.
+      example:
+        unit: Count
+        limit: 6
+        name:
+          localizedValue: localizedValue
+          value: value
+        currentValue: 0
+      properties:
+        currentValue:
+          description: The current value of the usage.
+          format: int64
+          title: currentValue
+          type: integer
+        limit:
+          description: The limit of usage.
+          format: int64
+          title: limit
+          type: integer
+        name:
+          $ref: '#/components/schemas/UsageName'
+        unit:
+          description: An enum describing the unit of measurement.
+          enum:
+          - Count
+          title: unit
+          type: string
+          x-ms-enum:
+            modelAsString: true
+            name: UsageUnit
+      required:
+      - currentValue
+      - limit
+      - name
+      - unit
+      title: Usage
+      type: object
+    UsageName:
+      description: The usage names.
+      example:
+        localizedValue: localizedValue
+        value: value
+      properties:
+        localizedValue:
+          description: A localized string describing the resource name.
+          title: localizedValue
+          type: string
+        value:
+          description: A string describing the resource name.
+          title: value
+          type: string
+      title: UsageName
+      type: object
+    UsagesListResult:
+      description: The list usages operation response.
+      example:
+        value:
+        - unit: Count
+          limit: 6
+          name:
+            localizedValue: localizedValue
+            value: value
+          currentValue: 0
+        - unit: Count
+          limit: 6
+          name:
+            localizedValue: localizedValue
+            value: value
+          currentValue: 0
+        nextLink: nextLink
+      properties:
+        nextLink:
+          description: URL to get the next set of results.
+          title: nextLink
+          type: string
+        value:
+          description: The list network resource usages.
+          items:
+            $ref: '#/components/schemas/Usage'
+          title: value
+          type: array
+      title: UsagesListResult
+      type: object
+  securitySchemes:
+    azure_auth:
+      description: Azure Active Directory OAuth2 Flow
+      flows:
+        implicit:
+          authorizationUrl: https://login.microsoftonline.com/common/oauth2/authorize
+          scopes:
+            user_impersonation: impersonate your user account
+      type: oauth2
+      x-tokenInfoFunc: openapi_server.controllers.security_controller.info_from_azure_auth
+      x-scopeValidateFunc: openapi_server.controllers.security_controller.validate_scope_azure_auth
+x-original-swagger-version: "2.0"

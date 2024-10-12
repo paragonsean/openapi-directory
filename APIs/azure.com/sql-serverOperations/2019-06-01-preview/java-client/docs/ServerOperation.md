@@ -1,0 +1,17 @@
+
+
+# ServerOperation
+
+A server operation.
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**properties** | [**ServerOperationProperties**](ServerOperationProperties.md) |  |  [optional] |
+|**id** | **String** | Resource ID. |  [optional] [readonly] |
+|**name** | **String** | Resource name. |  [optional] [readonly] |
+|**type** | **String** | Resource type. |  [optional] [readonly] |
+
+
+

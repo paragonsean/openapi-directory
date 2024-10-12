@@ -1,0 +1,87 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIAccount.h \
+    $${PWD}/OAIAccountList.h \
+    $${PWD}/OAIAccountPatch.h \
+    $${PWD}/OAIChannel.h \
+    $${PWD}/OAIChannelList.h \
+    $${PWD}/OAIChannelProperties.h \
+    $${PWD}/OAIChannelTypeDescription.h \
+    $${PWD}/OAIChannelTypeDescriptionList.h \
+    $${PWD}/OAICheckNameAvailabilityParameter.h \
+    $${PWD}/OAICheckNameAvailabilityResult.h \
+    $${PWD}/OAICheckNameUnavailableReason.h \
+    $${PWD}/OAICloudError.h \
+    $${PWD}/OAICloudErrorBody.h \
+    $${PWD}/OAIKeyDescription.h \
+    $${PWD}/OAIKeyDescriptionList.h \
+    $${PWD}/OAIKeyRank.h \
+    $${PWD}/OAIOperation.h \
+    $${PWD}/OAIOperationDisplay.h \
+    $${PWD}/OAIOperationList.h \
+    $${PWD}/OAIProxyOnlyResource.h \
+    $${PWD}/OAIRegenerateKeyParameter.h \
+    $${PWD}/OAIResource.h \
+    $${PWD}/OAISKU.h \
+    $${PWD}/OAISkuDescription.h \
+    $${PWD}/OAISkuDescriptionList.h \
+    $${PWD}/OAISkuLocationInfoItem.h \
+    $${PWD}/OAITrackedResource.h \
+# APIs
+    $${PWD}/OAIAccountsApi.h \
+    $${PWD}/OAIChannelsApi.h \
+    $${PWD}/OAINameAvailabilityApi.h \
+    $${PWD}/OAIOperationsApi.h \
+    $${PWD}/OAISkusApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIAccount.cpp \
+    $${PWD}/OAIAccountList.cpp \
+    $${PWD}/OAIAccountPatch.cpp \
+    $${PWD}/OAIChannel.cpp \
+    $${PWD}/OAIChannelList.cpp \
+    $${PWD}/OAIChannelProperties.cpp \
+    $${PWD}/OAIChannelTypeDescription.cpp \
+    $${PWD}/OAIChannelTypeDescriptionList.cpp \
+    $${PWD}/OAICheckNameAvailabilityParameter.cpp \
+    $${PWD}/OAICheckNameAvailabilityResult.cpp \
+    $${PWD}/OAICheckNameUnavailableReason.cpp \
+    $${PWD}/OAICloudError.cpp \
+    $${PWD}/OAICloudErrorBody.cpp \
+    $${PWD}/OAIKeyDescription.cpp \
+    $${PWD}/OAIKeyDescriptionList.cpp \
+    $${PWD}/OAIKeyRank.cpp \
+    $${PWD}/OAIOperation.cpp \
+    $${PWD}/OAIOperationDisplay.cpp \
+    $${PWD}/OAIOperationList.cpp \
+    $${PWD}/OAIProxyOnlyResource.cpp \
+    $${PWD}/OAIRegenerateKeyParameter.cpp \
+    $${PWD}/OAIResource.cpp \
+    $${PWD}/OAISKU.cpp \
+    $${PWD}/OAISkuDescription.cpp \
+    $${PWD}/OAISkuDescriptionList.cpp \
+    $${PWD}/OAISkuLocationInfoItem.cpp \
+    $${PWD}/OAITrackedResource.cpp \
+# APIs
+    $${PWD}/OAIAccountsApi.cpp \
+    $${PWD}/OAIChannelsApi.cpp \
+    $${PWD}/OAINameAvailabilityApi.cpp \
+    $${PWD}/OAIOperationsApi.cpp \
+    $${PWD}/OAISkusApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

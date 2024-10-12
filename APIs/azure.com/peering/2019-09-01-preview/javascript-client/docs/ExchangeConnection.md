@@ -1,0 +1,36 @@
+# PeeringManagementClient.ExchangeConnection
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**bgpSession** | [**BgpSession**](BgpSession.md) |  | [optional] 
+**connectionIdentifier** | **String** | The unique identifier (GUID) for the connection. | [optional] 
+**connectionState** | **String** | The state of the connection. | [optional] [readonly] 
+**errorMessage** | **String** | The error message related to the connection state, if any. | [optional] [readonly] 
+**peeringDBFacilityId** | **Number** | The PeeringDB.com ID of the facility at which the connection has to be set up. | [optional] 
+
+
+
+## Enum: ConnectionStateEnum
+
+
+* `None` (value: `"None"`)
+
+* `PendingApproval` (value: `"PendingApproval"`)
+
+* `Approved` (value: `"Approved"`)
+
+* `ProvisioningStarted` (value: `"ProvisioningStarted"`)
+
+* `ProvisioningFailed` (value: `"ProvisioningFailed"`)
+
+* `ProvisioningCompleted` (value: `"ProvisioningCompleted"`)
+
+* `Validating` (value: `"Validating"`)
+
+* `Active` (value: `"Active"`)
+
+
+
+

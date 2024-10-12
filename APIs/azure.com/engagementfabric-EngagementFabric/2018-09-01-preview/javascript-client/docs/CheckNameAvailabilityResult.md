@@ -1,0 +1,11 @@
+# EngagementFabric.CheckNameAvailabilityResult
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**message** | **String** | The message if name is unavailable | [optional] [readonly] 
+**nameAvailable** | **Boolean** | The name to be checked | [optional] [readonly] 
+**reason** | [**CheckNameUnavailableReason**](CheckNameUnavailableReason.md) |  | [optional] 
+
+
