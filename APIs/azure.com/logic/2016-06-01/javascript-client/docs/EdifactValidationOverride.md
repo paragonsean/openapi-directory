@@ -1,0 +1,15 @@
+# LogicManagementClient.EdifactValidationOverride
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**allowLeadingAndTrailingSpacesAndZeroes** | **Boolean** | The value indicating whether to allow leading and trailing spaces and zeroes. | 
+**enforceCharacterSet** | **Boolean** | The value indicating whether to validate character Set. | 
+**messageId** | **String** | The message id on which the validation settings has to be applied. | 
+**trailingSeparatorPolicy** | [**TrailingSeparatorPolicy**](TrailingSeparatorPolicy.md) |  | 
+**trimLeadingAndTrailingSpacesAndZeroes** | **Boolean** | The value indicating whether to trim leading and trailing spaces and zeroes. | 
+**validateEdiTypes** | **Boolean** | The value indicating whether to validate EDI types. | 
+**validateXsdTypes** | **Boolean** | The value indicating whether to validate XSD types. | 
+
+

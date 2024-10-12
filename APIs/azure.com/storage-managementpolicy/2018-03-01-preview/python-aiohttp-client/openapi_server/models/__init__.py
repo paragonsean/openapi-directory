@@ -1,0 +1,7 @@
+# coding: utf-8
+
+# import models into model package
+from openapi_server.models.management_policies_rules import ManagementPoliciesRules
+from openapi_server.models.management_policies_rules_set_parameter import ManagementPoliciesRulesSetParameter
+from openapi_server.models.storage_account_management_policies import StorageAccountManagementPolicies
+from openapi_server.models.storage_account_management_policies_rules_property import StorageAccountManagementPoliciesRulesProperty

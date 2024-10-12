@@ -1,0 +1,6 @@
+# coding: utf-8
+
+# import models into model package
+from openapi_server.models.automatic_tuning_options import AutomaticTuningOptions
+from openapi_server.models.database_automatic_tuning import DatabaseAutomaticTuning
+from openapi_server.models.database_automatic_tuning_properties import DatabaseAutomaticTuningProperties

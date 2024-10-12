@@ -1,0 +1,1147 @@
+# WorkflowsApi
+
+All URIs are relative to *https://management.azure.com*
+
+| Method | HTTP request | Description |
+|------------- | ------------- | -------------|
+| [**workflowsCreateOrUpdate**](WorkflowsApi.md#workflowsCreateOrUpdate) | **PUT** /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/workflows/{workflowName} |  |
+| [**workflowsDelete**](WorkflowsApi.md#workflowsDelete) | **DELETE** /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/workflows/{workflowName} |  |
+| [**workflowsDisable**](WorkflowsApi.md#workflowsDisable) | **POST** /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/workflows/{workflowName}/disable |  |
+| [**workflowsEnable**](WorkflowsApi.md#workflowsEnable) | **POST** /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/workflows/{workflowName}/enable |  |
+| [**workflowsGenerateUpgradedDefinition**](WorkflowsApi.md#workflowsGenerateUpgradedDefinition) | **POST** /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/workflows/{workflowName}/generateUpgradedDefinition |  |
+| [**workflowsGet**](WorkflowsApi.md#workflowsGet) | **GET** /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/workflows/{workflowName} |  |
+| [**workflowsListByResourceGroup**](WorkflowsApi.md#workflowsListByResourceGroup) | **GET** /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/workflows |  |
+| [**workflowsListBySubscription**](WorkflowsApi.md#workflowsListBySubscription) | **GET** /subscriptions/{subscriptionId}/providers/Microsoft.Logic/workflows |  |
+| [**workflowsListCallbackUrl**](WorkflowsApi.md#workflowsListCallbackUrl) | **POST** /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/workflows/{workflowName}/listCallbackUrl |  |
+| [**workflowsListSwagger**](WorkflowsApi.md#workflowsListSwagger) | **POST** /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/workflows/{workflowName}/listSwagger |  |
+| [**workflowsMove**](WorkflowsApi.md#workflowsMove) | **POST** /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/workflows/{workflowName}/move |  |
+| [**workflowsRegenerateAccessKey**](WorkflowsApi.md#workflowsRegenerateAccessKey) | **POST** /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/workflows/{workflowName}/regenerateAccessKey |  |
+| [**workflowsUpdate**](WorkflowsApi.md#workflowsUpdate) | **PATCH** /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/workflows/{workflowName} |  |
+| [**workflowsValidateByLocation**](WorkflowsApi.md#workflowsValidateByLocation) | **POST** /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/locations/{location}/workflows/{workflowName}/validate |  |
+| [**workflowsValidateByResourceGroup**](WorkflowsApi.md#workflowsValidateByResourceGroup) | **POST** /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/workflows/{workflowName}/validate |  |
+
+
+<a id="workflowsCreateOrUpdate"></a>
+# **workflowsCreateOrUpdate**
+> Workflow workflowsCreateOrUpdate(subscriptionId, resourceGroupName, workflowName, apiVersion, workflow)
+
+
+
+Creates or updates a workflow.
+
+### Example
+```java
+// Import classes:
+import org.openapitools.client.ApiClient;
+import org.openapitools.client.ApiException;
+import org.openapitools.client.Configuration;
+import org.openapitools.client.auth.*;
+import org.openapitools.client.models.*;
+import org.openapitools.client.api.WorkflowsApi;
+
+public class Example {
+  public static void main(String[] args) {
+    ApiClient defaultClient = Configuration.getDefaultApiClient();
+    defaultClient.setBasePath("https://management.azure.com");
+    
+    // Configure OAuth2 access token for authorization: azure_auth
+    OAuth azure_auth = (OAuth) defaultClient.getAuthentication("azure_auth");
+    azure_auth.setAccessToken("YOUR ACCESS TOKEN");
+
+    WorkflowsApi apiInstance = new WorkflowsApi(defaultClient);
+    String subscriptionId = "subscriptionId_example"; // String | The subscription id.
+    String resourceGroupName = "resourceGroupName_example"; // String | The resource group name.
+    String workflowName = "workflowName_example"; // String | The workflow name.
+    String apiVersion = "apiVersion_example"; // String | The API version.
+    Workflow workflow = new Workflow(); // Workflow | The workflow.
+    try {
+      Workflow result = apiInstance.workflowsCreateOrUpdate(subscriptionId, resourceGroupName, workflowName, apiVersion, workflow);
+      System.out.println(result);
+    } catch (ApiException e) {
+      System.err.println("Exception when calling WorkflowsApi#workflowsCreateOrUpdate");
+      System.err.println("Status code: " + e.getCode());
+      System.err.println("Reason: " + e.getResponseBody());
+      System.err.println("Response headers: " + e.getResponseHeaders());
+      e.printStackTrace();
+    }
+  }
+}
+```
+
+### Parameters
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **subscriptionId** | **String**| The subscription id. | |
+| **resourceGroupName** | **String**| The resource group name. | |
+| **workflowName** | **String**| The workflow name. | |
+| **apiVersion** | **String**| The API version. | |
+| **workflow** | [**Workflow**](Workflow.md)| The workflow. | |
+
+### Return type
+
+[**Workflow**](Workflow.md)
+
+### Authorization
+
+[azure_auth](../README.md#azure_auth)
+
+### HTTP request headers
+
+ - **Content-Type**: application/json
+ - **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | OK |  -  |
+| **201** | Created |  -  |
+| **0** | Error response describing why the operation failed. |  -  |
+
+<a id="workflowsDelete"></a>
+# **workflowsDelete**
+> workflowsDelete(subscriptionId, resourceGroupName, workflowName, apiVersion)
+
+
+
+Deletes a workflow.
+
+### Example
+```java
+// Import classes:
+import org.openapitools.client.ApiClient;
+import org.openapitools.client.ApiException;
+import org.openapitools.client.Configuration;
+import org.openapitools.client.auth.*;
+import org.openapitools.client.models.*;
+import org.openapitools.client.api.WorkflowsApi;
+
+public class Example {
+  public static void main(String[] args) {
+    ApiClient defaultClient = Configuration.getDefaultApiClient();
+    defaultClient.setBasePath("https://management.azure.com");
+    
+    // Configure OAuth2 access token for authorization: azure_auth
+    OAuth azure_auth = (OAuth) defaultClient.getAuthentication("azure_auth");
+    azure_auth.setAccessToken("YOUR ACCESS TOKEN");
+
+    WorkflowsApi apiInstance = new WorkflowsApi(defaultClient);
+    String subscriptionId = "subscriptionId_example"; // String | The subscription id.
+    String resourceGroupName = "resourceGroupName_example"; // String | The resource group name.
+    String workflowName = "workflowName_example"; // String | The workflow name.
+    String apiVersion = "apiVersion_example"; // String | The API version.
+    try {
+      apiInstance.workflowsDelete(subscriptionId, resourceGroupName, workflowName, apiVersion);
+    } catch (ApiException e) {
+      System.err.println("Exception when calling WorkflowsApi#workflowsDelete");
+      System.err.println("Status code: " + e.getCode());
+      System.err.println("Reason: " + e.getResponseBody());
+      System.err.println("Response headers: " + e.getResponseHeaders());
+      e.printStackTrace();
+    }
+  }
+}
+```
+
+### Parameters
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **subscriptionId** | **String**| The subscription id. | |
+| **resourceGroupName** | **String**| The resource group name. | |
+| **workflowName** | **String**| The workflow name. | |
+| **apiVersion** | **String**| The API version. | |
+
+### Return type
+
+null (empty response body)
+
+### Authorization
+
+[azure_auth](../README.md#azure_auth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | OK |  -  |
+| **204** | No Content |  -  |
+| **0** | Error response describing why the operation failed. |  -  |
+
+<a id="workflowsDisable"></a>
+# **workflowsDisable**
+> workflowsDisable(subscriptionId, resourceGroupName, workflowName, apiVersion)
+
+
+
+Disables a workflow.
+
+### Example
+```java
+// Import classes:
+import org.openapitools.client.ApiClient;
+import org.openapitools.client.ApiException;
+import org.openapitools.client.Configuration;
+import org.openapitools.client.auth.*;
+import org.openapitools.client.models.*;
+import org.openapitools.client.api.WorkflowsApi;
+
+public class Example {
+  public static void main(String[] args) {
+    ApiClient defaultClient = Configuration.getDefaultApiClient();
+    defaultClient.setBasePath("https://management.azure.com");
+    
+    // Configure OAuth2 access token for authorization: azure_auth
+    OAuth azure_auth = (OAuth) defaultClient.getAuthentication("azure_auth");
+    azure_auth.setAccessToken("YOUR ACCESS TOKEN");
+
+    WorkflowsApi apiInstance = new WorkflowsApi(defaultClient);
+    String subscriptionId = "subscriptionId_example"; // String | The subscription id.
+    String resourceGroupName = "resourceGroupName_example"; // String | The resource group name.
+    String workflowName = "workflowName_example"; // String | The workflow name.
+    String apiVersion = "apiVersion_example"; // String | The API version.
+    try {
+      apiInstance.workflowsDisable(subscriptionId, resourceGroupName, workflowName, apiVersion);
+    } catch (ApiException e) {
+      System.err.println("Exception when calling WorkflowsApi#workflowsDisable");
+      System.err.println("Status code: " + e.getCode());
+      System.err.println("Reason: " + e.getResponseBody());
+      System.err.println("Response headers: " + e.getResponseHeaders());
+      e.printStackTrace();
+    }
+  }
+}
+```
+
+### Parameters
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **subscriptionId** | **String**| The subscription id. | |
+| **resourceGroupName** | **String**| The resource group name. | |
+| **workflowName** | **String**| The workflow name. | |
+| **apiVersion** | **String**| The API version. | |
+
+### Return type
+
+null (empty response body)
+
+### Authorization
+
+[azure_auth](../README.md#azure_auth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | OK |  -  |
+| **0** | Error response describing why the operation failed. |  -  |
+
+<a id="workflowsEnable"></a>
+# **workflowsEnable**
+> workflowsEnable(subscriptionId, resourceGroupName, workflowName, apiVersion)
+
+
+
+Enables a workflow.
+
+### Example
+```java
+// Import classes:
+import org.openapitools.client.ApiClient;
+import org.openapitools.client.ApiException;
+import org.openapitools.client.Configuration;
+import org.openapitools.client.auth.*;
+import org.openapitools.client.models.*;
+import org.openapitools.client.api.WorkflowsApi;
+
+public class Example {
+  public static void main(String[] args) {
+    ApiClient defaultClient = Configuration.getDefaultApiClient();
+    defaultClient.setBasePath("https://management.azure.com");
+    
+    // Configure OAuth2 access token for authorization: azure_auth
+    OAuth azure_auth = (OAuth) defaultClient.getAuthentication("azure_auth");
+    azure_auth.setAccessToken("YOUR ACCESS TOKEN");
+
+    WorkflowsApi apiInstance = new WorkflowsApi(defaultClient);
+    String subscriptionId = "subscriptionId_example"; // String | The subscription id.
+    String resourceGroupName = "resourceGroupName_example"; // String | The resource group name.
+    String workflowName = "workflowName_example"; // String | The workflow name.
+    String apiVersion = "apiVersion_example"; // String | The API version.
+    try {
+      apiInstance.workflowsEnable(subscriptionId, resourceGroupName, workflowName, apiVersion);
+    } catch (ApiException e) {
+      System.err.println("Exception when calling WorkflowsApi#workflowsEnable");
+      System.err.println("Status code: " + e.getCode());
+      System.err.println("Reason: " + e.getResponseBody());
+      System.err.println("Response headers: " + e.getResponseHeaders());
+      e.printStackTrace();
+    }
+  }
+}
+```
+
+### Parameters
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **subscriptionId** | **String**| The subscription id. | |
+| **resourceGroupName** | **String**| The resource group name. | |
+| **workflowName** | **String**| The workflow name. | |
+| **apiVersion** | **String**| The API version. | |
+
+### Return type
+
+null (empty response body)
+
+### Authorization
+
+[azure_auth](../README.md#azure_auth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | OK |  -  |
+| **0** | Error response describing why the operation failed. |  -  |
+
+<a id="workflowsGenerateUpgradedDefinition"></a>
+# **workflowsGenerateUpgradedDefinition**
+> Object workflowsGenerateUpgradedDefinition(subscriptionId, resourceGroupName, workflowName, apiVersion, parameters)
+
+
+
+Generates the upgraded definition for a workflow.
+
+### Example
+```java
+// Import classes:
+import org.openapitools.client.ApiClient;
+import org.openapitools.client.ApiException;
+import org.openapitools.client.Configuration;
+import org.openapitools.client.auth.*;
+import org.openapitools.client.models.*;
+import org.openapitools.client.api.WorkflowsApi;
+
+public class Example {
+  public static void main(String[] args) {
+    ApiClient defaultClient = Configuration.getDefaultApiClient();
+    defaultClient.setBasePath("https://management.azure.com");
+    
+    // Configure OAuth2 access token for authorization: azure_auth
+    OAuth azure_auth = (OAuth) defaultClient.getAuthentication("azure_auth");
+    azure_auth.setAccessToken("YOUR ACCESS TOKEN");
+
+    WorkflowsApi apiInstance = new WorkflowsApi(defaultClient);
+    String subscriptionId = "subscriptionId_example"; // String | The subscription id.
+    String resourceGroupName = "resourceGroupName_example"; // String | The resource group name.
+    String workflowName = "workflowName_example"; // String | The workflow name.
+    String apiVersion = "apiVersion_example"; // String | The API version.
+    GenerateUpgradedDefinitionParameters parameters = new GenerateUpgradedDefinitionParameters(); // GenerateUpgradedDefinitionParameters | Parameters for generating an upgraded definition.
+    try {
+      Object result = apiInstance.workflowsGenerateUpgradedDefinition(subscriptionId, resourceGroupName, workflowName, apiVersion, parameters);
+      System.out.println(result);
+    } catch (ApiException e) {
+      System.err.println("Exception when calling WorkflowsApi#workflowsGenerateUpgradedDefinition");
+      System.err.println("Status code: " + e.getCode());
+      System.err.println("Reason: " + e.getResponseBody());
+      System.err.println("Response headers: " + e.getResponseHeaders());
+      e.printStackTrace();
+    }
+  }
+}
+```
+
+### Parameters
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **subscriptionId** | **String**| The subscription id. | |
+| **resourceGroupName** | **String**| The resource group name. | |
+| **workflowName** | **String**| The workflow name. | |
+| **apiVersion** | **String**| The API version. | |
+| **parameters** | [**GenerateUpgradedDefinitionParameters**](GenerateUpgradedDefinitionParameters.md)| Parameters for generating an upgraded definition. | |
+
+### Return type
+
+**Object**
+
+### Authorization
+
+[azure_auth](../README.md#azure_auth)
+
+### HTTP request headers
+
+ - **Content-Type**: application/json
+ - **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | OK |  -  |
+| **0** | Error response describing why the operation failed. |  -  |
+
+<a id="workflowsGet"></a>
+# **workflowsGet**
+> Workflow workflowsGet(subscriptionId, resourceGroupName, workflowName, apiVersion)
+
+
+
+Gets a workflow.
+
+### Example
+```java
+// Import classes:
+import org.openapitools.client.ApiClient;
+import org.openapitools.client.ApiException;
+import org.openapitools.client.Configuration;
+import org.openapitools.client.auth.*;
+import org.openapitools.client.models.*;
+import org.openapitools.client.api.WorkflowsApi;
+
+public class Example {
+  public static void main(String[] args) {
+    ApiClient defaultClient = Configuration.getDefaultApiClient();
+    defaultClient.setBasePath("https://management.azure.com");
+    
+    // Configure OAuth2 access token for authorization: azure_auth
+    OAuth azure_auth = (OAuth) defaultClient.getAuthentication("azure_auth");
+    azure_auth.setAccessToken("YOUR ACCESS TOKEN");
+
+    WorkflowsApi apiInstance = new WorkflowsApi(defaultClient);
+    String subscriptionId = "subscriptionId_example"; // String | The subscription id.
+    String resourceGroupName = "resourceGroupName_example"; // String | The resource group name.
+    String workflowName = "workflowName_example"; // String | The workflow name.
+    String apiVersion = "apiVersion_example"; // String | The API version.
+    try {
+      Workflow result = apiInstance.workflowsGet(subscriptionId, resourceGroupName, workflowName, apiVersion);
+      System.out.println(result);
+    } catch (ApiException e) {
+      System.err.println("Exception when calling WorkflowsApi#workflowsGet");
+      System.err.println("Status code: " + e.getCode());
+      System.err.println("Reason: " + e.getResponseBody());
+      System.err.println("Response headers: " + e.getResponseHeaders());
+      e.printStackTrace();
+    }
+  }
+}
+```
+
+### Parameters
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **subscriptionId** | **String**| The subscription id. | |
+| **resourceGroupName** | **String**| The resource group name. | |
+| **workflowName** | **String**| The workflow name. | |
+| **apiVersion** | **String**| The API version. | |
+
+### Return type
+
+[**Workflow**](Workflow.md)
+
+### Authorization
+
+[azure_auth](../README.md#azure_auth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | OK |  -  |
+| **0** | Error response describing why the operation failed. |  -  |
+
+<a id="workflowsListByResourceGroup"></a>
+# **workflowsListByResourceGroup**
+> WorkflowListResult workflowsListByResourceGroup(subscriptionId, resourceGroupName, apiVersion, $top, $filter)
+
+
+
+Gets a list of workflows by resource group.
+
+### Example
+```java
+// Import classes:
+import org.openapitools.client.ApiClient;
+import org.openapitools.client.ApiException;
+import org.openapitools.client.Configuration;
+import org.openapitools.client.auth.*;
+import org.openapitools.client.models.*;
+import org.openapitools.client.api.WorkflowsApi;
+
+public class Example {
+  public static void main(String[] args) {
+    ApiClient defaultClient = Configuration.getDefaultApiClient();
+    defaultClient.setBasePath("https://management.azure.com");
+    
+    // Configure OAuth2 access token for authorization: azure_auth
+    OAuth azure_auth = (OAuth) defaultClient.getAuthentication("azure_auth");
+    azure_auth.setAccessToken("YOUR ACCESS TOKEN");
+
+    WorkflowsApi apiInstance = new WorkflowsApi(defaultClient);
+    String subscriptionId = "subscriptionId_example"; // String | The subscription id.
+    String resourceGroupName = "resourceGroupName_example"; // String | The resource group name.
+    String apiVersion = "apiVersion_example"; // String | The API version.
+    Integer $top = 56; // Integer | The number of items to be included in the result.
+    String $filter = "$filter_example"; // String | The filter to apply on the operation. Options for filters include: State, Trigger, and ReferencedResourceId.
+    try {
+      WorkflowListResult result = apiInstance.workflowsListByResourceGroup(subscriptionId, resourceGroupName, apiVersion, $top, $filter);
+      System.out.println(result);
+    } catch (ApiException e) {
+      System.err.println("Exception when calling WorkflowsApi#workflowsListByResourceGroup");
+      System.err.println("Status code: " + e.getCode());
+      System.err.println("Reason: " + e.getResponseBody());
+      System.err.println("Response headers: " + e.getResponseHeaders());
+      e.printStackTrace();
+    }
+  }
+}
+```
+
+### Parameters
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **subscriptionId** | **String**| The subscription id. | |
+| **resourceGroupName** | **String**| The resource group name. | |
+| **apiVersion** | **String**| The API version. | |
+| **$top** | **Integer**| The number of items to be included in the result. | [optional] |
+| **$filter** | **String**| The filter to apply on the operation. Options for filters include: State, Trigger, and ReferencedResourceId. | [optional] |
+
+### Return type
+
+[**WorkflowListResult**](WorkflowListResult.md)
+
+### Authorization
+
+[azure_auth](../README.md#azure_auth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | OK |  -  |
+| **0** | Error response describing why the operation failed. |  -  |
+
+<a id="workflowsListBySubscription"></a>
+# **workflowsListBySubscription**
+> WorkflowListResult workflowsListBySubscription(subscriptionId, apiVersion, $top, $filter)
+
+
+
+Gets a list of workflows by subscription.
+
+### Example
+```java
+// Import classes:
+import org.openapitools.client.ApiClient;
+import org.openapitools.client.ApiException;
+import org.openapitools.client.Configuration;
+import org.openapitools.client.auth.*;
+import org.openapitools.client.models.*;
+import org.openapitools.client.api.WorkflowsApi;
+
+public class Example {
+  public static void main(String[] args) {
+    ApiClient defaultClient = Configuration.getDefaultApiClient();
+    defaultClient.setBasePath("https://management.azure.com");
+    
+    // Configure OAuth2 access token for authorization: azure_auth
+    OAuth azure_auth = (OAuth) defaultClient.getAuthentication("azure_auth");
+    azure_auth.setAccessToken("YOUR ACCESS TOKEN");
+
+    WorkflowsApi apiInstance = new WorkflowsApi(defaultClient);
+    String subscriptionId = "subscriptionId_example"; // String | The subscription id.
+    String apiVersion = "apiVersion_example"; // String | The API version.
+    Integer $top = 56; // Integer | The number of items to be included in the result.
+    String $filter = "$filter_example"; // String | The filter to apply on the operation. Options for filters include: State, Trigger, and ReferencedResourceId.
+    try {
+      WorkflowListResult result = apiInstance.workflowsListBySubscription(subscriptionId, apiVersion, $top, $filter);
+      System.out.println(result);
+    } catch (ApiException e) {
+      System.err.println("Exception when calling WorkflowsApi#workflowsListBySubscription");
+      System.err.println("Status code: " + e.getCode());
+      System.err.println("Reason: " + e.getResponseBody());
+      System.err.println("Response headers: " + e.getResponseHeaders());
+      e.printStackTrace();
+    }
+  }
+}
+```
+
+### Parameters
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **subscriptionId** | **String**| The subscription id. | |
+| **apiVersion** | **String**| The API version. | |
+| **$top** | **Integer**| The number of items to be included in the result. | [optional] |
+| **$filter** | **String**| The filter to apply on the operation. Options for filters include: State, Trigger, and ReferencedResourceId. | [optional] |
+
+### Return type
+
+[**WorkflowListResult**](WorkflowListResult.md)
+
+### Authorization
+
+[azure_auth](../README.md#azure_auth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | OK |  -  |
+| **0** | Error response describing why the operation failed. |  -  |
+
+<a id="workflowsListCallbackUrl"></a>
+# **workflowsListCallbackUrl**
+> WorkflowTriggerCallbackUrl workflowsListCallbackUrl(subscriptionId, resourceGroupName, workflowName, apiVersion, listCallbackUrl)
+
+
+
+Get the workflow callback Url.
+
+### Example
+```java
+// Import classes:
+import org.openapitools.client.ApiClient;
+import org.openapitools.client.ApiException;
+import org.openapitools.client.Configuration;
+import org.openapitools.client.auth.*;
+import org.openapitools.client.models.*;
+import org.openapitools.client.api.WorkflowsApi;
+
+public class Example {
+  public static void main(String[] args) {
+    ApiClient defaultClient = Configuration.getDefaultApiClient();
+    defaultClient.setBasePath("https://management.azure.com");
+    
+    // Configure OAuth2 access token for authorization: azure_auth
+    OAuth azure_auth = (OAuth) defaultClient.getAuthentication("azure_auth");
+    azure_auth.setAccessToken("YOUR ACCESS TOKEN");
+
+    WorkflowsApi apiInstance = new WorkflowsApi(defaultClient);
+    String subscriptionId = "subscriptionId_example"; // String | The subscription id.
+    String resourceGroupName = "resourceGroupName_example"; // String | The resource group name.
+    String workflowName = "workflowName_example"; // String | The workflow name.
+    String apiVersion = "apiVersion_example"; // String | The API version.
+    GetCallbackUrlParameters listCallbackUrl = new GetCallbackUrlParameters(); // GetCallbackUrlParameters | Which callback url to list.
+    try {
+      WorkflowTriggerCallbackUrl result = apiInstance.workflowsListCallbackUrl(subscriptionId, resourceGroupName, workflowName, apiVersion, listCallbackUrl);
+      System.out.println(result);
+    } catch (ApiException e) {
+      System.err.println("Exception when calling WorkflowsApi#workflowsListCallbackUrl");
+      System.err.println("Status code: " + e.getCode());
+      System.err.println("Reason: " + e.getResponseBody());
+      System.err.println("Response headers: " + e.getResponseHeaders());
+      e.printStackTrace();
+    }
+  }
+}
+```
+
+### Parameters
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **subscriptionId** | **String**| The subscription id. | |
+| **resourceGroupName** | **String**| The resource group name. | |
+| **workflowName** | **String**| The workflow name. | |
+| **apiVersion** | **String**| The API version. | |
+| **listCallbackUrl** | [**GetCallbackUrlParameters**](GetCallbackUrlParameters.md)| Which callback url to list. | |
+
+### Return type
+
+[**WorkflowTriggerCallbackUrl**](WorkflowTriggerCallbackUrl.md)
+
+### Authorization
+
+[azure_auth](../README.md#azure_auth)
+
+### HTTP request headers
+
+ - **Content-Type**: application/json
+ - **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | OK |  -  |
+| **0** | Error response describing why the operation failed. |  -  |
+
+<a id="workflowsListSwagger"></a>
+# **workflowsListSwagger**
+> Object workflowsListSwagger(subscriptionId, resourceGroupName, workflowName, apiVersion)
+
+
+
+Gets an OpenAPI definition for the workflow.
+
+### Example
+```java
+// Import classes:
+import org.openapitools.client.ApiClient;
+import org.openapitools.client.ApiException;
+import org.openapitools.client.Configuration;
+import org.openapitools.client.auth.*;
+import org.openapitools.client.models.*;
+import org.openapitools.client.api.WorkflowsApi;
+
+public class Example {
+  public static void main(String[] args) {
+    ApiClient defaultClient = Configuration.getDefaultApiClient();
+    defaultClient.setBasePath("https://management.azure.com");
+    
+    // Configure OAuth2 access token for authorization: azure_auth
+    OAuth azure_auth = (OAuth) defaultClient.getAuthentication("azure_auth");
+    azure_auth.setAccessToken("YOUR ACCESS TOKEN");
+
+    WorkflowsApi apiInstance = new WorkflowsApi(defaultClient);
+    String subscriptionId = "subscriptionId_example"; // String | The subscription id.
+    String resourceGroupName = "resourceGroupName_example"; // String | The resource group name.
+    String workflowName = "workflowName_example"; // String | The workflow name.
+    String apiVersion = "apiVersion_example"; // String | The API version.
+    try {
+      Object result = apiInstance.workflowsListSwagger(subscriptionId, resourceGroupName, workflowName, apiVersion);
+      System.out.println(result);
+    } catch (ApiException e) {
+      System.err.println("Exception when calling WorkflowsApi#workflowsListSwagger");
+      System.err.println("Status code: " + e.getCode());
+      System.err.println("Reason: " + e.getResponseBody());
+      System.err.println("Response headers: " + e.getResponseHeaders());
+      e.printStackTrace();
+    }
+  }
+}
+```
+
+### Parameters
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **subscriptionId** | **String**| The subscription id. | |
+| **resourceGroupName** | **String**| The resource group name. | |
+| **workflowName** | **String**| The workflow name. | |
+| **apiVersion** | **String**| The API version. | |
+
+### Return type
+
+**Object**
+
+### Authorization
+
+[azure_auth](../README.md#azure_auth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | OK |  -  |
+| **0** | Error response describing why the operation failed. |  -  |
+
+<a id="workflowsMove"></a>
+# **workflowsMove**
+> workflowsMove(subscriptionId, resourceGroupName, workflowName, apiVersion, move)
+
+
+
+Moves an existing workflow.
+
+### Example
+```java
+// Import classes:
+import org.openapitools.client.ApiClient;
+import org.openapitools.client.ApiException;
+import org.openapitools.client.Configuration;
+import org.openapitools.client.auth.*;
+import org.openapitools.client.models.*;
+import org.openapitools.client.api.WorkflowsApi;
+
+public class Example {
+  public static void main(String[] args) {
+    ApiClient defaultClient = Configuration.getDefaultApiClient();
+    defaultClient.setBasePath("https://management.azure.com");
+    
+    // Configure OAuth2 access token for authorization: azure_auth
+    OAuth azure_auth = (OAuth) defaultClient.getAuthentication("azure_auth");
+    azure_auth.setAccessToken("YOUR ACCESS TOKEN");
+
+    WorkflowsApi apiInstance = new WorkflowsApi(defaultClient);
+    String subscriptionId = "subscriptionId_example"; // String | The subscription id.
+    String resourceGroupName = "resourceGroupName_example"; // String | The resource group name.
+    String workflowName = "workflowName_example"; // String | The workflow name.
+    String apiVersion = "apiVersion_example"; // String | The API version.
+    Workflow move = new Workflow(); // Workflow | The workflow to move.
+    try {
+      apiInstance.workflowsMove(subscriptionId, resourceGroupName, workflowName, apiVersion, move);
+    } catch (ApiException e) {
+      System.err.println("Exception when calling WorkflowsApi#workflowsMove");
+      System.err.println("Status code: " + e.getCode());
+      System.err.println("Reason: " + e.getResponseBody());
+      System.err.println("Response headers: " + e.getResponseHeaders());
+      e.printStackTrace();
+    }
+  }
+}
+```
+
+### Parameters
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **subscriptionId** | **String**| The subscription id. | |
+| **resourceGroupName** | **String**| The resource group name. | |
+| **workflowName** | **String**| The workflow name. | |
+| **apiVersion** | **String**| The API version. | |
+| **move** | [**Workflow**](Workflow.md)| The workflow to move. | |
+
+### Return type
+
+null (empty response body)
+
+### Authorization
+
+[azure_auth](../README.md#azure_auth)
+
+### HTTP request headers
+
+ - **Content-Type**: application/json
+ - **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | OK |  -  |
+| **202** | No Content |  -  |
+| **0** | Error response describing why the operation failed. |  -  |
+
+<a id="workflowsRegenerateAccessKey"></a>
+# **workflowsRegenerateAccessKey**
+> workflowsRegenerateAccessKey(subscriptionId, resourceGroupName, workflowName, apiVersion, keyType)
+
+
+
+Regenerates the callback URL access key for request triggers.
+
+### Example
+```java
+// Import classes:
+import org.openapitools.client.ApiClient;
+import org.openapitools.client.ApiException;
+import org.openapitools.client.Configuration;
+import org.openapitools.client.auth.*;
+import org.openapitools.client.models.*;
+import org.openapitools.client.api.WorkflowsApi;
+
+public class Example {
+  public static void main(String[] args) {
+    ApiClient defaultClient = Configuration.getDefaultApiClient();
+    defaultClient.setBasePath("https://management.azure.com");
+    
+    // Configure OAuth2 access token for authorization: azure_auth
+    OAuth azure_auth = (OAuth) defaultClient.getAuthentication("azure_auth");
+    azure_auth.setAccessToken("YOUR ACCESS TOKEN");
+
+    WorkflowsApi apiInstance = new WorkflowsApi(defaultClient);
+    String subscriptionId = "subscriptionId_example"; // String | The subscription id.
+    String resourceGroupName = "resourceGroupName_example"; // String | The resource group name.
+    String workflowName = "workflowName_example"; // String | The workflow name.
+    String apiVersion = "apiVersion_example"; // String | The API version.
+    RegenerateActionParameter keyType = new RegenerateActionParameter(); // RegenerateActionParameter | The access key type.
+    try {
+      apiInstance.workflowsRegenerateAccessKey(subscriptionId, resourceGroupName, workflowName, apiVersion, keyType);
+    } catch (ApiException e) {
+      System.err.println("Exception when calling WorkflowsApi#workflowsRegenerateAccessKey");
+      System.err.println("Status code: " + e.getCode());
+      System.err.println("Reason: " + e.getResponseBody());
+      System.err.println("Response headers: " + e.getResponseHeaders());
+      e.printStackTrace();
+    }
+  }
+}
+```
+
+### Parameters
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **subscriptionId** | **String**| The subscription id. | |
+| **resourceGroupName** | **String**| The resource group name. | |
+| **workflowName** | **String**| The workflow name. | |
+| **apiVersion** | **String**| The API version. | |
+| **keyType** | [**RegenerateActionParameter**](RegenerateActionParameter.md)| The access key type. | |
+
+### Return type
+
+null (empty response body)
+
+### Authorization
+
+[azure_auth](../README.md#azure_auth)
+
+### HTTP request headers
+
+ - **Content-Type**: application/json
+ - **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | OK |  -  |
+| **0** | Error response describing why the operation failed. |  -  |
+
+<a id="workflowsUpdate"></a>
+# **workflowsUpdate**
+> Workflow workflowsUpdate(subscriptionId, resourceGroupName, workflowName, apiVersion, workflow)
+
+
+
+Updates a workflow.
+
+### Example
+```java
+// Import classes:
+import org.openapitools.client.ApiClient;
+import org.openapitools.client.ApiException;
+import org.openapitools.client.Configuration;
+import org.openapitools.client.auth.*;
+import org.openapitools.client.models.*;
+import org.openapitools.client.api.WorkflowsApi;
+
+public class Example {
+  public static void main(String[] args) {
+    ApiClient defaultClient = Configuration.getDefaultApiClient();
+    defaultClient.setBasePath("https://management.azure.com");
+    
+    // Configure OAuth2 access token for authorization: azure_auth
+    OAuth azure_auth = (OAuth) defaultClient.getAuthentication("azure_auth");
+    azure_auth.setAccessToken("YOUR ACCESS TOKEN");
+
+    WorkflowsApi apiInstance = new WorkflowsApi(defaultClient);
+    String subscriptionId = "subscriptionId_example"; // String | The subscription id.
+    String resourceGroupName = "resourceGroupName_example"; // String | The resource group name.
+    String workflowName = "workflowName_example"; // String | The workflow name.
+    String apiVersion = "apiVersion_example"; // String | The API version.
+    Workflow workflow = new Workflow(); // Workflow | The workflow.
+    try {
+      Workflow result = apiInstance.workflowsUpdate(subscriptionId, resourceGroupName, workflowName, apiVersion, workflow);
+      System.out.println(result);
+    } catch (ApiException e) {
+      System.err.println("Exception when calling WorkflowsApi#workflowsUpdate");
+      System.err.println("Status code: " + e.getCode());
+      System.err.println("Reason: " + e.getResponseBody());
+      System.err.println("Response headers: " + e.getResponseHeaders());
+      e.printStackTrace();
+    }
+  }
+}
+```
+
+### Parameters
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **subscriptionId** | **String**| The subscription id. | |
+| **resourceGroupName** | **String**| The resource group name. | |
+| **workflowName** | **String**| The workflow name. | |
+| **apiVersion** | **String**| The API version. | |
+| **workflow** | [**Workflow**](Workflow.md)| The workflow. | |
+
+### Return type
+
+[**Workflow**](Workflow.md)
+
+### Authorization
+
+[azure_auth](../README.md#azure_auth)
+
+### HTTP request headers
+
+ - **Content-Type**: application/json
+ - **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | OK |  -  |
+| **0** | Error response describing why the operation failed. |  -  |
+
+<a id="workflowsValidateByLocation"></a>
+# **workflowsValidateByLocation**
+> workflowsValidateByLocation(subscriptionId, resourceGroupName, location, workflowName, apiVersion)
+
+
+
+Validates the workflow definition.
+
+### Example
+```java
+// Import classes:
+import org.openapitools.client.ApiClient;
+import org.openapitools.client.ApiException;
+import org.openapitools.client.Configuration;
+import org.openapitools.client.auth.*;
+import org.openapitools.client.models.*;
+import org.openapitools.client.api.WorkflowsApi;
+
+public class Example {
+  public static void main(String[] args) {
+    ApiClient defaultClient = Configuration.getDefaultApiClient();
+    defaultClient.setBasePath("https://management.azure.com");
+    
+    // Configure OAuth2 access token for authorization: azure_auth
+    OAuth azure_auth = (OAuth) defaultClient.getAuthentication("azure_auth");
+    azure_auth.setAccessToken("YOUR ACCESS TOKEN");
+
+    WorkflowsApi apiInstance = new WorkflowsApi(defaultClient);
+    String subscriptionId = "subscriptionId_example"; // String | The subscription id.
+    String resourceGroupName = "resourceGroupName_example"; // String | The resource group name.
+    String location = "location_example"; // String | The workflow location.
+    String workflowName = "workflowName_example"; // String | The workflow name.
+    String apiVersion = "apiVersion_example"; // String | The API version.
+    try {
+      apiInstance.workflowsValidateByLocation(subscriptionId, resourceGroupName, location, workflowName, apiVersion);
+    } catch (ApiException e) {
+      System.err.println("Exception when calling WorkflowsApi#workflowsValidateByLocation");
+      System.err.println("Status code: " + e.getCode());
+      System.err.println("Reason: " + e.getResponseBody());
+      System.err.println("Response headers: " + e.getResponseHeaders());
+      e.printStackTrace();
+    }
+  }
+}
+```
+
+### Parameters
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **subscriptionId** | **String**| The subscription id. | |
+| **resourceGroupName** | **String**| The resource group name. | |
+| **location** | **String**| The workflow location. | |
+| **workflowName** | **String**| The workflow name. | |
+| **apiVersion** | **String**| The API version. | |
+
+### Return type
+
+null (empty response body)
+
+### Authorization
+
+[azure_auth](../README.md#azure_auth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | OK |  -  |
+| **0** | Error response describing why the operation failed. |  -  |
+
+<a id="workflowsValidateByResourceGroup"></a>
+# **workflowsValidateByResourceGroup**
+> workflowsValidateByResourceGroup(subscriptionId, resourceGroupName, workflowName, apiVersion, validate)
+
+
+
+Validates the workflow.
+
+### Example
+```java
+// Import classes:
+import org.openapitools.client.ApiClient;
+import org.openapitools.client.ApiException;
+import org.openapitools.client.Configuration;
+import org.openapitools.client.auth.*;
+import org.openapitools.client.models.*;
+import org.openapitools.client.api.WorkflowsApi;
+
+public class Example {
+  public static void main(String[] args) {
+    ApiClient defaultClient = Configuration.getDefaultApiClient();
+    defaultClient.setBasePath("https://management.azure.com");
+    
+    // Configure OAuth2 access token for authorization: azure_auth
+    OAuth azure_auth = (OAuth) defaultClient.getAuthentication("azure_auth");
+    azure_auth.setAccessToken("YOUR ACCESS TOKEN");
+
+    WorkflowsApi apiInstance = new WorkflowsApi(defaultClient);
+    String subscriptionId = "subscriptionId_example"; // String | The subscription id.
+    String resourceGroupName = "resourceGroupName_example"; // String | The resource group name.
+    String workflowName = "workflowName_example"; // String | The workflow name.
+    String apiVersion = "apiVersion_example"; // String | The API version.
+    Workflow validate = new Workflow(); // Workflow | The workflow.
+    try {
+      apiInstance.workflowsValidateByResourceGroup(subscriptionId, resourceGroupName, workflowName, apiVersion, validate);
+    } catch (ApiException e) {
+      System.err.println("Exception when calling WorkflowsApi#workflowsValidateByResourceGroup");
+      System.err.println("Status code: " + e.getCode());
+      System.err.println("Reason: " + e.getResponseBody());
+      System.err.println("Response headers: " + e.getResponseHeaders());
+      e.printStackTrace();
+    }
+  }
+}
+```
+
+### Parameters
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **subscriptionId** | **String**| The subscription id. | |
+| **resourceGroupName** | **String**| The resource group name. | |
+| **workflowName** | **String**| The workflow name. | |
+| **apiVersion** | **String**| The API version. | |
+| **validate** | [**Workflow**](Workflow.md)| The workflow. | |
+
+### Return type
+
+null (empty response body)
+
+### Authorization
+
+[azure_auth](../README.md#azure_auth)
+
+### HTTP request headers
+
+ - **Content-Type**: application/json
+ - **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | OK |  -  |
+| **0** | Error response describing why the operation failed. |  -  |
+

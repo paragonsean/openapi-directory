@@ -1,0 +1,13 @@
+# LogicManagementClient.Resource
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**id** | **String** | The resource id. | [optional] [readonly] 
+**location** | **String** | The resource location. | [optional] 
+**name** | **String** | Gets the resource name. | [optional] [readonly] 
+**tags** | **{String: String}** | The resource tags. | [optional] 
+**type** | **String** | Gets the resource type. | [optional] [readonly] 
+
+

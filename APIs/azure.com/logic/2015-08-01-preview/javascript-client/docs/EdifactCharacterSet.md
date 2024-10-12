@@ -1,0 +1,36 @@
+# LogicManagementClient.EdifactCharacterSet
+
+## Enum
+
+
+* `NotSpecified` (value: `"NotSpecified"`)
+
+* `UNOB` (value: `"UNOB"`)
+
+* `UNOA` (value: `"UNOA"`)
+
+* `UNOC` (value: `"UNOC"`)
+
+* `UNOD` (value: `"UNOD"`)
+
+* `UNOE` (value: `"UNOE"`)
+
+* `UNOF` (value: `"UNOF"`)
+
+* `UNOG` (value: `"UNOG"`)
+
+* `UNOH` (value: `"UNOH"`)
+
+* `UNOI` (value: `"UNOI"`)
+
+* `UNOJ` (value: `"UNOJ"`)
+
+* `UNOK` (value: `"UNOK"`)
+
+* `UNOX` (value: `"UNOX"`)
+
+* `UNOY` (value: `"UNOY"`)
+
+* `KECA` (value: `"KECA"`)
+
+

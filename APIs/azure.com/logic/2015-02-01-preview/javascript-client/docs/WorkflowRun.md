@@ -1,0 +1,12 @@
+# LogicManagementClient.WorkflowRun
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**name** | **String** | Gets the workflow run name. | [optional] [readonly] 
+**properties** | [**WorkflowRunProperties**](WorkflowRunProperties.md) |  | [optional] 
+**type** | **String** | Gets the workflow run type. | [optional] [readonly] 
+**id** | **String** | Gets or sets the resource id. | [optional] 
+
+
