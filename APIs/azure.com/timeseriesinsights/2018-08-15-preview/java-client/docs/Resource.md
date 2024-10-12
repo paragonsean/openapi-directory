@@ -1,0 +1,16 @@
+
+
+# Resource
+
+Time Series Insights resource
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**id** | **String** | Resource Id |  [optional] [readonly] |
+|**name** | **String** | Resource name |  [optional] [readonly] |
+|**type** | **String** | Resource type |  [optional] [readonly] |
+
+
+

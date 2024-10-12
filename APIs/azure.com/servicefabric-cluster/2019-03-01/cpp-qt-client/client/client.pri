@@ -1,0 +1,107 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIAddOnFeatures.h \
+    $${PWD}/OAIApplicationDeltaHealthPolicy.h \
+    $${PWD}/OAIApplicationHealthPolicy.h \
+    $${PWD}/OAIAvailableOperationDisplay.h \
+    $${PWD}/OAIAzureActiveDirectory.h \
+    $${PWD}/OAICertificateDescription.h \
+    $${PWD}/OAIClientCertificateCommonName.h \
+    $${PWD}/OAIClientCertificateThumbprint.h \
+    $${PWD}/OAICluster.h \
+    $${PWD}/OAIClusterCodeVersionsListResult.h \
+    $${PWD}/OAIClusterCodeVersionsResult.h \
+    $${PWD}/OAIClusterEnvironment.h \
+    $${PWD}/OAIClusterHealthPolicy.h \
+    $${PWD}/OAIClusterListResult.h \
+    $${PWD}/OAIClusterProperties.h \
+    $${PWD}/OAIClusterPropertiesUpdateParameters.h \
+    $${PWD}/OAIClusterState.h \
+    $${PWD}/OAIClusterUpdateParameters.h \
+    $${PWD}/OAIClusterUpgradeDeltaHealthPolicy.h \
+    $${PWD}/OAIClusterUpgradePolicy.h \
+    $${PWD}/OAIClusterVersionDetails.h \
+    $${PWD}/OAIDiagnosticsStorageAccountConfig.h \
+    $${PWD}/OAIDurabilityLevel.h \
+    $${PWD}/OAIEndpointRangeDescription.h \
+    $${PWD}/OAIErrorModel.h \
+    $${PWD}/OAIErrorModelError.h \
+    $${PWD}/OAINodeTypeDescription.h \
+    $${PWD}/OAIOperationListResult.h \
+    $${PWD}/OAIOperationResult.h \
+    $${PWD}/OAIReliabilityLevel.h \
+    $${PWD}/OAIResource.h \
+    $${PWD}/OAIServerCertificateCommonName.h \
+    $${PWD}/OAIServerCertificateCommonNames.h \
+    $${PWD}/OAIServiceTypeDeltaHealthPolicy.h \
+    $${PWD}/OAIServiceTypeHealthPolicy.h \
+    $${PWD}/OAISettingsParameterDescription.h \
+    $${PWD}/OAISettingsSectionDescription.h \
+    $${PWD}/OAIStoreName.h \
+    $${PWD}/OAIUpgradeMode.h \
+# APIs
+    $${PWD}/OAIClusterApi.h \
+    $${PWD}/OAIClusterVersionApi.h \
+    $${PWD}/OAIOperationsApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIAddOnFeatures.cpp \
+    $${PWD}/OAIApplicationDeltaHealthPolicy.cpp \
+    $${PWD}/OAIApplicationHealthPolicy.cpp \
+    $${PWD}/OAIAvailableOperationDisplay.cpp \
+    $${PWD}/OAIAzureActiveDirectory.cpp \
+    $${PWD}/OAICertificateDescription.cpp \
+    $${PWD}/OAIClientCertificateCommonName.cpp \
+    $${PWD}/OAIClientCertificateThumbprint.cpp \
+    $${PWD}/OAICluster.cpp \
+    $${PWD}/OAIClusterCodeVersionsListResult.cpp \
+    $${PWD}/OAIClusterCodeVersionsResult.cpp \
+    $${PWD}/OAIClusterEnvironment.cpp \
+    $${PWD}/OAIClusterHealthPolicy.cpp \
+    $${PWD}/OAIClusterListResult.cpp \
+    $${PWD}/OAIClusterProperties.cpp \
+    $${PWD}/OAIClusterPropertiesUpdateParameters.cpp \
+    $${PWD}/OAIClusterState.cpp \
+    $${PWD}/OAIClusterUpdateParameters.cpp \
+    $${PWD}/OAIClusterUpgradeDeltaHealthPolicy.cpp \
+    $${PWD}/OAIClusterUpgradePolicy.cpp \
+    $${PWD}/OAIClusterVersionDetails.cpp \
+    $${PWD}/OAIDiagnosticsStorageAccountConfig.cpp \
+    $${PWD}/OAIDurabilityLevel.cpp \
+    $${PWD}/OAIEndpointRangeDescription.cpp \
+    $${PWD}/OAIErrorModel.cpp \
+    $${PWD}/OAIErrorModelError.cpp \
+    $${PWD}/OAINodeTypeDescription.cpp \
+    $${PWD}/OAIOperationListResult.cpp \
+    $${PWD}/OAIOperationResult.cpp \
+    $${PWD}/OAIReliabilityLevel.cpp \
+    $${PWD}/OAIResource.cpp \
+    $${PWD}/OAIServerCertificateCommonName.cpp \
+    $${PWD}/OAIServerCertificateCommonNames.cpp \
+    $${PWD}/OAIServiceTypeDeltaHealthPolicy.cpp \
+    $${PWD}/OAIServiceTypeHealthPolicy.cpp \
+    $${PWD}/OAISettingsParameterDescription.cpp \
+    $${PWD}/OAISettingsSectionDescription.cpp \
+    $${PWD}/OAIStoreName.cpp \
+    $${PWD}/OAIUpgradeMode.cpp \
+# APIs
+    $${PWD}/OAIClusterApi.cpp \
+    $${PWD}/OAIClusterVersionApi.cpp \
+    $${PWD}/OAIOperationsApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

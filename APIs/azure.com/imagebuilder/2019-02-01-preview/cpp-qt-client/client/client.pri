@@ -1,0 +1,87 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIApiError.h \
+    $${PWD}/OAIApiErrorBase.h \
+    $${PWD}/OAIImageTemplate.h \
+    $${PWD}/OAIImageTemplateCustomizer.h \
+    $${PWD}/OAIImageTemplateDistributor.h \
+    $${PWD}/OAIImageTemplateIsoSource.h \
+    $${PWD}/OAIImageTemplateLastRunStatus.h \
+    $${PWD}/OAIImageTemplateListResult.h \
+    $${PWD}/OAIImageTemplateManagedImageDistributor.h \
+    $${PWD}/OAIImageTemplateManagedImageSource.h \
+    $${PWD}/OAIImageTemplatePlatformImageSource.h \
+    $${PWD}/OAIImageTemplatePowerShellCustomizer.h \
+    $${PWD}/OAIImageTemplateProperties.h \
+    $${PWD}/OAIImageTemplateRestartCustomizer.h \
+    $${PWD}/OAIImageTemplateSharedImageDistributor.h \
+    $${PWD}/OAIImageTemplateShellCustomizer.h \
+    $${PWD}/OAIImageTemplateSource.h \
+    $${PWD}/OAIImageTemplateUpdateParameters.h \
+    $${PWD}/OAIImageTemplateVhdDistributor.h \
+    $${PWD}/OAIInnerError.h \
+    $${PWD}/OAIOperation.h \
+    $${PWD}/OAIOperationListResult.h \
+    $${PWD}/OAIProvisioningError.h \
+    $${PWD}/OAIProvisioningState.h \
+    $${PWD}/OAIResource.h \
+    $${PWD}/OAIRunOutput.h \
+    $${PWD}/OAIRunOutputCollection.h \
+    $${PWD}/OAIRunOutputProperties.h \
+    $${PWD}/OAISubResource.h \
+    $${PWD}/OAIThe_object_that_describes_the_operation_.h \
+# APIs
+    $${PWD}/OAIOperationsApi.h \
+    $${PWD}/OAIVirtualMachineImageTemplateApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIApiError.cpp \
+    $${PWD}/OAIApiErrorBase.cpp \
+    $${PWD}/OAIImageTemplate.cpp \
+    $${PWD}/OAIImageTemplateCustomizer.cpp \
+    $${PWD}/OAIImageTemplateDistributor.cpp \
+    $${PWD}/OAIImageTemplateIsoSource.cpp \
+    $${PWD}/OAIImageTemplateLastRunStatus.cpp \
+    $${PWD}/OAIImageTemplateListResult.cpp \
+    $${PWD}/OAIImageTemplateManagedImageDistributor.cpp \
+    $${PWD}/OAIImageTemplateManagedImageSource.cpp \
+    $${PWD}/OAIImageTemplatePlatformImageSource.cpp \
+    $${PWD}/OAIImageTemplatePowerShellCustomizer.cpp \
+    $${PWD}/OAIImageTemplateProperties.cpp \
+    $${PWD}/OAIImageTemplateRestartCustomizer.cpp \
+    $${PWD}/OAIImageTemplateSharedImageDistributor.cpp \
+    $${PWD}/OAIImageTemplateShellCustomizer.cpp \
+    $${PWD}/OAIImageTemplateSource.cpp \
+    $${PWD}/OAIImageTemplateUpdateParameters.cpp \
+    $${PWD}/OAIImageTemplateVhdDistributor.cpp \
+    $${PWD}/OAIInnerError.cpp \
+    $${PWD}/OAIOperation.cpp \
+    $${PWD}/OAIOperationListResult.cpp \
+    $${PWD}/OAIProvisioningError.cpp \
+    $${PWD}/OAIProvisioningState.cpp \
+    $${PWD}/OAIResource.cpp \
+    $${PWD}/OAIRunOutput.cpp \
+    $${PWD}/OAIRunOutputCollection.cpp \
+    $${PWD}/OAIRunOutputProperties.cpp \
+    $${PWD}/OAISubResource.cpp \
+    $${PWD}/OAIThe_object_that_describes_the_operation_.cpp \
+# APIs
+    $${PWD}/OAIOperationsApi.cpp \
+    $${PWD}/OAIVirtualMachineImageTemplateApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp
