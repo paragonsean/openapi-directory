@@ -1,0 +1,87 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIOperation_ListByTags_200_response.h \
+    $${PWD}/OAIOperation_ListByTags_200_response_value_inner.h \
+    $${PWD}/OAIOperation_ListByTags_200_response_value_inner_properties.h \
+    $${PWD}/OAIOperation_ListByTags_200_response_value_inner_properties_api.h \
+    $${PWD}/OAIOperation_ListByTags_200_response_value_inner_properties_api_properties.h \
+    $${PWD}/OAIOperation_ListByTags_200_response_value_inner_properties_api_properties_apiVersionSet.h \
+    $${PWD}/OAIOperation_ListByTags_200_response_value_inner_properties_api_properties_apiVersionSet_properties.h \
+    $${PWD}/OAIOperation_ListByTags_200_response_value_inner_properties_operation.h \
+    $${PWD}/OAIOperation_ListByTags_200_response_value_inner_properties_operation_properties.h \
+    $${PWD}/OAIOperation_ListByTags_200_response_value_inner_properties_product.h \
+    $${PWD}/OAIOperation_ListByTags_200_response_value_inner_properties_product_properties.h \
+    $${PWD}/OAIOperation_ListByTags_200_response_value_inner_properties_tag.h \
+    $${PWD}/OAIOperation_ListByTags_200_response_value_inner_properties_tag_properties.h \
+    $${PWD}/OAITagCollection.h \
+    $${PWD}/OAITagContract.h \
+    $${PWD}/OAITagContractProperties.h \
+    $${PWD}/OAITagCreateUpdateParameters.h \
+    $${PWD}/OAITagDescriptionBaseProperties.h \
+    $${PWD}/OAITagDescriptionCollection.h \
+    $${PWD}/OAITagDescriptionContract.h \
+    $${PWD}/OAITagDescriptionContractProperties.h \
+    $${PWD}/OAITagDescriptionCreateParameters.h \
+    $${PWD}/OAITag_GetByProduct_200_response.h \
+    $${PWD}/OAITag_ListByOperation_default_response.h \
+    $${PWD}/OAITag_ListByOperation_default_response_details_inner.h \
+    $${PWD}/OAITag_ListByProduct_200_response.h \
+# APIs
+    $${PWD}/OAIApiTagDescriptionsApi.h \
+    $${PWD}/OAIApiTagsApi.h \
+    $${PWD}/OAIOperationTagsApi.h \
+    $${PWD}/OAIOperationsByTagsApi.h \
+    $${PWD}/OAIProductTagsApi.h \
+    $${PWD}/OAITagsApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIOperation_ListByTags_200_response.cpp \
+    $${PWD}/OAIOperation_ListByTags_200_response_value_inner.cpp \
+    $${PWD}/OAIOperation_ListByTags_200_response_value_inner_properties.cpp \
+    $${PWD}/OAIOperation_ListByTags_200_response_value_inner_properties_api.cpp \
+    $${PWD}/OAIOperation_ListByTags_200_response_value_inner_properties_api_properties.cpp \
+    $${PWD}/OAIOperation_ListByTags_200_response_value_inner_properties_api_properties_apiVersionSet.cpp \
+    $${PWD}/OAIOperation_ListByTags_200_response_value_inner_properties_api_properties_apiVersionSet_properties.cpp \
+    $${PWD}/OAIOperation_ListByTags_200_response_value_inner_properties_operation.cpp \
+    $${PWD}/OAIOperation_ListByTags_200_response_value_inner_properties_operation_properties.cpp \
+    $${PWD}/OAIOperation_ListByTags_200_response_value_inner_properties_product.cpp \
+    $${PWD}/OAIOperation_ListByTags_200_response_value_inner_properties_product_properties.cpp \
+    $${PWD}/OAIOperation_ListByTags_200_response_value_inner_properties_tag.cpp \
+    $${PWD}/OAIOperation_ListByTags_200_response_value_inner_properties_tag_properties.cpp \
+    $${PWD}/OAITagCollection.cpp \
+    $${PWD}/OAITagContract.cpp \
+    $${PWD}/OAITagContractProperties.cpp \
+    $${PWD}/OAITagCreateUpdateParameters.cpp \
+    $${PWD}/OAITagDescriptionBaseProperties.cpp \
+    $${PWD}/OAITagDescriptionCollection.cpp \
+    $${PWD}/OAITagDescriptionContract.cpp \
+    $${PWD}/OAITagDescriptionContractProperties.cpp \
+    $${PWD}/OAITagDescriptionCreateParameters.cpp \
+    $${PWD}/OAITag_GetByProduct_200_response.cpp \
+    $${PWD}/OAITag_ListByOperation_default_response.cpp \
+    $${PWD}/OAITag_ListByOperation_default_response_details_inner.cpp \
+    $${PWD}/OAITag_ListByProduct_200_response.cpp \
+# APIs
+    $${PWD}/OAIApiTagDescriptionsApi.cpp \
+    $${PWD}/OAIApiTagsApi.cpp \
+    $${PWD}/OAIOperationTagsApi.cpp \
+    $${PWD}/OAIOperationsByTagsApi.cpp \
+    $${PWD}/OAIProductTagsApi.cpp \
+    $${PWD}/OAITagsApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

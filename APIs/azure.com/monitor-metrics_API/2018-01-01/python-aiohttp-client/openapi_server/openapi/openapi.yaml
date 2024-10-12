@@ -1,0 +1,755 @@
+openapi: 3.0.1
+info:
+  title: MonitorManagementClient
+  version: 2018-01-01
+  x-apisguru-categories:
+  - cloud
+  x-logo:
+    url: https://assets.onestore.ms/cdnfiles/onestorerolling-1606-01000/shell/v3/images/logo/microsoft.png
+  x-ms-code-generation-settings:
+    name: MonitorManagementClient
+  x-origin:
+  - format: swagger
+    url: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/monitor/resource-manager/Microsoft.Insights/stable/2018-01-01/metrics_API.json
+    version: "2.0"
+  x-preferred: true
+  x-providerName: azure.com
+  x-serviceName: monitor-metrics_API
+  x-tags:
+  - Azure
+  - Microsoft
+servers:
+- url: https://management.azure.com/
+security:
+- azure_auth:
+  - user_impersonation
+paths:
+  /{resourceUri}/providers/microsoft.insights/metrics:
+    get:
+      description: '**Lists the metric values for a resource**.'
+      operationId: metrics_list
+      parameters:
+      - description: The identifier of the resource.
+        in: path
+        name: resourceUri
+        required: true
+        schema:
+          type: string
+          x-ms-parameter-location: method
+          x-ms-skip-url-encoding: true
+        x-ms-parameter-location: method
+        x-ms-skip-url-encoding: true
+      - description: The timespan of the query. It is a string with the following
+          format 'startDateTime_ISO/endDateTime_ISO'.
+        in: query
+        name: timespan
+        schema:
+          type: string
+          x-ms-parameter-location: method
+        x-ms-parameter-location: method
+      - description: The interval (i.e. timegrain) of the query.
+        in: query
+        name: interval
+        schema:
+          format: duration
+          type: string
+          x-ms-parameter-location: method
+        x-ms-parameter-location: method
+      - description: The names of the metrics (comma separated) to retrieve.
+        in: query
+        name: metricnames
+        schema:
+          type: string
+          x-ms-parameter-location: method
+        x-ms-parameter-location: method
+      - description: The list of aggregation types (comma separated) to retrieve.
+        in: query
+        name: aggregation
+        schema:
+          type: string
+          x-ms-parameter-location: method
+        x-ms-parameter-location: method
+      - description: |-
+          The maximum number of records to retrieve.
+          Valid only if $filter is specified.
+          Defaults to 10.
+        in: query
+        name: top
+        schema:
+          format: int32
+          type: integer
+          x-ms-parameter-location: method
+        x-ms-parameter-location: method
+      - description: |-
+          The aggregation to use for sorting results and the direction of the sort.
+          Only one order can be specified.
+          Examples: sum asc.
+        in: query
+        name: orderby
+        schema:
+          type: string
+          x-ms-parameter-location: method
+        x-ms-parameter-location: method
+      - description: "The **$filter** is used to reduce the set of metric data returned.<br>Example:<br>Metric\
+          \ contains metadata A, B and C.<br>- Return all time series of C where A\
+          \ = a1 and B = b1 or b2<br>**$filter=A eq ‘a1’ and B eq ‘b1’ or B eq ‘b2’\
+          \ and C eq ‘*’**<br>- Invalid variant:<br>**$filter=A eq ‘a1’ and B eq ‘\
+          b1’ and C eq ‘*’ or B = ‘b2’**<br>This is invalid because the logical or\
+          \ operator cannot separate two different metadata names.<br>- Return all\
+          \ time series where A = a1, B = b1 and C = c1:<br>**$filter=A eq ‘a1’ and\
+          \ B eq ‘b1’ and C eq ‘c1’**<br>- Return all time series where A = a1<br>**$filter=A\
+          \ eq ‘a1’ and B eq ‘*’ and C eq ‘*’**."
+        in: query
+        name: $filter
+        schema:
+          type: string
+      - description: Reduces the set of data collected. The syntax allowed depends
+          on the operation. See the operation's description for details.
+        in: query
+        name: resultType
+        schema:
+          enum:
+          - Data
+          - Metadata
+          type: string
+          x-ms-enum:
+            modelAsString: false
+            name: ResultType
+          x-ms-parameter-location: method
+        x-ms-enum:
+          modelAsString: false
+          name: ResultType
+        x-ms-parameter-location: method
+      - description: Client Api Version.
+        in: query
+        name: api-version
+        required: true
+        schema:
+          type: string
+      - description: Metric namespace to query metric definitions for.
+        in: query
+        name: metricnamespace
+        schema:
+          type: string
+          x-ms-parameter-location: method
+        x-ms-parameter-location: method
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+          description: Successful request to get the list of metric values.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Error response describing why the operation failed.
+      tags:
+      - Metrics
+      x-ms-examples:
+        Get Metric for data:
+          parameters:
+            $filter: BlobType eq '*'
+            aggregation: "Average,count"
+            api-version: 2018-01-01
+            interval: PT1M
+            metric: BlobCapacity
+            metricnamespace: Microsoft.Storage/storageAccounts/blobServices
+            orderby: Average asc
+            resourceUri: subscriptions/b324c52b-4073-4807-93af-e07d289c093e/resourceGroups/test/providers/Microsoft.Storage/storageAccounts/larryshoebox/blobServices/default
+            timespan: 2017-04-14T02:20:00Z/2017-04-14T04:20:00Z
+            top: 3
+          responses:
+            "200":
+              body:
+                cost: 0
+                interval: PT1M
+                namespace: Microsoft.Storage/storageAccounts/blobServices
+                resourceregion: eastus2
+                timespan: 2017-04-14T02:20:00Z/2017-04-14T04:20:00Z
+                value:
+                - id: /subscriptions/b324c52b-4073-4807-93af-e07d289c093e/resourceGroups/test/providers/Microsoft.Storage/storageAccounts/larryshoebox/blobServices/default/providers/Microsoft.Insights/metrics/BlobCapacity
+                  name:
+                    localizedValue: Blob Capacity
+                    value: BlobCapacity
+                  timeseries:
+                  - data:
+                    - count: 0
+                      timeStamp: 2017-04-14T02:20:00Z
+                    - count: 0
+                      timeStamp: 2017-04-14T02:21:00Z
+                    - count: 0
+                      timeStamp: 2017-04-14T02:22:00Z
+                    - average: 0
+                      count: 1
+                      timeStamp: 2017-04-14T02:23:00Z
+                    metadatavalues:
+                    - name:
+                        localizedValue: blobtype
+                        value: blobtype
+                      value: PageBlob
+                  - data:
+                    - count: 0
+                      timeStamp: 2017-04-14T02:20:00Z
+                    - count: 0
+                      timeStamp: 2017-04-14T02:21:00Z
+                    - count: 0
+                      timeStamp: 2017-04-14T02:22:00Z
+                    - average: 245
+                      count: 1
+                      timeStamp: 2017-04-14T02:23:00Z
+                    metadatavalues:
+                    - name:
+                        localizedValue: blobtype
+                        value: blobtype
+                      value: BlockBlob
+                  type: Microsoft.Insights/metrics
+                  unit: Bytes
+        Get Metric for metadata:
+          parameters:
+            $filter: BlobType eq '*'
+            aggregation: "Average,count"
+            api-version: 2018-01-01
+            interval: PT1M
+            metric: BlobCapacity
+            metricnamespace: Microsoft.Storage/storageAccounts/blobServices
+            orderby: Average asc
+            resourceUri: subscriptions/b324c52b-4073-4807-93af-e07d289c093e/resourceGroups/test/providers/Microsoft.Storage/storageAccounts/larryshoebox/blobServices/default
+            resulttype: metadata
+            timespan: 2017-04-14T02:20:00Z/2017-04-14T04:20:00Z
+            top: 3
+          responses:
+            "200":
+              body:
+                namespace: Microsoft.Storage/storageAccounts/blobServices
+                resourceregion: eastus2
+                timespan: 2017-04-14T02:20:00Z/2017-04-14T04:20:00Z
+                value:
+                - id: /subscriptions/b324c52b-4073-4807-93af-e07d289c093e/resourceGroups/test/providers/Microsoft.Storage/storageAccounts/larryshoebox/blobServices/default/providers/Microsoft.Insights/metrics/BlobCapacity
+                  name:
+                    localizedValue: Blob Capacity
+                    value: BlobCapacity
+                  timeseries:
+                  - metadatavalues:
+                    - name:
+                        localizedValue: blobtype
+                        value: blobtype
+                      value: BlockBlob
+                  - metadatavalues:
+                    - name:
+                        localizedValue: blobtype
+                        value: blobtype
+                      value: PageBlob
+                  type: Microsoft.Insights/metrics
+                  unit: Bytes
+      x-ms-odata: '#/definitions/MetadataValue'
+      x-openapi-router-controller: openapi_server.controllers.metrics_controller
+components:
+  parameters:
+    AggregationsParameter:
+      description: The list of aggregation types (comma separated) to retrieve.
+      in: query
+      name: aggregation
+      schema:
+        type: string
+        x-ms-parameter-location: method
+      x-ms-parameter-location: method
+    ApiVersionParameter:
+      description: Client Api Version.
+      in: query
+      name: api-version
+      required: true
+      schema:
+        type: string
+    IntervalParameter:
+      description: The interval (i.e. timegrain) of the query.
+      in: query
+      name: interval
+      schema:
+        format: duration
+        type: string
+        x-ms-parameter-location: method
+      x-ms-parameter-location: method
+    MetricNamesParameter:
+      description: The names of the metrics (comma separated) to retrieve.
+      in: query
+      name: metricnames
+      schema:
+        type: string
+        x-ms-parameter-location: method
+      x-ms-parameter-location: method
+    MetricNamespaceParameter:
+      description: Metric namespace to query metric definitions for.
+      in: query
+      name: metricnamespace
+      schema:
+        type: string
+        x-ms-parameter-location: method
+      x-ms-parameter-location: method
+    OrderByParameter:
+      description: |-
+        The aggregation to use for sorting results and the direction of the sort.
+        Only one order can be specified.
+        Examples: sum asc.
+      in: query
+      name: orderby
+      schema:
+        type: string
+        x-ms-parameter-location: method
+      x-ms-parameter-location: method
+    ResourceUriParameter:
+      description: The identifier of the resource.
+      in: path
+      name: resourceUri
+      required: true
+      schema:
+        type: string
+        x-ms-parameter-location: method
+        x-ms-skip-url-encoding: true
+      x-ms-parameter-location: method
+      x-ms-skip-url-encoding: true
+    ResultTypeParameter:
+      description: Reduces the set of data collected. The syntax allowed depends on
+        the operation. See the operation's description for details.
+      in: query
+      name: resultType
+      schema:
+        enum:
+        - Data
+        - Metadata
+        type: string
+        x-ms-enum:
+          modelAsString: false
+          name: ResultType
+        x-ms-parameter-location: method
+      x-ms-enum:
+        modelAsString: false
+        name: ResultType
+      x-ms-parameter-location: method
+    TimespanParameter:
+      description: The timespan of the query. It is a string with the following format
+        'startDateTime_ISO/endDateTime_ISO'.
+      in: query
+      name: timespan
+      schema:
+        type: string
+        x-ms-parameter-location: method
+      x-ms-parameter-location: method
+    TopParameter:
+      description: |-
+        The maximum number of records to retrieve.
+        Valid only if $filter is specified.
+        Defaults to 10.
+      in: query
+      name: top
+      schema:
+        format: int32
+        type: integer
+        x-ms-parameter-location: method
+      x-ms-parameter-location: method
+  schemas:
+    ErrorResponse:
+      description: Describes the format of Error response.
+      example:
+        code: code
+        message: message
+      properties:
+        code:
+          description: Error code
+          title: code
+          type: string
+        message:
+          description: Error message indicating why the operation failed.
+          title: message
+          type: string
+      title: ErrorResponse
+      type: object
+    LocalizableString:
+      description: The localizable string class.
+      example:
+        localizedValue: localizedValue
+        value: value
+      properties:
+        localizedValue:
+          description: the locale specific value.
+          title: localizedValue
+          type: string
+        value:
+          description: the invariant value.
+          title: value
+          type: string
+      required:
+      - value
+      title: LocalizableString
+      type: object
+    MetadataValue:
+      description: Represents a metric metadata value.
+      example:
+        name:
+          localizedValue: localizedValue
+          value: value
+        value: value
+      properties:
+        name:
+          $ref: '#/components/schemas/LocalizableString'
+        value:
+          description: the value of the metadata.
+          title: value
+          type: string
+      title: MetadataValue
+      type: object
+    Metric:
+      description: The result data of a query.
+      example:
+        unit: Count
+        timeseries:
+        - data:
+          - timeStamp: 2000-01-23T04:56:07.000+00:00
+            average: 6.027456183070403
+            total: 2.3021358869347655
+            count: 1.4658129805029452
+            maximum: 5.962133916683182
+            minimum: 5.637376656633329
+          - timeStamp: 2000-01-23T04:56:07.000+00:00
+            average: 6.027456183070403
+            total: 2.3021358869347655
+            count: 1.4658129805029452
+            maximum: 5.962133916683182
+            minimum: 5.637376656633329
+          metadatavalues:
+          - name:
+              localizedValue: localizedValue
+              value: value
+            value: value
+          - name:
+              localizedValue: localizedValue
+              value: value
+            value: value
+        - data:
+          - timeStamp: 2000-01-23T04:56:07.000+00:00
+            average: 6.027456183070403
+            total: 2.3021358869347655
+            count: 1.4658129805029452
+            maximum: 5.962133916683182
+            minimum: 5.637376656633329
+          - timeStamp: 2000-01-23T04:56:07.000+00:00
+            average: 6.027456183070403
+            total: 2.3021358869347655
+            count: 1.4658129805029452
+            maximum: 5.962133916683182
+            minimum: 5.637376656633329
+          metadatavalues:
+          - name:
+              localizedValue: localizedValue
+              value: value
+            value: value
+          - name:
+              localizedValue: localizedValue
+              value: value
+            value: value
+        name:
+          localizedValue: localizedValue
+          value: value
+        id: id
+        type: type
+      properties:
+        id:
+          description: the metric Id.
+          title: id
+          type: string
+        name:
+          $ref: '#/components/schemas/LocalizableString'
+        timeseries:
+          description: the time series returned when a data query is performed.
+          items:
+            $ref: '#/components/schemas/TimeSeriesElement'
+          title: timeseries
+          type: array
+        type:
+          description: the resource type of the metric resource.
+          title: type
+          type: string
+        unit:
+          $ref: '#/components/schemas/Unit'
+      required:
+      - id
+      - name
+      - timeseries
+      - type
+      - unit
+      title: Metric
+      type: object
+    MetricValue:
+      description: Represents a metric value.
+      example:
+        timeStamp: 2000-01-23T04:56:07.000+00:00
+        average: 6.027456183070403
+        total: 2.3021358869347655
+        count: 1.4658129805029452
+        maximum: 5.962133916683182
+        minimum: 5.637376656633329
+      properties:
+        average:
+          description: the average value in the time range.
+          format: double
+          title: average
+          type: number
+        count:
+          description: the number of samples in the time range. Can be used to determine
+            the number of values that contributed to the average value.
+          format: double
+          title: count
+          type: number
+        maximum:
+          description: the greatest value in the time range.
+          format: double
+          title: maximum
+          type: number
+        minimum:
+          description: the least value in the time range.
+          format: double
+          title: minimum
+          type: number
+        timeStamp:
+          description: the timestamp for the metric value in ISO 8601 format.
+          format: date-time
+          title: timeStamp
+          type: string
+        total:
+          description: the sum of all of the values in the time range.
+          format: double
+          title: total
+          type: number
+      required:
+      - timeStamp
+      title: MetricValue
+      type: object
+    Response:
+      description: The response to a metrics query.
+      example:
+        cost: 0.08008281904610115
+        namespace: namespace
+        interval: interval
+        resourceregion: resourceregion
+        timespan: timespan
+        value:
+        - unit: Count
+          timeseries:
+          - data:
+            - timeStamp: 2000-01-23T04:56:07.000+00:00
+              average: 6.027456183070403
+              total: 2.3021358869347655
+              count: 1.4658129805029452
+              maximum: 5.962133916683182
+              minimum: 5.637376656633329
+            - timeStamp: 2000-01-23T04:56:07.000+00:00
+              average: 6.027456183070403
+              total: 2.3021358869347655
+              count: 1.4658129805029452
+              maximum: 5.962133916683182
+              minimum: 5.637376656633329
+            metadatavalues:
+            - name:
+                localizedValue: localizedValue
+                value: value
+              value: value
+            - name:
+                localizedValue: localizedValue
+                value: value
+              value: value
+          - data:
+            - timeStamp: 2000-01-23T04:56:07.000+00:00
+              average: 6.027456183070403
+              total: 2.3021358869347655
+              count: 1.4658129805029452
+              maximum: 5.962133916683182
+              minimum: 5.637376656633329
+            - timeStamp: 2000-01-23T04:56:07.000+00:00
+              average: 6.027456183070403
+              total: 2.3021358869347655
+              count: 1.4658129805029452
+              maximum: 5.962133916683182
+              minimum: 5.637376656633329
+            metadatavalues:
+            - name:
+                localizedValue: localizedValue
+                value: value
+              value: value
+            - name:
+                localizedValue: localizedValue
+                value: value
+              value: value
+          name:
+            localizedValue: localizedValue
+            value: value
+          id: id
+          type: type
+        - unit: Count
+          timeseries:
+          - data:
+            - timeStamp: 2000-01-23T04:56:07.000+00:00
+              average: 6.027456183070403
+              total: 2.3021358869347655
+              count: 1.4658129805029452
+              maximum: 5.962133916683182
+              minimum: 5.637376656633329
+            - timeStamp: 2000-01-23T04:56:07.000+00:00
+              average: 6.027456183070403
+              total: 2.3021358869347655
+              count: 1.4658129805029452
+              maximum: 5.962133916683182
+              minimum: 5.637376656633329
+            metadatavalues:
+            - name:
+                localizedValue: localizedValue
+                value: value
+              value: value
+            - name:
+                localizedValue: localizedValue
+                value: value
+              value: value
+          - data:
+            - timeStamp: 2000-01-23T04:56:07.000+00:00
+              average: 6.027456183070403
+              total: 2.3021358869347655
+              count: 1.4658129805029452
+              maximum: 5.962133916683182
+              minimum: 5.637376656633329
+            - timeStamp: 2000-01-23T04:56:07.000+00:00
+              average: 6.027456183070403
+              total: 2.3021358869347655
+              count: 1.4658129805029452
+              maximum: 5.962133916683182
+              minimum: 5.637376656633329
+            metadatavalues:
+            - name:
+                localizedValue: localizedValue
+                value: value
+              value: value
+            - name:
+                localizedValue: localizedValue
+                value: value
+              value: value
+          name:
+            localizedValue: localizedValue
+            value: value
+          id: id
+          type: type
+      properties:
+        cost:
+          description: "The integer value representing the cost of the query, for\
+            \ data case."
+          format: int32
+          minimum: 0
+          title: cost
+          type: number
+        interval:
+          description: The interval (window size) for which the metric data was returned
+            in.  This may be adjusted in the future and returned back from what was
+            originally requested.  This is not present if a metadata request was made.
+          format: duration
+          title: interval
+          type: string
+        namespace:
+          description: The namespace of the metrics been queried
+          title: namespace
+          type: string
+        resourceregion:
+          description: The region of the resource been queried for metrics.
+          title: resourceregion
+          type: string
+        timespan:
+          description: "The timespan for which the data was retrieved. Its value consists\
+            \ of two datetimes concatenated, separated by '/'.  This may be adjusted\
+            \ in the future and returned back from what was originally requested."
+          title: timespan
+          type: string
+        value:
+          description: the value of the collection.
+          items:
+            $ref: '#/components/schemas/Metric'
+          title: value
+          type: array
+      required:
+      - timespan
+      - value
+      title: Response
+      type: object
+    TimeSeriesElement:
+      description: A time series result type. The discriminator value is always TimeSeries
+        in this case.
+      example:
+        data:
+        - timeStamp: 2000-01-23T04:56:07.000+00:00
+          average: 6.027456183070403
+          total: 2.3021358869347655
+          count: 1.4658129805029452
+          maximum: 5.962133916683182
+          minimum: 5.637376656633329
+        - timeStamp: 2000-01-23T04:56:07.000+00:00
+          average: 6.027456183070403
+          total: 2.3021358869347655
+          count: 1.4658129805029452
+          maximum: 5.962133916683182
+          minimum: 5.637376656633329
+        metadatavalues:
+        - name:
+            localizedValue: localizedValue
+            value: value
+          value: value
+        - name:
+            localizedValue: localizedValue
+            value: value
+          value: value
+      properties:
+        data:
+          description: An array of data points representing the metric values.  This
+            is only returned if a result type of data is specified.
+          items:
+            $ref: '#/components/schemas/MetricValue'
+          title: data
+          type: array
+        metadatavalues:
+          description: the metadata values returned if $filter was specified in the
+            call.
+          items:
+            $ref: '#/components/schemas/MetadataValue'
+          title: metadatavalues
+          type: array
+      title: TimeSeriesElement
+      type: object
+    Unit:
+      description: the unit of the metric.
+      enum:
+      - Count
+      - Bytes
+      - Seconds
+      - CountPerSecond
+      - BytesPerSecond
+      - Percent
+      - MilliSeconds
+      - ByteSeconds
+      - Unspecified
+      - Cores
+      - MilliCores
+      - NanoCores
+      - BitsPerSecond
+      title: Unit
+      type: string
+      x-ms-enum:
+        modelAsString: false
+        name: Unit
+  securitySchemes:
+    azure_auth:
+      description: Azure Active Directory OAuth2 Flow
+      flows:
+        implicit:
+          authorizationUrl: https://login.microsoftonline.com/common/oauth2/authorize
+          scopes:
+            user_impersonation: impersonate your user account
+      type: oauth2
+      x-tokenInfoFunc: openapi_server.controllers.security_controller.info_from_azure_auth
+      x-scopeValidateFunc: openapi_server.controllers.security_controller.validate_scope_azure_auth
+x-original-swagger-version: "2.0"

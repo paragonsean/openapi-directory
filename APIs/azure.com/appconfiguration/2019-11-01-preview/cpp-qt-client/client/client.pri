@@ -1,0 +1,91 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIApiKey.h \
+    $${PWD}/OAIApiKeyListResult.h \
+    $${PWD}/OAICheckNameAvailabilityParameters.h \
+    $${PWD}/OAIConfigurationStore.h \
+    $${PWD}/OAIConfigurationStoreListResult.h \
+    $${PWD}/OAIConfigurationStoreProperties.h \
+    $${PWD}/OAIConfigurationStorePropertiesUpdateParameters.h \
+    $${PWD}/OAIConfigurationStoreUpdateParameters.h \
+    $${PWD}/OAIEncryptionProperties.h \
+    $${PWD}/OAIError.h \
+    $${PWD}/OAIKeyValue.h \
+    $${PWD}/OAIKeyVaultProperties.h \
+    $${PWD}/OAIListKeyValueParameters.h \
+    $${PWD}/OAINameAvailabilityStatus.h \
+    $${PWD}/OAIOperationDefinition.h \
+    $${PWD}/OAIOperationDefinitionDisplay.h \
+    $${PWD}/OAIOperationDefinitionListResult.h \
+    $${PWD}/OAIPrivateEndpoint.h \
+    $${PWD}/OAIPrivateEndpointConnection.h \
+    $${PWD}/OAIPrivateEndpointConnectionListResult.h \
+    $${PWD}/OAIPrivateEndpointConnectionProperties.h \
+    $${PWD}/OAIPrivateLinkResource.h \
+    $${PWD}/OAIPrivateLinkResourceListResult.h \
+    $${PWD}/OAIPrivateLinkResourceProperties.h \
+    $${PWD}/OAIPrivateLinkServiceConnectionState.h \
+    $${PWD}/OAIRegenerateKeyParameters.h \
+    $${PWD}/OAIResource.h \
+    $${PWD}/OAIResourceIdentity.h \
+    $${PWD}/OAISku.h \
+    $${PWD}/OAIUserIdentity.h \
+# APIs
+    $${PWD}/OAIConfigurationStoresApi.h \
+    $${PWD}/OAIOperationsApi.h \
+    $${PWD}/OAIPrivateEndpointConnectionsApi.h \
+    $${PWD}/OAIPrivateLinkResourcesApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIApiKey.cpp \
+    $${PWD}/OAIApiKeyListResult.cpp \
+    $${PWD}/OAICheckNameAvailabilityParameters.cpp \
+    $${PWD}/OAIConfigurationStore.cpp \
+    $${PWD}/OAIConfigurationStoreListResult.cpp \
+    $${PWD}/OAIConfigurationStoreProperties.cpp \
+    $${PWD}/OAIConfigurationStorePropertiesUpdateParameters.cpp \
+    $${PWD}/OAIConfigurationStoreUpdateParameters.cpp \
+    $${PWD}/OAIEncryptionProperties.cpp \
+    $${PWD}/OAIError.cpp \
+    $${PWD}/OAIKeyValue.cpp \
+    $${PWD}/OAIKeyVaultProperties.cpp \
+    $${PWD}/OAIListKeyValueParameters.cpp \
+    $${PWD}/OAINameAvailabilityStatus.cpp \
+    $${PWD}/OAIOperationDefinition.cpp \
+    $${PWD}/OAIOperationDefinitionDisplay.cpp \
+    $${PWD}/OAIOperationDefinitionListResult.cpp \
+    $${PWD}/OAIPrivateEndpoint.cpp \
+    $${PWD}/OAIPrivateEndpointConnection.cpp \
+    $${PWD}/OAIPrivateEndpointConnectionListResult.cpp \
+    $${PWD}/OAIPrivateEndpointConnectionProperties.cpp \
+    $${PWD}/OAIPrivateLinkResource.cpp \
+    $${PWD}/OAIPrivateLinkResourceListResult.cpp \
+    $${PWD}/OAIPrivateLinkResourceProperties.cpp \
+    $${PWD}/OAIPrivateLinkServiceConnectionState.cpp \
+    $${PWD}/OAIRegenerateKeyParameters.cpp \
+    $${PWD}/OAIResource.cpp \
+    $${PWD}/OAIResourceIdentity.cpp \
+    $${PWD}/OAISku.cpp \
+    $${PWD}/OAIUserIdentity.cpp \
+# APIs
+    $${PWD}/OAIConfigurationStoresApi.cpp \
+    $${PWD}/OAIOperationsApi.cpp \
+    $${PWD}/OAIPrivateEndpointConnectionsApi.cpp \
+    $${PWD}/OAIPrivateLinkResourcesApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

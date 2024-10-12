@@ -1,0 +1,1731 @@
+openapi: 3.0.1
+info:
+  title: Azure App Configuration
+  version: "1.0"
+  x-apisguru-categories:
+  - cloud
+  x-logo:
+    url: https://assets.onestore.ms/cdnfiles/onestorerolling-1606-01000/shell/v3/images/logo/microsoft.png
+  x-origin:
+  - format: swagger
+    url: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/appconfiguration/data-plane/Microsoft.AppConfiguration/stable/1.0/appconfiguration.json
+    version: "2.0"
+  x-preferred: false
+  x-providerName: azure.com
+  x-serviceName: appconfiguration
+  x-tags:
+  - Azure
+  - Microsoft
+servers:
+- url: https://azure.local/
+paths:
+  /keys:
+    get:
+      operationId: GetKeys
+      parameters:
+      - description: A filter for the name of the returned keys.
+        in: query
+        name: name
+        schema:
+          type: string
+      - description: Used to guarantee real-time consistency between requests.
+        in: header
+        name: Sync-Token
+        schema:
+          type: string
+      - description: The API version to be used with the HTTP request.
+        in: query
+        name: api-version
+        required: true
+        schema:
+          type: string
+      - description: Instructs the server to return elements that appear after the
+          element referred to by the specified token.
+        in: query
+        name: After
+        schema:
+          type: string
+      - description: Requests the server to respond with the state of the resource
+          at the specified time.
+        in: header
+        name: Accept-Datetime
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/vnd.microsoft.appconfig.keyset+json:
+              schema:
+                $ref: '#/components/schemas/KeyListResult'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/KeyListResult'
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/KeyListResult'
+          description: Success
+          headers:
+            Sync-Token:
+              description: Enables real-time consistency between requests by providing
+                the returned value in the next request made to the server.
+              schema:
+                type: string
+        default:
+          content:
+            application/vnd.microsoft.appconfig.keyset+json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Error response describing why the operation failed
+      summary: Gets a list of keys.
+      tags:
+      - Keys
+      x-ms-examples:
+        GetKeys:
+          parameters:
+            api-version: "1.0"
+            endpoint: "https://{exampleAppConfigurationName}.azconfig.io"
+          responses:
+            "200":
+              body:
+                items:
+                - name: MaxRequests
+                - name: RequestTimeout
+              headers:
+                Content-Type: application/vnd.microsoft.appconfig.keyset+json
+      x-ms-pageable:
+        itemName: items
+        nextLinkName: '@nextLink'
+      x-accepts:
+      - application/json
+      - application/problem+json
+      - application/vnd.microsoft.appconfig.keyset+json
+    head:
+      operationId: CheckKeys
+      parameters:
+      - description: A filter for the name of the returned keys.
+        in: query
+        name: name
+        schema:
+          type: string
+      - description: Used to guarantee real-time consistency between requests.
+        in: header
+        name: Sync-Token
+        schema:
+          type: string
+      - description: The API version to be used with the HTTP request.
+        in: query
+        name: api-version
+        required: true
+        schema:
+          type: string
+      - description: Instructs the server to return elements that appear after the
+          element referred to by the specified token.
+        in: query
+        name: After
+        schema:
+          type: string
+      - description: Requests the server to respond with the state of the resource
+          at the specified time.
+        in: header
+        name: Accept-Datetime
+        schema:
+          type: string
+      responses:
+        "200":
+          content: {}
+          description: Success
+          headers:
+            Sync-Token:
+              description: Enables real-time consistency between requests by providing
+                the returned value in the next request made to the server.
+              schema:
+                type: string
+        default:
+          content: {}
+          description: Error response describing why the operation failed
+      summary: Requests the headers and status of the given resource.
+      tags:
+      - Keys
+      x-ms-examples:
+        CheckKeys:
+          parameters:
+            api-version: "1.0"
+            endpoint: "https://{exampleAppConfigurationName}.azconfig.io"
+          responses:
+            "200":
+              headers:
+                Content-Type: application/vnd.microsoft.appconfig.keyset+json
+      x-accepts:
+      - application/json
+  /kv:
+    get:
+      operationId: GetKeyValues
+      parameters:
+      - description: A filter used to match keys.
+        in: query
+        name: key
+        schema:
+          type: string
+      - description: A filter used to match labels
+        in: query
+        name: label
+        schema:
+          type: string
+      - description: Used to guarantee real-time consistency between requests.
+        in: header
+        name: Sync-Token
+        schema:
+          type: string
+      - description: The API version to be used with the HTTP request.
+        in: query
+        name: api-version
+        required: true
+        schema:
+          type: string
+      - description: Instructs the server to return elements that appear after the
+          element referred to by the specified token.
+        in: query
+        name: After
+        schema:
+          type: string
+      - description: Requests the server to respond with the state of the resource
+          at the specified time.
+        in: header
+        name: Accept-Datetime
+        schema:
+          type: string
+      - description: Used to select what fields are present in the returned resource(s).
+        explode: false
+        in: query
+        name: $Select
+        schema:
+          items:
+            enum:
+            - key
+            - label
+            - content_type
+            - value
+            - last_modified
+            - tags
+            - locked
+            - etag
+            type: string
+          type: array
+        style: form
+      responses:
+        "200":
+          content:
+            application/vnd.microsoft.appconfig.kvset+json:
+              schema:
+                $ref: '#/components/schemas/KeyValueListResult'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/KeyValueListResult'
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/KeyValueListResult'
+          description: Success
+          headers:
+            Sync-Token:
+              description: Enables real-time consistency between requests by providing
+                the returned value in the next request made to the server.
+              schema:
+                type: string
+        default:
+          content:
+            application/vnd.microsoft.appconfig.kvset+json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Error response describing why the operation failed
+      summary: Gets a list of key-values.
+      tags:
+      - KeyValues
+      x-ms-examples:
+        GetKeyValues:
+          parameters:
+            api-version: "1.0"
+            endpoint: "https://{exampleAppConfigurationName}.azconfig.io"
+          responses:
+            "200":
+              body:
+                items:
+                - etag: CTgHR5UrDKNj2nsoGWDOipST9Pv
+                  key: Background
+                  label: Asset1
+                  last_modified: 2019-03-04T17:12:23+00:00
+                  locked: false
+                  tags: {}
+                  value: blue
+                - etag: UTSN1zePHbBQ0npbRB6elGRRuH7
+                  key: MaxLogFiles
+                  label: Asset1
+                  last_modified: 2019-03-04T17:12:23+00:00
+                  locked: false
+                  tags: {}
+                  value: "50"
+                - etag: 7XpB48ET4VAlB9068ft6fKMyA3m
+                  key: Message
+                  last_modified: 2019-06-20T16:52:23+00:00
+                  locked: false
+                  tags: {}
+                  value: Hello World
+                - etag: fAFm4jkGNB1hsIr4o0S5hnhCCvY
+                  key: WebDemo:Settings:BackgroundColor
+                  last_modified: 2019-06-20T15:48:01+00:00
+                  locked: false
+                  tags: {}
+                  value: blue
+              headers:
+                Content-Type: application/vnd.microsoft.appconfig.kvset+json
+      x-ms-pageable:
+        itemName: items
+        nextLinkName: '@nextLink'
+      x-accepts:
+      - application/json
+      - application/problem+json
+      - application/vnd.microsoft.appconfig.kvset+json
+    head:
+      operationId: CheckKeyValues
+      parameters:
+      - description: A filter used to match keys.
+        in: query
+        name: key
+        schema:
+          type: string
+      - description: A filter used to match labels
+        in: query
+        name: label
+        schema:
+          type: string
+      - description: Used to guarantee real-time consistency between requests.
+        in: header
+        name: Sync-Token
+        schema:
+          type: string
+      - description: The API version to be used with the HTTP request.
+        in: query
+        name: api-version
+        required: true
+        schema:
+          type: string
+      - description: Instructs the server to return elements that appear after the
+          element referred to by the specified token.
+        in: query
+        name: After
+        schema:
+          type: string
+      - description: Requests the server to respond with the state of the resource
+          at the specified time.
+        in: header
+        name: Accept-Datetime
+        schema:
+          type: string
+      - description: Used to select what fields are present in the returned resource(s).
+        explode: false
+        in: query
+        name: $Select
+        schema:
+          items:
+            enum:
+            - key
+            - label
+            - content_type
+            - value
+            - last_modified
+            - tags
+            - locked
+            - etag
+            type: string
+          type: array
+        style: form
+      responses:
+        "200":
+          content: {}
+          description: Success
+          headers:
+            Sync-Token:
+              description: Enables real-time consistency between requests by providing
+                the returned value in the next request made to the server.
+              schema:
+                type: string
+        default:
+          content: {}
+          description: Error response describing why the operation failed
+      summary: Requests the headers and status of the given resource.
+      tags:
+      - KeyValues
+      x-ms-examples:
+        CheckKeyValues:
+          parameters:
+            api-version: "1.0"
+            endpoint: "https://{exampleAppConfigurationName}.azconfig.io"
+          responses:
+            "200":
+              headers:
+                Content-Type: application/vnd.microsoft.appconfig.kvset+json
+      x-accepts:
+      - application/json
+  /kv/{key}:
+    delete:
+      operationId: DeleteKeyValue
+      parameters:
+      - description: The key of the key-value to delete.
+        in: path
+        name: key
+        required: true
+        schema:
+          type: string
+      - description: The label of the key-value to delete.
+        in: query
+        name: label
+        schema:
+          type: string
+      - description: Used to guarantee real-time consistency between requests.
+        in: header
+        name: Sync-Token
+        schema:
+          type: string
+      - description: The API version to be used with the HTTP request.
+        in: query
+        name: api-version
+        required: true
+        schema:
+          type: string
+      - description: Used to perform an operation only if the targeted resource's
+          etag matches the value provided.
+        in: header
+        name: If-Match
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/vnd.microsoft.appconfig.kv+json:
+              schema:
+                $ref: '#/components/schemas/KeyValue'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/KeyValue'
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/KeyValue'
+          description: Success
+          headers:
+            ETag:
+              description: An identifier representing the returned state of the resource.
+              schema:
+                type: string
+            Sync-Token:
+              description: Enables real-time consistency between requests by providing
+                the returned value in the next request made to the server.
+              schema:
+                type: string
+        "204":
+          content: {}
+          description: Success
+          headers:
+            Sync-Token:
+              description: Enables real-time consistency between requests by providing
+                the returned value in the next request made to the server.
+              schema:
+                type: string
+        default:
+          content:
+            application/vnd.microsoft.appconfig.kv+json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Error response describing why the operation failed
+      summary: Deletes a key-value.
+      tags:
+      - KeyValues
+      x-ms-examples:
+        DeleteKeyValue:
+          parameters:
+            api-version: "1.0"
+            endpoint: "https://{exampleAppConfigurationName}.azconfig.io"
+            key: Message
+          responses:
+            "200":
+              body:
+                etag: 7XpB48ET4VAlB9068ft6fKMyA3m
+                key: Message
+                last_modified: 2019-08-27T16:52:32+00:00
+                locked: false
+                tags: {}
+                value: Hello World!
+              headers:
+                Content-Type: application/vnd.microsoft.appconfig.kv+json
+                ETag: W/"7XpB48ET4VAlB9068ft6fKMyA3m"
+                Last-Modified: "Tue, 27 Aug 2019 16:52:32 GMT"
+                Sync-Token: zAJw6V16=NjotMSM3ODk3NjM=;sn=789763
+            "204": {}
+        DeleteKeyValue_IfMatch:
+          parameters:
+            If-Match: '"L10qpBghN693OaxydgTkLmrBbV5"'
+            api-version: "1.0"
+            endpoint: "https://{exampleAppConfigurationName}.azconfig.io"
+            key: Message
+          responses:
+            "200":
+              body:
+                etag: L10qpBghN693OaxydgTkLmrBbV5
+                key: Message
+                last_modified: 2019-08-27T16:52:32+00:00
+                locked: false
+                tags: {}
+                value: Hello World!
+              headers:
+                Content-Type: application/vnd.microsoft.appconfig.kv+json
+                ETag: W/"L10qpBghN693OaxydgTkLmrBbV5"
+                Last-Modified: "Tue, 27 Aug 2019 16:52:32 GMT"
+                Sync-Token: zAJw6V16=NjotMSM3ODk3NjM=;sn=789763
+            "204": {}
+      x-accepts:
+      - application/json
+      - application/problem+json
+      - application/vnd.microsoft.appconfig.kv+json
+    get:
+      operationId: GetKeyValue
+      parameters:
+      - description: The key of the key-value to retrieve.
+        in: path
+        name: key
+        required: true
+        schema:
+          type: string
+      - description: The label of the key-value to retrieve.
+        in: query
+        name: label
+        schema:
+          type: string
+      - description: Used to guarantee real-time consistency between requests.
+        in: header
+        name: Sync-Token
+        schema:
+          type: string
+      - description: The API version to be used with the HTTP request.
+        in: query
+        name: api-version
+        required: true
+        schema:
+          type: string
+      - description: Requests the server to respond with the state of the resource
+          at the specified time.
+        in: header
+        name: Accept-Datetime
+        schema:
+          type: string
+      - description: Used to perform an operation only if the targeted resource's
+          etag matches the value provided.
+        in: header
+        name: If-Match
+        schema:
+          type: string
+      - description: Used to perform an operation only if the targeted resource's
+          etag does not match the value provided.
+        in: header
+        name: If-None-Match
+        schema:
+          type: string
+      - description: Used to select what fields are present in the returned resource(s).
+        explode: false
+        in: query
+        name: $Select
+        schema:
+          items:
+            enum:
+            - key
+            - label
+            - content_type
+            - value
+            - last_modified
+            - tags
+            - locked
+            - etag
+            type: string
+          type: array
+        style: form
+      responses:
+        "200":
+          content:
+            application/vnd.microsoft.appconfig.kv+json:
+              schema:
+                $ref: '#/components/schemas/KeyValue'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/KeyValue'
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/KeyValue'
+          description: Success
+          headers:
+            ETag:
+              description: An identifier representing the returned state of the resource.
+              schema:
+                type: string
+            Sync-Token:
+              description: Enables real-time consistency between requests by providing
+                the returned value in the next request made to the server.
+              schema:
+                type: string
+            Last-Modified:
+              description: A UTC datetime that specifies the last time the resource
+                was modified.
+              schema:
+                type: string
+        default:
+          content:
+            application/vnd.microsoft.appconfig.kv+json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Error response describing why the operation failed
+      summary: Gets a single key-value.
+      tags:
+      - KeyValues
+      x-ms-examples:
+        GetKeyValue:
+          parameters:
+            api-version: "1.0"
+            endpoint: "https://{exampleAppConfigurationName}.azconfig.io"
+            key: Message
+          responses:
+            "200":
+              body:
+                etag: 7XpB48ET4VAlB9068ft6fKMyA3m
+                key: Message
+                last_modified: 2019-08-27T16:52:32+00:00
+                locked: false
+                tags: {}
+                value: Hello World!
+              headers:
+                Content-Type: application/vnd.microsoft.appconfig.kv+json
+                ETag: W/"7XpB48ET4VAlB9068ft6fKMyA3m"
+                Last-Modified: "Tue, 27 Aug 2019 16:52:32 GMT"
+                Sync-Token: zAJw6V16=NjotMSM3ODk3NjM=;sn=789763
+        GetKeyValue_IfMatch:
+          parameters:
+            If-Match: '"L10qpBghN693OaxydgTkLmrBbV5"'
+            api-version: "1.0"
+            endpoint: "https://{exampleAppConfigurationName}.azconfig.io"
+            key: Message
+          responses:
+            "200":
+              body:
+                etag: L10qpBghN693OaxydgTkLmrBbV5
+                key: Message
+                last_modified: 2019-08-27T16:52:32+00:00
+                locked: false
+                tags: {}
+                value: Hello World!
+              headers:
+                Content-Type: application/vnd.microsoft.appconfig.kv+json
+                ETag: W/"L10qpBghN693OaxydgTkLmrBbV5"
+                Last-Modified: "Tue, 27 Aug 2019 16:52:32 GMT"
+                Sync-Token: zAJw6V16=NjotMSM3ODk3NjM=;sn=789763
+        GetKeyValue_IfNoneMatch:
+          parameters:
+            If-None-Match: L10qpBghN693OaxydgTkLmrBbV5
+            api-version: "1.0"
+            endpoint: "https://{exampleAppConfigurationName}.azconfig.io"
+            key: Message
+          responses:
+            "200":
+              body:
+                etag: 7XpB48ET4VAlB9068ft6fKMyA3m
+                key: Message
+                last_modified: 2019-08-27T16:52:32+00:00
+                locked: false
+                tags: {}
+                value: Hello World!
+              headers:
+                Content-Type: application/vnd.microsoft.appconfig.kv+json
+                ETag: W/"7XpB48ET4VAlB9068ft6fKMyA3m"
+                Last-Modified: "Tue, 27 Aug 2019 16:52:32 GMT"
+                Sync-Token: zAJw6V16=NjotMSM3ODk3NjM=;sn=789763
+      x-accepts:
+      - application/json
+      - application/problem+json
+      - application/vnd.microsoft.appconfig.kv+json
+    head:
+      operationId: CheckKeyValue
+      parameters:
+      - description: The key of the key-value to retrieve.
+        in: path
+        name: key
+        required: true
+        schema:
+          type: string
+      - description: The label of the key-value to retrieve.
+        in: query
+        name: label
+        schema:
+          type: string
+      - description: Used to guarantee real-time consistency between requests.
+        in: header
+        name: Sync-Token
+        schema:
+          type: string
+      - description: The API version to be used with the HTTP request.
+        in: query
+        name: api-version
+        required: true
+        schema:
+          type: string
+      - description: Requests the server to respond with the state of the resource
+          at the specified time.
+        in: header
+        name: Accept-Datetime
+        schema:
+          type: string
+      - description: Used to perform an operation only if the targeted resource's
+          etag matches the value provided.
+        in: header
+        name: If-Match
+        schema:
+          type: string
+      - description: Used to perform an operation only if the targeted resource's
+          etag does not match the value provided.
+        in: header
+        name: If-None-Match
+        schema:
+          type: string
+      - description: Used to select what fields are present in the returned resource(s).
+        explode: false
+        in: query
+        name: $Select
+        schema:
+          items:
+            enum:
+            - key
+            - label
+            - content_type
+            - value
+            - last_modified
+            - tags
+            - locked
+            - etag
+            type: string
+          type: array
+        style: form
+      responses:
+        "200":
+          content: {}
+          description: Success
+          headers:
+            ETag:
+              description: An identifier representing the returned state of the resource.
+              schema:
+                type: string
+            Sync-Token:
+              description: Enables real-time consistency between requests by providing
+                the returned value in the next request made to the server.
+              schema:
+                type: string
+            Last-Modified:
+              description: A UTC datetime that specifies the last time the resource
+                was modified.
+              schema:
+                type: string
+        default:
+          content: {}
+          description: Error response describing why the operation failed
+      summary: Requests the headers and status of the given resource.
+      tags:
+      - KeyValues
+      x-ms-examples:
+        CheckKeyValue:
+          parameters:
+            api-version: "1.0"
+            endpoint: "https://{exampleAppConfigurationName}.azconfig.io"
+            key: Message
+          responses:
+            "200":
+              headers:
+                Content-Type: application/vnd.microsoft.appconfig.kv+json
+                ETag: W/"7XpB48ET4VAlB9068ft6fKMyA3m"
+                Last-Modified: "Tue, 27 Aug 2019 16:52:32 GMT"
+                Sync-Token: zAJw6V16=NjotMSM3ODk3NjM=;sn=789763
+        CheckKeyValue_IfMatch:
+          parameters:
+            If-Match: '"L10qpBghN693OaxydgTkLmrBbV5"'
+            api-version: "1.0"
+            endpoint: "https://{exampleAppConfigurationName}.azconfig.io"
+            key: Message
+          responses:
+            "200":
+              headers:
+                Content-Type: application/vnd.microsoft.appconfig.kv+json
+                ETag: W/"L10qpBghN693OaxydgTkLmrBbV5"
+                Last-Modified: "Tue, 27 Aug 2019 16:52:32 GMT"
+                Sync-Token: zAJw6V16=NjotMSM3ODk3NjM=;sn=789763
+        CheckKeyValue_IfNoneMatch:
+          parameters:
+            If-None-Match: L10qpBghN693OaxydgTkLmrBbV5
+            api-version: "1.0"
+            endpoint: "https://{exampleAppConfigurationName}.azconfig.io"
+            key: Message
+          responses:
+            "200":
+              headers:
+                Content-Type: application/vnd.microsoft.appconfig.kv+json
+                ETag: W/"7XpB48ET4VAlB9068ft6fKMyA3m"
+                Last-Modified: "Tue, 27 Aug 2019 16:52:32 GMT"
+                Sync-Token: zAJw6V16=NjotMSM3ODk3NjM=;sn=789763
+      x-accepts:
+      - application/json
+    put:
+      operationId: PutKeyValue
+      parameters:
+      - description: The key of the key-value to create.
+        in: path
+        name: key
+        required: true
+        schema:
+          type: string
+      - description: The label of the key-value to create.
+        in: query
+        name: label
+        schema:
+          type: string
+      - description: Used to guarantee real-time consistency between requests.
+        in: header
+        name: Sync-Token
+        schema:
+          type: string
+      - description: The API version to be used with the HTTP request.
+        in: query
+        name: api-version
+        required: true
+        schema:
+          type: string
+      - description: Used to perform an operation only if the targeted resource's
+          etag matches the value provided.
+        in: header
+        name: If-Match
+        schema:
+          type: string
+      - description: Used to perform an operation only if the targeted resource's
+          etag does not match the value provided.
+        in: header
+        name: If-None-Match
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/vnd.microsoft.appconfig.kv+json:
+            schema:
+              $ref: '#/components/schemas/KeyValue'
+          application/vnd.microsoft.appconfig.kvset+json:
+            schema:
+              $ref: '#/components/schemas/KeyValue'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/KeyValue'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/KeyValue'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/KeyValue'
+          application/json-patch+json:
+            schema:
+              $ref: '#/components/schemas/KeyValue'
+        description: The key-value to create.
+        required: false
+      responses:
+        "200":
+          content:
+            application/vnd.microsoft.appconfig.kv+json:
+              schema:
+                $ref: '#/components/schemas/KeyValue'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/KeyValue'
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/KeyValue'
+          description: Success
+          headers:
+            ETag:
+              description: An identifier representing the returned state of the resource.
+              schema:
+                type: string
+            Sync-Token:
+              description: Enables real-time consistency between requests by providing
+                the returned value in the next request made to the server.
+              schema:
+                type: string
+        default:
+          content:
+            application/vnd.microsoft.appconfig.kv+json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Error response describing why the operation failed
+      summary: Creates a key-value.
+      tags:
+      - KeyValues
+      x-ms-examples:
+        PutKeyValue:
+          parameters:
+            api-version: "1.0"
+            endpoint: "https://{exampleAppConfigurationName}.azconfig.io"
+            key: Message
+          responses:
+            "200":
+              body:
+                etag: tnIHBkDYQwtdNMLoWtr5aybkKwL
+                key: Message
+                last_modified: 2019-08-27T16:52:32+00:00
+                locked: false
+                tags: {}
+                value: Hello World!
+              headers:
+                Content-Type: application/vnd.microsoft.appconfig.kv+json
+                ETag: W/"tnIHBkDYQwtdNMLoWtr5aybkKwL"
+                Last-Modified: "Tue, 27 Aug 2019 16:52:32 GMT"
+                Sync-Token: zAJw6V16=NjotMSM3ODk3NjM=;sn=789763
+        PutKeyValue_IfMatch:
+          parameters:
+            If-Match: '"L10qpBghN693OaxydgTkLmrBbV5"'
+            api-version: "1.0"
+            endpoint: "https://{exampleAppConfigurationName}.azconfig.io"
+            key: Message
+          responses:
+            "200":
+              body:
+                etag: L10qpBghN693OaxydgTkLmrBbV5
+                key: Message
+                last_modified: 2019-08-27T16:52:32+00:00
+                locked: false
+                tags: {}
+                value: Hello World!
+              headers:
+                Content-Type: application/vnd.microsoft.appconfig.kv+json
+                ETag: W/"L10qpBghN693OaxydgTkLmrBbV5"
+                Last-Modified: "Tue, 27 Aug 2019 16:52:32 GMT"
+                Sync-Token: zAJw6V16=NjotMSM3ODk3NjM=;sn=789763
+      x-codegen-request-body-name: entity
+      x-content-type: application/vnd.microsoft.appconfig.kv+json
+      x-accepts:
+      - application/json
+      - application/problem+json
+      - application/vnd.microsoft.appconfig.kv+json
+  /labels:
+    get:
+      operationId: GetLabels
+      parameters:
+      - description: A filter for the name of the returned labels.
+        in: query
+        name: name
+        schema:
+          type: string
+      - description: Used to guarantee real-time consistency between requests.
+        in: header
+        name: Sync-Token
+        schema:
+          type: string
+      - description: The API version to be used with the HTTP request.
+        in: query
+        name: api-version
+        required: true
+        schema:
+          type: string
+      - description: Instructs the server to return elements that appear after the
+          element referred to by the specified token.
+        in: query
+        name: After
+        schema:
+          type: string
+      - description: Requests the server to respond with the state of the resource
+          at the specified time.
+        in: header
+        name: Accept-Datetime
+        schema:
+          type: string
+      - description: Used to select what fields are present in the returned resource(s).
+        explode: false
+        in: query
+        name: $Select
+        schema:
+          items:
+            enum:
+            - name
+            type: string
+          type: array
+        style: form
+      responses:
+        "200":
+          content:
+            application/vnd.microsoft.appconfig.labelset+json:
+              schema:
+                $ref: '#/components/schemas/LabelListResult'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LabelListResult'
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/LabelListResult'
+          description: Success
+          headers:
+            Sync-Token:
+              description: Enables real-time consistency between requests by providing
+                the returned value in the next request made to the server.
+              schema:
+                type: string
+        default:
+          content:
+            application/vnd.microsoft.appconfig.labelset+json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Error response describing why the operation failed
+      summary: Gets a list of labels.
+      tags:
+      - Labels
+      x-ms-examples:
+        GetLabels:
+          parameters:
+            api-version: "1.0"
+            endpoint: "https://{exampleAppConfigurationName}.azconfig.io"
+          responses:
+            "200":
+              body:
+                items:
+                - {}
+                - name: Asset1
+                - name: Asset1/devCi
+                - name: Asset1/devCi/branch1
+                - name: WestUs
+              headers:
+                Content-Type: application/vnd.microsoft.appconfig.labelset+json
+      x-ms-pageable:
+        itemName: items
+        nextLinkName: '@nextLink'
+      x-accepts:
+      - application/json
+      - application/problem+json
+      - application/vnd.microsoft.appconfig.labelset+json
+    head:
+      operationId: CheckLabels
+      parameters:
+      - description: A filter for the name of the returned labels.
+        in: query
+        name: name
+        schema:
+          type: string
+      - description: Used to guarantee real-time consistency between requests.
+        in: header
+        name: Sync-Token
+        schema:
+          type: string
+      - description: The API version to be used with the HTTP request.
+        in: query
+        name: api-version
+        required: true
+        schema:
+          type: string
+      - description: Instructs the server to return elements that appear after the
+          element referred to by the specified token.
+        in: query
+        name: After
+        schema:
+          type: string
+      - description: Requests the server to respond with the state of the resource
+          at the specified time.
+        in: header
+        name: Accept-Datetime
+        schema:
+          type: string
+      - description: Used to select what fields are present in the returned resource(s).
+        explode: false
+        in: query
+        name: $Select
+        schema:
+          items:
+            enum:
+            - name
+            type: string
+          type: array
+        style: form
+      responses:
+        "200":
+          content: {}
+          description: Success
+          headers:
+            Sync-Token:
+              description: Enables real-time consistency between requests by providing
+                the returned value in the next request made to the server.
+              schema:
+                type: string
+        default:
+          content: {}
+          description: Error response describing why the operation failed
+      summary: Requests the headers and status of the given resource.
+      tags:
+      - Labels
+      x-ms-examples:
+        CheckLabels:
+          parameters:
+            api-version: "1.0"
+            endpoint: "https://{exampleAppConfigurationName}.azconfig.io"
+          responses:
+            "200":
+              headers:
+                Content-Type: application/vnd.microsoft.appconfig.labelset+json
+      x-accepts:
+      - application/json
+  /locks/{key}:
+    delete:
+      operationId: DeleteLock
+      parameters:
+      - description: The key of the key-value to unlock.
+        in: path
+        name: key
+        required: true
+        schema:
+          type: string
+      - description: "The label, if any, of the key-value to unlock."
+        in: query
+        name: label
+        schema:
+          type: string
+      - description: Used to guarantee real-time consistency between requests.
+        in: header
+        name: Sync-Token
+        schema:
+          type: string
+      - description: The API version to be used with the HTTP request.
+        in: query
+        name: api-version
+        required: true
+        schema:
+          type: string
+      - description: Used to perform an operation only if the targeted resource's
+          etag matches the value provided.
+        in: header
+        name: If-Match
+        schema:
+          type: string
+      - description: Used to perform an operation only if the targeted resource's
+          etag does not match the value provided.
+        in: header
+        name: If-None-Match
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/vnd.microsoft.appconfig.kv+json:
+              schema:
+                $ref: '#/components/schemas/KeyValue'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/KeyValue'
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/KeyValue'
+          description: Success
+          headers:
+            ETag:
+              description: An identifier representing the returned state of the resource.
+              schema:
+                type: string
+            Sync-Token:
+              description: Enables real-time consistency between requests by providing
+                the returned value in the next request made to the server.
+              schema:
+                type: string
+        default:
+          content:
+            application/vnd.microsoft.appconfig.kv+json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Error response describing why the operation failed
+      summary: Unlocks a key-value.
+      tags:
+      - Locks
+      x-ms-examples:
+        DeleteLock:
+          parameters:
+            api-version: "1.0"
+            endpoint: "https://{exampleAppConfigurationName}.azconfig.io"
+            key: Message
+          responses:
+            "200":
+              body:
+                etag: 0BGYCoQ6iNdp5NtQ7N8shrobo6s
+                key: Message
+                last_modified: 2019-08-27T16:52:32+00:00
+                locked: false
+                tags: {}
+                value: Hello World!
+              headers:
+                Content-Type: application/vnd.microsoft.appconfig.kv+json
+                ETag: W/"0BGYCoQ6iNdp5NtQ7N8shrobo6s"
+                Last-Modified: "Tue, 27 Aug 2019 16:52:32 GMT"
+                Sync-Token: zAJw6V16=NjotMSM3ODk3NjM=;sn=789763
+        DeleteLock_IfMatch:
+          parameters:
+            If-Match: '"L10qpBghN693OaxydgTkLmrBbV5"'
+            api-version: "1.0"
+            endpoint: "https://{exampleAppConfigurationName}.azconfig.io"
+            key: Message
+          responses:
+            "200":
+              body:
+                etag: L10qpBghN693OaxydgTkLmrBbV5
+                key: Message
+                last_modified: 2019-08-27T16:52:32+00:00
+                locked: false
+                tags: {}
+                value: Hello World!
+              headers:
+                Content-Type: application/vnd.microsoft.appconfig.kv+json
+                ETag: W/"L10qpBghN693OaxydgTkLmrBbV5"
+                Last-Modified: "Tue, 27 Aug 2019 16:52:32 GMT"
+                Sync-Token: zAJw6V16=NjotMSM3ODk3NjM=;sn=789763
+      x-accepts:
+      - application/json
+      - application/problem+json
+      - application/vnd.microsoft.appconfig.kv+json
+    put:
+      operationId: PutLock
+      parameters:
+      - description: The key of the key-value to lock.
+        in: path
+        name: key
+        required: true
+        schema:
+          type: string
+      - description: "The label, if any, of the key-value to lock."
+        in: query
+        name: label
+        schema:
+          type: string
+      - description: Used to guarantee real-time consistency between requests.
+        in: header
+        name: Sync-Token
+        schema:
+          type: string
+      - description: The API version to be used with the HTTP request.
+        in: query
+        name: api-version
+        required: true
+        schema:
+          type: string
+      - description: Used to perform an operation only if the targeted resource's
+          etag matches the value provided.
+        in: header
+        name: If-Match
+        schema:
+          type: string
+      - description: Used to perform an operation only if the targeted resource's
+          etag does not match the value provided.
+        in: header
+        name: If-None-Match
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/vnd.microsoft.appconfig.kv+json:
+              schema:
+                $ref: '#/components/schemas/KeyValue'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/KeyValue'
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/KeyValue'
+          description: Success
+          headers:
+            ETag:
+              description: An identifier representing the returned state of the resource.
+              schema:
+                type: string
+            Sync-Token:
+              description: Enables real-time consistency between requests by providing
+                the returned value in the next request made to the server.
+              schema:
+                type: string
+        default:
+          content:
+            application/vnd.microsoft.appconfig.kv+json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Error response describing why the operation failed
+      summary: Locks a key-value.
+      tags:
+      - Locks
+      x-ms-examples:
+        PutLock:
+          parameters:
+            api-version: "1.0"
+            endpoint: "https://{exampleAppConfigurationName}.azconfig.io"
+            key: Message
+          responses:
+            "200":
+              body:
+                etag: L10qpBghN693OaxydgTkLmrBbV4
+                key: Message
+                last_modified: 2019-08-27T16:52:32+00:00
+                locked: true
+                tags: {}
+                value: Hello World!
+              headers:
+                Content-Type: application/vnd.microsoft.appconfig.kv+json
+                ETag: W/"L10qpBghN693OaxydgTkLmrBbV4"
+                Last-Modified: "Tue, 27 Aug 2019 16:52:32 GMT"
+                Sync-Token: zAJw6V16=NjotMSM3ODk3NjM=;sn=789763
+        PutLock_IfMatch:
+          parameters:
+            If-Match: '"L10qpBghN693OaxydgTkLmrBbV5"'
+            api-version: "1.0"
+            endpoint: "https://{exampleAppConfigurationName}.azconfig.io"
+            key: Message
+          responses:
+            "200":
+              body:
+                etag: L10qpBghN693OaxydgTkLmrBbV5
+                key: Message
+                last_modified: 2019-08-27T16:52:32+00:00
+                locked: true
+                tags: {}
+                value: Hello World!
+              headers:
+                Content-Type: application/vnd.microsoft.appconfig.kv+json
+                ETag: W/"L10qpBghN693OaxydgTkLmrBbV5"
+                Last-Modified: "Tue, 27 Aug 2019 16:52:32 GMT"
+                Sync-Token: zAJw6V16=NjotMSM3ODk3NjM=;sn=789763
+      x-accepts:
+      - application/json
+      - application/problem+json
+      - application/vnd.microsoft.appconfig.kv+json
+  /revisions:
+    get:
+      operationId: GetRevisions
+      parameters:
+      - description: A filter used to match keys.
+        in: query
+        name: key
+        schema:
+          type: string
+      - description: A filter used to match labels
+        in: query
+        name: label
+        schema:
+          type: string
+      - description: Used to guarantee real-time consistency between requests.
+        in: header
+        name: Sync-Token
+        schema:
+          type: string
+      - description: The API version to be used with the HTTP request.
+        in: query
+        name: api-version
+        required: true
+        schema:
+          type: string
+      - description: Instructs the server to return elements that appear after the
+          element referred to by the specified token.
+        in: query
+        name: After
+        schema:
+          type: string
+      - description: Requests the server to respond with the state of the resource
+          at the specified time.
+        in: header
+        name: Accept-Datetime
+        schema:
+          type: string
+      - description: Used to select what fields are present in the returned resource(s).
+        explode: false
+        in: query
+        name: $Select
+        schema:
+          items:
+            enum:
+            - key
+            - label
+            - content_type
+            - value
+            - last_modified
+            - tags
+            - locked
+            - etag
+            type: string
+          type: array
+        style: form
+      responses:
+        "200":
+          content:
+            application/vnd.microsoft.appconfig.kvset+json:
+              schema:
+                $ref: '#/components/schemas/KeyValueListResult'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/KeyValueListResult'
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/KeyValueListResult'
+          description: Success
+          headers:
+            Sync-Token:
+              description: Enables real-time consistency between requests by providing
+                the returned value in the next request made to the server.
+              schema:
+                type: string
+        default:
+          content:
+            application/vnd.microsoft.appconfig.kvset+json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Error response describing why the operation failed
+      summary: Gets a list of key-value revisions.
+      tags:
+      - Revisions
+      x-ms-examples:
+        GetRevisions:
+          parameters:
+            api-version: "1.0"
+            endpoint: "https://{exampleAppConfigurationName}.azconfig.io"
+          responses:
+            "200":
+              body:
+                items:
+                - etag: 0BGYCoQ6iNdp5NtQ7N8shrobo6s
+                  key: Message
+                  last_modified: 2019-08-27T16:52:32+00:00
+                  locked: false
+                  tags: {}
+                  value: Hello World!
+                - etag: L10qpBghN693OaxydgTkLmrBbV4
+                  key: Message
+                  last_modified: 2019-08-27T16:52:20+00:00
+                  locked: false
+                  tags: {}
+                  value: A new message.
+                - etag: tnIHBkDYQwtdNMLoWtr5aybkKwL
+                  key: Message
+                  last_modified: 2019-08-27T16:50:47+00:00
+                  locked: false
+                  tags: {}
+                  value: Hello World!
+              headers:
+                Content-Type: application/vnd.microsoft.appconfig.kvset+json
+      x-ms-pageable:
+        itemName: items
+        nextLinkName: '@nextLink'
+      x-accepts:
+      - application/json
+      - application/problem+json
+      - application/vnd.microsoft.appconfig.kvset+json
+    head:
+      operationId: CheckRevisions
+      parameters:
+      - description: A filter used to match keys.
+        in: query
+        name: key
+        schema:
+          type: string
+      - description: A filter used to match labels
+        in: query
+        name: label
+        schema:
+          type: string
+      - description: Used to guarantee real-time consistency between requests.
+        in: header
+        name: Sync-Token
+        schema:
+          type: string
+      - description: The API version to be used with the HTTP request.
+        in: query
+        name: api-version
+        required: true
+        schema:
+          type: string
+      - description: Instructs the server to return elements that appear after the
+          element referred to by the specified token.
+        in: query
+        name: After
+        schema:
+          type: string
+      - description: Requests the server to respond with the state of the resource
+          at the specified time.
+        in: header
+        name: Accept-Datetime
+        schema:
+          type: string
+      - description: Used to select what fields are present in the returned resource(s).
+        explode: false
+        in: query
+        name: $Select
+        schema:
+          items:
+            enum:
+            - key
+            - label
+            - content_type
+            - value
+            - last_modified
+            - tags
+            - locked
+            - etag
+            type: string
+          type: array
+        style: form
+      responses:
+        "200":
+          content: {}
+          description: Success
+          headers:
+            Sync-Token:
+              description: Enables real-time consistency between requests by providing
+                the returned value in the next request made to the server.
+              schema:
+                type: string
+        default:
+          content: {}
+          description: Error response describing why the operation failed
+      summary: Requests the headers and status of the given resource.
+      tags:
+      - Revisions
+      x-ms-examples:
+        CheckRevisions:
+          parameters:
+            api-version: "1.0"
+            endpoint: "https://{exampleAppConfigurationName}.azconfig.io"
+          responses:
+            "200":
+              headers:
+                Content-Type: application/vnd.microsoft.appconfig.kvset+json
+      x-accepts:
+      - application/json
+components:
+  parameters:
+    ApiVersion:
+      description: The API version to be used with the HTTP request.
+      in: query
+      name: api-version
+      required: true
+      schema:
+        type: string
+    Endpoint:
+      description: The endpoint of the App Configuration instance to send requests
+        to.
+      in: path
+      name: endpoint
+      required: true
+      schema:
+        type: string
+        x-ms-parameter-location: client
+        x-ms-skip-url-encoding: true
+      x-ms-parameter-location: client
+      x-ms-skip-url-encoding: true
+    SyncTokens:
+      description: Used to guarantee real-time consistency between requests.
+      in: header
+      name: Sync-Token
+      schema:
+        type: string
+  schemas:
+    Error:
+      description: Azure App Configuration error object.
+      example:
+        name: name
+        detail: detail
+        title: title
+        type: type
+        status: 0
+      properties:
+        detail:
+          description: A detailed description of the error.
+          type: string
+        name:
+          description: The name of the parameter that resulted in the error.
+          type: string
+        status:
+          description: The HTTP status code that the error maps to.
+          type: integer
+        title:
+          description: A brief summary of the error.
+          type: string
+        type:
+          description: The type of the error.
+          type: string
+      type: object
+    Key:
+      example:
+        name: name
+      properties:
+        name:
+          readOnly: true
+          type: string
+      type: object
+    KeyListResult:
+      description: The result of a list request.
+      example:
+        '@nextLink': '@nextLink'
+        items:
+        - name: name
+        - name: name
+      properties:
+        '@nextLink':
+          description: The URI that can be used to request the next set of paged results.
+          type: string
+        items:
+          description: The collection value.
+          items:
+            $ref: '#/components/schemas/Key'
+          type: array
+      type: object
+    KeyValue:
+      example:
+        content_type: content_type
+        etag: etag
+        label: label
+        locked: true
+        last_modified: 2000-01-23T04:56:07.000+00:00
+        value: value
+        key: key
+        tags:
+          key: tags
+      properties:
+        content_type:
+          type: string
+        etag:
+          type: string
+        key:
+          type: string
+        label:
+          type: string
+        last_modified:
+          format: date-time
+          type: string
+        locked:
+          type: boolean
+        tags:
+          additionalProperties:
+            type: string
+          type: object
+        value:
+          type: string
+      type: object
+    KeyValueListResult:
+      description: The result of a list request.
+      example:
+        '@nextLink': '@nextLink'
+        items:
+        - content_type: content_type
+          etag: etag
+          label: label
+          locked: true
+          last_modified: 2000-01-23T04:56:07.000+00:00
+          value: value
+          key: key
+          tags:
+            key: tags
+        - content_type: content_type
+          etag: etag
+          label: label
+          locked: true
+          last_modified: 2000-01-23T04:56:07.000+00:00
+          value: value
+          key: key
+          tags:
+            key: tags
+      properties:
+        '@nextLink':
+          description: The URI that can be used to request the next set of paged results.
+          type: string
+        items:
+          description: The collection value.
+          items:
+            $ref: '#/components/schemas/KeyValue'
+          type: array
+      type: object
+    Label:
+      example:
+        name: name
+      properties:
+        name:
+          readOnly: true
+          type: string
+      type: object
+    LabelListResult:
+      description: The result of a list request.
+      example:
+        '@nextLink': '@nextLink'
+        items:
+        - name: name
+        - name: name
+      properties:
+        '@nextLink':
+          description: The URI that can be used to request the next set of paged results.
+          type: string
+        items:
+          description: The collection value.
+          items:
+            $ref: '#/components/schemas/Label'
+          type: array
+      type: object
+x-ms-parameterized-host:
+  hostTemplate: "{endpoint}"
+  parameters:
+  - $ref: '#/parameters/Endpoint'
+  useSchemePrefix: false
+x-original-swagger-version: "2.0"
+
