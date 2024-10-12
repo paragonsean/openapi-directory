@@ -1,0 +1,9 @@
+# coding: utf-8
+
+# import models into model package
+from openapi_server.models.recommendation import Recommendation
+from openapi_server.models.recommendation_collection import RecommendationCollection
+from openapi_server.models.recommendation_rule import RecommendationRule
+from openapi_server.models.recommendations_list_default_response import RecommendationsListDefaultResponse
+from openapi_server.models.recommendations_list_default_response_error import RecommendationsListDefaultResponseError
+from openapi_server.models.recommendations_list_default_response_error_details_inner import RecommendationsListDefaultResponseErrorDetailsInner
