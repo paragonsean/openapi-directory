@@ -1,0 +1,9 @@
+# coding: utf-8
+
+# import models into model package
+from openapi_server.models.client_discovery_display import ClientDiscoveryDisplay
+from openapi_server.models.client_discovery_for_log_specification import ClientDiscoveryForLogSpecification
+from openapi_server.models.client_discovery_for_properties import ClientDiscoveryForProperties
+from openapi_server.models.client_discovery_for_service_specification import ClientDiscoveryForServiceSpecification
+from openapi_server.models.client_discovery_response import ClientDiscoveryResponse
+from openapi_server.models.client_discovery_value_for_single_api import ClientDiscoveryValueForSingleApi
