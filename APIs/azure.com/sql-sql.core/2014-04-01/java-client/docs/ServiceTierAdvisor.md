@@ -1,0 +1,17 @@
+
+
+# ServiceTierAdvisor
+
+Represents a Service Tier Advisor.
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**properties** | [**ServiceTierAdvisorProperties**](ServiceTierAdvisorProperties.md) |  |  [optional] |
+|**id** | **String** | Resource ID. |  [optional] [readonly] |
+|**name** | **String** | Resource name. |  [optional] [readonly] |
+|**type** | **String** | Resource type. |  [optional] [readonly] |
+
+
+

@@ -1,0 +1,11 @@
+# coding: utf-8
+
+# import models into model package
+from openapi_server.models.capabilities_result import CapabilitiesResult
+from openapi_server.models.quota_capability import QuotaCapability
+from openapi_server.models.regional_quota_capability import RegionalQuotaCapability
+from openapi_server.models.regions_capability import RegionsCapability
+from openapi_server.models.version_spec import VersionSpec
+from openapi_server.models.versions_capability import VersionsCapability
+from openapi_server.models.vm_size_compatibility_filter import VmSizeCompatibilityFilter
+from openapi_server.models.vm_sizes_capability import VmSizesCapability

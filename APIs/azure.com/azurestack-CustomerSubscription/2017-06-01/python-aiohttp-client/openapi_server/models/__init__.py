@@ -1,0 +1,8 @@
+# coding: utf-8
+
+# import models into model package
+from openapi_server.models.customer_subscription import CustomerSubscription
+from openapi_server.models.customer_subscription_list import CustomerSubscriptionList
+from openapi_server.models.customer_subscription_properties import CustomerSubscriptionProperties
+from openapi_server.models.customer_subscriptions_list_default_response import CustomerSubscriptionsListDefaultResponse
+from openapi_server.models.customer_subscriptions_list_default_response_error import CustomerSubscriptionsListDefaultResponseError
