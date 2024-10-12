@@ -1,0 +1,109 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIAccessEntry.h \
+    $${PWD}/OAIAgentState.h \
+    $${PWD}/OAIConfigCOAP.h \
+    $${PWD}/OAIConfigDHCP.h \
+    $${PWD}/OAIConfigIPMI.h \
+    $${PWD}/OAIConfigMQTT.h \
+    $${PWD}/OAIConfigNETFLOW.h \
+    $${PWD}/OAIConfigPROXY.h \
+    $${PWD}/OAIConfigSFLOW.h \
+    $${PWD}/OAIConfigSNMPTCP.h \
+    $${PWD}/OAIConfigSNMPv3.h \
+    $${PWD}/OAIConfigSSH.h \
+    $${PWD}/OAIConfigSYSLOG.h \
+    $${PWD}/OAIConfigTELNET.h \
+    $${PWD}/OAIConfigTFTP.h \
+    $${PWD}/OAIConfigTOD.h \
+    $${PWD}/OAIConfigWEB.h \
+    $${PWD}/OAIIPAlias.h \
+    $${PWD}/OAIIPSource.h \
+    $${PWD}/OAISyslogMsg.h \
+    $${PWD}/OAITelnetUser.h \
+    $${PWD}/OAITimerScript.h \
+    $${PWD}/OAITrapDest.h \
+    $${PWD}/OAITriplet.h \
+# APIs
+    $${PWD}/OAIAccessApi.h \
+    $${PWD}/OAIAgentApi.h \
+    $${PWD}/OAICOAPApi.h \
+    $${PWD}/OAIDHCPApi.h \
+    $${PWD}/OAIDaemonApi.h \
+    $${PWD}/OAIIPMIApi.h \
+    $${PWD}/OAIMQTTApi.h \
+    $${PWD}/OAINETFLOWApi.h \
+    $${PWD}/OAIPROXYApi.h \
+    $${PWD}/OAISFLOWApi.h \
+    $${PWD}/OAISNMPTCPApi.h \
+    $${PWD}/OAISNMPv3Api.h \
+    $${PWD}/OAISSHApi.h \
+    $${PWD}/OAISYSLOGApi.h \
+    $${PWD}/OAITELNETApi.h \
+    $${PWD}/OAITFTPApi.h \
+    $${PWD}/OAITODApi.h \
+    $${PWD}/OAIValuespaceApi.h \
+    $${PWD}/OAIWEBApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIAccessEntry.cpp \
+    $${PWD}/OAIAgentState.cpp \
+    $${PWD}/OAIConfigCOAP.cpp \
+    $${PWD}/OAIConfigDHCP.cpp \
+    $${PWD}/OAIConfigIPMI.cpp \
+    $${PWD}/OAIConfigMQTT.cpp \
+    $${PWD}/OAIConfigNETFLOW.cpp \
+    $${PWD}/OAIConfigPROXY.cpp \
+    $${PWD}/OAIConfigSFLOW.cpp \
+    $${PWD}/OAIConfigSNMPTCP.cpp \
+    $${PWD}/OAIConfigSNMPv3.cpp \
+    $${PWD}/OAIConfigSSH.cpp \
+    $${PWD}/OAIConfigSYSLOG.cpp \
+    $${PWD}/OAIConfigTELNET.cpp \
+    $${PWD}/OAIConfigTFTP.cpp \
+    $${PWD}/OAIConfigTOD.cpp \
+    $${PWD}/OAIConfigWEB.cpp \
+    $${PWD}/OAIIPAlias.cpp \
+    $${PWD}/OAIIPSource.cpp \
+    $${PWD}/OAISyslogMsg.cpp \
+    $${PWD}/OAITelnetUser.cpp \
+    $${PWD}/OAITimerScript.cpp \
+    $${PWD}/OAITrapDest.cpp \
+    $${PWD}/OAITriplet.cpp \
+# APIs
+    $${PWD}/OAIAccessApi.cpp \
+    $${PWD}/OAIAgentApi.cpp \
+    $${PWD}/OAICOAPApi.cpp \
+    $${PWD}/OAIDHCPApi.cpp \
+    $${PWD}/OAIDaemonApi.cpp \
+    $${PWD}/OAIIPMIApi.cpp \
+    $${PWD}/OAIMQTTApi.cpp \
+    $${PWD}/OAINETFLOWApi.cpp \
+    $${PWD}/OAIPROXYApi.cpp \
+    $${PWD}/OAISFLOWApi.cpp \
+    $${PWD}/OAISNMPTCPApi.cpp \
+    $${PWD}/OAISNMPv3Api.cpp \
+    $${PWD}/OAISSHApi.cpp \
+    $${PWD}/OAISYSLOGApi.cpp \
+    $${PWD}/OAITELNETApi.cpp \
+    $${PWD}/OAITFTPApi.cpp \
+    $${PWD}/OAITODApi.cpp \
+    $${PWD}/OAIValuespaceApi.cpp \
+    $${PWD}/OAIWEBApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

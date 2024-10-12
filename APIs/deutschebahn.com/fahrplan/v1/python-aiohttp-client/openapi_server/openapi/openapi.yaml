@@ -1,0 +1,463 @@
+openapi: 3.0.1
+info:
+  contact:
+    email: DBOpenData@deutschebahn.com
+    name: DBOpenData
+    url: https://developer.deutschebahn.com/store/
+  description: |-
+    A RESTful webservice to request a railway journey - FREE plan with restricted access (max. 10 requests per minute). Please ignore the message in the API Console about the access token.
+
+    Register to use an less restricted version, which requires an access token.
+  license:
+    name: DB Data Portal
+    url: http://data.deutschebahn.com/pages/nutzungsbedingungen
+  termsOfService: http://data.deutschebahn.com/nutzungsbedingungen.html
+  title: Fahrplan-Free
+  version: v1
+  x-apisguru-categories:
+  - transport
+  - open_data
+  x-logo:
+    backgroundColor: '#FFFFFF'
+    url: https://pbs.twimg.com/profile_images/591140150413025280/Cjcqjl2J.png
+  x-origin:
+  - format: swagger
+    url: https://developer.deutschebahn.com/store/api-docs/DBOpenData/Fahrplan-Free/v1
+    version: "2.0"
+  x-providerName: deutschebahn.com
+  x-serviceName: fahrplan
+servers:
+- url: https://api.deutschebahn.com/freeplan/v1
+- url: http://api.deutschebahn.com/freeplan/v1
+paths:
+  /arrivalBoard/{id}:
+    get:
+      description: Get arrival board at a given location at a given daten and time.
+      operationId: arrival_board_id_get
+      parameters:
+      - description: Id of location. Use attribute 'id' from the result of 'location'
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: "Date and time in ISO-8601 format, yyyy-mm-ddThh:mm:ss, example:\
+          \ 2017-04-01 or 2017-04-01T10:30"
+        in: query
+        name: date
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BoardResponse'
+          description: arrival board
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+          description: Invalid date/time specification.
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+          description: Internal Server Error.
+        "503":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+          description: The service has been disabled temporarily.
+      summary: Get arrival board of a location
+      x-auth-type: None
+      x-throttling-tier: 10_per_minute
+      x-openapi-router-controller: openapi_server.controllers.default_controller
+  /departureBoard/{id}:
+    get:
+      description: Get departure board at a given location at a given daten and time.
+      operationId: departure_board_id_get
+      parameters:
+      - description: Id of a location. Use attribute 'id' from the result of 'location'
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: "Date and time in ISO-8601 format, yyyy-mm-ddThh:mm:ss, example:\
+          \ 2017-04-01 or 2017-04-01T10:30"
+        in: query
+        name: date
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BoardResponse'
+          description: departure board
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+          description: Invalid date/time specification.
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+          description: Internal Server Error.
+        "503":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+          description: The service has been disabled temporarily.
+      summary: Get departure board of a location
+      x-auth-type: None
+      x-throttling-tier: 10_per_minute
+      x-openapi-router-controller: openapi_server.controllers.default_controller
+  /journeyDetails/{id}:
+    get:
+      description: Retrieve details of a journey. The id of journey should come from
+        an arrival board or a departure board.
+      operationId: journey_details_id_get
+      parameters:
+      - description: Id of a journey. Use attribute 'detailsId' from the result of  'arrivalBoard'
+          or 'departureBoard'
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JourneyResponse'
+          description: "journey details, locations of a journey"
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+          description: Internal Server Error.
+        "503":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+          description: The service has been disabled temporarily.
+      summary: Get details about a single journey
+      x-auth-type: None
+      x-throttling-tier: 10_per_minute
+      x-openapi-router-controller: openapi_server.controllers.default_controller
+  /location/{name}:
+    get:
+      description: Get information about locations matching the given name or name
+        fragment
+      operationId: location_name_get
+      parameters:
+      - description: Name or name fragment of a location
+        in: path
+        name: name
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LocationResponse'
+          description: location information
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+          description: Internal Server Error.
+        "503":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+          description: The service has been disabled temporarily.
+      summary: Get location information
+      x-auth-type: None
+      x-throttling-tier: 10_per_minute
+      x-openapi-router-controller: openapi_server.controllers.default_controller
+components:
+  schemas:
+    Board:
+      example:
+        dateTime: dateTime
+        origin: origin
+        detailsId: detailsId
+        name: name
+        boardId: boardId
+        stopId: stopId
+        track: track
+        type: type
+        stopName: stopName
+      properties:
+        boardId:
+          description: ""
+          title: boardId
+          type: string
+        dateTime:
+          description: ""
+          title: dateTime
+          type: string
+        detailsId:
+          description: ""
+          title: detailsId
+          type: string
+        name:
+          description: Name of train
+          title: name
+          type: string
+        origin:
+          description: ""
+          title: origin
+          type: string
+        stopId:
+          description: ""
+          title: stopId
+          type: string
+        stopName:
+          description: ""
+          title: stopName
+          type: string
+        track:
+          description: ""
+          title: track
+          type: string
+        type:
+          description: ""
+          title: type
+          type: string
+      required:
+      - boardId
+      - dateTime
+      - detailsId
+      - name
+      - origin
+      - stopId
+      - stopName
+      - track
+      - type
+      title: Board
+      type: object
+    BoardResponse:
+      example:
+        boards:
+        - dateTime: dateTime
+          origin: origin
+          detailsId: detailsId
+          name: name
+          boardId: boardId
+          stopId: stopId
+          track: track
+          type: type
+          stopName: stopName
+        - dateTime: dateTime
+          origin: origin
+          detailsId: detailsId
+          name: name
+          boardId: boardId
+          stopId: stopId
+          track: track
+          type: type
+          stopName: stopName
+      properties:
+        boards:
+          items:
+            $ref: '#/components/schemas/Board'
+          minItems: 1
+          title: boards
+          type: array
+          uniqueItems: true
+      required:
+      - boards
+      title: BoardResponse
+      type: object
+    ErrorModel:
+      example:
+        code: 0
+        internal_code: 6
+        message: message
+        internal_message: internal_message
+      properties:
+        code:
+          title: code
+          type: integer
+        internal_code:
+          title: internal_code
+          type: integer
+        internal_message:
+          title: internal_message
+          type: string
+        message:
+          title: message
+          type: string
+      required:
+      - code
+      - message
+      title: ErrorModel
+      type: object
+    JourneyResponse:
+      example:
+        train_locs:
+        - depTime: depTime
+          stopId: stopId
+          lon: 6.027456183070403
+          type: type
+          arrTime: arrTime
+          lat: 0.8008281904610115
+          operator: operator
+          stopName: stopName
+          train: train
+        - depTime: depTime
+          stopId: stopId
+          lon: 6.027456183070403
+          type: type
+          arrTime: arrTime
+          lat: 0.8008281904610115
+          operator: operator
+          stopName: stopName
+          train: train
+      properties:
+        train_locs:
+          items:
+            $ref: '#/components/schemas/TrainLocation'
+          minItems: 1
+          title: train_locs
+          type: array
+          uniqueItems: true
+      required:
+      - train_locs
+      title: JourneyResponse
+      type: object
+    Location:
+      example:
+        name: name
+        lon: 6.027456183070403
+        id: id
+        lat: 0.8008281904610115
+      properties:
+        id:
+          description: "id of location (eva-number), example: 8000105"
+          title: id
+          type: string
+        lat:
+          description: "latitude, example: 50.107149"
+          title: lat
+          type: number
+        lon:
+          description: "longitude, example: 8.663785"
+          title: lon
+          type: number
+        name:
+          description: "Name of location, example: Frankfurt(Main)Hbf"
+          title: name
+          type: string
+      required:
+      - id
+      - lat
+      - lon
+      - name
+      title: Location
+      type: object
+    LocationResponse:
+      example:
+        locations:
+        - name: name
+          lon: 6.027456183070403
+          id: id
+          lat: 0.8008281904610115
+        - name: name
+          lon: 6.027456183070403
+          id: id
+          lat: 0.8008281904610115
+      properties:
+        locations:
+          items:
+            $ref: '#/components/schemas/Location'
+          minItems: 1
+          title: locations
+          type: array
+          uniqueItems: true
+      required:
+      - locations
+      title: LocationResponse
+      type: object
+    TrainLocation:
+      example:
+        depTime: depTime
+        stopId: stopId
+        lon: 6.027456183070403
+        type: type
+        arrTime: arrTime
+        lat: 0.8008281904610115
+        operator: operator
+        stopName: stopName
+        train: train
+      properties:
+        arrTime:
+          description: ""
+          title: arrTime
+          type: string
+        depTime:
+          description: ""
+          title: depTime
+          type: string
+        lat:
+          description: ""
+          title: lat
+          type: number
+        lon:
+          description: ""
+          title: lon
+          type: number
+        operator:
+          description: ""
+          title: operator
+          type: string
+        stopId:
+          description: ""
+          title: stopId
+          type: string
+        stopName:
+          description: ""
+          title: stopName
+          type: string
+        train:
+          description: ""
+          title: train
+          type: string
+        type:
+          description: ""
+          title: type
+          type: string
+      required:
+      - arrTime
+      - depTime
+      - lat
+      - lon
+      - operator
+      - stopId
+      - stopName
+      - train
+      - type
+      title: TrainLocation
+      type: object
+x-original-swagger-version: "2.0"

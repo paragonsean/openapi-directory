@@ -1,0 +1,92 @@
+
+
+# ScheduleB
+
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**amendmentIndicator** | **String** |  |  [optional] |
+|**amendmentIndicatorDesc** | **String** |  |  [optional] |
+|**backReferenceScheduleId** | **String** |  |  [optional] |
+|**backReferenceTransactionId** | **String** |  |  [optional] |
+|**beneficiaryCommitteeName** | **String** |  |  [optional] |
+|**candidateFirstName** | **String** |  |  [optional] |
+|**candidateId** | **String** |  A unique identifier assigned to each candidate registered with the FEC. If a person runs for several offices, that person will have separate candidate IDs for each office. First character indicates office - [P]residential, [H]ouse, [S]enate]. Second character is the last digit of the two-year period the ID was created. Third and fourth is the candidate state. Presidential IDs don&#39;t have state. Fifth and sixth is the district when the candidate first ran. This does not change if the candidate/member&#39;s district changes during re-districting. Presidential IDs don&#39;t have districts. The rest is sequence.  |  [optional] |
+|**candidateLastName** | **String** |  |  [optional] |
+|**candidateMiddleName** | **String** |  |  [optional] |
+|**candidateName** | **String** | Name of candidate running for office |  [optional] |
+|**candidateOffice** | **String** |  |  [optional] |
+|**candidateOfficeDescription** | **String** |  |  [optional] |
+|**candidateOfficeDistrict** | **String** |  |  [optional] |
+|**candidateOfficeState** | **String** |  |  [optional] |
+|**candidateOfficeStateFull** | **String** |  |  [optional] |
+|**candidatePrefix** | **String** |  |  [optional] |
+|**candidateSuffix** | **String** |  |  [optional] |
+|**categoryCode** | **String** |  |  [optional] |
+|**categoryCodeFull** | **String** |  |  [optional] |
+|**commDt** | **LocalDate** |  |  [optional] |
+|**committee** | [**CommitteeHistory**](CommitteeHistory.md) |  |  [optional] |
+|**committeeId** | **String** |  A unique identifier assigned to each committee or filer registered with the FEC. In general committee id&#39;s begin with the letter C which is followed by eight digits.  |  [optional] |
+|**conduitCommitteeCity** | **String** |  |  [optional] |
+|**conduitCommitteeName** | **String** |  |  [optional] |
+|**conduitCommitteeState** | **String** |  |  [optional] |
+|**conduitCommitteeStreet1** | **String** |  |  [optional] |
+|**conduitCommitteeStreet2** | **String** |  |  [optional] |
+|**conduitCommitteeZip** | **Integer** |  |  [optional] |
+|**disbursementAmount** | **BigDecimal** |  |  [optional] |
+|**disbursementDate** | **LocalDate** |  |  [optional] |
+|**disbursementDescription** | **String** |  |  [optional] |
+|**disbursementPurposeCategory** | **String** |  |  [optional] |
+|**disbursementType** | **String** |  |  [optional] |
+|**disbursementTypeDescription** | **String** |  |  [optional] |
+|**electionType** | **String** |  |  [optional] |
+|**electionTypeFull** | **String** |  |  [optional] |
+|**entityType** | **String** |  |  [optional] |
+|**entityTypeDesc** | **String** |  |  [optional] |
+|**fecElectionTypeDesc** | **String** |  |  [optional] |
+|**fecElectionYear** | **String** |  |  [optional] |
+|**fileNumber** | **Integer** |  |  [optional] |
+|**filingForm** | **String** |  |  [optional] |
+|**imageNumber** | **String** |  |  [optional] |
+|**lineNumber** | **String** |  |  [optional] |
+|**lineNumberLabel** | **String** |  |  [optional] |
+|**linkId** | **Integer** |  |  [optional] |
+|**loadDate** | **OffsetDateTime** |  |  [optional] |
+|**memoCode** | **String** |  |  [optional] |
+|**memoCodeFull** | **String** |  |  [optional] |
+|**memoText** | **String** |  |  [optional] |
+|**memoedSubtotal** | **Boolean** |  |  [optional] |
+|**nationalCommitteeNonfederalAccount** | **String** |  |  [optional] |
+|**originalSubId** | **String** |  |  [optional] |
+|**payeeEmployer** | **String** |  |  [optional] |
+|**payeeFirstName** | **String** |  |  [optional] |
+|**payeeLastName** | **String** |  |  [optional] |
+|**payeeMiddleName** | **String** |  |  [optional] |
+|**payeeOccupation** | **String** |  |  [optional] |
+|**payeePrefix** | **String** |  |  [optional] |
+|**payeeSuffix** | **String** |  |  [optional] |
+|**pdfUrl** | **String** |  |  [optional] |
+|**recipientCity** | **String** |  |  [optional] |
+|**recipientCommittee** | [**CommitteeHistory**](CommitteeHistory.md) |  |  [optional] |
+|**recipientCommitteeId** | **String** |  |  [optional] |
+|**recipientName** | **String** |  |  [optional] |
+|**recipientState** | **String** |  |  [optional] |
+|**recipientZip** | **String** |  |  [optional] |
+|**refDispExcessFlg** | **String** |  |  [optional] |
+|**reportType** | **String** | Name of report where the underlying data comes from:     - 10D Pre-Election     - 10G Pre-General     - 10P Pre-Primary     - 10R Pre-Run-Off     - 10S Pre-Special     - 12C Pre-Convention     - 12G Pre-General     - 12P Pre-Primary     - 12R Pre-Run-Off     - 12S Pre-Special     - 30D Post-Election     - 30G Post-General     - 30P Post-Primary     - 30R Post-Run-Off     - 30S Post-Special     - 60D Post-Convention     - M1  January Monthly     - M10 October Monthly     - M11 November Monthly     - M12 December Monthly     - M2  February Monthly     - M3  March Monthly     - M4  April Monthly     - M5  May Monthly     - M6  June Monthly     - M7  July Monthly     - M8  August Monthly     - M9  September Monthly     - MY  Mid-Year Report     - Q1  April Quarterly     - Q2  July Quarterly     - Q3  October Quarterly     - TER Termination Report     - YE  Year-End     - ADJ COMP ADJUST AMEND     - CA  COMPREHENSIVE AMEND     - 90S Post Inaugural Supplement     - 90D Post Inaugural     - 48  48 Hour Notification     - 24  24 Hour Notification     - M7S July Monthly/Semi-Annual     - MSA Monthly Semi-Annual (MY)     - MYS Monthly Year End/Semi-Annual     - Q2S July Quarterly/Semi-Annual     - QSA Quarterly Semi-Annual (MY)     - QYS Quarterly Year End/Semi-Annual     - QYE Quarterly Semi-Annual (YE)     - QMS Quarterly Mid-Year/ Semi-Annual     - MSY Monthly Semi-Annual (YE)  |  [optional] |
+|**reportYear** | **Integer** |  Forms with coverage date -      year from the coverage ending date. Forms without coverage date -      year from the receipt date.  |  [optional] |
+|**scheduleType** | **String** |  |  [optional] |
+|**scheduleTypeFull** | **String** |  |  [optional] |
+|**semiAnnualBundledRefund** | **BigDecimal** |  |  [optional] |
+|**spenderCommitteeDesignation** | **String** |  |  [optional] |
+|**spenderCommitteeOrgType** | **String** |  |  [optional] |
+|**spenderCommitteeType** | **String** |  |  [optional] |
+|**subId** | **String** |  |  [optional] |
+|**transactionId** | **String** |  |  [optional] |
+|**twoYearTransactionPeriod** | **Integer** |  This is a two-year period that is derived from the year a transaction took place in the Itemized Schedule A and Schedule B tables. In cases where we have the date of the transaction (contribution_receipt_date in schedules/schedule_a, disbursement_date in schedules/schedule_b) the two_year_transaction_period is named after the ending, even-numbered year. If we do not have the date  of the transaction, we fall back to using the report year (report_year in both tables) instead,  making the same cycle adjustment as necessary. If no transaction year is specified, the results default to the most current cycle.  |  [optional] |
+|**unusedRecipientCommitteeId** | **String** |  |  [optional] |
+
+
+

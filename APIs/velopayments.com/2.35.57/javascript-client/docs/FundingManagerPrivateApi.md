@@ -1,0 +1,110 @@
+# VeloPaymentsApis.FundingManagerPrivateApi
+
+All URIs are relative to *https://api.sandbox.velopayments.com*
+
+Method | HTTP request | Description
+------------- | ------------- | -------------
+[**createFundingAccountV2**](FundingManagerPrivateApi.md#createFundingAccountV2) | **POST** /v2/fundingAccounts | Create Funding Account
+[**deleteSourceAccountV3**](FundingManagerPrivateApi.md#deleteSourceAccountV3) | **DELETE** /v3/sourceAccounts/{sourceAccountId} | Delete a source account by ID
+
+
+
+## createFundingAccountV2
+
+> createFundingAccountV2(opts)
+
+Create Funding Account
+
+Create Funding Account
+
+### Example
+
+```javascript
+import VeloPaymentsApis from 'velo_payments_apis';
+let defaultClient = VeloPaymentsApis.ApiClient.instance;
+// Configure OAuth2 access token for authorization: OAuth2
+let OAuth2 = defaultClient.authentications['OAuth2'];
+OAuth2.accessToken = 'YOUR ACCESS TOKEN';
+
+let apiInstance = new VeloPaymentsApis.FundingManagerPrivateApi();
+let opts = {
+  'createFundingAccountRequestV2': {"accountName":"My Account Name","accountNumber":1231231234556,"name":"My FBO Account","payorId":"ee53e01d-c078-43fd-abd4-47e92f4a06cf","routingNumber":123456789,"type":"FBO"} // CreateFundingAccountRequestV2 | 
+};
+apiInstance.createFundingAccountV2(opts, (error, data, response) => {
+  if (error) {
+    console.error(error);
+  } else {
+    console.log('API called successfully.');
+  }
+});
+```
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **createFundingAccountRequestV2** | [**CreateFundingAccountRequestV2**](CreateFundingAccountRequestV2.md)|  | [optional] 
+
+### Return type
+
+null (empty response body)
+
+### Authorization
+
+[OAuth2](../README.md#OAuth2)
+
+### HTTP request headers
+
+- **Content-Type**: application/json
+- **Accept**: application/json
+
+
+## deleteSourceAccountV3
+
+> deleteSourceAccountV3(sourceAccountId)
+
+Delete a source account by ID
+
+Mark a source account as deleted by ID
+
+### Example
+
+```javascript
+import VeloPaymentsApis from 'velo_payments_apis';
+let defaultClient = VeloPaymentsApis.ApiClient.instance;
+// Configure OAuth2 access token for authorization: OAuth2
+let OAuth2 = defaultClient.authentications['OAuth2'];
+OAuth2.accessToken = 'YOUR ACCESS TOKEN';
+
+let apiInstance = new VeloPaymentsApis.FundingManagerPrivateApi();
+let sourceAccountId = "sourceAccountId_example"; // String | Source account id
+apiInstance.deleteSourceAccountV3(sourceAccountId, (error, data, response) => {
+  if (error) {
+    console.error(error);
+  } else {
+    console.log('API called successfully.');
+  }
+});
+```
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **sourceAccountId** | **String**| Source account id | 
+
+### Return type
+
+null (empty response body)
+
+### Authorization
+
+[OAuth2](../README.md#OAuth2)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+

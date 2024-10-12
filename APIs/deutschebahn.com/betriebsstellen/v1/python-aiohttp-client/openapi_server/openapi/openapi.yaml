@@ -1,0 +1,191 @@
+openapi: 3.0.1
+info:
+  contact:
+    email: Joachim.Schirrmacher@deutschebahn.com
+    name: DB Systel GmbH
+  description: This REST-API enables you to query station and stop infos
+  termsOfService: https://developer.deutschebahn.com/store/
+  title: Betriebsstellen
+  version: v1
+  x-apisguru-categories:
+  - transport
+  - open_data
+  x-logo:
+    backgroundColor: '#FFFFFF'
+    url: https://pbs.twimg.com/profile_images/591140150413025280/Cjcqjl2J.png
+  x-origin:
+  - format: swagger
+    url: https://developer.deutschebahn.com/store/api-docs/DBOpenData/Betriebsstellen/v1
+    version: "2.0"
+  x-providerName: deutschebahn.com
+  x-serviceName: betriebsstellen
+servers:
+- url: https://api.deutschebahn.com/betriebsstellen/v1
+- url: http://api.deutschebahn.com/betriebsstellen/v1
+tags:
+- name: API
+paths:
+  /betriebsstellen:
+    get:
+      description: Get all station and stop infos
+      operationId: betriebsstellen_get
+      parameters:
+      - description: A station name or part of it
+        in: query
+        name: name
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StationList'
+          description: List was generated
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: No stations or stops could be found matching the given name
+        "416":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Filtering required - specify a name fragment of at least 3
+            characters
+      summary: Get information of stations matching a given text
+      x-auth-type: Application & Application User
+      x-throttling-tier: Unlimited
+      x-openapi-router-controller: openapi_server.controllers.default_controller
+  /betriebsstellen/{abbrev}:
+    get:
+      description: Get information about a specific station or stop by abbrevation
+      operationId: betriebsstellen_abbrev_get
+      parameters:
+      - description: Station or stop abbrevation
+        in: path
+        name: abbrev
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Station'
+          description: Entry found
+        "404":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Entry not found
+      summary: Get information about a specific station or stop by abbrevation
+      x-auth-type: Application & Application User
+      x-throttling-tier: Unlimited
+      x-openapi-router-controller: openapi_server.controllers.default_controller
+components:
+  schemas:
+    Error:
+      example:
+        code: 1
+        message: message
+      properties:
+        code:
+          format: int32
+          title: code
+          type: integer
+        message:
+          title: message
+          type: string
+      title: Error
+      type: object
+    Station:
+      example:
+        validTill: validTill
+        timeTableRelevant: true
+        borderStation: true
+        validFrom: validFrom
+        type: Abzw
+        UIC: UIC
+        RB: 0
+        name: name
+        short: short
+        abbrev: abbrev
+        id: 6
+        locationCode: locationCode
+        status: in use
+      properties:
+        RB:
+          description: Regional code
+          title: RB
+          type: integer
+        UIC:
+          description: UIC RICS code
+          title: UIC
+          type: string
+        abbrev:
+          description: Abbrevation name of station or halt
+          title: abbrev
+          type: string
+        borderStation:
+          description: Station is at a country border
+          title: borderStation
+          type: boolean
+        id:
+          description: Identifying number
+          title: id
+          type: integer
+        locationCode:
+          description: Primary location code
+          title: locationCode
+          type: string
+        name:
+          description: Long name of station or halt
+          title: name
+          type: string
+        short:
+          description: Short name of station or halt
+          title: short
+          type: string
+        status:
+          description: State of operation
+          enum:
+          - in use
+          - out of service
+          - formerly
+          - planned
+          - study
+          title: status
+          type: string
+        timeTableRelevant:
+          description: Relevant for time table
+          title: timeTableRelevant
+          type: boolean
+        type:
+          description: Type of station or halt
+          enum:
+          - Abzw
+          - Anst
+          - Awanst
+          - Bf
+          title: type
+          type: string
+        validFrom:
+          description: Start date for validity
+          title: validFrom
+          type: string
+        validTill:
+          description: End date for validity or null if still valid
+          title: validTill
+          type: string
+      title: Station
+      type: object
+    StationList:
+      items:
+        $ref: '#/components/schemas/Station'
+      type: array
+x-original-swagger-version: "2.0"

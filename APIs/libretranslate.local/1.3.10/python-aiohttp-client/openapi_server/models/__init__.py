@@ -1,0 +1,14 @@
+# coding: utf-8
+
+# import models into model package
+from openapi_server.models.detections_inner import DetectionsInner
+from openapi_server.models.error_response import ErrorResponse
+from openapi_server.models.error_slow_down import ErrorSlowDown
+from openapi_server.models.frontend_settings import FrontendSettings
+from openapi_server.models.frontend_settings_language import FrontendSettingsLanguage
+from openapi_server.models.frontend_settings_language_source import FrontendSettingsLanguageSource
+from openapi_server.models.languages_inner import LanguagesInner
+from openapi_server.models.suggest_response import SuggestResponse
+from openapi_server.models.translate import Translate
+from openapi_server.models.translate_file import TranslateFile
+from openapi_server.models.translate_translated_text import TranslateTranslatedText

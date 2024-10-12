@@ -1,0 +1,194 @@
+openapi: 3.0.1
+info:
+  contact: {}
+  description: A real-time RESTish web API for worldwide carbon dioxide levels.
+  title: CarbonDoomsDay
+  version: v1
+  x-apisguru-categories:
+  - open_data
+  x-logo:
+    url: https://twitter.com/CarbonDoomsday/profile_image?size=original
+  x-origin:
+  - format: swagger
+    url: https://api.carbondoomsday.com/?format=openapi
+    version: "2.0"
+  x-providerName: carbondoomsday.com
+servers:
+- url: https://api.carbondoomsday.com/api
+security:
+- basic: []
+paths:
+  /co2/:
+    get:
+      description: |-
+        CO2 measurements from the Mauna Loa observatory.
+
+        This data is made available through the good work of the people at the
+        Mauna Loa observatory. Their release notes say:
+
+            These data are made freely available to the public and the scientific
+            community in the belief that their wide dissemination will lead to greater
+            understanding and new scientific insights.
+
+        We currently scrape the following sources:
+
+          * [co2_mlo_weekly.csv]
+          * [co2_mlo_surface-insitu_1_ccgg_DailyData.txt]
+          * [weekly_mlo.csv]
+
+        We have daily CO2 measurements as far back as 1958.
+
+        Learn about using pagination via [the 3rd party documentation].
+
+        [co2_mlo_weekly.csv]: https://www.esrl.noaa.gov/gmd/webdata/ccgg/trends/co2_mlo_weekly.csv
+        [co2_mlo_surface-insitu_1_ccgg_DailyData.txt]: ftp://aftp.cmdl.noaa.gov/data/trace_gases/co2/in-situ/surface/mlo/co2_mlo_surface-insitu_1_ccgg_DailyData.txt
+        [weekly_mlo.csv]: http://scrippsco2.ucsd.edu/sites/default/files/data/in_situ_co2/weekly_mlo.csv
+        [the 3rd party documentation]: http://www.django-rest-framework.org/api-guide/pagination/#pagenumberpagination
+      operationId: co2_list
+      parameters:
+      - in: query
+        name: ppm
+        schema:
+          type: number
+      - in: query
+        name: date
+        schema:
+          type: string
+      - description: Multiple values may be separated by commas.
+        in: query
+        name: date__range
+        schema:
+          type: string
+      - description: Which field to use when ordering the results.
+        in: query
+        name: ordering
+        schema:
+          type: string
+      - description: A page number within the paginated result set.
+        in: query
+        name: page
+        schema:
+          type: integer
+      - description: Number of results to return per page.
+        in: query
+        name: limit
+        schema:
+          type: integer
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/co2_list_200_response'
+            text/csv:
+              schema:
+                $ref: '#/components/schemas/co2_list_200_response'
+          description: ""
+      tags:
+      - co2
+      x-openapi-router-controller: openapi_server.controllers.co2_controller
+  /co2/{date}/:
+    get:
+      description: |-
+        CO2 measurements from the Mauna Loa observatory.
+
+        This data is made available through the good work of the people at the
+        Mauna Loa observatory. Their release notes say:
+
+            These data are made freely available to the public and the scientific
+            community in the belief that their wide dissemination will lead to greater
+            understanding and new scientific insights.
+
+        We currently scrape the following sources:
+
+          * [co2_mlo_weekly.csv]
+          * [co2_mlo_surface-insitu_1_ccgg_DailyData.txt]
+          * [weekly_mlo.csv]
+
+        We have daily CO2 measurements as far back as 1958.
+
+        Learn about using pagination via [the 3rd party documentation].
+
+        [co2_mlo_weekly.csv]: https://www.esrl.noaa.gov/gmd/webdata/ccgg/trends/co2_mlo_weekly.csv
+        [co2_mlo_surface-insitu_1_ccgg_DailyData.txt]: ftp://aftp.cmdl.noaa.gov/data/trace_gases/co2/in-situ/surface/mlo/co2_mlo_surface-insitu_1_ccgg_DailyData.txt
+        [weekly_mlo.csv]: http://scrippsco2.ucsd.edu/sites/default/files/data/in_situ_co2/weekly_mlo.csv
+        [the 3rd party documentation]: http://www.django-rest-framework.org/api-guide/pagination/#pagenumberpagination
+      operationId: co2_read
+      parameters:
+      - in: path
+        name: date
+        required: true
+        schema:
+          format: date
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CO2'
+            text/csv:
+              schema:
+                $ref: '#/components/schemas/CO2'
+          description: ""
+      tags:
+      - co2
+      x-openapi-router-controller: openapi_server.controllers.co2_controller
+components:
+  schemas:
+    CO2:
+      example:
+        date: 2000-01-23
+        ppm: ppm
+      properties:
+        date:
+          format: date
+          title: Date
+          type: string
+        ppm:
+          format: decimal
+          title: Ppm
+          type: string
+      required:
+      - date
+      - ppm
+      title: CO2
+      type: object
+    co2_list_200_response:
+      example:
+        next: https://openapi-generator.tech
+        previous: https://openapi-generator.tech
+        count: 0
+        results:
+        - date: 2000-01-23
+          ppm: ppm
+        - date: 2000-01-23
+          ppm: ppm
+      properties:
+        count:
+          title: count
+          type: integer
+        next:
+          format: uri
+          title: next
+          type: string
+        previous:
+          format: uri
+          title: previous
+          type: string
+        results:
+          items:
+            $ref: '#/components/schemas/CO2'
+          title: results
+          type: array
+      required:
+      - count
+      - results
+      title: co2_list_200_response
+      type: object
+  securitySchemes:
+    basic:
+      scheme: basic
+      type: http
+      x-basicInfoFunc: openapi_server.controllers.security_controller.info_from_basic
+x-original-swagger-version: "2.0"

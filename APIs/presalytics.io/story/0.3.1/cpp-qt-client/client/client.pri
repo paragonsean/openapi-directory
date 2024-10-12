@@ -1,0 +1,87 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIAdd_new_collaborator_request.h \
+    $${PWD}/OAIBase_model.h \
+    $${PWD}/OAICache_post_request.h \
+    $${PWD}/OAICollaborator_bulk_update_request.h \
+    $${PWD}/OAICreate_session_request.h \
+    $${PWD}/OAIEvent.h \
+    $${PWD}/OAIFile_upload.h \
+    $${PWD}/OAIManage_event.h \
+    $${PWD}/OAIMessage.h \
+    $${PWD}/OAIModify_inactive_collaborator.h \
+    $${PWD}/OAIOoxml_document.h \
+    $${PWD}/OAIOutline.h \
+    $${PWD}/OAIPermission_type.h \
+    $${PWD}/OAIProblem_detail.h \
+    $${PWD}/OAIRequired_parameters_to_create_a_view.h \
+    $${PWD}/OAISession.h \
+    $${PWD}/OAIStatus.h \
+    $${PWD}/OAIStory.h \
+    $${PWD}/OAIStory_collaborator.h \
+    $${PWD}/OAIStory_outline_history.h \
+    $${PWD}/OAIView.h \
+# APIs
+    $${PWD}/OAICacheApi.h \
+    $${PWD}/OAIConversationApi.h \
+    $${PWD}/OAIDefaultApi.h \
+    $${PWD}/OAIEventsApi.h \
+    $${PWD}/OAIPermissionsApi.h \
+    $${PWD}/OAIRestrictedApi.h \
+    $${PWD}/OAISchemasApi.h \
+    $${PWD}/OAISessionsApi.h \
+    $${PWD}/OAIStoryApi.h \
+    $${PWD}/OAIStoryCollaboratorsApi.h \
+    $${PWD}/OAIViewsApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIAdd_new_collaborator_request.cpp \
+    $${PWD}/OAIBase_model.cpp \
+    $${PWD}/OAICache_post_request.cpp \
+    $${PWD}/OAICollaborator_bulk_update_request.cpp \
+    $${PWD}/OAICreate_session_request.cpp \
+    $${PWD}/OAIEvent.cpp \
+    $${PWD}/OAIFile_upload.cpp \
+    $${PWD}/OAIManage_event.cpp \
+    $${PWD}/OAIMessage.cpp \
+    $${PWD}/OAIModify_inactive_collaborator.cpp \
+    $${PWD}/OAIOoxml_document.cpp \
+    $${PWD}/OAIOutline.cpp \
+    $${PWD}/OAIPermission_type.cpp \
+    $${PWD}/OAIProblem_detail.cpp \
+    $${PWD}/OAIRequired_parameters_to_create_a_view.cpp \
+    $${PWD}/OAISession.cpp \
+    $${PWD}/OAIStatus.cpp \
+    $${PWD}/OAIStory.cpp \
+    $${PWD}/OAIStory_collaborator.cpp \
+    $${PWD}/OAIStory_outline_history.cpp \
+    $${PWD}/OAIView.cpp \
+# APIs
+    $${PWD}/OAICacheApi.cpp \
+    $${PWD}/OAIConversationApi.cpp \
+    $${PWD}/OAIDefaultApi.cpp \
+    $${PWD}/OAIEventsApi.cpp \
+    $${PWD}/OAIPermissionsApi.cpp \
+    $${PWD}/OAIRestrictedApi.cpp \
+    $${PWD}/OAISchemasApi.cpp \
+    $${PWD}/OAISessionsApi.cpp \
+    $${PWD}/OAIStoryApi.cpp \
+    $${PWD}/OAIStoryCollaboratorsApi.cpp \
+    $${PWD}/OAIViewsApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

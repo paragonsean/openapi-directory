@@ -1,0 +1,152 @@
+openapi: 3.0.1
+info:
+  description: Search for millions of products from the world's greatest brands.
+  title: Shop
+  version: v1
+  x-apisguru-categories:
+  - ecommerce
+  x-logo:
+    url: https://cdn.shopify.com/shop-assets/static_uploads/shop-logo-white-bg-purple.png
+  x-origin:
+  - format: openapi
+    url: https://server.shop.app/openai/v1/api.json
+    version: "3.0"
+  x-providerName: shop.app
+servers:
+- url: https://server.shop.app
+paths:
+  /openai/details:
+    get:
+      operationId: details
+      parameters:
+      - description: Comma separated list of product ids
+        explode: true
+        in: query
+        name: ids
+        required: true
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/searchResponse'
+          description: OK
+        "503":
+          description: Service Unavailable
+      summary: Return more details about a list of products.
+      x-openapi-router-controller: openapi_server.controllers.default_controller
+  /openai/search:
+    get:
+      operationId: search
+      parameters:
+      - description: Query string to search for items.
+        explode: true
+        in: query
+        name: query
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: The minimum price to filter by.
+        explode: true
+        in: query
+        name: price_min
+        required: false
+        schema:
+          type: number
+        style: form
+      - description: The maximum price to filter by.
+        explode: true
+        in: query
+        name: price_max
+        required: false
+        schema:
+          type: number
+        style: form
+      - description: A product id that you want to find similar products for. (Only
+          include one)
+        explode: true
+        in: query
+        name: similar_to_id
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: How many results to return. Defaults to 5. It can be a number
+          between 1 and 10.
+        explode: true
+        in: query
+        name: num_results
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/searchResponse'
+          description: OK
+        "503":
+          description: Service Unavailable
+      summary: Search for products
+      x-openapi-router-controller: openapi_server.controllers.default_controller
+components:
+  schemas:
+    searchResponse:
+      example:
+        results:
+        - price: 0.8008281904610115
+          description: description
+          title: title
+          currency_code: currency_code
+          url: url
+        - price: 0.8008281904610115
+          description: description
+          title: title
+          currency_code: currency_code
+          url: url
+      properties:
+        results:
+          items:
+            $ref: '#/components/schemas/searchResponse_results_inner'
+          title: results
+          type: array
+      title: searchResponse
+      type: object
+    searchResponse_results_inner:
+      description: The list of products matching the search
+      example:
+        price: 0.8008281904610115
+        description: description
+        title: title
+        currency_code: currency_code
+        url: url
+      properties:
+        currency_code:
+          description: The currency that the price is in
+          title: currency_code
+          type: string
+        description:
+          description: The description of the product
+          title: description
+          type: string
+        price:
+          description: The price of the product
+          format: string
+          title: price
+          type: number
+        title:
+          description: The title of the product
+          title: title
+          type: string
+        url:
+          description: The url of the product page for this product
+          title: url
+          type: string
+      title: searchResponse_results_inner
+      type: object

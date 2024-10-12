@@ -1,0 +1,13 @@
+
+
+# InstructPayoutRequestV3
+
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**fxRateDegredationThresholdPercentage** | **Float** | Halt instruction if the FX rates have become worse since the last quote |  [optional] |
+
+
+

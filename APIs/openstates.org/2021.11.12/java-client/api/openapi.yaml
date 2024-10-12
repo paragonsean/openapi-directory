@@ -1,0 +1,4742 @@
+openapi: 3.0.2
+info:
+  description: |2
+
+    * [More documentation](https://docs.openstates.org/en/latest/api/v3/index.html)
+    * [Register for an account](https://openstates.org/accounts/signup/)
+
+
+    **We are currently working to restore experimental support for committees & events.**
+
+    During this period please note that data is not yet available for all states
+    and the exact format of the new endpoints may change slightly depending on user feedback.
+
+    If you have any issues or questions use our
+    [GitHub Issues](https://github.com/openstates/issues/issues) to give feedback.
+  title: Open States API v3
+  version: 2021.11.12
+  x-apisguru-categories:
+  - open_data
+  x-logo:
+    url: https://openstates.org/static/images/favicon/apple-touch-icon.78b6cbd31087.png?v=20190106
+  x-origin:
+  - format: openapi
+    url: https://v3.openstates.org/openapi.json
+    version: "3.0"
+  x-providerName: openstates.org
+servers:
+- url: /
+paths:
+  /bills:
+    get:
+      description: |-
+        Search for bills matching given criteria.
+
+        Must either specify a jurisdiction or a full text query (q).  Additional parameters will
+        futher restrict bills returned.
+      operationId: bills_search_bills_get
+      parameters:
+      - description: Filter by jurisdiction name or ID.
+        explode: true
+        in: query
+        name: jurisdiction
+        required: false
+        schema:
+          description: Filter by jurisdiction name or ID.
+          title: Jurisdiction
+          type: string
+        style: form
+      - description: Filter by session identifier.
+        explode: true
+        in: query
+        name: session
+        required: false
+        schema:
+          description: Filter by session identifier.
+          title: Session
+          type: string
+        style: form
+      - description: Filter by chamber of origination.
+        explode: true
+        in: query
+        name: chamber
+        required: false
+        schema:
+          description: Filter by chamber of origination.
+          title: Chamber
+          type: string
+        style: form
+      - description: Filter to only include bills with this identifier.
+        explode: true
+        in: query
+        name: identifier
+        required: false
+        schema:
+          default: []
+          description: Filter to only include bills with this identifier.
+          items:
+            type: string
+          title: Identifier
+          type: array
+        style: form
+      - description: "Filter by classification, e.g. bill or resolution"
+        explode: true
+        in: query
+        name: classification
+        required: false
+        schema:
+          description: "Filter by classification, e.g. bill or resolution"
+          title: Classification
+          type: string
+        style: form
+      - description: Filter by one or more subjects.
+        explode: true
+        in: query
+        name: subject
+        required: false
+        schema:
+          default: []
+          description: Filter by one or more subjects.
+          items:
+            type: string
+          title: Subject
+          type: array
+        style: form
+      - description: Filter to only include bills with updates since a given date.
+        explode: true
+        in: query
+        name: updated_since
+        required: false
+        schema:
+          description: Filter to only include bills with updates since a given date.
+          title: Updated Since
+          type: string
+        style: form
+      - description: Filter to only include bills created since a given date.
+        explode: true
+        in: query
+        name: created_since
+        required: false
+        schema:
+          description: Filter to only include bills created since a given date.
+          title: Created Since
+          type: string
+        style: form
+      - description: Filter to only include bills with an action since a given date.
+        explode: true
+        in: query
+        name: action_since
+        required: false
+        schema:
+          description: Filter to only include bills with an action since a given date.
+          title: Action Since
+          type: string
+        style: form
+      - description: Desired sort order for bill results.
+        explode: true
+        in: query
+        name: sort
+        required: false
+        schema:
+          allOf:
+          - $ref: '#/components/schemas/BillSortOption'
+          default: updated_desc
+          description: Desired sort order for bill results.
+        style: form
+      - description: Filter to only include bills sponsored by a given name or person
+          ID.
+        explode: true
+        in: query
+        name: sponsor
+        required: false
+        schema:
+          description: Filter to only include bills sponsored by a given name or person
+            ID.
+          title: Sponsor
+          type: string
+        style: form
+      - description: Filter matched sponsors to only include particular types of sponsorships.
+        explode: true
+        in: query
+        name: sponsor_classification
+        required: false
+        schema:
+          description: Filter matched sponsors to only include particular types of
+            sponsorships.
+          title: Sponsor Classification
+          type: string
+        style: form
+      - description: Filter by full text search term.
+        explode: true
+        in: query
+        name: q
+        required: false
+        schema:
+          description: Filter by full text search term.
+          title: Q
+          type: string
+        style: form
+      - description: Additional information to include in response.
+        explode: true
+        in: query
+        name: include
+        required: false
+        schema:
+          default: []
+          description: Additional information to include in response.
+          items:
+            $ref: '#/components/schemas/BillInclude'
+          type: array
+        style: form
+      - explode: true
+        in: query
+        name: page
+        required: false
+        schema:
+          default: 1
+          title: Page
+          type: integer
+        style: form
+      - explode: true
+        in: query
+        name: per_page
+        required: false
+        schema:
+          default: 10
+          title: Per Page
+          type: integer
+        style: form
+      - explode: true
+        in: query
+        name: apikey
+        required: false
+        schema:
+          title: Apikey
+          type: string
+        style: form
+      - explode: false
+        in: header
+        name: x-api-key
+        required: false
+        schema:
+          title: X-Api-Key
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BillList'
+          description: Successful Response
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: Bills Search
+      tags:
+      - bills
+      x-accepts:
+      - application/json
+  /bills/ocd-bill/{openstates_bill_id}:
+    get:
+      description: Obtain bill information by internal ID in the format ocd-bill/*uuid*.
+      operationId: bill_detail_by_id_bills_ocd_bill__openstates_bill_id__get
+      parameters:
+      - explode: false
+        in: path
+        name: openstates_bill_id
+        required: true
+        schema:
+          title: Openstates Bill Id
+          type: string
+        style: simple
+      - explode: true
+        in: query
+        name: include
+        required: false
+        schema:
+          default: []
+          items:
+            $ref: '#/components/schemas/BillInclude'
+          type: array
+        style: form
+      - explode: true
+        in: query
+        name: apikey
+        required: false
+        schema:
+          title: Apikey
+          type: string
+        style: form
+      - explode: false
+        in: header
+        name: x-api-key
+        required: false
+        schema:
+          title: X-Api-Key
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Bill'
+          description: Successful Response
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: Bill Detail By Id
+      tags:
+      - bills
+      x-accepts:
+      - application/json
+  /bills/{jurisdiction}/{session}/{bill_id}:
+    get:
+      description: "Obtain bill information based on (state, session, bill_id)."
+      operationId: bill_detail_bills__jurisdiction___session___bill_id__get
+      parameters:
+      - explode: false
+        in: path
+        name: jurisdiction
+        required: true
+        schema:
+          title: Jurisdiction
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: session
+        required: true
+        schema:
+          title: Session
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: bill_id
+        required: true
+        schema:
+          title: Bill Id
+          type: string
+        style: simple
+      - explode: true
+        in: query
+        name: include
+        required: false
+        schema:
+          default: []
+          items:
+            $ref: '#/components/schemas/BillInclude'
+          type: array
+        style: form
+      - explode: true
+        in: query
+        name: apikey
+        required: false
+        schema:
+          title: Apikey
+          type: string
+        style: form
+      - explode: false
+        in: header
+        name: x-api-key
+        required: false
+        schema:
+          title: X-Api-Key
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Bill'
+          description: Successful Response
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: Bill Detail
+      tags:
+      - bills
+      x-accepts:
+      - application/json
+  /committees:
+    get:
+      operationId: committee_list_committees_get
+      parameters:
+      - description: Filter by jurisdiction name or ID.
+        explode: true
+        in: query
+        name: jurisdiction
+        required: false
+        schema:
+          description: Filter by jurisdiction name or ID.
+          title: Jurisdiction
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: classification
+        required: false
+        schema:
+          $ref: '#/components/schemas/CommitteeClassification'
+        style: form
+      - description: ocd-organization ID of parent committee.
+        explode: true
+        in: query
+        name: parent
+        required: false
+        schema:
+          description: ocd-organization ID of parent committee.
+          title: Parent
+          type: string
+        style: form
+      - description: "Chamber of committee, generally upper or lower."
+        explode: true
+        in: query
+        name: chamber
+        required: false
+        schema:
+          allOf:
+          - $ref: '#/components/schemas/OrgClassification'
+          description: "Chamber of committee, generally upper or lower."
+        style: form
+      - description: Additional includes for the Committee response.
+        explode: true
+        in: query
+        name: include
+        required: false
+        schema:
+          default: []
+          description: Additional includes for the Committee response.
+          items:
+            $ref: '#/components/schemas/CommitteeInclude'
+          type: array
+        style: form
+      - explode: true
+        in: query
+        name: apikey
+        required: false
+        schema:
+          title: Apikey
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: page
+        required: false
+        schema:
+          default: 1
+          title: Page
+          type: integer
+        style: form
+      - explode: true
+        in: query
+        name: per_page
+        required: false
+        schema:
+          default: 20
+          title: Per Page
+          type: integer
+        style: form
+      - explode: false
+        in: header
+        name: x-api-key
+        required: false
+        schema:
+          title: X-Api-Key
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommitteeList'
+          description: Successful Response
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: Committee List
+      tags:
+      - committees
+      x-accepts:
+      - application/json
+  /committees/{committee_id}:
+    get:
+      description: Get details on a single committee by ID.
+      operationId: committee_detail_committees__committee_id__get
+      parameters:
+      - explode: false
+        in: path
+        name: committee_id
+        required: true
+        schema:
+          title: Committee Id
+          type: string
+        style: simple
+      - description: Additional includes for the Committee response.
+        explode: true
+        in: query
+        name: include
+        required: false
+        schema:
+          default: []
+          description: Additional includes for the Committee response.
+          items:
+            $ref: '#/components/schemas/CommitteeInclude'
+          type: array
+        style: form
+      - explode: true
+        in: query
+        name: apikey
+        required: false
+        schema:
+          title: Apikey
+          type: string
+        style: form
+      - explode: false
+        in: header
+        name: x-api-key
+        required: false
+        schema:
+          title: X-Api-Key
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Committee'
+          description: Successful Response
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: Committee Detail
+      tags:
+      - committees
+      x-accepts:
+      - application/json
+  /events:
+    get:
+      operationId: event_list_events_get
+      parameters:
+      - description: Filter by jurisdiction name or ID.
+        explode: true
+        in: query
+        name: jurisdiction
+        required: false
+        schema:
+          description: Filter by jurisdiction name or ID.
+          title: Jurisdiction
+          type: string
+        style: form
+      - description: Return events marked as deleted?
+        explode: true
+        in: query
+        name: deleted
+        required: false
+        schema:
+          default: false
+          description: Return events marked as deleted?
+          title: Deleted
+          type: boolean
+        style: form
+      - description: Limit results to those starting before a given datetime.
+        explode: true
+        in: query
+        name: before
+        required: false
+        schema:
+          description: Limit results to those starting before a given datetime.
+          title: Before
+          type: string
+        style: form
+      - description: Limit results to those starting before a given datetime.
+        explode: true
+        in: query
+        name: after
+        required: false
+        schema:
+          description: Limit results to those starting before a given datetime.
+          title: After
+          type: string
+        style: form
+      - description: Limit results to events with associated bills.
+        explode: true
+        in: query
+        name: require_bills
+        required: false
+        schema:
+          default: false
+          description: Limit results to events with associated bills.
+          title: Require Bills
+          type: boolean
+        style: form
+      - description: Additional includes for the Event response.
+        explode: true
+        in: query
+        name: include
+        required: false
+        schema:
+          default: []
+          description: Additional includes for the Event response.
+          items:
+            $ref: '#/components/schemas/EventInclude'
+          type: array
+        style: form
+      - explode: true
+        in: query
+        name: apikey
+        required: false
+        schema:
+          title: Apikey
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: page
+        required: false
+        schema:
+          default: 1
+          title: Page
+          type: integer
+        style: form
+      - explode: true
+        in: query
+        name: per_page
+        required: false
+        schema:
+          default: 20
+          title: Per Page
+          type: integer
+        style: form
+      - explode: false
+        in: header
+        name: x-api-key
+        required: false
+        schema:
+          title: X-Api-Key
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventList'
+          description: Successful Response
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: Event List
+      tags:
+      - events
+      x-accepts:
+      - application/json
+  /events/{event_id}:
+    get:
+      description: Get details on a single event by ID.
+      operationId: event_detail_events__event_id__get
+      parameters:
+      - explode: false
+        in: path
+        name: event_id
+        required: true
+        schema:
+          title: Event Id
+          type: string
+        style: simple
+      - description: Additional includes for the Event response.
+        explode: true
+        in: query
+        name: include
+        required: false
+        schema:
+          default: []
+          description: Additional includes for the Event response.
+          items:
+            $ref: '#/components/schemas/EventInclude'
+          type: array
+        style: form
+      - explode: true
+        in: query
+        name: apikey
+        required: false
+        schema:
+          title: Apikey
+          type: string
+        style: form
+      - explode: false
+        in: header
+        name: x-api-key
+        required: false
+        schema:
+          title: X-Api-Key
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Event'
+          description: Successful Response
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: Event Detail
+      tags:
+      - events
+      x-accepts:
+      - application/json
+  /jurisdictions:
+    get:
+      description: "Get list of supported Jurisdictions, a Jurisdiction is a state\
+        \ or municipality."
+      operationId: jurisdiction_list_jurisdictions_get
+      parameters:
+      - description: Filter returned jurisdictions by type.
+        explode: true
+        in: query
+        name: classification
+        required: false
+        schema:
+          allOf:
+          - $ref: '#/components/schemas/JurisdictionClassification'
+          description: Filter returned jurisdictions by type.
+        style: form
+      - description: Additional information to include in response.
+        explode: true
+        in: query
+        name: include
+        required: false
+        schema:
+          default: []
+          description: Additional information to include in response.
+          items:
+            $ref: '#/components/schemas/JurisdictionInclude'
+          type: array
+        style: form
+      - explode: true
+        in: query
+        name: page
+        required: false
+        schema:
+          default: 1
+          title: Page
+          type: integer
+        style: form
+      - explode: true
+        in: query
+        name: per_page
+        required: false
+        schema:
+          default: 52
+          title: Per Page
+          type: integer
+        style: form
+      - explode: true
+        in: query
+        name: apikey
+        required: false
+        schema:
+          title: Apikey
+          type: string
+        style: form
+      - explode: false
+        in: header
+        name: x-api-key
+        required: false
+        schema:
+          title: X-Api-Key
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JurisdictionList'
+          description: Successful Response
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: Jurisdiction List
+      tags:
+      - jurisdictions
+      x-accepts:
+      - application/json
+  /jurisdictions/{jurisdiction_id}:
+    get:
+      description: Get details on a single Jurisdiction (e.g. state or municipality).
+      operationId: jurisdiction_detail_jurisdictions__jurisdiction_id__get
+      parameters:
+      - explode: false
+        in: path
+        name: jurisdiction_id
+        required: true
+        schema:
+          title: Jurisdiction Id
+          type: string
+        style: simple
+      - description: Additional includes for the Jurisdiction response.
+        explode: true
+        in: query
+        name: include
+        required: false
+        schema:
+          default: []
+          description: Additional includes for the Jurisdiction response.
+          items:
+            $ref: '#/components/schemas/JurisdictionInclude'
+          type: array
+        style: form
+      - explode: true
+        in: query
+        name: apikey
+        required: false
+        schema:
+          title: Apikey
+          type: string
+        style: form
+      - explode: false
+        in: header
+        name: x-api-key
+        required: false
+        schema:
+          title: X-Api-Key
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Jurisdiction'
+          description: Successful Response
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: Jurisdiction Detail
+      tags:
+      - jurisdictions
+      x-accepts:
+      - application/json
+  /metrics:
+    get:
+      description: Endpoint that serves Prometheus metrics.
+      operationId: metrics_metrics_get
+      responses:
+        "200":
+          content:
+            application/json:
+              schema: {}
+          description: Successful Response
+      summary: Metrics
+      x-accepts:
+      - application/json
+  /people:
+    get:
+      description: |-
+        Get list of people matching selected criteria.
+
+        Must provide either **jurisdiction**, **name**, or one or more **id** parameters.
+      operationId: people_search_people_get
+      parameters:
+      - description: Filter by jurisdiction name or id.
+        explode: true
+        in: query
+        name: jurisdiction
+        required: false
+        schema:
+          description: Filter by jurisdiction name or id.
+          title: Jurisdiction
+          type: string
+        style: form
+      - description: "Filter by name, case-insensitive match."
+        explode: true
+        in: query
+        name: name
+        required: false
+        schema:
+          description: "Filter by name, case-insensitive match."
+          title: Name
+          type: string
+        style: form
+      - description: "Filter by id, can be specified multiple times for multiple people."
+        explode: true
+        in: query
+        name: id
+        required: false
+        schema:
+          default: []
+          description: "Filter by id, can be specified multiple times for multiple\
+            \ people."
+          items:
+            type: string
+          title: Id
+          type: array
+        style: form
+      - description: Filter by current role.
+        explode: true
+        in: query
+        name: org_classification
+        required: false
+        schema:
+          allOf:
+          - $ref: '#/components/schemas/OrgClassification'
+          description: Filter by current role.
+        style: form
+      - description: Filter by district name.
+        explode: true
+        in: query
+        name: district
+        required: false
+        schema:
+          description: Filter by district name.
+          title: District
+          type: string
+        style: form
+      - description: Additional information to include in response.
+        explode: true
+        in: query
+        name: include
+        required: false
+        schema:
+          default: []
+          description: Additional information to include in response.
+          items:
+            $ref: '#/components/schemas/PersonInclude'
+          type: array
+        style: form
+      - explode: true
+        in: query
+        name: page
+        required: false
+        schema:
+          default: 1
+          title: Page
+          type: integer
+        style: form
+      - explode: true
+        in: query
+        name: per_page
+        required: false
+        schema:
+          default: 10
+          title: Per Page
+          type: integer
+        style: form
+      - explode: true
+        in: query
+        name: apikey
+        required: false
+        schema:
+          title: Apikey
+          type: string
+        style: form
+      - explode: false
+        in: header
+        name: x-api-key
+        required: false
+        schema:
+          title: X-Api-Key
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PersonList'
+          description: Successful Response
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: People Search
+      tags:
+      - people
+      x-accepts:
+      - application/json
+  /people.geo:
+    get:
+      description: |-
+        Get list of people currently representing a given location.
+
+        **Note:** Currently limited to state legislators and US Congress.  Governors & mayors are not included.
+      operationId: people_geo_people_geo_get
+      parameters:
+      - description: Latitude of point.
+        explode: true
+        in: query
+        name: lat
+        required: true
+        schema:
+          description: Latitude of point.
+          title: Lat
+          type: number
+        style: form
+      - description: Longitude of point.
+        explode: true
+        in: query
+        name: lng
+        required: true
+        schema:
+          description: Longitude of point.
+          title: Lng
+          type: number
+        style: form
+      - description: Additional information to include in the response.
+        explode: true
+        in: query
+        name: include
+        required: false
+        schema:
+          default: []
+          description: Additional information to include in the response.
+          items:
+            $ref: '#/components/schemas/PersonInclude'
+          type: array
+        style: form
+      - explode: true
+        in: query
+        name: apikey
+        required: false
+        schema:
+          title: Apikey
+          type: string
+        style: form
+      - explode: false
+        in: header
+        name: x-api-key
+        required: false
+        schema:
+          title: X-Api-Key
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PersonList'
+          description: Successful Response
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: People Geo
+      tags:
+      - people
+      x-accepts:
+      - application/json
+components:
+  schemas:
+    AltIdentifier:
+      example:
+        identifier: NCL000123
+        scheme: legacy_openstates
+      properties:
+        identifier:
+          example: NCL000123
+          title: Identifier
+          type: string
+        scheme:
+          example: legacy_openstates
+          title: Scheme
+          type: string
+      required:
+      - identifier
+      - scheme
+      title: AltIdentifier
+      type: object
+    AltName:
+      example:
+        note: nickname
+        name: Auggie
+      properties:
+        name:
+          example: Auggie
+          title: Name
+          type: string
+        note:
+          example: nickname
+          title: Note
+          type: string
+      required:
+      - name
+      - note
+      title: AltName
+      type: object
+    Bill:
+      example:
+        related_bills:
+        - identifier: HB 123
+          legislative_session: 2022S1
+          relation_type: companion
+        - identifier: HB 123
+          legislative_session: 2022S1
+          relation_type: companion
+        latest_action_date: 2020-02-01
+        sources:
+        - note: homepage
+          url: https://example.com/
+        - note: homepage
+          url: https://example.com/
+        documents:
+        - date: 2020-10-01
+          note: Latest Version
+          links:
+          - media_type: application/pdf
+            url: https://example.com/doc.pdf
+          - media_type: application/pdf
+            url: https://example.com/doc.pdf
+        - date: 2020-10-01
+          note: Latest Version
+          links:
+          - media_type: application/pdf
+            url: https://example.com/doc.pdf
+          - media_type: application/pdf
+            url: https://example.com/doc.pdf
+        session: "2020"
+        subject:
+        - SCORPIONS
+        - SYMBOLS
+        jurisdiction:
+          name: North Carolina
+          id: ocd-jurisdiction/country:us/state:nc/government
+          classification: state
+        created_at: 2000-01-23T04:56:07.000+00:00
+        extras: {}
+        other_titles:
+        - note: short title
+          title: Designating the scorpion as the state arachnid.
+        - note: short title
+          title: Designating the scorpion as the state arachnid.
+        latest_action_description: Introduced in House
+        first_action_date: 2020-01-01
+        title: Adopting a State Scorpion
+        other_identifiers:
+        - identifier: HB 74
+        - identifier: HB 74
+        updated_at: 2000-01-23T04:56:07.000+00:00
+        latest_passage_date: 2020-03-01
+        id: ocd-bill/f0049138-1ad8-4506-a2a4-f4dd1251bbba
+        identifier: SB 113
+        openstates_url: https://openstates.org/nc/bills/2019/HB1105/
+        abstracts:
+        - note: house abstract
+          abstract: This bill designates a new state arachnid.
+        - note: house abstract
+          abstract: This bill designates a new state arachnid.
+        classification:
+        - resolution
+        from_organization:
+          name: North Carolina General Assembly
+          id: ocd-organization/32aab083-d7a0-44e0-9b95-a7790c542605
+          classification: legislature
+        versions:
+        - date: 2020-10-01
+          note: Latest Version
+          links:
+          - media_type: application/pdf
+            url: https://example.com/doc.pdf
+          - media_type: application/pdf
+            url: https://example.com/doc.pdf
+        - date: 2020-10-01
+          note: Latest Version
+          links:
+          - media_type: application/pdf
+            url: https://example.com/doc.pdf
+          - media_type: application/pdf
+            url: https://example.com/doc.pdf
+        votes:
+        - result: pass
+          identifier: "HV #3312"
+          sources:
+          - note: homepage
+            url: https://example.com/
+          - note: homepage
+            url: https://example.com/
+          counts:
+          - value: 48
+            option: "true"
+          - value: 48
+            option: "true"
+          organization:
+            name: North Carolina General Assembly
+            id: ocd-organization/32aab083-d7a0-44e0-9b95-a7790c542605
+            classification: legislature
+          extras: "{}"
+          motion_text: Shall the bill be passed?
+          votes:
+          - voter_name: Wu
+            voter:
+              current_role:
+                district: 3
+                division_id: ocd-division/country:us/state:nc/sldu:3
+                title: Senator
+                org_classification: upper
+              name: Angela Augusta
+              id: ocd-person/adb58f21-f2fd-4830-85b6-f490b0867d14
+              party: Democratic
+            option: "false"
+          - voter_name: Wu
+            voter:
+              current_role:
+                district: 3
+                division_id: ocd-division/country:us/state:nc/sldu:3
+                title: Senator
+                org_classification: upper
+              name: Angela Augusta
+              id: ocd-person/adb58f21-f2fd-4830-85b6-f490b0867d14
+              party: Democratic
+            option: "false"
+          id: id
+          motion_classification:
+          - passage
+          start_date: 2020-09-18
+        - result: pass
+          identifier: "HV #3312"
+          sources:
+          - note: homepage
+            url: https://example.com/
+          - note: homepage
+            url: https://example.com/
+          counts:
+          - value: 48
+            option: "true"
+          - value: 48
+            option: "true"
+          organization:
+            name: North Carolina General Assembly
+            id: ocd-organization/32aab083-d7a0-44e0-9b95-a7790c542605
+            classification: legislature
+          extras: "{}"
+          motion_text: Shall the bill be passed?
+          votes:
+          - voter_name: Wu
+            voter:
+              current_role:
+                district: 3
+                division_id: ocd-division/country:us/state:nc/sldu:3
+                title: Senator
+                org_classification: upper
+              name: Angela Augusta
+              id: ocd-person/adb58f21-f2fd-4830-85b6-f490b0867d14
+              party: Democratic
+            option: "false"
+          - voter_name: Wu
+            voter:
+              current_role:
+                district: 3
+                division_id: ocd-division/country:us/state:nc/sldu:3
+                title: Senator
+                org_classification: upper
+              name: Angela Augusta
+              id: ocd-person/adb58f21-f2fd-4830-85b6-f490b0867d14
+              party: Democratic
+            option: "false"
+          id: id
+          motion_classification:
+          - passage
+          start_date: 2020-09-18
+        actions:
+        - date: 2020-03-14
+          organization:
+            name: North Carolina General Assembly
+            id: ocd-organization/32aab083-d7a0-44e0-9b95-a7790c542605
+            classification: legislature
+          description: Passed 1st Reading
+          classification:
+          - passed
+          order: 0
+        - date: 2020-03-14
+          organization:
+            name: North Carolina General Assembly
+            id: ocd-organization/32aab083-d7a0-44e0-9b95-a7790c542605
+            classification: legislature
+          description: Passed 1st Reading
+          classification:
+          - passed
+          order: 0
+        sponsorships:
+        - entity_type: person
+          person:
+            current_role:
+              district: 3
+              division_id: ocd-division/country:us/state:nc/sldu:3
+              title: Senator
+              org_classification: upper
+            name: Angela Augusta
+            id: ocd-person/adb58f21-f2fd-4830-85b6-f490b0867d14
+            party: Democratic
+          organization: ""
+          name: JONES
+          classification: primary
+          primary: true
+        - entity_type: person
+          person:
+            current_role:
+              district: 3
+              division_id: ocd-division/country:us/state:nc/sldu:3
+              title: Senator
+              org_classification: upper
+            name: Angela Augusta
+            id: ocd-person/adb58f21-f2fd-4830-85b6-f490b0867d14
+            party: Democratic
+          organization: ""
+          name: JONES
+          classification: primary
+          primary: true
+      properties:
+        abstracts:
+          items:
+            $ref: '#/components/schemas/BillAbstract'
+          title: Abstracts
+          type: array
+        actions:
+          items:
+            $ref: '#/components/schemas/BillAction'
+          title: Actions
+          type: array
+        classification:
+          default: []
+          example:
+          - resolution
+          items:
+            type: string
+          title: Classification
+          type: array
+        created_at:
+          format: date-time
+          title: Created At
+          type: string
+        documents:
+          items:
+            $ref: '#/components/schemas/BillDocumentOrVersion'
+          title: Documents
+          type: array
+        extras:
+          default: {}
+          example: {}
+          title: Extras
+          type: object
+        first_action_date:
+          default: ""
+          example: 2020-01-01
+          title: First Action Date
+          type: string
+        from_organization:
+          $ref: '#/components/schemas/Organization'
+        id:
+          example: ocd-bill/f0049138-1ad8-4506-a2a4-f4dd1251bbba
+          title: Id
+          type: string
+        identifier:
+          example: SB 113
+          title: Identifier
+          type: string
+        jurisdiction:
+          $ref: '#/components/schemas/CompactJurisdiction'
+        latest_action_date:
+          default: ""
+          example: 2020-02-01
+          title: Latest Action Date
+          type: string
+        latest_action_description:
+          default: ""
+          example: Introduced in House
+          title: Latest Action Description
+          type: string
+        latest_passage_date:
+          default: ""
+          example: 2020-03-01
+          title: Latest Passage Date
+          type: string
+        openstates_url:
+          example: https://openstates.org/nc/bills/2019/HB1105/
+          title: Openstates Url
+          type: string
+        other_identifiers:
+          items:
+            $ref: '#/components/schemas/BillIdentifier'
+          title: Other Identifiers
+          type: array
+        other_titles:
+          items:
+            $ref: '#/components/schemas/BillTitle'
+          title: Other Titles
+          type: array
+        related_bills:
+          items:
+            $ref: '#/components/schemas/RelatedBill'
+          title: Related Bills
+          type: array
+        session:
+          example: "2020"
+          title: Session
+          type: string
+        sources:
+          items:
+            $ref: '#/components/schemas/Link'
+          title: Sources
+          type: array
+        sponsorships:
+          items:
+            $ref: '#/components/schemas/BillSponsorship'
+          title: Sponsorships
+          type: array
+        subject:
+          default: []
+          example:
+          - SCORPIONS
+          - SYMBOLS
+          items:
+            type: string
+          title: Subject
+          type: array
+        title:
+          example: Adopting a State Scorpion
+          title: Title
+          type: string
+        updated_at:
+          format: date-time
+          title: Updated At
+          type: string
+        versions:
+          items:
+            $ref: '#/components/schemas/BillDocumentOrVersion'
+          title: Versions
+          type: array
+        votes:
+          items:
+            $ref: '#/components/schemas/VoteEvent'
+          title: Votes
+          type: array
+      required:
+      - created_at
+      - from_organization
+      - id
+      - identifier
+      - jurisdiction
+      - openstates_url
+      - session
+      - title
+      - updated_at
+      title: Bill
+      type: object
+    BillAbstract:
+      example:
+        note: house abstract
+        abstract: This bill designates a new state arachnid.
+      properties:
+        abstract:
+          example: This bill designates a new state arachnid.
+          title: Abstract
+          type: string
+        note:
+          example: house abstract
+          title: Note
+          type: string
+      required:
+      - abstract
+      - note
+      title: BillAbstract
+      type: object
+    BillAction:
+      example:
+        date: 2020-03-14
+        organization:
+          name: North Carolina General Assembly
+          id: ocd-organization/32aab083-d7a0-44e0-9b95-a7790c542605
+          classification: legislature
+        description: Passed 1st Reading
+        classification:
+        - passed
+        order: 0
+      properties:
+        classification:
+          example:
+          - passed
+          items:
+            type: string
+          title: Classification
+          type: array
+        date:
+          example: 2020-03-14
+          title: Date
+          type: string
+        description:
+          example: Passed 1st Reading
+          title: Description
+          type: string
+        order:
+          title: Order
+          type: integer
+        organization:
+          $ref: '#/components/schemas/Organization'
+      required:
+      - classification
+      - date
+      - description
+      - order
+      - organization
+      title: BillAction
+      type: object
+    BillDocumentLink:
+      example:
+        media_type: application/pdf
+        url: https://example.com/doc.pdf
+      properties:
+        media_type:
+          example: application/pdf
+          title: Media Type
+          type: string
+        url:
+          example: https://example.com/doc.pdf
+          title: Url
+          type: string
+      required:
+      - media_type
+      - url
+      title: BillDocumentLink
+      type: object
+    BillDocumentOrVersion:
+      example:
+        date: 2020-10-01
+        note: Latest Version
+        links:
+        - media_type: application/pdf
+          url: https://example.com/doc.pdf
+        - media_type: application/pdf
+          url: https://example.com/doc.pdf
+      properties:
+        date:
+          example: 2020-10-01
+          title: Date
+          type: string
+        links:
+          items:
+            $ref: '#/components/schemas/BillDocumentLink'
+          title: Links
+          type: array
+        note:
+          example: Latest Version
+          title: Note
+          type: string
+      required:
+      - date
+      - links
+      - note
+      title: BillDocumentOrVersion
+      type: object
+    BillIdentifier:
+      example:
+        identifier: HB 74
+      properties:
+        identifier:
+          example: HB 74
+          title: Identifier
+          type: string
+      required:
+      - identifier
+      title: BillIdentifier
+      type: object
+    BillInclude:
+      description: An enumeration.
+      enum:
+      - sponsorships
+      - abstracts
+      - other_titles
+      - other_identifiers
+      - actions
+      - sources
+      - documents
+      - versions
+      - votes
+      - related_bills
+      title: BillInclude
+      type: string
+    BillList:
+      example:
+        pagination:
+          per_page: 20
+          max_page: 3
+          page: 1
+          total_items: 52
+        results:
+        - related_bills:
+          - identifier: HB 123
+            legislative_session: 2022S1
+            relation_type: companion
+          - identifier: HB 123
+            legislative_session: 2022S1
+            relation_type: companion
+          latest_action_date: 2020-02-01
+          sources:
+          - note: homepage
+            url: https://example.com/
+          - note: homepage
+            url: https://example.com/
+          documents:
+          - date: 2020-10-01
+            note: Latest Version
+            links:
+            - media_type: application/pdf
+              url: https://example.com/doc.pdf
+            - media_type: application/pdf
+              url: https://example.com/doc.pdf
+          - date: 2020-10-01
+            note: Latest Version
+            links:
+            - media_type: application/pdf
+              url: https://example.com/doc.pdf
+            - media_type: application/pdf
+              url: https://example.com/doc.pdf
+          session: "2020"
+          subject:
+          - SCORPIONS
+          - SYMBOLS
+          jurisdiction:
+            name: North Carolina
+            id: ocd-jurisdiction/country:us/state:nc/government
+            classification: state
+          created_at: 2000-01-23T04:56:07.000+00:00
+          extras: {}
+          other_titles:
+          - note: short title
+            title: Designating the scorpion as the state arachnid.
+          - note: short title
+            title: Designating the scorpion as the state arachnid.
+          latest_action_description: Introduced in House
+          first_action_date: 2020-01-01
+          title: Adopting a State Scorpion
+          other_identifiers:
+          - identifier: HB 74
+          - identifier: HB 74
+          updated_at: 2000-01-23T04:56:07.000+00:00
+          latest_passage_date: 2020-03-01
+          id: ocd-bill/f0049138-1ad8-4506-a2a4-f4dd1251bbba
+          identifier: SB 113
+          openstates_url: https://openstates.org/nc/bills/2019/HB1105/
+          abstracts:
+          - note: house abstract
+            abstract: This bill designates a new state arachnid.
+          - note: house abstract
+            abstract: This bill designates a new state arachnid.
+          classification:
+          - resolution
+          from_organization:
+            name: North Carolina General Assembly
+            id: ocd-organization/32aab083-d7a0-44e0-9b95-a7790c542605
+            classification: legislature
+          versions:
+          - date: 2020-10-01
+            note: Latest Version
+            links:
+            - media_type: application/pdf
+              url: https://example.com/doc.pdf
+            - media_type: application/pdf
+              url: https://example.com/doc.pdf
+          - date: 2020-10-01
+            note: Latest Version
+            links:
+            - media_type: application/pdf
+              url: https://example.com/doc.pdf
+            - media_type: application/pdf
+              url: https://example.com/doc.pdf
+          votes:
+          - result: pass
+            identifier: "HV #3312"
+            sources:
+            - note: homepage
+              url: https://example.com/
+            - note: homepage
+              url: https://example.com/
+            counts:
+            - value: 48
+              option: "true"
+            - value: 48
+              option: "true"
+            organization:
+              name: North Carolina General Assembly
+              id: ocd-organization/32aab083-d7a0-44e0-9b95-a7790c542605
+              classification: legislature
+            extras: "{}"
+            motion_text: Shall the bill be passed?
+            votes:
+            - voter_name: Wu
+              voter:
+                current_role:
+                  district: 3
+                  division_id: ocd-division/country:us/state:nc/sldu:3
+                  title: Senator
+                  org_classification: upper
+                name: Angela Augusta
+                id: ocd-person/adb58f21-f2fd-4830-85b6-f490b0867d14
+                party: Democratic
+              option: "false"
+            - voter_name: Wu
+              voter:
+                current_role:
+                  district: 3
+                  division_id: ocd-division/country:us/state:nc/sldu:3
+                  title: Senator
+                  org_classification: upper
+                name: Angela Augusta
+                id: ocd-person/adb58f21-f2fd-4830-85b6-f490b0867d14
+                party: Democratic
+              option: "false"
+            id: id
+            motion_classification:
+            - passage
+            start_date: 2020-09-18
+          - result: pass
+            identifier: "HV #3312"
+            sources:
+            - note: homepage
+              url: https://example.com/
+            - note: homepage
+              url: https://example.com/
+            counts:
+            - value: 48
+              option: "true"
+            - value: 48
+              option: "true"
+            organization:
+              name: North Carolina General Assembly
+              id: ocd-organization/32aab083-d7a0-44e0-9b95-a7790c542605
+              classification: legislature
+            extras: "{}"
+            motion_text: Shall the bill be passed?
+            votes:
+            - voter_name: Wu
+              voter:
+                current_role:
+                  district: 3
+                  division_id: ocd-division/country:us/state:nc/sldu:3
+                  title: Senator
+                  org_classification: upper
+                name: Angela Augusta
+                id: ocd-person/adb58f21-f2fd-4830-85b6-f490b0867d14
+                party: Democratic
+              option: "false"
+            - voter_name: Wu
+              voter:
+                current_role:
+                  district: 3
+                  division_id: ocd-division/country:us/state:nc/sldu:3
+                  title: Senator
+                  org_classification: upper
+                name: Angela Augusta
+                id: ocd-person/adb58f21-f2fd-4830-85b6-f490b0867d14
+                party: Democratic
+              option: "false"
+            id: id
+            motion_classification:
+            - passage
+            start_date: 2020-09-18
+          actions:
+          - date: 2020-03-14
+            organization:
+              name: North Carolina General Assembly
+              id: ocd-organization/32aab083-d7a0-44e0-9b95-a7790c542605
+              classification: legislature
+            description: Passed 1st Reading
+            classification:
+            - passed
+            order: 0
+          - date: 2020-03-14
+            organization:
+              name: North Carolina General Assembly
+              id: ocd-organization/32aab083-d7a0-44e0-9b95-a7790c542605
+              classification: legislature
+            description: Passed 1st Reading
+            classification:
+            - passed
+            order: 0
+          sponsorships:
+          - entity_type: person
+            person:
+              current_role:
+                district: 3
+                division_id: ocd-division/country:us/state:nc/sldu:3
+                title: Senator
+                org_classification: upper
+              name: Angela Augusta
+              id: ocd-person/adb58f21-f2fd-4830-85b6-f490b0867d14
+              party: Democratic
+            organization: ""
+            name: JONES
+            classification: primary
+            primary: true
+          - entity_type: person
+            person:
+              current_role:
+                district: 3
+                division_id: ocd-division/country:us/state:nc/sldu:3
+                title: Senator
+                org_classification: upper
+              name: Angela Augusta
+              id: ocd-person/adb58f21-f2fd-4830-85b6-f490b0867d14
+              party: Democratic
+            organization: ""
+            name: JONES
+            classification: primary
+            primary: true
+        - related_bills:
+          - identifier: HB 123
+            legislative_session: 2022S1
+            relation_type: companion
+          - identifier: HB 123
+            legislative_session: 2022S1
+            relation_type: companion
+          latest_action_date: 2020-02-01
+          sources:
+          - note: homepage
+            url: https://example.com/
+          - note: homepage
+            url: https://example.com/
+          documents:
+          - date: 2020-10-01
+            note: Latest Version
+            links:
+            - media_type: application/pdf
+              url: https://example.com/doc.pdf
+            - media_type: application/pdf
+              url: https://example.com/doc.pdf
+          - date: 2020-10-01
+            note: Latest Version
+            links:
+            - media_type: application/pdf
+              url: https://example.com/doc.pdf
+            - media_type: application/pdf
+              url: https://example.com/doc.pdf
+          session: "2020"
+          subject:
+          - SCORPIONS
+          - SYMBOLS
+          jurisdiction:
+            name: North Carolina
+            id: ocd-jurisdiction/country:us/state:nc/government
+            classification: state
+          created_at: 2000-01-23T04:56:07.000+00:00
+          extras: {}
+          other_titles:
+          - note: short title
+            title: Designating the scorpion as the state arachnid.
+          - note: short title
+            title: Designating the scorpion as the state arachnid.
+          latest_action_description: Introduced in House
+          first_action_date: 2020-01-01
+          title: Adopting a State Scorpion
+          other_identifiers:
+          - identifier: HB 74
+          - identifier: HB 74
+          updated_at: 2000-01-23T04:56:07.000+00:00
+          latest_passage_date: 2020-03-01
+          id: ocd-bill/f0049138-1ad8-4506-a2a4-f4dd1251bbba
+          identifier: SB 113
+          openstates_url: https://openstates.org/nc/bills/2019/HB1105/
+          abstracts:
+          - note: house abstract
+            abstract: This bill designates a new state arachnid.
+          - note: house abstract
+            abstract: This bill designates a new state arachnid.
+          classification:
+          - resolution
+          from_organization:
+            name: North Carolina General Assembly
+            id: ocd-organization/32aab083-d7a0-44e0-9b95-a7790c542605
+            classification: legislature
+          versions:
+          - date: 2020-10-01
+            note: Latest Version
+            links:
+            - media_type: application/pdf
+              url: https://example.com/doc.pdf
+            - media_type: application/pdf
+              url: https://example.com/doc.pdf
+          - date: 2020-10-01
+            note: Latest Version
+            links:
+            - media_type: application/pdf
+              url: https://example.com/doc.pdf
+            - media_type: application/pdf
+              url: https://example.com/doc.pdf
+          votes:
+          - result: pass
+            identifier: "HV #3312"
+            sources:
+            - note: homepage
+              url: https://example.com/
+            - note: homepage
+              url: https://example.com/
+            counts:
+            - value: 48
+              option: "true"
+            - value: 48
+              option: "true"
+            organization:
+              name: North Carolina General Assembly
+              id: ocd-organization/32aab083-d7a0-44e0-9b95-a7790c542605
+              classification: legislature
+            extras: "{}"
+            motion_text: Shall the bill be passed?
+            votes:
+            - voter_name: Wu
+              voter:
+                current_role:
+                  district: 3
+                  division_id: ocd-division/country:us/state:nc/sldu:3
+                  title: Senator
+                  org_classification: upper
+                name: Angela Augusta
+                id: ocd-person/adb58f21-f2fd-4830-85b6-f490b0867d14
+                party: Democratic
+              option: "false"
+            - voter_name: Wu
+              voter:
+                current_role:
+                  district: 3
+                  division_id: ocd-division/country:us/state:nc/sldu:3
+                  title: Senator
+                  org_classification: upper
+                name: Angela Augusta
+                id: ocd-person/adb58f21-f2fd-4830-85b6-f490b0867d14
+                party: Democratic
+              option: "false"
+            id: id
+            motion_classification:
+            - passage
+            start_date: 2020-09-18
+          - result: pass
+            identifier: "HV #3312"
+            sources:
+            - note: homepage
+              url: https://example.com/
+            - note: homepage
+              url: https://example.com/
+            counts:
+            - value: 48
+              option: "true"
+            - value: 48
+              option: "true"
+            organization:
+              name: North Carolina General Assembly
+              id: ocd-organization/32aab083-d7a0-44e0-9b95-a7790c542605
+              classification: legislature
+            extras: "{}"
+            motion_text: Shall the bill be passed?
+            votes:
+            - voter_name: Wu
+              voter:
+                current_role:
+                  district: 3
+                  division_id: ocd-division/country:us/state:nc/sldu:3
+                  title: Senator
+                  org_classification: upper
+                name: Angela Augusta
+                id: ocd-person/adb58f21-f2fd-4830-85b6-f490b0867d14
+                party: Democratic
+              option: "false"
+            - voter_name: Wu
+              voter:
+                current_role:
+                  district: 3
+                  division_id: ocd-division/country:us/state:nc/sldu:3
+                  title: Senator
+                  org_classification: upper
+                name: Angela Augusta
+                id: ocd-person/adb58f21-f2fd-4830-85b6-f490b0867d14
+                party: Democratic
+              option: "false"
+            id: id
+            motion_classification:
+            - passage
+            start_date: 2020-09-18
+          actions:
+          - date: 2020-03-14
+            organization:
+              name: North Carolina General Assembly
+              id: ocd-organization/32aab083-d7a0-44e0-9b95-a7790c542605
+              classification: legislature
+            description: Passed 1st Reading
+            classification:
+            - passed
+            order: 0
+          - date: 2020-03-14
+            organization:
+              name: North Carolina General Assembly
+              id: ocd-organization/32aab083-d7a0-44e0-9b95-a7790c542605
+              classification: legislature
+            description: Passed 1st Reading
+            classification:
+            - passed
+            order: 0
+          sponsorships:
+          - entity_type: person
+            person:
+              current_role:
+                district: 3
+                division_id: ocd-division/country:us/state:nc/sldu:3
+                title: Senator
+                org_classification: upper
+              name: Angela Augusta
+              id: ocd-person/adb58f21-f2fd-4830-85b6-f490b0867d14
+              party: Democratic
+            organization: ""
+            name: JONES
+            classification: primary
+            primary: true
+          - entity_type: person
+            person:
+              current_role:
+                district: 3
+                division_id: ocd-division/country:us/state:nc/sldu:3
+                title: Senator
+                org_classification: upper
+              name: Angela Augusta
+              id: ocd-person/adb58f21-f2fd-4830-85b6-f490b0867d14
+              party: Democratic
+            organization: ""
+            name: JONES
+            classification: primary
+            primary: true
+      properties:
+        pagination:
+          $ref: '#/components/schemas/PaginationMeta'
+        results:
+          items:
+            $ref: '#/components/schemas/Bill'
+          title: Results
+          type: array
+      required:
+      - pagination
+      - results
+      title: BillList
+      type: object
+    BillSortOption:
+      description: An enumeration.
+      enum:
+      - updated_asc
+      - updated_desc
+      - first_action_asc
+      - first_action_desc
+      - latest_action_asc
+      - latest_action_desc
+      title: BillSortOption
+      type: string
+    BillSponsorship:
+      example:
+        entity_type: person
+        person:
+          current_role:
+            district: 3
+            division_id: ocd-division/country:us/state:nc/sldu:3
+            title: Senator
+            org_classification: upper
+          name: Angela Augusta
+          id: ocd-person/adb58f21-f2fd-4830-85b6-f490b0867d14
+          party: Democratic
+        organization: ""
+        name: JONES
+        classification: primary
+        primary: true
+      properties:
+        classification:
+          example: primary
+          title: Classification
+          type: string
+        entity_type:
+          example: person
+          title: Entity Type
+          type: string
+        name:
+          example: JONES
+          title: Name
+          type: string
+        organization:
+          allOf:
+          - $ref: '#/components/schemas/Organization'
+          title: Organization
+        person:
+          $ref: '#/components/schemas/CompactPerson'
+        primary:
+          title: Primary
+          type: boolean
+      required:
+      - classification
+      - entity_type
+      - name
+      - primary
+      title: BillSponsorship
+      type: object
+    BillTitle:
+      example:
+        note: short title
+        title: Designating the scorpion as the state arachnid.
+      properties:
+        note:
+          example: short title
+          title: Note
+          type: string
+        title:
+          example: Designating the scorpion as the state arachnid.
+          title: Title
+          type: string
+      required:
+      - note
+      - title
+      title: BillTitle
+      type: object
+    Chamber:
+      example:
+        districts:
+        - role: Senator
+          maximum_memberships: 1
+          division_id: ocd-division/country:us/state:mn/sldu:4
+          label: "2"
+        - role: Senator
+          maximum_memberships: 1
+          division_id: ocd-division/country:us/state:mn/sldu:4
+          label: "2"
+        name: North Carolina General Assembly
+        id: ocd-organization/32aab083-d7a0-44e0-9b95-a7790c542605
+        classification: legislature
+      properties:
+        classification:
+          example: legislature
+          title: Classification
+          type: string
+        districts:
+          items:
+            $ref: '#/components/schemas/Post'
+          title: Districts
+          type: array
+        id:
+          example: ocd-organization/32aab083-d7a0-44e0-9b95-a7790c542605
+          title: Id
+          type: string
+        name:
+          example: North Carolina General Assembly
+          title: Name
+          type: string
+      required:
+      - classification
+      - id
+      - name
+      title: Chamber
+      type: object
+    Committee:
+      example:
+        sources:
+        - note: homepage
+          url: https://example.com/
+        - note: homepage
+          url: https://example.com/
+        parent_id: ocd-organization/aabbbbcc-dddd-eeee-ffff-999988887777
+        name: Health & Public Services
+        extras:
+          room: Room 4B
+        links:
+        - note: homepage
+          url: https://example.com/
+        - note: homepage
+          url: https://example.com/
+        other_names:
+        - note: nickname
+          name: Auggie
+        - note: nickname
+          name: Auggie
+        id: ocd-organization/aabbbbcc-dddd-eeee-ffff-0123456789ab
+        classification: committee
+        memberships:
+        - role: role
+          person:
+            current_role:
+              district: 3
+              division_id: ocd-division/country:us/state:nc/sldu:3
+              title: Senator
+              org_classification: upper
+            name: Angela Augusta
+            id: ocd-person/adb58f21-f2fd-4830-85b6-f490b0867d14
+            party: Democratic
+          person_name: person_name
+        - role: role
+          person:
+            current_role:
+              district: 3
+              division_id: ocd-division/country:us/state:nc/sldu:3
+              title: Senator
+              org_classification: upper
+            name: Angela Augusta
+            id: ocd-person/adb58f21-f2fd-4830-85b6-f490b0867d14
+            party: Democratic
+          person_name: person_name
+      properties:
+        classification:
+          $ref: '#/components/schemas/CommitteeClassification'
+        extras:
+          example:
+            room: Room 4B
+          title: Extras
+          type: object
+        id:
+          example: ocd-organization/aabbbbcc-dddd-eeee-ffff-0123456789ab
+          title: Id
+          type: string
+        links:
+          items:
+            $ref: '#/components/schemas/Link'
+          title: Links
+          type: array
+        memberships:
+          items:
+            $ref: '#/components/schemas/CommitteeMembership'
+          title: Memberships
+          type: array
+        name:
+          example: Health & Public Services
+          title: Name
+          type: string
+        other_names:
+          items:
+            $ref: '#/components/schemas/AltName'
+          title: Other Names
+          type: array
+        parent_id:
+          example: ocd-organization/aabbbbcc-dddd-eeee-ffff-999988887777
+          title: Parent Id
+          type: string
+        sources:
+          items:
+            $ref: '#/components/schemas/Link'
+          title: Sources
+          type: array
+      required:
+      - classification
+      - extras
+      - id
+      - name
+      - parent_id
+      title: Committee
+      type: object
+    CommitteeClassification:
+      description: An enumeration.
+      enum:
+      - committee
+      - subcommittee
+      title: CommitteeClassification
+      type: string
+    CommitteeInclude:
+      description: An enumeration.
+      enum:
+      - memberships
+      - links
+      - sources
+      title: CommitteeInclude
+      type: string
+    CommitteeList:
+      example:
+        pagination:
+          per_page: 20
+          max_page: 3
+          page: 1
+          total_items: 52
+        results:
+        - sources:
+          - note: homepage
+            url: https://example.com/
+          - note: homepage
+            url: https://example.com/
+          parent_id: ocd-organization/aabbbbcc-dddd-eeee-ffff-999988887777
+          name: Health & Public Services
+          extras:
+            room: Room 4B
+          links:
+          - note: homepage
+            url: https://example.com/
+          - note: homepage
+            url: https://example.com/
+          other_names:
+          - note: nickname
+            name: Auggie
+          - note: nickname
+            name: Auggie
+          id: ocd-organization/aabbbbcc-dddd-eeee-ffff-0123456789ab
+          classification: committee
+          memberships:
+          - role: role
+            person:
+              current_role:
+                district: 3
+                division_id: ocd-division/country:us/state:nc/sldu:3
+                title: Senator
+                org_classification: upper
+              name: Angela Augusta
+              id: ocd-person/adb58f21-f2fd-4830-85b6-f490b0867d14
+              party: Democratic
+            person_name: person_name
+          - role: role
+            person:
+              current_role:
+                district: 3
+                division_id: ocd-division/country:us/state:nc/sldu:3
+                title: Senator
+                org_classification: upper
+              name: Angela Augusta
+              id: ocd-person/adb58f21-f2fd-4830-85b6-f490b0867d14
+              party: Democratic
+            person_name: person_name
+        - sources:
+          - note: homepage
+            url: https://example.com/
+          - note: homepage
+            url: https://example.com/
+          parent_id: ocd-organization/aabbbbcc-dddd-eeee-ffff-999988887777
+          name: Health & Public Services
+          extras:
+            room: Room 4B
+          links:
+          - note: homepage
+            url: https://example.com/
+          - note: homepage
+            url: https://example.com/
+          other_names:
+          - note: nickname
+            name: Auggie
+          - note: nickname
+            name: Auggie
+          id: ocd-organization/aabbbbcc-dddd-eeee-ffff-0123456789ab
+          classification: committee
+          memberships:
+          - role: role
+            person:
+              current_role:
+                district: 3
+                division_id: ocd-division/country:us/state:nc/sldu:3
+                title: Senator
+                org_classification: upper
+              name: Angela Augusta
+              id: ocd-person/adb58f21-f2fd-4830-85b6-f490b0867d14
+              party: Democratic
+            person_name: person_name
+          - role: role
+            person:
+              current_role:
+                district: 3
+                division_id: ocd-division/country:us/state:nc/sldu:3
+                title: Senator
+                org_classification: upper
+              name: Angela Augusta
+              id: ocd-person/adb58f21-f2fd-4830-85b6-f490b0867d14
+              party: Democratic
+            person_name: person_name
+      properties:
+        pagination:
+          $ref: '#/components/schemas/PaginationMeta'
+        results:
+          items:
+            $ref: '#/components/schemas/Committee'
+          title: Results
+          type: array
+      required:
+      - pagination
+      - results
+      title: CommitteeList
+      type: object
+    CommitteeMembership:
+      example:
+        role: role
+        person:
+          current_role:
+            district: 3
+            division_id: ocd-division/country:us/state:nc/sldu:3
+            title: Senator
+            org_classification: upper
+          name: Angela Augusta
+          id: ocd-person/adb58f21-f2fd-4830-85b6-f490b0867d14
+          party: Democratic
+        person_name: person_name
+      properties:
+        person:
+          $ref: '#/components/schemas/CompactPerson'
+        person_name:
+          title: Person Name
+          type: string
+        role:
+          title: Role
+          type: string
+      required:
+      - person_name
+      - role
+      title: CommitteeMembership
+      type: object
+    CompactBill:
+      example:
+        identifier: identifier
+        session: session
+        id: ocd-bill/12345678-0000-1111-2222-333344445555
+        title: title
+      properties:
+        id:
+          example: ocd-bill/12345678-0000-1111-2222-333344445555
+          title: Id
+          type: string
+        identifier:
+          title: Identifier
+          type: string
+        session:
+          title: Session
+          type: string
+        title:
+          title: Title
+          type: string
+      required:
+      - id
+      - identifier
+      - session
+      - title
+      title: CompactBill
+      type: object
+    CompactJurisdiction:
+      example:
+        name: North Carolina
+        id: ocd-jurisdiction/country:us/state:nc/government
+        classification: state
+      properties:
+        classification:
+          allOf:
+          - $ref: '#/components/schemas/JurisdictionClassification'
+          example: state
+        id:
+          example: ocd-jurisdiction/country:us/state:nc/government
+          title: Id
+          type: string
+        name:
+          example: North Carolina
+          title: Name
+          type: string
+      required:
+      - classification
+      - id
+      - name
+      title: CompactJurisdiction
+      type: object
+    CompactPerson:
+      example:
+        current_role:
+          district: 3
+          division_id: ocd-division/country:us/state:nc/sldu:3
+          title: Senator
+          org_classification: upper
+        name: Angela Augusta
+        id: ocd-person/adb58f21-f2fd-4830-85b6-f490b0867d14
+        party: Democratic
+      properties:
+        current_role:
+          $ref: '#/components/schemas/CurrentRole'
+        id:
+          example: ocd-person/adb58f21-f2fd-4830-85b6-f490b0867d14
+          title: Id
+          type: string
+        name:
+          example: Angela Augusta
+          title: Name
+          type: string
+        party:
+          example: Democratic
+          title: Party
+          type: string
+      required:
+      - id
+      - name
+      - party
+      title: CompactPerson
+      type: object
+    CompactVoteEvent:
+      example:
+        motion_text: Shall the bill be passed?
+        id: ocd-vote/12345678-0000-1111-2222-333344445555
+      properties:
+        id:
+          example: ocd-vote/12345678-0000-1111-2222-333344445555
+          title: Id
+          type: string
+        motion_text:
+          example: Shall the bill be passed?
+          title: Motion Text
+          type: string
+      required:
+      - id
+      - motion_text
+      title: CompactVoteEvent
+      type: object
+    CurrentRole:
+      example:
+        district: 3
+        division_id: ocd-division/country:us/state:nc/sldu:3
+        title: Senator
+        org_classification: upper
+      properties:
+        district:
+          $ref: '#/components/schemas/District'
+        division_id:
+          default: ""
+          example: ocd-division/country:us/state:nc/sldu:3
+          title: Division Id
+          type: string
+        org_classification:
+          allOf:
+          - $ref: '#/components/schemas/OrgClassification'
+          example: upper
+        title:
+          example: Senator
+          title: Title
+          type: string
+      required:
+      - org_classification
+      - title
+      title: CurrentRole
+      type: object
+    DataExport:
+      example:
+        updated_at: 2000-01-23T04:56:07.000+00:00
+        data_type: data_type
+        created_at: 2000-01-23T04:56:07.000+00:00
+        url: url
+      properties:
+        created_at:
+          format: date-time
+          title: Created At
+          type: string
+        data_type:
+          title: Data Type
+          type: string
+        updated_at:
+          format: date-time
+          title: Updated At
+          type: string
+        url:
+          title: Url
+          type: string
+      required:
+      - created_at
+      - data_type
+      - updated_at
+      - url
+      title: DataExport
+      type: object
+    Event:
+      example:
+        end_date: end_date
+        sources:
+        - note: homepage
+          url: https://example.com/
+        - note: homepage
+          url: https://example.com/
+        documents:
+        - date: date
+          note: note
+          links:
+          - note: homepage
+            url: https://example.com/
+          - note: homepage
+            url: https://example.com/
+          classification: classification
+        - date: date
+          note: note
+          links:
+          - note: homepage
+            url: https://example.com/
+          - note: homepage
+            url: https://example.com/
+          classification: classification
+        jurisdiction:
+          name: North Carolina
+          id: ocd-jurisdiction/country:us/state:nc/government
+          classification: state
+        upstream_id: upstream_id
+        description: description
+        media:
+        - date: date
+          note: note
+          offset: 0
+          links:
+          - note: homepage
+            url: https://example.com/
+          - note: homepage
+            url: https://example.com/
+          classification: classification
+        - date: date
+          note: note
+          offset: 0
+          links:
+          - note: homepage
+            url: https://example.com/
+          - note: homepage
+            url: https://example.com/
+          classification: classification
+        classification: classification
+        agenda:
+        - notes:
+          - notes
+          - notes
+          subjects:
+          - subjects
+          - subjects
+          description: description
+          extras: "{}"
+          related_entities:
+          - note: note
+            entity_type: person
+            person:
+              current_role:
+                district: 3
+                division_id: ocd-division/country:us/state:nc/sldu:3
+                title: Senator
+                org_classification: upper
+              name: Angela Augusta
+              id: ocd-person/adb58f21-f2fd-4830-85b6-f490b0867d14
+              party: Democratic
+            organization: ""
+            name: JONES
+            bill:
+              identifier: identifier
+              session: session
+              id: ocd-bill/12345678-0000-1111-2222-333344445555
+              title: title
+            vote:
+              motion_text: Shall the bill be passed?
+              id: ocd-vote/12345678-0000-1111-2222-333344445555
+          - note: note
+            entity_type: person
+            person:
+              current_role:
+                district: 3
+                division_id: ocd-division/country:us/state:nc/sldu:3
+                title: Senator
+                org_classification: upper
+              name: Angela Augusta
+              id: ocd-person/adb58f21-f2fd-4830-85b6-f490b0867d14
+              party: Democratic
+            organization: ""
+            name: JONES
+            bill:
+              identifier: identifier
+              session: session
+              id: ocd-bill/12345678-0000-1111-2222-333344445555
+              title: title
+            vote:
+              motion_text: Shall the bill be passed?
+              id: ocd-vote/12345678-0000-1111-2222-333344445555
+          media:
+          - date: date
+            note: note
+            offset: 0
+            links:
+            - note: homepage
+              url: https://example.com/
+            - note: homepage
+              url: https://example.com/
+            classification: classification
+          - date: date
+            note: note
+            offset: 0
+            links:
+            - note: homepage
+              url: https://example.com/
+            - note: homepage
+              url: https://example.com/
+            classification: classification
+          classification:
+          - classification
+          - classification
+          order: 6
+        - notes:
+          - notes
+          - notes
+          subjects:
+          - subjects
+          - subjects
+          description: description
+          extras: "{}"
+          related_entities:
+          - note: note
+            entity_type: person
+            person:
+              current_role:
+                district: 3
+                division_id: ocd-division/country:us/state:nc/sldu:3
+                title: Senator
+                org_classification: upper
+              name: Angela Augusta
+              id: ocd-person/adb58f21-f2fd-4830-85b6-f490b0867d14
+              party: Democratic
+            organization: ""
+            name: JONES
+            bill:
+              identifier: identifier
+              session: session
+              id: ocd-bill/12345678-0000-1111-2222-333344445555
+              title: title
+            vote:
+              motion_text: Shall the bill be passed?
+              id: ocd-vote/12345678-0000-1111-2222-333344445555
+          - note: note
+            entity_type: person
+            person:
+              current_role:
+                district: 3
+                division_id: ocd-division/country:us/state:nc/sldu:3
+                title: Senator
+                org_classification: upper
+              name: Angela Augusta
+              id: ocd-person/adb58f21-f2fd-4830-85b6-f490b0867d14
+              party: Democratic
+            organization: ""
+            name: JONES
+            bill:
+              identifier: identifier
+              session: session
+              id: ocd-bill/12345678-0000-1111-2222-333344445555
+              title: title
+            vote:
+              motion_text: Shall the bill be passed?
+              id: ocd-vote/12345678-0000-1111-2222-333344445555
+          media:
+          - date: date
+            note: note
+            offset: 0
+            links:
+            - note: homepage
+              url: https://example.com/
+            - note: homepage
+              url: https://example.com/
+            classification: classification
+          - date: date
+            note: note
+            offset: 0
+            links:
+            - note: homepage
+              url: https://example.com/
+            - note: homepage
+              url: https://example.com/
+            classification: classification
+          classification:
+          - classification
+          - classification
+          order: 6
+        deleted: true
+        all_day: true
+        name: name
+        links:
+        - note: homepage
+          url: https://example.com/
+        - note: homepage
+          url: https://example.com/
+        location:
+          name: name
+          url: url
+        id: id
+        participants:
+        - note: note
+          entity_type: person
+          person:
+            current_role:
+              district: 3
+              division_id: ocd-division/country:us/state:nc/sldu:3
+              title: Senator
+              org_classification: upper
+            name: Angela Augusta
+            id: ocd-person/adb58f21-f2fd-4830-85b6-f490b0867d14
+            party: Democratic
+          organization: ""
+          name: JONES
+        - note: note
+          entity_type: person
+          person:
+            current_role:
+              district: 3
+              division_id: ocd-division/country:us/state:nc/sldu:3
+              title: Senator
+              org_classification: upper
+            name: Angela Augusta
+            id: ocd-person/adb58f21-f2fd-4830-85b6-f490b0867d14
+            party: Democratic
+          organization: ""
+          name: JONES
+        start_date: start_date
+        status: status
+      properties:
+        agenda:
+          items:
+            $ref: '#/components/schemas/EventAgendaItem'
+          title: Agenda
+          type: array
+        all_day:
+          title: All Day
+          type: boolean
+        classification:
+          title: Classification
+          type: string
+        deleted:
+          title: Deleted
+          type: boolean
+        description:
+          title: Description
+          type: string
+        documents:
+          items:
+            $ref: '#/components/schemas/EventDocument'
+          title: Documents
+          type: array
+        end_date:
+          title: End Date
+          type: string
+        id:
+          title: Id
+          type: string
+        jurisdiction:
+          $ref: '#/components/schemas/CompactJurisdiction'
+        links:
+          items:
+            $ref: '#/components/schemas/Link'
+          title: Links
+          type: array
+        location:
+          $ref: '#/components/schemas/EventLocation'
+        media:
+          items:
+            $ref: '#/components/schemas/EventMedia'
+          title: Media
+          type: array
+        name:
+          title: Name
+          type: string
+        participants:
+          items:
+            $ref: '#/components/schemas/EventParticipant'
+          title: Participants
+          type: array
+        sources:
+          items:
+            $ref: '#/components/schemas/Link'
+          title: Sources
+          type: array
+        start_date:
+          title: Start Date
+          type: string
+        status:
+          title: Status
+          type: string
+        upstream_id:
+          title: Upstream Id
+          type: string
+      required:
+      - all_day
+      - classification
+      - deleted
+      - description
+      - end_date
+      - id
+      - jurisdiction
+      - name
+      - start_date
+      - status
+      - upstream_id
+      title: Event
+      type: object
+    EventAgendaItem:
+      example:
+        notes:
+        - notes
+        - notes
+        subjects:
+        - subjects
+        - subjects
+        description: description
+        extras: "{}"
+        related_entities:
+        - note: note
+          entity_type: person
+          person:
+            current_role:
+              district: 3
+              division_id: ocd-division/country:us/state:nc/sldu:3
+              title: Senator
+              org_classification: upper
+            name: Angela Augusta
+            id: ocd-person/adb58f21-f2fd-4830-85b6-f490b0867d14
+            party: Democratic
+          organization: ""
+          name: JONES
+          bill:
+            identifier: identifier
+            session: session
+            id: ocd-bill/12345678-0000-1111-2222-333344445555
+            title: title
+          vote:
+            motion_text: Shall the bill be passed?
+            id: ocd-vote/12345678-0000-1111-2222-333344445555
+        - note: note
+          entity_type: person
+          person:
+            current_role:
+              district: 3
+              division_id: ocd-division/country:us/state:nc/sldu:3
+              title: Senator
+              org_classification: upper
+            name: Angela Augusta
+            id: ocd-person/adb58f21-f2fd-4830-85b6-f490b0867d14
+            party: Democratic
+          organization: ""
+          name: JONES
+          bill:
+            identifier: identifier
+            session: session
+            id: ocd-bill/12345678-0000-1111-2222-333344445555
+            title: title
+          vote:
+            motion_text: Shall the bill be passed?
+            id: ocd-vote/12345678-0000-1111-2222-333344445555
+        media:
+        - date: date
+          note: note
+          offset: 0
+          links:
+          - note: homepage
+            url: https://example.com/
+          - note: homepage
+            url: https://example.com/
+          classification: classification
+        - date: date
+          note: note
+          offset: 0
+          links:
+          - note: homepage
+            url: https://example.com/
+          - note: homepage
+            url: https://example.com/
+          classification: classification
+        classification:
+        - classification
+        - classification
+        order: 6
+      properties:
+        classification:
+          items:
+            type: string
+          title: Classification
+          type: array
+        description:
+          title: Description
+          type: string
+        extras:
+          title: Extras
+          type: object
+        media:
+          items:
+            $ref: '#/components/schemas/EventMedia'
+          title: Media
+          type: array
+        notes:
+          items:
+            type: string
+          title: Notes
+          type: array
+        order:
+          title: Order
+          type: integer
+        related_entities:
+          items:
+            $ref: '#/components/schemas/EventRelatedEntity'
+          title: Related Entities
+          type: array
+        subjects:
+          items:
+            type: string
+          title: Subjects
+          type: array
+      required:
+      - classification
+      - description
+      - extras
+      - media
+      - notes
+      - order
+      - related_entities
+      - subjects
+      title: EventAgendaItem
+      type: object
+    EventDocument:
+      example:
+        date: date
+        note: note
+        links:
+        - note: homepage
+          url: https://example.com/
+        - note: homepage
+          url: https://example.com/
+        classification: classification
+      properties:
+        classification:
+          title: Classification
+          type: string
+        date:
+          title: Date
+          type: string
+        links:
+          items:
+            $ref: '#/components/schemas/Link'
+          title: Links
+          type: array
+        note:
+          title: Note
+          type: string
+      required:
+      - classification
+      - date
+      - links
+      - note
+      title: EventDocument
+      type: object
+    EventInclude:
+      description: An enumeration.
+      enum:
+      - links
+      - sources
+      - media
+      - documents
+      - participants
+      - agenda
+      title: EventInclude
+      type: string
+    EventList:
+      example:
+        pagination:
+          per_page: 20
+          max_page: 3
+          page: 1
+          total_items: 52
+        results:
+        - end_date: end_date
+          sources:
+          - note: homepage
+            url: https://example.com/
+          - note: homepage
+            url: https://example.com/
+          documents:
+          - date: date
+            note: note
+            links:
+            - note: homepage
+              url: https://example.com/
+            - note: homepage
+              url: https://example.com/
+            classification: classification
+          - date: date
+            note: note
+            links:
+            - note: homepage
+              url: https://example.com/
+            - note: homepage
+              url: https://example.com/
+            classification: classification
+          jurisdiction:
+            name: North Carolina
+            id: ocd-jurisdiction/country:us/state:nc/government
+            classification: state
+          upstream_id: upstream_id
+          description: description
+          media:
+          - date: date
+            note: note
+            offset: 0
+            links:
+            - note: homepage
+              url: https://example.com/
+            - note: homepage
+              url: https://example.com/
+            classification: classification
+          - date: date
+            note: note
+            offset: 0
+            links:
+            - note: homepage
+              url: https://example.com/
+            - note: homepage
+              url: https://example.com/
+            classification: classification
+          classification: classification
+          agenda:
+          - notes:
+            - notes
+            - notes
+            subjects:
+            - subjects
+            - subjects
+            description: description
+            extras: "{}"
+            related_entities:
+            - note: note
+              entity_type: person
+              person:
+                current_role:
+                  district: 3
+                  division_id: ocd-division/country:us/state:nc/sldu:3
+                  title: Senator
+                  org_classification: upper
+                name: Angela Augusta
+                id: ocd-person/adb58f21-f2fd-4830-85b6-f490b0867d14
+                party: Democratic
+              organization: ""
+              name: JONES
+              bill:
+                identifier: identifier
+                session: session
+                id: ocd-bill/12345678-0000-1111-2222-333344445555
+                title: title
+              vote:
+                motion_text: Shall the bill be passed?
+                id: ocd-vote/12345678-0000-1111-2222-333344445555
+            - note: note
+              entity_type: person
+              person:
+                current_role:
+                  district: 3
+                  division_id: ocd-division/country:us/state:nc/sldu:3
+                  title: Senator
+                  org_classification: upper
+                name: Angela Augusta
+                id: ocd-person/adb58f21-f2fd-4830-85b6-f490b0867d14
+                party: Democratic
+              organization: ""
+              name: JONES
+              bill:
+                identifier: identifier
+                session: session
+                id: ocd-bill/12345678-0000-1111-2222-333344445555
+                title: title
+              vote:
+                motion_text: Shall the bill be passed?
+                id: ocd-vote/12345678-0000-1111-2222-333344445555
+            media:
+            - date: date
+              note: note
+              offset: 0
+              links:
+              - note: homepage
+                url: https://example.com/
+              - note: homepage
+                url: https://example.com/
+              classification: classification
+            - date: date
+              note: note
+              offset: 0
+              links:
+              - note: homepage
+                url: https://example.com/
+              - note: homepage
+                url: https://example.com/
+              classification: classification
+            classification:
+            - classification
+            - classification
+            order: 6
+          - notes:
+            - notes
+            - notes
+            subjects:
+            - subjects
+            - subjects
+            description: description
+            extras: "{}"
+            related_entities:
+            - note: note
+              entity_type: person
+              person:
+                current_role:
+                  district: 3
+                  division_id: ocd-division/country:us/state:nc/sldu:3
+                  title: Senator
+                  org_classification: upper
+                name: Angela Augusta
+                id: ocd-person/adb58f21-f2fd-4830-85b6-f490b0867d14
+                party: Democratic
+              organization: ""
+              name: JONES
+              bill:
+                identifier: identifier
+                session: session
+                id: ocd-bill/12345678-0000-1111-2222-333344445555
+                title: title
+              vote:
+                motion_text: Shall the bill be passed?
+                id: ocd-vote/12345678-0000-1111-2222-333344445555
+            - note: note
+              entity_type: person
+              person:
+                current_role:
+                  district: 3
+                  division_id: ocd-division/country:us/state:nc/sldu:3
+                  title: Senator
+                  org_classification: upper
+                name: Angela Augusta
+                id: ocd-person/adb58f21-f2fd-4830-85b6-f490b0867d14
+                party: Democratic
+              organization: ""
+              name: JONES
+              bill:
+                identifier: identifier
+                session: session
+                id: ocd-bill/12345678-0000-1111-2222-333344445555
+                title: title
+              vote:
+                motion_text: Shall the bill be passed?
+                id: ocd-vote/12345678-0000-1111-2222-333344445555
+            media:
+            - date: date
+              note: note
+              offset: 0
+              links:
+              - note: homepage
+                url: https://example.com/
+              - note: homepage
+                url: https://example.com/
+              classification: classification
+            - date: date
+              note: note
+              offset: 0
+              links:
+              - note: homepage
+                url: https://example.com/
+              - note: homepage
+                url: https://example.com/
+              classification: classification
+            classification:
+            - classification
+            - classification
+            order: 6
+          deleted: true
+          all_day: true
+          name: name
+          links:
+          - note: homepage
+            url: https://example.com/
+          - note: homepage
+            url: https://example.com/
+          location:
+            name: name
+            url: url
+          id: id
+          participants:
+          - note: note
+            entity_type: person
+            person:
+              current_role:
+                district: 3
+                division_id: ocd-division/country:us/state:nc/sldu:3
+                title: Senator
+                org_classification: upper
+              name: Angela Augusta
+              id: ocd-person/adb58f21-f2fd-4830-85b6-f490b0867d14
+              party: Democratic
+            organization: ""
+            name: JONES
+          - note: note
+            entity_type: person
+            person:
+              current_role:
+                district: 3
+                division_id: ocd-division/country:us/state:nc/sldu:3
+                title: Senator
+                org_classification: upper
+              name: Angela Augusta
+              id: ocd-person/adb58f21-f2fd-4830-85b6-f490b0867d14
+              party: Democratic
+            organization: ""
+            name: JONES
+          start_date: start_date
+          status: status
+        - end_date: end_date
+          sources:
+          - note: homepage
+            url: https://example.com/
+          - note: homepage
+            url: https://example.com/
+          documents:
+          - date: date
+            note: note
+            links:
+            - note: homepage
+              url: https://example.com/
+            - note: homepage
+              url: https://example.com/
+            classification: classification
+          - date: date
+            note: note
+            links:
+            - note: homepage
+              url: https://example.com/
+            - note: homepage
+              url: https://example.com/
+            classification: classification
+          jurisdiction:
+            name: North Carolina
+            id: ocd-jurisdiction/country:us/state:nc/government
+            classification: state
+          upstream_id: upstream_id
+          description: description
+          media:
+          - date: date
+            note: note
+            offset: 0
+            links:
+            - note: homepage
+              url: https://example.com/
+            - note: homepage
+              url: https://example.com/
+            classification: classification
+          - date: date
+            note: note
+            offset: 0
+            links:
+            - note: homepage
+              url: https://example.com/
+            - note: homepage
+              url: https://example.com/
+            classification: classification
+          classification: classification
+          agenda:
+          - notes:
+            - notes
+            - notes
+            subjects:
+            - subjects
+            - subjects
+            description: description
+            extras: "{}"
+            related_entities:
+            - note: note
+              entity_type: person
+              person:
+                current_role:
+                  district: 3
+                  division_id: ocd-division/country:us/state:nc/sldu:3
+                  title: Senator
+                  org_classification: upper
+                name: Angela Augusta
+                id: ocd-person/adb58f21-f2fd-4830-85b6-f490b0867d14
+                party: Democratic
+              organization: ""
+              name: JONES
+              bill:
+                identifier: identifier
+                session: session
+                id: ocd-bill/12345678-0000-1111-2222-333344445555
+                title: title
+              vote:
+                motion_text: Shall the bill be passed?
+                id: ocd-vote/12345678-0000-1111-2222-333344445555
+            - note: note
+              entity_type: person
+              person:
+                current_role:
+                  district: 3
+                  division_id: ocd-division/country:us/state:nc/sldu:3
+                  title: Senator
+                  org_classification: upper
+                name: Angela Augusta
+                id: ocd-person/adb58f21-f2fd-4830-85b6-f490b0867d14
+                party: Democratic
+              organization: ""
+              name: JONES
+              bill:
+                identifier: identifier
+                session: session
+                id: ocd-bill/12345678-0000-1111-2222-333344445555
+                title: title
+              vote:
+                motion_text: Shall the bill be passed?
+                id: ocd-vote/12345678-0000-1111-2222-333344445555
+            media:
+            - date: date
+              note: note
+              offset: 0
+              links:
+              - note: homepage
+                url: https://example.com/
+              - note: homepage
+                url: https://example.com/
+              classification: classification
+            - date: date
+              note: note
+              offset: 0
+              links:
+              - note: homepage
+                url: https://example.com/
+              - note: homepage
+                url: https://example.com/
+              classification: classification
+            classification:
+            - classification
+            - classification
+            order: 6
+          - notes:
+            - notes
+            - notes
+            subjects:
+            - subjects
+            - subjects
+            description: description
+            extras: "{}"
+            related_entities:
+            - note: note
+              entity_type: person
+              person:
+                current_role:
+                  district: 3
+                  division_id: ocd-division/country:us/state:nc/sldu:3
+                  title: Senator
+                  org_classification: upper
+                name: Angela Augusta
+                id: ocd-person/adb58f21-f2fd-4830-85b6-f490b0867d14
+                party: Democratic
+              organization: ""
+              name: JONES
+              bill:
+                identifier: identifier
+                session: session
+                id: ocd-bill/12345678-0000-1111-2222-333344445555
+                title: title
+              vote:
+                motion_text: Shall the bill be passed?
+                id: ocd-vote/12345678-0000-1111-2222-333344445555
+            - note: note
+              entity_type: person
+              person:
+                current_role:
+                  district: 3
+                  division_id: ocd-division/country:us/state:nc/sldu:3
+                  title: Senator
+                  org_classification: upper
+                name: Angela Augusta
+                id: ocd-person/adb58f21-f2fd-4830-85b6-f490b0867d14
+                party: Democratic
+              organization: ""
+              name: JONES
+              bill:
+                identifier: identifier
+                session: session
+                id: ocd-bill/12345678-0000-1111-2222-333344445555
+                title: title
+              vote:
+                motion_text: Shall the bill be passed?
+                id: ocd-vote/12345678-0000-1111-2222-333344445555
+            media:
+            - date: date
+              note: note
+              offset: 0
+              links:
+              - note: homepage
+                url: https://example.com/
+              - note: homepage
+                url: https://example.com/
+              classification: classification
+            - date: date
+              note: note
+              offset: 0
+              links:
+              - note: homepage
+                url: https://example.com/
+              - note: homepage
+                url: https://example.com/
+              classification: classification
+            classification:
+            - classification
+            - classification
+            order: 6
+          deleted: true
+          all_day: true
+          name: name
+          links:
+          - note: homepage
+            url: https://example.com/
+          - note: homepage
+            url: https://example.com/
+          location:
+            name: name
+            url: url
+          id: id
+          participants:
+          - note: note
+            entity_type: person
+            person:
+              current_role:
+                district: 3
+                division_id: ocd-division/country:us/state:nc/sldu:3
+                title: Senator
+                org_classification: upper
+              name: Angela Augusta
+              id: ocd-person/adb58f21-f2fd-4830-85b6-f490b0867d14
+              party: Democratic
+            organization: ""
+            name: JONES
+          - note: note
+            entity_type: person
+            person:
+              current_role:
+                district: 3
+                division_id: ocd-division/country:us/state:nc/sldu:3
+                title: Senator
+                org_classification: upper
+              name: Angela Augusta
+              id: ocd-person/adb58f21-f2fd-4830-85b6-f490b0867d14
+              party: Democratic
+            organization: ""
+            name: JONES
+          start_date: start_date
+          status: status
+      properties:
+        pagination:
+          $ref: '#/components/schemas/PaginationMeta'
+        results:
+          items:
+            $ref: '#/components/schemas/Event'
+          title: Results
+          type: array
+      required:
+      - pagination
+      - results
+      title: EventList
+      type: object
+    EventLocation:
+      example:
+        name: name
+        url: url
+      properties:
+        name:
+          title: Name
+          type: string
+        url:
+          title: Url
+          type: string
+      required:
+      - name
+      - url
+      title: EventLocation
+      type: object
+    EventMedia:
+      example:
+        date: date
+        note: note
+        offset: 0
+        links:
+        - note: homepage
+          url: https://example.com/
+        - note: homepage
+          url: https://example.com/
+        classification: classification
+      properties:
+        classification:
+          title: Classification
+          type: string
+        date:
+          title: Date
+          type: string
+        links:
+          items:
+            $ref: '#/components/schemas/Link'
+          title: Links
+          type: array
+        note:
+          title: Note
+          type: string
+        offset:
+          title: Offset
+          type: integer
+      required:
+      - classification
+      - date
+      - links
+      - note
+      - offset
+      title: EventMedia
+      type: object
+    EventParticipant:
+      example:
+        note: note
+        entity_type: person
+        person:
+          current_role:
+            district: 3
+            division_id: ocd-division/country:us/state:nc/sldu:3
+            title: Senator
+            org_classification: upper
+          name: Angela Augusta
+          id: ocd-person/adb58f21-f2fd-4830-85b6-f490b0867d14
+          party: Democratic
+        organization: ""
+        name: JONES
+      properties:
+        entity_type:
+          example: person
+          title: Entity Type
+          type: string
+        name:
+          example: JONES
+          title: Name
+          type: string
+        note:
+          title: Note
+          type: string
+        organization:
+          allOf:
+          - $ref: '#/components/schemas/Organization'
+          title: Organization
+        person:
+          $ref: '#/components/schemas/CompactPerson'
+      required:
+      - entity_type
+      - name
+      - note
+      title: EventParticipant
+      type: object
+    EventRelatedEntity:
+      example:
+        note: note
+        entity_type: person
+        person:
+          current_role:
+            district: 3
+            division_id: ocd-division/country:us/state:nc/sldu:3
+            title: Senator
+            org_classification: upper
+          name: Angela Augusta
+          id: ocd-person/adb58f21-f2fd-4830-85b6-f490b0867d14
+          party: Democratic
+        organization: ""
+        name: JONES
+        bill:
+          identifier: identifier
+          session: session
+          id: ocd-bill/12345678-0000-1111-2222-333344445555
+          title: title
+        vote:
+          motion_text: Shall the bill be passed?
+          id: ocd-vote/12345678-0000-1111-2222-333344445555
+      properties:
+        bill:
+          $ref: '#/components/schemas/CompactBill'
+        entity_type:
+          example: person
+          title: Entity Type
+          type: string
+        name:
+          example: JONES
+          title: Name
+          type: string
+        note:
+          title: Note
+          type: string
+        organization:
+          allOf:
+          - $ref: '#/components/schemas/Organization'
+          title: Organization
+        person:
+          $ref: '#/components/schemas/CompactPerson'
+        vote:
+          $ref: '#/components/schemas/CompactVoteEvent'
+      required:
+      - entity_type
+      - name
+      - note
+      title: EventRelatedEntity
+      type: object
+    HTTPValidationError:
+      example:
+        detail:
+        - msg: msg
+          loc:
+          - Location_inner
+          - Location_inner
+          type: type
+        - msg: msg
+          loc:
+          - Location_inner
+          - Location_inner
+          type: type
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          title: Detail
+          type: array
+      title: HTTPValidationError
+      type: object
+    Jurisdiction:
+      example:
+        latest_bill_update: 2000-01-23T04:56:07.000+00:00
+        latest_runs:
+        - start_time: 2000-01-23T04:56:07.000+00:00
+          success: true
+          end_time: 2000-01-23T04:56:07.000+00:00
+        - start_time: 2000-01-23T04:56:07.000+00:00
+          success: true
+          end_time: 2000-01-23T04:56:07.000+00:00
+        name: North Carolina
+        organizations:
+        - districts:
+          - role: Senator
+            maximum_memberships: 1
+            division_id: ocd-division/country:us/state:mn/sldu:4
+            label: "2"
+          - role: Senator
+            maximum_memberships: 1
+            division_id: ocd-division/country:us/state:mn/sldu:4
+            label: "2"
+          name: North Carolina General Assembly
+          id: ocd-organization/32aab083-d7a0-44e0-9b95-a7790c542605
+          classification: legislature
+        - districts:
+          - role: Senator
+            maximum_memberships: 1
+            division_id: ocd-division/country:us/state:mn/sldu:4
+            label: "2"
+          - role: Senator
+            maximum_memberships: 1
+            division_id: ocd-division/country:us/state:mn/sldu:4
+            label: "2"
+          name: North Carolina General Assembly
+          id: ocd-organization/32aab083-d7a0-44e0-9b95-a7790c542605
+          classification: legislature
+        division_id: ocd-division/country:us/state:nc
+        legislative_sessions:
+        - end_date: end_date
+          identifier: identifier
+          downloads:
+          - updated_at: 2000-01-23T04:56:07.000+00:00
+            data_type: data_type
+            created_at: 2000-01-23T04:56:07.000+00:00
+            url: url
+          - updated_at: 2000-01-23T04:56:07.000+00:00
+            data_type: data_type
+            created_at: 2000-01-23T04:56:07.000+00:00
+            url: url
+          name: name
+          classification: classification
+          start_date: start_date
+        - end_date: end_date
+          identifier: identifier
+          downloads:
+          - updated_at: 2000-01-23T04:56:07.000+00:00
+            data_type: data_type
+            created_at: 2000-01-23T04:56:07.000+00:00
+            url: url
+          - updated_at: 2000-01-23T04:56:07.000+00:00
+            data_type: data_type
+            created_at: 2000-01-23T04:56:07.000+00:00
+            url: url
+          name: name
+          classification: classification
+          start_date: start_date
+        id: ocd-jurisdiction/country:us/state:nc/government
+        classification: state
+        url: https://nc.gov
+        latest_people_update: 2000-01-23T04:56:07.000+00:00
+      properties:
+        classification:
+          allOf:
+          - $ref: '#/components/schemas/JurisdictionClassification'
+          example: state
+        division_id:
+          default: ""
+          example: ocd-division/country:us/state:nc
+          title: Division Id
+          type: string
+        id:
+          example: ocd-jurisdiction/country:us/state:nc/government
+          title: Id
+          type: string
+        latest_bill_update:
+          format: date-time
+          title: Latest Bill Update
+          type: string
+        latest_people_update:
+          format: date-time
+          title: Latest People Update
+          type: string
+        latest_runs:
+          items:
+            $ref: '#/components/schemas/RunPlan'
+          title: Latest Runs
+          type: array
+        legislative_sessions:
+          items:
+            $ref: '#/components/schemas/LegislativeSession'
+          title: Legislative Sessions
+          type: array
+        name:
+          example: North Carolina
+          title: Name
+          type: string
+        organizations:
+          items:
+            $ref: '#/components/schemas/Chamber'
+          title: Organizations
+          type: array
+        url:
+          example: https://nc.gov
+          title: Url
+          type: string
+      required:
+      - classification
+      - id
+      - latest_bill_update
+      - latest_people_update
+      - name
+      - url
+      title: Jurisdiction
+      type: object
+    JurisdictionClassification:
+      description: An enumeration.
+      enum:
+      - state
+      - municipality
+      - country
+      title: JurisdictionClassification
+      type: string
+    JurisdictionInclude:
+      description: An enumeration.
+      enum:
+      - organizations
+      - legislative_sessions
+      - latest_runs
+      title: JurisdictionInclude
+      type: string
+    JurisdictionList:
+      example:
+        pagination:
+          per_page: 20
+          max_page: 3
+          page: 1
+          total_items: 52
+        results:
+        - latest_bill_update: 2000-01-23T04:56:07.000+00:00
+          latest_runs:
+          - start_time: 2000-01-23T04:56:07.000+00:00
+            success: true
+            end_time: 2000-01-23T04:56:07.000+00:00
+          - start_time: 2000-01-23T04:56:07.000+00:00
+            success: true
+            end_time: 2000-01-23T04:56:07.000+00:00
+          name: North Carolina
+          organizations:
+          - districts:
+            - role: Senator
+              maximum_memberships: 1
+              division_id: ocd-division/country:us/state:mn/sldu:4
+              label: "2"
+            - role: Senator
+              maximum_memberships: 1
+              division_id: ocd-division/country:us/state:mn/sldu:4
+              label: "2"
+            name: North Carolina General Assembly
+            id: ocd-organization/32aab083-d7a0-44e0-9b95-a7790c542605
+            classification: legislature
+          - districts:
+            - role: Senator
+              maximum_memberships: 1
+              division_id: ocd-division/country:us/state:mn/sldu:4
+              label: "2"
+            - role: Senator
+              maximum_memberships: 1
+              division_id: ocd-division/country:us/state:mn/sldu:4
+              label: "2"
+            name: North Carolina General Assembly
+            id: ocd-organization/32aab083-d7a0-44e0-9b95-a7790c542605
+            classification: legislature
+          division_id: ocd-division/country:us/state:nc
+          legislative_sessions:
+          - end_date: end_date
+            identifier: identifier
+            downloads:
+            - updated_at: 2000-01-23T04:56:07.000+00:00
+              data_type: data_type
+              created_at: 2000-01-23T04:56:07.000+00:00
+              url: url
+            - updated_at: 2000-01-23T04:56:07.000+00:00
+              data_type: data_type
+              created_at: 2000-01-23T04:56:07.000+00:00
+              url: url
+            name: name
+            classification: classification
+            start_date: start_date
+          - end_date: end_date
+            identifier: identifier
+            downloads:
+            - updated_at: 2000-01-23T04:56:07.000+00:00
+              data_type: data_type
+              created_at: 2000-01-23T04:56:07.000+00:00
+              url: url
+            - updated_at: 2000-01-23T04:56:07.000+00:00
+              data_type: data_type
+              created_at: 2000-01-23T04:56:07.000+00:00
+              url: url
+            name: name
+            classification: classification
+            start_date: start_date
+          id: ocd-jurisdiction/country:us/state:nc/government
+          classification: state
+          url: https://nc.gov
+          latest_people_update: 2000-01-23T04:56:07.000+00:00
+        - latest_bill_update: 2000-01-23T04:56:07.000+00:00
+          latest_runs:
+          - start_time: 2000-01-23T04:56:07.000+00:00
+            success: true
+            end_time: 2000-01-23T04:56:07.000+00:00
+          - start_time: 2000-01-23T04:56:07.000+00:00
+            success: true
+            end_time: 2000-01-23T04:56:07.000+00:00
+          name: North Carolina
+          organizations:
+          - districts:
+            - role: Senator
+              maximum_memberships: 1
+              division_id: ocd-division/country:us/state:mn/sldu:4
+              label: "2"
+            - role: Senator
+              maximum_memberships: 1
+              division_id: ocd-division/country:us/state:mn/sldu:4
+              label: "2"
+            name: North Carolina General Assembly
+            id: ocd-organization/32aab083-d7a0-44e0-9b95-a7790c542605
+            classification: legislature
+          - districts:
+            - role: Senator
+              maximum_memberships: 1
+              division_id: ocd-division/country:us/state:mn/sldu:4
+              label: "2"
+            - role: Senator
+              maximum_memberships: 1
+              division_id: ocd-division/country:us/state:mn/sldu:4
+              label: "2"
+            name: North Carolina General Assembly
+            id: ocd-organization/32aab083-d7a0-44e0-9b95-a7790c542605
+            classification: legislature
+          division_id: ocd-division/country:us/state:nc
+          legislative_sessions:
+          - end_date: end_date
+            identifier: identifier
+            downloads:
+            - updated_at: 2000-01-23T04:56:07.000+00:00
+              data_type: data_type
+              created_at: 2000-01-23T04:56:07.000+00:00
+              url: url
+            - updated_at: 2000-01-23T04:56:07.000+00:00
+              data_type: data_type
+              created_at: 2000-01-23T04:56:07.000+00:00
+              url: url
+            name: name
+            classification: classification
+            start_date: start_date
+          - end_date: end_date
+            identifier: identifier
+            downloads:
+            - updated_at: 2000-01-23T04:56:07.000+00:00
+              data_type: data_type
+              created_at: 2000-01-23T04:56:07.000+00:00
+              url: url
+            - updated_at: 2000-01-23T04:56:07.000+00:00
+              data_type: data_type
+              created_at: 2000-01-23T04:56:07.000+00:00
+              url: url
+            name: name
+            classification: classification
+            start_date: start_date
+          id: ocd-jurisdiction/country:us/state:nc/government
+          classification: state
+          url: https://nc.gov
+          latest_people_update: 2000-01-23T04:56:07.000+00:00
+      properties:
+        pagination:
+          $ref: '#/components/schemas/PaginationMeta'
+        results:
+          items:
+            $ref: '#/components/schemas/Jurisdiction'
+          title: Results
+          type: array
+      required:
+      - pagination
+      - results
+      title: JurisdictionList
+      type: object
+    LegislativeSession:
+      example:
+        end_date: end_date
+        identifier: identifier
+        downloads:
+        - updated_at: 2000-01-23T04:56:07.000+00:00
+          data_type: data_type
+          created_at: 2000-01-23T04:56:07.000+00:00
+          url: url
+        - updated_at: 2000-01-23T04:56:07.000+00:00
+          data_type: data_type
+          created_at: 2000-01-23T04:56:07.000+00:00
+          url: url
+        name: name
+        classification: classification
+        start_date: start_date
+      properties:
+        classification:
+          title: Classification
+          type: string
+        downloads:
+          items:
+            $ref: '#/components/schemas/DataExport'
+          title: Downloads
+          type: array
+        end_date:
+          title: End Date
+          type: string
+        identifier:
+          title: Identifier
+          type: string
+        name:
+          title: Name
+          type: string
+        start_date:
+          title: Start Date
+          type: string
+      required:
+      - classification
+      - end_date
+      - identifier
+      - name
+      - start_date
+      title: LegislativeSession
+      type: object
+    Link:
+      example:
+        note: homepage
+        url: https://example.com/
+      properties:
+        note:
+          example: homepage
+          title: Note
+          type: string
+        url:
+          example: https://example.com/
+          title: Url
+          type: string
+      required:
+      - note
+      - url
+      title: Link
+      type: object
+    Office:
+      example:
+        voice: 919-555-0064
+        address: 212 Maple Lane; Raleigh NC; 27526
+        name: District Office
+        classification: capitol
+        fax: 919-555-1234
+      properties:
+        address:
+          example: 212 Maple Lane; Raleigh NC; 27526
+          title: Address
+          type: string
+        classification:
+          example: capitol
+          title: Classification
+          type: string
+        fax:
+          example: 919-555-1234
+          title: Fax
+          type: string
+        name:
+          example: District Office
+          title: Name
+          type: string
+        voice:
+          example: 919-555-0064
+          title: Voice
+          type: string
+      required:
+      - name
+      title: Office
+      type: object
+    OrgClassification:
+      description: An enumeration.
+      enum:
+      - legislature
+      - executive
+      - lower
+      - upper
+      - government
+      title: OrgClassification
+      type: string
+    Organization:
+      example:
+        name: North Carolina General Assembly
+        id: ocd-organization/32aab083-d7a0-44e0-9b95-a7790c542605
+        classification: legislature
+      properties:
+        classification:
+          example: legislature
+          title: Classification
+          type: string
+        id:
+          example: ocd-organization/32aab083-d7a0-44e0-9b95-a7790c542605
+          title: Id
+          type: string
+        name:
+          example: North Carolina General Assembly
+          title: Name
+          type: string
+      required:
+      - classification
+      - id
+      - name
+      title: Organization
+      type: object
+    PaginationMeta:
+      example:
+        per_page: 20
+        max_page: 3
+        page: 1
+        total_items: 52
+      properties:
+        max_page:
+          example: 3
+          title: Max Page
+          type: integer
+        page:
+          example: 1
+          title: Page
+          type: integer
+        per_page:
+          example: 20
+          title: Per Page
+          type: integer
+        total_items:
+          example: 52
+          title: Total Items
+          type: integer
+      required:
+      - max_page
+      - page
+      - per_page
+      - total_items
+      title: PaginationMeta
+      type: object
+    Person:
+      example:
+        image: https://example.com/ncimg/3.png
+        gender: female
+        openstates_url: https://openstates.org/person/amos-l-quick-iii-28NRPPfJA6FGVl9RrjpKjl/
+        sources:
+        - note: homepage
+          url: https://example.com/
+        - note: homepage
+          url: https://example.com/
+        birth_date: 1960-05-04
+        jurisdiction:
+          name: North Carolina
+          id: ocd-jurisdiction/country:us/state:nc/government
+          classification: state
+        offices:
+        - voice: 919-555-0064
+          address: 212 Maple Lane; Raleigh NC; 27526
+          name: District Office
+          classification: capitol
+          fax: 919-555-1234
+        - voice: 919-555-0064
+          address: 212 Maple Lane; Raleigh NC; 27526
+          name: District Office
+          classification: capitol
+          fax: 919-555-1234
+        created_at: 2000-01-23T04:56:07.000+00:00
+        extras:
+          profession: Doctor
+        other_names:
+        - note: nickname
+          name: Auggie
+        - note: nickname
+          name: Auggie
+        given_name: Angela
+        other_identifiers:
+        - identifier: NCL000123
+          scheme: legacy_openstates
+        - identifier: NCL000123
+          scheme: legacy_openstates
+        death_date: 2019-04-10
+        current_role:
+          district: 3
+          division_id: ocd-division/country:us/state:nc/sldu:3
+          title: Senator
+          org_classification: upper
+        updated_at: 2000-01-23T04:56:07.000+00:00
+        name: Angela Augusta
+        links:
+        - note: homepage
+          url: https://example.com/
+        - note: homepage
+          url: https://example.com/
+        id: ocd-person/adb58f21-f2fd-4830-85b6-f490b0867d14
+        family_name: Augusta
+        email: aperson@example.com
+        party: Democratic
+      properties:
+        birth_date:
+          example: 1960-05-04
+          title: Birth Date
+          type: string
+        created_at:
+          format: date-time
+          title: Created At
+          type: string
+        current_role:
+          $ref: '#/components/schemas/CurrentRole'
+        death_date:
+          example: 2019-04-10
+          title: Death Date
+          type: string
+        email:
+          example: aperson@example.com
+          title: Email
+          type: string
+        extras:
+          example:
+            profession: Doctor
+          title: Extras
+          type: object
+        family_name:
+          example: Augusta
+          title: Family Name
+          type: string
+        gender:
+          example: female
+          title: Gender
+          type: string
+        given_name:
+          example: Angela
+          title: Given Name
+          type: string
+        id:
+          example: ocd-person/adb58f21-f2fd-4830-85b6-f490b0867d14
+          title: Id
+          type: string
+        image:
+          example: https://example.com/ncimg/3.png
+          title: Image
+          type: string
+        jurisdiction:
+          $ref: '#/components/schemas/CompactJurisdiction'
+        links:
+          items:
+            $ref: '#/components/schemas/Link'
+          title: Links
+          type: array
+        name:
+          example: Angela Augusta
+          title: Name
+          type: string
+        offices:
+          items:
+            $ref: '#/components/schemas/Office'
+          title: Offices
+          type: array
+        openstates_url:
+          example: https://openstates.org/person/amos-l-quick-iii-28NRPPfJA6FGVl9RrjpKjl/
+          title: Openstates Url
+          type: string
+        other_identifiers:
+          items:
+            $ref: '#/components/schemas/AltIdentifier'
+          title: Other Identifiers
+          type: array
+        other_names:
+          items:
+            $ref: '#/components/schemas/AltName'
+          title: Other Names
+          type: array
+        party:
+          example: Democratic
+          title: Party
+          type: string
+        sources:
+          items:
+            $ref: '#/components/schemas/Link'
+          title: Sources
+          type: array
+        updated_at:
+          format: date-time
+          title: Updated At
+          type: string
+      required:
+      - birth_date
+      - created_at
+      - death_date
+      - email
+      - extras
+      - family_name
+      - gender
+      - given_name
+      - id
+      - image
+      - jurisdiction
+      - name
+      - openstates_url
+      - party
+      - updated_at
+      title: Person
+      type: object
+    PersonInclude:
+      description: An enumeration.
+      enum:
+      - other_names
+      - other_identifiers
+      - links
+      - sources
+      - offices
+      title: PersonInclude
+      type: string
+    PersonList:
+      example:
+        pagination:
+          per_page: 20
+          max_page: 3
+          page: 1
+          total_items: 52
+        results:
+        - image: https://example.com/ncimg/3.png
+          gender: female
+          openstates_url: https://openstates.org/person/amos-l-quick-iii-28NRPPfJA6FGVl9RrjpKjl/
+          sources:
+          - note: homepage
+            url: https://example.com/
+          - note: homepage
+            url: https://example.com/
+          birth_date: 1960-05-04
+          jurisdiction:
+            name: North Carolina
+            id: ocd-jurisdiction/country:us/state:nc/government
+            classification: state
+          offices:
+          - voice: 919-555-0064
+            address: 212 Maple Lane; Raleigh NC; 27526
+            name: District Office
+            classification: capitol
+            fax: 919-555-1234
+          - voice: 919-555-0064
+            address: 212 Maple Lane; Raleigh NC; 27526
+            name: District Office
+            classification: capitol
+            fax: 919-555-1234
+          created_at: 2000-01-23T04:56:07.000+00:00
+          extras:
+            profession: Doctor
+          other_names:
+          - note: nickname
+            name: Auggie
+          - note: nickname
+            name: Auggie
+          given_name: Angela
+          other_identifiers:
+          - identifier: NCL000123
+            scheme: legacy_openstates
+          - identifier: NCL000123
+            scheme: legacy_openstates
+          death_date: 2019-04-10
+          current_role:
+            district: 3
+            division_id: ocd-division/country:us/state:nc/sldu:3
+            title: Senator
+            org_classification: upper
+          updated_at: 2000-01-23T04:56:07.000+00:00
+          name: Angela Augusta
+          links:
+          - note: homepage
+            url: https://example.com/
+          - note: homepage
+            url: https://example.com/
+          id: ocd-person/adb58f21-f2fd-4830-85b6-f490b0867d14
+          family_name: Augusta
+          email: aperson@example.com
+          party: Democratic
+        - image: https://example.com/ncimg/3.png
+          gender: female
+          openstates_url: https://openstates.org/person/amos-l-quick-iii-28NRPPfJA6FGVl9RrjpKjl/
+          sources:
+          - note: homepage
+            url: https://example.com/
+          - note: homepage
+            url: https://example.com/
+          birth_date: 1960-05-04
+          jurisdiction:
+            name: North Carolina
+            id: ocd-jurisdiction/country:us/state:nc/government
+            classification: state
+          offices:
+          - voice: 919-555-0064
+            address: 212 Maple Lane; Raleigh NC; 27526
+            name: District Office
+            classification: capitol
+            fax: 919-555-1234
+          - voice: 919-555-0064
+            address: 212 Maple Lane; Raleigh NC; 27526
+            name: District Office
+            classification: capitol
+            fax: 919-555-1234
+          created_at: 2000-01-23T04:56:07.000+00:00
+          extras:
+            profession: Doctor
+          other_names:
+          - note: nickname
+            name: Auggie
+          - note: nickname
+            name: Auggie
+          given_name: Angela
+          other_identifiers:
+          - identifier: NCL000123
+            scheme: legacy_openstates
+          - identifier: NCL000123
+            scheme: legacy_openstates
+          death_date: 2019-04-10
+          current_role:
+            district: 3
+            division_id: ocd-division/country:us/state:nc/sldu:3
+            title: Senator
+            org_classification: upper
+          updated_at: 2000-01-23T04:56:07.000+00:00
+          name: Angela Augusta
+          links:
+          - note: homepage
+            url: https://example.com/
+          - note: homepage
+            url: https://example.com/
+          id: ocd-person/adb58f21-f2fd-4830-85b6-f490b0867d14
+          family_name: Augusta
+          email: aperson@example.com
+          party: Democratic
+      properties:
+        pagination:
+          $ref: '#/components/schemas/PaginationMeta'
+        results:
+          items:
+            $ref: '#/components/schemas/Person'
+          title: Results
+          type: array
+      required:
+      - pagination
+      - results
+      title: PersonList
+      type: object
+    PersonVote:
+      example:
+        voter_name: Wu
+        voter:
+          current_role:
+            district: 3
+            division_id: ocd-division/country:us/state:nc/sldu:3
+            title: Senator
+            org_classification: upper
+          name: Angela Augusta
+          id: ocd-person/adb58f21-f2fd-4830-85b6-f490b0867d14
+          party: Democratic
+        option: "false"
+      properties:
+        option:
+          example: "false"
+          title: Option
+          type: string
+        voter:
+          $ref: '#/components/schemas/CompactPerson'
+        voter_name:
+          example: Wu
+          title: Voter Name
+          type: string
+      required:
+      - option
+      - voter_name
+      title: PersonVote
+      type: object
+    Post:
+      example:
+        role: Senator
+        maximum_memberships: 1
+        division_id: ocd-division/country:us/state:mn/sldu:4
+        label: "2"
+      properties:
+        division_id:
+          example: ocd-division/country:us/state:mn/sldu:4
+          title: Division Id
+          type: string
+        label:
+          example: "2"
+          title: Label
+          type: string
+        maximum_memberships:
+          example: 1
+          title: Maximum Memberships
+          type: integer
+        role:
+          example: Senator
+          title: Role
+          type: string
+      required:
+      - division_id
+      - label
+      - maximum_memberships
+      - role
+      title: Post
+      type: object
+    RelatedBill:
+      example:
+        identifier: HB 123
+        legislative_session: 2022S1
+        relation_type: companion
+      properties:
+        identifier:
+          example: HB 123
+          title: Identifier
+          type: string
+        legislative_session:
+          example: 2022S1
+          title: Legislative Session
+          type: string
+        relation_type:
+          example: companion
+          title: Relation Type
+          type: string
+      required:
+      - identifier
+      - legislative_session
+      - relation_type
+      title: RelatedBill
+      type: object
+    RunPlan:
+      example:
+        start_time: 2000-01-23T04:56:07.000+00:00
+        success: true
+        end_time: 2000-01-23T04:56:07.000+00:00
+      properties:
+        end_time:
+          format: date-time
+          title: End Time
+          type: string
+        start_time:
+          format: date-time
+          title: Start Time
+          type: string
+        success:
+          title: Success
+          type: boolean
+      required:
+      - end_time
+      - start_time
+      - success
+      title: RunPlan
+      type: object
+    ValidationError:
+      example:
+        msg: msg
+        loc:
+        - Location_inner
+        - Location_inner
+        type: type
+      properties:
+        loc:
+          items:
+            $ref: '#/components/schemas/Location_inner'
+          title: Location
+          type: array
+        msg:
+          title: Message
+          type: string
+        type:
+          title: Error Type
+          type: string
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+      type: object
+    VoteCount:
+      example:
+        value: 48
+        option: "true"
+      properties:
+        option:
+          example: "true"
+          title: Option
+          type: string
+        value:
+          example: 48
+          title: Value
+          type: integer
+      required:
+      - option
+      - value
+      title: VoteCount
+      type: object
+    VoteEvent:
+      example:
+        result: pass
+        identifier: "HV #3312"
+        sources:
+        - note: homepage
+          url: https://example.com/
+        - note: homepage
+          url: https://example.com/
+        counts:
+        - value: 48
+          option: "true"
+        - value: 48
+          option: "true"
+        organization:
+          name: North Carolina General Assembly
+          id: ocd-organization/32aab083-d7a0-44e0-9b95-a7790c542605
+          classification: legislature
+        extras: "{}"
+        motion_text: Shall the bill be passed?
+        votes:
+        - voter_name: Wu
+          voter:
+            current_role:
+              district: 3
+              division_id: ocd-division/country:us/state:nc/sldu:3
+              title: Senator
+              org_classification: upper
+            name: Angela Augusta
+            id: ocd-person/adb58f21-f2fd-4830-85b6-f490b0867d14
+            party: Democratic
+          option: "false"
+        - voter_name: Wu
+          voter:
+            current_role:
+              district: 3
+              division_id: ocd-division/country:us/state:nc/sldu:3
+              title: Senator
+              org_classification: upper
+            name: Angela Augusta
+            id: ocd-person/adb58f21-f2fd-4830-85b6-f490b0867d14
+            party: Democratic
+          option: "false"
+        id: id
+        motion_classification:
+        - passage
+        start_date: 2020-09-18
+      properties:
+        counts:
+          items:
+            $ref: '#/components/schemas/VoteCount'
+          title: Counts
+          type: array
+        extras:
+          title: Extras
+          type: object
+        id:
+          title: Id
+          type: string
+        identifier:
+          example: "HV #3312"
+          title: Identifier
+          type: string
+        motion_classification:
+          default: []
+          example:
+          - passage
+          items:
+            type: string
+          title: Motion Classification
+          type: array
+        motion_text:
+          example: Shall the bill be passed?
+          title: Motion Text
+          type: string
+        organization:
+          $ref: '#/components/schemas/Organization'
+        result:
+          example: pass
+          title: Result
+          type: string
+        sources:
+          items:
+            $ref: '#/components/schemas/Link'
+          title: Sources
+          type: array
+        start_date:
+          example: 2020-09-18
+          title: Start Date
+          type: string
+        votes:
+          items:
+            $ref: '#/components/schemas/PersonVote'
+          title: Votes
+          type: array
+      required:
+      - counts
+      - extras
+      - id
+      - identifier
+      - motion_text
+      - organization
+      - result
+      - sources
+      - start_date
+      - votes
+      title: VoteEvent
+      type: object
+    District:
+      anyOf:
+      - type: string
+      - type: integer
+      default: ""
+      example: 3
+      title: District
+    Location_inner:
+      anyOf:
+      - type: string
+      - type: integer
+

@@ -1,0 +1,18 @@
+# coding: utf-8
+
+# import models into model package
+from openapi_server.models.category_list import CategoryList
+from openapi_server.models.category_list_categories_item import CategoryListCategoriesItem
+from openapi_server.models.error import Error
+from openapi_server.models.language_item import LanguageItem
+from openapi_server.models.language_list import LanguageList
+from openapi_server.models.podcast_episode_list import PodcastEpisodeList
+from openapi_server.models.podcast_episode_list_episodes_item import PodcastEpisodeListEpisodesItem
+from openapi_server.models.podcast_episode_list_episodes_item_play import PodcastEpisodeListEpisodesItemPlay
+from openapi_server.models.podcast_list import PodcastList
+from openapi_server.models.podcast_list_podcasts_item import PodcastListPodcastsItem
+from openapi_server.models.podcast_list_podcasts_item_category import PodcastListPodcastsItemCategory
+from openapi_server.models.single_category import SingleCategory
+from openapi_server.models.single_category_category import SingleCategoryCategory
+from openapi_server.models.single_podcast import SinglePodcast
+from openapi_server.models.single_podcast_podcast import SinglePodcastPodcast

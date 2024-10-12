@@ -1,0 +1,1465 @@
+openapi: 3.0.1
+info:
+  contact:
+    email: partner@flinkster.de
+    name: DB Rent GmbH
+  description: "This REST-API enables you to query for private transport sharing offers\
+    \ provided by companies and cities in Germany, Netherland and Austria. \nYou can\
+    \ search for informations about the rental stations (points or areas) where you\
+    \ can find the rentals by utilizing the /areas/ ressource. \nWith the help of\
+    \ the proximity search in the /bookingproposals/ URI you can request the availabilities\
+    \ of the rentalobjects for spontaneous or planed usage in the future. \n\nFeel\
+    \ free to browse through data by setting the parameter 'providernetwork' to the\
+    \ value: \n 1: Search for car sharing offers provided by the Flinkster platform\
+    \ (http://www.flinkster.de)\n2: Finding bike rental offers from Call a Bike (http://www.callabike.de)\
+    \ \n\nYou can find more details in the documentation section (Unfortunately only\
+    \ available in german language).\n\nHave lots of fun and we are lucky to take\
+    \ notice of your products or getting your feedback."
+  termsOfService: https://developer.deutschebahn.com/store/
+  title: Flinkster_API_NG
+  version: v1
+  x-apisguru-categories:
+  - transport
+  - open_data
+  x-logo:
+    backgroundColor: '#FFFFFF'
+    url: https://pbs.twimg.com/profile_images/591140150413025280/Cjcqjl2J.png
+  x-origin:
+  - format: swagger
+    url: https://developer.deutschebahn.com/store/api-docs/DBOpenData/Flinkster_API_NG/v1
+    version: "2.0"
+  x-providerName: deutschebahn.com
+  x-serviceName: flinkster
+servers:
+- url: https://api.deutschebahn.com/flinkster-api-ng/v1
+- url: http://api.deutschebahn.com/flinkster-api-ng/v1
+tags:
+- name: areas
+- name: bookingproposals
+- name: categories
+- name: index
+- name: prices
+- name: providernetworks
+- name: providers
+- name: rentalobjects
+paths:
+  /areas:
+    get:
+      description: Search for areas (locations of rental objects) by criteria.
+      operationId: list_areas
+      parameters:
+      - in: query
+        name: lat
+        schema:
+          format: double
+          type: number
+      - in: query
+        name: lon
+        schema:
+          format: double
+          type: number
+      - in: query
+        name: radius
+        schema:
+          format: int32
+          type: integer
+      - in: query
+        name: offset
+        schema:
+          format: int32
+          type: integer
+      - in: query
+        name: limit
+        schema:
+          format: int32
+          type: integer
+      - in: query
+        name: expand
+        schema:
+          type: string
+      - in: query
+        name: type
+        schema:
+          type: string
+      - in: query
+        name: provider
+        schema:
+          type: string
+      - in: query
+        name: providernetwork
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AreaJO'
+          description: OK
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AreaJO'
+          description: |-
+            Forbidden
+            If provider is not allowed to display this area.
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AreaJO'
+          description: |-
+            Not Found
+            If no area was found for the given UID.
+      summary: List Areas by Criteria.
+      tags:
+      - areas
+      x-auth-type: Application & Application User
+      x-throttling-tier: Unlimited
+      x-openapi-router-controller: openapi_server.controllers.areas_controller
+  /areas/{areaUID}:
+    get:
+      description: Search for a specific area by UID.
+      operationId: get_area
+      parameters:
+      - description: 'The Area UID '
+        in: path
+        name: areaUID
+        required: true
+        schema:
+          type: string
+      - description: Expand Provider
+        in: query
+        name: expand
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AreaJO'
+          description: OK
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AreaJO'
+          description: |-
+            Forbidden
+            If provider is not allowed to display this area.
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AreaJO'
+          description: |-
+            Not Found
+            If no area was found for the given UID.
+      summary: Get area by UID.
+      tags:
+      - areas
+      x-auth-type: Application & Application User
+      x-throttling-tier: Unlimited
+      x-openapi-router-controller: openapi_server.controllers.areas_controller
+  /bookingproposals:
+    get:
+      description: "Here you can query all bookable Rental Objects with different\
+        \ Parameters (Time, Location,...)"
+      operationId: list_booking_proposals
+      parameters:
+      - in: query
+        name: lat
+        schema:
+          format: double
+          type: number
+      - in: query
+        name: lon
+        schema:
+          format: double
+          type: number
+      - in: query
+        name: radius
+        schema:
+          format: int32
+          type: integer
+      - in: query
+        name: offset
+        schema:
+          format: int32
+          type: integer
+      - in: query
+        name: limit
+        schema:
+          format: int32
+          type: integer
+      - in: query
+        name: providernetwork
+        schema:
+          type: string
+      - in: query
+        name: begin
+        schema:
+          type: string
+      - in: query
+        name: end
+        schema:
+          type: string
+      - in: query
+        name: expand
+        schema:
+          type: string
+      - in: query
+        name: view
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RentalObjectJO'
+          description: OK
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorJO'
+          description: |-
+            Bad Request
+            One or more parameters have invalid values.
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorJO'
+          description: |-
+            Forbidden
+            Provider is not allowed to use this interface.
+      summary: Query for available RentalObjects of a specific view
+      tags:
+      - bookingproposals
+      x-auth-type: Application & Application User
+      x-throttling-tier: Unlimited
+      x-openapi-router-controller: openapi_server.controllers.bookingproposals_controller
+  /index:
+    get:
+      description: Show Service index.
+      operationId: get_index
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JsonCollection'
+          description: successful operation
+      summary: Show index.
+      tags:
+      - index
+      x-auth-type: Application & Application User
+      x-throttling-tier: Unlimited
+      x-openapi-router-controller: openapi_server.controllers.index_controller
+  /providernetworks/{providernetworkUID}/categories:
+    get:
+      description: Search for categorie.
+      operationId: list_categories
+      parameters:
+      - in: path
+        name: providernetworkUID
+        required: true
+        schema:
+          type: string
+      - in: query
+        name: expand
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CategoryJO'
+          description: OK
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorJO'
+          description: |-
+            Bad Request
+            One or more parameters have invalid values.
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorJO'
+          description: |-
+            Forbidden
+            Provider is not allowed to use this interface.
+      summary: Lists all categories
+      tags:
+      - categories
+      x-auth-type: Application & Application User
+      x-throttling-tier: Unlimited
+      x-openapi-router-controller: openapi_server.controllers.categories_controller
+  /providernetworks/{providernetworkUID}/categories/{categoryUID}:
+    get:
+      description: Search for categorie.
+      operationId: get_category
+      parameters:
+      - description: Provider Network UID
+        in: path
+        name: providernetworkUID
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: categoryUID
+        required: true
+        schema:
+          type: string
+      - in: query
+        name: expand
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CategoryJO'
+          description: OK
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorJO'
+          description: |-
+            Bad Request
+            One or more parameters have invalid values.
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorJO'
+          description: |-
+            Forbidden
+            Provider is not allowed to use this interface.
+      summary: Get a Category by UID
+      tags:
+      - categories
+      x-auth-type: Application & Application User
+      x-throttling-tier: Unlimited
+      x-openapi-router-controller: openapi_server.controllers.categories_controller
+  /providernetworks/{providernetworkUID}/prices:
+    get:
+      description: |
+        Prices of a rental object by query params. The params depend on the price determination strategy of the provider network.
+      operationId: get_prices
+      parameters:
+      - in: path
+        name: providernetworkUID
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RentalObjectJO'
+          description: OK
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorJO'
+          description: |-
+            Bad Request
+            One or more parameters have invalid values.
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorJO'
+          description: |-
+            Forbidden
+            Provider is not allowed to use this interface.
+      summary: Get information about the prices.
+      tags:
+      - prices
+      x-auth-type: Application & Application User
+      x-throttling-tier: Unlimited
+      x-openapi-router-controller: openapi_server.controllers.prices_controller
+  /providernetworks/{providernetworkUID}/rentalobjects/{rentalObjectUID}:
+    get:
+      description: |
+        Get information about the Rental Object.
+      operationId: get_rental_object
+      parameters:
+      - in: path
+        name: rentalObjectUID
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: providernetworkUID
+        required: true
+        schema:
+          type: string
+      - in: query
+        name: expand
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RentalObjectJO'
+          description: OK
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorJO'
+          description: |-
+            Bad Request
+            One or more parameters have invalid values.
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorJO'
+          description: |-
+            Forbidden
+            Provider is not allowed to use this interface.
+      summary: Get information about the RentalObject.
+      tags:
+      - rentalobjects
+      x-auth-type: Application & Application User
+      x-throttling-tier: Unlimited
+      x-openapi-router-controller: openapi_server.controllers.rentalobjects_controller
+  /providernetworks/{uid}:
+    get:
+      description: |
+        Get information about the ProviderNetworkResources.
+      operationId: get_provider_network
+      parameters:
+      - in: path
+        name: uid
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RentalObjectJO'
+          description: OK
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorJO'
+          description: |-
+            Bad Request
+            One or more parameters have invalid values.
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorJO'
+          description: |-
+            Forbidden
+            Provider is not allowed to use this interface.
+      summary: Get information about the ProviderNetworkResources.
+      tags:
+      - providernetworks
+      x-auth-type: Application & Application User
+      x-throttling-tier: Unlimited
+      x-openapi-router-controller: openapi_server.controllers.providernetworks_controller
+  /providers/{uid}:
+    get:
+      description: |
+        Get information about the ProviderResourcesCtrl.
+      operationId: get_provider
+      parameters:
+      - in: path
+        name: uid
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RentalObjectJO'
+          description: OK
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorJO'
+          description: |-
+            Bad Request
+            One or more parameters have invalid values.
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorJO'
+          description: |-
+            Forbidden
+            Provider is not allowed to use this interface.
+      summary: Get information about the ProviderResourceImpl.
+      tags:
+      - providers
+      x-auth-type: Application & Application User
+      x-throttling-tier: Unlimited
+      x-openapi-router-controller: openapi_server.controllers.providers_controller
+components:
+  schemas:
+    AddressJO:
+      example:
+        zip: zip
+        number: number
+        city: city
+        street: street
+        district: district
+        isoCountryCode: isoCountryCode
+      properties:
+        city:
+          title: city
+          type: string
+        district:
+          title: district
+          type: string
+        isoCountryCode:
+          title: isoCountryCode
+          type: string
+        number:
+          title: number
+          type: string
+        street:
+          title: street
+          type: string
+        zip:
+          title: zip
+          type: string
+      title: AddressJO
+      type: object
+    AreaJO:
+      example:
+        address:
+          zip: zip
+          number: number
+          city: city
+          street: street
+          district: district
+          isoCountryCode: isoCountryCode
+        _links:
+        - rel: rel
+          verb: verb
+          href: href
+        - rel: rel
+          verb: verb
+          href: href
+        providerNetworkIds:
+        - 2
+        - 2
+        description: description
+        type: STATION
+        uid: uid
+        expand: expand
+        providerAreaId: providerAreaId
+        provider:
+          uid: uid
+          expand: expand
+          _links:
+          - rel: rel
+            verb: verb
+            href: href
+          - rel: rel
+            verb: verb
+            href: href
+          name: name
+          description: description
+          attributes:
+            key: "{}"
+          href: href
+        name: name
+        attributes:
+          key: "{}"
+        geometry:
+          centroid:
+            crs:
+              type: name
+              properties:
+                key: "{}"
+            bbox:
+            - 0.8008281904610115
+            - 0.8008281904610115
+            coordinates:
+              altitude: 6.027456183070403
+              latitude: 1.4658129805029452
+              longitude: 5.962133916683182
+          position:
+            crs:
+              type: name
+              properties:
+                key: "{}"
+            bbox:
+            - 5.637376656633329
+            - 5.637376656633329
+        href: href
+      properties:
+        _links:
+          items:
+            $ref: '#/components/schemas/LinkJO'
+          title: _links
+          type: array
+        address:
+          $ref: '#/components/schemas/AddressJO'
+        attributes:
+          additionalProperties:
+            properties: {}
+            type: object
+          title: attributes
+          type: object
+        description:
+          title: description
+          type: string
+        expand:
+          title: expand
+          type: string
+        geometry:
+          $ref: '#/components/schemas/GeometryJO'
+        href:
+          title: href
+          type: string
+        name:
+          title: name
+          type: string
+        provider:
+          $ref: '#/components/schemas/ProviderJO'
+        providerAreaId:
+          title: providerAreaId
+          type: string
+        providerNetworkIds:
+          items:
+            format: int32
+            type: integer
+          title: providerNetworkIds
+          type: array
+        type:
+          enum:
+          - STATION
+          - OPERATIONAREA
+          - PARKINGAREA
+          - GASSTATION
+          - UNKNOWN
+          title: type
+          type: string
+        uid:
+          title: uid
+          type: string
+      title: AreaJO
+      type: object
+    BookingProposalJO:
+      properties:
+        _links:
+          items:
+            $ref: '#/components/schemas/LinkJO'
+          type: array
+        area:
+          $ref: '#/components/schemas/AreaJO'
+        attributes:
+          additionalProperties:
+            properties: {}
+            type: object
+          type: object
+        description:
+          type: string
+        distance:
+          format: double
+          type: number
+        expand:
+          type: string
+        href:
+          type: string
+        name:
+          type: string
+        position:
+          $ref: '#/components/schemas/GeoJsonObject'
+        price:
+          $ref: '#/components/schemas/JsonCollectionPriceJO'
+        rentalObject:
+          $ref: '#/components/schemas/RentalObjectJO'
+        uid:
+          type: string
+      type: object
+    CategoryJO:
+      example:
+        uid: uid
+        expand: expand
+        _links:
+        - rel: rel
+          verb: verb
+          href: href
+        - rel: rel
+          verb: verb
+          href: href
+        price:
+        - preferredprice: false
+          taxrate: 1.4658129805029452
+          _links:
+          - rel: rel
+            verb: verb
+            href: href
+          - rel: rel
+            verb: verb
+            href: href
+          description: description
+          type: TIME
+          grossamount: 0.8008281904610115
+          uid: uid
+          expand: expand
+          name: name
+          attributes:
+            key: "{}"
+          currency: currency
+          interval: 6
+          href: href
+        - preferredprice: false
+          taxrate: 1.4658129805029452
+          _links:
+          - rel: rel
+            verb: verb
+            href: href
+          - rel: rel
+            verb: verb
+            href: href
+          description: description
+          type: TIME
+          grossamount: 0.8008281904610115
+          uid: uid
+          expand: expand
+          name: name
+          attributes:
+            key: "{}"
+          currency: currency
+          interval: 6
+          href: href
+        name: name
+        description: description
+        attributes:
+          key: "{}"
+        href: href
+      properties:
+        _links:
+          items:
+            $ref: '#/components/schemas/LinkJO'
+          title: _links
+          type: array
+        attributes:
+          additionalProperties:
+            properties: {}
+            type: object
+          title: attributes
+          type: object
+        description:
+          title: description
+          type: string
+        expand:
+          title: expand
+          type: string
+        href:
+          title: href
+          type: string
+        name:
+          title: name
+          type: string
+        price:
+          items:
+            $ref: '#/components/schemas/PriceJO'
+          title: price
+          type: array
+        uid:
+          title: uid
+          type: string
+      title: CategoryJO
+      type: object
+    Crs:
+      example:
+        type: name
+        properties:
+          key: "{}"
+      properties:
+        properties:
+          additionalProperties:
+            properties: {}
+            type: object
+          title: properties
+          type: object
+        type:
+          enum:
+          - name
+          - link
+          title: type
+          type: string
+      title: Crs
+      type: object
+    ErrorJO:
+      example:
+        code: 5
+        level: INFO
+        name: name
+        attributes:
+          key: attributes
+        message: message
+      properties:
+        attributes:
+          additionalProperties:
+            type: string
+          title: attributes
+          type: object
+        code:
+          format: int32
+          title: code
+          type: integer
+        level:
+          enum:
+          - INFO
+          - WARNING
+          - ERROR
+          title: level
+          type: string
+        message:
+          title: message
+          type: string
+        name:
+          title: name
+          type: string
+      title: ErrorJO
+      type: object
+    Feature:
+      discriminator:
+        propertyName: type
+      properties:
+        bbox:
+          items:
+            format: double
+            type: number
+          title: bbox
+          type: array
+        crs:
+          $ref: '#/components/schemas/Crs'
+        geometry:
+          $ref: '#/components/schemas/GeoJsonObject'
+        id:
+          title: id
+          type: string
+        properties:
+          additionalProperties:
+            properties: {}
+            type: object
+          title: properties
+          type: object
+      title: Feature
+      type: object
+    FeatureCollection:
+      allOf:
+      - $ref: '#/components/schemas/GeoJsonObject'
+      - properties:
+          features:
+            items:
+              $ref: '#/components/schemas/Feature'
+            type: array
+        type: object
+    GeoJsonObject:
+      discriminator:
+        propertyName: type
+      example:
+        crs:
+          type: name
+          properties:
+            key: "{}"
+        bbox:
+        - 5.637376656633329
+        - 5.637376656633329
+      properties:
+        bbox:
+          items:
+            format: double
+            type: number
+          title: bbox
+          type: array
+        crs:
+          $ref: '#/components/schemas/Crs'
+      title: GeoJsonObject
+      type: object
+    GeometryJO:
+      example:
+        centroid:
+          crs:
+            type: name
+            properties:
+              key: "{}"
+          bbox:
+          - 0.8008281904610115
+          - 0.8008281904610115
+          coordinates:
+            altitude: 6.027456183070403
+            latitude: 1.4658129805029452
+            longitude: 5.962133916683182
+        position:
+          crs:
+            type: name
+            properties:
+              key: "{}"
+          bbox:
+          - 5.637376656633329
+          - 5.637376656633329
+      properties:
+        centroid:
+          $ref: '#/components/schemas/Point'
+        position:
+          $ref: '#/components/schemas/GeoJsonObject'
+      title: GeometryJO
+      type: object
+    JsonCollection:
+      example:
+        offset: 6
+        size: 1
+        _links:
+        - rel: rel
+          verb: verb
+          href: href
+        - rel: rel
+          verb: verb
+          href: href
+        limit: 0
+        href: href
+        items:
+        - uid: uid
+          expand: expand
+          _links:
+          - rel: rel
+            verb: verb
+            href: href
+          - rel: rel
+            verb: verb
+            href: href
+          name: name
+          description: description
+          attributes:
+            key: "{}"
+          href: href
+        - uid: uid
+          expand: expand
+          _links:
+          - rel: rel
+            verb: verb
+            href: href
+          - rel: rel
+            verb: verb
+            href: href
+          name: name
+          description: description
+          attributes:
+            key: "{}"
+          href: href
+      properties:
+        _links:
+          items:
+            $ref: '#/components/schemas/LinkJO'
+          title: _links
+          type: array
+        href:
+          title: href
+          type: string
+        items:
+          items:
+            $ref: '#/components/schemas/JsonObject'
+          title: items
+          type: array
+        limit:
+          format: int32
+          title: limit
+          type: integer
+        offset:
+          format: int32
+          title: offset
+          type: integer
+        size:
+          format: int64
+          title: size
+          type: integer
+      title: JsonCollection
+      type: object
+    JsonCollectionPriceJO:
+      properties:
+        _links:
+          items:
+            $ref: '#/components/schemas/LinkJO'
+          title: _links
+          type: array
+        href:
+          title: href
+          type: string
+        items:
+          items:
+            $ref: '#/components/schemas/PriceJO'
+          title: items
+          type: array
+        limit:
+          format: int32
+          title: limit
+          type: integer
+        offset:
+          format: int32
+          title: offset
+          type: integer
+        size:
+          format: int64
+          title: size
+          type: integer
+      title: JsonCollectionPriceJO
+      type: object
+    JsonObject:
+      example:
+        uid: uid
+        expand: expand
+        _links:
+        - rel: rel
+          verb: verb
+          href: href
+        - rel: rel
+          verb: verb
+          href: href
+        name: name
+        description: description
+        attributes:
+          key: "{}"
+        href: href
+      properties:
+        _links:
+          items:
+            $ref: '#/components/schemas/LinkJO'
+          title: _links
+          type: array
+        attributes:
+          additionalProperties:
+            properties: {}
+            type: object
+          title: attributes
+          type: object
+        description:
+          title: description
+          type: string
+        expand:
+          title: expand
+          type: string
+        href:
+          title: href
+          type: string
+        name:
+          title: name
+          type: string
+        uid:
+          title: uid
+          type: string
+      title: JsonObject
+      type: object
+    LineString:
+      allOf:
+      - $ref: '#/components/schemas/GeoJsonObject'
+      - type: object
+    LinkJO:
+      example:
+        rel: rel
+        verb: verb
+        href: href
+      properties:
+        href:
+          title: href
+          type: string
+        rel:
+          title: rel
+          type: string
+        verb:
+          title: verb
+          type: string
+      title: LinkJO
+      type: object
+    LngLatAlt:
+      example:
+        altitude: 6.027456183070403
+        latitude: 1.4658129805029452
+        longitude: 5.962133916683182
+      properties:
+        altitude:
+          format: double
+          title: altitude
+          type: number
+        latitude:
+          format: double
+          title: latitude
+          type: number
+        longitude:
+          format: double
+          title: longitude
+          type: number
+      title: LngLatAlt
+      type: object
+    MultiLineString:
+      allOf:
+      - $ref: '#/components/schemas/GeoJsonObject'
+      - properties:
+          coordinates:
+            items:
+              items:
+                $ref: '#/components/schemas/LngLatAlt'
+              type: array
+            type: array
+        type: object
+    MultiPoint:
+      allOf:
+      - $ref: '#/components/schemas/GeoJsonObject'
+      - properties:
+          coordinates:
+            items:
+              $ref: '#/components/schemas/LngLatAlt'
+            type: array
+        type: object
+    MultiPolygon:
+      allOf:
+      - $ref: '#/components/schemas/GeoJsonObject'
+      - properties:
+          coordinates:
+            items:
+              items:
+                items:
+                  $ref: '#/components/schemas/LngLatAlt'
+                type: array
+              type: array
+            type: array
+        type: object
+    Point:
+      discriminator:
+        propertyName: type
+      example:
+        crs:
+          type: name
+          properties:
+            key: "{}"
+        bbox:
+        - 0.8008281904610115
+        - 0.8008281904610115
+        coordinates:
+          altitude: 6.027456183070403
+          latitude: 1.4658129805029452
+          longitude: 5.962133916683182
+      properties:
+        bbox:
+          items:
+            format: double
+            type: number
+          title: bbox
+          type: array
+        coordinates:
+          $ref: '#/components/schemas/LngLatAlt'
+        crs:
+          $ref: '#/components/schemas/Crs'
+      title: Point
+      type: object
+    Polygon:
+      allOf:
+      - $ref: '#/components/schemas/GeoJsonObject'
+      - properties:
+          coordinates:
+            items:
+              items:
+                $ref: '#/components/schemas/LngLatAlt'
+              type: array
+            type: array
+        type: object
+    PriceJO:
+      example:
+        preferredprice: false
+        taxrate: 1.4658129805029452
+        _links:
+        - rel: rel
+          verb: verb
+          href: href
+        - rel: rel
+          verb: verb
+          href: href
+        description: description
+        type: TIME
+        grossamount: 0.8008281904610115
+        uid: uid
+        expand: expand
+        name: name
+        attributes:
+          key: "{}"
+        currency: currency
+        interval: 6
+        href: href
+      properties:
+        _links:
+          items:
+            $ref: '#/components/schemas/LinkJO'
+          title: _links
+          type: array
+        attributes:
+          additionalProperties:
+            properties: {}
+            type: object
+          title: attributes
+          type: object
+        currency:
+          title: currency
+          type: string
+        description:
+          title: description
+          type: string
+        expand:
+          title: expand
+          type: string
+        grossamount:
+          format: double
+          title: grossamount
+          type: number
+        href:
+          title: href
+          type: string
+        interval:
+          format: int32
+          title: interval
+          type: integer
+        name:
+          title: name
+          type: string
+        preferredprice:
+          default: false
+          title: preferredprice
+          type: boolean
+        taxrate:
+          format: double
+          title: taxrate
+          type: number
+        type:
+          enum:
+          - TIME
+          - DISTANCE
+          title: type
+          type: string
+        uid:
+          title: uid
+          type: string
+      title: PriceJO
+      type: object
+    ProviderJO:
+      example:
+        uid: uid
+        expand: expand
+        _links:
+        - rel: rel
+          verb: verb
+          href: href
+        - rel: rel
+          verb: verb
+          href: href
+        name: name
+        description: description
+        attributes:
+          key: "{}"
+        href: href
+      properties:
+        _links:
+          items:
+            $ref: '#/components/schemas/LinkJO'
+          title: _links
+          type: array
+        attributes:
+          additionalProperties:
+            properties: {}
+            type: object
+          title: attributes
+          type: object
+        description:
+          title: description
+          type: string
+        expand:
+          title: expand
+          type: string
+        href:
+          title: href
+          type: string
+        name:
+          title: name
+          type: string
+        uid:
+          title: uid
+          type: string
+      title: ProviderJO
+      type: object
+    RentalObjectJO:
+      example:
+        _links:
+        - rel: rel
+          verb: verb
+          href: href
+        - rel: rel
+          verb: verb
+          href: href
+        providerNetworkIds:
+        - 5
+        - 5
+        providerRentalObjectId: providerRentalObjectId
+        description: description
+        type: VEHICLE
+        uid: uid
+        expand: expand
+        provider:
+          uid: uid
+          expand: expand
+          _links:
+          - rel: rel
+            verb: verb
+            href: href
+          - rel: rel
+            verb: verb
+            href: href
+          name: name
+          description: description
+          attributes:
+            key: "{}"
+          href: href
+        name: name
+        attributes:
+          key: "{}"
+        href: href
+        category:
+          uid: uid
+          expand: expand
+          _links:
+          - rel: rel
+            verb: verb
+            href: href
+          - rel: rel
+            verb: verb
+            href: href
+          price:
+          - preferredprice: false
+            taxrate: 1.4658129805029452
+            _links:
+            - rel: rel
+              verb: verb
+              href: href
+            - rel: rel
+              verb: verb
+              href: href
+            description: description
+            type: TIME
+            grossamount: 0.8008281904610115
+            uid: uid
+            expand: expand
+            name: name
+            attributes:
+              key: "{}"
+            currency: currency
+            interval: 6
+            href: href
+          - preferredprice: false
+            taxrate: 1.4658129805029452
+            _links:
+            - rel: rel
+              verb: verb
+              href: href
+            - rel: rel
+              verb: verb
+              href: href
+            description: description
+            type: TIME
+            grossamount: 0.8008281904610115
+            uid: uid
+            expand: expand
+            name: name
+            attributes:
+              key: "{}"
+            currency: currency
+            interval: 6
+            href: href
+          name: name
+          description: description
+          attributes:
+            key: "{}"
+          href: href
+        rentalModel: FREEFLOATING
+      properties:
+        _links:
+          items:
+            $ref: '#/components/schemas/LinkJO'
+          title: _links
+          type: array
+        attributes:
+          additionalProperties:
+            properties: {}
+            type: object
+          title: attributes
+          type: object
+        category:
+          $ref: '#/components/schemas/CategoryJO'
+        description:
+          title: description
+          type: string
+        expand:
+          title: expand
+          type: string
+        href:
+          title: href
+          type: string
+        name:
+          title: name
+          type: string
+        provider:
+          $ref: '#/components/schemas/ProviderJO'
+        providerNetworkIds:
+          items:
+            format: int32
+            type: integer
+          title: providerNetworkIds
+          type: array
+        providerRentalObjectId:
+          title: providerRentalObjectId
+          type: string
+        rentalModel:
+          enum:
+          - FREEFLOATING
+          - FREEFLOATINGWITHSTATION
+          - STATIONBASED
+          - PARKINGAREA
+          - UNKNOWN
+          title: rentalModel
+          type: string
+        type:
+          enum:
+          - VEHICLE
+          - VEHICLEPOOL
+          - BIKE
+          - PEDELEC
+          - UNKNOWN
+          title: type
+          type: string
+        uid:
+          title: uid
+          type: string
+      title: RentalObjectJO
+      type: object
+x-original-swagger-version: "2.0"

@@ -1,0 +1,6 @@
+# coding: utf-8
+
+# import models into model package
+from openapi_server.models.healthcheck200_response import Healthcheck200Response
+from openapi_server.models.healthcheck400_response import Healthcheck400Response
+from openapi_server.models.historical_exchange_rate200_response import HistoricalExchangeRate200Response

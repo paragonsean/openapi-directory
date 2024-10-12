@@ -1,0 +1,1657 @@
+openapi: 3.0.0
+info:
+  contact:
+    email: info@obono.at
+    name: CodeWerkstatt OG
+    url: https://obono.at
+    x-twitter: obono_at
+  description: |
+    Provides a RESTful API for interacting with virtual cash registers and creating receipts that are conform with the Registrierkassensicherheitsverordnung (RKSV).
+
+    You may find our [automatically generated clients](./clients) for various programming languages and environments helpful...
+  license:
+    name: Creative Commons Attribution NonCommercial 4.0 (CC-BY-NC)
+    url: https://creativecommons.org/licenses/by-nc/4.0/legalcode
+  title: obono RKSV API
+  version: 1.4.0.0
+  x-apisguru-categories:
+  - ecommerce
+  x-logo:
+    url: https://twitter.com/obono_at/profile_image?size=original
+  x-origin:
+  - format: openapi
+    url: https://app.obono.at/api/docs/api.yml
+    version: "3.0"
+  x-providerName: obono.at
+servers:
+- url: /api/v1
+security:
+- jwt: []
+tags:
+- description: resources concerning a "Registrierkasse"
+  name: registrierkasse
+- description: resources concerning a "Beleg"
+  name: beleg
+- description: authentication and authorization
+  name: auth
+paths:
+  /auth:
+    get:
+      description: Request a JWT access token using your obono username and password.
+      operationId: auth_get
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResult'
+          description: The JWT `accessToken` to use for accessing secured resourced
+            as well as the `registrierkassenUuid` of the corresponding "Registrierkasse".
+      security:
+      - basicAuth: []
+      tags:
+      - auth
+      x-openapi-router-controller: openapi_server.controllers.auth_controller
+  /belege/{belegUuid}:
+    get:
+      description: Retrieves a particular `Beleg` from the "Datenerfassungsprotokoll".
+      operationId: belege_beleg_uuid_get
+      parameters:
+      - description: The `_uuid` of the `Beleg` to fetch.
+        explode: false
+        in: path
+        name: belegUuid
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Beleg'
+          description: The requested `Beleg` resource.
+        "404":
+          description: The requested `Beleg` resource does not exist.
+      security: []
+      tags:
+      - beleg
+      x-openapi-router-controller: openapi_server.controllers.beleg_controller
+  /export/csv/registrierkassen/{registrierkasseUuid}/belege:
+    get:
+      operationId: export_csv_registrierkassen_registrierkasse_uuid_belege_get
+      parameters:
+      - description: The `_uuid` of the `Registrierkasse` to export.
+        explode: false
+        in: path
+        name: registrierkasseUuid
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: "Only return results that were saved before the specified date-time\
+          \ string (i.e., anything that `Date.parse()` can parse)."
+        explode: true
+        in: query
+        name: before
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: "Only return results that were saved after the specified date-time\
+          \ string (i.e., anything that `Date.parse()` can parse)."
+        explode: true
+        in: query
+        name: after
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Export `Posten` instead of `Belegdaten`.
+        explode: true
+        in: query
+        name: posten
+        required: false
+        schema:
+          type: boolean
+        style: form
+      responses:
+        "200":
+          description: The exported data of a particular `Registrierkasse` in its
+            CSV representation.
+      tags:
+      - export
+      x-openapi-router-controller: openapi_server.controllers.export_controller
+  /export/dep131/registrierkassen/{registrierkasseUuid}/belege:
+    get:
+      operationId: export_dep131_registrierkassen_registrierkasse_uuid_belege_get
+      parameters:
+      - description: The `_uuid` of the `Registrierkasse` to export.
+        explode: false
+        in: path
+        name: registrierkasseUuid
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: "Only return results that were saved before the specified date-time\
+          \ string (i.e., anything that `Date.parse()` can parse)."
+        explode: true
+        in: query
+        name: before
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: "Only return results that were saved after the specified date-time\
+          \ string (i.e., anything that `Date.parse()` can parse)."
+        explode: true
+        in: query
+        name: after
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          description: The exported data of a particular `Registrierkasse` in its
+            DEP131 / CSV representation.
+      tags:
+      - export
+      x-openapi-router-controller: openapi_server.controllers.export_controller
+  /export/dep7/registrierkassen/{registrierkasseUuid}/belege:
+    get:
+      operationId: export_dep7_registrierkassen_registrierkasse_uuid_belege_get
+      parameters:
+      - description: The `_uuid` of the `Registrierkasse` to export.
+        explode: false
+        in: path
+        name: registrierkasseUuid
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: "Only return results that were saved before the specified date-time\
+          \ string (i.e., anything that `Date.parse()` can parse)."
+        explode: true
+        in: query
+        name: before
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: "Only return results that were saved after the specified date-time\
+          \ string (i.e., anything that `Date.parse()` can parse)."
+        explode: true
+        in: query
+        name: after
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          description: The exported data of a particular `Registrierkasse` in its
+            DEP7 representation.
+      tags:
+      - export
+      x-openapi-router-controller: openapi_server.controllers.export_controller
+  /export/gobd/registrierkassen/{registrierkasseUuid}:
+    get:
+      operationId: export_gobd_registrierkassen_registrierkasse_uuid_get
+      parameters:
+      - description: The `_uuid` of the `Registrierkasse` to export.
+        explode: false
+        in: path
+        name: registrierkasseUuid
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: "Only return results that were saved before the specified date-time\
+          \ string (i.e., anything that `Date.parse()` can parse)."
+        explode: true
+        in: query
+        name: before
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: "Only return results that were saved after the specified date-time\
+          \ string (i.e., anything that `Date.parse()` can parse)."
+        explode: true
+        in: query
+        name: after
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          description: The exported data of a particular `Registrierkasse` in its
+            GoBD representation.
+      tags:
+      - export
+      x-openapi-router-controller: openapi_server.controllers.export_controller
+  /export/html/belege/{belegUuid}:
+    get:
+      operationId: export_html_belege_beleg_uuid_get
+      parameters:
+      - description: The `_uuid` of a particular `Beleg` to export.
+        explode: false
+        in: path
+        name: belegUuid
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          description: A particular `Beleg` in its HTML representation.
+      security: []
+      tags:
+      - export
+      x-openapi-router-controller: openapi_server.controllers.export_controller
+  /export/pdf/belege/{belegUuid}:
+    get:
+      operationId: export_pdf_belege_beleg_uuid_get
+      parameters:
+      - description: The `_uuid` of a particular `Beleg` to export.
+        explode: false
+        in: path
+        name: belegUuid
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          description: A particular `Beleg` in its PDF representation.
+      security: []
+      tags:
+      - export
+      x-openapi-router-controller: openapi_server.controllers.export_controller
+  /export/qr/belege/{belegUuid}:
+    get:
+      operationId: export_qr_belege_beleg_uuid_get
+      parameters:
+      - description: The `_uuid` of a particular `Beleg` to export.
+        explode: false
+        in: path
+        name: belegUuid
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          description: The RKSV QR-Code as PNG file.
+      security: []
+      tags:
+      - export
+      x-openapi-router-controller: openapi_server.controllers.export_controller
+  /export/thermal-print/belege/{belegUuid}:
+    get:
+      operationId: export_thermal_print_belege_beleg_uuid_get
+      parameters:
+      - description: The `_uuid` of a particular `Beleg` to export.
+        explode: false
+        in: path
+        name: belegUuid
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: Should the RKSV QR code should be rendered?
+        explode: true
+        in: query
+        name: qr
+        required: false
+        schema:
+          default: true
+          type: boolean
+        style: form
+      - description: Number of characters per line.
+        explode: true
+        in: query
+        name: width
+        required: false
+        schema:
+          default: 42
+          type: integer
+        style: form
+      - description: The thermal printer dialect.
+        explode: true
+        in: query
+        name: dialect
+        required: false
+        schema:
+          default: escpos
+          enum:
+          - escpos
+          - escposlite
+          - star
+          - text
+          type: string
+        style: form
+      - description: The encoding of the binary data.
+        explode: true
+        in: query
+        name: encoding
+        required: false
+        schema:
+          default: raw
+          enum:
+          - raw
+          - base64
+          type: string
+        style: form
+      responses:
+        "200":
+          description: A particular `Beleg` in its ESC/POS or STAR representation.
+      security: []
+      tags:
+      - export
+      x-openapi-router-controller: openapi_server.controllers.export_controller
+  /export/xls/registrierkassen/{registrierkasseUuid}/belege:
+    get:
+      operationId: export_xls_registrierkassen_registrierkasse_uuid_belege_get
+      parameters:
+      - description: The `_uuid` of the `Registrierkasse` to export.
+        explode: false
+        in: path
+        name: registrierkasseUuid
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: "Only return results that were saved before the specified date-time\
+          \ string (i.e., anything that `Date.parse()` can parse)."
+        explode: true
+        in: query
+        name: before
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: "Only return results that were saved after the specified date-time\
+          \ string (i.e., anything that `Date.parse()` can parse)."
+        explode: true
+        in: query
+        name: after
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          description: The exported data of a particular `Registrierkasse` in its
+            Microsoft Excel representation.
+      tags:
+      - export
+      x-openapi-router-controller: openapi_server.controllers.export_controller
+  /registrierkassen/{registrierkasseUuid}:
+    get:
+      description: Returns information about a particular `Registrierkasse`.
+      operationId: get_registrierkasse
+      parameters:
+      - description: The `_uuid` of a particular `Registrierkasse` to fetch.
+        explode: false
+        in: path
+        name: registrierkasseUuid
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Registrierkasse'
+          description: Information about a particular `Registrierkasse`.
+        "404":
+          description: This particular `Registrierkasse` does not exist.
+      tags:
+      - registrierkasse
+      x-openapi-router-controller: openapi_server.controllers.registrierkasse_controller
+  /registrierkassen/{registrierkasseUuid}/abschluss:
+    post:
+      description: Generates an `Abschlussbeleg`.
+      operationId: create_abschluss
+      parameters:
+      - description: The `_uuid` of the `Registrierkasse` to retrieve the `Beleg`
+          collection.
+        explode: false
+        in: path
+        name: registrierkasseUuid
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Abschlussbelegdaten'
+        description: An object that contains all data for a particular `Abschlussbeleg`.
+        required: true
+        x-body-name: body
+      responses:
+        "201":
+          description: "The `Abschlussbeleg` has been created, signed and added to\
+            \ the \"Datenerfassungsprotokoll\"."
+          headers:
+            Location:
+              description: The URL (`_href`) of the newly created `Beleg` resource.
+              explode: false
+              schema:
+                format: url
+                type: string
+              style: simple
+      tags:
+      - beleg
+      x-openapi-router-controller: openapi_server.controllers.beleg_controller
+      x-codegen-request-body-name: body
+  /registrierkassen/{registrierkasseUuid}/belege:
+    get:
+      description: Retrieves the `Beleg` collection from the "Datenerfassungsprotokoll".
+      operationId: get_belege
+      parameters:
+      - description: The `_uuid` of the `Registrierkasse` to retrieve the `Beleg`
+          collection.
+        explode: false
+        in: path
+        name: registrierkasseUuid
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: Determines the format of the `Beleg` collection.
+        explode: true
+        in: query
+        name: format
+        required: true
+        schema:
+          default: export
+          enum:
+          - export
+          - beleg
+          - uuidlist
+          type: string
+        style: form
+      - description: Determines the sorting order.
+        explode: true
+        in: query
+        name: order
+        required: false
+        schema:
+          default: asc
+          enum:
+          - asc
+          - desc
+          type: string
+        style: form
+      - description: Limits the number of returned results.
+        explode: true
+        in: query
+        name: limit
+        required: false
+        schema:
+          type: integer
+        style: form
+      - description: Skips the specified number of results from the result set.
+        explode: true
+        in: query
+        name: offset
+        required: false
+        schema:
+          default: 0
+          type: integer
+        style: form
+      - description: "Only return results that where saved before the specified date-time\
+          \ string (i.e., anything that `Date.parse()` can parse)."
+        explode: true
+        in: query
+        name: before
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: "Only return results that where saved after the specified date-time\
+          \ string (i.e., anything that `Date.parse()` can parse)."
+        explode: true
+        in: query
+        name: after
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Only return results that have at least a particular `Belegnummer`.
+        explode: true
+        in: query
+        name: gte
+        required: false
+        schema:
+          type: integer
+        style: form
+      - description: Only return results that have at most a particular `Belegnummer`.
+        explode: true
+        in: query
+        name: lte
+        required: false
+        schema:
+          type: integer
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Belege'
+          description: The `Beleg` collection from the "Datenerfassungsprotokoll".
+      tags:
+      - beleg
+      x-openapi-router-controller: openapi_server.controllers.beleg_controller
+  /registrierkassen/{registrierkasseUuid}/belege/{belegUuid}:
+    get:
+      description: Retrieves a particular `Beleg` from the "Datenerfassungsprotokoll".
+      operationId: get_beleg
+      parameters:
+      - description: The `_uuid` of the `Registrierkasse` that contains the requested
+          `Beleg`.
+        explode: false
+        in: path
+        name: registrierkasseUuid
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: The `_uuid` of the `Beleg` to fetch.
+        explode: false
+        in: path
+        name: belegUuid
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Beleg'
+          description: The requested `Beleg` resource.
+        "404":
+          description: The requested `Beleg` resource does not exist.
+      tags:
+      - beleg
+      x-openapi-router-controller: openapi_server.controllers.beleg_controller
+    put:
+      description: Signs a receipt and stores it in the "Datenerfassungsprotokoll".
+      operationId: add_beleg
+      parameters:
+      - description: The `_uuid` of the `Registrierkasse` to use for signing data.
+        explode: false
+        in: path
+        name: registrierkasseUuid
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: The `_uuid` of the `Beleg` to store.
+        explode: false
+        in: path
+        name: belegUuid
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Belegdaten'
+        description: An object that contains all data for a particular `Beleg` and
+          is formatted according to RKSV "Signaturformat".
+        required: true
+        x-body-name: body
+      responses:
+        "201":
+          description: The `Beleg` has been signed and added to the "Datenerfassungsprotokoll".
+          headers:
+            Location:
+              description: The URL (`_href`) of the newly created `Beleg` resource.
+              explode: false
+              schema:
+                format: url
+                type: string
+              style: simple
+        "400":
+          description: The provided request payload is invalid i.e. not conform the
+            the JSON schema.
+        "403":
+          description: Access token is either missing or invalid. Be sure to include
+            the Authorization HTTP header.
+        "409":
+          description: A `Beleg` with this particular `belegUuid` already exists.
+        "415":
+          description: The provided request payload is not JSON encoded.
+        "429":
+          description: Request limit exceeded.
+        "500":
+          description: The receipt could not be signed either because the HSM delivered
+            invalid data or the request signing request timed out (currently after
+            10 seconds).
+      tags:
+      - beleg
+      x-openapi-router-controller: openapi_server.controllers.beleg_controller
+      x-codegen-request-body-name: body
+  /registrierkassen/{registrierkasseUuid}/dep:
+    get:
+      description: Generates a DEP file.
+      operationId: get_dep
+      parameters:
+      - description: The `_uuid` of the `Registrierkasse` to retrieve the DEP file.
+        explode: false
+        in: path
+        name: registrierkasseUuid
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          description: The DEP file.
+      tags:
+      - registrierkasse
+      x-openapi-router-controller: openapi_server.controllers.registrierkasse_controller
+  /registrierkassen/{registrierkasseUuid}/monatsbelege:
+    get:
+      description: Returns a list of `Monatsbelege`.
+      operationId: get_monatsbelege
+      parameters:
+      - description: The `_uuid` of the `Registrierkasse`.
+        explode: false
+        in: path
+        name: registrierkasseUuid
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: true
+        in: query
+        name: year
+        required: false
+        schema:
+          type: integer
+        style: form
+      - explode: true
+        in: query
+        name: month
+        required: false
+        schema:
+          type: integer
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/Monatsbeleg'
+                type: array
+          description: Information about `Monatsbelege`.
+      tags:
+      - monatsbelege
+      x-openapi-router-controller: openapi_server.controllers.monatsbelege_controller
+components:
+  schemas:
+    Abschlussbelegdaten:
+      example:
+        Abschluss-Beginn-Datum-Uhrzeit: Abschluss-Beginn-Datum-Uhrzeit
+        Abschluss-Ende-Datum-Uhrzeit: Abschluss-Ende-Datum-Uhrzeit
+      properties:
+        Abschluss-Beginn-Datum-Uhrzeit:
+          format: iso8601-date-time
+          title: Abschluss-Beginn-Datum-Uhrzeit
+          type: string
+        Abschluss-Ende-Datum-Uhrzeit:
+          format: iso8601-date-time
+          title: Abschluss-Ende-Datum-Uhrzeit
+          type: string
+      required:
+      - Abschluss-Beginn-Datum-Uhrzeit
+      - Abschluss-Ende-Datum-Uhrzeit
+      title: Abschlussbelegdaten
+      type: object
+    AuthResult:
+      example:
+        accessToken: accessToken
+        registrierkasseUuid: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+      properties:
+        accessToken:
+          title: accessToken
+          type: string
+        registrierkasseUuid:
+          format: uuid
+          title: registrierkasseUuid
+          type: string
+      title: AuthResult
+      type: object
+    Beleg:
+      example:
+        Belegdaten:
+          Betrag-Brutto: 0
+          Rabatte:
+          - Betrag-Brutto: 6
+            Betrag-Netto: 7
+            Satz: NORMAL
+            Bezeichnung: Bezeichnung
+          - Betrag-Brutto: 6
+            Betrag-Netto: 7
+            Satz: NORMAL
+            Bezeichnung: Bezeichnung
+          Betrag-Satz-Ermaessigt-2-Netto: 9
+          Betrag-Satz-Normal-Brutto: 3
+          Unternehmen-Kopfzeile: Unternehmen-Kopfzeile
+          Unternehmen-Adresse1: Unternehmen-Adresse1
+          Unternehmen-Adresse2: Unternehmen-Adresse2
+          Betrag-Satz-Null-Brutto: 4
+          Externer-Beleg-Referenz: Externer-Beleg-Referenz
+          Training: true
+          Beleg-Datum-Uhrzeit: Beleg-Datum-Uhrzeit
+          Unternehmen-ID-Typ: steuernummer
+          Unternehmen-Name: Unternehmen-Name
+          Betrag-Satz-Ermaessigt-2-Brutto: 7
+          Externer-Beleg-Belegkreis: Externer-Beleg-Belegkreis
+          Betrag-Satz-Besonders-Brutto: 1
+          Betrag-Satz-Ermaessigt-1-Brutto: 5
+          Unternehmen-Fusszeile: Unternehmen-Fusszeile
+          Storno: true
+          Unternehmen-ID: Unternehmen-ID
+          Zertifikat-Seriennummer: Zertifikat-Seriennummer
+          Kassen-ID: Kassen-ID
+          Storno-Beleg-UUID: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          Betrag-Satz-Ermaessigt-1-Netto: 2
+          Betrag-Satz-Besonders-Netto: 5
+          Notizen:
+          - Notizen
+          - Notizen
+          Storno-Text: Storno-Text
+          Betrag-Satz-Normal-Netto: 2
+          Unternehmen-Ort: Unternehmen-Ort
+          Betrag-Netto: 6
+          Kunde: Kunde
+          Zahlungen:
+          - Betrag: 1
+            Referenz: Referenz
+            Bezeichnung: Bezeichnung
+          - Betrag: 1
+            Referenz: Referenz
+            Bezeichnung: Bezeichnung
+          Externer-Beleg-Bezeichnung: Externer-Beleg-Bezeichnung
+          Betrag-Satz-Null-Netto: 7
+          Posten:
+          - Satz: NORMAL
+            NettoBetrag: 1
+            Externer-Beleg-Bezeichnung: Externer-Beleg-Bezeichnung
+            Externer-Beleg-Belegkreis: Externer-Beleg-Belegkreis
+            Menge: 1
+            BruttoBetrag: 1
+            Externer-Beleg-Referenz: Externer-Beleg-Referenz
+            Bezeichnung: Bezeichnung
+          - Satz: NORMAL
+            NettoBetrag: 1
+            Externer-Beleg-Bezeichnung: Externer-Beleg-Bezeichnung
+            Externer-Beleg-Belegkreis: Externer-Beleg-Belegkreis
+            Menge: 1
+            BruttoBetrag: 1
+            Externer-Beleg-Referenz: Externer-Beleg-Referenz
+            Bezeichnung: Bezeichnung
+          Unternehmen-PLZ: Unternehmen-PLZ
+          Belegnummer: Belegnummer
+        Beleg-Codes:
+        - Beleg-Codes
+        - Beleg-Codes
+        QR: QR
+        _href: http://example.com/aeiou
+        QR-Link: http://example.com/aeiou
+        Signaturerstellungseinheit-UUID: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        JWS: JWS
+        Beleg-Typen:
+        - Belegkreisinitialisierung
+        - Belegkreisinitialisierung
+        _uuid: _uuid
+        Registrierkasse-UUID: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+      properties:
+        Beleg-Codes:
+          items:
+            type: string
+          title: Beleg-Codes
+          type: array
+        Beleg-Typen:
+          items:
+            enum:
+            - Belegkreisinitialisierung
+            - Kassenbericht
+            - Monatsabschluss
+            - Startbeleg
+            - Storno
+            - Systembeleg
+            - Training
+            type: string
+          title: Beleg-Typen
+          type: array
+        Belegdaten:
+          $ref: '#/components/schemas/SignierteBelegdaten'
+        JWS:
+          description: The signed `Beleg` as a JWS signature token.
+          format: jws
+          title: JWS
+          type: string
+        QR:
+          description: The portion of the `JWS` token to be used for generating QR
+            codes.
+          title: QR
+          type: string
+        QR-Link:
+          description: A hyperlink that retrieves the `QR` data.
+          format: url
+          title: QR-Link
+          type: string
+        Registrierkasse-UUID:
+          description: The `_uuid` of the `Registrierkasse` that has issued this `Beleg`.
+          format: uuid
+          title: Registrierkasse-UUID
+          type: string
+        Signaturerstellungseinheit-UUID:
+          description: The `_uuid` of the `Signaturerstellungseinheit` that has signed
+            this `Beleg`.
+          format: uuid
+          title: Signaturerstellungseinheit-UUID
+          type: string
+        _href:
+          description: URL of the particular `Beleg` instance.
+          format: url
+          title: _href
+          type: string
+        _uuid:
+          description: Unique ID of the particular `Beleg` instance.
+          title: _uuid
+          type: string
+      title: Beleg
+      type: object
+    Belegdaten:
+      description: The `Beleg` to be signed by the "Signaturerstellungseinheit" and
+        stored in the "Datenerfassungsprotokoll".
+      example:
+        Rabatte:
+        - Betrag-Brutto: 6
+          Betrag-Netto: 7
+          Satz: NORMAL
+          Bezeichnung: Bezeichnung
+        - Betrag-Brutto: 6
+          Betrag-Netto: 7
+          Satz: NORMAL
+          Bezeichnung: Bezeichnung
+        Unternehmen-Kopfzeile: Unternehmen-Kopfzeile
+        Storno-Beleg-UUID: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        Unternehmen-Adresse1: Unternehmen-Adresse1
+        Unternehmen-Adresse2: Unternehmen-Adresse2
+        Notizen:
+        - Notizen
+        - Notizen
+        Externer-Beleg-Referenz: Externer-Beleg-Referenz
+        Storno-Text: Storno-Text
+        Training: true
+        Unternehmen-Ort: Unternehmen-Ort
+        Kunde: Kunde
+        Unternehmen-ID-Typ: steuernummer
+        Unternehmen-Name: Unternehmen-Name
+        Zahlungen:
+        - Betrag: 1
+          Referenz: Referenz
+          Bezeichnung: Bezeichnung
+        - Betrag: 1
+          Referenz: Referenz
+          Bezeichnung: Bezeichnung
+        Externer-Beleg-Bezeichnung: Externer-Beleg-Bezeichnung
+        Externer-Beleg-Belegkreis: Externer-Beleg-Belegkreis
+        Unternehmen-Fusszeile: Unternehmen-Fusszeile
+        Posten:
+        - Satz: NORMAL
+          NettoBetrag: 1
+          Externer-Beleg-Bezeichnung: Externer-Beleg-Bezeichnung
+          Externer-Beleg-Belegkreis: Externer-Beleg-Belegkreis
+          Menge: 1
+          BruttoBetrag: 1
+          Externer-Beleg-Referenz: Externer-Beleg-Referenz
+          Bezeichnung: Bezeichnung
+        - Satz: NORMAL
+          NettoBetrag: 1
+          Externer-Beleg-Bezeichnung: Externer-Beleg-Bezeichnung
+          Externer-Beleg-Belegkreis: Externer-Beleg-Belegkreis
+          Menge: 1
+          BruttoBetrag: 1
+          Externer-Beleg-Referenz: Externer-Beleg-Referenz
+          Bezeichnung: Bezeichnung
+        Storno: true
+        Unternehmen-ID: Unternehmen-ID
+        Unternehmen-PLZ: Unternehmen-PLZ
+      properties:
+        Externer-Beleg-Belegkreis:
+          title: Externer-Beleg-Belegkreis
+          type: string
+        Externer-Beleg-Bezeichnung:
+          title: Externer-Beleg-Bezeichnung
+          type: string
+        Externer-Beleg-Referenz:
+          title: Externer-Beleg-Referenz
+          type: string
+        Kunde:
+          title: Kunde
+          type: string
+        Notizen:
+          items:
+            type: string
+          title: Notizen
+          type: array
+        Posten:
+          items:
+            $ref: '#/components/schemas/Posten'
+          title: Posten
+          type: array
+        Rabatte:
+          items:
+            $ref: '#/components/schemas/Rabatt'
+          title: Rabatte
+          type: array
+        Storno:
+          description: Storno?
+          title: Storno
+          type: boolean
+        Storno-Beleg-UUID:
+          description: The `Beleg-UUID` property of the `Beleg` to be cancelled
+          format: uuid
+          title: Storno-Beleg-UUID
+          type: string
+        Storno-Text:
+          title: Storno-Text
+          type: string
+        Training:
+          description: Training?
+          title: Training
+          type: boolean
+        Unternehmen-Adresse1:
+          title: Unternehmen-Adresse1
+          type: string
+        Unternehmen-Adresse2:
+          title: Unternehmen-Adresse2
+          type: string
+        Unternehmen-Fusszeile:
+          title: Unternehmen-Fusszeile
+          type: string
+        Unternehmen-ID:
+          title: Unternehmen-ID
+          type: string
+        Unternehmen-ID-Typ:
+          enum:
+          - steuernummer
+          - uid
+          - gln
+          title: Unternehmen-ID-Typ
+          type: string
+        Unternehmen-Kopfzeile:
+          title: Unternehmen-Kopfzeile
+          type: string
+        Unternehmen-Name:
+          title: Unternehmen-Name
+          type: string
+        Unternehmen-Ort:
+          title: Unternehmen-Ort
+          type: string
+        Unternehmen-PLZ:
+          title: Unternehmen-PLZ
+          type: string
+        Zahlungen:
+          items:
+            $ref: '#/components/schemas/Zahlung'
+          title: Zahlungen
+          type: array
+      title: Belegdaten
+      type: object
+    Belege:
+      allOf:
+      - $ref: '#/components/schemas/Belegformat'
+      - $ref: '#/components/schemas/Exportformat'
+      example:
+        Belege:
+        - Belegdaten:
+            Betrag-Brutto: 0
+            Rabatte:
+            - Betrag-Brutto: 6
+              Betrag-Netto: 7
+              Satz: NORMAL
+              Bezeichnung: Bezeichnung
+            - Betrag-Brutto: 6
+              Betrag-Netto: 7
+              Satz: NORMAL
+              Bezeichnung: Bezeichnung
+            Betrag-Satz-Ermaessigt-2-Netto: 9
+            Betrag-Satz-Normal-Brutto: 3
+            Unternehmen-Kopfzeile: Unternehmen-Kopfzeile
+            Unternehmen-Adresse1: Unternehmen-Adresse1
+            Unternehmen-Adresse2: Unternehmen-Adresse2
+            Betrag-Satz-Null-Brutto: 4
+            Externer-Beleg-Referenz: Externer-Beleg-Referenz
+            Training: true
+            Beleg-Datum-Uhrzeit: Beleg-Datum-Uhrzeit
+            Unternehmen-ID-Typ: steuernummer
+            Unternehmen-Name: Unternehmen-Name
+            Betrag-Satz-Ermaessigt-2-Brutto: 7
+            Externer-Beleg-Belegkreis: Externer-Beleg-Belegkreis
+            Betrag-Satz-Besonders-Brutto: 1
+            Betrag-Satz-Ermaessigt-1-Brutto: 5
+            Unternehmen-Fusszeile: Unternehmen-Fusszeile
+            Storno: true
+            Unternehmen-ID: Unternehmen-ID
+            Zertifikat-Seriennummer: Zertifikat-Seriennummer
+            Kassen-ID: Kassen-ID
+            Storno-Beleg-UUID: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+            Betrag-Satz-Ermaessigt-1-Netto: 2
+            Betrag-Satz-Besonders-Netto: 5
+            Notizen:
+            - Notizen
+            - Notizen
+            Storno-Text: Storno-Text
+            Betrag-Satz-Normal-Netto: 2
+            Unternehmen-Ort: Unternehmen-Ort
+            Betrag-Netto: 6
+            Kunde: Kunde
+            Zahlungen:
+            - Betrag: 1
+              Referenz: Referenz
+              Bezeichnung: Bezeichnung
+            - Betrag: 1
+              Referenz: Referenz
+              Bezeichnung: Bezeichnung
+            Externer-Beleg-Bezeichnung: Externer-Beleg-Bezeichnung
+            Betrag-Satz-Null-Netto: 7
+            Posten:
+            - Satz: NORMAL
+              NettoBetrag: 1
+              Externer-Beleg-Bezeichnung: Externer-Beleg-Bezeichnung
+              Externer-Beleg-Belegkreis: Externer-Beleg-Belegkreis
+              Menge: 1
+              BruttoBetrag: 1
+              Externer-Beleg-Referenz: Externer-Beleg-Referenz
+              Bezeichnung: Bezeichnung
+            - Satz: NORMAL
+              NettoBetrag: 1
+              Externer-Beleg-Bezeichnung: Externer-Beleg-Bezeichnung
+              Externer-Beleg-Belegkreis: Externer-Beleg-Belegkreis
+              Menge: 1
+              BruttoBetrag: 1
+              Externer-Beleg-Referenz: Externer-Beleg-Referenz
+              Bezeichnung: Bezeichnung
+            Unternehmen-PLZ: Unternehmen-PLZ
+            Belegnummer: Belegnummer
+          Beleg-Codes:
+          - Beleg-Codes
+          - Beleg-Codes
+          QR: QR
+          _href: http://example.com/aeiou
+          QR-Link: http://example.com/aeiou
+          Signaturerstellungseinheit-UUID: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          JWS: JWS
+          Beleg-Typen:
+          - Belegkreisinitialisierung
+          - Belegkreisinitialisierung
+          _uuid: _uuid
+          Registrierkasse-UUID: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        - Belegdaten:
+            Betrag-Brutto: 0
+            Rabatte:
+            - Betrag-Brutto: 6
+              Betrag-Netto: 7
+              Satz: NORMAL
+              Bezeichnung: Bezeichnung
+            - Betrag-Brutto: 6
+              Betrag-Netto: 7
+              Satz: NORMAL
+              Bezeichnung: Bezeichnung
+            Betrag-Satz-Ermaessigt-2-Netto: 9
+            Betrag-Satz-Normal-Brutto: 3
+            Unternehmen-Kopfzeile: Unternehmen-Kopfzeile
+            Unternehmen-Adresse1: Unternehmen-Adresse1
+            Unternehmen-Adresse2: Unternehmen-Adresse2
+            Betrag-Satz-Null-Brutto: 4
+            Externer-Beleg-Referenz: Externer-Beleg-Referenz
+            Training: true
+            Beleg-Datum-Uhrzeit: Beleg-Datum-Uhrzeit
+            Unternehmen-ID-Typ: steuernummer
+            Unternehmen-Name: Unternehmen-Name
+            Betrag-Satz-Ermaessigt-2-Brutto: 7
+            Externer-Beleg-Belegkreis: Externer-Beleg-Belegkreis
+            Betrag-Satz-Besonders-Brutto: 1
+            Betrag-Satz-Ermaessigt-1-Brutto: 5
+            Unternehmen-Fusszeile: Unternehmen-Fusszeile
+            Storno: true
+            Unternehmen-ID: Unternehmen-ID
+            Zertifikat-Seriennummer: Zertifikat-Seriennummer
+            Kassen-ID: Kassen-ID
+            Storno-Beleg-UUID: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+            Betrag-Satz-Ermaessigt-1-Netto: 2
+            Betrag-Satz-Besonders-Netto: 5
+            Notizen:
+            - Notizen
+            - Notizen
+            Storno-Text: Storno-Text
+            Betrag-Satz-Normal-Netto: 2
+            Unternehmen-Ort: Unternehmen-Ort
+            Betrag-Netto: 6
+            Kunde: Kunde
+            Zahlungen:
+            - Betrag: 1
+              Referenz: Referenz
+              Bezeichnung: Bezeichnung
+            - Betrag: 1
+              Referenz: Referenz
+              Bezeichnung: Bezeichnung
+            Externer-Beleg-Bezeichnung: Externer-Beleg-Bezeichnung
+            Betrag-Satz-Null-Netto: 7
+            Posten:
+            - Satz: NORMAL
+              NettoBetrag: 1
+              Externer-Beleg-Bezeichnung: Externer-Beleg-Bezeichnung
+              Externer-Beleg-Belegkreis: Externer-Beleg-Belegkreis
+              Menge: 1
+              BruttoBetrag: 1
+              Externer-Beleg-Referenz: Externer-Beleg-Referenz
+              Bezeichnung: Bezeichnung
+            - Satz: NORMAL
+              NettoBetrag: 1
+              Externer-Beleg-Bezeichnung: Externer-Beleg-Bezeichnung
+              Externer-Beleg-Belegkreis: Externer-Beleg-Belegkreis
+              Menge: 1
+              BruttoBetrag: 1
+              Externer-Beleg-Referenz: Externer-Beleg-Referenz
+              Bezeichnung: Bezeichnung
+            Unternehmen-PLZ: Unternehmen-PLZ
+            Belegnummer: Belegnummer
+          Beleg-Codes:
+          - Beleg-Codes
+          - Beleg-Codes
+          QR: QR
+          _href: http://example.com/aeiou
+          QR-Link: http://example.com/aeiou
+          Signaturerstellungseinheit-UUID: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          JWS: JWS
+          Beleg-Typen:
+          - Belegkreisinitialisierung
+          - Belegkreisinitialisierung
+          _uuid: _uuid
+          Registrierkasse-UUID: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        Belege-Gruppe:
+        - Belege-kompakt:
+          - Belege-kompakt
+          - Belege-kompakt
+          Signaturzertifikat: Signaturzertifikat
+          Zertifizierungsstellen:
+          - Zertifizierungsstellen
+          - Zertifizierungsstellen
+        - Belege-kompakt:
+          - Belege-kompakt
+          - Belege-kompakt
+          Signaturzertifikat: Signaturzertifikat
+          Zertifizierungsstellen:
+          - Zertifizierungsstellen
+          - Zertifizierungsstellen
+      title: Belege
+      type: object
+    Belegformat:
+      properties:
+        Belege:
+          items:
+            $ref: '#/components/schemas/Beleg'
+          title: Belege
+          type: array
+      title: Belegformat
+      type: object
+    Exportformat:
+      properties:
+        Belege-Gruppe:
+          items:
+            $ref: '#/components/schemas/Exportformat_Belege_Gruppe_inner'
+          minItems: 1
+          title: Belege-Gruppe
+          type: array
+      title: Exportformat
+      type: object
+    Monatsbeleg:
+      example:
+        Jahr: 0
+        Beleg-UUID: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        FON-Geprueft-Datum-Uhrzeit: FON-Geprueft-Datum-Uhrzeit
+        Monat: 6
+        FON-Geprueft-Erfolgreich: true
+      properties:
+        Beleg-UUID:
+          format: uuid
+          title: Beleg-UUID
+          type: string
+        FON-Geprueft-Datum-Uhrzeit:
+          format: iso8601-date-time
+          title: FON-Geprueft-Datum-Uhrzeit
+          type: string
+        FON-Geprueft-Erfolgreich:
+          title: FON-Geprueft-Erfolgreich
+          type: boolean
+        Jahr:
+          title: Jahr
+          type: integer
+        Monat:
+          title: Monat
+          type: integer
+      title: Monatsbeleg
+      type: object
+    Posten:
+      example:
+        Satz: NORMAL
+        NettoBetrag: 1
+        Externer-Beleg-Bezeichnung: Externer-Beleg-Bezeichnung
+        Externer-Beleg-Belegkreis: Externer-Beleg-Belegkreis
+        Menge: 1
+        BruttoBetrag: 1
+        Externer-Beleg-Referenz: Externer-Beleg-Referenz
+        Bezeichnung: Bezeichnung
+      properties:
+        Bezeichnung:
+          title: Bezeichnung
+          type: string
+        BruttoBetrag:
+          description: The amount in cents
+          title: BruttoBetrag
+          type: integer
+        Externer-Beleg-Belegkreis:
+          title: Externer-Beleg-Belegkreis
+          type: string
+        Externer-Beleg-Bezeichnung:
+          title: Externer-Beleg-Bezeichnung
+          type: string
+        Externer-Beleg-Referenz:
+          title: Externer-Beleg-Referenz
+          type: string
+        Menge:
+          title: Menge
+          type: integer
+        NettoBetrag:
+          description: The amount in cents
+          title: NettoBetrag
+          type: integer
+        Satz:
+          enum:
+          - NORMAL
+          - ERMAESSIGT1
+          - ERMAESSIGT2
+          - BESONDERS
+          - "NULL"
+          title: Satz
+          type: string
+      required:
+      - Bezeichnung
+      - BruttoBetrag
+      - Menge
+      - NettoBetrag
+      - Satz
+      title: Posten
+      type: object
+    Rabatt:
+      example:
+        Betrag-Brutto: 6
+        Betrag-Netto: 7
+        Satz: NORMAL
+        Bezeichnung: Bezeichnung
+      properties:
+        Betrag-Brutto:
+          description: The amount in cents
+          title: Betrag-Brutto
+          type: integer
+        Betrag-Netto:
+          description: The amount in cents
+          title: Betrag-Netto
+          type: integer
+        Bezeichnung:
+          title: Bezeichnung
+          type: string
+        Satz:
+          enum:
+          - NORMAL
+          - ERMAESSIGT1
+          - ERMAESSIGT2
+          - BESONDERS
+          - "NULL"
+          title: Satz
+          type: string
+      required:
+      - Betrag-Brutto
+      - Betrag-Netto
+      - Bezeichnung
+      title: Rabatt
+      type: object
+    Registrierkasse:
+      example:
+        _href: http://example.com/aeiou
+        Kassen-ID: Kassen-ID
+        Signaturerstellungseinheit-UUID: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        Benutzerschluessel: Benutzerschluessel
+        _uuid: _uuid
+      properties:
+        Benutzerschluessel:
+          description: The base64 encoded AES 256 key used for encrypting the "Umsatzzaehler".
+          format: base64
+          title: Benutzerschluessel
+          type: string
+        Kassen-ID:
+          description: The (RKSV) "Kassenidentifikationsnummer" of this particular
+            `Registrierkasse`.
+          title: Kassen-ID
+          type: string
+        Signaturerstellungseinheit-UUID:
+          description: The `_uuid` of the paired "Signaturerstellungseinheit".
+          format: uuid
+          title: Signaturerstellungseinheit-UUID
+          type: string
+        _href:
+          description: URL of the particular `Registrierkasse` instance.
+          format: url
+          title: _href
+          type: string
+        _uuid:
+          description: Unique ID of the particular `Registrierkasse` instance.
+          title: _uuid
+          type: string
+      title: Registrierkasse
+      type: object
+    SignierteBelegdaten:
+      description: The complete `Beleg` that has been signed by the "Signaturerstellungseinheit"
+        and stored in the "Datenerfassungsprotokoll".
+      example:
+        Betrag-Brutto: 0
+        Rabatte:
+        - Betrag-Brutto: 6
+          Betrag-Netto: 7
+          Satz: NORMAL
+          Bezeichnung: Bezeichnung
+        - Betrag-Brutto: 6
+          Betrag-Netto: 7
+          Satz: NORMAL
+          Bezeichnung: Bezeichnung
+        Betrag-Satz-Ermaessigt-2-Netto: 9
+        Betrag-Satz-Normal-Brutto: 3
+        Unternehmen-Kopfzeile: Unternehmen-Kopfzeile
+        Unternehmen-Adresse1: Unternehmen-Adresse1
+        Unternehmen-Adresse2: Unternehmen-Adresse2
+        Betrag-Satz-Null-Brutto: 4
+        Externer-Beleg-Referenz: Externer-Beleg-Referenz
+        Training: true
+        Beleg-Datum-Uhrzeit: Beleg-Datum-Uhrzeit
+        Unternehmen-ID-Typ: steuernummer
+        Unternehmen-Name: Unternehmen-Name
+        Betrag-Satz-Ermaessigt-2-Brutto: 7
+        Externer-Beleg-Belegkreis: Externer-Beleg-Belegkreis
+        Betrag-Satz-Besonders-Brutto: 1
+        Betrag-Satz-Ermaessigt-1-Brutto: 5
+        Unternehmen-Fusszeile: Unternehmen-Fusszeile
+        Storno: true
+        Unternehmen-ID: Unternehmen-ID
+        Zertifikat-Seriennummer: Zertifikat-Seriennummer
+        Kassen-ID: Kassen-ID
+        Storno-Beleg-UUID: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        Betrag-Satz-Ermaessigt-1-Netto: 2
+        Betrag-Satz-Besonders-Netto: 5
+        Notizen:
+        - Notizen
+        - Notizen
+        Storno-Text: Storno-Text
+        Betrag-Satz-Normal-Netto: 2
+        Unternehmen-Ort: Unternehmen-Ort
+        Betrag-Netto: 6
+        Kunde: Kunde
+        Zahlungen:
+        - Betrag: 1
+          Referenz: Referenz
+          Bezeichnung: Bezeichnung
+        - Betrag: 1
+          Referenz: Referenz
+          Bezeichnung: Bezeichnung
+        Externer-Beleg-Bezeichnung: Externer-Beleg-Bezeichnung
+        Betrag-Satz-Null-Netto: 7
+        Posten:
+        - Satz: NORMAL
+          NettoBetrag: 1
+          Externer-Beleg-Bezeichnung: Externer-Beleg-Bezeichnung
+          Externer-Beleg-Belegkreis: Externer-Beleg-Belegkreis
+          Menge: 1
+          BruttoBetrag: 1
+          Externer-Beleg-Referenz: Externer-Beleg-Referenz
+          Bezeichnung: Bezeichnung
+        - Satz: NORMAL
+          NettoBetrag: 1
+          Externer-Beleg-Bezeichnung: Externer-Beleg-Bezeichnung
+          Externer-Beleg-Belegkreis: Externer-Beleg-Belegkreis
+          Menge: 1
+          BruttoBetrag: 1
+          Externer-Beleg-Referenz: Externer-Beleg-Referenz
+          Bezeichnung: Bezeichnung
+        Unternehmen-PLZ: Unternehmen-PLZ
+        Belegnummer: Belegnummer
+      properties:
+        Beleg-Datum-Uhrzeit:
+          title: Beleg-Datum-Uhrzeit
+          type: string
+        Belegnummer:
+          title: Belegnummer
+          type: string
+        Betrag-Brutto:
+          title: Betrag-Brutto
+          type: integer
+        Betrag-Netto:
+          title: Betrag-Netto
+          type: integer
+        Betrag-Satz-Besonders-Brutto:
+          description: The total amount in cents
+          title: Betrag-Satz-Besonders-Brutto
+          type: integer
+        Betrag-Satz-Besonders-Netto:
+          description: The total amount in cents
+          title: Betrag-Satz-Besonders-Netto
+          type: integer
+        Betrag-Satz-Ermaessigt-1-Brutto:
+          description: The total amount in cents
+          title: Betrag-Satz-Ermaessigt-1-Brutto
+          type: integer
+        Betrag-Satz-Ermaessigt-1-Netto:
+          description: The total amount in cents
+          title: Betrag-Satz-Ermaessigt-1-Netto
+          type: integer
+        Betrag-Satz-Ermaessigt-2-Brutto:
+          description: The total amount in cents
+          title: Betrag-Satz-Ermaessigt-2-Brutto
+          type: integer
+        Betrag-Satz-Ermaessigt-2-Netto:
+          description: The total amount in cents
+          title: Betrag-Satz-Ermaessigt-2-Netto
+          type: integer
+        Betrag-Satz-Normal-Brutto:
+          description: The total amount in cents
+          title: Betrag-Satz-Normal-Brutto
+          type: integer
+        Betrag-Satz-Normal-Netto:
+          description: The total amount in cents
+          title: Betrag-Satz-Normal-Netto
+          type: integer
+        Betrag-Satz-Null-Brutto:
+          description: The total amount in cents
+          title: Betrag-Satz-Null-Brutto
+          type: integer
+        Betrag-Satz-Null-Netto:
+          description: The total amount in cents
+          title: Betrag-Satz-Null-Netto
+          type: integer
+        Externer-Beleg-Belegkreis:
+          title: Externer-Beleg-Belegkreis
+          type: string
+        Externer-Beleg-Bezeichnung:
+          title: Externer-Beleg-Bezeichnung
+          type: string
+        Externer-Beleg-Referenz:
+          title: Externer-Beleg-Referenz
+          type: string
+        Kassen-ID:
+          title: Kassen-ID
+          type: string
+        Kunde:
+          title: Kunde
+          type: string
+        Notizen:
+          items:
+            type: string
+          title: Notizen
+          type: array
+        Posten:
+          items:
+            $ref: '#/components/schemas/Posten'
+          title: Posten
+          type: array
+        Rabatte:
+          items:
+            $ref: '#/components/schemas/Rabatt'
+          title: Rabatte
+          type: array
+        Storno:
+          description: Storno?
+          title: Storno
+          type: boolean
+        Storno-Beleg-UUID:
+          description: The `Beleg-UUID` property of the `Beleg` to be cancelled
+          format: uuid
+          title: Storno-Beleg-UUID
+          type: string
+        Storno-Text:
+          title: Storno-Text
+          type: string
+        Training:
+          description: Training?
+          title: Training
+          type: boolean
+        Unternehmen-Adresse1:
+          title: Unternehmen-Adresse1
+          type: string
+        Unternehmen-Adresse2:
+          title: Unternehmen-Adresse2
+          type: string
+        Unternehmen-Fusszeile:
+          title: Unternehmen-Fusszeile
+          type: string
+        Unternehmen-ID:
+          title: Unternehmen-ID
+          type: string
+        Unternehmen-ID-Typ:
+          enum:
+          - steuernummer
+          - uid
+          - gln
+          title: Unternehmen-ID-Typ
+          type: string
+        Unternehmen-Kopfzeile:
+          title: Unternehmen-Kopfzeile
+          type: string
+        Unternehmen-Name:
+          title: Unternehmen-Name
+          type: string
+        Unternehmen-Ort:
+          title: Unternehmen-Ort
+          type: string
+        Unternehmen-PLZ:
+          title: Unternehmen-PLZ
+          type: string
+        Zahlungen:
+          items:
+            $ref: '#/components/schemas/Zahlung'
+          title: Zahlungen
+          type: array
+        Zertifikat-Seriennummer:
+          title: Zertifikat-Seriennummer
+          type: string
+      title: SignierteBelegdaten
+      type: object
+    Zahlung:
+      example:
+        Betrag: 1
+        Referenz: Referenz
+        Bezeichnung: Bezeichnung
+      properties:
+        Betrag:
+          description: The amount in cents
+          title: Betrag
+          type: integer
+        Bezeichnung:
+          title: Bezeichnung
+          type: string
+        Referenz:
+          title: Referenz
+          type: string
+      required:
+      - Betrag
+      - Bezeichnung
+      title: Zahlung
+      type: object
+    Exportformat_Belege_Gruppe_inner:
+      example:
+        Belege-kompakt:
+        - Belege-kompakt
+        - Belege-kompakt
+        Signaturzertifikat: Signaturzertifikat
+        Zertifizierungsstellen:
+        - Zertifizierungsstellen
+        - Zertifizierungsstellen
+      properties:
+        Belege-kompakt:
+          items:
+            format: base64
+            type: string
+          minItems: 1
+          title: Belege-kompakt
+          type: array
+        Signaturzertifikat:
+          format: base64
+          title: Signaturzertifikat
+          type: string
+        Zertifizierungsstellen:
+          items:
+            format: base64
+            type: string
+          minItems: 1
+          title: Zertifizierungsstellen
+          type: array
+      required:
+      - Belege-kompakt
+      - Signaturzertifikat
+      - Zertifizierungsstellen
+      title: Exportformat_Belege_Gruppe_inner
+      type: object
+  securitySchemes:
+    basicAuth:
+      description: HTTP Basic Authentication.
+      scheme: basic
+      type: http
+      x-basicInfoFunc: openapi_server.controllers.security_controller.info_from_basicAuth
+    jwt:
+      description: A JSON Web Token (JWT) used for access control and authorization.
+      in: header
+      name: Authorization
+      type: apiKey
+      x-apikeyInfoFunc: openapi_server.controllers.security_controller.info_from_jwt

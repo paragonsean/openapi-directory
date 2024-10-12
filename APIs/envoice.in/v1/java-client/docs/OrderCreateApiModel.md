@@ -1,0 +1,47 @@
+
+
+# OrderCreateApiModel
+
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**afterPaymentDescription** | **String** | After payment description |  [optional] |
+|**attachments** | [**List&lt;OrderAttachmentApiModel&gt;**](OrderAttachmentApiModel.md) | List of Order attachments |  [optional] |
+|**couponCode** | **String** | Coupon to apply in order to get the discount |  [optional] |
+|**currencyId** | **Integer** | Foreign key Currency |  [optional] |
+|**description** | **String** | Product description |  [optional] |
+|**discountAmount** | **Double** | Discount amount |  [optional] |
+|**items** | [**List&lt;OrderItemApiModel&gt;**](OrderItemApiModel.md) | List of Order items |  [optional] |
+|**name** | **String** | Product alias |  [optional] |
+|**note** | **String** | Customer note to seller |  [optional] |
+|**orderBillingDetails** | [**OrderBillingDetailsApiModel**](OrderBillingDetailsApiModel.md) |  |  [optional] |
+|**orderShippingDetails** | [**OrderShippingDetailsApiModel**](OrderShippingDetailsApiModel.md) |  |  [optional] |
+|**productId** | **Integer** | Product id |  [optional] |
+|**referral** | **String** | Represent the referral for this order |  [optional] |
+|**shippingAmount** | **Double** | Cost for shipping the product |  [optional] |
+|**shippingDescription** | **String** | Client instructions for shipping |  [optional] |
+|**status** | [**StatusEnum**](#StatusEnum) | Order status |  [optional] |
+|**subTotalAmount** | **Double** | Sub total amount |  [optional] |
+|**taxAmount** | **Double** | Tax amount |  [optional] |
+|**totalAmount** | **Double** | Total amount |  [optional] |
+|**whatHappensNextDescription** | **String** | What happens next description |  [optional] |
+
+
+
+## Enum: StatusEnum
+
+| Name | Value |
+|---- | -----|
+| PENDING_PAYMENT | &quot;PendingPayment&quot; |
+| PROCESSING | &quot;Processing&quot; |
+| SHIPPED | &quot;Shipped&quot; |
+| COMPLETED | &quot;Completed&quot; |
+| ON_HOLD | &quot;OnHold&quot; |
+| CANCELLED | &quot;Cancelled&quot; |
+| REFUNDED | &quot;Refunded&quot; |
+| FAILED | &quot;Failed&quot; |
+
+
+

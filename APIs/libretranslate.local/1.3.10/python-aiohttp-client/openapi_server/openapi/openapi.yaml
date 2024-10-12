@@ -1,0 +1,401 @@
+openapi: 3.0.0
+info:
+  title: LibreTranslate
+  version: 1.3.10
+  x-apisguru-categories:
+  - text
+  x-origin:
+  - format: openapi
+    url: https://libretranslate.com/spec
+    version: "3.0"
+  x-providerName: libretranslate.local
+servers:
+- url: http://libretranslate.local
+paths:
+  /detect:
+    post:
+      description: ""
+      operationId: detect_post
+      requestBody:
+        $ref: '#/components/requestBodies/postDetect'
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/detections'
+          description: Detections
+        "400":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/error-response'
+          description: Invalid request
+        "403":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/error-response'
+          description: Banned
+        "429":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/error-slow-down'
+          description: Slow down
+        "500":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/error-response'
+          description: Detection error
+      summary: Detect the language of a single text
+      tags:
+      - translate
+      x-openapi-router-controller: openapi_server.controllers.translate_controller
+      x-codegen-request-body-name: body
+  /frontend/settings:
+    get:
+      description: ""
+      operationId: frontend_settings_get
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/frontend-settings'
+          description: frontend settings
+      summary: Retrieve frontend specific settings
+      tags:
+      - frontend
+      x-openapi-router-controller: openapi_server.controllers.frontend_controller
+  /languages:
+    get:
+      description: ""
+      operationId: languages_get
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/languages'
+          description: List of languages
+      summary: Retrieve list of supported languages
+      tags:
+      - translate
+      x-openapi-router-controller: openapi_server.controllers.translate_controller
+  /suggest:
+    post:
+      description: ""
+      operationId: suggest_post
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              example: es
+              type: string
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/suggest-response'
+          description: Success
+        "403":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/error-response'
+          description: Not authorized
+      summary: Submit a suggestion to improve a translation
+      tags:
+      - feedback
+      x-openapi-router-controller: openapi_server.controllers.feedback_controller
+      x-codegen-request-body-name: body
+  /translate:
+    post:
+      description: ""
+      operationId: translate_post
+      requestBody:
+        $ref: '#/components/requestBodies/postDetect'
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/translate'
+          description: Translated text
+        "400":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/error-response'
+          description: Invalid request
+        "403":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/error-response'
+          description: Banned
+        "429":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/error-slow-down'
+          description: Slow down
+        "500":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/error-response'
+          description: Translation error
+      summary: Translate text from a language to another
+      tags:
+      - translate
+      x-openapi-router-controller: openapi_server.controllers.translate_controller
+      x-codegen-request-body-name: body
+  /translate_file:
+    post:
+      description: ""
+      operationId: translate_file_post
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              example: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+              type: string
+        required: true
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/translate-file'
+          description: Translated file
+        "400":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/error-response'
+          description: Invalid request
+        "403":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/error-response'
+          description: Banned
+        "429":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/error-slow-down'
+          description: Slow down
+        "500":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/error-response'
+          description: Translation error
+      summary: Translate file from a language to another
+      tags:
+      - translate
+      x-openapi-router-controller: openapi_server.controllers.translate_controller
+      x-codegen-request-body-name: body
+components:
+  requestBodies:
+    postDetect:
+      content:
+        application/x-www-form-urlencoded:
+          schema:
+            example: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+            type: string
+  schemas:
+    detections:
+      items:
+        $ref: '#/components/schemas/detections_inner'
+      type: array
+    error-response:
+      example:
+        error: error
+      properties:
+        error:
+          description: Error message
+          title: error
+          type: string
+      title: error-response
+      type: object
+    error-slow-down:
+      example:
+        error: error
+      properties:
+        error:
+          description: Reason for slow down
+          title: error
+          type: string
+      title: error-slow-down
+      type: object
+    frontend-settings:
+      example:
+        charLimit: 0
+        apiKeys: true
+        keyRequired: true
+        language:
+          source:
+            code: code
+            name: name
+          target:
+            code: code
+            name: name
+        suggestions: true
+        frontendTimeout: 6
+        supportedFilesFormat:
+        - supportedFilesFormat
+        - supportedFilesFormat
+      properties:
+        apiKeys:
+          description: Whether the API key database is enabled.
+          title: apiKeys
+          type: boolean
+        charLimit:
+          description: Character input limit for this language (-1 indicates no limit)
+          title: charLimit
+          type: integer
+        frontendTimeout:
+          description: Frontend translation timeout
+          title: frontendTimeout
+          type: integer
+        keyRequired:
+          description: Whether an API key is required.
+          title: keyRequired
+          type: boolean
+        language:
+          $ref: '#/components/schemas/frontend_settings_language'
+        suggestions:
+          description: Whether submitting suggestions is enabled.
+          title: suggestions
+          type: boolean
+        supportedFilesFormat:
+          description: Supported files format
+          items:
+            type: string
+          title: supportedFilesFormat
+          type: array
+      title: frontend-settings
+      type: object
+    languages:
+      items:
+        $ref: '#/components/schemas/languages_inner'
+      type: array
+    suggest-response:
+      example:
+        success: true
+      properties:
+        success:
+          description: Whether submission was successful
+          title: success
+          type: boolean
+      title: suggest-response
+      type: object
+    translate:
+      example:
+        translatedText: translate_translatedText
+      properties:
+        translatedText:
+          $ref: '#/components/schemas/translate_translatedText'
+      title: translate
+      type: object
+    translate-file:
+      example:
+        translatedFileUrl: translatedFileUrl
+      properties:
+        translatedFileUrl:
+          description: Translated file url
+          title: translatedFileUrl
+          type: string
+      title: translate-file
+      type: object
+    detections_inner:
+      example:
+        confidence: 0.6
+        language: en
+      properties:
+        confidence:
+          description: Confidence value
+          example: 0.6
+          format: float
+          maximum: 1
+          minimum: 0
+          title: confidence
+          type: number
+        language:
+          description: Language code
+          example: en
+          title: language
+          type: string
+      title: detections_inner
+      type: object
+    frontend_settings_language_source:
+      example:
+        code: code
+        name: name
+      properties:
+        code:
+          description: Language code
+          title: code
+          type: string
+        name:
+          description: Human-readable language name (in English)
+          title: name
+          type: string
+      title: frontend_settings_language_source
+      type: object
+    frontend_settings_language:
+      example:
+        source:
+          code: code
+          name: name
+        target:
+          code: code
+          name: name
+      properties:
+        source:
+          $ref: '#/components/schemas/frontend_settings_language_source'
+        target:
+          $ref: '#/components/schemas/frontend_settings_language_source'
+      title: frontend_settings_language
+      type: object
+    languages_inner:
+      example:
+        code: code
+        name: name
+        targets:
+        - targets
+        - targets
+      properties:
+        code:
+          description: Language code
+          title: code
+          type: string
+        name:
+          description: Human-readable language name (in English)
+          title: name
+          type: string
+        targets:
+          description: Supported target language codes
+          items:
+            type: string
+          title: targets
+          type: array
+      title: languages_inner
+      type: object
+    translate_translatedText:
+      description: Translated text(s)
+      oneOf:
+      - type: string
+      - items: {}
+        type: array
+      title: translate_translatedText

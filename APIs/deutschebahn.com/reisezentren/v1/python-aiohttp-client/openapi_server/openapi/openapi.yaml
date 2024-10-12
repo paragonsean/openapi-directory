@@ -1,0 +1,331 @@
+openapi: 3.0.0
+info:
+  contact:
+    email: Joachim.Schirrmacher@deutschebahn.com
+    name: DB Systel GmbH
+  description: This REST-API enables you to query information about travel centers
+    in Germany.
+  termsOfService: https://developer.deutschebahn.com/store/
+  title: Reisezentren-API
+  version: v1
+  x-apisguru-categories:
+  - transport
+  - open_data
+  x-logo:
+    backgroundColor: '#FFFFFF'
+    url: https://pbs.twimg.com/profile_images/591140150413025280/Cjcqjl2J.png
+  x-origin:
+  - format: openapi
+    url: https://developer.deutschebahn.com/store/api-docs/DBOpenData/Reisezentren/v1
+    version: "3.0"
+  x-providerName: deutschebahn.com
+  x-serviceName: reisezentren
+servers:
+- url: https://api.deutschebahn.com/reisezentren/v1
+- url: http://api.deutschebahn.com/reisezentren/v1
+tags:
+- name: API
+paths:
+  /reisezentren:
+    get:
+      description: Get all station infos
+      operationId: reisezentren_get
+      parameters:
+      - description: A station name or part of it
+        explode: true
+        in: query
+        name: name
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TravelCenterList'
+          description: List has been created
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: No travel centers could be found matching the given name
+        "416":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Filtering required - specify a name fragment of at least 3
+            characters
+      summary: Get all station infos
+      x-auth-type: Application & Application User
+      x-throttling-tier: Unlimited
+      x-openapi-router-controller: openapi_server.controllers.default_controller
+  /reisezentren/loc/{lat}/{lon}:
+    get:
+      description: Get information about a station near a location
+      operationId: reisezentren_loc_lat_lon_get
+      parameters:
+      - description: Latitude
+        explode: false
+        in: path
+        name: lat
+        required: true
+        schema:
+          format: float
+          type: number
+        style: simple
+      - description: Longitude
+        explode: false
+        in: path
+        name: lon
+        required: true
+        schema:
+          format: float
+          type: number
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TravelCenter'
+          description: A station was found
+      summary: Get information about a station near a location
+      x-auth-type: Application & Application User
+      x-throttling-tier: Unlimited
+      x-openapi-router-controller: openapi_server.controllers.default_controller
+  /reisezentren/loc/{lat}/{lon}/{dist}:
+    get:
+      description: Get stations in a given radius
+      operationId: reisezentren_loc_lat_lon_dist_get
+      parameters:
+      - description: Latitude
+        explode: false
+        in: path
+        name: lat
+        required: true
+        schema:
+          format: float
+          type: number
+        style: simple
+      - description: Longitude
+        explode: false
+        in: path
+        name: lon
+        required: true
+        schema:
+          format: float
+          type: number
+        style: simple
+      - description: Radius
+        explode: false
+        in: path
+        name: dist
+        required: true
+        schema:
+          format: float
+          type: number
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TravelCenter'
+          description: A station was found
+      summary: Get stations in a given radius
+      x-auth-type: Application & Application User
+      x-throttling-tier: Unlimited
+      x-openapi-router-controller: openapi_server.controllers.default_controller
+  /reisezentren/{id}:
+    get:
+      description: Get information about a specific station
+      operationId: reisezentren_id_get
+      parameters:
+      - description: Station id
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/TravelCenter'
+          description: The travel center was found
+        "404":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: No travel center found
+      summary: Get information about a specific station
+      x-auth-type: Application & Application User
+      x-throttling-tier: Unlimited
+      x-openapi-router-controller: openapi_server.controllers.default_controller
+components:
+  schemas:
+    Error:
+      example:
+        code: 5
+        message: message
+      properties:
+        code:
+          format: int32
+          title: code
+          type: integer
+        message:
+          title: message
+          type: string
+      title: Error
+      type: object
+    OpeningTime:
+      items:
+        type: string
+      title: OpeningTime
+      type: array
+    TravelCenter:
+      example:
+        address: address
+        city: city
+        name: name
+        lon: 1.4658129805029452
+        postCode: postCode
+        id: 0
+        type: Reisezentrum
+        openingTimes:
+          thu:
+          - thu
+          - thu
+          tue:
+          - tue
+          - tue
+          sat:
+          - sat
+          - sat
+          wed:
+          - wed
+          - wed
+          fri:
+          - fri
+          - fri
+          mon:
+          - mon
+          - mon
+          sun:
+          - sun
+          - sun
+        lat: 6.027456183070403
+      properties:
+        address:
+          description: Street address of travel center
+          title: address
+          type: string
+        city:
+          description: City of travel center
+          title: city
+          type: string
+        id:
+          description: Identifying number
+          title: id
+          type: integer
+        lat:
+          description: Latitude of travel center location
+          title: lat
+          type: number
+        lon:
+          description: Longitude of travel center location
+          title: lon
+          type: number
+        name:
+          description: Name of travel center
+          title: name
+          type: string
+        openingTimes:
+          $ref: '#/components/schemas/TravelCenter_openingTimes'
+        postCode:
+          description: Post code of travel center
+          title: postCode
+          type: string
+        type:
+          description: Type of travel center
+          enum:
+          - Reisezentrum
+          - Mobility Center
+          title: type
+          type: string
+      title: TravelCenter
+      type: object
+    TravelCenterList:
+      items:
+        $ref: '#/components/schemas/TravelCenter'
+      type: array
+    TravelCenter_openingTimes:
+      description: "Opening times of the travel center, ordered by week day"
+      example:
+        thu:
+        - thu
+        - thu
+        tue:
+        - tue
+        - tue
+        sat:
+        - sat
+        - sat
+        wed:
+        - wed
+        - wed
+        fri:
+        - fri
+        - fri
+        mon:
+        - mon
+        - mon
+        sun:
+        - sun
+        - sun
+      properties:
+        fri:
+          items:
+            type: string
+          title: OpeningTime
+          type: array
+        mon:
+          items:
+            type: string
+          title: OpeningTime
+          type: array
+        sat:
+          items:
+            type: string
+          title: OpeningTime
+          type: array
+        sun:
+          items:
+            type: string
+          title: OpeningTime
+          type: array
+        thu:
+          items:
+            type: string
+          title: OpeningTime
+          type: array
+        tue:
+          items:
+            type: string
+          title: OpeningTime
+          type: array
+        wed:
+          items:
+            type: string
+          title: OpeningTime
+          type: array
+      title: TravelCenter_openingTimes
+      type: object

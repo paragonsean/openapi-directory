@@ -1,0 +1,302 @@
+openapi: 3.0.1
+info:
+  contact:
+    email: michael.binzen@deutschebahn.com
+    name: Michael Binzen
+  description: A RESTful webservice to retrieve data about the operational state of
+    public elevators and escalators in german railway stations.
+  license:
+    name: CC-BY 4.0
+    url: https://creativecommons.org/licenses/by/4.0/
+  termsOfService: http://data.deutschebahn.com/nutzungsbedingungen.html
+  title: FaSta - Station Facilities Status
+  version: "2.1"
+  x-apisguru-categories:
+  - transport
+  - open_data
+  x-logo:
+    backgroundColor: '#FFFFFF'
+    url: https://pbs.twimg.com/profile_images/591140150413025280/Cjcqjl2J.png
+  x-origin:
+  - format: swagger
+    url: https://developer.deutschebahn.com/store/api-docs/DBOpenData/FaSta-Station_Facilities_Status/v2
+    version: "2.0"
+  x-providerName: deutschebahn.com
+  x-serviceName: fasta
+servers:
+- url: https://api.deutschebahn.com/fasta/v2
+- url: http://api.deutschebahn.com/fasta/v2
+security:
+- UserSecurity: []
+paths:
+  /facilities:
+    get:
+      description: Access to public facilities (escalators and elevators) in railway
+        stations
+      operationId: findFacilities
+      parameters:
+      - description: Type of the facility.
+        explode: false
+        in: query
+        name: type
+        schema:
+          default: "[\"ESCALATOR\",\"ELEVATOR\"]"
+          items:
+            enum:
+            - ESCALATOR
+            - ELEVATOR
+            type: string
+          type: array
+          uniqueItems: true
+        style: form
+      - description: Operational state of the facility.
+        explode: false
+        in: query
+        name: state
+        schema:
+          default: "[\"ACTIVE\",\"INACTIVE\",\"UNKNOWN\"]"
+          items:
+            enum:
+            - ACTIVE
+            - INACTIVE
+            - UNKNOWN
+            type: string
+          type: array
+          uniqueItems: true
+        style: form
+      - description: List of equipmentnumbers to select.
+        explode: false
+        in: query
+        name: equipmentnumbers
+        schema:
+          items:
+            format: int64
+            type: integer
+          type: array
+          uniqueItems: true
+        style: form
+      - description: Number of the station the facilities belong to.
+        in: query
+        name: stationnumber
+        schema:
+          format: int64
+          minimum: 1
+          type: integer
+      - description: "Geo coordinate rectangle in WGS84-format to filter facilities\
+          \ by geographical position. Parameters must be 4 numbers exactly as follows:\
+          \ longitudeWest, latitudeSouth, longitudeEast, latitudeNorth."
+        explode: false
+        in: query
+        name: area
+        schema:
+          items:
+            type: string
+          maxItems: 4
+          minItems: 4
+          type: array
+          uniqueItems: false
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/facility'
+                type: array
+          description: facility data
+        "400":
+          content: {}
+          description: The given filters contained invalid values.
+        "406":
+          content: {}
+          description: The requested representation format is not available.
+        "500":
+          content: {}
+          description: A processing error has occurred.
+        "503":
+          content: {}
+          description: The service has been disabled temporarily.
+      x-auth-type: Application & Application User
+      x-throttling-tier: Unlimited
+      x-accepts:
+      - application/json
+  /facilities/{equipmentnumber}:
+    get:
+      description: Returns the facility identified by its equipmentnumber.
+      operationId: getFacilityByEquipmentNumber
+      parameters:
+      - description: Equipmentnumber of the facility to fetch.
+        in: path
+        name: equipmentnumber
+        required: true
+        schema:
+          format: int64
+          minimum: 1
+          type: integer
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/facility'
+          description: Facility data
+        "404":
+          content: {}
+          description: The requested facility could not be found.
+        "406":
+          content: {}
+          description: The requested representation format is not available.
+        "500":
+          content: {}
+          description: A processing error has occurred.
+        "503":
+          content: {}
+          description: The service has been disabled temporarily.
+      x-auth-type: Application & Application User
+      x-throttling-tier: Unlimited
+      x-accepts:
+      - application/json
+  /stations/{stationnumber}:
+    get:
+      description: Returns information about a station (and its corresponding facilities)
+        identified by a stationnumber.
+      operationId: findStationByStationNumber
+      parameters:
+      - description: Number of the station to fetch.
+        in: path
+        name: stationnumber
+        required: true
+        schema:
+          format: int64
+          minimum: 1
+          type: integer
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/station'
+          description: station data
+        "404":
+          content: {}
+          description: The requested station could not be found.
+        "406":
+          content: {}
+          description: Requested representation format is not available.
+        "500":
+          content: {}
+          description: A processing error has occurred.
+        "503":
+          content: {}
+          description: The service has been disabled temporarily.
+      x-auth-type: Application & Application User
+      x-throttling-tier: Unlimited
+      x-accepts:
+      - application/json
+components:
+  schemas:
+    facility:
+      description: A facility provided by this API is either a public elevator or
+        escalator located at a German railway station.
+      example:
+        equipmentnumber: 0
+        geocoordY: 1.4658129805029452
+        geocoordX: 6.027456183070403
+        stateExplanation: stateExplanation
+        description: description
+        stationnumber: 5
+        state: ACTIVE
+        type: ESCALATOR
+        operatorname: operatorname
+      properties:
+        description:
+          description: Textual description of the facility.
+          type: string
+        equipmentnumber:
+          description: Unique identifier of the facility.
+          format: int64
+          type: integer
+        geocoordX:
+          description: Longitude component of geocoordinate in WGS84 format.
+          format: double
+          type: number
+        geocoordY:
+          description: Latitude component of geocoordinate in WGS84 format.
+          format: double
+          type: number
+        operatorname:
+          description: The name of the operator of the facility.
+          type: string
+        state:
+          description: Operational state of the facility.
+          enum:
+          - ACTIVE
+          - INACTIVE
+          - UNKNOWN
+          type: string
+        stateExplanation:
+          description: Detailed description of the state.
+          type: string
+        stationnumber:
+          description: Number of the station the facility belongs to.
+          format: int64
+          type: integer
+        type:
+          description: Type of the facility.
+          enum:
+          - ESCALATOR
+          - ELEVATOR
+          type: string
+      required:
+      - equipmentnumber
+      - state
+      - stationnumber
+      - type
+      type: object
+    station:
+      example:
+        name: name
+        stationnumber: 0
+        facilities:
+        - equipmentnumber: 0
+          geocoordY: 1.4658129805029452
+          geocoordX: 6.027456183070403
+          stateExplanation: stateExplanation
+          description: description
+          stationnumber: 5
+          state: ACTIVE
+          type: ESCALATOR
+          operatorname: operatorname
+        - equipmentnumber: 0
+          geocoordY: 1.4658129805029452
+          geocoordX: 6.027456183070403
+          stateExplanation: stateExplanation
+          description: description
+          stationnumber: 5
+          state: ACTIVE
+          type: ESCALATOR
+          operatorname: operatorname
+      properties:
+        facilities:
+          items:
+            $ref: '#/components/schemas/facility'
+          type: array
+        name:
+          description: Name of the station.
+          type: string
+        stationnumber:
+          description: Unique identifier of the station.
+          format: int64
+          type: integer
+      required:
+      - name
+      - stationnumber
+      type: object
+  securitySchemes:
+    UserSecurity:
+      in: header
+      name: Authorization
+      type: apiKey
+x-original-swagger-version: "2.0"
+

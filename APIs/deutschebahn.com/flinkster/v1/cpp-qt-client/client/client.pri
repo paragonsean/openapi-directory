@@ -1,0 +1,87 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIAddressJO.h \
+    $${PWD}/OAIAreaJO.h \
+    $${PWD}/OAIBookingProposalJO.h \
+    $${PWD}/OAICategoryJO.h \
+    $${PWD}/OAICrs.h \
+    $${PWD}/OAIErrorJO.h \
+    $${PWD}/OAIFeature.h \
+    $${PWD}/OAIFeatureCollection.h \
+    $${PWD}/OAIGeoJsonObject.h \
+    $${PWD}/OAIGeometryJO.h \
+    $${PWD}/OAIJsonCollection.h \
+    $${PWD}/OAIJsonCollectionPriceJO.h \
+    $${PWD}/OAIJsonObject.h \
+    $${PWD}/OAILineString.h \
+    $${PWD}/OAILinkJO.h \
+    $${PWD}/OAILngLatAlt.h \
+    $${PWD}/OAIMultiLineString.h \
+    $${PWD}/OAIMultiPoint.h \
+    $${PWD}/OAIMultiPolygon.h \
+    $${PWD}/OAIPoint.h \
+    $${PWD}/OAIPolygon.h \
+    $${PWD}/OAIPriceJO.h \
+    $${PWD}/OAIProviderJO.h \
+    $${PWD}/OAIRentalObjectJO.h \
+# APIs
+    $${PWD}/OAIAreasApi.h \
+    $${PWD}/OAIBookingproposalsApi.h \
+    $${PWD}/OAICategoriesApi.h \
+    $${PWD}/OAIIndexApi.h \
+    $${PWD}/OAIPricesApi.h \
+    $${PWD}/OAIProvidernetworksApi.h \
+    $${PWD}/OAIProvidersApi.h \
+    $${PWD}/OAIRentalobjectsApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIAddressJO.cpp \
+    $${PWD}/OAIAreaJO.cpp \
+    $${PWD}/OAIBookingProposalJO.cpp \
+    $${PWD}/OAICategoryJO.cpp \
+    $${PWD}/OAICrs.cpp \
+    $${PWD}/OAIErrorJO.cpp \
+    $${PWD}/OAIFeature.cpp \
+    $${PWD}/OAIFeatureCollection.cpp \
+    $${PWD}/OAIGeoJsonObject.cpp \
+    $${PWD}/OAIGeometryJO.cpp \
+    $${PWD}/OAIJsonCollection.cpp \
+    $${PWD}/OAIJsonCollectionPriceJO.cpp \
+    $${PWD}/OAIJsonObject.cpp \
+    $${PWD}/OAILineString.cpp \
+    $${PWD}/OAILinkJO.cpp \
+    $${PWD}/OAILngLatAlt.cpp \
+    $${PWD}/OAIMultiLineString.cpp \
+    $${PWD}/OAIMultiPoint.cpp \
+    $${PWD}/OAIMultiPolygon.cpp \
+    $${PWD}/OAIPoint.cpp \
+    $${PWD}/OAIPolygon.cpp \
+    $${PWD}/OAIPriceJO.cpp \
+    $${PWD}/OAIProviderJO.cpp \
+    $${PWD}/OAIRentalObjectJO.cpp \
+# APIs
+    $${PWD}/OAIAreasApi.cpp \
+    $${PWD}/OAIBookingproposalsApi.cpp \
+    $${PWD}/OAICategoriesApi.cpp \
+    $${PWD}/OAIIndexApi.cpp \
+    $${PWD}/OAIPricesApi.cpp \
+    $${PWD}/OAIProvidernetworksApi.cpp \
+    $${PWD}/OAIProvidersApi.cpp \
+    $${PWD}/OAIRentalobjectsApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

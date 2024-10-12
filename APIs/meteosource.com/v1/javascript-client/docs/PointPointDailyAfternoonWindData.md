@@ -1,0 +1,12 @@
+# InteractiveDocumentationForYourPremiumPlan.PointPointDailyAfternoonWindData
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**angle** | **Number** | Afternoon wind direction angle in degrees, 180° means wind from the south. Unit: degrees | [optional] 
+**dir** | **File** | Afternoon wind direction in &#x60;N&#x60;, &#x60;NNE&#x60;, &#x60;NE&#x60;, ..., &#x60;NNW&#x60; format. Unit: 16dir | [optional] 
+**gusts** | **Number** | Units: metric &#x3D; m/s, us &#x3D; mph, uk &#x3D; mph, ca &#x3D; km/h | [optional] 
+**speed** | **Number** | Units: metric &#x3D; m/s, us &#x3D; mph, uk &#x3D; mph, ca &#x3D; km/h | [optional] 
+
+

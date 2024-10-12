@@ -1,0 +1,99 @@
+
+
+# FlowTag
+
+## Enum
+
+
+* `TRAFFIC_TYPE_UNKNOWN` (value: `"TAG_TRAFFIC_TYPE_UNKNOWN"`)
+
+* `INTERNET_TRAFFIC` (value: `"TAG_INTERNET_TRAFFIC"`)
+
+* `EAST_WEST_TRAFFIC` (value: `"TAG_EAST_WEST_TRAFFIC"`)
+
+* `VM_VM_TRAFFIC` (value: `"TAG_VM_VM_TRAFFIC"`)
+
+* `VM_PHY_TRAFFIC` (value: `"TAG_VM_PHY_TRAFFIC"`)
+
+* `PHY_PHY_TRAFFIC` (value: `"TAG_PHY_PHY_TRAFFIC"`)
+
+* `SRC_IP_VMKNIC` (value: `"TAG_SRC_IP_VMKNIC"`)
+
+* `DST_IP_VMKNIC` (value: `"TAG_DST_IP_VMKNIC"`)
+
+* `SRC_IP_VM` (value: `"TAG_SRC_IP_VM"`)
+
+* `DST_IP_VM` (value: `"TAG_DST_IP_VM"`)
+
+* `SRC_IP_INTERNET` (value: `"TAG_SRC_IP_INTERNET"`)
+
+* `DST_IP_INTERNET` (value: `"TAG_DST_IP_INTERNET"`)
+
+* `SRC_IP_PHYSICAL` (value: `"TAG_SRC_IP_PHYSICAL"`)
+
+* `DST_IP_PHYSICAL` (value: `"TAG_DST_IP_PHYSICAL"`)
+
+* `SAME_HOST` (value: `"TAG_SAME_HOST"`)
+
+* `DIFF_HOST` (value: `"TAG_DIFF_HOST"`)
+
+* `SHARED_SERVICE` (value: `"TAG_SHARED_SERVICE"`)
+
+* `NOT_SHARED_SERVICE` (value: `"TAG_NOT_SHARED_SERVICE"`)
+
+* `NETWORK_SWITCHED` (value: `"TAG_NETWORK_SWITCHED"`)
+
+* `NETWORK_ROUTED` (value: `"TAG_NETWORK_ROUTED"`)
+
+* `NETWORK_UNKNOWN` (value: `"TAG_NETWORK_UNKNOWN"`)
+
+* `SRC_IP_VTEP` (value: `"TAG_SRC_IP_VTEP"`)
+
+* `DST_IP_VTEP` (value: `"TAG_DST_IP_VTEP"`)
+
+* `UNICAST` (value: `"TAG_UNICAST"`)
+
+* `BROADCAST` (value: `"TAG_BROADCAST"`)
+
+* `MULTICAST` (value: `"TAG_MULTICAST"`)
+
+* `SRC_IP_LINK_LOCAL` (value: `"TAG_SRC_IP_LINK_LOCAL"`)
+
+* `DST_IP_LINK_LOCAL` (value: `"TAG_DST_IP_LINK_LOCAL"`)
+
+* `SRC_IP_CLASS_E` (value: `"TAG_SRC_IP_CLASS_E"`)
+
+* `DST_IP_CLASS_E` (value: `"TAG_DST_IP_CLASS_E"`)
+
+* `SRC_IP_CLASS_A_RESERVED` (value: `"TAG_SRC_IP_CLASS_A_RESERVED"`)
+
+* `DST_IP_CLASS_A_RESERVED` (value: `"TAG_DST_IP_CLASS_A_RESERVED"`)
+
+* `INVALID_IP_PACKETS` (value: `"TAG_INVALID_IP_PACKETS"`)
+
+* `NOT_ANALYZED` (value: `"TAG_NOT_ANALYZED"`)
+
+* `GENERIC_INTERNET_SRC_IP` (value: `"TAG_GENERIC_INTERNET_SRC_IP"`)
+
+* `SNAT_DNAT_FLOW` (value: `"TAG_SNAT_DNAT_FLOW"`)
+
+* `MULTINICS` (value: `"TAG_MULTINICS"`)
+
+* `SRC_VC` (value: `"TAG_SRC_VC"`)
+
+* `DST_VC` (value: `"TAG_DST_VC"`)
+
+* `SRC_AWS` (value: `"TAG_SRC_AWS"`)
+
+* `DST_AWS` (value: `"TAG_DST_AWS"`)
+
+* `WITHIN_DC` (value: `"TAG_WITHIN_DC"`)
+
+* `DIFF_DC` (value: `"TAG_DIFF_DC"`)
+
+* `WITHIN_VPC` (value: `"TAG_WITHIN_VPC"`)
+
+* `DIFF_VPC` (value: `"TAG_DIFF_VPC"`)
+
+
+

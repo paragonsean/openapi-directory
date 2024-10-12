@@ -1,0 +1,656 @@
+openapi: 3.0.1
+info:
+  contact:
+    email: developer@opto22.com
+    name: Opto 22
+    url: http://developer.opto22.com
+  description: |
+    #### Revised: 2019-11-21
+
+    ### Overview
+    groov View Public API revision 1.
+  title: groov View Public API
+  version: R4.2a
+  x-apisguru-categories:
+  - iot
+  x-logo:
+    url: https://twitter.com/opto22/profile_image?size=original
+  x-origin:
+  - format: swagger
+    url: http://developer.opto22.com/static/generated/groov-rest-api/swagger.yaml
+    version: "2.0"
+  x-providerName: opto22.com
+  x-serviceName: groov
+servers:
+- url: /api
+tags:
+- description: Provides information about groov View itself.
+  name: info
+- description: Provides information about the user you are authenticated as.
+  name: whoami
+- description: Provides access to the Data Store devices and tags.
+  name: data-store
+- description: Access to groov View's event log.
+  name: logging
+paths:
+  /info:
+    get:
+      description: Get information about groov View. No authorization required.
+      operationId: groovInfo
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/groovInfo'
+          description: OK
+      tags:
+      - info
+      x-accepts:
+      - application/json
+  /v1/data-store/devices:
+    get:
+      description: List devices available in the data store. Authorized for admins
+        and editors.
+      operationId: listDevices
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/dataStoreDevice'
+                type: array
+          description: OK
+      security:
+      - api_key: []
+      tags:
+      - data-store
+      x-accepts:
+      - application/json
+  /v1/data-store/devices/{id}/tags:
+    get:
+      description: List tags of the given device. Authorized for admins and editors.
+      operationId: listDeviceTags
+      parameters:
+      - description: ID of the device to use.
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int64
+          type: number
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/tagDefinition'
+                type: array
+          description: OK
+      security:
+      - api_key: []
+      tags:
+      - data-store
+      x-accepts:
+      - application/json
+  /v1/data-store/read:
+    post:
+      description: Read selected tags from the data store. Authorized for admins and
+        editors.
+      operationId: batchReadTags
+      requestBody:
+        content:
+          application/json:
+            schema:
+              items:
+                $ref: '#/components/schemas/tagReference'
+              type: array
+        description: Tag references for the tags to read.
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/tagValue'
+                type: array
+          description: OK
+      security:
+      - api_key: []
+      tags:
+      - data-store
+      x-codegen-request-body-name: tags
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+  /v1/data-store/read/{id}:
+    get:
+      description: Read the current value of a single tag. Authorized for admins and
+        editors.
+      operationId: readTag
+      parameters:
+      - description: ID of the tag to read.
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int64
+          type: number
+      - description: Table index to start reading at.
+        in: query
+        name: index
+        schema:
+          default: 0.0
+          format: int32
+          type: number
+      - description: Number of elements to read from a table.
+        in: query
+        name: count
+        schema:
+          default: 1.0
+          format: int32
+          type: number
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tagValue'
+          description: OK
+      security:
+      - api_key: []
+      tags:
+      - data-store
+      x-accepts:
+      - application/json
+  /v1/data-store/tags:
+    get:
+      description: List all data store tags defined in the project. Authorized for
+        admins and editors.
+      operationId: listAllTags
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/tagDefinition'
+                type: array
+          description: OK
+      security:
+      - api_key: []
+      tags:
+      - data-store
+      x-accepts:
+      - application/json
+  /v1/data-store/write/{id}:
+    post:
+      description: Writes a new value to the given tag. Authorized for admins and
+        editors.
+      operationId: writeTag
+      parameters:
+      - description: ID of the tag to write.
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int64
+          type: number
+      - description: "Value to write to the tag. Must be a string, number, or boolean."
+        in: query
+        name: value
+        required: true
+        schema:
+          type: string
+      - description: "For array tags, the index to write the value to."
+        in: query
+        name: index
+        schema:
+          default: 0.0
+          format: int32
+          type: number
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tagValue'
+          description: OK
+      security:
+      - api_key: []
+      tags:
+      - data-store
+      x-accepts:
+      - application/json
+  /v1/logging/groovLogs.json:
+    get:
+      description: Downloads the complete groov View log in JSON format. Added in
+        groov View R4.2a.
+      operationId: downloadLogJson
+      parameters:
+      - description: How verbose the log should be.
+        in: query
+        name: minimum-log-level
+        schema:
+          default: INFO
+          enum:
+          - TRACE
+          - DEBUG
+          - INFO
+          - WARN
+          - ERROR
+          - FATAL
+          type: string
+      - description: "The earliest time to include in the log. Value is milliseconds\
+          \ since January 1, 1970 UTC."
+        in: query
+        name: last-timestamp
+        schema:
+          default: 0.0
+          format: int64
+          type: number
+      - description: Optional string to search for in the log.
+        in: query
+        name: filter
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                format: binary
+                type: string
+          description: Downloaded log file.
+      security:
+      - api_key: []
+      tags:
+      - logging
+      x-accepts:
+      - application/json
+  /v1/logging/groovLogs.txt:
+    get:
+      description: Downloads the complete groov View log. Added in groov View R4.2a.
+      operationId: downloadLogText
+      parameters:
+      - description: How verbose the log should be.
+        in: query
+        name: minimum-log-level
+        schema:
+          default: INFO
+          enum:
+          - TRACE
+          - DEBUG
+          - INFO
+          - WARN
+          - ERROR
+          - FATAL
+          type: string
+      - description: "The earliest time to include in the log. Value is milliseconds\
+          \ since January 1, 1970 UTC."
+        in: query
+        name: last-timestamp
+        schema:
+          default: 0.0
+          format: int64
+          type: number
+      - description: Optional string to search for in the log.
+        in: query
+        name: filter
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                format: binary
+                type: string
+          description: Downloaded log file.
+      security:
+      - api_key: []
+      tags:
+      - logging
+      x-accepts:
+      - application/json
+  /whoami:
+    get:
+      description: "Get information about the user you are authenticated as. Authorized\
+        \ for admins, editors, operators, and kiosk."
+      operationId: whoAmI
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: OK
+      security:
+      - api_key: []
+      tags:
+      - whoami
+      x-accepts:
+      - application/json
+components:
+  schemas:
+    User:
+      example:
+        role: role
+        apiKey: apiKey
+        groups:
+        - 0.8008281904610115
+        - 0.8008281904610115
+        id: 6.027456183070403
+        needsPasswordChange: true
+        email: email
+        username: username
+      properties:
+        apiKey:
+          type: string
+        email:
+          type: string
+        groups:
+          items:
+            format: int64
+            type: number
+          type: array
+        id:
+          format: int64
+          type: number
+        needsPasswordChange:
+          description: True if your password is expired
+          type: boolean
+        role:
+          type: string
+        username:
+          type: string
+      required:
+      - apiKey
+      - email
+      - groups
+      - id
+      - needsPasswordChange
+      - role
+      - username
+      type: object
+    booleanArrayValue:
+      allOf:
+      - $ref: '#/components/schemas/tagValue'
+      - properties:
+          value:
+            items:
+              type: boolean
+            type: array
+        required:
+        - value
+        type: object
+    booleanValue:
+      allOf:
+      - $ref: '#/components/schemas/tagValue'
+      - properties:
+          value:
+            type: boolean
+        required:
+        - value
+        type: object
+    dataStoreDevice:
+      allOf:
+      - $ref: '#/components/schemas/device'
+      - properties:
+          id:
+            format: int64
+            type: number
+          name:
+            type: string
+        required:
+        - id
+        - name
+        type: object
+      description: A Data Store device within a groov View project
+      example:
+        deviceType: deviceType
+        name: name
+        id: 0.8008281904610115
+    device:
+      description: A generic device within a groov View project
+      discriminator:
+        propertyName: deviceType
+      properties:
+        deviceType:
+          type: string
+      required:
+      - deviceType
+      type: object
+    errorValue:
+      allOf:
+      - $ref: '#/components/schemas/tagValue'
+      - properties:
+          errorCode:
+            type: string
+          errorMessage:
+            type: string
+        required:
+        - errorCode
+        - errorMessage
+        type: object
+    floatArrayValue:
+      allOf:
+      - $ref: '#/components/schemas/tagValue'
+      - properties:
+          value:
+            items:
+              format: float
+              type: number
+            type: array
+        required:
+        - value
+        type: object
+    floatValue:
+      allOf:
+      - $ref: '#/components/schemas/tagValue'
+      - properties:
+          value:
+            format: float
+            type: number
+        required:
+        - value
+        type: object
+    groovInfo:
+      example:
+        groovAdminVersion: groovAdminVersion
+        shouldShowTrialDialog: true
+        currentApiVersion: 0.8008281904610115
+        minimumApiVersion: 6.027456183070403
+        groovNodeRedVersion: groovNodeRedVersion
+        isLicenseValid: true
+        licenseType: licenseType
+        groovBoxDescription: groovBoxDescription
+        isGroovBoxSetup: true
+        timezoneOffset: 1.4658129805029452
+        warVersion: warVersion
+        trialPeriodExpiration: 5.962133916683182
+        isGroovBox: true
+        timezoneName: timezoneName
+      properties:
+        currentApiVersion:
+          description: The current API version number
+          format: int32
+          type: number
+        groovAdminVersion:
+          description: The groov Admin version number if running on a groov hardware
+            box
+          type: string
+        groovBoxDescription:
+          description: "The groov box type (GROOV-AT1, GROOV-AR1, or GRV-EPIC-PR1)"
+          type: string
+        groovNodeRedVersion:
+          description: The node red version number if running on a GROOV-AR1 which
+            has node red installed
+          type: string
+        isGroovBox:
+          description: True if running on a groov hardware box
+          type: boolean
+        isGroovBoxSetup:
+          description: True if running on a groov hardware box which has been setup
+            or true if running on groov Server for Windows
+          type: boolean
+        isLicenseValid:
+          description: "True if a license is installed, valid, and not expired"
+          type: boolean
+        licenseType:
+          description: "The license type (NONE, MAINTENANCE_EXPIRED, or VALID)"
+          type: string
+        minimumApiVersion:
+          description: The minimum supported API version number
+          format: int32
+          type: number
+        shouldShowTrialDialog:
+          description: True if the trial dialog pops up when logging into groov View
+          type: boolean
+        timezoneName:
+          description: The server's timezone
+          type: string
+        timezoneOffset:
+          description: The server's timezone offset from UTC in minutes
+          format: int32
+          type: number
+        trialPeriodExpiration:
+          description: Milliseconds until trial period is expired
+          format: int64
+          type: number
+        warVersion:
+          description: The version number of the war
+          type: string
+      required:
+      - currentApiVersion
+      - groovAdminVersion
+      - groovBoxDescription
+      - groovNodeRedVersion
+      - isGroovBox
+      - isGroovBoxSetup
+      - isLicenseValid
+      - licenseType
+      - minimumApiVersion
+      - shouldShowTrialDialog
+      - timezoneName
+      - timezoneOffset
+      - trialPeriodExpiration
+      - warVersion
+      type: object
+    integerArrayValue:
+      allOf:
+      - $ref: '#/components/schemas/tagValue'
+      - properties:
+          value:
+            items:
+              format: int64
+              type: number
+            type: array
+        required:
+        - value
+        type: object
+    integerValue:
+      allOf:
+      - $ref: '#/components/schemas/tagValue'
+      - properties:
+          value:
+            format: int64
+            type: number
+        required:
+        - value
+        type: object
+    stringArrayValue:
+      allOf:
+      - $ref: '#/components/schemas/tagValue'
+      - properties:
+          value:
+            items:
+              type: string
+            type: array
+        required:
+        - value
+        type: object
+    stringValue:
+      allOf:
+      - $ref: '#/components/schemas/tagValue'
+      - properties:
+          value:
+            type: string
+        required:
+        - value
+        type: object
+    tagDefinition:
+      example:
+        dataType: boolean
+        length: 1.4658129805029452
+        name: name
+        id: 6.027456183070403
+        deviceId: 0.8008281904610115
+      properties:
+        dataType:
+          enum:
+          - boolean
+          - integer
+          - float
+          - string
+          - booleanArray
+          - integerArray
+          - floatArray
+          - stringArray
+          type: string
+        deviceId:
+          format: int64
+          type: number
+        id:
+          format: int64
+          type: number
+        length:
+          format: int32
+          type: number
+        name:
+          type: string
+      required:
+      - dataType
+      - deviceId
+      - id
+      - name
+      type: object
+    tagReference:
+      properties:
+        count:
+          description: "For array tags, the number of elements to read, starting at\
+            \ index."
+          format: int32
+          type: number
+        id:
+          description: Unique id for the tag.
+          format: int64
+          type: number
+        index:
+          description: "For array tags, the index to start reading at."
+          format: int32
+          type: number
+      required:
+      - id
+      type: object
+    tagValue:
+      discriminator:
+        propertyName: valueType
+      example:
+        valueType: valueType
+      properties:
+        valueType:
+          type: string
+      required:
+      - valueType
+      type: object
+  securitySchemes:
+    api_key:
+      in: query
+      name: api_key
+      type: apiKey
+x-original-swagger-version: "2.0"
+

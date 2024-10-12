@@ -1,0 +1,1390 @@
+openapi: 3.0.0
+info:
+  contact:
+    email: support@seven.io
+    name: Support
+    url: https://seven.io/en/company/contact
+  description: seven.io Swagger API. Get your API-Key now at seven.io.
+  license:
+    name: Licensed by Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: https://seven.io/en/company/terms/
+  title: seven.io API
+  version: 1.0.0
+  x-apisguru-categories:
+  - telecom
+  x-logo:
+    url: https://www.sms77.io/wp-content/uploads/integrationen_sms77_logo.png
+  x-origin:
+  - format: openapi
+    url: https://raw.githubusercontent.com/sms77io/api-schemes/master/json/openapi.json
+    version: "3.0"
+  x-providerName: sms77.io
+externalDocs:
+  description: Find out more about the seven.io SMS gateway.
+  url: https://seven.io/en/docs/gateway/http-api
+servers:
+- url: https://gateway.seven.io/api
+security:
+- ApiKeyAuth: []
+tags:
+- externalDocs:
+    description: Retrieve analytics
+    url: https://www.seven.io/en/docs/gateway/http-api/analytics
+  name: analytics
+- externalDocs:
+    description: Send one/multiple SMS
+    url: https://seven.io/en/docs/gateway/http-api/sms-disptach
+  name: sms
+- externalDocs:
+    description: Retrieve account balance
+    url: https://seven.io/en/docs/gateway/http-api/credit-balance
+  name: balance
+- externalDocs:
+    description: Retrieve/edit/delete contact(s)
+    url: https://seven.io/en/docs/gateway/http-api/contacts
+  name: contacts
+- externalDocs:
+    description: Retrieve pricing information
+    url: https://seven.io/en/docs/gateway/http-api/pricing
+  name: pricing
+- externalDocs:
+    description: Retrieve the status for a sent SMS with the given ID
+    url: https://seven.io/en/docs/gateway/http-api/status-reports
+  name: status
+- externalDocs:
+    description: Validate caller ID for voice Voice API
+    url: https://seven.io/en/docs/gateway/http-api/caller-ids
+  name: validate_for_voice
+- externalDocs:
+    description: Issue voice call to phone number
+    url: https://seven.io/en/docs/gateway/http-api/voice
+  name: voice
+- externalDocs:
+    description: "Get number format, CNAM,- HLR- or MNP information for given phone\
+      \ number"
+    url: https://seven.io/en/docs/gateway/http-api
+  name: lookup
+- externalDocs:
+    description: "Create, view and delete webhooks"
+    url: https://www.seven.io/en/docs/gateway/http-api/webhooks/
+  name: hooks
+paths:
+  /analytics:
+    get:
+      operationId: Analytics
+      parameters:
+      - description: "Start date of the statistics in the format YYYY-MM-DD. By default,\
+          \ the date of 30 days ago is set."
+        explode: true
+        in: query
+        name: start
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: "End date of the statistics in the format YYYY-MM-DD. By default,\
+          \ the current day."
+        explode: true
+        in: query
+        name: end
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Shows only data of a specific label.
+        explode: true
+        in: query
+        name: label
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: "Receive the data only for the main account, all your (sub-)accounts\
+          \ or only for specific subaccounts."
+        explode: true
+        in: query
+        name: subaccounts
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Defines the grouping of the data.
+        explode: true
+        in: query
+        name: group_by
+        required: false
+        schema:
+          enum:
+          - date
+          - label
+          - subaccount
+          - country
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Analytics_200_response'
+          description: OK
+      tags:
+      - analytics
+      x-accepts:
+      - application/json
+  /balance:
+    get:
+      operationId: Balance
+      responses:
+        "200":
+          content:
+            text/plain:
+              schema:
+                example: 12.34
+                format: float
+                type: number
+          description: OK
+      tags:
+      - balance
+      x-accepts:
+      - text/plain
+  /contacts:
+    get:
+      operationId: ContactsGet
+      parameters:
+      - description: Determines the action to execute.
+        explode: true
+        in: query
+        name: action
+        required: true
+        schema:
+          enum:
+          - read
+          type: string
+        style: form
+      - description: Defines whether to return the response as JSON or CSV separated
+          by semicolon.
+        explode: true
+        in: query
+        name: json
+        required: false
+        schema:
+          default: 0
+          enum:
+          - 0
+          - 1
+          type: number
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                example: '"1";"Tommy Tester";"0049179876543210"'
+                type: string
+            text/csv:
+              schema:
+                example: '"1";"Tommy Tester";"0049179876543210"'
+                type: string
+          description: OK (CSV)
+      tags:
+      - contacts
+      x-accepts:
+      - application/json
+      - text/csv
+    post:
+      operationId: ContactsPOST
+      parameters:
+      - description: Determines the action to execute.
+        explode: true
+        in: query
+        name: action
+        required: true
+        schema:
+          enum:
+          - del
+          - write
+          type: string
+        style: form
+      - description: Defines whether to return the response as JSON or CSV separated
+          by semicolon.
+        explode: true
+        in: query
+        name: json
+        required: false
+        schema:
+          default: 0
+          enum:
+          - 0
+          - 1
+          type: number
+        style: form
+      - description: The contact ID for editing/deletion.
+        explode: true
+        in: query
+        name: id
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: The contacts name.
+        explode: true
+        in: query
+        name: nick
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: The contacts phone number.
+        explode: true
+        in: query
+        name: empfaenger
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: The contacts email address.
+        explode: true
+        in: query
+        name: email
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                example: "152"
+                type: string
+            text/plain:
+              schema:
+                example: "152"
+                type: string
+          description: OK
+      tags:
+      - contacts
+      x-accepts:
+      - application/json
+      - text/plain
+  /hooks:
+    get:
+      operationId: HooksGet
+      parameters:
+      - description: Determines the action to execute.
+        explode: true
+        in: query
+        name: action
+        required: true
+        schema:
+          enum:
+          - read
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HooksGet_200_response'
+          description: OK
+      tags:
+      - hooks
+      x-accepts:
+      - application/json
+    post:
+      operationId: HooksPOST
+      parameters:
+      - description: Determines the action to execute.
+        explode: true
+        in: query
+        name: action
+        required: true
+        schema:
+          enum:
+          - subscribe
+          - unsubscribe
+          type: string
+        style: form
+      - description: The Webhook ID you wish to unsubscribe.
+        explode: true
+        in: query
+        name: id
+        required: false
+        schema:
+          type: integer
+        style: form
+      - description: Target URL of your Webhook.
+        explode: true
+        in: query
+        name: target_url
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Type of event for which you would like to receive a webhook.
+        explode: true
+        in: query
+        name: event_type
+        required: false
+        schema:
+          enum:
+          - all
+          - sms_mo
+          - dlr
+          - voice_status
+          type: string
+        style: form
+      - description: Request method in which you want to receive the webhook.
+        explode: true
+        in: query
+        name: request_method
+        required: false
+        schema:
+          default: POST
+          enum:
+          - POST
+          - JSON
+          - GET
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HooksPOST_200_response'
+          description: Hook subscribed
+      tags:
+      - hooks
+      x-accepts:
+      - application/json
+  /lookup:
+    post:
+      operationId: Lookup
+      parameters:
+      - description: "Allowed values are \"cnam\", \"format\", \"hlr\" and \"mnp\"\
+          ."
+        explode: true
+        in: query
+        name: type
+        required: true
+        schema:
+          type: string
+        style: form
+      - description: The phone number to look up.
+        explode: false
+        in: query
+        name: number
+        required: true
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: Determines whether the response shall be returned in JSON format.
+          Does not work with type "format".
+        explode: true
+        in: query
+        name: json
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              examples:
+                response:
+                  value:
+                    schema:
+                      properties:
+                        carrier:
+                          description: The (former) mobile carrier the number got
+                            issued to on initial number release.
+                          type: string
+                        code:
+                          enum:
+                          - 100
+                          - 202
+                          - 500
+                          - 600
+                          type: number
+                        country_code:
+                          description: The area code of the number belonging country.
+                            This value is numeric.
+                          type: string
+                        country_code_iso3:
+                          type: string
+                        country_iso:
+                          description: The two digit ISO 3166-1 alpha-2 country code.
+                          type: string
+                        country_name:
+                          description: The full english name if the number belonging
+                            country.
+                          type: string
+                        country_prefix:
+                          type: string
+                        current_carrier:
+                          schema:
+                            $ref: '#/components/schemas/Carrier'
+                        international:
+                          description: The number formatted accordingly to the E.164
+                            standard.
+                          type: string
+                        international_format_number:
+                          type: string
+                        international_formatted:
+                          description: The number formatted accordingly to the E.164
+                            standard in a human readable format.
+                          type: string
+                        lookup_outcome:
+                          type: string
+                        lookup_outcome_message:
+                          type: string
+                        name:
+                          description: The carrier name
+                          type: string
+                        national:
+                          description: The number in a domestic number format.
+                          type: string
+                        national_format_number:
+                          type: string
+                        number:
+                          description: The number formatted accordingly to the E.164
+                            standard in a human readable format.
+                          type: string
+                        original_carrier:
+                          schema:
+                            $ref: '#/components/schemas/Carrier'
+                        ported:
+                          enum:
+                          - unknown
+                          - ported
+                          - not_ported
+                          - assumed_not_ported
+                          - assumed_ported
+                          type: string
+                        reachable:
+                          enum:
+                          - unknown
+                          - reachable
+                          - undeliverable
+                          - absent
+                          - bad_number
+                          - blacklisted
+                          type: string
+                        roaming:
+                          schema:
+                            $ref: '#/components/schemas/Roaming'
+                        status:
+                          type: string
+                        success:
+                          description: "Determines if the request was successful.,"
+                          type: boolean
+                        valid_number:
+                          type: string
+                      type: object
+          description: OK
+      tags:
+      - lookup
+      x-accepts:
+      - application/json
+  /lookup/cnam:
+    post:
+      operationId: LookupCnam
+      parameters:
+      - description: The phone number to look up.
+        explode: false
+        in: query
+        name: number
+        required: true
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              examples:
+                response:
+                  value:
+                    schema:
+                      properties:
+                        code:
+                          description: The API status code
+                          enum:
+                          - 100
+                          type: number
+                        name:
+                          description: The country for given phone number
+                          type: string
+                        number:
+                          description: The phone number that was looked up
+                          type: string
+                        success:
+                          description: Whether the request was successful or not
+                          enum:
+                          - true
+                          - false
+                          type: string
+                      type: object
+          description: OK
+      tags:
+      - lookup
+      x-accepts:
+      - application/json
+  /lookup/format:
+    post:
+      operationId: LookupFormat
+      parameters:
+      - description: The phone number to look up.
+        explode: false
+        in: query
+        name: number
+        required: true
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              examples:
+                response:
+                  value:
+                    schema:
+                      properties:
+                        carrier:
+                          description: Network operator to whom the call number was
+                            originally assigned.
+                          type: string
+                        country_code:
+                          description: Country code of the queried number – international
+                            without leading “00”.
+                          type: string
+                        country_iso:
+                          description: Country code of the phone number in the format
+                            ISO 3166-1 alpha-2 (two letters).
+                          type: string
+                        country_name:
+                          description: The full name of the country of the queried
+                            phone number in English.
+                          type: string
+                        international:
+                          description: International E.164 format of the queried phone
+                            number.
+                          type: string
+                        international_formatted:
+                          description: The international number.
+                          type: string
+                        national:
+                          description: National format of the queried phone number.
+                          type: string
+                        network_type:
+                          description: The type of network for the requested number.
+                          type: string
+                        success:
+                          description: Whether the request was successful or not.
+                          type: boolean
+                      type: object
+          description: OK
+      tags:
+      - lookup
+      x-accepts:
+      - application/json
+  /lookup/hlr:
+    post:
+      operationId: LookupHlr
+      parameters:
+      - description: The phone number to look up.
+        explode: false
+        in: query
+        name: number
+        required: true
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              examples:
+                response:
+                  value:
+                    schema:
+                      properties:
+                        country_code:
+                          description: The area code of the number belonging country.
+                            This value is numeric.
+                          type: string
+                        country_code_iso3:
+                          type: string
+                        country_name:
+                          description: The full english name if the number belonging
+                            country.
+                          type: string
+                        country_prefix:
+                          type: string
+                        current_carrier:
+                          schema:
+                            $ref: '#/components/schemas/Carrier'
+                        gsm_code:
+                          type: string
+                        gsm_message:
+                          type: string
+                        international_format_number:
+                          type: string
+                        international_formatted:
+                          description: The number formatted accordingly to the E.164
+                            standard in a human readable format.
+                          type: string
+                        lookup_outcome:
+                          type: string
+                        lookup_outcome_message:
+                          type: string
+                        national_format_number:
+                          type: string
+                        original_carrier:
+                          schema:
+                            $ref: '#/components/schemas/Carrier'
+                        ported:
+                          enum:
+                          - unknown
+                          - ported
+                          - not_ported
+                          - assumed_not_ported
+                          - assumed_ported
+                          type: string
+                        reachable:
+                          enum:
+                          - unknown
+                          - reachable
+                          - undeliverable
+                          - absent
+                          - bad_number
+                          - blacklisted
+                          type: string
+                        roaming:
+                          schema:
+                            $ref: '#/components/schemas/Roaming'
+                        status:
+                          type: boolean
+                        status_message:
+                          type: string
+                        valid_number:
+                          type: string
+                      type: object
+          description: OK
+      tags:
+      - lookup
+      x-accepts:
+      - application/json
+  /lookup/mnp:
+    post:
+      operationId: LookupMnp
+      parameters:
+      - description: The phone number to look up.
+        explode: false
+        in: query
+        name: number
+        required: true
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: Determines whether the response shall be returned in JSON format.
+        explode: true
+        in: query
+        name: json
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              examples:
+                response:
+                  value:
+                    schema:
+                      properties:
+                        code:
+                          enum:
+                          - 100
+                          - 202
+                          - 500
+                          - 600
+                          type: number
+                        mnp:
+                          schema:
+                            $ref: '#/components/schemas/Mnp'
+                        price:
+                          type: float
+                        success:
+                          description: "Determines if the request was successful.,"
+                          type: boolean
+                      type: object
+          description: OK
+      tags:
+      - lookup
+      x-accepts:
+      - application/json
+  /pricing:
+    get:
+      operationId: Pricing
+      parameters:
+      - description: "The countries ISO code to get pricings for. Allowed values are\
+          \ de, fr, at. Omit to show pricings for all channels."
+        explode: true
+        in: query
+        name: country
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Determines the response format. Allowed values are json and csv.
+          The default value is json.
+        explode: true
+        in: query
+        name: format
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              examples:
+                response:
+                  value:
+                    schema:
+                      properties:
+                        countCountries:
+                          description: The number if countries in total.
+                          type: integer
+                        countNetworks:
+                          description: The number of total networks.
+                          type: integer
+                        countries:
+                          items:
+                            properties:
+                              countryCode:
+                                description: The countries ISO code.
+                                type: string
+                              countryName:
+                                description: The countries full name.
+                                type: string
+                              countryPrefix:
+                                description: The countries number prefix.
+                                type: string
+                              networks:
+                                items:
+                                  properties:
+                                    comment:
+                                      description: Any information which might be
+                                        of interest.
+                                      type: string
+                                    features:
+                                      description: The features supported by this
+                                        network.
+                                      items:
+                                        type: string
+                                      type: array
+                                    mcc:
+                                      description: The mobile country code.
+                                      type: string
+                                    mncs:
+                                      description: The mobile network code(s).
+                                      items:
+                                        type: string
+                                      type: array
+                                    networkName:
+                                      description: The full name of the carrier.
+                                      type: string
+                                    price:
+                                      format: float
+                                      type: number
+                                  type: object
+                                type: array
+                            type: object
+                          type: array
+                      type: object
+            text/csv:
+              examples:
+                response:
+                  value: |
+                    countryCode,countryName,countryPrefix,mcc,mncs,networkName,price,features,comment "DE";"Germany";"49";"262";"15";" (Airdata)";"0.075";"";""
+          description: OK
+      tags:
+      - pricing
+      x-accepts:
+      - application/json
+      - text/csv
+  /sms:
+    post:
+      operationId: Sms
+      parameters:
+      - description: The actual text message to send.
+        explode: true
+        in: query
+        name: text
+        required: true
+        schema:
+          type: string
+        style: form
+      - description: The recipient number or group name.
+        explode: true
+        in: query
+        name: to
+        required: true
+        schema:
+          type: string
+        style: form
+      - description: Set a custom sender name.
+        explode: true
+        in: query
+        name: from
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Identifier to return in callbacks.
+        explode: true
+        in: query
+        name: foreign_id
+        required: false
+        schema:
+          pattern: "^[A-Z|a-z|0-9|.|\\-|_|@]+"
+          type: string
+        style: form
+      - description: A custom label.
+        explode: true
+        in: query
+        name: label
+        required: false
+        schema:
+          pattern: "^[A-Z|a-z|0-9|.|\\-|_|@]+"
+          type: string
+        style: form
+      - description: A custom User Data Header.
+        explode: true
+        in: query
+        name: udh
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Date/Time for delayed dispatch.
+        explode: true
+        in: query
+        name: delay
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Disable message sending.
+        explode: true
+        in: query
+        name: debug
+        required: false
+        schema:
+          default: 0
+          enum:
+          - 1
+          - 0
+          type: number
+        style: form
+      - description: Enable sending of duplicated messages within 180 seconds.
+        explode: true
+        in: query
+        name: no_reload
+        required: false
+        schema:
+          default: 0
+          enum:
+          - 1
+          - 0
+          type: number
+        style: form
+      - description: Force unicode encoding. Reduces sms length to 70 chars.
+        explode: true
+        in: query
+        name: unicode
+        required: false
+        schema:
+          default: 0
+          enum:
+          - 1
+          - 0
+          type: number
+        style: form
+      - description: Send as flash.
+        explode: true
+        in: query
+        name: flash
+        required: false
+        schema:
+          default: 0
+          enum:
+          - 1
+          - 0
+          type: number
+        style: form
+      - description: Force UTF8 encoding.
+        explode: true
+        in: query
+        name: utf8
+        required: false
+        schema:
+          default: 0
+          enum:
+          - 1
+          - 0
+          type: number
+        style: form
+      - description: Attach message details to response.
+        explode: true
+        in: query
+        name: details
+        required: false
+        schema:
+          default: 0
+          enum:
+          - 1
+          - 0
+          type: number
+        style: form
+      - description: Attach message ID to second row in a text response.
+        explode: true
+        in: query
+        name: return_msg_id
+        required: false
+        schema:
+          default: 0
+          enum:
+          - 1
+          - 0
+          type: number
+        style: form
+      - description: Return a detailed JSON response.
+        explode: true
+        in: query
+        name: json
+        required: false
+        schema:
+          default: 0
+          enum:
+          - 1
+          - 0
+          type: number
+        style: form
+      - description: Enable performance tracking for found URLs.
+        explode: true
+        in: query
+        name: performance_tracking
+        required: false
+        schema:
+          default: 0
+          enum:
+          - 1
+          - 0
+          type: number
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Sms_200_response'
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/Sms_200_response'
+          description: OK
+      tags:
+      - sms
+      x-accepts:
+      - application/json
+      - text/plain
+  /status:
+    get:
+      operationId: Status
+      parameters:
+      - description: The ID from the SMS.
+        explode: true
+        in: query
+        name: msg_id
+        required: true
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            text/plain:
+              schema:
+                example: |
+                  DELIVERED
+                  2020-01-09 15:41:30.656
+                type: string
+          description: OK
+      tags:
+      - status
+      x-accepts:
+      - text/plain
+  /validate_for_voice:
+    post:
+      operationId: ValidateForVoice
+      parameters:
+      - description: "Determines the recipient. Can only be a number, not a contact\
+          \ from your address book."
+        explode: true
+        in: query
+        name: number
+        required: true
+        schema:
+          type: string
+        style: form
+      - description: The callback URL which gets queried right after validation.
+        explode: true
+        in: query
+        name: callback
+        required: false
+        schema:
+          format: uri
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidateForVoice_200_response'
+          description: OK
+      tags:
+      - validate_for_voice
+      x-accepts:
+      - application/json
+  /voice:
+    post:
+      operationId: Voice
+      parameters:
+      - description: Determines the receiver. Must be a valid phone number or contact
+          from the address book.
+        explode: true
+        in: query
+        name: to
+        required: true
+        schema:
+          type: string
+        style: form
+      - description: The text to convert to a voice message. Accepts valid XML too.
+        explode: true
+        in: query
+        name: text
+        required: true
+        schema:
+          maxLength: 10000
+          type: string
+        style: form
+      - description: Decides whether the parameter "text" is plain text or XML. The
+          default value is 0.
+        explode: true
+        in: query
+        name: xml
+        required: false
+        schema:
+          enum:
+          - 1
+          - 0
+          type: number
+        style: form
+      - description: Sets the sender. Must be a verified sender. Use an inbound number
+          of yours or one of ours.
+        explode: true
+        in: query
+        name: from
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            text/plain:
+              schema:
+                example: |
+                  100
+                  123456789
+                  0
+                type: string
+          description: OK
+      tags:
+      - voice
+      x-accepts:
+      - text/plain
+components:
+  schemas:
+    Carrier:
+      properties:
+        country:
+          type: string
+        name:
+          type: string
+        network_code:
+          type: string
+        network_type:
+          enum:
+          - fixed_line
+          - fixed_line_or_mobile
+          - mobile
+          - pager
+          - personal_number
+          - premium_rate
+          - shared_cost
+          - toll_free
+          - uan
+          - unknown
+          - voicemail
+          - voip
+          type: string
+      type: object
+    Mnp:
+      properties:
+        country:
+          type: string
+        international_formatted:
+          type: string
+        isPorted:
+          type: boolean
+        mccmnc:
+          type: string
+        national_format:
+          type: string
+        network:
+          type: string
+        number:
+          type: string
+      type: object
+    Roaming:
+      properties:
+        roaming_country_code:
+          type: string
+        roaming_network_code:
+          type: string
+        roaming_network_name:
+          type: string
+        status:
+          enum:
+          - unknown
+          - roaming
+          - not_roaming
+          type: string
+      type: object
+    Analytics_200_response:
+      example:
+        date: date
+        voice: 7
+        inbound: 5
+        direct: 0
+        economy: 6
+        usage_eur: 2.302136
+        mnp: 5
+        hlr: 1
+      properties:
+        date:
+          type: string
+        direct:
+          type: integer
+        economy:
+          type: integer
+        hlr:
+          type: integer
+        inbound:
+          type: integer
+        mnp:
+          type: integer
+        usage_eur:
+          format: float
+          type: number
+        voice:
+          type: integer
+      type: object
+    HooksGet_200_response_hooks_inner:
+      example:
+        event_type: event_type
+        created: created
+        target_url: target_url
+        id: id
+        request_method: request_method
+      properties:
+        created:
+          type: string
+        event_type:
+          type: string
+        id:
+          type: string
+        request_method:
+          type: string
+        target_url:
+          type: string
+      type: object
+    HooksGet_200_response:
+      example:
+        success: true
+        hooks:
+        - event_type: event_type
+          created: created
+          target_url: target_url
+          id: id
+          request_method: request_method
+        - event_type: event_type
+          created: created
+          target_url: target_url
+          id: id
+          request_method: request_method
+      properties:
+        hooks:
+          items:
+            $ref: '#/components/schemas/HooksGet_200_response_hooks_inner'
+          type: array
+        success:
+          type: boolean
+      type: object
+    HooksPOST_200_response:
+      example:
+        success: true
+        id: 0
+      properties:
+        id:
+          type: integer
+        success:
+          type: boolean
+      type: object
+    Sms_200_response_messages_inner:
+      example:
+        error_text: error_text
+        sender: sender
+        price: 1
+        success: true
+        parts: 6
+        recipient: recipient
+        messages:
+        - messages
+        - messages
+        id: id
+        text: text
+        encoding: encoding
+        error: error
+      properties:
+        encoding:
+          type: string
+        error:
+          type: string
+        error_text:
+          type: string
+        id:
+          type: string
+        messages:
+          items:
+            type: string
+          type: array
+        parts:
+          type: integer
+        price:
+          type: integer
+        recipient:
+          type: string
+        sender:
+          type: string
+        success:
+          type: boolean
+        text:
+          type: string
+      type: object
+    Sms_200_response:
+      example:
+        debug: debug
+        balance: 0.8008282
+        total_price: 5.962134
+        success: success
+        messages:
+        - error_text: error_text
+          sender: sender
+          price: 1
+          success: true
+          parts: 6
+          recipient: recipient
+          messages:
+          - messages
+          - messages
+          id: id
+          text: text
+          encoding: encoding
+          error: error
+        - error_text: error_text
+          sender: sender
+          price: 1
+          success: true
+          parts: 6
+          recipient: recipient
+          messages:
+          - messages
+          - messages
+          id: id
+          text: text
+          encoding: encoding
+          error: error
+        sms_type: economy
+      properties:
+        balance:
+          format: float
+          type: number
+        debug:
+          type: string
+        messages:
+          items:
+            $ref: '#/components/schemas/Sms_200_response_messages_inner'
+          type: array
+        sms_type:
+          enum:
+          - economy
+          - direct
+          type: string
+        success:
+          type: string
+        total_price:
+          format: float
+          type: number
+      type: object
+    ValidateForVoice_200_response:
+      example:
+        code: code
+        success: true
+        error: error
+      properties:
+        code:
+          type: string
+        error:
+          type: string
+        success:
+          type: boolean
+      type: object
+  securitySchemes:
+    ApiKeyAuth:
+      in: header
+      name: X-API-Key
+      type: apiKey
+

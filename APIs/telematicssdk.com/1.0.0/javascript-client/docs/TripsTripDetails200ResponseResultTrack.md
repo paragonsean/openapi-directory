@@ -1,0 +1,48 @@
+# QuickStartTelematicsSdk.TripsTripDetails200ResponseResultTrack
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**accelerationCount** | **Number** |  | [optional] 
+**addressEnd** | **String** |  | [optional] 
+**addressFinishParts** | [**TripsTripDetails200ResponseResultTrackAddressFinishParts**](TripsTripDetails200ResponseResultTrackAddressFinishParts.md) |  | [optional] 
+**addressStart** | **String** |  | [optional] 
+**addressStartParts** | [**TripsTripDetails200ResponseResultTrackAddressFinishParts**](TripsTripDetails200ResponseResultTrackAddressFinishParts.md) |  | [optional] 
+**beaconId** | **Number** |  | [optional] 
+**cityFinish** | **String** |  | [optional] 
+**cityStart** | **String** |  | [optional] 
+**decelerationCount** | **Number** |  | [optional] 
+**distance** | **Number** |  | [optional] 
+**drivingTips** | **String** |  | [optional] 
+**duration** | **Number** |  | [optional] 
+**ecoScore** | **Number** |  | [optional] 
+**ecoScoreBrakes** | **Number** |  | [optional] 
+**ecoScoreDepreciation** | **Number** |  | [optional] 
+**ecoScoreFuel** | **Number** |  | [optional] 
+**ecoScoreTyres** | **Number** |  | [optional] 
+**endDate** | **String** |  | [optional] 
+**highOverSpeedMileage** | **Number** |  | [optional] 
+**midOverSpeedMileage** | **Number** |  | [optional] 
+**originChanged** | **Boolean** |  | [optional] 
+**phoneUsage** | **Number** |  | [optional] 
+**points** | [**[TripsTripDetails200ResponseResultTrackPointsInner]**](TripsTripDetails200ResponseResultTrackPointsInner.md) |  | [optional] 
+**rating** | **Number** |  | [optional] 
+**rating100** | **Number** |  | [optional] 
+**ratingAcceleration** | **Number** |  | [optional] 
+**ratingAcceleration100** | **Number** |  | [optional] 
+**ratingBraking** | **Number** |  | [optional] 
+**ratingBraking100** | **Number** |  | [optional] 
+**ratingCornering** | **Number** |  | [optional] 
+**ratingCornering100** | **Number** |  | [optional] 
+**ratingPhoneDistraction100** | **Number** |  | [optional] 
+**ratingPhoneUsage** | **Number** |  | [optional] 
+**ratingSpeeding** | **Number** |  | [optional] 
+**ratingSpeeding100** | **Number** |  | [optional] 
+**ratingTimeOfDay** | **Number** |  | [optional] 
+**shareType** | **String** |  | [optional] 
+**startDate** | **String** |  | [optional] 
+**status** | **String** |  | [optional] 
+**trackOriginCode** | **String** |  | [optional] 
+
+

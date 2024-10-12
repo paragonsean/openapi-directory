@@ -1,0 +1,22 @@
+# coding: utf-8
+
+# import models into model package
+from openapi_server.models.controller_response import ControllerResponse
+from openapi_server.models.digital_point_state_object import DigitalPointStateObject
+from openapi_server.models.digital_point_state_var import DigitalPointStateVar
+from openapi_server.models.error_response200_o_kish import ErrorResponse200OKish
+from openapi_server.models.error_response400_bad_admin_or_value import ErrorResponse400BadAdminOrValue
+from openapi_server.models.error_response401_bad_key_for_basic_auth import ErrorResponse401BadKeyForBasicAuth
+from openapi_server.models.error_response404_not_found import ErrorResponse404NotFound
+from openapi_server.models.float_value_object import FloatValueObject
+from openapi_server.models.float_var import FloatVar
+from openapi_server.models.int32_value_object import Int32ValueObject
+from openapi_server.models.int32_var import Int32Var
+from openapi_server.models.int64_string_value_object import Int64StringValueObject
+from openapi_server.models.int64_value_object import Int64ValueObject
+from openapi_server.models.int64_var import Int64Var
+from openapi_server.models.int64_var_as_string import Int64VarAsString
+from openapi_server.models.strategy_response import StrategyResponse
+from openapi_server.models.string_value_object import StringValueObject
+from openapi_server.models.string_var import StringVar
+from openapi_server.models.table_def import TableDef

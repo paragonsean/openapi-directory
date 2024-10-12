@@ -1,0 +1,14 @@
+
+
+# AuthorisationConfirmation
+
+Content of the body of an authorisation confirmation request 
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**confirmationCode** | **String** | Confirmation Code as retrieved by the TPP from the redirect based SCA process. |  |
+
+
+
