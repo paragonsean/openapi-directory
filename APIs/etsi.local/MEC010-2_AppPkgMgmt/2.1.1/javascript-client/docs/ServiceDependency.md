@@ -1,0 +1,13 @@
+# EtsiGsMec0102Part2ApplicationLifecycleRulesAndRequirementsManagement.ServiceDependency
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**requestedPermissions** | **[String]** | Requested permissions regarding the access of the application to the service. See clause 8.2 of ETSI GS MEC 009 [4]. The format of this attribute is left for the data model design stage. | [optional] 
+**serCategory** | **Object** | See MEC011 | [optional] 
+**serName** | **String** | The name of the service, for example, RNIS, LocationService, etc. | 
+**serTransportDependencies** | [**[TransportDependency]**](TransportDependency.md) | Indicates transport and serialization format dependencies of consuming the service. Defaults to REST + JSON if absent. See note. | [optional] 
+**version** | **String** | The version of the service. | 
+
+

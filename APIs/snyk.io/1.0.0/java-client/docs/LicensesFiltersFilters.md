@@ -1,0 +1,17 @@
+
+
+# LicensesFiltersFilters
+
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**dependencies** | **List&lt;Object&gt;** | The list of dependency IDs to filter the results by |  [optional] |
+|**languages** | **List&lt;Object&gt;** | The type of languages to filter the results by |  [optional] |
+|**licenses** | **List&lt;Object&gt;** | The list of license IDs to filter the results by |  [optional] |
+|**projects** | **List&lt;Object&gt;** | The list of project IDs to filter the results by |  [optional] |
+|**severity** | **List&lt;Object&gt;** | The severities to filter the results by |  [optional] |
+
+
+

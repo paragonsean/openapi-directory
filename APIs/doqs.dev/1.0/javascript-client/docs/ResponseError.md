@@ -1,0 +1,9 @@
+# DoqsDevPdfFillingApi.ResponseError
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**message** | **String** |  | 
+
+

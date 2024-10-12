@@ -1,0 +1,93 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIAnalysis.h \
+    $${PWD}/OAICode_review.h \
+    $${PWD}/OAICodereview_alerts.h \
+    $${PWD}/OAICodereview_languages.h \
+    $${PWD}/OAIHealth.h \
+    $${PWD}/OAILanguage_stats.h \
+    $${PWD}/OAIMeasurement.h \
+    $${PWD}/OAIMetric.h \
+    $${PWD}/OAIMetric_name.h \
+    $${PWD}/OAIMetrics_list.h \
+    $${PWD}/OAIOperation.h \
+    $${PWD}/OAIOperation_task_result.h \
+    $${PWD}/OAIProject.h \
+    $${PWD}/OAIProject_details.h \
+    $${PWD}/OAIProject_language_stats.h \
+    $${PWD}/OAIProject_list.h \
+    $${PWD}/OAIQuery.h \
+    $${PWD}/OAIQuery_properties.h \
+    $${PWD}/OAIQuery_result_entry.h \
+    $${PWD}/OAIQueryjob.h \
+    $${PWD}/OAIQueryjob_project_results.h \
+    $${PWD}/OAIQueryjob_results_overview.h \
+    $${PWD}/OAIQueryjob_results_overview_entry.h \
+    $${PWD}/OAIQueryjob_stats.h \
+    $${PWD}/OAIUpload_session.h \
+    $${PWD}/OAIVersion.h \
+# APIs
+    $${PWD}/OAIAPIRootApi.h \
+    $${PWD}/OAIAnalysesApi.h \
+    $${PWD}/OAICodeReviewsApi.h \
+    $${PWD}/OAIIssuesApi.h \
+    $${PWD}/OAIOperationsApi.h \
+    $${PWD}/OAIProjectsApi.h \
+    $${PWD}/OAIQueryJobsApi.h \
+    $${PWD}/OAISnapshotsApi.h \
+    $${PWD}/OAISystemApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIAnalysis.cpp \
+    $${PWD}/OAICode_review.cpp \
+    $${PWD}/OAICodereview_alerts.cpp \
+    $${PWD}/OAICodereview_languages.cpp \
+    $${PWD}/OAIHealth.cpp \
+    $${PWD}/OAILanguage_stats.cpp \
+    $${PWD}/OAIMeasurement.cpp \
+    $${PWD}/OAIMetric.cpp \
+    $${PWD}/OAIMetric_name.cpp \
+    $${PWD}/OAIMetrics_list.cpp \
+    $${PWD}/OAIOperation.cpp \
+    $${PWD}/OAIOperation_task_result.cpp \
+    $${PWD}/OAIProject.cpp \
+    $${PWD}/OAIProject_details.cpp \
+    $${PWD}/OAIProject_language_stats.cpp \
+    $${PWD}/OAIProject_list.cpp \
+    $${PWD}/OAIQuery.cpp \
+    $${PWD}/OAIQuery_properties.cpp \
+    $${PWD}/OAIQuery_result_entry.cpp \
+    $${PWD}/OAIQueryjob.cpp \
+    $${PWD}/OAIQueryjob_project_results.cpp \
+    $${PWD}/OAIQueryjob_results_overview.cpp \
+    $${PWD}/OAIQueryjob_results_overview_entry.cpp \
+    $${PWD}/OAIQueryjob_stats.cpp \
+    $${PWD}/OAIUpload_session.cpp \
+    $${PWD}/OAIVersion.cpp \
+# APIs
+    $${PWD}/OAIAPIRootApi.cpp \
+    $${PWD}/OAIAnalysesApi.cpp \
+    $${PWD}/OAICodeReviewsApi.cpp \
+    $${PWD}/OAIIssuesApi.cpp \
+    $${PWD}/OAIOperationsApi.cpp \
+    $${PWD}/OAIProjectsApi.cpp \
+    $${PWD}/OAIQueryJobsApi.cpp \
+    $${PWD}/OAISnapshotsApi.cpp \
+    $${PWD}/OAISystemApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

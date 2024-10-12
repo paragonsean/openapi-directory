@@ -1,0 +1,23 @@
+
+
+# CreateSubscriptionRequest
+
+Defines parameters in a [CreateSubscription](https://developer.squareup.com/reference/square_2021-08-18/subscriptions-api/create-subscription) endpoint request.
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**canceledDate** | **String** | The date when the subscription should be canceled, in YYYY-MM-DD format (for example, 2025-02-29). This overrides the plan configuration if it comes before the date the subscription would otherwise end. |  [optional] |
+|**cardId** | **String** | The ID of the [customer](https://developer.squareup.com/reference/square_2021-08-18/objects/Customer) [card](https://developer.squareup.com/reference/square_2021-08-18/objects/Card) to charge. If not specified, Square sends an invoice via email. For an example to create a customer and add a card on file, see [Subscriptions Walkthrough](https://developer.squareup.com/docs/subscriptions-api/walkthrough). |  [optional] |
+|**customerId** | **String** | The ID of the [customer](https://developer.squareup.com/reference/square_2021-08-18/objects/Customer) profile. |  |
+|**idempotencyKey** | **String** | A unique string that identifies this &#x60;CreateSubscription&#x60; request. If you do not provide a unique string (or provide an empty string as the value), the endpoint treats each request as independent.  For more information, see [Idempotency keys](https://developer.squareup.com/docs/working-with-apis/idempotency). |  [optional] |
+|**locationId** | **String** | The ID of the location the subscription is associated with. |  |
+|**planId** | **String** | The ID of the subscription plan created using the Catalog API. For more information, see [Set Up and Manage a Subscription Plan](https://developer.squareup.com/docs/subscriptions-api/setup-plan) and  [Subscriptions Walkthrough](https://developer.squareup.com/docs/subscriptions-api/walkthrough). |  |
+|**priceOverrideMoney** | [**Money**](Money.md) |  |  [optional] |
+|**startDate** | **String** | The start date of the subscription, in YYYY-MM-DD format. For example, 2013-01-15. If the start date is left empty, the subscription begins immediately. |  [optional] |
+|**taxPercentage** | **String** | The tax to add when billing the subscription. The percentage is expressed in decimal form, using a &#x60;&#39;.&#39;&#x60; as the decimal separator and without a &#x60;&#39;%&#39;&#x60; sign. For example, a value of 7.5 corresponds to 7.5%. |  [optional] |
+|**timezone** | **String** | The timezone that is used in date calculations for the subscription. If unset, defaults to the location timezone. If a timezone is not configured for the location, defaults to \&quot;America/New_York\&quot;. Format: the IANA Timezone Database identifier for the location timezone. For a list of time zones, see [List of tz database time zones](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones). |  [optional] |
+
+
+
