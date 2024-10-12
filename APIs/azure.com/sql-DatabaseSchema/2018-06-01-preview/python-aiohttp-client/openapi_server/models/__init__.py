@@ -1,0 +1,12 @@
+# coding: utf-8
+
+# import models into model package
+from openapi_server.models.database_column import DatabaseColumn
+from openapi_server.models.database_column_list_result import DatabaseColumnListResult
+from openapi_server.models.database_column_properties import DatabaseColumnProperties
+from openapi_server.models.database_schema import DatabaseSchema
+from openapi_server.models.database_schema_list_result import DatabaseSchemaListResult
+from openapi_server.models.database_table import DatabaseTable
+from openapi_server.models.database_table_list_result import DatabaseTableListResult
+from openapi_server.models.proxy_resource import ProxyResource
+from openapi_server.models.resource import Resource
