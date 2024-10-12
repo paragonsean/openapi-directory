@@ -1,0 +1,97 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIConnectionType.h \
+    $${PWD}/OAICreateEnvironmentEC2Request.h \
+    $${PWD}/OAICreateEnvironmentEC2Result.h \
+    $${PWD}/OAICreateEnvironmentMembershipRequest.h \
+    $${PWD}/OAICreateEnvironmentMembershipResult.h \
+    $${PWD}/OAICreateEnvironmentMembershipResult_membership.h \
+    $${PWD}/OAIDeleteEnvironmentMembershipRequest.h \
+    $${PWD}/OAIDeleteEnvironmentRequest.h \
+    $${PWD}/OAIDescribeEnvironmentMembershipsRequest.h \
+    $${PWD}/OAIDescribeEnvironmentMembershipsResult.h \
+    $${PWD}/OAIDescribeEnvironmentStatusRequest.h \
+    $${PWD}/OAIDescribeEnvironmentStatusResult.h \
+    $${PWD}/OAIDescribeEnvironmentsRequest.h \
+    $${PWD}/OAIDescribeEnvironmentsResult.h \
+    $${PWD}/OAIEnvironment.h \
+    $${PWD}/OAIEnvironmentLifecycle.h \
+    $${PWD}/OAIEnvironmentLifecycleStatus.h \
+    $${PWD}/OAIEnvironmentMember.h \
+    $${PWD}/OAIEnvironmentStatus.h \
+    $${PWD}/OAIEnvironmentType.h \
+    $${PWD}/OAIEnvironment_lifecycle.h \
+    $${PWD}/OAIListEnvironmentsRequest.h \
+    $${PWD}/OAIListEnvironmentsResult.h \
+    $${PWD}/OAIListTagsForResourceRequest.h \
+    $${PWD}/OAIListTagsForResourceResponse.h \
+    $${PWD}/OAIManagedCredentialsAction.h \
+    $${PWD}/OAIManagedCredentialsStatus.h \
+    $${PWD}/OAIMemberPermissions.h \
+    $${PWD}/OAIPermissions.h \
+    $${PWD}/OAITag.h \
+    $${PWD}/OAITagResourceRequest.h \
+    $${PWD}/OAIUntagResourceRequest.h \
+    $${PWD}/OAIUpdateEnvironmentMembershipRequest.h \
+    $${PWD}/OAIUpdateEnvironmentMembershipResult.h \
+    $${PWD}/OAIUpdateEnvironmentMembershipResult_membership.h \
+    $${PWD}/OAIUpdateEnvironmentRequest.h \
+# APIs
+    $${PWD}/OAIDefaultApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIConnectionType.cpp \
+    $${PWD}/OAICreateEnvironmentEC2Request.cpp \
+    $${PWD}/OAICreateEnvironmentEC2Result.cpp \
+    $${PWD}/OAICreateEnvironmentMembershipRequest.cpp \
+    $${PWD}/OAICreateEnvironmentMembershipResult.cpp \
+    $${PWD}/OAICreateEnvironmentMembershipResult_membership.cpp \
+    $${PWD}/OAIDeleteEnvironmentMembershipRequest.cpp \
+    $${PWD}/OAIDeleteEnvironmentRequest.cpp \
+    $${PWD}/OAIDescribeEnvironmentMembershipsRequest.cpp \
+    $${PWD}/OAIDescribeEnvironmentMembershipsResult.cpp \
+    $${PWD}/OAIDescribeEnvironmentStatusRequest.cpp \
+    $${PWD}/OAIDescribeEnvironmentStatusResult.cpp \
+    $${PWD}/OAIDescribeEnvironmentsRequest.cpp \
+    $${PWD}/OAIDescribeEnvironmentsResult.cpp \
+    $${PWD}/OAIEnvironment.cpp \
+    $${PWD}/OAIEnvironmentLifecycle.cpp \
+    $${PWD}/OAIEnvironmentLifecycleStatus.cpp \
+    $${PWD}/OAIEnvironmentMember.cpp \
+    $${PWD}/OAIEnvironmentStatus.cpp \
+    $${PWD}/OAIEnvironmentType.cpp \
+    $${PWD}/OAIEnvironment_lifecycle.cpp \
+    $${PWD}/OAIListEnvironmentsRequest.cpp \
+    $${PWD}/OAIListEnvironmentsResult.cpp \
+    $${PWD}/OAIListTagsForResourceRequest.cpp \
+    $${PWD}/OAIListTagsForResourceResponse.cpp \
+    $${PWD}/OAIManagedCredentialsAction.cpp \
+    $${PWD}/OAIManagedCredentialsStatus.cpp \
+    $${PWD}/OAIMemberPermissions.cpp \
+    $${PWD}/OAIPermissions.cpp \
+    $${PWD}/OAITag.cpp \
+    $${PWD}/OAITagResourceRequest.cpp \
+    $${PWD}/OAIUntagResourceRequest.cpp \
+    $${PWD}/OAIUpdateEnvironmentMembershipRequest.cpp \
+    $${PWD}/OAIUpdateEnvironmentMembershipResult.cpp \
+    $${PWD}/OAIUpdateEnvironmentMembershipResult_membership.cpp \
+    $${PWD}/OAIUpdateEnvironmentRequest.cpp \
+# APIs
+    $${PWD}/OAIDefaultApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

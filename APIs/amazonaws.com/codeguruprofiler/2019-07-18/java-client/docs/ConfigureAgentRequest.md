@@ -1,0 +1,14 @@
+
+
+# ConfigureAgentRequest
+
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**fleetInstanceId** | **String** |  A universally unique identifier (UUID) for a profiling instance. For example, if the profiling instance is an Amazon EC2 instance, it is the instance ID. If it is an AWS Fargate container, it is the container&#39;s task ID.  |  [optional] |
+|**metadata** | **Map&lt;String, String&gt;** | &lt;p&gt; Metadata captured about the compute platform the agent is running on. It includes information about sampling and reporting. The valid fields are:&lt;/p&gt; &lt;ul&gt; &lt;li&gt; &lt;p&gt; &lt;code&gt;COMPUTE_PLATFORM&lt;/code&gt; - The compute platform on which the agent is running &lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;code&gt;AGENT_ID&lt;/code&gt; - The ID for an agent instance. &lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;code&gt;AWS_REQUEST_ID&lt;/code&gt; - The AWS request ID of a Lambda invocation. &lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;code&gt;EXECUTION_ENVIRONMENT&lt;/code&gt; - The execution environment a Lambda function is running on. &lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;code&gt;LAMBDA_FUNCTION_ARN&lt;/code&gt; - The Amazon Resource Name (ARN) that is used to invoke a Lambda function. &lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;code&gt;LAMBDA_MEMORY_LIMIT_IN_MB&lt;/code&gt; - The memory allocated to a Lambda function. &lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;code&gt;LAMBDA_REMAINING_TIME_IN_MILLISECONDS&lt;/code&gt; - The time in milliseconds before execution of a Lambda function times out. &lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;code&gt;LAMBDA_TIME_GAP_BETWEEN_INVOKES_IN_MILLISECONDS&lt;/code&gt; - The time in milliseconds between two invocations of a Lambda function. &lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;code&gt;LAMBDA_PREVIOUS_EXECUTION_TIME_IN_MILLISECONDS&lt;/code&gt; - The time in milliseconds for the previous Lambda invocation. &lt;/p&gt; &lt;/li&gt; &lt;/ul&gt; |  [optional] |
+
+
+

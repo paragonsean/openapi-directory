@@ -1,0 +1,16 @@
+
+
+# ModelPerformance
+
+Information about the evaluation performance of a trained model. 
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**f1Score** | [**Float**](Float.md) |  |  [optional] |
+|**recall** | [**Float**](Float.md) |  |  [optional] |
+|**precision** | [**Float**](Float.md) |  |  [optional] |
+
+
+

@@ -1,0 +1,10 @@
+# coding: utf-8
+
+# import models into model package
+from openapi_server.models.data_point import DataPoint
+from openapi_server.models.forecast import Forecast
+from openapi_server.models.query_forecast_request import QueryForecastRequest
+from openapi_server.models.query_forecast_response import QueryForecastResponse
+from openapi_server.models.query_forecast_response_forecast import QueryForecastResponseForecast
+from openapi_server.models.query_what_if_forecast_request import QueryWhatIfForecastRequest
+from openapi_server.models.query_what_if_forecast_response import QueryWhatIfForecastResponse

@@ -1,0 +1,9 @@
+# coding: utf-8
+
+# import models into model package
+from openapi_server.models.create_token_request import CreateTokenRequest
+from openapi_server.models.create_token_response import CreateTokenResponse
+from openapi_server.models.register_client_request import RegisterClientRequest
+from openapi_server.models.register_client_response import RegisterClientResponse
+from openapi_server.models.start_device_authorization_request import StartDeviceAuthorizationRequest
+from openapi_server.models.start_device_authorization_response import StartDeviceAuthorizationResponse

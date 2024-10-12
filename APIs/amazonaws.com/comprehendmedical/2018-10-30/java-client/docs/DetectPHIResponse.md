@@ -1,0 +1,15 @@
+
+
+# DetectPHIResponse
+
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**entities** | [**List**](List.md) |  |  |
+|**paginationToken** | [**String**](String.md) |  |  [optional] |
+|**modelVersion** | [**String**](String.md) |  |  |
+
+
+

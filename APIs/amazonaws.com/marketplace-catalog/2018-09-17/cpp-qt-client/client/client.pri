@@ -1,0 +1,101 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAICancelChangeSetResponse.h \
+    $${PWD}/OAIChange.h \
+    $${PWD}/OAIChangeSetSummaryListItem.h \
+    $${PWD}/OAIChangeStatus.h \
+    $${PWD}/OAIChangeSummary.h \
+    $${PWD}/OAIChange_Entity.h \
+    $${PWD}/OAIDescribeChangeSetResponse.h \
+    $${PWD}/OAIDescribeEntityResponse.h \
+    $${PWD}/OAIEntity.h \
+    $${PWD}/OAIEntitySummary.h \
+    $${PWD}/OAIErrorDetail.h \
+    $${PWD}/OAIFailureCode.h \
+    $${PWD}/OAIFilter.h \
+    $${PWD}/OAIGetResourcePolicyResponse.h \
+    $${PWD}/OAIListChangeSetsRequest.h \
+    $${PWD}/OAIListChangeSetsRequest_Sort.h \
+    $${PWD}/OAIListChangeSetsResponse.h \
+    $${PWD}/OAIListChangeSets_request.h \
+    $${PWD}/OAIListChangeSets_request_Sort.h \
+    $${PWD}/OAIListEntitiesRequest.h \
+    $${PWD}/OAIListEntitiesResponse.h \
+    $${PWD}/OAIListEntities_request.h \
+    $${PWD}/OAIListTagsForResourceRequest.h \
+    $${PWD}/OAIListTagsForResourceResponse.h \
+    $${PWD}/OAIListTagsForResource_request.h \
+    $${PWD}/OAIOwnershipType.h \
+    $${PWD}/OAIPutResourcePolicyRequest.h \
+    $${PWD}/OAIPutResourcePolicy_request.h \
+    $${PWD}/OAISort.h \
+    $${PWD}/OAISortOrder.h \
+    $${PWD}/OAIStartChangeSetRequest.h \
+    $${PWD}/OAIStartChangeSetResponse.h \
+    $${PWD}/OAIStartChangeSet_request.h \
+    $${PWD}/OAITag.h \
+    $${PWD}/OAITagResourceRequest.h \
+    $${PWD}/OAITagResource_request.h \
+    $${PWD}/OAIUntagResourceRequest.h \
+    $${PWD}/OAIUntagResource_request.h \
+# APIs
+    $${PWD}/OAIDefaultApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAICancelChangeSetResponse.cpp \
+    $${PWD}/OAIChange.cpp \
+    $${PWD}/OAIChangeSetSummaryListItem.cpp \
+    $${PWD}/OAIChangeStatus.cpp \
+    $${PWD}/OAIChangeSummary.cpp \
+    $${PWD}/OAIChange_Entity.cpp \
+    $${PWD}/OAIDescribeChangeSetResponse.cpp \
+    $${PWD}/OAIDescribeEntityResponse.cpp \
+    $${PWD}/OAIEntity.cpp \
+    $${PWD}/OAIEntitySummary.cpp \
+    $${PWD}/OAIErrorDetail.cpp \
+    $${PWD}/OAIFailureCode.cpp \
+    $${PWD}/OAIFilter.cpp \
+    $${PWD}/OAIGetResourcePolicyResponse.cpp \
+    $${PWD}/OAIListChangeSetsRequest.cpp \
+    $${PWD}/OAIListChangeSetsRequest_Sort.cpp \
+    $${PWD}/OAIListChangeSetsResponse.cpp \
+    $${PWD}/OAIListChangeSets_request.cpp \
+    $${PWD}/OAIListChangeSets_request_Sort.cpp \
+    $${PWD}/OAIListEntitiesRequest.cpp \
+    $${PWD}/OAIListEntitiesResponse.cpp \
+    $${PWD}/OAIListEntities_request.cpp \
+    $${PWD}/OAIListTagsForResourceRequest.cpp \
+    $${PWD}/OAIListTagsForResourceResponse.cpp \
+    $${PWD}/OAIListTagsForResource_request.cpp \
+    $${PWD}/OAIOwnershipType.cpp \
+    $${PWD}/OAIPutResourcePolicyRequest.cpp \
+    $${PWD}/OAIPutResourcePolicy_request.cpp \
+    $${PWD}/OAISort.cpp \
+    $${PWD}/OAISortOrder.cpp \
+    $${PWD}/OAIStartChangeSetRequest.cpp \
+    $${PWD}/OAIStartChangeSetResponse.cpp \
+    $${PWD}/OAIStartChangeSet_request.cpp \
+    $${PWD}/OAITag.cpp \
+    $${PWD}/OAITagResourceRequest.cpp \
+    $${PWD}/OAITagResource_request.cpp \
+    $${PWD}/OAIUntagResourceRequest.cpp \
+    $${PWD}/OAIUntagResource_request.cpp \
+# APIs
+    $${PWD}/OAIDefaultApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

@@ -1,0 +1,107 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIBulkPublishResponse.h \
+    $${PWD}/OAIBulkPublishStatus.h \
+    $${PWD}/OAICognitoStreams.h \
+    $${PWD}/OAIDataset.h \
+    $${PWD}/OAIDeleteDatasetResponse.h \
+    $${PWD}/OAIDeleteDatasetResponse_Dataset.h \
+    $${PWD}/OAIDescribeDatasetResponse.h \
+    $${PWD}/OAIDescribeDatasetResponse_Dataset.h \
+    $${PWD}/OAIDescribeIdentityPoolUsageResponse.h \
+    $${PWD}/OAIDescribeIdentityPoolUsageResponse_IdentityPoolUsage.h \
+    $${PWD}/OAIDescribeIdentityUsageResponse.h \
+    $${PWD}/OAIDescribeIdentityUsageResponse_IdentityUsage.h \
+    $${PWD}/OAIGetBulkPublishDetailsResponse.h \
+    $${PWD}/OAIGetCognitoEventsResponse.h \
+    $${PWD}/OAIGetIdentityPoolConfigurationResponse.h \
+    $${PWD}/OAIGetIdentityPoolConfigurationResponse_CognitoStreams.h \
+    $${PWD}/OAIGetIdentityPoolConfigurationResponse_PushSync.h \
+    $${PWD}/OAIIdentityPoolUsage.h \
+    $${PWD}/OAIIdentityUsage.h \
+    $${PWD}/OAIListDatasetsResponse.h \
+    $${PWD}/OAIListIdentityPoolUsageResponse.h \
+    $${PWD}/OAIListRecordsResponse.h \
+    $${PWD}/OAIOperation.h \
+    $${PWD}/OAIPlatform.h \
+    $${PWD}/OAIPushSync.h \
+    $${PWD}/OAIRecord.h \
+    $${PWD}/OAIRecordPatch.h \
+    $${PWD}/OAIRegisterDeviceRequest.h \
+    $${PWD}/OAIRegisterDeviceResponse.h \
+    $${PWD}/OAIRegisterDevice_request.h \
+    $${PWD}/OAISetCognitoEventsRequest.h \
+    $${PWD}/OAISetCognitoEvents_request.h \
+    $${PWD}/OAISetIdentityPoolConfigurationRequest.h \
+    $${PWD}/OAISetIdentityPoolConfigurationResponse.h \
+    $${PWD}/OAISetIdentityPoolConfiguration_request.h \
+    $${PWD}/OAISetIdentityPoolConfiguration_request_CognitoStreams.h \
+    $${PWD}/OAISetIdentityPoolConfiguration_request_PushSync.h \
+    $${PWD}/OAIStreamingStatus.h \
+    $${PWD}/OAIUpdateRecordsRequest.h \
+    $${PWD}/OAIUpdateRecordsResponse.h \
+    $${PWD}/OAIUpdateRecords_request.h \
+# APIs
+    $${PWD}/OAIDefaultApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIBulkPublishResponse.cpp \
+    $${PWD}/OAIBulkPublishStatus.cpp \
+    $${PWD}/OAICognitoStreams.cpp \
+    $${PWD}/OAIDataset.cpp \
+    $${PWD}/OAIDeleteDatasetResponse.cpp \
+    $${PWD}/OAIDeleteDatasetResponse_Dataset.cpp \
+    $${PWD}/OAIDescribeDatasetResponse.cpp \
+    $${PWD}/OAIDescribeDatasetResponse_Dataset.cpp \
+    $${PWD}/OAIDescribeIdentityPoolUsageResponse.cpp \
+    $${PWD}/OAIDescribeIdentityPoolUsageResponse_IdentityPoolUsage.cpp \
+    $${PWD}/OAIDescribeIdentityUsageResponse.cpp \
+    $${PWD}/OAIDescribeIdentityUsageResponse_IdentityUsage.cpp \
+    $${PWD}/OAIGetBulkPublishDetailsResponse.cpp \
+    $${PWD}/OAIGetCognitoEventsResponse.cpp \
+    $${PWD}/OAIGetIdentityPoolConfigurationResponse.cpp \
+    $${PWD}/OAIGetIdentityPoolConfigurationResponse_CognitoStreams.cpp \
+    $${PWD}/OAIGetIdentityPoolConfigurationResponse_PushSync.cpp \
+    $${PWD}/OAIIdentityPoolUsage.cpp \
+    $${PWD}/OAIIdentityUsage.cpp \
+    $${PWD}/OAIListDatasetsResponse.cpp \
+    $${PWD}/OAIListIdentityPoolUsageResponse.cpp \
+    $${PWD}/OAIListRecordsResponse.cpp \
+    $${PWD}/OAIOperation.cpp \
+    $${PWD}/OAIPlatform.cpp \
+    $${PWD}/OAIPushSync.cpp \
+    $${PWD}/OAIRecord.cpp \
+    $${PWD}/OAIRecordPatch.cpp \
+    $${PWD}/OAIRegisterDeviceRequest.cpp \
+    $${PWD}/OAIRegisterDeviceResponse.cpp \
+    $${PWD}/OAIRegisterDevice_request.cpp \
+    $${PWD}/OAISetCognitoEventsRequest.cpp \
+    $${PWD}/OAISetCognitoEvents_request.cpp \
+    $${PWD}/OAISetIdentityPoolConfigurationRequest.cpp \
+    $${PWD}/OAISetIdentityPoolConfigurationResponse.cpp \
+    $${PWD}/OAISetIdentityPoolConfiguration_request.cpp \
+    $${PWD}/OAISetIdentityPoolConfiguration_request_CognitoStreams.cpp \
+    $${PWD}/OAISetIdentityPoolConfiguration_request_PushSync.cpp \
+    $${PWD}/OAIStreamingStatus.cpp \
+    $${PWD}/OAIUpdateRecordsRequest.cpp \
+    $${PWD}/OAIUpdateRecordsResponse.cpp \
+    $${PWD}/OAIUpdateRecords_request.cpp \
+# APIs
+    $${PWD}/OAIDefaultApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

@@ -1,0 +1,8 @@
+# AmazonFsx.DeleteFileSystemOpenZFSOption
+
+## Enum
+
+
+* `DELETE_CHILD_VOLUMES_AND_SNAPSHOTS` (value: `"DELETE_CHILD_VOLUMES_AND_SNAPSHOTS"`)
+
+

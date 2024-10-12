@@ -1,0 +1,14 @@
+# AmazonLookoutForMetrics.AnomalyDetectorFailureType
+
+## Enum
+
+
+* `ACTIVATION_FAILURE` (value: `"ACTIVATION_FAILURE"`)
+
+* `BACK_TEST_ACTIVATION_FAILURE` (value: `"BACK_TEST_ACTIVATION_FAILURE"`)
+
+* `DELETION_FAILURE` (value: `"DELETION_FAILURE"`)
+
+* `DEACTIVATION_FAILURE` (value: `"DEACTIVATION_FAILURE"`)
+
+

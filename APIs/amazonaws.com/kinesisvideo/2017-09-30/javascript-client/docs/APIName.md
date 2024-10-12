@@ -1,0 +1,22 @@
+# AmazonKinesisVideoStreams.APIName
+
+## Enum
+
+
+* `PUT_MEDIA` (value: `"PUT_MEDIA"`)
+
+* `GET_MEDIA` (value: `"GET_MEDIA"`)
+
+* `LIST_FRAGMENTS` (value: `"LIST_FRAGMENTS"`)
+
+* `GET_MEDIA_FOR_FRAGMENT_LIST` (value: `"GET_MEDIA_FOR_FRAGMENT_LIST"`)
+
+* `GET_HLS_STREAMING_SESSION_URL` (value: `"GET_HLS_STREAMING_SESSION_URL"`)
+
+* `GET_DASH_STREAMING_SESSION_URL` (value: `"GET_DASH_STREAMING_SESSION_URL"`)
+
+* `GET_CLIP` (value: `"GET_CLIP"`)
+
+* `GET_IMAGES` (value: `"GET_IMAGES"`)
+
+

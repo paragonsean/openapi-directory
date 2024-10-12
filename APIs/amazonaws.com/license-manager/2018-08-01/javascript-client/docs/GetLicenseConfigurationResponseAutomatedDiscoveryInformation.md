@@ -1,0 +1,9 @@
+# AwsLicenseManager.GetLicenseConfigurationResponseAutomatedDiscoveryInformation
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**lastRunTime** | **Date** |  | [optional] 
+
+

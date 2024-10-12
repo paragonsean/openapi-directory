@@ -1,0 +1,12 @@
+# AwsComprehendMedical.SNOMEDCTEntityCategory
+
+## Enum
+
+
+* `MEDICAL_CONDITION` (value: `"MEDICAL_CONDITION"`)
+
+* `ANATOMY` (value: `"ANATOMY"`)
+
+* `TEST_TREATMENT_PROCEDURE` (value: `"TEST_TREATMENT_PROCEDURE"`)
+
+

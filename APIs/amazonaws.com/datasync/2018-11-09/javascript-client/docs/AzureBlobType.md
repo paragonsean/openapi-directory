@@ -1,0 +1,8 @@
+# AwsDataSync.AzureBlobType
+
+## Enum
+
+
+* `BLOCK` (value: `"BLOCK"`)
+
+

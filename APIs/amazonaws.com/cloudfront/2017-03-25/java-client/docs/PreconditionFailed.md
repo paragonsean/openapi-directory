@@ -1,0 +1,14 @@
+
+
+# PreconditionFailed
+
+The precondition given in one or more of the request-header fields evaluated to <code>false</code>. 
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**message** | **String** |  |  [optional] |
+
+
+

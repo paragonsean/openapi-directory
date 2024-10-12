@@ -1,0 +1,13 @@
+
+
+# CreateReplicationGroupMemberActionProvisionedThroughputOverride
+
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**readCapacityUnits** | [**Integer**](Integer.md) |  |  [optional] |
+
+
+

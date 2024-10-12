@@ -1,0 +1,13 @@
+
+
+# DeletableSamlProperty
+
+## Enum
+
+
+* `USER_ACCESS_URL` (value: `"SAML_PROPERTIES_USER_ACCESS_URL"`)
+
+* `RELAY_STATE_PARAMETER_NAME` (value: `"SAML_PROPERTIES_RELAY_STATE_PARAMETER_NAME"`)
+
+
+

@@ -1,0 +1,19 @@
+
+
+# AppUnitErrorCategory
+
+## Enum
+
+
+* `CREDENTIAL_ERROR` (value: `"CREDENTIAL_ERROR"`)
+
+* `CONNECTIVITY_ERROR` (value: `"CONNECTIVITY_ERROR"`)
+
+* `PERMISSION_ERROR` (value: `"PERMISSION_ERROR"`)
+
+* `UNSUPPORTED_ERROR` (value: `"UNSUPPORTED_ERROR"`)
+
+* `OTHER_ERROR` (value: `"OTHER_ERROR"`)
+
+
+

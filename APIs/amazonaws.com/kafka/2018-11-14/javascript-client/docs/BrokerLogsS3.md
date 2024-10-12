@@ -1,0 +1,11 @@
+# ManagedStreamingForKafka.BrokerLogsS3
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**bucket** | **String** |  | [optional] 
+**enabled** | **Boolean** |  | 
+**prefix** | **String** |  | [optional] 
+
+

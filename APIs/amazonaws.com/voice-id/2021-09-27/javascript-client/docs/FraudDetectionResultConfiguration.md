@@ -1,0 +1,10 @@
+# AmazonVoiceId.FraudDetectionResultConfiguration
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**riskThreshold** | **Number** |  | [optional] 
+**watchlistId** | **String** |  | [optional] 
+
+

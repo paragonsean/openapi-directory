@@ -1,0 +1,12 @@
+# Inspector2.FindingType
+
+## Enum
+
+
+* `NETWORK_REACHABILITY` (value: `"NETWORK_REACHABILITY"`)
+
+* `PACKAGE_VULNERABILITY` (value: `"PACKAGE_VULNERABILITY"`)
+
+* `CODE_VULNERABILITY` (value: `"CODE_VULNERABILITY"`)
+
+

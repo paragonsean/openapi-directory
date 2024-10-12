@@ -1,0 +1,16 @@
+
+
+# UpdateDataRepositoryAssociationRequest
+
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**associationId** | [**String**](String.md) |  |  |
+|**clientRequestToken** | **String** | (Optional) An idempotency token for resource creation, in a string of up to 63 ASCII characters. This token is automatically filled on your behalf when you use the Command Line Interface (CLI) or an Amazon Web Services SDK. |  [optional] |
+|**importedFileChunkSize** | [**Integer**](Integer.md) |  |  [optional] |
+|**S3** | [**CreateDataRepositoryAssociationRequestS3**](CreateDataRepositoryAssociationRequestS3.md) |  |  [optional] |
+
+
+

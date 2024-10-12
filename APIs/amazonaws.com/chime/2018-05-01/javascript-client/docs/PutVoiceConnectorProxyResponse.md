@@ -1,0 +1,9 @@
+# AmazonChime.PutVoiceConnectorProxyResponse
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**proxy** | [**GetVoiceConnectorProxyResponseProxy**](GetVoiceConnectorProxyResponseProxy.md) |  | [optional] 
+
+

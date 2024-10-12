@@ -1,0 +1,8 @@
+# AwsKendraFrontendService.WarningCode
+
+## Enum
+
+
+* `QUERY_LANGUAGE_INVALID_SYNTAX` (value: `"QUERY_LANGUAGE_INVALID_SYNTAX"`)
+
+

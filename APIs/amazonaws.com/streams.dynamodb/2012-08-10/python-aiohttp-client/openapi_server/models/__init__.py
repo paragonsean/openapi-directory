@@ -1,0 +1,29 @@
+# coding: utf-8
+
+# import models into model package
+from openapi_server.models.attribute_value import AttributeValue
+from openapi_server.models.describe_stream_input import DescribeStreamInput
+from openapi_server.models.describe_stream_output import DescribeStreamOutput
+from openapi_server.models.describe_stream_output_stream_description import DescribeStreamOutputStreamDescription
+from openapi_server.models.get_records_input import GetRecordsInput
+from openapi_server.models.get_records_output import GetRecordsOutput
+from openapi_server.models.get_shard_iterator_input import GetShardIteratorInput
+from openapi_server.models.get_shard_iterator_output import GetShardIteratorOutput
+from openapi_server.models.identity import Identity
+from openapi_server.models.key_schema_element import KeySchemaElement
+from openapi_server.models.key_type import KeyType
+from openapi_server.models.list_streams_input import ListStreamsInput
+from openapi_server.models.list_streams_output import ListStreamsOutput
+from openapi_server.models.operation_type import OperationType
+from openapi_server.models.record import Record
+from openapi_server.models.record_dynamodb import RecordDynamodb
+from openapi_server.models.record_user_identity import RecordUserIdentity
+from openapi_server.models.sequence_number_range import SequenceNumberRange
+from openapi_server.models.shard import Shard
+from openapi_server.models.shard_iterator_type import ShardIteratorType
+from openapi_server.models.shard_sequence_number_range import ShardSequenceNumberRange
+from openapi_server.models.stream import Stream
+from openapi_server.models.stream_description import StreamDescription
+from openapi_server.models.stream_record import StreamRecord
+from openapi_server.models.stream_status import StreamStatus
+from openapi_server.models.stream_view_type import StreamViewType

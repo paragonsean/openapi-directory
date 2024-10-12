@@ -1,0 +1,14 @@
+# Inspector2.Operation
+
+## Enum
+
+
+* `ENABLE_SCANNING` (value: `"ENABLE_SCANNING"`)
+
+* `DISABLE_SCANNING` (value: `"DISABLE_SCANNING"`)
+
+* `ENABLE_REPOSITORY` (value: `"ENABLE_REPOSITORY"`)
+
+* `DISABLE_REPOSITORY` (value: `"DISABLE_REPOSITORY"`)
+
+

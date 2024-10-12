@@ -1,0 +1,19 @@
+
+
+# Origin
+
+<p>A complex type that describes the Amazon S3 bucket or the HTTP server (for example, a web server) from which CloudFront gets your files. You must create at least one origin.</p> <p>For the current limit on the number of origins that you can create for a distribution, see <a href=\"http://docs.aws.amazon.com/general/latest/gr/aws_service_limits.html#limits_cloudfront\">Amazon CloudFront Limits</a> in the <i>AWS General Reference</i>.</p>
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**id** | [**String**](String.md) |  |  |
+|**domainName** | [**String**](String.md) |  |  |
+|**originPath** | [**String**](String.md) |  |  [optional] |
+|**customHeaders** | [**OriginCustomHeaders**](OriginCustomHeaders.md) |  |  [optional] |
+|**s3OriginConfig** | [**OriginS3OriginConfig**](OriginS3OriginConfig.md) |  |  [optional] |
+|**customOriginConfig** | [**OriginCustomOriginConfig**](OriginCustomOriginConfig.md) |  |  [optional] |
+
+
+

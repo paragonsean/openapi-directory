@@ -1,0 +1,19 @@
+
+
+# MemberStatus
+
+## Enum
+
+
+* `INVITED` (value: `"INVITED"`)
+
+* `VERIFICATION_IN_PROGRESS` (value: `"VERIFICATION_IN_PROGRESS"`)
+
+* `VERIFICATION_FAILED` (value: `"VERIFICATION_FAILED"`)
+
+* `ENABLED` (value: `"ENABLED"`)
+
+* `ACCEPTED_BUT_DISABLED` (value: `"ACCEPTED_BUT_DISABLED"`)
+
+
+

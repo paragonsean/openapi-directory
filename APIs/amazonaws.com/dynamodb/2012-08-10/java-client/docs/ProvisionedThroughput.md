@@ -1,0 +1,15 @@
+
+
+# ProvisionedThroughput
+
+<p>Represents the provisioned throughput settings for a specified table or index. The settings can be modified using the <code>UpdateTable</code> operation.</p> <p>For current minimum and maximum provisioned throughput values, see <a href=\"https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Limits.html\">Service, Account, and Table Quotas</a> in the <i>Amazon DynamoDB Developer Guide</i>.</p>
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**readCapacityUnits** | [**Integer**](Integer.md) |  |  |
+|**writeCapacityUnits** | [**Integer**](Integer.md) |  |  |
+
+
+

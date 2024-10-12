@@ -1,0 +1,14 @@
+# AmazonDynamoDb.Select
+
+## Enum
+
+
+* `ALL_ATTRIBUTES` (value: `"ALL_ATTRIBUTES"`)
+
+* `ALL_PROJECTED_ATTRIBUTES` (value: `"ALL_PROJECTED_ATTRIBUTES"`)
+
+* `SPECIFIC_ATTRIBUTES` (value: `"SPECIFIC_ATTRIBUTES"`)
+
+* `COUNT` (value: `"COUNT"`)
+
+

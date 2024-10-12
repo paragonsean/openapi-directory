@@ -1,0 +1,29 @@
+# AwsSupportApp.CreateSlackChannelConfigurationRequest
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**channelId** | **String** | The channel ID in Slack. This ID identifies a channel within a Slack workspace. | 
+**channelName** | **String** | The name of the Slack channel that you configure for the Amazon Web Services Support App. | [optional] 
+**channelRoleArn** | **String** | The Amazon Resource Name (ARN) of an IAM role that you want to use to perform operations on Amazon Web Services. For more information, see &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/awssupport/latest/user/support-app-permissions.html\&quot;&gt;Managing access to the Amazon Web Services Support App&lt;/a&gt; in the &lt;i&gt;Amazon Web Services Support User Guide&lt;/i&gt;. | 
+**notifyOnAddCorrespondenceToCase** | **Boolean** | Whether you want to get notified when a support case has a new correspondence. | [optional] 
+**notifyOnCaseSeverity** | **String** | &lt;p&gt;The case severity for a support case that you want to receive notifications.&lt;/p&gt; &lt;p&gt;If you specify &lt;code&gt;high&lt;/code&gt; or &lt;code&gt;all&lt;/code&gt;, you must specify &lt;code&gt;true&lt;/code&gt; for at least one of the following parameters:&lt;/p&gt; &lt;ul&gt; &lt;li&gt; &lt;p&gt; &lt;code&gt;notifyOnAddCorrespondenceToCase&lt;/code&gt; &lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;code&gt;notifyOnCreateOrReopenCase&lt;/code&gt; &lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;code&gt;notifyOnResolveCase&lt;/code&gt; &lt;/p&gt; &lt;/li&gt; &lt;/ul&gt; &lt;p&gt;If you specify &lt;code&gt;none&lt;/code&gt;, the following parameters must be null or &lt;code&gt;false&lt;/code&gt;:&lt;/p&gt; &lt;ul&gt; &lt;li&gt; &lt;p&gt; &lt;code&gt;notifyOnAddCorrespondenceToCase&lt;/code&gt; &lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;code&gt;notifyOnCreateOrReopenCase&lt;/code&gt; &lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt; &lt;code&gt;notifyOnResolveCase&lt;/code&gt; &lt;/p&gt; &lt;/li&gt; &lt;/ul&gt; &lt;note&gt; &lt;p&gt;If you don&#39;t specify these parameters in your request, they default to &lt;code&gt;false&lt;/code&gt;.&lt;/p&gt; &lt;/note&gt; | 
+**notifyOnCreateOrReopenCase** | **Boolean** | Whether you want to get notified when a support case is created or reopened. | [optional] 
+**notifyOnResolveCase** | **Boolean** | Whether you want to get notified when a support case is resolved. | [optional] 
+**teamId** | **String** | The team ID in Slack. This ID uniquely identifies a Slack workspace, such as &lt;code&gt;T012ABCDEFG&lt;/code&gt;. | 
+
+
+
+## Enum: NotifyOnCaseSeverityEnum
+
+
+* `none` (value: `"none"`)
+
+* `all` (value: `"all"`)
+
+* `high` (value: `"high"`)
+
+
+
+

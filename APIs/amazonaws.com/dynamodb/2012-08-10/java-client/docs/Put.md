@@ -1,0 +1,19 @@
+
+
+# Put
+
+Represents a request to perform a <code>PutItem</code> operation.
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**item** | [**Map**](Map.md) |  |  |
+|**tableName** | [**String**](String.md) |  |  |
+|**conditionExpression** | [**String**](String.md) |  |  [optional] |
+|**expressionAttributeNames** | [**Map**](Map.md) |  |  [optional] |
+|**expressionAttributeValues** | [**Map**](Map.md) |  |  [optional] |
+|**returnValuesOnConditionCheckFailure** | [**ReturnValuesOnConditionCheckFailure**](ReturnValuesOnConditionCheckFailure.md) |  |  [optional] |
+
+
+

@@ -1,0 +1,91 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAICreateDataIntegrationRequest.h \
+    $${PWD}/OAICreateDataIntegrationResponse.h \
+    $${PWD}/OAICreateDataIntegrationResponse_FileConfiguration.h \
+    $${PWD}/OAICreateDataIntegrationResponse_ScheduleConfiguration.h \
+    $${PWD}/OAICreateDataIntegration_request.h \
+    $${PWD}/OAICreateDataIntegration_request_FileConfiguration.h \
+    $${PWD}/OAICreateDataIntegration_request_ScheduleConfig.h \
+    $${PWD}/OAICreateEventIntegrationRequest.h \
+    $${PWD}/OAICreateEventIntegrationResponse.h \
+    $${PWD}/OAICreateEventIntegration_request.h \
+    $${PWD}/OAICreateEventIntegration_request_EventFilter.h \
+    $${PWD}/OAIDataIntegrationAssociationSummary.h \
+    $${PWD}/OAIDataIntegrationSummary.h \
+    $${PWD}/OAIEventFilter.h \
+    $${PWD}/OAIEventIntegration.h \
+    $${PWD}/OAIEventIntegrationAssociation.h \
+    $${PWD}/OAIEventIntegration_EventFilter.h \
+    $${PWD}/OAIFileConfiguration.h \
+    $${PWD}/OAIGetDataIntegrationResponse.h \
+    $${PWD}/OAIGetEventIntegrationResponse.h \
+    $${PWD}/OAIGetEventIntegrationResponse_EventFilter.h \
+    $${PWD}/OAIListDataIntegrationAssociationsResponse.h \
+    $${PWD}/OAIListDataIntegrationsResponse.h \
+    $${PWD}/OAIListEventIntegrationAssociationsResponse.h \
+    $${PWD}/OAIListEventIntegrationsResponse.h \
+    $${PWD}/OAIListTagsForResourceResponse.h \
+    $${PWD}/OAIScheduleConfiguration.h \
+    $${PWD}/OAITagResourceRequest.h \
+    $${PWD}/OAITagResource_request.h \
+    $${PWD}/OAIUpdateDataIntegrationRequest.h \
+    $${PWD}/OAIUpdateDataIntegration_request.h \
+    $${PWD}/OAIUpdateEventIntegrationRequest.h \
+    $${PWD}/OAIUpdateEventIntegration_request.h \
+# APIs
+    $${PWD}/OAIDefaultApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAICreateDataIntegrationRequest.cpp \
+    $${PWD}/OAICreateDataIntegrationResponse.cpp \
+    $${PWD}/OAICreateDataIntegrationResponse_FileConfiguration.cpp \
+    $${PWD}/OAICreateDataIntegrationResponse_ScheduleConfiguration.cpp \
+    $${PWD}/OAICreateDataIntegration_request.cpp \
+    $${PWD}/OAICreateDataIntegration_request_FileConfiguration.cpp \
+    $${PWD}/OAICreateDataIntegration_request_ScheduleConfig.cpp \
+    $${PWD}/OAICreateEventIntegrationRequest.cpp \
+    $${PWD}/OAICreateEventIntegrationResponse.cpp \
+    $${PWD}/OAICreateEventIntegration_request.cpp \
+    $${PWD}/OAICreateEventIntegration_request_EventFilter.cpp \
+    $${PWD}/OAIDataIntegrationAssociationSummary.cpp \
+    $${PWD}/OAIDataIntegrationSummary.cpp \
+    $${PWD}/OAIEventFilter.cpp \
+    $${PWD}/OAIEventIntegration.cpp \
+    $${PWD}/OAIEventIntegrationAssociation.cpp \
+    $${PWD}/OAIEventIntegration_EventFilter.cpp \
+    $${PWD}/OAIFileConfiguration.cpp \
+    $${PWD}/OAIGetDataIntegrationResponse.cpp \
+    $${PWD}/OAIGetEventIntegrationResponse.cpp \
+    $${PWD}/OAIGetEventIntegrationResponse_EventFilter.cpp \
+    $${PWD}/OAIListDataIntegrationAssociationsResponse.cpp \
+    $${PWD}/OAIListDataIntegrationsResponse.cpp \
+    $${PWD}/OAIListEventIntegrationAssociationsResponse.cpp \
+    $${PWD}/OAIListEventIntegrationsResponse.cpp \
+    $${PWD}/OAIListTagsForResourceResponse.cpp \
+    $${PWD}/OAIScheduleConfiguration.cpp \
+    $${PWD}/OAITagResourceRequest.cpp \
+    $${PWD}/OAITagResource_request.cpp \
+    $${PWD}/OAIUpdateDataIntegrationRequest.cpp \
+    $${PWD}/OAIUpdateDataIntegration_request.cpp \
+    $${PWD}/OAIUpdateEventIntegrationRequest.cpp \
+    $${PWD}/OAIUpdateEventIntegration_request.cpp \
+# APIs
+    $${PWD}/OAIDefaultApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

@@ -1,0 +1,26 @@
+
+
+# BatchImport
+
+The batch import job details.
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**jobId** | [**String**](String.md) |  |  [optional] |
+|**status** | [**AsyncJobStatus**](AsyncJobStatus.md) |  |  [optional] |
+|**failureReason** | [**String**](String.md) |  |  [optional] |
+|**startTime** | [**String**](String.md) |  |  [optional] |
+|**completionTime** | [**String**](String.md) |  |  [optional] |
+|**inputPath** | [**String**](String.md) |  |  [optional] |
+|**outputPath** | [**String**](String.md) |  |  [optional] |
+|**eventTypeName** | [**String**](String.md) |  |  [optional] |
+|**iamRoleArn** | [**String**](String.md) |  |  [optional] |
+|**arn** | [**String**](String.md) |  |  [optional] |
+|**processedRecordsCount** | [**Integer**](Integer.md) |  |  [optional] |
+|**failedRecordsCount** | [**Integer**](Integer.md) |  |  [optional] |
+|**totalRecordsCount** | [**Integer**](Integer.md) |  |  [optional] |
+
+
+

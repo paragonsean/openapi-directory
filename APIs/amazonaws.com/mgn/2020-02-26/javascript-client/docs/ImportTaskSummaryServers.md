@@ -1,0 +1,10 @@
+# ApplicationMigrationService.ImportTaskSummaryServers
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**createdCount** | **Number** |  | [optional] 
+**modifiedCount** | **Number** |  | [optional] 
+
+

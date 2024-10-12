@@ -1,0 +1,20 @@
+# MigrationHubStrategyRecommendations.SrcCodeOrDbAnalysisStatus
+
+## Enum
+
+
+* `ANALYSIS_TO_BE_SCHEDULED` (value: `"ANALYSIS_TO_BE_SCHEDULED"`)
+
+* `ANALYSIS_STARTED` (value: `"ANALYSIS_STARTED"`)
+
+* `ANALYSIS_SUCCESS` (value: `"ANALYSIS_SUCCESS"`)
+
+* `ANALYSIS_FAILED` (value: `"ANALYSIS_FAILED"`)
+
+* `ANALYSIS_PARTIAL_SUCCESS` (value: `"ANALYSIS_PARTIAL_SUCCESS"`)
+
+* `UNCONFIGURED` (value: `"UNCONFIGURED"`)
+
+* `CONFIGURED` (value: `"CONFIGURED"`)
+
+

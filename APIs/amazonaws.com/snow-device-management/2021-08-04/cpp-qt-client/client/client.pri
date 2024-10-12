@@ -1,0 +1,115 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIAttachmentStatus.h \
+    $${PWD}/OAICancelTaskOutput.h \
+    $${PWD}/OAICapacity.h \
+    $${PWD}/OAICommand.h \
+    $${PWD}/OAICpuOptions.h \
+    $${PWD}/OAICreateTaskInput.h \
+    $${PWD}/OAICreateTaskInput_command.h \
+    $${PWD}/OAICreateTaskOutput.h \
+    $${PWD}/OAICreateTask_request.h \
+    $${PWD}/OAICreateTask_request_command.h \
+    $${PWD}/OAIDescribeDeviceEc2Input.h \
+    $${PWD}/OAIDescribeDeviceEc2Instances_request.h \
+    $${PWD}/OAIDescribeDeviceEc2Output.h \
+    $${PWD}/OAIDescribeDeviceOutput.h \
+    $${PWD}/OAIDescribeDeviceOutput_software.h \
+    $${PWD}/OAIDescribeExecutionOutput.h \
+    $${PWD}/OAIDescribeTaskOutput.h \
+    $${PWD}/OAIDeviceSummary.h \
+    $${PWD}/OAIEbsInstanceBlockDevice.h \
+    $${PWD}/OAIExecutionState.h \
+    $${PWD}/OAIExecutionSummary.h \
+    $${PWD}/OAIInstance.h \
+    $${PWD}/OAIInstanceBlockDeviceMapping.h \
+    $${PWD}/OAIInstanceBlockDeviceMapping_ebs.h \
+    $${PWD}/OAIInstanceState.h \
+    $${PWD}/OAIInstanceStateName.h \
+    $${PWD}/OAIInstanceSummary.h \
+    $${PWD}/OAIInstanceSummary_instance.h \
+    $${PWD}/OAIInstance_cpuOptions.h \
+    $${PWD}/OAIIpAddressAssignment.h \
+    $${PWD}/OAIListDeviceResourcesOutput.h \
+    $${PWD}/OAIListDevicesOutput.h \
+    $${PWD}/OAIListExecutionsOutput.h \
+    $${PWD}/OAIListTagsForResourceOutput.h \
+    $${PWD}/OAIListTasksOutput.h \
+    $${PWD}/OAIPhysicalConnectorType.h \
+    $${PWD}/OAIPhysicalNetworkInterface.h \
+    $${PWD}/OAIResourceSummary.h \
+    $${PWD}/OAISecurityGroupIdentifier.h \
+    $${PWD}/OAISoftwareInformation.h \
+    $${PWD}/OAITagResourceInput.h \
+    $${PWD}/OAITagResource_request.h \
+    $${PWD}/OAITaskState.h \
+    $${PWD}/OAITaskSummary.h \
+    $${PWD}/OAIUnlockState.h \
+# APIs
+    $${PWD}/OAIDefaultApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIAttachmentStatus.cpp \
+    $${PWD}/OAICancelTaskOutput.cpp \
+    $${PWD}/OAICapacity.cpp \
+    $${PWD}/OAICommand.cpp \
+    $${PWD}/OAICpuOptions.cpp \
+    $${PWD}/OAICreateTaskInput.cpp \
+    $${PWD}/OAICreateTaskInput_command.cpp \
+    $${PWD}/OAICreateTaskOutput.cpp \
+    $${PWD}/OAICreateTask_request.cpp \
+    $${PWD}/OAICreateTask_request_command.cpp \
+    $${PWD}/OAIDescribeDeviceEc2Input.cpp \
+    $${PWD}/OAIDescribeDeviceEc2Instances_request.cpp \
+    $${PWD}/OAIDescribeDeviceEc2Output.cpp \
+    $${PWD}/OAIDescribeDeviceOutput.cpp \
+    $${PWD}/OAIDescribeDeviceOutput_software.cpp \
+    $${PWD}/OAIDescribeExecutionOutput.cpp \
+    $${PWD}/OAIDescribeTaskOutput.cpp \
+    $${PWD}/OAIDeviceSummary.cpp \
+    $${PWD}/OAIEbsInstanceBlockDevice.cpp \
+    $${PWD}/OAIExecutionState.cpp \
+    $${PWD}/OAIExecutionSummary.cpp \
+    $${PWD}/OAIInstance.cpp \
+    $${PWD}/OAIInstanceBlockDeviceMapping.cpp \
+    $${PWD}/OAIInstanceBlockDeviceMapping_ebs.cpp \
+    $${PWD}/OAIInstanceState.cpp \
+    $${PWD}/OAIInstanceStateName.cpp \
+    $${PWD}/OAIInstanceSummary.cpp \
+    $${PWD}/OAIInstanceSummary_instance.cpp \
+    $${PWD}/OAIInstance_cpuOptions.cpp \
+    $${PWD}/OAIIpAddressAssignment.cpp \
+    $${PWD}/OAIListDeviceResourcesOutput.cpp \
+    $${PWD}/OAIListDevicesOutput.cpp \
+    $${PWD}/OAIListExecutionsOutput.cpp \
+    $${PWD}/OAIListTagsForResourceOutput.cpp \
+    $${PWD}/OAIListTasksOutput.cpp \
+    $${PWD}/OAIPhysicalConnectorType.cpp \
+    $${PWD}/OAIPhysicalNetworkInterface.cpp \
+    $${PWD}/OAIResourceSummary.cpp \
+    $${PWD}/OAISecurityGroupIdentifier.cpp \
+    $${PWD}/OAISoftwareInformation.cpp \
+    $${PWD}/OAITagResourceInput.cpp \
+    $${PWD}/OAITagResource_request.cpp \
+    $${PWD}/OAITaskState.cpp \
+    $${PWD}/OAITaskSummary.cpp \
+    $${PWD}/OAIUnlockState.cpp \
+# APIs
+    $${PWD}/OAIDefaultApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

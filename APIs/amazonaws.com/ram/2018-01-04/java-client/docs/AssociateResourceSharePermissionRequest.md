@@ -1,0 +1,17 @@
+
+
+# AssociateResourceSharePermissionRequest
+
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**resourceShareArn** | **String** | Specifies the &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/general/latest/gr/aws-arns-and-namespaces.html\&quot;&gt;Amazon Resource Name (ARN)&lt;/a&gt; of the resource share to which you want to add or replace permissions. |  |
+|**permissionArn** | **String** | Specifies the &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/general/latest/gr/aws-arns-and-namespaces.html\&quot;&gt;Amazon Resource Name (ARN)&lt;/a&gt; of the RAM permission to associate with the resource share. To find the ARN for a permission, use either the &lt;a&gt;ListPermissions&lt;/a&gt; operation or go to the &lt;a href&#x3D;\&quot;https://console.aws.amazon.com/ram/home#Permissions:\&quot;&gt;Permissions library&lt;/a&gt; page in the RAM console and then choose the name of the permission. The ARN is displayed on the detail page. |  |
+|**replace** | **Boolean** | &lt;p&gt;Specifies whether the specified permission should replace the existing permission associated with the resource share. Use &lt;code&gt;true&lt;/code&gt; to replace the current permissions. Use &lt;code&gt;false&lt;/code&gt; to add the permission to a resource share that currently doesn&#39;t have a permission. The default value is &lt;code&gt;false&lt;/code&gt;.&lt;/p&gt; &lt;note&gt; &lt;p&gt;A resource share can have only one permission per resource type. If a resource share already has a permission for the specified resource type and you don&#39;t set &lt;code&gt;replace&lt;/code&gt; to &lt;code&gt;true&lt;/code&gt; then the operation returns an error. This helps prevent accidental overwriting of a permission.&lt;/p&gt; &lt;/note&gt; |  [optional] |
+|**clientToken** | **String** | &lt;p&gt;Specifies a unique, case-sensitive identifier that you provide to ensure the idempotency of the request. This lets you safely retry the request without accidentally performing the same operation a second time. Passing the same value to a later call to an operation requires that you also pass the same value for all other parameters. We recommend that you use a &lt;a href&#x3D;\&quot;https://wikipedia.org/wiki/Universally_unique_identifier\&quot;&gt;UUID type of value.&lt;/a&gt;.&lt;/p&gt; &lt;p&gt;If you don&#39;t provide this value, then Amazon Web Services generates a random one for you.&lt;/p&gt; &lt;p&gt;If you retry the operation with the same &lt;code&gt;ClientToken&lt;/code&gt;, but with different parameters, the retry fails with an &lt;code&gt;IdempotentParameterMismatch&lt;/code&gt; error.&lt;/p&gt; |  [optional] |
+|**permissionVersion** | **Integer** | &lt;p&gt;Specifies the version of the RAM permission to associate with the resource share. You can specify &lt;i&gt;only&lt;/i&gt; the version that is currently set as the default version for the permission. If you also set the &lt;code&gt;replace&lt;/code&gt; pararameter to &lt;code&gt;true&lt;/code&gt;, then this operation updates an outdated version of the permission to the current default version.&lt;/p&gt; &lt;note&gt; &lt;p&gt;You don&#39;t need to specify this parameter because the default behavior is to use the version that is currently set as the default version for the permission. This parameter is supported for backwards compatibility.&lt;/p&gt; &lt;/note&gt; |  [optional] |
+
+
+

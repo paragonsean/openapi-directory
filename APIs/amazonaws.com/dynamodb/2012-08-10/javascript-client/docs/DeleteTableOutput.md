@@ -1,0 +1,9 @@
+# AmazonDynamoDb.DeleteTableOutput
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**tableDescription** | [**DeleteTableOutputTableDescription**](DeleteTableOutputTableDescription.md) |  | [optional] 
+
+

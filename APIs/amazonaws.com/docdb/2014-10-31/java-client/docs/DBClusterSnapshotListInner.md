@@ -1,0 +1,29 @@
+
+
+# DBClusterSnapshotListInner
+
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**availabilityZones** | [**List**](List.md) |  |  [optional] |
+|**dbClusterSnapshotIdentifier** | [**String**](String.md) |  |  [optional] |
+|**dbClusterIdentifier** | [**String**](String.md) |  |  [optional] |
+|**snapshotCreateTime** | [**OffsetDateTime**](OffsetDateTime.md) |  |  [optional] |
+|**engine** | [**String**](String.md) |  |  [optional] |
+|**status** | [**String**](String.md) |  |  [optional] |
+|**port** | [**Integer**](Integer.md) |  |  [optional] |
+|**vpcId** | [**String**](String.md) |  |  [optional] |
+|**clusterCreateTime** | [**OffsetDateTime**](OffsetDateTime.md) |  |  [optional] |
+|**masterUsername** | [**String**](String.md) |  |  [optional] |
+|**engineVersion** | [**String**](String.md) |  |  [optional] |
+|**snapshotType** | [**String**](String.md) |  |  [optional] |
+|**percentProgress** | [**Integer**](Integer.md) |  |  [optional] |
+|**storageEncrypted** | [**Boolean**](Boolean.md) |  |  [optional] |
+|**kmsKeyId** | [**String**](String.md) |  |  [optional] |
+|**dbClusterSnapshotArn** | [**String**](String.md) |  |  [optional] |
+|**sourceDBClusterSnapshotArn** | [**String**](String.md) |  |  [optional] |
+
+
+

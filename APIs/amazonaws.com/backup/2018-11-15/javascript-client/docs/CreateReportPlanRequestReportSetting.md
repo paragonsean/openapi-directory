@@ -1,0 +1,14 @@
+# AwsBackup.CreateReportPlanRequestReportSetting
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**reportTemplate** | **String** |  | [optional] 
+**frameworkArns** | **Array** |  | [optional] 
+**numberOfFrameworks** | **Number** |  | [optional] 
+**accounts** | **Array** |  | [optional] 
+**organizationUnits** | **Array** |  | [optional] 
+**regions** | **Array** |  | [optional] 
+
+

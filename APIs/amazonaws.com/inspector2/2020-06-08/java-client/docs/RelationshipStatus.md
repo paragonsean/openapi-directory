@@ -1,0 +1,33 @@
+
+
+# RelationshipStatus
+
+## Enum
+
+
+* `CREATED` (value: `"CREATED"`)
+
+* `INVITED` (value: `"INVITED"`)
+
+* `DISABLED` (value: `"DISABLED"`)
+
+* `ENABLED` (value: `"ENABLED"`)
+
+* `REMOVED` (value: `"REMOVED"`)
+
+* `RESIGNED` (value: `"RESIGNED"`)
+
+* `DELETED` (value: `"DELETED"`)
+
+* `EMAIL_VERIFICATION_IN_PROGRESS` (value: `"EMAIL_VERIFICATION_IN_PROGRESS"`)
+
+* `EMAIL_VERIFICATION_FAILED` (value: `"EMAIL_VERIFICATION_FAILED"`)
+
+* `REGION_DISABLED` (value: `"REGION_DISABLED"`)
+
+* `ACCOUNT_SUSPENDED` (value: `"ACCOUNT_SUSPENDED"`)
+
+* `CANNOT_CREATE_DETECTOR_IN_ORG_MASTER` (value: `"CANNOT_CREATE_DETECTOR_IN_ORG_MASTER"`)
+
+
+

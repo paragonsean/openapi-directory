@@ -1,0 +1,89 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIAbortTransactionResult.h \
+    $${PWD}/OAIAbortTransactionResult_TimingInformation.h \
+    $${PWD}/OAICommitTransactionRequest.h \
+    $${PWD}/OAICommitTransactionResult.h \
+    $${PWD}/OAICommitTransactionResult_ConsumedIOs.h \
+    $${PWD}/OAIEndSessionResult.h \
+    $${PWD}/OAIExecuteStatementRequest.h \
+    $${PWD}/OAIExecuteStatementResult.h \
+    $${PWD}/OAIExecuteStatementResult_FirstPage.h \
+    $${PWD}/OAIFetchPageRequest.h \
+    $${PWD}/OAIFetchPageResult.h \
+    $${PWD}/OAIFetchPageResult_Page.h \
+    $${PWD}/OAIIOUsage.h \
+    $${PWD}/OAIPage.h \
+    $${PWD}/OAISendCommandRequest.h \
+    $${PWD}/OAISendCommandRequest_CommitTransaction.h \
+    $${PWD}/OAISendCommandRequest_ExecuteStatement.h \
+    $${PWD}/OAISendCommandRequest_FetchPage.h \
+    $${PWD}/OAISendCommandRequest_StartSession.h \
+    $${PWD}/OAISendCommandResult.h \
+    $${PWD}/OAISendCommandResult_AbortTransaction.h \
+    $${PWD}/OAISendCommandResult_CommitTransaction.h \
+    $${PWD}/OAISendCommandResult_EndSession.h \
+    $${PWD}/OAISendCommandResult_ExecuteStatement.h \
+    $${PWD}/OAISendCommandResult_FetchPage.h \
+    $${PWD}/OAISendCommandResult_StartSession.h \
+    $${PWD}/OAISendCommandResult_StartTransaction.h \
+    $${PWD}/OAIStartSessionRequest.h \
+    $${PWD}/OAIStartSessionResult.h \
+    $${PWD}/OAIStartTransactionResult.h \
+    $${PWD}/OAITimingInformation.h \
+    $${PWD}/OAIValueHolder.h \
+# APIs
+    $${PWD}/OAIDefaultApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIAbortTransactionResult.cpp \
+    $${PWD}/OAIAbortTransactionResult_TimingInformation.cpp \
+    $${PWD}/OAICommitTransactionRequest.cpp \
+    $${PWD}/OAICommitTransactionResult.cpp \
+    $${PWD}/OAICommitTransactionResult_ConsumedIOs.cpp \
+    $${PWD}/OAIEndSessionResult.cpp \
+    $${PWD}/OAIExecuteStatementRequest.cpp \
+    $${PWD}/OAIExecuteStatementResult.cpp \
+    $${PWD}/OAIExecuteStatementResult_FirstPage.cpp \
+    $${PWD}/OAIFetchPageRequest.cpp \
+    $${PWD}/OAIFetchPageResult.cpp \
+    $${PWD}/OAIFetchPageResult_Page.cpp \
+    $${PWD}/OAIIOUsage.cpp \
+    $${PWD}/OAIPage.cpp \
+    $${PWD}/OAISendCommandRequest.cpp \
+    $${PWD}/OAISendCommandRequest_CommitTransaction.cpp \
+    $${PWD}/OAISendCommandRequest_ExecuteStatement.cpp \
+    $${PWD}/OAISendCommandRequest_FetchPage.cpp \
+    $${PWD}/OAISendCommandRequest_StartSession.cpp \
+    $${PWD}/OAISendCommandResult.cpp \
+    $${PWD}/OAISendCommandResult_AbortTransaction.cpp \
+    $${PWD}/OAISendCommandResult_CommitTransaction.cpp \
+    $${PWD}/OAISendCommandResult_EndSession.cpp \
+    $${PWD}/OAISendCommandResult_ExecuteStatement.cpp \
+    $${PWD}/OAISendCommandResult_FetchPage.cpp \
+    $${PWD}/OAISendCommandResult_StartSession.cpp \
+    $${PWD}/OAISendCommandResult_StartTransaction.cpp \
+    $${PWD}/OAIStartSessionRequest.cpp \
+    $${PWD}/OAIStartSessionResult.cpp \
+    $${PWD}/OAIStartTransactionResult.cpp \
+    $${PWD}/OAITimingInformation.cpp \
+    $${PWD}/OAIValueHolder.cpp \
+# APIs
+    $${PWD}/OAIDefaultApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

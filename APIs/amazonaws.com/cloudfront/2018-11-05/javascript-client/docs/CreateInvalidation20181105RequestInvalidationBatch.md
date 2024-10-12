@@ -1,0 +1,10 @@
+# AmazonCloudFront.CreateInvalidation20181105RequestInvalidationBatch
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**paths** | [**CreateInvalidation20181105RequestInvalidationBatchPaths**](CreateInvalidation20181105RequestInvalidationBatchPaths.md) |  | [optional] 
+**callerReference** | **String** |  | [optional] 
+
+

@@ -1,0 +1,12 @@
+# AmazonCloudFront.CreateDistribution20171030RequestDistributionConfigLogging
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**enabled** | **Boolean** |  | 
+**includeCookies** | **Boolean** |  | 
+**bucket** | **String** |  | 
+**prefix** | **String** |  | 
+
+

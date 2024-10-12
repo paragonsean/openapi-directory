@@ -1,0 +1,10 @@
+# AmazonChimeSdkMessaging.ChannelMode
+
+## Enum
+
+
+* `UNRESTRICTED` (value: `"UNRESTRICTED"`)
+
+* `RESTRICTED` (value: `"RESTRICTED"`)
+
+

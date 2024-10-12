@@ -1,0 +1,33 @@
+# coding: utf-8
+
+# import models into model package
+from openapi_server.models.connection import Connection
+from openapi_server.models.connection_status import ConnectionStatus
+from openapi_server.models.create_connection_input import CreateConnectionInput
+from openapi_server.models.create_connection_output import CreateConnectionOutput
+from openapi_server.models.create_host_input import CreateHostInput
+from openapi_server.models.create_host_input_vpc_configuration import CreateHostInputVpcConfiguration
+from openapi_server.models.create_host_output import CreateHostOutput
+from openapi_server.models.delete_connection_input import DeleteConnectionInput
+from openapi_server.models.delete_host_input import DeleteHostInput
+from openapi_server.models.get_connection_input import GetConnectionInput
+from openapi_server.models.get_connection_output import GetConnectionOutput
+from openapi_server.models.get_connection_output_connection import GetConnectionOutputConnection
+from openapi_server.models.get_host_input import GetHostInput
+from openapi_server.models.get_host_output import GetHostOutput
+from openapi_server.models.get_host_output_vpc_configuration import GetHostOutputVpcConfiguration
+from openapi_server.models.host import Host
+from openapi_server.models.host_vpc_configuration import HostVpcConfiguration
+from openapi_server.models.list_connections_input import ListConnectionsInput
+from openapi_server.models.list_connections_output import ListConnectionsOutput
+from openapi_server.models.list_hosts_input import ListHostsInput
+from openapi_server.models.list_hosts_output import ListHostsOutput
+from openapi_server.models.list_tags_for_resource_input import ListTagsForResourceInput
+from openapi_server.models.list_tags_for_resource_output import ListTagsForResourceOutput
+from openapi_server.models.provider_type import ProviderType
+from openapi_server.models.tag import Tag
+from openapi_server.models.tag_resource_input import TagResourceInput
+from openapi_server.models.untag_resource_input import UntagResourceInput
+from openapi_server.models.update_host_input import UpdateHostInput
+from openapi_server.models.update_host_input_vpc_configuration import UpdateHostInputVpcConfiguration
+from openapi_server.models.vpc_configuration import VpcConfiguration

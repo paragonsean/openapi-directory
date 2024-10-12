@@ -1,0 +1,978 @@
+openapi: 3.0.0
+info:
+  contact:
+    email: mike.ralphson@gmail.com
+    name: Mike Ralphson
+    url: https://github.com/mermade/aws2openapi
+    x-twitter: PermittedSoc
+  description: "<p>AWS IAM Identity Center (successor to AWS Single Sign-On) OpenID\
+    \ Connect (OIDC) is a web service that enables a client (such as AWS CLI or a\
+    \ native application) to register with IAM Identity Center. The service also enables\
+    \ the client to fetch the user’s access token upon successful authentication and\
+    \ authorization with IAM Identity Center.</p> <note> <p>Although AWS Single Sign-On\
+    \ was renamed, the <code>sso</code> and <code>identitystore</code> API namespaces\
+    \ will continue to retain their original name for backward compatibility purposes.\
+    \ For more information, see <a href=\"https://docs.aws.amazon.com/singlesignon/latest/userguide/what-is.html#renamed\"\
+    >IAM Identity Center rename</a>.</p> </note> <p> <b>Considerations for Using This\
+    \ Guide</b> </p> <p>Before you begin using this guide, we recommend that you first\
+    \ review the following important information about how the IAM Identity Center\
+    \ OIDC service works.</p> <ul> <li> <p>The IAM Identity Center OIDC service currently\
+    \ implements only the portions of the OAuth 2.0 Device Authorization Grant standard\
+    \ (<a href=\"https://tools.ietf.org/html/rfc8628\">https://tools.ietf.org/html/rfc8628</a>)\
+    \ that are necessary to enable single sign-on authentication with the AWS CLI.\
+    \ Support for other OIDC flows frequently needed for native applications, such\
+    \ as Authorization Code Flow (+ PKCE), will be addressed in future releases.</p>\
+    \ </li> <li> <p>The service emits only OIDC access tokens, such that obtaining\
+    \ a new token (For example, token refresh) requires explicit user re-authentication.</p>\
+    \ </li> <li> <p>The access tokens provided by this service grant access to all\
+    \ AWS account entitlements assigned to an IAM Identity Center user, not just a\
+    \ particular application.</p> </li> <li> <p>The documentation in this guide does\
+    \ not describe the mechanism to convert the access token into AWS Auth (“sigv4”\
+    ) credentials for use with IAM-protected AWS service endpoints. For more information,\
+    \ see <a href=\"https://docs.aws.amazon.com/singlesignon/latest/PortalAPIReference/API_GetRoleCredentials.html\"\
+    >GetRoleCredentials</a> in the <i>IAM Identity Center Portal API Reference Guide</i>.</p>\
+    \ </li> </ul> <p>For general information about IAM Identity Center, see <a href=\"\
+    https://docs.aws.amazon.com/singlesignon/latest/userguide/what-is.html\">What\
+    \ is IAM Identity Center?</a> in the <i>IAM Identity Center User Guide</i>.</p>"
+  license:
+    name: Apache 2.0 License
+    url: http://www.apache.org/licenses/
+  termsOfService: https://aws.amazon.com/service-terms/
+  title: AWS SSO OIDC
+  version: 2019-06-10
+  x-release: v4
+  x-logo:
+    url: https://twitter.com/awscloud/profile_image?size=original
+    backgroundColor: '#FFFFFF'
+  x-providerName: amazonaws.com
+  x-serviceName: sso-oidc
+  x-aws-signingName: awsssooidc
+  x-origin:
+  - contentType: application/json
+    url: https://raw.githubusercontent.com/aws/aws-sdk-js/master/apis/sso-oidc-2019-06-10.normal.json
+    converter:
+      url: https://github.com/mermade/aws2openapi
+      version: 1.0.0
+    x-apisguru-driver: external
+  x-apiClientRegistration:
+    url: https://portal.aws.amazon.com/gp/aws/developer/registration/index.html?nc2=h_ct
+  x-apisguru-categories:
+  - cloud
+  x-preferred: true
+externalDocs:
+  description: Amazon Web Services documentation
+  url: https://docs.aws.amazon.com/oidc/
+servers:
+- description: The SSO OIDC multi-region endpoint
+  url: "http://oidc.{region}.amazonaws.com"
+  variables:
+    region:
+      default: us-east-1
+      description: The AWS region
+      enum:
+      - us-east-1
+      - us-east-2
+      - us-west-1
+      - us-west-2
+      - us-gov-west-1
+      - us-gov-east-1
+      - ca-central-1
+      - eu-north-1
+      - eu-west-1
+      - eu-west-2
+      - eu-west-3
+      - eu-central-1
+      - eu-south-1
+      - af-south-1
+      - ap-northeast-1
+      - ap-northeast-2
+      - ap-northeast-3
+      - ap-southeast-1
+      - ap-southeast-2
+      - ap-east-1
+      - ap-south-1
+      - sa-east-1
+      - me-south-1
+- description: The SSO OIDC multi-region endpoint
+  url: "https://oidc.{region}.amazonaws.com"
+  variables:
+    region:
+      default: us-east-1
+      description: The AWS region
+      enum:
+      - us-east-1
+      - us-east-2
+      - us-west-1
+      - us-west-2
+      - us-gov-west-1
+      - us-gov-east-1
+      - ca-central-1
+      - eu-north-1
+      - eu-west-1
+      - eu-west-2
+      - eu-west-3
+      - eu-central-1
+      - eu-south-1
+      - af-south-1
+      - ap-northeast-1
+      - ap-northeast-2
+      - ap-northeast-3
+      - ap-southeast-1
+      - ap-southeast-2
+      - ap-east-1
+      - ap-south-1
+      - sa-east-1
+      - me-south-1
+- description: The SSO OIDC endpoint for China (Beijing) and China (Ningxia)
+  url: "http://oidc.{region}.amazonaws.com.cn"
+  variables:
+    region:
+      default: cn-north-1
+      description: The AWS region
+      enum:
+      - cn-north-1
+      - cn-northwest-1
+- description: The SSO OIDC endpoint for China (Beijing) and China (Ningxia)
+  url: "https://oidc.{region}.amazonaws.com.cn"
+  variables:
+    region:
+      default: cn-north-1
+      description: The AWS region
+      enum:
+      - cn-north-1
+      - cn-northwest-1
+security:
+- hmac: []
+paths:
+  /client/register:
+    post:
+      description: Registers a client with IAM Identity Center. This allows clients
+        to initiate device authorization. The output should be persisted for reuse
+        through many authentication requests.
+      operationId: register_client
+      parameters:
+      - explode: false
+        in: header
+        name: X-Amz-Content-Sha256
+        required: false
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: header
+        name: X-Amz-Date
+        required: false
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: header
+        name: X-Amz-Algorithm
+        required: false
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: header
+        name: X-Amz-Credential
+        required: false
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: header
+        name: X-Amz-Security-Token
+        required: false
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: header
+        name: X-Amz-Signature
+        required: false
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: header
+        name: X-Amz-SignedHeaders
+        required: false
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterClient_request'
+        required: true
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegisterClientResponse'
+          description: Success
+        "480":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InvalidRequestException'
+          description: InvalidRequestException
+        "481":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InvalidScopeException'
+          description: InvalidScopeException
+        "482":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InvalidClientMetadataException'
+          description: InvalidClientMetadataException
+        "483":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerException'
+          description: InternalServerException
+      x-openapi-router-controller: openapi_server.controllers.default_controller
+      x-codegen-request-body-name: body
+  /device_authorization:
+    post:
+      description: Initiates device authorization by requesting a pair of verification
+        codes from the authorization service.
+      operationId: start_device_authorization
+      parameters:
+      - explode: false
+        in: header
+        name: X-Amz-Content-Sha256
+        required: false
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: header
+        name: X-Amz-Date
+        required: false
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: header
+        name: X-Amz-Algorithm
+        required: false
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: header
+        name: X-Amz-Credential
+        required: false
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: header
+        name: X-Amz-Security-Token
+        required: false
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: header
+        name: X-Amz-Signature
+        required: false
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: header
+        name: X-Amz-SignedHeaders
+        required: false
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StartDeviceAuthorization_request'
+        required: true
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StartDeviceAuthorizationResponse'
+          description: Success
+        "480":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InvalidRequestException'
+          description: InvalidRequestException
+        "481":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InvalidClientException'
+          description: InvalidClientException
+        "482":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedClientException'
+          description: UnauthorizedClientException
+        "483":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SlowDownException'
+          description: SlowDownException
+        "484":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerException'
+          description: InternalServerException
+      x-openapi-router-controller: openapi_server.controllers.default_controller
+      x-codegen-request-body-name: body
+  /token:
+    post:
+      description: Creates and returns an access token for the authorized client.
+        The access token issued will be used to fetch short-term credentials for the
+        assigned roles in the AWS account.
+      operationId: create_token
+      parameters:
+      - explode: false
+        in: header
+        name: X-Amz-Content-Sha256
+        required: false
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: header
+        name: X-Amz-Date
+        required: false
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: header
+        name: X-Amz-Algorithm
+        required: false
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: header
+        name: X-Amz-Credential
+        required: false
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: header
+        name: X-Amz-Security-Token
+        required: false
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: header
+        name: X-Amz-Signature
+        required: false
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: header
+        name: X-Amz-SignedHeaders
+        required: false
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateToken_request'
+        required: true
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateTokenResponse'
+          description: Success
+        "480":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InvalidRequestException'
+          description: InvalidRequestException
+        "481":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InvalidClientException'
+          description: InvalidClientException
+        "482":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InvalidGrantException'
+          description: InvalidGrantException
+        "483":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedClientException'
+          description: UnauthorizedClientException
+        "484":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnsupportedGrantTypeException'
+          description: UnsupportedGrantTypeException
+        "485":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InvalidScopeException'
+          description: InvalidScopeException
+        "486":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthorizationPendingException'
+          description: AuthorizationPendingException
+        "487":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SlowDownException'
+          description: SlowDownException
+        "488":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccessDeniedException'
+          description: AccessDeniedException
+        "489":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExpiredTokenException'
+          description: ExpiredTokenException
+        "490":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerException'
+          description: InternalServerException
+      x-openapi-router-controller: openapi_server.controllers.default_controller
+      x-codegen-request-body-name: body
+components:
+  parameters:
+    X-Amz-Content-Sha256:
+      explode: false
+      in: header
+      name: X-Amz-Content-Sha256
+      required: false
+      schema:
+        type: string
+      style: simple
+    X-Amz-Date:
+      explode: false
+      in: header
+      name: X-Amz-Date
+      required: false
+      schema:
+        type: string
+      style: simple
+    X-Amz-Algorithm:
+      explode: false
+      in: header
+      name: X-Amz-Algorithm
+      required: false
+      schema:
+        type: string
+      style: simple
+    X-Amz-Credential:
+      explode: false
+      in: header
+      name: X-Amz-Credential
+      required: false
+      schema:
+        type: string
+      style: simple
+    X-Amz-Security-Token:
+      explode: false
+      in: header
+      name: X-Amz-Security-Token
+      required: false
+      schema:
+        type: string
+      style: simple
+    X-Amz-Signature:
+      explode: false
+      in: header
+      name: X-Amz-Signature
+      required: false
+      schema:
+        type: string
+      style: simple
+    X-Amz-SignedHeaders:
+      explode: false
+      in: header
+      name: X-Amz-SignedHeaders
+      required: false
+      schema:
+        type: string
+      style: simple
+  schemas:
+    CreateTokenResponse:
+      example:
+        expiresIn: ""
+        idToken: ""
+        accessToken: ""
+        tokenType: ""
+        refreshToken: ""
+      properties:
+        accessToken:
+          allOf:
+          - $ref: '#/components/schemas/AccessToken'
+          - description: An opaque token to access IAM Identity Center resources assigned
+              to a user.
+          title: accessToken
+        tokenType:
+          allOf:
+          - $ref: '#/components/schemas/TokenType'
+          - description: Used to notify the client that the returned token is an access
+              token. The supported type is <code>BearerToken</code>.
+          title: tokenType
+        expiresIn:
+          allOf:
+          - $ref: '#/components/schemas/ExpirationInSeconds'
+          - description: Indicates the time in seconds when an access token will expire.
+          title: expiresIn
+        refreshToken:
+          allOf:
+          - $ref: '#/components/schemas/RefreshToken'
+          - description: "<p>Currently, <code>refreshToken</code> is not yet implemented\
+              \ and is not supported. For more information about the features and\
+              \ limitations of the current IAM Identity Center OIDC implementation,\
+              \ see <i>Considerations for Using this Guide</i> in the <a href=\"https://docs.aws.amazon.com/singlesignon/latest/OIDCAPIReference/Welcome.html\"\
+              >IAM Identity Center OIDC API Reference</a>.</p> <p>A token that, if\
+              \ present, can be used to refresh a previously issued access token that\
+              \ might have expired.</p>"
+          title: refreshToken
+        idToken:
+          allOf:
+          - $ref: '#/components/schemas/IdToken'
+          - description: "<p>Currently, <code>idToken</code> is not yet implemented\
+              \ and is not supported. For more information about the features and\
+              \ limitations of the current IAM Identity Center OIDC implementation,\
+              \ see <i>Considerations for Using this Guide</i> in the <a href=\"https://docs.aws.amazon.com/singlesignon/latest/OIDCAPIReference/Welcome.html\"\
+              >IAM Identity Center OIDC API Reference</a>.</p> <p>The identifier of\
+              \ the user that associated with the access token, if present.</p>"
+          title: idToken
+      title: CreateTokenResponse
+      type: object
+    Scope:
+      title: Scope
+      type: string
+    InvalidRequestException: {}
+    InvalidClientException: {}
+    InvalidGrantException: {}
+    UnauthorizedClientException: {}
+    UnsupportedGrantTypeException: {}
+    InvalidScopeException: {}
+    AuthorizationPendingException: {}
+    SlowDownException: {}
+    AccessDeniedException: {}
+    ExpiredTokenException: {}
+    InternalServerException: {}
+    RegisterClientResponse:
+      example:
+        clientSecretExpiresAt: ""
+        clientIdIssuedAt: ""
+        tokenEndpoint: ""
+        clientId: ""
+        clientSecret: ""
+        authorizationEndpoint: ""
+      properties:
+        clientId:
+          allOf:
+          - $ref: '#/components/schemas/ClientId'
+          - description: The unique identifier string for each client. This client
+              uses this identifier to get authenticated by the service in subsequent
+              calls.
+          title: clientId
+        clientSecret:
+          allOf:
+          - $ref: '#/components/schemas/ClientSecret'
+          - description: A secret string generated for the client. The client will
+              use this string to get authenticated by the service in subsequent calls.
+          title: clientSecret
+        clientIdIssuedAt:
+          allOf:
+          - $ref: '#/components/schemas/LongTimeStampType'
+          - description: Indicates the time at which the <code>clientId</code> and
+              <code>clientSecret</code> were issued.
+          title: clientIdIssuedAt
+        clientSecretExpiresAt:
+          allOf:
+          - $ref: '#/components/schemas/LongTimeStampType'
+          - description: Indicates the time at which the <code>clientId</code> and
+              <code>clientSecret</code> will become invalid.
+          title: clientSecretExpiresAt
+        authorizationEndpoint:
+          allOf:
+          - $ref: '#/components/schemas/URI'
+          - description: The endpoint where the client can request authorization.
+          title: authorizationEndpoint
+        tokenEndpoint:
+          allOf:
+          - $ref: '#/components/schemas/URI'
+          - description: The endpoint where the client can get an access token.
+          title: tokenEndpoint
+      title: RegisterClientResponse
+      type: object
+    InvalidClientMetadataException: {}
+    StartDeviceAuthorizationResponse:
+      example:
+        expiresIn: ""
+        verificationUriComplete: ""
+        interval: ""
+        deviceCode: ""
+        userCode: ""
+        verificationUri: ""
+      properties:
+        deviceCode:
+          allOf:
+          - $ref: '#/components/schemas/DeviceCode'
+          - description: The short-lived code that is used by the device when polling
+              for a session token.
+          title: deviceCode
+        userCode:
+          allOf:
+          - $ref: '#/components/schemas/UserCode'
+          - description: A one-time user verification code. This is needed to authorize
+              an in-use device.
+          title: userCode
+        verificationUri:
+          allOf:
+          - $ref: '#/components/schemas/URI'
+          - description: The URI of the verification page that takes the <code>userCode</code>
+              to authorize the device.
+          title: verificationUri
+        verificationUriComplete:
+          allOf:
+          - $ref: '#/components/schemas/URI'
+          - description: An alternate URL that the client can use to automatically
+              launch a browser. This process skips the manual step in which the user
+              visits the verification page and enters their code.
+          title: verificationUriComplete
+        expiresIn:
+          allOf:
+          - $ref: '#/components/schemas/ExpirationInSeconds'
+          - description: Indicates the number of seconds in which the verification
+              code will become invalid.
+          title: expiresIn
+        interval:
+          allOf:
+          - $ref: '#/components/schemas/IntervalInSeconds'
+          - description: Indicates the number of seconds the client must wait between
+              attempts when polling for a session.
+          title: interval
+      title: StartDeviceAuthorizationResponse
+      type: object
+    AccessToken:
+      type: string
+    AuthCode:
+      type: string
+    ClientId:
+      type: string
+    ClientName:
+      type: string
+    ClientSecret:
+      type: string
+    ClientType:
+      type: string
+    GrantType:
+      type: string
+    DeviceCode:
+      type: string
+    RefreshToken:
+      type: string
+    Scopes:
+      items:
+        $ref: '#/components/schemas/Scope'
+      type: array
+    URI:
+      type: string
+    CreateTokenRequest:
+      example:
+        redirectUri: ""
+        clientId: ""
+        code: ""
+        scope: ""
+        clientSecret: ""
+        deviceCode: ""
+        grantType: ""
+        refreshToken: ""
+      properties:
+        clientId:
+          allOf:
+          - $ref: '#/components/schemas/ClientId'
+          - description: The unique identifier string for each client. This value
+              should come from the persisted result of the <a>RegisterClient</a> API.
+        clientSecret:
+          allOf:
+          - $ref: '#/components/schemas/ClientSecret'
+          - description: A secret string generated for the client. This value should
+              come from the persisted result of the <a>RegisterClient</a> API.
+        grantType:
+          allOf:
+          - $ref: '#/components/schemas/GrantType'
+          - description: "<p>Supports grant types for the authorization code, refresh\
+              \ token, and device code request. For device code requests, specify\
+              \ the following value:</p> <p> <code>urn:ietf:params:oauth:grant-type:<i>device_code</i>\
+              \ </code> </p> <p>For information about how to obtain the device code,\
+              \ see the <a>StartDeviceAuthorization</a> topic.</p>"
+        deviceCode:
+          allOf:
+          - $ref: '#/components/schemas/DeviceCode'
+          - description: Used only when calling this API for the device code grant
+              type. This short-term code is used to identify this authentication attempt.
+              This should come from an in-memory reference to the result of the <a>StartDeviceAuthorization</a>
+              API.
+        code:
+          allOf:
+          - $ref: '#/components/schemas/AuthCode'
+          - description: The authorization code received from the authorization service.
+              This parameter is required to perform an authorization grant request
+              to get access to a token.
+        refreshToken:
+          allOf:
+          - $ref: '#/components/schemas/RefreshToken'
+          - description: "<p>Currently, <code>refreshToken</code> is not yet implemented\
+              \ and is not supported. For more information about the features and\
+              \ limitations of the current IAM Identity Center OIDC implementation,\
+              \ see <i>Considerations for Using this Guide</i> in the <a href=\"https://docs.aws.amazon.com/singlesignon/latest/OIDCAPIReference/Welcome.html\"\
+              >IAM Identity Center OIDC API Reference</a>.</p> <p>The token used to\
+              \ obtain an access token in the event that the access token is invalid\
+              \ or expired.</p>"
+        scope:
+          allOf:
+          - $ref: '#/components/schemas/Scopes'
+          - description: "The list of scopes that is defined by the client. Upon authorization,\
+              \ this list is used to restrict permissions when granting an access\
+              \ token."
+        redirectUri:
+          allOf:
+          - $ref: '#/components/schemas/URI'
+          - description: The location of the application that will receive the authorization
+              code. Users authorize the service to send the request to this location.
+      required:
+      - clientId
+      - clientSecret
+      - grantType
+      title: CreateTokenRequest
+      type: object
+    TokenType:
+      type: string
+    ExpirationInSeconds:
+      type: integer
+    IdToken:
+      type: string
+    IntervalInSeconds:
+      type: integer
+    LongTimeStampType:
+      type: integer
+    RegisterClientRequest:
+      example:
+        clientType: ""
+        clientName: ""
+        scopes: ""
+      properties:
+        clientName:
+          allOf:
+          - $ref: '#/components/schemas/ClientName'
+          - description: The friendly name of the client.
+        clientType:
+          allOf:
+          - $ref: '#/components/schemas/ClientType'
+          - description: The type of client. The service supports only <code>public</code>
+              as a client type. Anything other than public will be rejected by the
+              service.
+        scopes:
+          allOf:
+          - $ref: '#/components/schemas/Scopes'
+          - description: "The list of scopes that are defined by the client. Upon\
+              \ authorization, this list is used to restrict permissions when granting\
+              \ an access token."
+      required:
+      - clientName
+      - clientType
+      title: RegisterClientRequest
+      type: object
+    StartDeviceAuthorizationRequest:
+      example:
+        startUrl: ""
+        clientId: ""
+        clientSecret: ""
+      properties:
+        clientId:
+          allOf:
+          - $ref: '#/components/schemas/ClientId'
+          - description: The unique identifier string for the client that is registered
+              with IAM Identity Center. This value should come from the persisted
+              result of the <a>RegisterClient</a> API operation.
+        clientSecret:
+          allOf:
+          - $ref: '#/components/schemas/ClientSecret'
+          - description: A secret string that is generated for the client. This value
+              should come from the persisted result of the <a>RegisterClient</a> API
+              operation.
+        startUrl:
+          allOf:
+          - $ref: '#/components/schemas/URI'
+          - description: "The URL for the AWS access portal. For more information,\
+              \ see <a href=\"https://docs.aws.amazon.com/singlesignon/latest/userguide/using-the-portal.html\"\
+              >Using the AWS access portal</a> in the <i>IAM Identity Center User\
+              \ Guide</i>."
+      required:
+      - clientId
+      - clientSecret
+      - startUrl
+      title: StartDeviceAuthorizationRequest
+      type: object
+    UserCode:
+      type: string
+    CreateToken_request:
+      properties:
+        clientId:
+          description: The unique identifier string for each client. This value should
+            come from the persisted result of the <a>RegisterClient</a> API.
+          title: clientId
+          type: string
+        clientSecret:
+          description: A secret string generated for the client. This value should
+            come from the persisted result of the <a>RegisterClient</a> API.
+          title: clientSecret
+          type: string
+        grantType:
+          description: "<p>Supports grant types for the authorization code, refresh\
+            \ token, and device code request. For device code requests, specify the\
+            \ following value:</p> <p> <code>urn:ietf:params:oauth:grant-type:<i>device_code</i>\
+            \ </code> </p> <p>For information about how to obtain the device code,\
+            \ see the <a>StartDeviceAuthorization</a> topic.</p>"
+          title: grantType
+          type: string
+        deviceCode:
+          description: Used only when calling this API for the device code grant type.
+            This short-term code is used to identify this authentication attempt.
+            This should come from an in-memory reference to the result of the <a>StartDeviceAuthorization</a>
+            API.
+          title: deviceCode
+          type: string
+        code:
+          description: The authorization code received from the authorization service.
+            This parameter is required to perform an authorization grant request to
+            get access to a token.
+          title: code
+          type: string
+        refreshToken:
+          description: "<p>Currently, <code>refreshToken</code> is not yet implemented\
+            \ and is not supported. For more information about the features and limitations\
+            \ of the current IAM Identity Center OIDC implementation, see <i>Considerations\
+            \ for Using this Guide</i> in the <a href=\"https://docs.aws.amazon.com/singlesignon/latest/OIDCAPIReference/Welcome.html\"\
+            >IAM Identity Center OIDC API Reference</a>.</p> <p>The token used to\
+            \ obtain an access token in the event that the access token is invalid\
+            \ or expired.</p>"
+          title: refreshToken
+          type: string
+        scope:
+          description: "The list of scopes that is defined by the client. Upon authorization,\
+            \ this list is used to restrict permissions when granting an access token."
+          items:
+            $ref: '#/components/schemas/Scope'
+          title: scope
+          type: array
+        redirectUri:
+          description: The location of the application that will receive the authorization
+            code. Users authorize the service to send the request to this location.
+          title: redirectUri
+          type: string
+      required:
+      - clientId
+      - clientSecret
+      - grantType
+      title: CreateToken_request
+      type: object
+    RegisterClient_request:
+      properties:
+        clientName:
+          description: The friendly name of the client.
+          title: clientName
+          type: string
+        clientType:
+          description: The type of client. The service supports only <code>public</code>
+            as a client type. Anything other than public will be rejected by the service.
+          title: clientType
+          type: string
+        scopes:
+          description: "The list of scopes that are defined by the client. Upon authorization,\
+            \ this list is used to restrict permissions when granting an access token."
+          items:
+            $ref: '#/components/schemas/Scope'
+          title: scopes
+          type: array
+      required:
+      - clientName
+      - clientType
+      title: RegisterClient_request
+      type: object
+    StartDeviceAuthorization_request:
+      properties:
+        clientId:
+          description: The unique identifier string for the client that is registered
+            with IAM Identity Center. This value should come from the persisted result
+            of the <a>RegisterClient</a> API operation.
+          title: clientId
+          type: string
+        clientSecret:
+          description: A secret string that is generated for the client. This value
+            should come from the persisted result of the <a>RegisterClient</a> API
+            operation.
+          title: clientSecret
+          type: string
+        startUrl:
+          description: "The URL for the AWS access portal. For more information, see\
+            \ <a href=\"https://docs.aws.amazon.com/singlesignon/latest/userguide/using-the-portal.html\"\
+            >Using the AWS access portal</a> in the <i>IAM Identity Center User Guide</i>."
+          title: startUrl
+          type: string
+      required:
+      - clientId
+      - clientSecret
+      - startUrl
+      title: StartDeviceAuthorization_request
+      type: object
+  securitySchemes:
+    hmac:
+      description: Amazon Signature authorization v4
+      in: header
+      name: Authorization
+      type: apiKey
+      x-amazon-apigateway-authtype: awsSigv4
+      x-apikeyInfoFunc: openapi_server.controllers.security_controller.info_from_hmac

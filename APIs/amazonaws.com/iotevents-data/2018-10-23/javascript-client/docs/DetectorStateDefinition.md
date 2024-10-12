@@ -1,0 +1,11 @@
+# AwsIoTEventsData.DetectorStateDefinition
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**stateName** | **String** |  | 
+**variables** | **Array** |  | 
+**timers** | **Array** |  | 
+
+

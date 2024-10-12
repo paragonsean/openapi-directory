@@ -1,0 +1,15 @@
+
+
+# EventErrorCode
+
+## Enum
+
+
+* `INSUFFICIENT_CAPABILITIES` (value: `"INSUFFICIENT_CAPABILITIES"`)
+
+* `QUOTA_EXCEEDED` (value: `"QUOTA_EXCEEDED"`)
+
+* `PUBLISHER_NOT_FOUND` (value: `"PUBLISHER_NOT_FOUND"`)
+
+
+

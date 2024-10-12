@@ -1,0 +1,95 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIArtifact.h \
+    $${PWD}/OAIBucketPermissionException.h \
+    $${PWD}/OAICancelJobInput.h \
+    $${PWD}/OAICancelJobOutput.h \
+    $${PWD}/OAICanceledJobIdException.h \
+    $${PWD}/OAICreateJobInput.h \
+    $${PWD}/OAICreateJobOutput.h \
+    $${PWD}/OAICreateJobQuotaExceededException.h \
+    $${PWD}/OAIExpiredJobIdException.h \
+    $${PWD}/OAIGetShippingLabelInput.h \
+    $${PWD}/OAIGetShippingLabelOutput.h \
+    $${PWD}/OAIGetStatusInput.h \
+    $${PWD}/OAIGetStatusOutput.h \
+    $${PWD}/OAIInvalidAccessKeyIdException.h \
+    $${PWD}/OAIInvalidAddressException.h \
+    $${PWD}/OAIInvalidCustomsException.h \
+    $${PWD}/OAIInvalidFileSystemException.h \
+    $${PWD}/OAIInvalidJobIdException.h \
+    $${PWD}/OAIInvalidManifestFieldException.h \
+    $${PWD}/OAIInvalidParameterException.h \
+    $${PWD}/OAIInvalidVersionException.h \
+    $${PWD}/OAIJob.h \
+    $${PWD}/OAIJobType.h \
+    $${PWD}/OAIListJobsInput.h \
+    $${PWD}/OAIListJobsOutput.h \
+    $${PWD}/OAIMalformedManifestException.h \
+    $${PWD}/OAIMissingCustomsException.h \
+    $${PWD}/OAIMissingManifestFieldException.h \
+    $${PWD}/OAIMissingParameterException.h \
+    $${PWD}/OAIMultipleRegionsException.h \
+    $${PWD}/OAINoSuchBucketException.h \
+    $${PWD}/OAIUnableToCancelJobIdException.h \
+    $${PWD}/OAIUnableToUpdateJobIdException.h \
+    $${PWD}/OAIUpdateJobInput.h \
+    $${PWD}/OAIUpdateJobOutput.h \
+# APIs
+    $${PWD}/OAIDefaultApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIArtifact.cpp \
+    $${PWD}/OAIBucketPermissionException.cpp \
+    $${PWD}/OAICancelJobInput.cpp \
+    $${PWD}/OAICancelJobOutput.cpp \
+    $${PWD}/OAICanceledJobIdException.cpp \
+    $${PWD}/OAICreateJobInput.cpp \
+    $${PWD}/OAICreateJobOutput.cpp \
+    $${PWD}/OAICreateJobQuotaExceededException.cpp \
+    $${PWD}/OAIExpiredJobIdException.cpp \
+    $${PWD}/OAIGetShippingLabelInput.cpp \
+    $${PWD}/OAIGetShippingLabelOutput.cpp \
+    $${PWD}/OAIGetStatusInput.cpp \
+    $${PWD}/OAIGetStatusOutput.cpp \
+    $${PWD}/OAIInvalidAccessKeyIdException.cpp \
+    $${PWD}/OAIInvalidAddressException.cpp \
+    $${PWD}/OAIInvalidCustomsException.cpp \
+    $${PWD}/OAIInvalidFileSystemException.cpp \
+    $${PWD}/OAIInvalidJobIdException.cpp \
+    $${PWD}/OAIInvalidManifestFieldException.cpp \
+    $${PWD}/OAIInvalidParameterException.cpp \
+    $${PWD}/OAIInvalidVersionException.cpp \
+    $${PWD}/OAIJob.cpp \
+    $${PWD}/OAIJobType.cpp \
+    $${PWD}/OAIListJobsInput.cpp \
+    $${PWD}/OAIListJobsOutput.cpp \
+    $${PWD}/OAIMalformedManifestException.cpp \
+    $${PWD}/OAIMissingCustomsException.cpp \
+    $${PWD}/OAIMissingManifestFieldException.cpp \
+    $${PWD}/OAIMissingParameterException.cpp \
+    $${PWD}/OAIMultipleRegionsException.cpp \
+    $${PWD}/OAINoSuchBucketException.cpp \
+    $${PWD}/OAIUnableToCancelJobIdException.cpp \
+    $${PWD}/OAIUnableToUpdateJobIdException.cpp \
+    $${PWD}/OAIUpdateJobInput.cpp \
+    $${PWD}/OAIUpdateJobOutput.cpp \
+# APIs
+    $${PWD}/OAIDefaultApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

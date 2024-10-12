@@ -1,0 +1,83 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIAccountActionRequiredException.h \
+    $${PWD}/OAIBadRequestException.h \
+    $${PWD}/OAIBundleDetails.h \
+    $${PWD}/OAICreateProjectRequest.h \
+    $${PWD}/OAICreateProjectResult.h \
+    $${PWD}/OAICreateProjectResult_details.h \
+    $${PWD}/OAICreateProject_request.h \
+    $${PWD}/OAIDeleteProjectResult.h \
+    $${PWD}/OAIDescribeBundleResult.h \
+    $${PWD}/OAIDescribeBundleResult_details.h \
+    $${PWD}/OAIDescribeProjectResult.h \
+    $${PWD}/OAIExportBundleResult.h \
+    $${PWD}/OAIExportProjectResult.h \
+    $${PWD}/OAIInternalFailureException.h \
+    $${PWD}/OAILimitExceededException.h \
+    $${PWD}/OAIListBundlesResult.h \
+    $${PWD}/OAIListProjectsResult.h \
+    $${PWD}/OAINotFoundException.h \
+    $${PWD}/OAIPlatform.h \
+    $${PWD}/OAIProjectDetails.h \
+    $${PWD}/OAIProjectState.h \
+    $${PWD}/OAIProjectSummary.h \
+    $${PWD}/OAIResource.h \
+    $${PWD}/OAIServiceUnavailableException.h \
+    $${PWD}/OAITooManyRequestsException.h \
+    $${PWD}/OAIUnauthorizedException.h \
+    $${PWD}/OAIUpdateProjectRequest.h \
+    $${PWD}/OAIUpdateProjectResult.h \
+    $${PWD}/OAIUpdateProjectResult_details.h \
+# APIs
+    $${PWD}/OAIDefaultApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIAccountActionRequiredException.cpp \
+    $${PWD}/OAIBadRequestException.cpp \
+    $${PWD}/OAIBundleDetails.cpp \
+    $${PWD}/OAICreateProjectRequest.cpp \
+    $${PWD}/OAICreateProjectResult.cpp \
+    $${PWD}/OAICreateProjectResult_details.cpp \
+    $${PWD}/OAICreateProject_request.cpp \
+    $${PWD}/OAIDeleteProjectResult.cpp \
+    $${PWD}/OAIDescribeBundleResult.cpp \
+    $${PWD}/OAIDescribeBundleResult_details.cpp \
+    $${PWD}/OAIDescribeProjectResult.cpp \
+    $${PWD}/OAIExportBundleResult.cpp \
+    $${PWD}/OAIExportProjectResult.cpp \
+    $${PWD}/OAIInternalFailureException.cpp \
+    $${PWD}/OAILimitExceededException.cpp \
+    $${PWD}/OAIListBundlesResult.cpp \
+    $${PWD}/OAIListProjectsResult.cpp \
+    $${PWD}/OAINotFoundException.cpp \
+    $${PWD}/OAIPlatform.cpp \
+    $${PWD}/OAIProjectDetails.cpp \
+    $${PWD}/OAIProjectState.cpp \
+    $${PWD}/OAIProjectSummary.cpp \
+    $${PWD}/OAIResource.cpp \
+    $${PWD}/OAIServiceUnavailableException.cpp \
+    $${PWD}/OAITooManyRequestsException.cpp \
+    $${PWD}/OAIUnauthorizedException.cpp \
+    $${PWD}/OAIUpdateProjectRequest.cpp \
+    $${PWD}/OAIUpdateProjectResult.cpp \
+    $${PWD}/OAIUpdateProjectResult_details.cpp \
+# APIs
+    $${PWD}/OAIDefaultApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

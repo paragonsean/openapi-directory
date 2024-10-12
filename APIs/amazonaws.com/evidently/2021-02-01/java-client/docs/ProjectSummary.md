@@ -1,0 +1,25 @@
+
+
+# ProjectSummary
+
+A structure that contains configuration information about an Evidently project.
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**activeExperimentCount** | [**Integer**](Integer.md) |  |  [optional] |
+|**activeLaunchCount** | [**Integer**](Integer.md) |  |  [optional] |
+|**arn** | [**String**](String.md) |  |  |
+|**createdTime** | [**OffsetDateTime**](OffsetDateTime.md) |  |  |
+|**description** | [**String**](String.md) |  |  [optional] |
+|**experimentCount** | [**Integer**](Integer.md) |  |  [optional] |
+|**featureCount** | [**Integer**](Integer.md) |  |  [optional] |
+|**lastUpdatedTime** | [**OffsetDateTime**](OffsetDateTime.md) |  |  |
+|**launchCount** | [**Integer**](Integer.md) |  |  [optional] |
+|**name** | [**String**](String.md) |  |  |
+|**status** | [**ProjectStatus**](ProjectStatus.md) |  |  |
+|**tags** | [**Map**](Map.md) |  |  [optional] |
+
+
+

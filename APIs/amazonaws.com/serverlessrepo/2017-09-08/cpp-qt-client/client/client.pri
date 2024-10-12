@@ -1,0 +1,107 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIApplicationDependencySummary.h \
+    $${PWD}/OAIApplicationPolicyStatement.h \
+    $${PWD}/OAIApplicationSummary.h \
+    $${PWD}/OAICapability.h \
+    $${PWD}/OAICreateApplicationRequest.h \
+    $${PWD}/OAICreateApplicationResponse.h \
+    $${PWD}/OAICreateApplicationResponse_Version.h \
+    $${PWD}/OAICreateApplicationVersionRequest.h \
+    $${PWD}/OAICreateApplicationVersionResponse.h \
+    $${PWD}/OAICreateApplicationVersion_request.h \
+    $${PWD}/OAICreateApplication_request.h \
+    $${PWD}/OAICreateCloudFormationChangeSetRequest.h \
+    $${PWD}/OAICreateCloudFormationChangeSetRequest_RollbackConfiguration.h \
+    $${PWD}/OAICreateCloudFormationChangeSetResponse.h \
+    $${PWD}/OAICreateCloudFormationChangeSet_request.h \
+    $${PWD}/OAICreateCloudFormationChangeSet_request_rollbackConfiguration.h \
+    $${PWD}/OAICreateCloudFormationTemplateRequest.h \
+    $${PWD}/OAICreateCloudFormationTemplateResponse.h \
+    $${PWD}/OAICreateCloudFormationTemplate_request.h \
+    $${PWD}/OAIGetApplicationPolicyResponse.h \
+    $${PWD}/OAIGetApplicationResponse.h \
+    $${PWD}/OAIGetCloudFormationTemplateResponse.h \
+    $${PWD}/OAIListApplicationDependenciesResponse.h \
+    $${PWD}/OAIListApplicationVersionsResponse.h \
+    $${PWD}/OAIListApplicationsResponse.h \
+    $${PWD}/OAIParameterDefinition.h \
+    $${PWD}/OAIParameterValue.h \
+    $${PWD}/OAIPutApplicationPolicyRequest.h \
+    $${PWD}/OAIPutApplicationPolicyResponse.h \
+    $${PWD}/OAIPutApplicationPolicy_request.h \
+    $${PWD}/OAIRollbackConfiguration.h \
+    $${PWD}/OAIRollbackTrigger.h \
+    $${PWD}/OAIStatus.h \
+    $${PWD}/OAITag.h \
+    $${PWD}/OAIUnshareApplicationRequest.h \
+    $${PWD}/OAIUnshareApplication_request.h \
+    $${PWD}/OAIUpdateApplicationRequest.h \
+    $${PWD}/OAIUpdateApplicationResponse.h \
+    $${PWD}/OAIUpdateApplication_request.h \
+    $${PWD}/OAIVersion.h \
+    $${PWD}/OAIVersionSummary.h \
+# APIs
+    $${PWD}/OAIDefaultApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIApplicationDependencySummary.cpp \
+    $${PWD}/OAIApplicationPolicyStatement.cpp \
+    $${PWD}/OAIApplicationSummary.cpp \
+    $${PWD}/OAICapability.cpp \
+    $${PWD}/OAICreateApplicationRequest.cpp \
+    $${PWD}/OAICreateApplicationResponse.cpp \
+    $${PWD}/OAICreateApplicationResponse_Version.cpp \
+    $${PWD}/OAICreateApplicationVersionRequest.cpp \
+    $${PWD}/OAICreateApplicationVersionResponse.cpp \
+    $${PWD}/OAICreateApplicationVersion_request.cpp \
+    $${PWD}/OAICreateApplication_request.cpp \
+    $${PWD}/OAICreateCloudFormationChangeSetRequest.cpp \
+    $${PWD}/OAICreateCloudFormationChangeSetRequest_RollbackConfiguration.cpp \
+    $${PWD}/OAICreateCloudFormationChangeSetResponse.cpp \
+    $${PWD}/OAICreateCloudFormationChangeSet_request.cpp \
+    $${PWD}/OAICreateCloudFormationChangeSet_request_rollbackConfiguration.cpp \
+    $${PWD}/OAICreateCloudFormationTemplateRequest.cpp \
+    $${PWD}/OAICreateCloudFormationTemplateResponse.cpp \
+    $${PWD}/OAICreateCloudFormationTemplate_request.cpp \
+    $${PWD}/OAIGetApplicationPolicyResponse.cpp \
+    $${PWD}/OAIGetApplicationResponse.cpp \
+    $${PWD}/OAIGetCloudFormationTemplateResponse.cpp \
+    $${PWD}/OAIListApplicationDependenciesResponse.cpp \
+    $${PWD}/OAIListApplicationVersionsResponse.cpp \
+    $${PWD}/OAIListApplicationsResponse.cpp \
+    $${PWD}/OAIParameterDefinition.cpp \
+    $${PWD}/OAIParameterValue.cpp \
+    $${PWD}/OAIPutApplicationPolicyRequest.cpp \
+    $${PWD}/OAIPutApplicationPolicyResponse.cpp \
+    $${PWD}/OAIPutApplicationPolicy_request.cpp \
+    $${PWD}/OAIRollbackConfiguration.cpp \
+    $${PWD}/OAIRollbackTrigger.cpp \
+    $${PWD}/OAIStatus.cpp \
+    $${PWD}/OAITag.cpp \
+    $${PWD}/OAIUnshareApplicationRequest.cpp \
+    $${PWD}/OAIUnshareApplication_request.cpp \
+    $${PWD}/OAIUpdateApplicationRequest.cpp \
+    $${PWD}/OAIUpdateApplicationResponse.cpp \
+    $${PWD}/OAIUpdateApplication_request.cpp \
+    $${PWD}/OAIVersion.cpp \
+    $${PWD}/OAIVersionSummary.cpp \
+# APIs
+    $${PWD}/OAIDefaultApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

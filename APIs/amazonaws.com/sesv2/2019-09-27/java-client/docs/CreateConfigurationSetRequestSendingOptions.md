@@ -1,0 +1,14 @@
+
+
+# CreateConfigurationSetRequestSendingOptions
+
+Used to enable or disable email sending for messages that use this configuration set in the current Amazon Web Services Region.
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**sendingEnabled** | [**Boolean**](Boolean.md) |  |  [optional] |
+
+
+

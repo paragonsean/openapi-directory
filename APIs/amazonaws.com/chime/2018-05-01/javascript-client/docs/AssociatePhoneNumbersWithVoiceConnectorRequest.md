@@ -1,0 +1,10 @@
+# AmazonChime.AssociatePhoneNumbersWithVoiceConnectorRequest
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**e164PhoneNumbers** | **[String]** | List of phone numbers, in E.164 format. | 
+**forceAssociate** | **Boolean** | If true, associates the provided phone numbers with the provided Amazon Chime Voice Connector and removes any previously existing associations. If false, does not associate any phone numbers that have previously existing associations. | [optional] 
+
+

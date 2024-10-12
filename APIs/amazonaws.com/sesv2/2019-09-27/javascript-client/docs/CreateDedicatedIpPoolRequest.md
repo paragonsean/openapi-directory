@@ -1,0 +1,22 @@
+# AmazonSimpleEmailService.CreateDedicatedIpPoolRequest
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**poolName** | **String** | The name of a dedicated IP pool. | 
+**tags** | [**[Tag]**](Tag.md) | An object that defines the tags (keys and values) that you want to associate with the pool. | [optional] 
+**scalingMode** | **String** | The type of scaling mode. | [optional] 
+
+
+
+## Enum: ScalingModeEnum
+
+
+* `STANDARD` (value: `"STANDARD"`)
+
+* `MANAGED` (value: `"MANAGED"`)
+
+
+
+

@@ -1,0 +1,27 @@
+# AwsAccount.PutAlternateContactRequest
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**accountId** | **String** | &lt;p&gt;Specifies the 12 digit account ID number of the Amazon Web Services account that you want to access or modify with this operation.&lt;/p&gt; &lt;p&gt;If you do not specify this parameter, it defaults to the Amazon Web Services account of the identity used to call the operation.&lt;/p&gt; &lt;p&gt;To use this parameter, the caller must be an identity in the &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/organizations/latest/userguide/orgs_getting-started_concepts.html#account\&quot;&gt;organization&#39;s management account&lt;/a&gt; or a delegated administrator account, and the specified account ID must be a member account in the same organization. The organization must have &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_org_support-all-features.html\&quot;&gt;all features enabled&lt;/a&gt;, and the organization must have &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/organizations/latest/userguide/using-orgs-trusted-access.html\&quot;&gt;trusted access&lt;/a&gt; enabled for the Account Management service, and optionally a &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/organizations/latest/userguide/using-orgs-delegated-admin.html\&quot;&gt;delegated admin&lt;/a&gt; account assigned.&lt;/p&gt; &lt;note&gt; &lt;p&gt;The management account can&#39;t specify its own &lt;code&gt;AccountId&lt;/code&gt;; it must call the operation in standalone context by not including the &lt;code&gt;AccountId&lt;/code&gt; parameter.&lt;/p&gt; &lt;/note&gt; &lt;p&gt;To call this operation on an account that is not a member of an organization, then don&#39;t specify this parameter, and call the operation using an identity belonging to the account whose contacts you wish to retrieve or modify.&lt;/p&gt; | [optional] 
+**alternateContactType** | **String** | Specifies which alternate contact you want to create or update. | 
+**emailAddress** | **String** | Specifies an email address for the alternate contact.  | 
+**name** | **String** | Specifies a name for the alternate contact. | 
+**phoneNumber** | **String** | Specifies a phone number for the alternate contact. | 
+**title** | **String** | Specifies a title for the alternate contact. | 
+
+
+
+## Enum: AlternateContactTypeEnum
+
+
+* `BILLING` (value: `"BILLING"`)
+
+* `OPERATIONS` (value: `"OPERATIONS"`)
+
+* `SECURITY` (value: `"SECURITY"`)
+
+
+
+

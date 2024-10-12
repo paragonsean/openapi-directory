@@ -1,0 +1,15 @@
+
+
+# Key
+
+The primary key that uniquely identifies each item in a table. A primary key can be a one attribute (hash) primary key or a two attribute (hash-and-range) primary key.
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**hashKeyElement** | [**KeyHashKeyElement**](KeyHashKeyElement.md) |  |  |
+|**rangeKeyElement** | [**KeyRangeKeyElement**](KeyRangeKeyElement.md) |  |  [optional] |
+
+
+

@@ -1,0 +1,10 @@
+# AmazonFsx.RestoreOpenZFSVolumeOption
+
+## Enum
+
+
+* `INTERMEDIATE_SNAPSHOTS` (value: `"DELETE_INTERMEDIATE_SNAPSHOTS"`)
+
+* `CLONED_VOLUMES` (value: `"DELETE_CLONED_VOLUMES"`)
+
+

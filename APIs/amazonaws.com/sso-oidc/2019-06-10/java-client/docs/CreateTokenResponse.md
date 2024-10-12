@@ -1,0 +1,17 @@
+
+
+# CreateTokenResponse
+
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**accessToken** | [**String**](String.md) |  |  [optional] |
+|**tokenType** | [**String**](String.md) |  |  [optional] |
+|**expiresIn** | [**Integer**](Integer.md) |  |  [optional] |
+|**refreshToken** | [**String**](String.md) |  |  [optional] |
+|**idToken** | [**String**](String.md) |  |  [optional] |
+
+
+

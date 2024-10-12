@@ -1,0 +1,31 @@
+
+
+# FileCacheCreating
+
+The response object for the Amazon File Cache resource being created in the <code>CreateFileCache</code> operation.
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**ownerId** | **String** | An Amazon Web Services account ID. This ID is a 12-digit number that you use to construct Amazon Resource Names (ARNs) for resources. |  [optional] |
+|**creationTime** | **OffsetDateTime** | The time that the resource was created, in seconds (since 1970-01-01T00:00:00Z), also known as Unix time. |  [optional] |
+|**fileCacheId** | [**String**](String.md) |  |  [optional] |
+|**fileCacheType** | [**FileCacheType**](FileCacheType.md) |  |  [optional] |
+|**fileCacheTypeVersion** | [**String**](String.md) |  |  [optional] |
+|**lifecycle** | [**FileCacheLifecycle**](FileCacheLifecycle.md) |  |  [optional] |
+|**failureDetails** | [**FileCacheCreatingFailureDetails**](FileCacheCreatingFailureDetails.md) |  |  [optional] |
+|**storageCapacity** | [**Integer**](Integer.md) |  |  [optional] |
+|**vpcId** | **String** | The ID of your virtual private cloud (VPC). For more information, see &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/AmazonVPC/latest/UserGuide/VPC_Subnets.html\&quot;&gt;VPC and subnets&lt;/a&gt; in the &lt;i&gt;Amazon VPC User Guide&lt;/i&gt;. |  [optional] |
+|**subnetIds** | **List&lt;String&gt;** | A list of subnet IDs that the cache will be accessible from. You can specify only one subnet ID in a call to the &lt;code&gt;CreateFileCache&lt;/code&gt; operation. |  [optional] |
+|**networkInterfaceIds** | **List&lt;String&gt;** | A list of network interface IDs. |  [optional] |
+|**dnSName** | [**String**](String.md) |  |  [optional] |
+|**kmsKeyId** | [**String**](String.md) |  |  [optional] |
+|**resourceARN** | **String** | The Amazon Resource Name (ARN) for a given resource. ARNs uniquely identify Amazon Web Services resources. We require an ARN when you need to specify a resource unambiguously across all of Amazon Web Services. For more information, see &lt;a href&#x3D;\&quot;https://docs.aws.amazon.com/general/latest/gr/aws-arns-and-namespaces.html\&quot;&gt;Amazon Resource Names (ARNs)&lt;/a&gt; in the &lt;i&gt;Amazon Web Services General Reference&lt;/i&gt;. |  [optional] |
+|**tags** | [**List&lt;Tag&gt;**](Tag.md) | A list of &lt;code&gt;Tag&lt;/code&gt; values, with a maximum of 50 elements. |  [optional] |
+|**copyTagsToDataRepositoryAssociations** | [**Boolean**](Boolean.md) |  |  [optional] |
+|**lustreConfiguration** | [**FileCacheCreatingLustreConfiguration**](FileCacheCreatingLustreConfiguration.md) |  |  [optional] |
+|**dataRepositoryAssociationIds** | [**List**](List.md) |  |  [optional] |
+
+
+

@@ -1,0 +1,14 @@
+
+
+# Options
+
+The options you can specify when you create a new version of a grant, such as activation override behavior. For more information, see <a href=\"https://docs.aws.amazon.com/license-manager/latest/userguide/granted-licenses.html\">Granted licenses in License Manager</a> in the <i>License Manager User Guide</i>.
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**activationOverrideBehavior** | [**ActivationOverrideBehavior**](ActivationOverrideBehavior.md) |  |  [optional] |
+
+
+

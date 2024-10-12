@@ -1,0 +1,9 @@
+# AmazonChime.CreateAccountResponse
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**account** | [**CreateAccountResponseAccount**](CreateAccountResponseAccount.md) |  | [optional] 
+
+

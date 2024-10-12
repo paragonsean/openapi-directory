@@ -1,0 +1,12 @@
+# Inspector2.ImageLayerSortBy
+
+## Enum
+
+
+* `CRITICAL` (value: `"CRITICAL"`)
+
+* `HIGH` (value: `"HIGH"`)
+
+* `ALL` (value: `"ALL"`)
+
+

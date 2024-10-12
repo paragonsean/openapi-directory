@@ -1,0 +1,10 @@
+# AmazonLookoutForMetrics.RelationshipType
+
+## Enum
+
+
+* `CAUSE_OF_INPUT_ANOMALY_GROUP` (value: `"CAUSE_OF_INPUT_ANOMALY_GROUP"`)
+
+* `EFFECT_OF_INPUT_ANOMALY_GROUP` (value: `"EFFECT_OF_INPUT_ANOMALY_GROUP"`)
+
+

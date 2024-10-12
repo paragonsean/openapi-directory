@@ -1,0 +1,9 @@
+# Inspector2.GetConfigurationResponseEcrConfiguration
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**rescanDurationState** | [**EcrConfigurationStateRescanDurationState**](EcrConfigurationStateRescanDurationState.md) |  | [optional] 
+
+

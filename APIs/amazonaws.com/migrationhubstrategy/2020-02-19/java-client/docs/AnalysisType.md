@@ -1,0 +1,17 @@
+
+
+# AnalysisType
+
+## Enum
+
+
+* `SOURCE_CODE_ANALYSIS` (value: `"SOURCE_CODE_ANALYSIS"`)
+
+* `DATABASE_ANALYSIS` (value: `"DATABASE_ANALYSIS"`)
+
+* `RUNTIME_ANALYSIS` (value: `"RUNTIME_ANALYSIS"`)
+
+* `BINARY_ANALYSIS` (value: `"BINARY_ANALYSIS"`)
+
+
+

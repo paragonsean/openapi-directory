@@ -1,0 +1,91 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIDataPoint.h \
+    $${PWD}/OAIDescribeDimensionKeysRequest.h \
+    $${PWD}/OAIDescribeDimensionKeysRequest_GroupBy.h \
+    $${PWD}/OAIDescribeDimensionKeysRequest_PartitionBy.h \
+    $${PWD}/OAIDescribeDimensionKeysResponse.h \
+    $${PWD}/OAIDetailStatus.h \
+    $${PWD}/OAIDimensionDetail.h \
+    $${PWD}/OAIDimensionGroup.h \
+    $${PWD}/OAIDimensionGroupDetail.h \
+    $${PWD}/OAIDimensionKeyDescription.h \
+    $${PWD}/OAIDimensionKeyDetail.h \
+    $${PWD}/OAIFeatureMetadata.h \
+    $${PWD}/OAIFeatureStatus.h \
+    $${PWD}/OAIGetDimensionKeyDetailsRequest.h \
+    $${PWD}/OAIGetDimensionKeyDetailsResponse.h \
+    $${PWD}/OAIGetResourceMetadataRequest.h \
+    $${PWD}/OAIGetResourceMetadataResponse.h \
+    $${PWD}/OAIGetResourceMetricsRequest.h \
+    $${PWD}/OAIGetResourceMetricsResponse.h \
+    $${PWD}/OAIListAvailableResourceDimensionsRequest.h \
+    $${PWD}/OAIListAvailableResourceDimensionsResponse.h \
+    $${PWD}/OAIListAvailableResourceMetricsRequest.h \
+    $${PWD}/OAIListAvailableResourceMetricsResponse.h \
+    $${PWD}/OAIMetricDimensionGroups.h \
+    $${PWD}/OAIMetricKeyDataPoints.h \
+    $${PWD}/OAIMetricKeyDataPoints_Key.h \
+    $${PWD}/OAIMetricQuery.h \
+    $${PWD}/OAIMetricQuery_GroupBy.h \
+    $${PWD}/OAIPeriodAlignment.h \
+    $${PWD}/OAIResponsePartitionKey.h \
+    $${PWD}/OAIResponseResourceMetric.h \
+    $${PWD}/OAIResponseResourceMetricKey.h \
+    $${PWD}/OAIServiceType.h \
+# APIs
+    $${PWD}/OAIDefaultApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIDataPoint.cpp \
+    $${PWD}/OAIDescribeDimensionKeysRequest.cpp \
+    $${PWD}/OAIDescribeDimensionKeysRequest_GroupBy.cpp \
+    $${PWD}/OAIDescribeDimensionKeysRequest_PartitionBy.cpp \
+    $${PWD}/OAIDescribeDimensionKeysResponse.cpp \
+    $${PWD}/OAIDetailStatus.cpp \
+    $${PWD}/OAIDimensionDetail.cpp \
+    $${PWD}/OAIDimensionGroup.cpp \
+    $${PWD}/OAIDimensionGroupDetail.cpp \
+    $${PWD}/OAIDimensionKeyDescription.cpp \
+    $${PWD}/OAIDimensionKeyDetail.cpp \
+    $${PWD}/OAIFeatureMetadata.cpp \
+    $${PWD}/OAIFeatureStatus.cpp \
+    $${PWD}/OAIGetDimensionKeyDetailsRequest.cpp \
+    $${PWD}/OAIGetDimensionKeyDetailsResponse.cpp \
+    $${PWD}/OAIGetResourceMetadataRequest.cpp \
+    $${PWD}/OAIGetResourceMetadataResponse.cpp \
+    $${PWD}/OAIGetResourceMetricsRequest.cpp \
+    $${PWD}/OAIGetResourceMetricsResponse.cpp \
+    $${PWD}/OAIListAvailableResourceDimensionsRequest.cpp \
+    $${PWD}/OAIListAvailableResourceDimensionsResponse.cpp \
+    $${PWD}/OAIListAvailableResourceMetricsRequest.cpp \
+    $${PWD}/OAIListAvailableResourceMetricsResponse.cpp \
+    $${PWD}/OAIMetricDimensionGroups.cpp \
+    $${PWD}/OAIMetricKeyDataPoints.cpp \
+    $${PWD}/OAIMetricKeyDataPoints_Key.cpp \
+    $${PWD}/OAIMetricQuery.cpp \
+    $${PWD}/OAIMetricQuery_GroupBy.cpp \
+    $${PWD}/OAIPeriodAlignment.cpp \
+    $${PWD}/OAIResponsePartitionKey.cpp \
+    $${PWD}/OAIResponseResourceMetric.cpp \
+    $${PWD}/OAIResponseResourceMetricKey.cpp \
+    $${PWD}/OAIServiceType.cpp \
+# APIs
+    $${PWD}/OAIDefaultApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

@@ -1,0 +1,15 @@
+
+
+# OriginRequestPolicyHeadersConfig
+
+An object that determines whether any HTTP headers (and if so, which headers) are included in requests that CloudFront sends to the origin.
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**headerBehavior** | [**OriginRequestPolicyHeaderBehavior**](OriginRequestPolicyHeaderBehavior.md) |  |  |
+|**headers** | [**Headers**](Headers.md) |  |  [optional] |
+
+
+

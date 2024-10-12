@@ -1,0 +1,85 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIAlternateContact.h \
+    $${PWD}/OAIAlternateContactType.h \
+    $${PWD}/OAIContactInformation.h \
+    $${PWD}/OAIDeleteAlternateContactRequest.h \
+    $${PWD}/OAIDeleteAlternateContact_request.h \
+    $${PWD}/OAIDisableRegionRequest.h \
+    $${PWD}/OAIDisableRegion_request.h \
+    $${PWD}/OAIEnableRegionRequest.h \
+    $${PWD}/OAIEnableRegion_request.h \
+    $${PWD}/OAIGetAlternateContactRequest.h \
+    $${PWD}/OAIGetAlternateContactResponse.h \
+    $${PWD}/OAIGetAlternateContactResponse_AlternateContact.h \
+    $${PWD}/OAIGetAlternateContact_request.h \
+    $${PWD}/OAIGetContactInformationRequest.h \
+    $${PWD}/OAIGetContactInformationResponse.h \
+    $${PWD}/OAIGetContactInformationResponse_ContactInformation.h \
+    $${PWD}/OAIGetContactInformation_request.h \
+    $${PWD}/OAIGetRegionOptStatusRequest.h \
+    $${PWD}/OAIGetRegionOptStatusResponse.h \
+    $${PWD}/OAIGetRegionOptStatus_request.h \
+    $${PWD}/OAIListRegionsRequest.h \
+    $${PWD}/OAIListRegionsResponse.h \
+    $${PWD}/OAIListRegions_request.h \
+    $${PWD}/OAIPutAlternateContactRequest.h \
+    $${PWD}/OAIPutAlternateContact_request.h \
+    $${PWD}/OAIPutContactInformationRequest.h \
+    $${PWD}/OAIPutContactInformation_request.h \
+    $${PWD}/OAIPutContactInformation_request_ContactInformation.h \
+    $${PWD}/OAIRegion.h \
+    $${PWD}/OAIRegionOptStatus.h \
+# APIs
+    $${PWD}/OAIDefaultApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIAlternateContact.cpp \
+    $${PWD}/OAIAlternateContactType.cpp \
+    $${PWD}/OAIContactInformation.cpp \
+    $${PWD}/OAIDeleteAlternateContactRequest.cpp \
+    $${PWD}/OAIDeleteAlternateContact_request.cpp \
+    $${PWD}/OAIDisableRegionRequest.cpp \
+    $${PWD}/OAIDisableRegion_request.cpp \
+    $${PWD}/OAIEnableRegionRequest.cpp \
+    $${PWD}/OAIEnableRegion_request.cpp \
+    $${PWD}/OAIGetAlternateContactRequest.cpp \
+    $${PWD}/OAIGetAlternateContactResponse.cpp \
+    $${PWD}/OAIGetAlternateContactResponse_AlternateContact.cpp \
+    $${PWD}/OAIGetAlternateContact_request.cpp \
+    $${PWD}/OAIGetContactInformationRequest.cpp \
+    $${PWD}/OAIGetContactInformationResponse.cpp \
+    $${PWD}/OAIGetContactInformationResponse_ContactInformation.cpp \
+    $${PWD}/OAIGetContactInformation_request.cpp \
+    $${PWD}/OAIGetRegionOptStatusRequest.cpp \
+    $${PWD}/OAIGetRegionOptStatusResponse.cpp \
+    $${PWD}/OAIGetRegionOptStatus_request.cpp \
+    $${PWD}/OAIListRegionsRequest.cpp \
+    $${PWD}/OAIListRegionsResponse.cpp \
+    $${PWD}/OAIListRegions_request.cpp \
+    $${PWD}/OAIPutAlternateContactRequest.cpp \
+    $${PWD}/OAIPutAlternateContact_request.cpp \
+    $${PWD}/OAIPutContactInformationRequest.cpp \
+    $${PWD}/OAIPutContactInformation_request.cpp \
+    $${PWD}/OAIPutContactInformation_request_ContactInformation.cpp \
+    $${PWD}/OAIRegion.cpp \
+    $${PWD}/OAIRegionOptStatus.cpp \
+# APIs
+    $${PWD}/OAIDefaultApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

@@ -1,0 +1,9 @@
+# ManagedStreamingForKafka.StorageInfo
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**ebsStorageInfo** | [**StorageInfoEbsStorageInfo**](StorageInfoEbsStorageInfo.md) |  | [optional] 
+
+

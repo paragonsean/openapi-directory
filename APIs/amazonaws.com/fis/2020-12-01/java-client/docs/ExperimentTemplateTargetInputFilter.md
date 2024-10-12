@@ -1,0 +1,15 @@
+
+
+# ExperimentTemplateTargetInputFilter
+
+<p>Specifies a filter used for the target resource input in an experiment template.</p> <p>For more information, see <a href=\"https://docs.aws.amazon.com/fis/latest/userguide/targets.html#target-filters\">Resource filters</a> in the <i>Fault Injection Simulator User Guide</i>.</p>
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**path** | [**String**](String.md) |  |  |
+|**values** | [**List**](List.md) |  |  |
+
+
+

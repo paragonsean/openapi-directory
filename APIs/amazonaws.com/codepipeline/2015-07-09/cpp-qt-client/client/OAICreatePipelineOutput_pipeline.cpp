@@ -1,0 +1,251 @@
+/**
+ * AWS CodePipeline
+ * <fullname>CodePipeline</fullname> <p> <b>Overview</b> </p> <p>This is the CodePipeline API Reference. This guide provides descriptions of the actions and data types for CodePipeline. Some functionality for your pipeline can only be configured through the API. For more information, see the <a href=\"https://docs.aws.amazon.com/codepipeline/latest/userguide/welcome.html\">CodePipeline User Guide</a>.</p> <p>You can use the CodePipeline API to work with pipelines, stages, actions, and transitions.</p> <p> <i>Pipelines</i> are models of automated release processes. Each pipeline is uniquely named, and consists of stages, actions, and transitions. </p> <p>You can work with pipelines by calling:</p> <ul> <li> <p> <a>CreatePipeline</a>, which creates a uniquely named pipeline.</p> </li> <li> <p> <a>DeletePipeline</a>, which deletes the specified pipeline.</p> </li> <li> <p> <a>GetPipeline</a>, which returns information about the pipeline structure and pipeline metadata, including the pipeline Amazon Resource Name (ARN).</p> </li> <li> <p> <a>GetPipelineExecution</a>, which returns information about a specific execution of a pipeline.</p> </li> <li> <p> <a>GetPipelineState</a>, which returns information about the current state of the stages and actions of a pipeline.</p> </li> <li> <p> <a>ListActionExecutions</a>, which returns action-level details for past executions. The details include full stage and action-level details, including individual action duration, status, any errors that occurred during the execution, and input and output artifact location details.</p> </li> <li> <p> <a>ListPipelines</a>, which gets a summary of all of the pipelines associated with your account.</p> </li> <li> <p> <a>ListPipelineExecutions</a>, which gets a summary of the most recent executions for a pipeline.</p> </li> <li> <p> <a>StartPipelineExecution</a>, which runs the most recent revision of an artifact through the pipeline.</p> </li> <li> <p> <a>StopPipelineExecution</a>, which stops the specified pipeline execution from continuing through the pipeline.</p> </li> <li> <p> <a>UpdatePipeline</a>, which updates a pipeline with edits or changes to the structure of the pipeline.</p> </li> </ul> <p>Pipelines include <i>stages</i>. Each stage contains one or more actions that must complete before the next stage begins. A stage results in success or failure. If a stage fails, the pipeline stops at that stage and remains stopped until either a new version of an artifact appears in the source location, or a user takes action to rerun the most recent artifact through the pipeline. You can call <a>GetPipelineState</a>, which displays the status of a pipeline, including the status of stages in the pipeline, or <a>GetPipeline</a>, which returns the entire structure of the pipeline, including the stages of that pipeline. For more information about the structure of stages and actions, see <a href=\"https://docs.aws.amazon.com/codepipeline/latest/userguide/pipeline-structure.html\">CodePipeline Pipeline Structure Reference</a>.</p> <p>Pipeline stages include <i>actions</i> that are categorized into categories such as source or build actions performed in a stage of a pipeline. For example, you can use a source action to import artifacts into a pipeline from a source such as Amazon S3. Like stages, you do not work with actions directly in most cases, but you do define and interact with actions when working with pipeline operations such as <a>CreatePipeline</a> and <a>GetPipelineState</a>. Valid action categories are:</p> <ul> <li> <p>Source</p> </li> <li> <p>Build</p> </li> <li> <p>Test</p> </li> <li> <p>Deploy</p> </li> <li> <p>Approval</p> </li> <li> <p>Invoke</p> </li> </ul> <p>Pipelines also include <i>transitions</i>, which allow the transition of artifacts from one stage to the next in a pipeline after the actions in one stage complete.</p> <p>You can work with transitions by calling:</p> <ul> <li> <p> <a>DisableStageTransition</a>, which prevents artifacts from transitioning to the next stage in a pipeline.</p> </li> <li> <p> <a>EnableStageTransition</a>, which enables transition of artifacts between stages in a pipeline. </p> </li> </ul> <p> <b>Using the API to integrate with CodePipeline</b> </p> <p>For third-party integrators or developers who want to create their own integrations with CodePipeline, the expected sequence varies from the standard API user. To integrate with CodePipeline, developers need to work with the following items:</p> <p> <b>Jobs</b>, which are instances of an action. For example, a job for a source action might import a revision of an artifact from a source. </p> <p>You can work with jobs by calling:</p> <ul> <li> <p> <a>AcknowledgeJob</a>, which confirms whether a job worker has received the specified job.</p> </li> <li> <p> <a>GetJobDetails</a>, which returns the details of a job.</p> </li> <li> <p> <a>PollForJobs</a>, which determines whether there are any jobs to act on.</p> </li> <li> <p> <a>PutJobFailureResult</a>, which provides details of a job failure. </p> </li> <li> <p> <a>PutJobSuccessResult</a>, which provides details of a job success.</p> </li> </ul> <p> <b>Third party jobs</b>, which are instances of an action created by a partner action and integrated into CodePipeline. Partner actions are created by members of the Amazon Web Services Partner Network.</p> <p>You can work with third party jobs by calling:</p> <ul> <li> <p> <a>AcknowledgeThirdPartyJob</a>, which confirms whether a job worker has received the specified job.</p> </li> <li> <p> <a>GetThirdPartyJobDetails</a>, which requests the details of a job for a partner action.</p> </li> <li> <p> <a>PollForThirdPartyJobs</a>, which determines whether there are any jobs to act on. </p> </li> <li> <p> <a>PutThirdPartyJobFailureResult</a>, which provides details of a job failure.</p> </li> <li> <p> <a>PutThirdPartyJobSuccessResult</a>, which provides details of a job success.</p> </li> </ul>
+ *
+ * The version of the OpenAPI document: 2015-07-09
+ * Contact: mike.ralphson@gmail.com
+ *
+ * NOTE: This class is auto generated by OpenAPI Generator (https://openapi-generator.tech).
+ * https://openapi-generator.tech
+ * Do not edit the class manually.
+ */
+
+#include "OAICreatePipelineOutput_pipeline.h"
+
+#include <QDebug>
+#include <QJsonArray>
+#include <QJsonDocument>
+#include <QObject>
+
+#include "OAIHelpers.h"
+
+namespace OpenAPI {
+
+OAICreatePipelineOutput_pipeline::OAICreatePipelineOutput_pipeline(QString json) {
+    this->initializeModel();
+    this->fromJson(json);
+}
+
+OAICreatePipelineOutput_pipeline::OAICreatePipelineOutput_pipeline() {
+    this->initializeModel();
+}
+
+OAICreatePipelineOutput_pipeline::~OAICreatePipelineOutput_pipeline() {}
+
+void OAICreatePipelineOutput_pipeline::initializeModel() {
+
+    m_name_isSet = false;
+    m_name_isValid = false;
+
+    m_role_arn_isSet = false;
+    m_role_arn_isValid = false;
+
+    m_artifact_store_isSet = false;
+    m_artifact_store_isValid = false;
+
+    m_artifact_stores_isSet = false;
+    m_artifact_stores_isValid = false;
+
+    m_stages_isSet = false;
+    m_stages_isValid = false;
+
+    m_version_isSet = false;
+    m_version_isValid = false;
+}
+
+void OAICreatePipelineOutput_pipeline::fromJson(QString jsonString) {
+    QByteArray array(jsonString.toStdString().c_str());
+    QJsonDocument doc = QJsonDocument::fromJson(array);
+    QJsonObject jsonObject = doc.object();
+    this->fromJsonObject(jsonObject);
+}
+
+void OAICreatePipelineOutput_pipeline::fromJsonObject(QJsonObject json) {
+
+    m_name_isValid = ::OpenAPI::fromJsonValue(m_name, json[QString("name")]);
+    m_name_isSet = !json[QString("name")].isNull() && m_name_isValid;
+
+    m_role_arn_isValid = ::OpenAPI::fromJsonValue(m_role_arn, json[QString("roleArn")]);
+    m_role_arn_isSet = !json[QString("roleArn")].isNull() && m_role_arn_isValid;
+
+    m_artifact_store_isValid = ::OpenAPI::fromJsonValue(m_artifact_store, json[QString("artifactStore")]);
+    m_artifact_store_isSet = !json[QString("artifactStore")].isNull() && m_artifact_store_isValid;
+
+    m_artifact_stores_isValid = ::OpenAPI::fromJsonValue(m_artifact_stores, json[QString("artifactStores")]);
+    m_artifact_stores_isSet = !json[QString("artifactStores")].isNull() && m_artifact_stores_isValid;
+
+    m_stages_isValid = ::OpenAPI::fromJsonValue(m_stages, json[QString("stages")]);
+    m_stages_isSet = !json[QString("stages")].isNull() && m_stages_isValid;
+
+    m_version_isValid = ::OpenAPI::fromJsonValue(m_version, json[QString("version")]);
+    m_version_isSet = !json[QString("version")].isNull() && m_version_isValid;
+}
+
+QString OAICreatePipelineOutput_pipeline::asJson() const {
+    QJsonObject obj = this->asJsonObject();
+    QJsonDocument doc(obj);
+    QByteArray bytes = doc.toJson();
+    return QString(bytes);
+}
+
+QJsonObject OAICreatePipelineOutput_pipeline::asJsonObject() const {
+    QJsonObject obj;
+    if (m_name_isSet) {
+        obj.insert(QString("name"), ::OpenAPI::toJsonValue(m_name));
+    }
+    if (m_role_arn_isSet) {
+        obj.insert(QString("roleArn"), ::OpenAPI::toJsonValue(m_role_arn));
+    }
+    if (m_artifact_store.isSet()) {
+        obj.insert(QString("artifactStore"), ::OpenAPI::toJsonValue(m_artifact_store));
+    }
+    if (m_artifact_stores.isSet()) {
+        obj.insert(QString("artifactStores"), ::OpenAPI::toJsonValue(m_artifact_stores));
+    }
+    if (m_stages.isSet()) {
+        obj.insert(QString("stages"), ::OpenAPI::toJsonValue(m_stages));
+    }
+    if (m_version_isSet) {
+        obj.insert(QString("version"), ::OpenAPI::toJsonValue(m_version));
+    }
+    return obj;
+}
+
+QString OAICreatePipelineOutput_pipeline::getName() const {
+    return m_name;
+}
+void OAICreatePipelineOutput_pipeline::setName(const QString &name) {
+    m_name = name;
+    m_name_isSet = true;
+}
+
+bool OAICreatePipelineOutput_pipeline::is_name_Set() const{
+    return m_name_isSet;
+}
+
+bool OAICreatePipelineOutput_pipeline::is_name_Valid() const{
+    return m_name_isValid;
+}
+
+QString OAICreatePipelineOutput_pipeline::getRoleArn() const {
+    return m_role_arn;
+}
+void OAICreatePipelineOutput_pipeline::setRoleArn(const QString &role_arn) {
+    m_role_arn = role_arn;
+    m_role_arn_isSet = true;
+}
+
+bool OAICreatePipelineOutput_pipeline::is_role_arn_Set() const{
+    return m_role_arn_isSet;
+}
+
+bool OAICreatePipelineOutput_pipeline::is_role_arn_Valid() const{
+    return m_role_arn_isValid;
+}
+
+OAIPipelineDeclaration_artifactStore OAICreatePipelineOutput_pipeline::getArtifactStore() const {
+    return m_artifact_store;
+}
+void OAICreatePipelineOutput_pipeline::setArtifactStore(const OAIPipelineDeclaration_artifactStore &artifact_store) {
+    m_artifact_store = artifact_store;
+    m_artifact_store_isSet = true;
+}
+
+bool OAICreatePipelineOutput_pipeline::is_artifact_store_Set() const{
+    return m_artifact_store_isSet;
+}
+
+bool OAICreatePipelineOutput_pipeline::is_artifact_store_Valid() const{
+    return m_artifact_store_isValid;
+}
+
+QMap OAICreatePipelineOutput_pipeline::getArtifactStores() const {
+    return m_artifact_stores;
+}
+void OAICreatePipelineOutput_pipeline::setArtifactStores(const QMap &artifact_stores) {
+    m_artifact_stores = artifact_stores;
+    m_artifact_stores_isSet = true;
+}
+
+bool OAICreatePipelineOutput_pipeline::is_artifact_stores_Set() const{
+    return m_artifact_stores_isSet;
+}
+
+bool OAICreatePipelineOutput_pipeline::is_artifact_stores_Valid() const{
+    return m_artifact_stores_isValid;
+}
+
+QList OAICreatePipelineOutput_pipeline::getStages() const {
+    return m_stages;
+}
+void OAICreatePipelineOutput_pipeline::setStages(const QList &stages) {
+    m_stages = stages;
+    m_stages_isSet = true;
+}
+
+bool OAICreatePipelineOutput_pipeline::is_stages_Set() const{
+    return m_stages_isSet;
+}
+
+bool OAICreatePipelineOutput_pipeline::is_stages_Valid() const{
+    return m_stages_isValid;
+}
+
+qint32 OAICreatePipelineOutput_pipeline::getVersion() const {
+    return m_version;
+}
+void OAICreatePipelineOutput_pipeline::setVersion(const qint32 &version) {
+    m_version = version;
+    m_version_isSet = true;
+}
+
+bool OAICreatePipelineOutput_pipeline::is_version_Set() const{
+    return m_version_isSet;
+}
+
+bool OAICreatePipelineOutput_pipeline::is_version_Valid() const{
+    return m_version_isValid;
+}
+
+bool OAICreatePipelineOutput_pipeline::isSet() const {
+    bool isObjectUpdated = false;
+    do {
+        if (m_name_isSet) {
+            isObjectUpdated = true;
+            break;
+        }
+
+        if (m_role_arn_isSet) {
+            isObjectUpdated = true;
+            break;
+        }
+
+        if (m_artifact_store.isSet()) {
+            isObjectUpdated = true;
+            break;
+        }
+
+        if (m_artifact_stores.isSet()) {
+            isObjectUpdated = true;
+            break;
+        }
+
+        if (m_stages.isSet()) {
+            isObjectUpdated = true;
+            break;
+        }
+
+        if (m_version_isSet) {
+            isObjectUpdated = true;
+            break;
+        }
+    } while (false);
+    return isObjectUpdated;
+}
+
+bool OAICreatePipelineOutput_pipeline::isValid() const {
+    // only required properties are required for the object to be considered valid
+    return m_name_isValid && m_role_arn_isValid && m_stages_isValid && true;
+}
+
+} // namespace OpenAPI

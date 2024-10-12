@@ -1,0 +1,85 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIConnection.h \
+    $${PWD}/OAIConnectionStatus.h \
+    $${PWD}/OAICreateConnectionInput.h \
+    $${PWD}/OAICreateConnectionOutput.h \
+    $${PWD}/OAICreateHostInput.h \
+    $${PWD}/OAICreateHostInput_VpcConfiguration.h \
+    $${PWD}/OAICreateHostOutput.h \
+    $${PWD}/OAIDeleteConnectionInput.h \
+    $${PWD}/OAIDeleteHostInput.h \
+    $${PWD}/OAIGetConnectionInput.h \
+    $${PWD}/OAIGetConnectionOutput.h \
+    $${PWD}/OAIGetConnectionOutput_Connection.h \
+    $${PWD}/OAIGetHostInput.h \
+    $${PWD}/OAIGetHostOutput.h \
+    $${PWD}/OAIGetHostOutput_VpcConfiguration.h \
+    $${PWD}/OAIHost.h \
+    $${PWD}/OAIHost_VpcConfiguration.h \
+    $${PWD}/OAIListConnectionsInput.h \
+    $${PWD}/OAIListConnectionsOutput.h \
+    $${PWD}/OAIListHostsInput.h \
+    $${PWD}/OAIListHostsOutput.h \
+    $${PWD}/OAIListTagsForResourceInput.h \
+    $${PWD}/OAIListTagsForResourceOutput.h \
+    $${PWD}/OAIProviderType.h \
+    $${PWD}/OAITag.h \
+    $${PWD}/OAITagResourceInput.h \
+    $${PWD}/OAIUntagResourceInput.h \
+    $${PWD}/OAIUpdateHostInput.h \
+    $${PWD}/OAIUpdateHostInput_VpcConfiguration.h \
+    $${PWD}/OAIVpcConfiguration.h \
+# APIs
+    $${PWD}/OAIDefaultApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIConnection.cpp \
+    $${PWD}/OAIConnectionStatus.cpp \
+    $${PWD}/OAICreateConnectionInput.cpp \
+    $${PWD}/OAICreateConnectionOutput.cpp \
+    $${PWD}/OAICreateHostInput.cpp \
+    $${PWD}/OAICreateHostInput_VpcConfiguration.cpp \
+    $${PWD}/OAICreateHostOutput.cpp \
+    $${PWD}/OAIDeleteConnectionInput.cpp \
+    $${PWD}/OAIDeleteHostInput.cpp \
+    $${PWD}/OAIGetConnectionInput.cpp \
+    $${PWD}/OAIGetConnectionOutput.cpp \
+    $${PWD}/OAIGetConnectionOutput_Connection.cpp \
+    $${PWD}/OAIGetHostInput.cpp \
+    $${PWD}/OAIGetHostOutput.cpp \
+    $${PWD}/OAIGetHostOutput_VpcConfiguration.cpp \
+    $${PWD}/OAIHost.cpp \
+    $${PWD}/OAIHost_VpcConfiguration.cpp \
+    $${PWD}/OAIListConnectionsInput.cpp \
+    $${PWD}/OAIListConnectionsOutput.cpp \
+    $${PWD}/OAIListHostsInput.cpp \
+    $${PWD}/OAIListHostsOutput.cpp \
+    $${PWD}/OAIListTagsForResourceInput.cpp \
+    $${PWD}/OAIListTagsForResourceOutput.cpp \
+    $${PWD}/OAIProviderType.cpp \
+    $${PWD}/OAITag.cpp \
+    $${PWD}/OAITagResourceInput.cpp \
+    $${PWD}/OAIUntagResourceInput.cpp \
+    $${PWD}/OAIUpdateHostInput.cpp \
+    $${PWD}/OAIUpdateHostInput_VpcConfiguration.cpp \
+    $${PWD}/OAIVpcConfiguration.cpp \
+# APIs
+    $${PWD}/OAIDefaultApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

@@ -1,0 +1,10 @@
+# Inspector2.PackageFilterSourceLayerHash
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**comparison** | [**StringComparison**](StringComparison.md) |  | 
+**value** | **String** |  | 
+
+

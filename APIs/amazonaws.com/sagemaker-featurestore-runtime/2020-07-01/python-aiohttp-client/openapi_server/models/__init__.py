@@ -1,0 +1,17 @@
+# coding: utf-8
+
+# import models into model package
+from openapi_server.models.batch_get_record_error import BatchGetRecordError
+from openapi_server.models.batch_get_record_identifier import BatchGetRecordIdentifier
+from openapi_server.models.batch_get_record_request import BatchGetRecordRequest
+from openapi_server.models.batch_get_record_response import BatchGetRecordResponse
+from openapi_server.models.batch_get_record_result_detail import BatchGetRecordResultDetail
+from openapi_server.models.deletion_mode import DeletionMode
+from openapi_server.models.expiration_time_response import ExpirationTimeResponse
+from openapi_server.models.feature_value import FeatureValue
+from openapi_server.models.get_record_response import GetRecordResponse
+from openapi_server.models.put_record_request import PutRecordRequest
+from openapi_server.models.put_record_request_ttl_duration import PutRecordRequestTtlDuration
+from openapi_server.models.target_store import TargetStore
+from openapi_server.models.ttl_duration import TtlDuration
+from openapi_server.models.ttl_duration_unit import TtlDurationUnit
