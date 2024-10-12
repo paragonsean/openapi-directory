@@ -1,0 +1,51 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIContainerService.h \
+    $${PWD}/OAIContainerServiceAgentPoolProfile.h \
+    $${PWD}/OAIContainerServiceDiagnosticsProfile.h \
+    $${PWD}/OAIContainerServiceLinuxProfile.h \
+    $${PWD}/OAIContainerServiceListResult.h \
+    $${PWD}/OAIContainerServiceMasterProfile.h \
+    $${PWD}/OAIContainerServiceOrchestratorProfile.h \
+    $${PWD}/OAIContainerServiceProperties.h \
+    $${PWD}/OAIContainerServiceSshConfiguration.h \
+    $${PWD}/OAIContainerServiceSshPublicKey.h \
+    $${PWD}/OAIContainerServiceVMDiagnostics.h \
+    $${PWD}/OAIContainerServiceWindowsProfile.h \
+    $${PWD}/OAIResource.h \
+# APIs
+    $${PWD}/OAIContainerServiceApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIContainerService.cpp \
+    $${PWD}/OAIContainerServiceAgentPoolProfile.cpp \
+    $${PWD}/OAIContainerServiceDiagnosticsProfile.cpp \
+    $${PWD}/OAIContainerServiceLinuxProfile.cpp \
+    $${PWD}/OAIContainerServiceListResult.cpp \
+    $${PWD}/OAIContainerServiceMasterProfile.cpp \
+    $${PWD}/OAIContainerServiceOrchestratorProfile.cpp \
+    $${PWD}/OAIContainerServiceProperties.cpp \
+    $${PWD}/OAIContainerServiceSshConfiguration.cpp \
+    $${PWD}/OAIContainerServiceSshPublicKey.cpp \
+    $${PWD}/OAIContainerServiceVMDiagnostics.cpp \
+    $${PWD}/OAIContainerServiceWindowsProfile.cpp \
+    $${PWD}/OAIResource.cpp \
+# APIs
+    $${PWD}/OAIContainerServiceApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

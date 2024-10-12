@@ -1,0 +1,103 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIAccessProfile.h \
+    $${PWD}/OAIAgentPool.h \
+    $${PWD}/OAIAgentPoolListResult.h \
+    $${PWD}/OAIAgentPoolType.h \
+    $${PWD}/OAICloudError.h \
+    $${PWD}/OAICloudErrorBody.h \
+    $${PWD}/OAIContainerServiceDiagnosticsProfile.h \
+    $${PWD}/OAIContainerServiceLinuxProfile.h \
+    $${PWD}/OAIContainerServiceMasterProfile.h \
+    $${PWD}/OAIContainerServiceNetworkProfile.h \
+    $${PWD}/OAIContainerServiceSshConfiguration.h \
+    $${PWD}/OAIContainerServiceSshPublicKey.h \
+    $${PWD}/OAIContainerServiceStorageProfile.h \
+    $${PWD}/OAIContainerServiceVMDiagnostics.h \
+    $${PWD}/OAIContainerServiceVMSize.h \
+    $${PWD}/OAIContainerServiceWindowsProfile.h \
+    $${PWD}/OAICredentialResult.h \
+    $${PWD}/OAICredentialResults.h \
+    $${PWD}/OAIManagedCluster.h \
+    $${PWD}/OAIManagedClusterAADProfile.h \
+    $${PWD}/OAIManagedClusterAccessProfile.h \
+    $${PWD}/OAIManagedClusterAddonProfile.h \
+    $${PWD}/OAIManagedClusterAgentPoolProfile.h \
+    $${PWD}/OAIManagedClusterAgentPoolProfileProperties.h \
+    $${PWD}/OAIManagedClusterListResult.h \
+    $${PWD}/OAIManagedClusterPoolUpgradeProfile.h \
+    $${PWD}/OAIManagedClusterProperties.h \
+    $${PWD}/OAIManagedClusterServicePrincipalProfile.h \
+    $${PWD}/OAIManagedClusterUpgradeProfile.h \
+    $${PWD}/OAIManagedClusterUpgradeProfileProperties.h \
+    $${PWD}/OAIOSType.h \
+    $${PWD}/OAIOperationListResult.h \
+    $${PWD}/OAIOperationValue.h \
+    $${PWD}/OAIOperationValueDisplay.h \
+    $${PWD}/OAIOrchestratorProfile.h \
+    $${PWD}/OAIResource.h \
+    $${PWD}/OAISubResource.h \
+    $${PWD}/OAITagsObject.h \
+# APIs
+    $${PWD}/OAIAgentPoolsApi.h \
+    $${PWD}/OAIManagedClustersApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIAccessProfile.cpp \
+    $${PWD}/OAIAgentPool.cpp \
+    $${PWD}/OAIAgentPoolListResult.cpp \
+    $${PWD}/OAIAgentPoolType.cpp \
+    $${PWD}/OAICloudError.cpp \
+    $${PWD}/OAICloudErrorBody.cpp \
+    $${PWD}/OAIContainerServiceDiagnosticsProfile.cpp \
+    $${PWD}/OAIContainerServiceLinuxProfile.cpp \
+    $${PWD}/OAIContainerServiceMasterProfile.cpp \
+    $${PWD}/OAIContainerServiceNetworkProfile.cpp \
+    $${PWD}/OAIContainerServiceSshConfiguration.cpp \
+    $${PWD}/OAIContainerServiceSshPublicKey.cpp \
+    $${PWD}/OAIContainerServiceStorageProfile.cpp \
+    $${PWD}/OAIContainerServiceVMDiagnostics.cpp \
+    $${PWD}/OAIContainerServiceVMSize.cpp \
+    $${PWD}/OAIContainerServiceWindowsProfile.cpp \
+    $${PWD}/OAICredentialResult.cpp \
+    $${PWD}/OAICredentialResults.cpp \
+    $${PWD}/OAIManagedCluster.cpp \
+    $${PWD}/OAIManagedClusterAADProfile.cpp \
+    $${PWD}/OAIManagedClusterAccessProfile.cpp \
+    $${PWD}/OAIManagedClusterAddonProfile.cpp \
+    $${PWD}/OAIManagedClusterAgentPoolProfile.cpp \
+    $${PWD}/OAIManagedClusterAgentPoolProfileProperties.cpp \
+    $${PWD}/OAIManagedClusterListResult.cpp \
+    $${PWD}/OAIManagedClusterPoolUpgradeProfile.cpp \
+    $${PWD}/OAIManagedClusterProperties.cpp \
+    $${PWD}/OAIManagedClusterServicePrincipalProfile.cpp \
+    $${PWD}/OAIManagedClusterUpgradeProfile.cpp \
+    $${PWD}/OAIManagedClusterUpgradeProfileProperties.cpp \
+    $${PWD}/OAIOSType.cpp \
+    $${PWD}/OAIOperationListResult.cpp \
+    $${PWD}/OAIOperationValue.cpp \
+    $${PWD}/OAIOperationValueDisplay.cpp \
+    $${PWD}/OAIOrchestratorProfile.cpp \
+    $${PWD}/OAIResource.cpp \
+    $${PWD}/OAISubResource.cpp \
+    $${PWD}/OAITagsObject.cpp \
+# APIs
+    $${PWD}/OAIAgentPoolsApi.cpp \
+    $${PWD}/OAIManagedClustersApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp
