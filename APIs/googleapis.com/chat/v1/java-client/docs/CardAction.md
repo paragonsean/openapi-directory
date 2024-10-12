@@ -1,0 +1,15 @@
+
+
+# CardAction
+
+A card action is the action associated with the card. For an invoice card, a typical action would be: delete invoice, email invoice or open the invoice in browser. Not supported by Google Chat apps.
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**actionLabel** | **String** | The label used to be displayed in the action menu item. |  [optional] |
+|**onClick** | [**OnClick**](OnClick.md) |  |  [optional] |
+
+
+

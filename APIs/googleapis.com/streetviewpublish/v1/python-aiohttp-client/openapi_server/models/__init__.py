@@ -1,0 +1,32 @@
+# coding: utf-8
+
+# import models into model package
+from openapi_server.models.batch_delete_photos_request import BatchDeletePhotosRequest
+from openapi_server.models.batch_delete_photos_response import BatchDeletePhotosResponse
+from openapi_server.models.batch_get_photos_response import BatchGetPhotosResponse
+from openapi_server.models.batch_update_photos_request import BatchUpdatePhotosRequest
+from openapi_server.models.batch_update_photos_response import BatchUpdatePhotosResponse
+from openapi_server.models.connection import Connection
+from openapi_server.models.gps_data_gap_failure_details import GpsDataGapFailureDetails
+from openapi_server.models.imu import Imu
+from openapi_server.models.imu_data_gap_failure_details import ImuDataGapFailureDetails
+from openapi_server.models.insufficient_gps_failure_details import InsufficientGpsFailureDetails
+from openapi_server.models.lat_lng import LatLng
+from openapi_server.models.lat_lng_bounds import LatLngBounds
+from openapi_server.models.level import Level
+from openapi_server.models.list_photo_sequences_response import ListPhotoSequencesResponse
+from openapi_server.models.list_photos_response import ListPhotosResponse
+from openapi_server.models.measurement3d import Measurement3d
+from openapi_server.models.no_overlap_gps_failure_details import NoOverlapGpsFailureDetails
+from openapi_server.models.not_outdoors_failure_details import NotOutdoorsFailureDetails
+from openapi_server.models.operation import Operation
+from openapi_server.models.photo import Photo
+from openapi_server.models.photo_id import PhotoId
+from openapi_server.models.photo_response import PhotoResponse
+from openapi_server.models.photo_sequence import PhotoSequence
+from openapi_server.models.place import Place
+from openapi_server.models.pose import Pose
+from openapi_server.models.processing_failure_details import ProcessingFailureDetails
+from openapi_server.models.status import Status
+from openapi_server.models.update_photo_request import UpdatePhotoRequest
+from openapi_server.models.upload_ref import UploadRef

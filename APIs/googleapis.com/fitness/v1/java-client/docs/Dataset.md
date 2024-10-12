@@ -1,0 +1,18 @@
+
+
+# Dataset
+
+A dataset represents a projection container for data points. They do not carry any info of their own. Datasets represent a set of data points from a particular data source. A data point can be found in more than one dataset.
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**dataSourceId** | **String** | The data stream ID of the data source that created the points in this dataset. |  [optional] |
+|**maxEndTimeNs** | **String** | The largest end time of all data points in this possibly partial representation of the dataset. Time is in nanoseconds from epoch. This should also match the second part of the dataset identifier. |  [optional] |
+|**minStartTimeNs** | **String** | The smallest start time of all data points in this possibly partial representation of the dataset. Time is in nanoseconds from epoch. This should also match the first part of the dataset identifier. |  [optional] |
+|**nextPageToken** | **String** | This token will be set when a dataset is received in response to a GET request and the dataset is too large to be included in a single response. Provide this value in a subsequent GET request to return the next page of data points within this dataset. |  [optional] |
+|**point** | [**List&lt;DataPoint&gt;**](DataPoint.md) | A partial list of data points contained in the dataset, ordered by endTimeNanos. This list is considered complete when retrieving a small dataset and partial when patching a dataset or retrieving a dataset that is too large to include in a single response. |  [optional] |
+
+
+

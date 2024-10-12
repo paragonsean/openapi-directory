@@ -1,0 +1,10 @@
+# CloudDataplexApi.GoogleCloudDataplexV1EnvironmentEndpoints
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**notebooks** | **String** | Output only. URI to serve notebook APIs | [optional] [readonly] 
+**sql** | **String** | Output only. URI to serve SQL APIs | [optional] [readonly] 
+
+

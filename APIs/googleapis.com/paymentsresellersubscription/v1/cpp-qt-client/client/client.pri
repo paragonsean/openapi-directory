@@ -1,0 +1,99 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIGoogleCloudPaymentsResellerSubscriptionV1Amount.h \
+    $${PWD}/OAIGoogleCloudPaymentsResellerSubscriptionV1CancelSubscriptionRequest.h \
+    $${PWD}/OAIGoogleCloudPaymentsResellerSubscriptionV1CancelSubscriptionResponse.h \
+    $${PWD}/OAIGoogleCloudPaymentsResellerSubscriptionV1Duration.h \
+    $${PWD}/OAIGoogleCloudPaymentsResellerSubscriptionV1EntitleSubscriptionRequest.h \
+    $${PWD}/OAIGoogleCloudPaymentsResellerSubscriptionV1EntitleSubscriptionRequestLineItemEntitlementDetails.h \
+    $${PWD}/OAIGoogleCloudPaymentsResellerSubscriptionV1EntitleSubscriptionResponse.h \
+    $${PWD}/OAIGoogleCloudPaymentsResellerSubscriptionV1ExtendSubscriptionRequest.h \
+    $${PWD}/OAIGoogleCloudPaymentsResellerSubscriptionV1ExtendSubscriptionResponse.h \
+    $${PWD}/OAIGoogleCloudPaymentsResellerSubscriptionV1Extension.h \
+    $${PWD}/OAIGoogleCloudPaymentsResellerSubscriptionV1FindEligiblePromotionsRequest.h \
+    $${PWD}/OAIGoogleCloudPaymentsResellerSubscriptionV1FindEligiblePromotionsResponse.h \
+    $${PWD}/OAIGoogleCloudPaymentsResellerSubscriptionV1FiniteBillingCycleDetails.h \
+    $${PWD}/OAIGoogleCloudPaymentsResellerSubscriptionV1GoogleOnePayload.h \
+    $${PWD}/OAIGoogleCloudPaymentsResellerSubscriptionV1ListProductsResponse.h \
+    $${PWD}/OAIGoogleCloudPaymentsResellerSubscriptionV1ListPromotionsResponse.h \
+    $${PWD}/OAIGoogleCloudPaymentsResellerSubscriptionV1Location.h \
+    $${PWD}/OAIGoogleCloudPaymentsResellerSubscriptionV1Product.h \
+    $${PWD}/OAIGoogleCloudPaymentsResellerSubscriptionV1ProductBundleDetailsBundleElement.h \
+    $${PWD}/OAIGoogleCloudPaymentsResellerSubscriptionV1ProductPayload.h \
+    $${PWD}/OAIGoogleCloudPaymentsResellerSubscriptionV1ProductPriceConfig.h \
+    $${PWD}/OAIGoogleCloudPaymentsResellerSubscriptionV1Promotion.h \
+    $${PWD}/OAIGoogleCloudPaymentsResellerSubscriptionV1PromotionIntroductoryPricingDetails.h \
+    $${PWD}/OAIGoogleCloudPaymentsResellerSubscriptionV1PromotionIntroductoryPricingDetailsIntroductoryPricingSpec.h \
+    $${PWD}/OAIGoogleCloudPaymentsResellerSubscriptionV1ServicePeriod.h \
+    $${PWD}/OAIGoogleCloudPaymentsResellerSubscriptionV1Subscription.h \
+    $${PWD}/OAIGoogleCloudPaymentsResellerSubscriptionV1SubscriptionCancellationDetails.h \
+    $${PWD}/OAIGoogleCloudPaymentsResellerSubscriptionV1SubscriptionLineItem.h \
+    $${PWD}/OAIGoogleCloudPaymentsResellerSubscriptionV1SubscriptionLineItemBundleDetailsBundleElementDetails.h \
+    $${PWD}/OAIGoogleCloudPaymentsResellerSubscriptionV1SubscriptionLineItemOneTimeRecurrenceDetails.h \
+    $${PWD}/OAIGoogleCloudPaymentsResellerSubscriptionV1SubscriptionPromotionSpec.h \
+    $${PWD}/OAIGoogleCloudPaymentsResellerSubscriptionV1SubscriptionUpgradeDowngradeDetails.h \
+    $${PWD}/OAIGoogleCloudPaymentsResellerSubscriptionV1UndoCancelSubscriptionResponse.h \
+    $${PWD}/OAIGoogleCloudPaymentsResellerSubscriptionV1YoutubePayload.h \
+    $${PWD}/OAIGoogleTypeLocalizedText.h \
+    $${PWD}/OAIProductBundleDetails.h \
+    $${PWD}/OAISubscriptionLineItemBundleDetails.h \
+# APIs
+    $${PWD}/OAIPartnersApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIGoogleCloudPaymentsResellerSubscriptionV1Amount.cpp \
+    $${PWD}/OAIGoogleCloudPaymentsResellerSubscriptionV1CancelSubscriptionRequest.cpp \
+    $${PWD}/OAIGoogleCloudPaymentsResellerSubscriptionV1CancelSubscriptionResponse.cpp \
+    $${PWD}/OAIGoogleCloudPaymentsResellerSubscriptionV1Duration.cpp \
+    $${PWD}/OAIGoogleCloudPaymentsResellerSubscriptionV1EntitleSubscriptionRequest.cpp \
+    $${PWD}/OAIGoogleCloudPaymentsResellerSubscriptionV1EntitleSubscriptionRequestLineItemEntitlementDetails.cpp \
+    $${PWD}/OAIGoogleCloudPaymentsResellerSubscriptionV1EntitleSubscriptionResponse.cpp \
+    $${PWD}/OAIGoogleCloudPaymentsResellerSubscriptionV1ExtendSubscriptionRequest.cpp \
+    $${PWD}/OAIGoogleCloudPaymentsResellerSubscriptionV1ExtendSubscriptionResponse.cpp \
+    $${PWD}/OAIGoogleCloudPaymentsResellerSubscriptionV1Extension.cpp \
+    $${PWD}/OAIGoogleCloudPaymentsResellerSubscriptionV1FindEligiblePromotionsRequest.cpp \
+    $${PWD}/OAIGoogleCloudPaymentsResellerSubscriptionV1FindEligiblePromotionsResponse.cpp \
+    $${PWD}/OAIGoogleCloudPaymentsResellerSubscriptionV1FiniteBillingCycleDetails.cpp \
+    $${PWD}/OAIGoogleCloudPaymentsResellerSubscriptionV1GoogleOnePayload.cpp \
+    $${PWD}/OAIGoogleCloudPaymentsResellerSubscriptionV1ListProductsResponse.cpp \
+    $${PWD}/OAIGoogleCloudPaymentsResellerSubscriptionV1ListPromotionsResponse.cpp \
+    $${PWD}/OAIGoogleCloudPaymentsResellerSubscriptionV1Location.cpp \
+    $${PWD}/OAIGoogleCloudPaymentsResellerSubscriptionV1Product.cpp \
+    $${PWD}/OAIGoogleCloudPaymentsResellerSubscriptionV1ProductBundleDetailsBundleElement.cpp \
+    $${PWD}/OAIGoogleCloudPaymentsResellerSubscriptionV1ProductPayload.cpp \
+    $${PWD}/OAIGoogleCloudPaymentsResellerSubscriptionV1ProductPriceConfig.cpp \
+    $${PWD}/OAIGoogleCloudPaymentsResellerSubscriptionV1Promotion.cpp \
+    $${PWD}/OAIGoogleCloudPaymentsResellerSubscriptionV1PromotionIntroductoryPricingDetails.cpp \
+    $${PWD}/OAIGoogleCloudPaymentsResellerSubscriptionV1PromotionIntroductoryPricingDetailsIntroductoryPricingSpec.cpp \
+    $${PWD}/OAIGoogleCloudPaymentsResellerSubscriptionV1ServicePeriod.cpp \
+    $${PWD}/OAIGoogleCloudPaymentsResellerSubscriptionV1Subscription.cpp \
+    $${PWD}/OAIGoogleCloudPaymentsResellerSubscriptionV1SubscriptionCancellationDetails.cpp \
+    $${PWD}/OAIGoogleCloudPaymentsResellerSubscriptionV1SubscriptionLineItem.cpp \
+    $${PWD}/OAIGoogleCloudPaymentsResellerSubscriptionV1SubscriptionLineItemBundleDetailsBundleElementDetails.cpp \
+    $${PWD}/OAIGoogleCloudPaymentsResellerSubscriptionV1SubscriptionLineItemOneTimeRecurrenceDetails.cpp \
+    $${PWD}/OAIGoogleCloudPaymentsResellerSubscriptionV1SubscriptionPromotionSpec.cpp \
+    $${PWD}/OAIGoogleCloudPaymentsResellerSubscriptionV1SubscriptionUpgradeDowngradeDetails.cpp \
+    $${PWD}/OAIGoogleCloudPaymentsResellerSubscriptionV1UndoCancelSubscriptionResponse.cpp \
+    $${PWD}/OAIGoogleCloudPaymentsResellerSubscriptionV1YoutubePayload.cpp \
+    $${PWD}/OAIGoogleTypeLocalizedText.cpp \
+    $${PWD}/OAIProductBundleDetails.cpp \
+    $${PWD}/OAISubscriptionLineItemBundleDetails.cpp \
+# APIs
+    $${PWD}/OAIPartnersApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

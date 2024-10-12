@@ -1,0 +1,29 @@
+
+
+# AchievementUpdateRequest
+
+A request to update an achievement.
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**achievementId** | **String** | The achievement this update is being applied to. |  [optional] |
+|**incrementPayload** | [**GamesAchievementIncrement**](GamesAchievementIncrement.md) |  |  [optional] |
+|**kind** | **String** | Uniquely identifies the type of this resource. Value is always the fixed string &#x60;games#achievementUpdateRequest&#x60;. |  [optional] |
+|**setStepsAtLeastPayload** | [**GamesAchievementSetStepsAtLeast**](GamesAchievementSetStepsAtLeast.md) |  |  [optional] |
+|**updateType** | [**UpdateTypeEnum**](#UpdateTypeEnum) | The type of update being applied. |  [optional] |
+
+
+
+## Enum: UpdateTypeEnum
+
+| Name | Value |
+|---- | -----|
+| REVEAL | &quot;REVEAL&quot; |
+| UNLOCK | &quot;UNLOCK&quot; |
+| INCREMENT | &quot;INCREMENT&quot; |
+| SET_STEPS_AT_LEAST | &quot;SET_STEPS_AT_LEAST&quot; |
+
+
+

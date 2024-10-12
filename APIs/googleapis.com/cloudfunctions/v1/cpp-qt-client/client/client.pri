@@ -1,0 +1,111 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIAuditConfig.h \
+    $${PWD}/OAIAuditLogConfig.h \
+    $${PWD}/OAIBinding.h \
+    $${PWD}/OAICallFunctionRequest.h \
+    $${PWD}/OAICallFunctionResponse.h \
+    $${PWD}/OAICloudFunction.h \
+    $${PWD}/OAIEventTrigger.h \
+    $${PWD}/OAIExpr.h \
+    $${PWD}/OAIFailurePolicy.h \
+    $${PWD}/OAIGenerateDownloadUrlRequest.h \
+    $${PWD}/OAIGenerateDownloadUrlResponse.h \
+    $${PWD}/OAIGenerateUploadUrlRequest.h \
+    $${PWD}/OAIGenerateUploadUrlResponse.h \
+    $${PWD}/OAIGoogleCloudFunctionsV2LocationMetadata.h \
+    $${PWD}/OAIGoogleCloudFunctionsV2OperationMetadata.h \
+    $${PWD}/OAIGoogleCloudFunctionsV2Stage.h \
+    $${PWD}/OAIGoogleCloudFunctionsV2StateMessage.h \
+    $${PWD}/OAIGoogleCloudFunctionsV2alphaLocationMetadata.h \
+    $${PWD}/OAIGoogleCloudFunctionsV2alphaOperationMetadata.h \
+    $${PWD}/OAIGoogleCloudFunctionsV2alphaStage.h \
+    $${PWD}/OAIGoogleCloudFunctionsV2alphaStateMessage.h \
+    $${PWD}/OAIGoogleCloudFunctionsV2betaLocationMetadata.h \
+    $${PWD}/OAIGoogleCloudFunctionsV2betaOperationMetadata.h \
+    $${PWD}/OAIGoogleCloudFunctionsV2betaStage.h \
+    $${PWD}/OAIGoogleCloudFunctionsV2betaStateMessage.h \
+    $${PWD}/OAIHttpsTrigger.h \
+    $${PWD}/OAIListFunctionsResponse.h \
+    $${PWD}/OAIListLocationsResponse.h \
+    $${PWD}/OAIListOperationsResponse.h \
+    $${PWD}/OAILocation.h \
+    $${PWD}/OAIOnDeployUpdatePolicy.h \
+    $${PWD}/OAIOperation.h \
+    $${PWD}/OAIOperationMetadataV1.h \
+    $${PWD}/OAIPolicy.h \
+    $${PWD}/OAISecretEnvVar.h \
+    $${PWD}/OAISecretVersion.h \
+    $${PWD}/OAISecretVolume.h \
+    $${PWD}/OAISetIamPolicyRequest.h \
+    $${PWD}/OAISourceRepository.h \
+    $${PWD}/OAIStatus.h \
+    $${PWD}/OAITestIamPermissionsRequest.h \
+    $${PWD}/OAITestIamPermissionsResponse.h \
+# APIs
+    $${PWD}/OAIOperationsApi.h \
+    $${PWD}/OAIProjectsApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIAuditConfig.cpp \
+    $${PWD}/OAIAuditLogConfig.cpp \
+    $${PWD}/OAIBinding.cpp \
+    $${PWD}/OAICallFunctionRequest.cpp \
+    $${PWD}/OAICallFunctionResponse.cpp \
+    $${PWD}/OAICloudFunction.cpp \
+    $${PWD}/OAIEventTrigger.cpp \
+    $${PWD}/OAIExpr.cpp \
+    $${PWD}/OAIFailurePolicy.cpp \
+    $${PWD}/OAIGenerateDownloadUrlRequest.cpp \
+    $${PWD}/OAIGenerateDownloadUrlResponse.cpp \
+    $${PWD}/OAIGenerateUploadUrlRequest.cpp \
+    $${PWD}/OAIGenerateUploadUrlResponse.cpp \
+    $${PWD}/OAIGoogleCloudFunctionsV2LocationMetadata.cpp \
+    $${PWD}/OAIGoogleCloudFunctionsV2OperationMetadata.cpp \
+    $${PWD}/OAIGoogleCloudFunctionsV2Stage.cpp \
+    $${PWD}/OAIGoogleCloudFunctionsV2StateMessage.cpp \
+    $${PWD}/OAIGoogleCloudFunctionsV2alphaLocationMetadata.cpp \
+    $${PWD}/OAIGoogleCloudFunctionsV2alphaOperationMetadata.cpp \
+    $${PWD}/OAIGoogleCloudFunctionsV2alphaStage.cpp \
+    $${PWD}/OAIGoogleCloudFunctionsV2alphaStateMessage.cpp \
+    $${PWD}/OAIGoogleCloudFunctionsV2betaLocationMetadata.cpp \
+    $${PWD}/OAIGoogleCloudFunctionsV2betaOperationMetadata.cpp \
+    $${PWD}/OAIGoogleCloudFunctionsV2betaStage.cpp \
+    $${PWD}/OAIGoogleCloudFunctionsV2betaStateMessage.cpp \
+    $${PWD}/OAIHttpsTrigger.cpp \
+    $${PWD}/OAIListFunctionsResponse.cpp \
+    $${PWD}/OAIListLocationsResponse.cpp \
+    $${PWD}/OAIListOperationsResponse.cpp \
+    $${PWD}/OAILocation.cpp \
+    $${PWD}/OAIOnDeployUpdatePolicy.cpp \
+    $${PWD}/OAIOperation.cpp \
+    $${PWD}/OAIOperationMetadataV1.cpp \
+    $${PWD}/OAIPolicy.cpp \
+    $${PWD}/OAISecretEnvVar.cpp \
+    $${PWD}/OAISecretVersion.cpp \
+    $${PWD}/OAISecretVolume.cpp \
+    $${PWD}/OAISetIamPolicyRequest.cpp \
+    $${PWD}/OAISourceRepository.cpp \
+    $${PWD}/OAIStatus.cpp \
+    $${PWD}/OAITestIamPermissionsRequest.cpp \
+    $${PWD}/OAITestIamPermissionsResponse.cpp \
+# APIs
+    $${PWD}/OAIOperationsApi.cpp \
+    $${PWD}/OAIProjectsApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

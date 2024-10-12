@@ -1,0 +1,15 @@
+# CalendarApi.ConferenceData
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**conferenceId** | **String** | The ID of the conference. Can be used by developers to keep track of conferences, should not be displayed to users. The ID value is formed differently for each conference solution type:   - eventHangout: ID is not set. (This conference type is deprecated.) - eventNamedHangout: ID is the name of the Hangout. (This conference type is deprecated.) - hangoutsMeet: ID is the 10-letter meeting code, for example aaa-bbbb-ccc. - addOn: ID is defined by the third-party provider.  Optional. | [optional] 
+**conferenceSolution** | [**ConferenceSolution**](ConferenceSolution.md) |  | [optional] 
+**createRequest** | [**CreateConferenceRequest**](CreateConferenceRequest.md) |  | [optional] 
+**entryPoints** | [**[EntryPoint]**](EntryPoint.md) | Information about individual conference entry points, such as URLs or phone numbers. All of them must belong to the same conference. Either conferenceSolution and at least one entryPoint, or createRequest is required. | [optional] 
+**notes** | **String** | Additional notes (such as instructions from the domain administrator, legal notices) to display to the user. Can contain HTML. The maximum length is 2048 characters. Optional. | [optional] 
+**parameters** | [**ConferenceParameters**](ConferenceParameters.md) |  | [optional] 
+**signature** | **String** | The signature of the conference data. Generated on server side. Unset for a conference with a failed create request. Optional for a conference with a pending create request. | [optional] 
+
+

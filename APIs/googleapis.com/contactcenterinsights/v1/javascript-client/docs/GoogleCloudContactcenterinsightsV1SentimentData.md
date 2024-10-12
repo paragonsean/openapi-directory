@@ -1,0 +1,10 @@
+# ContactCenterAiInsightsApi.GoogleCloudContactcenterinsightsV1SentimentData
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**magnitude** | **Number** | A non-negative number from 0 to infinity which represents the abolute magnitude of sentiment regardless of score. | [optional] 
+**score** | **Number** | The sentiment score between -1.0 (negative) and 1.0 (positive). | [optional] 
+
+

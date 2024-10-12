@@ -1,0 +1,66 @@
+
+
+# GoogleAdsSearchads360V0ServicesSearchAds360Row
+
+A returned row from the query.
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**adGroup** | [**GoogleAdsSearchads360V0ResourcesAdGroup**](GoogleAdsSearchads360V0ResourcesAdGroup.md) |  |  [optional] |
+|**adGroupAd** | [**GoogleAdsSearchads360V0ResourcesAdGroupAd**](GoogleAdsSearchads360V0ResourcesAdGroupAd.md) |  |  [optional] |
+|**adGroupAdLabel** | [**GoogleAdsSearchads360V0ResourcesAdGroupAdLabel**](GoogleAdsSearchads360V0ResourcesAdGroupAdLabel.md) |  |  [optional] |
+|**adGroupAsset** | [**GoogleAdsSearchads360V0ResourcesAdGroupAsset**](GoogleAdsSearchads360V0ResourcesAdGroupAsset.md) |  |  [optional] |
+|**adGroupAssetSet** | [**GoogleAdsSearchads360V0ResourcesAdGroupAssetSet**](GoogleAdsSearchads360V0ResourcesAdGroupAssetSet.md) |  |  [optional] |
+|**adGroupAudienceView** | [**GoogleAdsSearchads360V0ResourcesAdGroupAudienceView**](GoogleAdsSearchads360V0ResourcesAdGroupAudienceView.md) |  |  [optional] |
+|**adGroupBidModifier** | [**GoogleAdsSearchads360V0ResourcesAdGroupBidModifier**](GoogleAdsSearchads360V0ResourcesAdGroupBidModifier.md) |  |  [optional] |
+|**adGroupCriterion** | [**GoogleAdsSearchads360V0ResourcesAdGroupCriterion**](GoogleAdsSearchads360V0ResourcesAdGroupCriterion.md) |  |  [optional] |
+|**adGroupCriterionLabel** | [**GoogleAdsSearchads360V0ResourcesAdGroupCriterionLabel**](GoogleAdsSearchads360V0ResourcesAdGroupCriterionLabel.md) |  |  [optional] |
+|**adGroupLabel** | [**GoogleAdsSearchads360V0ResourcesAdGroupLabel**](GoogleAdsSearchads360V0ResourcesAdGroupLabel.md) |  |  [optional] |
+|**ageRangeView** | [**GoogleAdsSearchads360V0ResourcesAgeRangeView**](GoogleAdsSearchads360V0ResourcesAgeRangeView.md) |  |  [optional] |
+|**asset** | [**GoogleAdsSearchads360V0ResourcesAsset**](GoogleAdsSearchads360V0ResourcesAsset.md) |  |  [optional] |
+|**assetGroup** | [**GoogleAdsSearchads360V0ResourcesAssetGroup**](GoogleAdsSearchads360V0ResourcesAssetGroup.md) |  |  [optional] |
+|**assetGroupAsset** | [**GoogleAdsSearchads360V0ResourcesAssetGroupAsset**](GoogleAdsSearchads360V0ResourcesAssetGroupAsset.md) |  |  [optional] |
+|**assetGroupListingGroupFilter** | [**GoogleAdsSearchads360V0ResourcesAssetGroupListingGroupFilter**](GoogleAdsSearchads360V0ResourcesAssetGroupListingGroupFilter.md) |  |  [optional] |
+|**assetGroupSignal** | [**GoogleAdsSearchads360V0ResourcesAssetGroupSignal**](GoogleAdsSearchads360V0ResourcesAssetGroupSignal.md) |  |  [optional] |
+|**assetGroupTopCombinationView** | [**GoogleAdsSearchads360V0ResourcesAssetGroupTopCombinationView**](GoogleAdsSearchads360V0ResourcesAssetGroupTopCombinationView.md) |  |  [optional] |
+|**assetSet** | [**GoogleAdsSearchads360V0ResourcesAssetSet**](GoogleAdsSearchads360V0ResourcesAssetSet.md) |  |  [optional] |
+|**assetSetAsset** | [**GoogleAdsSearchads360V0ResourcesAssetSetAsset**](GoogleAdsSearchads360V0ResourcesAssetSetAsset.md) |  |  [optional] |
+|**audience** | [**GoogleAdsSearchads360V0ResourcesAudience**](GoogleAdsSearchads360V0ResourcesAudience.md) |  |  [optional] |
+|**biddingStrategy** | [**GoogleAdsSearchads360V0ResourcesBiddingStrategy**](GoogleAdsSearchads360V0ResourcesBiddingStrategy.md) |  |  [optional] |
+|**campaign** | [**GoogleAdsSearchads360V0ResourcesCampaign**](GoogleAdsSearchads360V0ResourcesCampaign.md) |  |  [optional] |
+|**campaignAsset** | [**GoogleAdsSearchads360V0ResourcesCampaignAsset**](GoogleAdsSearchads360V0ResourcesCampaignAsset.md) |  |  [optional] |
+|**campaignAssetSet** | [**GoogleAdsSearchads360V0ResourcesCampaignAssetSet**](GoogleAdsSearchads360V0ResourcesCampaignAssetSet.md) |  |  [optional] |
+|**campaignAudienceView** | [**GoogleAdsSearchads360V0ResourcesCampaignAudienceView**](GoogleAdsSearchads360V0ResourcesCampaignAudienceView.md) |  |  [optional] |
+|**campaignBudget** | [**GoogleAdsSearchads360V0ResourcesCampaignBudget**](GoogleAdsSearchads360V0ResourcesCampaignBudget.md) |  |  [optional] |
+|**campaignCriterion** | [**GoogleAdsSearchads360V0ResourcesCampaignCriterion**](GoogleAdsSearchads360V0ResourcesCampaignCriterion.md) |  |  [optional] |
+|**campaignLabel** | [**GoogleAdsSearchads360V0ResourcesCampaignLabel**](GoogleAdsSearchads360V0ResourcesCampaignLabel.md) |  |  [optional] |
+|**cartDataSalesView** | [**GoogleAdsSearchads360V0ResourcesCartDataSalesView**](GoogleAdsSearchads360V0ResourcesCartDataSalesView.md) |  |  [optional] |
+|**conversion** | [**GoogleAdsSearchads360V0ResourcesConversion**](GoogleAdsSearchads360V0ResourcesConversion.md) |  |  [optional] |
+|**conversionAction** | [**GoogleAdsSearchads360V0ResourcesConversionAction**](GoogleAdsSearchads360V0ResourcesConversionAction.md) |  |  [optional] |
+|**conversionCustomVariable** | [**GoogleAdsSearchads360V0ResourcesConversionCustomVariable**](GoogleAdsSearchads360V0ResourcesConversionCustomVariable.md) |  |  [optional] |
+|**customColumns** | [**List&lt;GoogleAdsSearchads360V0CommonValue&gt;**](GoogleAdsSearchads360V0CommonValue.md) | The custom columns. |  [optional] |
+|**customer** | [**GoogleAdsSearchads360V0ResourcesCustomer**](GoogleAdsSearchads360V0ResourcesCustomer.md) |  |  [optional] |
+|**customerAsset** | [**GoogleAdsSearchads360V0ResourcesCustomerAsset**](GoogleAdsSearchads360V0ResourcesCustomerAsset.md) |  |  [optional] |
+|**customerAssetSet** | [**GoogleAdsSearchads360V0ResourcesCustomerAssetSet**](GoogleAdsSearchads360V0ResourcesCustomerAssetSet.md) |  |  [optional] |
+|**customerClient** | [**GoogleAdsSearchads360V0ResourcesCustomerClient**](GoogleAdsSearchads360V0ResourcesCustomerClient.md) |  |  [optional] |
+|**customerManagerLink** | [**GoogleAdsSearchads360V0ResourcesCustomerManagerLink**](GoogleAdsSearchads360V0ResourcesCustomerManagerLink.md) |  |  [optional] |
+|**dynamicSearchAdsSearchTermView** | [**GoogleAdsSearchads360V0ResourcesDynamicSearchAdsSearchTermView**](GoogleAdsSearchads360V0ResourcesDynamicSearchAdsSearchTermView.md) |  |  [optional] |
+|**genderView** | [**GoogleAdsSearchads360V0ResourcesGenderView**](GoogleAdsSearchads360V0ResourcesGenderView.md) |  |  [optional] |
+|**geoTargetConstant** | [**GoogleAdsSearchads360V0ResourcesGeoTargetConstant**](GoogleAdsSearchads360V0ResourcesGeoTargetConstant.md) |  |  [optional] |
+|**keywordView** | [**GoogleAdsSearchads360V0ResourcesKeywordView**](GoogleAdsSearchads360V0ResourcesKeywordView.md) |  |  [optional] |
+|**label** | [**GoogleAdsSearchads360V0ResourcesLabel**](GoogleAdsSearchads360V0ResourcesLabel.md) |  |  [optional] |
+|**languageConstant** | [**GoogleAdsSearchads360V0ResourcesLanguageConstant**](GoogleAdsSearchads360V0ResourcesLanguageConstant.md) |  |  [optional] |
+|**locationView** | [**GoogleAdsSearchads360V0ResourcesLocationView**](GoogleAdsSearchads360V0ResourcesLocationView.md) |  |  [optional] |
+|**metrics** | [**GoogleAdsSearchads360V0CommonMetrics**](GoogleAdsSearchads360V0CommonMetrics.md) |  |  [optional] |
+|**productBiddingCategoryConstant** | [**GoogleAdsSearchads360V0ResourcesProductBiddingCategoryConstant**](GoogleAdsSearchads360V0ResourcesProductBiddingCategoryConstant.md) |  |  [optional] |
+|**productGroupView** | [**GoogleAdsSearchads360V0ResourcesProductGroupView**](GoogleAdsSearchads360V0ResourcesProductGroupView.md) |  |  [optional] |
+|**segments** | [**GoogleAdsSearchads360V0CommonSegments**](GoogleAdsSearchads360V0CommonSegments.md) |  |  [optional] |
+|**shoppingPerformanceView** | [**GoogleAdsSearchads360V0ResourcesShoppingPerformanceView**](GoogleAdsSearchads360V0ResourcesShoppingPerformanceView.md) |  |  [optional] |
+|**userList** | [**GoogleAdsSearchads360V0ResourcesUserList**](GoogleAdsSearchads360V0ResourcesUserList.md) |  |  [optional] |
+|**visit** | [**GoogleAdsSearchads360V0ResourcesVisit**](GoogleAdsSearchads360V0ResourcesVisit.md) |  |  [optional] |
+|**webpageView** | [**GoogleAdsSearchads360V0ResourcesWebpageView**](GoogleAdsSearchads360V0ResourcesWebpageView.md) |  |  [optional] |
+
+
+

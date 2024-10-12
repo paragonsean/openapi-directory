@@ -1,0 +1,17 @@
+# coding: utf-8
+
+# import models into model package
+from openapi_server.models.annotation import Annotation
+from openapi_server.models.collector import Collector
+from openapi_server.models.guest_os_scan import GuestOsScan
+from openapi_server.models.list_collectors_response import ListCollectorsResponse
+from openapi_server.models.list_locations_response import ListLocationsResponse
+from openapi_server.models.list_operations_response import ListOperationsResponse
+from openapi_server.models.location import Location
+from openapi_server.models.operation import Operation
+from openapi_server.models.operation_metadata import OperationMetadata
+from openapi_server.models.pause_collector_request import PauseCollectorRequest
+from openapi_server.models.register_collector_request import RegisterCollectorRequest
+from openapi_server.models.resume_collector_request import ResumeCollectorRequest
+from openapi_server.models.status import Status
+from openapi_server.models.v_sphere_scan import VSphereScan

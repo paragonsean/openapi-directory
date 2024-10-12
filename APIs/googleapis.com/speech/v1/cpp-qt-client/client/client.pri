@@ -1,0 +1,89 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIABNFGrammar.h \
+    $${PWD}/OAIClassItem.h \
+    $${PWD}/OAICreateCustomClassRequest.h \
+    $${PWD}/OAICreatePhraseSetRequest.h \
+    $${PWD}/OAICustomClass.h \
+    $${PWD}/OAIEntry.h \
+    $${PWD}/OAIListCustomClassesResponse.h \
+    $${PWD}/OAIListOperationsResponse.h \
+    $${PWD}/OAIListPhraseSetResponse.h \
+    $${PWD}/OAILongRunningRecognizeMetadata.h \
+    $${PWD}/OAILongRunningRecognizeRequest.h \
+    $${PWD}/OAILongRunningRecognizeResponse.h \
+    $${PWD}/OAIOperation.h \
+    $${PWD}/OAIPhrase.h \
+    $${PWD}/OAIPhraseSet.h \
+    $${PWD}/OAIRecognitionAudio.h \
+    $${PWD}/OAIRecognitionConfig.h \
+    $${PWD}/OAIRecognitionMetadata.h \
+    $${PWD}/OAIRecognizeRequest.h \
+    $${PWD}/OAIRecognizeResponse.h \
+    $${PWD}/OAISpeakerDiarizationConfig.h \
+    $${PWD}/OAISpeechAdaptation.h \
+    $${PWD}/OAISpeechAdaptationInfo.h \
+    $${PWD}/OAISpeechContext.h \
+    $${PWD}/OAISpeechRecognitionAlternative.h \
+    $${PWD}/OAISpeechRecognitionResult.h \
+    $${PWD}/OAIStatus.h \
+    $${PWD}/OAITranscriptNormalization.h \
+    $${PWD}/OAITranscriptOutputConfig.h \
+    $${PWD}/OAIWordInfo.h \
+# APIs
+    $${PWD}/OAIOperationsApi.h \
+    $${PWD}/OAIProjectsApi.h \
+    $${PWD}/OAISpeechApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIABNFGrammar.cpp \
+    $${PWD}/OAIClassItem.cpp \
+    $${PWD}/OAICreateCustomClassRequest.cpp \
+    $${PWD}/OAICreatePhraseSetRequest.cpp \
+    $${PWD}/OAICustomClass.cpp \
+    $${PWD}/OAIEntry.cpp \
+    $${PWD}/OAIListCustomClassesResponse.cpp \
+    $${PWD}/OAIListOperationsResponse.cpp \
+    $${PWD}/OAIListPhraseSetResponse.cpp \
+    $${PWD}/OAILongRunningRecognizeMetadata.cpp \
+    $${PWD}/OAILongRunningRecognizeRequest.cpp \
+    $${PWD}/OAILongRunningRecognizeResponse.cpp \
+    $${PWD}/OAIOperation.cpp \
+    $${PWD}/OAIPhrase.cpp \
+    $${PWD}/OAIPhraseSet.cpp \
+    $${PWD}/OAIRecognitionAudio.cpp \
+    $${PWD}/OAIRecognitionConfig.cpp \
+    $${PWD}/OAIRecognitionMetadata.cpp \
+    $${PWD}/OAIRecognizeRequest.cpp \
+    $${PWD}/OAIRecognizeResponse.cpp \
+    $${PWD}/OAISpeakerDiarizationConfig.cpp \
+    $${PWD}/OAISpeechAdaptation.cpp \
+    $${PWD}/OAISpeechAdaptationInfo.cpp \
+    $${PWD}/OAISpeechContext.cpp \
+    $${PWD}/OAISpeechRecognitionAlternative.cpp \
+    $${PWD}/OAISpeechRecognitionResult.cpp \
+    $${PWD}/OAIStatus.cpp \
+    $${PWD}/OAITranscriptNormalization.cpp \
+    $${PWD}/OAITranscriptOutputConfig.cpp \
+    $${PWD}/OAIWordInfo.cpp \
+# APIs
+    $${PWD}/OAIOperationsApi.cpp \
+    $${PWD}/OAIProjectsApi.cpp \
+    $${PWD}/OAISpeechApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

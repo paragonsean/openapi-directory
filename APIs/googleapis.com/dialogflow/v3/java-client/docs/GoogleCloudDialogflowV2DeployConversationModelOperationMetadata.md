@@ -1,0 +1,15 @@
+
+
+# GoogleCloudDialogflowV2DeployConversationModelOperationMetadata
+
+Metadata for a ConversationModels.DeployConversationModel operation.
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**conversationModel** | **String** | The resource name of the conversation model. Format: &#x60;projects//conversationModels/&#x60; |  [optional] |
+|**createTime** | **String** | Timestamp when request to deploy conversation model was submitted. The time is measured on server side. |  [optional] |
+
+
+

@@ -1,0 +1,17 @@
+
+
+# BoundingBoxMetricsEntryConfidenceMetricsEntry
+
+Metrics for a single confidence threshold.
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**confidenceThreshold** | **Float** | Output only. The confidence threshold value used to compute the metrics. |  [optional] |
+|**f1Score** | **Float** | Output only. The harmonic mean of recall and precision. |  [optional] |
+|**precision** | **Float** | Output only. Precision under the given confidence threshold. |  [optional] |
+|**recall** | **Float** | Output only. Recall under the given confidence threshold. |  [optional] |
+
+
+

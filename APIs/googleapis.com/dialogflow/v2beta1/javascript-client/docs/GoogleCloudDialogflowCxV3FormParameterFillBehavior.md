@@ -1,0 +1,10 @@
+# DialogflowApi.GoogleCloudDialogflowCxV3FormParameterFillBehavior
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**initialPromptFulfillment** | [**GoogleCloudDialogflowCxV3Fulfillment**](GoogleCloudDialogflowCxV3Fulfillment.md) |  | [optional] 
+**repromptEventHandlers** | [**[GoogleCloudDialogflowCxV3EventHandler]**](GoogleCloudDialogflowCxV3EventHandler.md) | The handlers for parameter-level events, used to provide reprompt for the parameter or transition to a different page/flow. The supported events are: * &#x60;sys.no-match-&#x60;, where N can be from 1 to 6 * &#x60;sys.no-match-default&#x60; * &#x60;sys.no-input-&#x60;, where N can be from 1 to 6 * &#x60;sys.no-input-default&#x60; * &#x60;sys.invalid-parameter&#x60; &#x60;initial_prompt_fulfillment&#x60; provides the first prompt for the parameter. If the user&#39;s response does not fill the parameter, a no-match/no-input event will be triggered, and the fulfillment associated with the &#x60;sys.no-match-1&#x60;/&#x60;sys.no-input-1&#x60; handler (if defined) will be called to provide a prompt. The &#x60;sys.no-match-2&#x60;/&#x60;sys.no-input-2&#x60; handler (if defined) will respond to the next no-match/no-input event, and so on. A &#x60;sys.no-match-default&#x60; or &#x60;sys.no-input-default&#x60; handler will be used to handle all following no-match/no-input events after all numbered no-match/no-input handlers for the parameter are consumed. A &#x60;sys.invalid-parameter&#x60; handler can be defined to handle the case where the parameter values have been &#x60;invalidated&#x60; by webhook. For example, if the user&#39;s response fill the parameter, however the parameter was invalidated by webhook, the fulfillment associated with the &#x60;sys.invalid-parameter&#x60; handler (if defined) will be called to provide a prompt. If the event handler for the corresponding event can&#39;t be found on the parameter, &#x60;initial_prompt_fulfillment&#x60; will be re-prompted. | [optional] 
+
+

@@ -1,0 +1,17 @@
+
+
+# ModelExportOutputConfig
+
+Output configuration for ModelExport Action.
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**gcrDestination** | [**GcrDestination**](GcrDestination.md) |  |  [optional] |
+|**gcsDestination** | [**GcsDestination**](GcsDestination.md) |  |  [optional] |
+|**modelFormat** | **String** | The format in which the model must be exported. The available, and default, formats depend on the problem and model type (if given problem and type combination doesn&#39;t have a format listed, it means its models are not exportable): * For Image Classification mobile-low-latency-1, mobile-versatile-1, mobile-high-accuracy-1: \&quot;tflite\&quot; (default), \&quot;edgetpu_tflite\&quot;, \&quot;tf_saved_model\&quot;, \&quot;tf_js\&quot;, \&quot;docker\&quot;. * For Image Classification mobile-core-ml-low-latency-1, mobile-core-ml-versatile-1, mobile-core-ml-high-accuracy-1: \&quot;core_ml\&quot; (default). * For Image Object Detection mobile-low-latency-1, mobile-versatile-1, mobile-high-accuracy-1: \&quot;tflite\&quot;, \&quot;tf_saved_model\&quot;, \&quot;tf_js\&quot;. * For Video Classification cloud, \&quot;tf_saved_model\&quot;. * For Video Object Tracking cloud, \&quot;tf_saved_model\&quot;. * For Video Object Tracking mobile-versatile-1: \&quot;tflite\&quot;, \&quot;edgetpu_tflite\&quot;, \&quot;tf_saved_model\&quot;, \&quot;docker\&quot;. * For Video Object Tracking mobile-coral-versatile-1: \&quot;tflite\&quot;, \&quot;edgetpu_tflite\&quot;, \&quot;docker\&quot;. * For Video Object Tracking mobile-coral-low-latency-1: \&quot;tflite\&quot;, \&quot;edgetpu_tflite\&quot;, \&quot;docker\&quot;. * For Video Object Tracking mobile-jetson-versatile-1: \&quot;tf_saved_model\&quot;, \&quot;docker\&quot;. * For Tables: \&quot;docker\&quot;. Formats description: * tflite - Used for Android mobile devices. * edgetpu_tflite - Used for [Edge TPU](https://cloud.google.com/edge-tpu/) devices. * tf_saved_model - A tensorflow model in SavedModel format. * tf_js - A [TensorFlow.js](https://www.tensorflow.org/js) model that can be used in the browser and in Node.js using JavaScript. * docker - Used for Docker containers. Use the params field to customize the container. The container is verified to work correctly on ubuntu 16.04 operating system. See more at [containers quickstart](https: //cloud.google.com/vision/automl/docs/containers-gcs-quickstart) * core_ml - Used for iOS mobile devices. |  [optional] |
+|**params** | **Map&lt;String, String&gt;** | Additional model-type and format specific parameters describing the requirements for the to be exported model files, any string must be up to 25000 characters long. * For &#x60;docker&#x60; format: &#x60;cpu_architecture&#x60; - (string) \&quot;x86_64\&quot; (default). &#x60;gpu_architecture&#x60; - (string) \&quot;none\&quot; (default), \&quot;nvidia\&quot;. |  [optional] |
+
+
+

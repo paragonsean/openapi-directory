@@ -1,0 +1,10 @@
+# SemanticTileApi.FirstDerivativeElevationGrid
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**altitudeMultiplier** | **Number** | A multiplier applied to the altitude fields below to extract the actual altitudes in meters from the elevation grid. | [optional] 
+**rows** | [**[Row]**](Row.md) | Rows of points containing altitude data making up the elevation grid. Each row is the same length. Rows are ordered from north to south. E.g: rows[0] is the north-most row, and rows[n] is the south-most row. | [optional] 
+
+

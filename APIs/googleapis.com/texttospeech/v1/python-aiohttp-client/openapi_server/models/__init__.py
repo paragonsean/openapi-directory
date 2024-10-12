@@ -1,0 +1,17 @@
+# coding: utf-8
+
+# import models into model package
+from openapi_server.models.audio_config import AudioConfig
+from openapi_server.models.custom_voice_params import CustomVoiceParams
+from openapi_server.models.google_cloud_texttospeech_v1_synthesize_long_audio_metadata import GoogleCloudTexttospeechV1SynthesizeLongAudioMetadata
+from openapi_server.models.list_operations_response import ListOperationsResponse
+from openapi_server.models.list_voices_response import ListVoicesResponse
+from openapi_server.models.operation import Operation
+from openapi_server.models.status import Status
+from openapi_server.models.synthesis_input import SynthesisInput
+from openapi_server.models.synthesize_long_audio_metadata import SynthesizeLongAudioMetadata
+from openapi_server.models.synthesize_long_audio_request import SynthesizeLongAudioRequest
+from openapi_server.models.synthesize_speech_request import SynthesizeSpeechRequest
+from openapi_server.models.synthesize_speech_response import SynthesizeSpeechResponse
+from openapi_server.models.voice import Voice
+from openapi_server.models.voice_selection_params import VoiceSelectionParams

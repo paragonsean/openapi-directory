@@ -1,0 +1,14 @@
+
+
+# GoogleCloudDataplexV1DataQualityRuleRowConditionExpectation
+
+Evaluates whether each row passes the specified condition.The SQL expression needs to use BigQuery standard SQL syntax and should produce a boolean value per row as the result.Example: col1 >= 0 AND col2 < 10
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**sqlExpression** | **String** | Optional. The SQL expression. |  [optional] |
+
+
+

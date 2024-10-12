@@ -1,0 +1,10 @@
+# CloudDeployApi.RollbackTargetConfig
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**rollout** | [**Rollout**](Rollout.md) |  | [optional] 
+**startingPhaseId** | **String** | Optional. The starting phase ID for the &#x60;Rollout&#x60;. If unspecified, the &#x60;Rollout&#x60; will start in the stable phase. | [optional] 
+
+

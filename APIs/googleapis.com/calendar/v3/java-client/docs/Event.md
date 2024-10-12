@@ -1,0 +1,54 @@
+
+
+# Event
+
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**anyoneCanAddSelf** | **Boolean** | Whether anyone can invite themselves to the event (deprecated). Optional. The default is False. |  [optional] |
+|**attachments** | [**List&lt;EventAttachment&gt;**](EventAttachment.md) | File attachments for the event. In order to modify attachments the supportsAttachments request parameter should be set to true. There can be at most 25 attachments per event, |  [optional] |
+|**attendees** | [**List&lt;EventAttendee&gt;**](EventAttendee.md) | The attendees of the event. See the Events with attendees guide for more information on scheduling events with other calendar users. Service accounts need to use domain-wide delegation of authority to populate the attendee list. |  [optional] |
+|**attendeesOmitted** | **Boolean** | Whether attendees may have been omitted from the event&#39;s representation. When retrieving an event, this may be due to a restriction specified by the maxAttendee query parameter. When updating an event, this can be used to only update the participant&#39;s response. Optional. The default is False. |  [optional] |
+|**colorId** | **String** | The color of the event. This is an ID referring to an entry in the event section of the colors definition (see the  colors endpoint). Optional. |  [optional] |
+|**conferenceData** | [**ConferenceData**](ConferenceData.md) |  |  [optional] |
+|**created** | **OffsetDateTime** | Creation time of the event (as a RFC3339 timestamp). Read-only. |  [optional] |
+|**creator** | [**EventCreator**](EventCreator.md) |  |  [optional] |
+|**description** | **String** | Description of the event. Can contain HTML. Optional. |  [optional] |
+|**end** | [**EventDateTime**](EventDateTime.md) |  |  [optional] |
+|**endTimeUnspecified** | **Boolean** | Whether the end time is actually unspecified. An end time is still provided for compatibility reasons, even if this attribute is set to True. The default is False. |  [optional] |
+|**etag** | **String** | ETag of the resource. |  [optional] |
+|**eventType** | **String** | Specific type of the event. This cannot be modified after the event is created. Possible values are:   - \&quot;default\&quot; - A regular event or not further specified.  - \&quot;outOfOffice\&quot; - An out-of-office event.  - \&quot;focusTime\&quot; - A focus-time event.  - \&quot;workingLocation\&quot; - A working location event.  Currently, only \&quot;default \&quot; and \&quot;workingLocation\&quot; events can be created using the API. Extended support for other event types will be made available in later releases. |  [optional] |
+|**extendedProperties** | [**EventExtendedProperties**](EventExtendedProperties.md) |  |  [optional] |
+|**focusTimeProperties** | [**EventFocusTimeProperties**](EventFocusTimeProperties.md) |  |  [optional] |
+|**gadget** | [**EventGadget**](EventGadget.md) |  |  [optional] |
+|**guestsCanInviteOthers** | **Boolean** | Whether attendees other than the organizer can invite others to the event. Optional. The default is True. |  [optional] |
+|**guestsCanModify** | **Boolean** | Whether attendees other than the organizer can modify the event. Optional. The default is False. |  [optional] |
+|**guestsCanSeeOtherGuests** | **Boolean** | Whether attendees other than the organizer can see who the event&#39;s attendees are. Optional. The default is True. |  [optional] |
+|**hangoutLink** | **String** | An absolute link to the Google Hangout associated with this event. Read-only. |  [optional] |
+|**htmlLink** | **String** | An absolute link to this event in the Google Calendar Web UI. Read-only. |  [optional] |
+|**iCalUID** | **String** | Event unique identifier as defined in RFC5545. It is used to uniquely identify events accross calendaring systems and must be supplied when importing events via the import method. Note that the iCalUID and the id are not identical and only one of them should be supplied at event creation time. One difference in their semantics is that in recurring events, all occurrences of one event have different ids while they all share the same iCalUIDs. To retrieve an event using its iCalUID, call the events.list method using the iCalUID parameter. To retrieve an event using its id, call the events.get method. |  [optional] |
+|**id** | **String** | Opaque identifier of the event. When creating new single or recurring events, you can specify their IDs. Provided IDs must follow these rules:   - characters allowed in the ID are those used in base32hex encoding, i.e. lowercase letters a-v and digits 0-9, see section 3.1.2 in RFC2938  - the length of the ID must be between 5 and 1024 characters  - the ID must be unique per calendar  Due to the globally distributed nature of the system, we cannot guarantee that ID collisions will be detected at event creation time. To minimize the risk of collisions we recommend using an established UUID algorithm such as one described in RFC4122. If you do not specify an ID, it will be automatically generated by the server. Note that the icalUID and the id are not identical and only one of them should be supplied at event creation time. One difference in their semantics is that in recurring events, all occurrences of one event have different ids while they all share the same icalUIDs. |  [optional] |
+|**kind** | **String** | Type of the resource (\&quot;calendar#event\&quot;). |  [optional] |
+|**location** | **String** | Geographic location of the event as free-form text. Optional. |  [optional] |
+|**locked** | **Boolean** | Whether this is a locked event copy where no changes can be made to the main event fields \&quot;summary\&quot;, \&quot;description\&quot;, \&quot;location\&quot;, \&quot;start\&quot;, \&quot;end\&quot; or \&quot;recurrence\&quot;. The default is False. Read-Only. |  [optional] |
+|**organizer** | [**EventOrganizer**](EventOrganizer.md) |  |  [optional] |
+|**originalStartTime** | [**EventDateTime**](EventDateTime.md) |  |  [optional] |
+|**outOfOfficeProperties** | [**EventOutOfOfficeProperties**](EventOutOfOfficeProperties.md) |  |  [optional] |
+|**privateCopy** | **Boolean** | If set to True, Event propagation is disabled. Note that it is not the same thing as Private event properties. Optional. Immutable. The default is False. |  [optional] |
+|**recurrence** | **List&lt;String&gt;** | List of RRULE, EXRULE, RDATE and EXDATE lines for a recurring event, as specified in RFC5545. Note that DTSTART and DTEND lines are not allowed in this field; event start and end times are specified in the start and end fields. This field is omitted for single events or instances of recurring events. |  [optional] |
+|**recurringEventId** | **String** | For an instance of a recurring event, this is the id of the recurring event to which this instance belongs. Immutable. |  [optional] |
+|**reminders** | [**EventReminders**](EventReminders.md) |  |  [optional] |
+|**sequence** | **Integer** | Sequence number as per iCalendar. |  [optional] |
+|**source** | [**EventSource**](EventSource.md) |  |  [optional] |
+|**start** | [**EventDateTime**](EventDateTime.md) |  |  [optional] |
+|**status** | **String** | Status of the event. Optional. Possible values are:   - \&quot;confirmed\&quot; - The event is confirmed. This is the default status.  - \&quot;tentative\&quot; - The event is tentatively confirmed.  - \&quot;cancelled\&quot; - The event is cancelled (deleted). The list method returns cancelled events only on incremental sync (when syncToken or updatedMin are specified) or if the showDeleted flag is set to true. The get method always returns them. A cancelled status represents two different states depending on the event type:   - Cancelled exceptions of an uncancelled recurring event indicate that this instance should no longer be presented to the user. Clients should store these events for the lifetime of the parent recurring event. Cancelled exceptions are only guaranteed to have values for the id, recurringEventId and originalStartTime fields populated. The other fields might be empty.   - All other cancelled events represent deleted events. Clients should remove their locally synced copies. Such cancelled events will eventually disappear, so do not rely on them being available indefinitely. Deleted events are only guaranteed to have the id field populated.   On the organizer&#39;s calendar, cancelled events continue to expose event details (summary, location, etc.) so that they can be restored (undeleted). Similarly, the events to which the user was invited and that they manually removed continue to provide details. However, incremental sync requests with showDeleted set to false will not return these details. If an event changes its organizer (for example via the move operation) and the original organizer is not on the attendee list, it will leave behind a cancelled event where only the id field is guaranteed to be populated. |  [optional] |
+|**summary** | **String** | Title of the event. |  [optional] |
+|**transparency** | **String** | Whether the event blocks time on the calendar. Optional. Possible values are:   - \&quot;opaque\&quot; - Default value. The event does block time on the calendar. This is equivalent to setting Show me as to Busy in the Calendar UI.  - \&quot;transparent\&quot; - The event does not block time on the calendar. This is equivalent to setting Show me as to Available in the Calendar UI. |  [optional] |
+|**updated** | **OffsetDateTime** | Last modification time of the event (as a RFC3339 timestamp). Read-only. |  [optional] |
+|**visibility** | **String** | Visibility of the event. Optional. Possible values are:   - \&quot;default\&quot; - Uses the default visibility for events on the calendar. This is the default value.  - \&quot;public\&quot; - The event is public and event details are visible to all readers of the calendar.  - \&quot;private\&quot; - The event is private and only event attendees may view event details.  - \&quot;confidential\&quot; - The event is private. This value is provided for compatibility reasons. |  [optional] |
+|**workingLocationProperties** | [**EventWorkingLocationProperties**](EventWorkingLocationProperties.md) |  |  [optional] |
+
+
+

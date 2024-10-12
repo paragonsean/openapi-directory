@@ -1,0 +1,46 @@
+# ContactCenterAiInsightsApi.GoogleCloudContactcenterinsightsV1alpha1Entity
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**displayName** | **String** | The representative name for the entity. | [optional] 
+**metadata** | **{String: String}** | Metadata associated with the entity. For most entity types, the metadata is a Wikipedia URL (&#x60;wikipedia_url&#x60;) and Knowledge Graph MID (&#x60;mid&#x60;), if they are available. For the metadata associated with other entity types, see the Type table below. | [optional] 
+**salience** | **Number** | The salience score associated with the entity in the [0, 1.0] range. The salience score for an entity provides information about the importance or centrality of that entity to the entire document text. Scores closer to 0 are less salient, while scores closer to 1.0 are highly salient. | [optional] 
+**sentiment** | [**GoogleCloudContactcenterinsightsV1alpha1SentimentData**](GoogleCloudContactcenterinsightsV1alpha1SentimentData.md) |  | [optional] 
+**type** | **String** | The entity type. | [optional] 
+
+
+
+## Enum: TypeEnum
+
+
+* `TYPE_UNSPECIFIED` (value: `"TYPE_UNSPECIFIED"`)
+
+* `PERSON` (value: `"PERSON"`)
+
+* `LOCATION` (value: `"LOCATION"`)
+
+* `ORGANIZATION` (value: `"ORGANIZATION"`)
+
+* `EVENT` (value: `"EVENT"`)
+
+* `WORK_OF_ART` (value: `"WORK_OF_ART"`)
+
+* `CONSUMER_GOOD` (value: `"CONSUMER_GOOD"`)
+
+* `OTHER` (value: `"OTHER"`)
+
+* `PHONE_NUMBER` (value: `"PHONE_NUMBER"`)
+
+* `ADDRESS` (value: `"ADDRESS"`)
+
+* `DATE` (value: `"DATE"`)
+
+* `NUMBER` (value: `"NUMBER"`)
+
+* `PRICE` (value: `"PRICE"`)
+
+
+
+

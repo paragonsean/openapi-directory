@@ -1,0 +1,33 @@
+# coding: utf-8
+
+# import models into model package
+from openapi_server.models.abnf_grammar import ABNFGrammar
+from openapi_server.models.class_item import ClassItem
+from openapi_server.models.create_custom_class_request import CreateCustomClassRequest
+from openapi_server.models.create_phrase_set_request import CreatePhraseSetRequest
+from openapi_server.models.custom_class import CustomClass
+from openapi_server.models.entry import Entry
+from openapi_server.models.list_custom_classes_response import ListCustomClassesResponse
+from openapi_server.models.list_operations_response import ListOperationsResponse
+from openapi_server.models.list_phrase_set_response import ListPhraseSetResponse
+from openapi_server.models.long_running_recognize_metadata import LongRunningRecognizeMetadata
+from openapi_server.models.long_running_recognize_request import LongRunningRecognizeRequest
+from openapi_server.models.long_running_recognize_response import LongRunningRecognizeResponse
+from openapi_server.models.operation import Operation
+from openapi_server.models.phrase import Phrase
+from openapi_server.models.phrase_set import PhraseSet
+from openapi_server.models.recognition_audio import RecognitionAudio
+from openapi_server.models.recognition_config import RecognitionConfig
+from openapi_server.models.recognition_metadata import RecognitionMetadata
+from openapi_server.models.recognize_request import RecognizeRequest
+from openapi_server.models.recognize_response import RecognizeResponse
+from openapi_server.models.speaker_diarization_config import SpeakerDiarizationConfig
+from openapi_server.models.speech_adaptation import SpeechAdaptation
+from openapi_server.models.speech_adaptation_info import SpeechAdaptationInfo
+from openapi_server.models.speech_context import SpeechContext
+from openapi_server.models.speech_recognition_alternative import SpeechRecognitionAlternative
+from openapi_server.models.speech_recognition_result import SpeechRecognitionResult
+from openapi_server.models.status import Status
+from openapi_server.models.transcript_normalization import TranscriptNormalization
+from openapi_server.models.transcript_output_config import TranscriptOutputConfig
+from openapi_server.models.word_info import WordInfo

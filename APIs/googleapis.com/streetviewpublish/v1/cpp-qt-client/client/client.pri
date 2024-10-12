@@ -1,0 +1,89 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIBatchDeletePhotosRequest.h \
+    $${PWD}/OAIBatchDeletePhotosResponse.h \
+    $${PWD}/OAIBatchGetPhotosResponse.h \
+    $${PWD}/OAIBatchUpdatePhotosRequest.h \
+    $${PWD}/OAIBatchUpdatePhotosResponse.h \
+    $${PWD}/OAIConnection.h \
+    $${PWD}/OAIGpsDataGapFailureDetails.h \
+    $${PWD}/OAIImu.h \
+    $${PWD}/OAIImuDataGapFailureDetails.h \
+    $${PWD}/OAIInsufficientGpsFailureDetails.h \
+    $${PWD}/OAILatLng.h \
+    $${PWD}/OAILatLngBounds.h \
+    $${PWD}/OAILevel.h \
+    $${PWD}/OAIListPhotoSequencesResponse.h \
+    $${PWD}/OAIListPhotosResponse.h \
+    $${PWD}/OAIMeasurement3d.h \
+    $${PWD}/OAINoOverlapGpsFailureDetails.h \
+    $${PWD}/OAINotOutdoorsFailureDetails.h \
+    $${PWD}/OAIOperation.h \
+    $${PWD}/OAIPhoto.h \
+    $${PWD}/OAIPhotoId.h \
+    $${PWD}/OAIPhotoResponse.h \
+    $${PWD}/OAIPhotoSequence.h \
+    $${PWD}/OAIPlace.h \
+    $${PWD}/OAIPose.h \
+    $${PWD}/OAIProcessingFailureDetails.h \
+    $${PWD}/OAIStatus.h \
+    $${PWD}/OAIUpdatePhotoRequest.h \
+    $${PWD}/OAIUploadRef.h \
+# APIs
+    $${PWD}/OAIPhotoApi.h \
+    $${PWD}/OAIPhotoSequenceApi.h \
+    $${PWD}/OAIPhotoSequencesApi.h \
+    $${PWD}/OAIPhotosApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIBatchDeletePhotosRequest.cpp \
+    $${PWD}/OAIBatchDeletePhotosResponse.cpp \
+    $${PWD}/OAIBatchGetPhotosResponse.cpp \
+    $${PWD}/OAIBatchUpdatePhotosRequest.cpp \
+    $${PWD}/OAIBatchUpdatePhotosResponse.cpp \
+    $${PWD}/OAIConnection.cpp \
+    $${PWD}/OAIGpsDataGapFailureDetails.cpp \
+    $${PWD}/OAIImu.cpp \
+    $${PWD}/OAIImuDataGapFailureDetails.cpp \
+    $${PWD}/OAIInsufficientGpsFailureDetails.cpp \
+    $${PWD}/OAILatLng.cpp \
+    $${PWD}/OAILatLngBounds.cpp \
+    $${PWD}/OAILevel.cpp \
+    $${PWD}/OAIListPhotoSequencesResponse.cpp \
+    $${PWD}/OAIListPhotosResponse.cpp \
+    $${PWD}/OAIMeasurement3d.cpp \
+    $${PWD}/OAINoOverlapGpsFailureDetails.cpp \
+    $${PWD}/OAINotOutdoorsFailureDetails.cpp \
+    $${PWD}/OAIOperation.cpp \
+    $${PWD}/OAIPhoto.cpp \
+    $${PWD}/OAIPhotoId.cpp \
+    $${PWD}/OAIPhotoResponse.cpp \
+    $${PWD}/OAIPhotoSequence.cpp \
+    $${PWD}/OAIPlace.cpp \
+    $${PWD}/OAIPose.cpp \
+    $${PWD}/OAIProcessingFailureDetails.cpp \
+    $${PWD}/OAIStatus.cpp \
+    $${PWD}/OAIUpdatePhotoRequest.cpp \
+    $${PWD}/OAIUploadRef.cpp \
+# APIs
+    $${PWD}/OAIPhotoApi.cpp \
+    $${PWD}/OAIPhotoSequenceApi.cpp \
+    $${PWD}/OAIPhotoSequencesApi.cpp \
+    $${PWD}/OAIPhotosApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

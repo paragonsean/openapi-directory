@@ -1,0 +1,16 @@
+# CertificateAuthorityApi.CertificateDescription
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**aiaIssuingCertificateUrls** | **[String]** | Describes lists of issuer CA certificate URLs that appear in the \&quot;Authority Information Access\&quot; extension in the certificate. | [optional] 
+**authorityKeyId** | [**KeyId**](KeyId.md) |  | [optional] 
+**certFingerprint** | [**CertificateFingerprint**](CertificateFingerprint.md) |  | [optional] 
+**crlDistributionPoints** | **[String]** | Describes a list of locations to obtain CRL information, i.e. the DistributionPoint.fullName described by https://tools.ietf.org/html/rfc5280#section-4.2.1.13 | [optional] 
+**publicKey** | [**PublicKey**](PublicKey.md) |  | [optional] 
+**subjectDescription** | [**SubjectDescription**](SubjectDescription.md) |  | [optional] 
+**subjectKeyId** | [**KeyId**](KeyId.md) |  | [optional] 
+**x509Description** | [**X509Parameters**](X509Parameters.md) |  | [optional] 
+
+

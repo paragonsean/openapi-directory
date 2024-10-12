@@ -1,0 +1,111 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIAccessibility.h \
+    $${PWD}/OAIActivities.h \
+    $${PWD}/OAIBusiness.h \
+    $${PWD}/OAIConnectivity.h \
+    $${PWD}/OAIEcoCertification.h \
+    $${PWD}/OAIEnergyEfficiency.h \
+    $${PWD}/OAIEnhancedCleaning.h \
+    $${PWD}/OAIFamilies.h \
+    $${PWD}/OAIFoodAndDrink.h \
+    $${PWD}/OAIGetGoogleUpdatedLodgingResponse.h \
+    $${PWD}/OAIGuestUnitFeatures.h \
+    $${PWD}/OAIGuestUnitType.h \
+    $${PWD}/OAIHealthAndSafety.h \
+    $${PWD}/OAIHousekeeping.h \
+    $${PWD}/OAIIncreasedFoodSafety.h \
+    $${PWD}/OAILanguageSpoken.h \
+    $${PWD}/OAILivingArea.h \
+    $${PWD}/OAILivingAreaAccessibility.h \
+    $${PWD}/OAILivingAreaEating.h \
+    $${PWD}/OAILivingAreaFeatures.h \
+    $${PWD}/OAILivingAreaLayout.h \
+    $${PWD}/OAILivingAreaSleeping.h \
+    $${PWD}/OAILodging.h \
+    $${PWD}/OAILodgingMetadata.h \
+    $${PWD}/OAIMinimizedContact.h \
+    $${PWD}/OAIParking.h \
+    $${PWD}/OAIPaymentOptions.h \
+    $${PWD}/OAIPersonalProtection.h \
+    $${PWD}/OAIPets.h \
+    $${PWD}/OAIPhysicalDistancing.h \
+    $${PWD}/OAIPolicies.h \
+    $${PWD}/OAIPools.h \
+    $${PWD}/OAIProperty.h \
+    $${PWD}/OAIServices.h \
+    $${PWD}/OAISustainability.h \
+    $${PWD}/OAISustainabilityCertifications.h \
+    $${PWD}/OAISustainableSourcing.h \
+    $${PWD}/OAITimeOfDay.h \
+    $${PWD}/OAITransportation.h \
+    $${PWD}/OAIViewsFromUnit.h \
+    $${PWD}/OAIWasteReduction.h \
+    $${PWD}/OAIWaterConservation.h \
+    $${PWD}/OAIWellness.h \
+# APIs
+    $${PWD}/OAILocationsApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIAccessibility.cpp \
+    $${PWD}/OAIActivities.cpp \
+    $${PWD}/OAIBusiness.cpp \
+    $${PWD}/OAIConnectivity.cpp \
+    $${PWD}/OAIEcoCertification.cpp \
+    $${PWD}/OAIEnergyEfficiency.cpp \
+    $${PWD}/OAIEnhancedCleaning.cpp \
+    $${PWD}/OAIFamilies.cpp \
+    $${PWD}/OAIFoodAndDrink.cpp \
+    $${PWD}/OAIGetGoogleUpdatedLodgingResponse.cpp \
+    $${PWD}/OAIGuestUnitFeatures.cpp \
+    $${PWD}/OAIGuestUnitType.cpp \
+    $${PWD}/OAIHealthAndSafety.cpp \
+    $${PWD}/OAIHousekeeping.cpp \
+    $${PWD}/OAIIncreasedFoodSafety.cpp \
+    $${PWD}/OAILanguageSpoken.cpp \
+    $${PWD}/OAILivingArea.cpp \
+    $${PWD}/OAILivingAreaAccessibility.cpp \
+    $${PWD}/OAILivingAreaEating.cpp \
+    $${PWD}/OAILivingAreaFeatures.cpp \
+    $${PWD}/OAILivingAreaLayout.cpp \
+    $${PWD}/OAILivingAreaSleeping.cpp \
+    $${PWD}/OAILodging.cpp \
+    $${PWD}/OAILodgingMetadata.cpp \
+    $${PWD}/OAIMinimizedContact.cpp \
+    $${PWD}/OAIParking.cpp \
+    $${PWD}/OAIPaymentOptions.cpp \
+    $${PWD}/OAIPersonalProtection.cpp \
+    $${PWD}/OAIPets.cpp \
+    $${PWD}/OAIPhysicalDistancing.cpp \
+    $${PWD}/OAIPolicies.cpp \
+    $${PWD}/OAIPools.cpp \
+    $${PWD}/OAIProperty.cpp \
+    $${PWD}/OAIServices.cpp \
+    $${PWD}/OAISustainability.cpp \
+    $${PWD}/OAISustainabilityCertifications.cpp \
+    $${PWD}/OAISustainableSourcing.cpp \
+    $${PWD}/OAITimeOfDay.cpp \
+    $${PWD}/OAITransportation.cpp \
+    $${PWD}/OAIViewsFromUnit.cpp \
+    $${PWD}/OAIWasteReduction.cpp \
+    $${PWD}/OAIWaterConservation.cpp \
+    $${PWD}/OAIWellness.cpp \
+# APIs
+    $${PWD}/OAILocationsApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

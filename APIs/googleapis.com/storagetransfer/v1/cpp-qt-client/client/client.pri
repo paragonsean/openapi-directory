@@ -1,0 +1,103 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIAgentPool.h \
+    $${PWD}/OAIAwsAccessKey.h \
+    $${PWD}/OAIAwsS3CompatibleData.h \
+    $${PWD}/OAIAwsS3Data.h \
+    $${PWD}/OAIAzureBlobStorageData.h \
+    $${PWD}/OAIAzureCredentials.h \
+    $${PWD}/OAIBandwidthLimit.h \
+    $${PWD}/OAIDate.h \
+    $${PWD}/OAIErrorLogEntry.h \
+    $${PWD}/OAIErrorSummary.h \
+    $${PWD}/OAIEventStream.h \
+    $${PWD}/OAIGcsData.h \
+    $${PWD}/OAIGoogleServiceAccount.h \
+    $${PWD}/OAIHdfsData.h \
+    $${PWD}/OAIHttpData.h \
+    $${PWD}/OAIListAgentPoolsResponse.h \
+    $${PWD}/OAIListOperationsResponse.h \
+    $${PWD}/OAIListTransferJobsResponse.h \
+    $${PWD}/OAILoggingConfig.h \
+    $${PWD}/OAIMetadataOptions.h \
+    $${PWD}/OAINotificationConfig.h \
+    $${PWD}/OAIObjectConditions.h \
+    $${PWD}/OAIOperation.h \
+    $${PWD}/OAIPosixFilesystem.h \
+    $${PWD}/OAIRunTransferJobRequest.h \
+    $${PWD}/OAIS3CompatibleMetadata.h \
+    $${PWD}/OAISchedule.h \
+    $${PWD}/OAIStatus.h \
+    $${PWD}/OAITimeOfDay.h \
+    $${PWD}/OAITransferCounters.h \
+    $${PWD}/OAITransferJob.h \
+    $${PWD}/OAITransferManifest.h \
+    $${PWD}/OAITransferOperation.h \
+    $${PWD}/OAITransferOptions.h \
+    $${PWD}/OAITransferSpec.h \
+    $${PWD}/OAIUpdateTransferJobRequest.h \
+# APIs
+    $${PWD}/OAIGoogleServiceAccountsApi.h \
+    $${PWD}/OAIProjectsApi.h \
+    $${PWD}/OAITransferJobsApi.h \
+    $${PWD}/OAITransferOperationsApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIAgentPool.cpp \
+    $${PWD}/OAIAwsAccessKey.cpp \
+    $${PWD}/OAIAwsS3CompatibleData.cpp \
+    $${PWD}/OAIAwsS3Data.cpp \
+    $${PWD}/OAIAzureBlobStorageData.cpp \
+    $${PWD}/OAIAzureCredentials.cpp \
+    $${PWD}/OAIBandwidthLimit.cpp \
+    $${PWD}/OAIDate.cpp \
+    $${PWD}/OAIErrorLogEntry.cpp \
+    $${PWD}/OAIErrorSummary.cpp \
+    $${PWD}/OAIEventStream.cpp \
+    $${PWD}/OAIGcsData.cpp \
+    $${PWD}/OAIGoogleServiceAccount.cpp \
+    $${PWD}/OAIHdfsData.cpp \
+    $${PWD}/OAIHttpData.cpp \
+    $${PWD}/OAIListAgentPoolsResponse.cpp \
+    $${PWD}/OAIListOperationsResponse.cpp \
+    $${PWD}/OAIListTransferJobsResponse.cpp \
+    $${PWD}/OAILoggingConfig.cpp \
+    $${PWD}/OAIMetadataOptions.cpp \
+    $${PWD}/OAINotificationConfig.cpp \
+    $${PWD}/OAIObjectConditions.cpp \
+    $${PWD}/OAIOperation.cpp \
+    $${PWD}/OAIPosixFilesystem.cpp \
+    $${PWD}/OAIRunTransferJobRequest.cpp \
+    $${PWD}/OAIS3CompatibleMetadata.cpp \
+    $${PWD}/OAISchedule.cpp \
+    $${PWD}/OAIStatus.cpp \
+    $${PWD}/OAITimeOfDay.cpp \
+    $${PWD}/OAITransferCounters.cpp \
+    $${PWD}/OAITransferJob.cpp \
+    $${PWD}/OAITransferManifest.cpp \
+    $${PWD}/OAITransferOperation.cpp \
+    $${PWD}/OAITransferOptions.cpp \
+    $${PWD}/OAITransferSpec.cpp \
+    $${PWD}/OAIUpdateTransferJobRequest.cpp \
+# APIs
+    $${PWD}/OAIGoogleServiceAccountsApi.cpp \
+    $${PWD}/OAIProjectsApi.cpp \
+    $${PWD}/OAITransferJobsApi.cpp \
+    $${PWD}/OAITransferOperationsApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

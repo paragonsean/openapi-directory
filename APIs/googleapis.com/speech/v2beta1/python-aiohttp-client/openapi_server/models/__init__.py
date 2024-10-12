@@ -1,0 +1,11 @@
+# coding: utf-8
+
+# import models into model package
+from openapi_server.models.list_operations_response import ListOperationsResponse
+from openapi_server.models.long_running_recognize_metadata import LongRunningRecognizeMetadata
+from openapi_server.models.long_running_recognize_response import LongRunningRecognizeResponse
+from openapi_server.models.operation import Operation
+from openapi_server.models.speech_recognition_alternative import SpeechRecognitionAlternative
+from openapi_server.models.speech_recognition_result import SpeechRecognitionResult
+from openapi_server.models.status import Status
+from openapi_server.models.word_info import WordInfo

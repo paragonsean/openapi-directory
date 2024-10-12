@@ -1,0 +1,15 @@
+
+
+# GoogleCloudDialogflowCxV3ListGeneratorsResponse
+
+The response message for Generators.ListGenerators.
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**generators** | [**List&lt;GoogleCloudDialogflowCxV3Generator&gt;**](GoogleCloudDialogflowCxV3Generator.md) | The list of generators. There will be a maximum number of items returned based on the page_size field in the request. |  [optional] |
+|**nextPageToken** | **String** | Token to retrieve the next page of results, or empty if there are no more results in the list. |  [optional] |
+
+
+

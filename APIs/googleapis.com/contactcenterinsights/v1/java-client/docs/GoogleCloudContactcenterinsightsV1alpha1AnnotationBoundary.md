@@ -1,0 +1,15 @@
+
+
+# GoogleCloudContactcenterinsightsV1alpha1AnnotationBoundary
+
+A point in a conversation that marks the start or the end of an annotation.
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**transcriptIndex** | **Integer** | The index in the sequence of transcribed pieces of the conversation where the boundary is located. This index starts at zero. |  [optional] |
+|**wordIndex** | **Integer** | The word index of this boundary with respect to the first word in the transcript piece. This index starts at zero. |  [optional] |
+
+
+

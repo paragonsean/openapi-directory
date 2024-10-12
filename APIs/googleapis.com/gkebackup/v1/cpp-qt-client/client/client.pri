@@ -1,0 +1,107 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIAuditConfig.h \
+    $${PWD}/OAIAuditLogConfig.h \
+    $${PWD}/OAIBackup.h \
+    $${PWD}/OAIBackupConfig.h \
+    $${PWD}/OAIBackupPlan.h \
+    $${PWD}/OAIBinding.h \
+    $${PWD}/OAIClusterMetadata.h \
+    $${PWD}/OAIClusterResourceRestoreScope.h \
+    $${PWD}/OAIEncryptionKey.h \
+    $${PWD}/OAIExpr.h \
+    $${PWD}/OAIGoogleLongrunningListOperationsResponse.h \
+    $${PWD}/OAIGoogleLongrunningOperation.h \
+    $${PWD}/OAIGoogleRpcStatus.h \
+    $${PWD}/OAIGroupKind.h \
+    $${PWD}/OAIListBackupPlansResponse.h \
+    $${PWD}/OAIListBackupsResponse.h \
+    $${PWD}/OAIListLocationsResponse.h \
+    $${PWD}/OAIListRestorePlansResponse.h \
+    $${PWD}/OAIListRestoresResponse.h \
+    $${PWD}/OAIListVolumeBackupsResponse.h \
+    $${PWD}/OAIListVolumeRestoresResponse.h \
+    $${PWD}/OAILocation.h \
+    $${PWD}/OAINamespacedName.h \
+    $${PWD}/OAINamespacedNames.h \
+    $${PWD}/OAINamespaces.h \
+    $${PWD}/OAIOperationMetadata.h \
+    $${PWD}/OAIPolicy.h \
+    $${PWD}/OAIResourceFilter.h \
+    $${PWD}/OAIRestore.h \
+    $${PWD}/OAIRestoreConfig.h \
+    $${PWD}/OAIRestorePlan.h \
+    $${PWD}/OAIRetentionPolicy.h \
+    $${PWD}/OAISchedule.h \
+    $${PWD}/OAISetIamPolicyRequest.h \
+    $${PWD}/OAISubstitutionRule.h \
+    $${PWD}/OAITestIamPermissionsRequest.h \
+    $${PWD}/OAITestIamPermissionsResponse.h \
+    $${PWD}/OAITransformationRule.h \
+    $${PWD}/OAITransformationRuleAction.h \
+    $${PWD}/OAIVolumeBackup.h \
+    $${PWD}/OAIVolumeRestore.h \
+# APIs
+    $${PWD}/OAIProjectsApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIAuditConfig.cpp \
+    $${PWD}/OAIAuditLogConfig.cpp \
+    $${PWD}/OAIBackup.cpp \
+    $${PWD}/OAIBackupConfig.cpp \
+    $${PWD}/OAIBackupPlan.cpp \
+    $${PWD}/OAIBinding.cpp \
+    $${PWD}/OAIClusterMetadata.cpp \
+    $${PWD}/OAIClusterResourceRestoreScope.cpp \
+    $${PWD}/OAIEncryptionKey.cpp \
+    $${PWD}/OAIExpr.cpp \
+    $${PWD}/OAIGoogleLongrunningListOperationsResponse.cpp \
+    $${PWD}/OAIGoogleLongrunningOperation.cpp \
+    $${PWD}/OAIGoogleRpcStatus.cpp \
+    $${PWD}/OAIGroupKind.cpp \
+    $${PWD}/OAIListBackupPlansResponse.cpp \
+    $${PWD}/OAIListBackupsResponse.cpp \
+    $${PWD}/OAIListLocationsResponse.cpp \
+    $${PWD}/OAIListRestorePlansResponse.cpp \
+    $${PWD}/OAIListRestoresResponse.cpp \
+    $${PWD}/OAIListVolumeBackupsResponse.cpp \
+    $${PWD}/OAIListVolumeRestoresResponse.cpp \
+    $${PWD}/OAILocation.cpp \
+    $${PWD}/OAINamespacedName.cpp \
+    $${PWD}/OAINamespacedNames.cpp \
+    $${PWD}/OAINamespaces.cpp \
+    $${PWD}/OAIOperationMetadata.cpp \
+    $${PWD}/OAIPolicy.cpp \
+    $${PWD}/OAIResourceFilter.cpp \
+    $${PWD}/OAIRestore.cpp \
+    $${PWD}/OAIRestoreConfig.cpp \
+    $${PWD}/OAIRestorePlan.cpp \
+    $${PWD}/OAIRetentionPolicy.cpp \
+    $${PWD}/OAISchedule.cpp \
+    $${PWD}/OAISetIamPolicyRequest.cpp \
+    $${PWD}/OAISubstitutionRule.cpp \
+    $${PWD}/OAITestIamPermissionsRequest.cpp \
+    $${PWD}/OAITestIamPermissionsResponse.cpp \
+    $${PWD}/OAITransformationRule.cpp \
+    $${PWD}/OAITransformationRuleAction.cpp \
+    $${PWD}/OAIVolumeBackup.cpp \
+    $${PWD}/OAIVolumeRestore.cpp \
+# APIs
+    $${PWD}/OAIProjectsApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

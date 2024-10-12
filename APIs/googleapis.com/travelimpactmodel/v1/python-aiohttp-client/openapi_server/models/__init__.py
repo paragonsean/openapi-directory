@@ -1,0 +1,10 @@
+# coding: utf-8
+
+# import models into model package
+from openapi_server.models.compute_flight_emissions_request import ComputeFlightEmissionsRequest
+from openapi_server.models.compute_flight_emissions_response import ComputeFlightEmissionsResponse
+from openapi_server.models.emissions_grams_per_pax import EmissionsGramsPerPax
+from openapi_server.models.flight import Flight
+from openapi_server.models.flight_with_emissions import FlightWithEmissions
+from openapi_server.models.model_date import ModelDate
+from openapi_server.models.model_version import ModelVersion

@@ -1,0 +1,89 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIAuditConfig.h \
+    $${PWD}/OAIAuditLogConfig.h \
+    $${PWD}/OAIBinding.h \
+    $${PWD}/OAICloudSqlConnectionProfile.h \
+    $${PWD}/OAICloudSqlSettings.h \
+    $${PWD}/OAIConnectionProfile.h \
+    $${PWD}/OAIDatabaseType.h \
+    $${PWD}/OAIExpr.h \
+    $${PWD}/OAIGenerateSshScriptRequest.h \
+    $${PWD}/OAIGoogleCloudClouddmsV1beta1OperationMetadata.h \
+    $${PWD}/OAIListConnectionProfilesResponse.h \
+    $${PWD}/OAIListLocationsResponse.h \
+    $${PWD}/OAIListMigrationJobsResponse.h \
+    $${PWD}/OAIListOperationsResponse.h \
+    $${PWD}/OAILocation.h \
+    $${PWD}/OAIMigrationJob.h \
+    $${PWD}/OAIMigrationJobVerificationError.h \
+    $${PWD}/OAIMySqlConnectionProfile.h \
+    $${PWD}/OAIOperation.h \
+    $${PWD}/OAIPolicy.h \
+    $${PWD}/OAIReverseSshConnectivity.h \
+    $${PWD}/OAISetIamPolicyRequest.h \
+    $${PWD}/OAISqlAclEntry.h \
+    $${PWD}/OAISqlIpConfig.h \
+    $${PWD}/OAISshScript.h \
+    $${PWD}/OAISslConfig.h \
+    $${PWD}/OAIStatus.h \
+    $${PWD}/OAITestIamPermissionsRequest.h \
+    $${PWD}/OAITestIamPermissionsResponse.h \
+    $${PWD}/OAIVmCreationConfig.h \
+    $${PWD}/OAIVmSelectionConfig.h \
+    $${PWD}/OAIVpcPeeringConnectivity.h \
+# APIs
+    $${PWD}/OAIProjectsApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIAuditConfig.cpp \
+    $${PWD}/OAIAuditLogConfig.cpp \
+    $${PWD}/OAIBinding.cpp \
+    $${PWD}/OAICloudSqlConnectionProfile.cpp \
+    $${PWD}/OAICloudSqlSettings.cpp \
+    $${PWD}/OAIConnectionProfile.cpp \
+    $${PWD}/OAIDatabaseType.cpp \
+    $${PWD}/OAIExpr.cpp \
+    $${PWD}/OAIGenerateSshScriptRequest.cpp \
+    $${PWD}/OAIGoogleCloudClouddmsV1beta1OperationMetadata.cpp \
+    $${PWD}/OAIListConnectionProfilesResponse.cpp \
+    $${PWD}/OAIListLocationsResponse.cpp \
+    $${PWD}/OAIListMigrationJobsResponse.cpp \
+    $${PWD}/OAIListOperationsResponse.cpp \
+    $${PWD}/OAILocation.cpp \
+    $${PWD}/OAIMigrationJob.cpp \
+    $${PWD}/OAIMigrationJobVerificationError.cpp \
+    $${PWD}/OAIMySqlConnectionProfile.cpp \
+    $${PWD}/OAIOperation.cpp \
+    $${PWD}/OAIPolicy.cpp \
+    $${PWD}/OAIReverseSshConnectivity.cpp \
+    $${PWD}/OAISetIamPolicyRequest.cpp \
+    $${PWD}/OAISqlAclEntry.cpp \
+    $${PWD}/OAISqlIpConfig.cpp \
+    $${PWD}/OAISshScript.cpp \
+    $${PWD}/OAISslConfig.cpp \
+    $${PWD}/OAIStatus.cpp \
+    $${PWD}/OAITestIamPermissionsRequest.cpp \
+    $${PWD}/OAITestIamPermissionsResponse.cpp \
+    $${PWD}/OAIVmCreationConfig.cpp \
+    $${PWD}/OAIVmSelectionConfig.cpp \
+    $${PWD}/OAIVpcPeeringConnectivity.cpp \
+# APIs
+    $${PWD}/OAIProjectsApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

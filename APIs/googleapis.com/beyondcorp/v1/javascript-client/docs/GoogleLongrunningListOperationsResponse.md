@@ -1,0 +1,10 @@
+# BeyondCorpApi.GoogleLongrunningListOperationsResponse
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**nextPageToken** | **String** | The standard List next-page token. | [optional] 
+**operations** | [**[GoogleLongrunningOperation]**](GoogleLongrunningOperation.md) | A list of operations that matches the specified filter in the request. | [optional] 
+
+
