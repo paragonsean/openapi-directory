@@ -1,0 +1,14 @@
+
+
+# GoogleCloudDocumentaiV1beta1DocumentPageAnchor
+
+Referencing the visual context of the entity in the Document.pages. Page anchors can be cross-page, consist of multiple bounding polygons and optionally reference specific layout element types.
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**pageRefs** | [**List&lt;GoogleCloudDocumentaiV1beta1DocumentPageAnchorPageRef&gt;**](GoogleCloudDocumentaiV1beta1DocumentPageAnchorPageRef.md) | One or more references to visual page elements |  [optional] |
+
+
+

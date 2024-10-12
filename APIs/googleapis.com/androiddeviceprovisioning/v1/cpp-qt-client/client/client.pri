@@ -1,0 +1,111 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIClaimDeviceRequest.h \
+    $${PWD}/OAIClaimDeviceResponse.h \
+    $${PWD}/OAIClaimDevicesRequest.h \
+    $${PWD}/OAICompany.h \
+    $${PWD}/OAIConfiguration.h \
+    $${PWD}/OAICreateCustomerRequest.h \
+    $${PWD}/OAICustomerApplyConfigurationRequest.h \
+    $${PWD}/OAICustomerListConfigurationsResponse.h \
+    $${PWD}/OAICustomerListCustomersResponse.h \
+    $${PWD}/OAICustomerListDevicesResponse.h \
+    $${PWD}/OAICustomerListDpcsResponse.h \
+    $${PWD}/OAICustomerRemoveConfigurationRequest.h \
+    $${PWD}/OAICustomerUnclaimDeviceRequest.h \
+    $${PWD}/OAIDevice.h \
+    $${PWD}/OAIDeviceClaim.h \
+    $${PWD}/OAIDeviceIdentifier.h \
+    $${PWD}/OAIDeviceMetadata.h \
+    $${PWD}/OAIDeviceReference.h \
+    $${PWD}/OAIDevicesLongRunningOperationMetadata.h \
+    $${PWD}/OAIDevicesLongRunningOperationResponse.h \
+    $${PWD}/OAIDpc.h \
+    $${PWD}/OAIFindDevicesByDeviceIdentifierRequest.h \
+    $${PWD}/OAIFindDevicesByDeviceIdentifierResponse.h \
+    $${PWD}/OAIFindDevicesByOwnerRequest.h \
+    $${PWD}/OAIFindDevicesByOwnerResponse.h \
+    $${PWD}/OAIGetDeviceSimLockStateRequest.h \
+    $${PWD}/OAIGetDeviceSimLockStateResponse.h \
+    $${PWD}/OAIGoogleWorkspaceAccount.h \
+    $${PWD}/OAIListCustomersResponse.h \
+    $${PWD}/OAIListVendorCustomersResponse.h \
+    $${PWD}/OAIListVendorsResponse.h \
+    $${PWD}/OAIOperation.h \
+    $${PWD}/OAIOperationPerDevice.h \
+    $${PWD}/OAIPartnerClaim.h \
+    $${PWD}/OAIPartnerUnclaim.h \
+    $${PWD}/OAIPerDeviceStatusInBatch.h \
+    $${PWD}/OAIStatus.h \
+    $${PWD}/OAIUnclaimDeviceRequest.h \
+    $${PWD}/OAIUnclaimDevicesRequest.h \
+    $${PWD}/OAIUpdateDeviceMetadataInBatchRequest.h \
+    $${PWD}/OAIUpdateDeviceMetadataRequest.h \
+    $${PWD}/OAIUpdateMetadataArguments.h \
+# APIs
+    $${PWD}/OAICustomersApi.h \
+    $${PWD}/OAIPartnersApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIClaimDeviceRequest.cpp \
+    $${PWD}/OAIClaimDeviceResponse.cpp \
+    $${PWD}/OAIClaimDevicesRequest.cpp \
+    $${PWD}/OAICompany.cpp \
+    $${PWD}/OAIConfiguration.cpp \
+    $${PWD}/OAICreateCustomerRequest.cpp \
+    $${PWD}/OAICustomerApplyConfigurationRequest.cpp \
+    $${PWD}/OAICustomerListConfigurationsResponse.cpp \
+    $${PWD}/OAICustomerListCustomersResponse.cpp \
+    $${PWD}/OAICustomerListDevicesResponse.cpp \
+    $${PWD}/OAICustomerListDpcsResponse.cpp \
+    $${PWD}/OAICustomerRemoveConfigurationRequest.cpp \
+    $${PWD}/OAICustomerUnclaimDeviceRequest.cpp \
+    $${PWD}/OAIDevice.cpp \
+    $${PWD}/OAIDeviceClaim.cpp \
+    $${PWD}/OAIDeviceIdentifier.cpp \
+    $${PWD}/OAIDeviceMetadata.cpp \
+    $${PWD}/OAIDeviceReference.cpp \
+    $${PWD}/OAIDevicesLongRunningOperationMetadata.cpp \
+    $${PWD}/OAIDevicesLongRunningOperationResponse.cpp \
+    $${PWD}/OAIDpc.cpp \
+    $${PWD}/OAIFindDevicesByDeviceIdentifierRequest.cpp \
+    $${PWD}/OAIFindDevicesByDeviceIdentifierResponse.cpp \
+    $${PWD}/OAIFindDevicesByOwnerRequest.cpp \
+    $${PWD}/OAIFindDevicesByOwnerResponse.cpp \
+    $${PWD}/OAIGetDeviceSimLockStateRequest.cpp \
+    $${PWD}/OAIGetDeviceSimLockStateResponse.cpp \
+    $${PWD}/OAIGoogleWorkspaceAccount.cpp \
+    $${PWD}/OAIListCustomersResponse.cpp \
+    $${PWD}/OAIListVendorCustomersResponse.cpp \
+    $${PWD}/OAIListVendorsResponse.cpp \
+    $${PWD}/OAIOperation.cpp \
+    $${PWD}/OAIOperationPerDevice.cpp \
+    $${PWD}/OAIPartnerClaim.cpp \
+    $${PWD}/OAIPartnerUnclaim.cpp \
+    $${PWD}/OAIPerDeviceStatusInBatch.cpp \
+    $${PWD}/OAIStatus.cpp \
+    $${PWD}/OAIUnclaimDeviceRequest.cpp \
+    $${PWD}/OAIUnclaimDevicesRequest.cpp \
+    $${PWD}/OAIUpdateDeviceMetadataInBatchRequest.cpp \
+    $${PWD}/OAIUpdateDeviceMetadataRequest.cpp \
+    $${PWD}/OAIUpdateMetadataArguments.cpp \
+# APIs
+    $${PWD}/OAICustomersApi.cpp \
+    $${PWD}/OAIPartnersApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

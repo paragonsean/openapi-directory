@@ -1,0 +1,11 @@
+# CloudDocumentAiApi.GoogleCloudDocumentaiV1beta2DocumentPageVisualElement
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**detectedLanguages** | [**[GoogleCloudDocumentaiV1beta2DocumentPageDetectedLanguage]**](GoogleCloudDocumentaiV1beta2DocumentPageDetectedLanguage.md) | A list of detected languages together with confidence. | [optional] 
+**layout** | [**GoogleCloudDocumentaiV1beta2DocumentPageLayout**](GoogleCloudDocumentaiV1beta2DocumentPageLayout.md) |  | [optional] 
+**type** | **String** | Type of the VisualElement. | [optional] 
+
+

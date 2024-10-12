@@ -1,0 +1,14 @@
+# CloudAssetApi.Resource
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**data** | **{String: Object}** | The content of the resource, in which some sensitive fields are removed and may not be present. | [optional] 
+**discoveryDocumentUri** | **String** | The URL of the discovery document containing the resource&#39;s JSON schema. Example: &#x60;https://www.googleapis.com/discovery/v1/apis/compute/v1/rest&#x60; This value is unspecified for resources that do not have an API based on a discovery document, such as Cloud Bigtable. | [optional] 
+**discoveryName** | **String** | The JSON schema name listed in the discovery document. Example: &#x60;Project&#x60; This value is unspecified for resources that do not have an API based on a discovery document, such as Cloud Bigtable. | [optional] 
+**parent** | **String** | The full name of the immediate parent of this resource. See [Resource Names](https://cloud.google.com/apis/design/resource_names#full_resource_name) for more information. For Google Cloud assets, this value is the parent resource defined in the [IAM policy hierarchy](https://cloud.google.com/iam/docs/overview#policy_hierarchy). Example: &#x60;//cloudresourcemanager.googleapis.com/projects/my_project_123&#x60; For third-party assets, this field may be set differently. | [optional] 
+**resourceUrl** | **String** | The REST URL for accessing the resource. An HTTP &#x60;GET&#x60; request using this URL returns the resource itself. Example: &#x60;https://cloudresourcemanager.googleapis.com/v1/projects/my-project-123&#x60; This value is unspecified for resources without a REST API. | [optional] 
+**version** | **String** | The API version. Example: \&quot;v1\&quot;. | [optional] 
+
+

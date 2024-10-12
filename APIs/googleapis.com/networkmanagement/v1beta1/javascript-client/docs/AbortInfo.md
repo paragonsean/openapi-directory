@@ -1,0 +1,79 @@
+# NetworkManagementApi.AbortInfo
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**cause** | **String** | Causes that the analysis is aborted. | [optional] 
+**ipAddress** | **String** | IP address that caused the abort. | [optional] 
+**projectsMissingPermission** | **[String]** | List of project IDs the user specified in the request but lacks access to. In this case, analysis is aborted with the PERMISSION_DENIED cause. | [optional] 
+**resourceUri** | **String** | URI of the resource that caused the abort. | [optional] 
+
+
+
+## Enum: CauseEnum
+
+
+* `CAUSE_UNSPECIFIED` (value: `"CAUSE_UNSPECIFIED"`)
+
+* `UNKNOWN_NETWORK` (value: `"UNKNOWN_NETWORK"`)
+
+* `UNKNOWN_PROJECT` (value: `"UNKNOWN_PROJECT"`)
+
+* `NO_EXTERNAL_IP` (value: `"NO_EXTERNAL_IP"`)
+
+* `UNINTENDED_DESTINATION` (value: `"UNINTENDED_DESTINATION"`)
+
+* `SOURCE_ENDPOINT_NOT_FOUND` (value: `"SOURCE_ENDPOINT_NOT_FOUND"`)
+
+* `MISMATCHED_SOURCE_NETWORK` (value: `"MISMATCHED_SOURCE_NETWORK"`)
+
+* `DESTINATION_ENDPOINT_NOT_FOUND` (value: `"DESTINATION_ENDPOINT_NOT_FOUND"`)
+
+* `MISMATCHED_DESTINATION_NETWORK` (value: `"MISMATCHED_DESTINATION_NETWORK"`)
+
+* `UNKNOWN_IP` (value: `"UNKNOWN_IP"`)
+
+* `SOURCE_IP_ADDRESS_NOT_IN_SOURCE_NETWORK` (value: `"SOURCE_IP_ADDRESS_NOT_IN_SOURCE_NETWORK"`)
+
+* `PERMISSION_DENIED` (value: `"PERMISSION_DENIED"`)
+
+* `PERMISSION_DENIED_NO_CLOUD_NAT_CONFIGS` (value: `"PERMISSION_DENIED_NO_CLOUD_NAT_CONFIGS"`)
+
+* `PERMISSION_DENIED_NO_NEG_ENDPOINT_CONFIGS` (value: `"PERMISSION_DENIED_NO_NEG_ENDPOINT_CONFIGS"`)
+
+* `NO_SOURCE_LOCATION` (value: `"NO_SOURCE_LOCATION"`)
+
+* `INVALID_ARGUMENT` (value: `"INVALID_ARGUMENT"`)
+
+* `TRACE_TOO_LONG` (value: `"TRACE_TOO_LONG"`)
+
+* `INTERNAL_ERROR` (value: `"INTERNAL_ERROR"`)
+
+* `UNSUPPORTED` (value: `"UNSUPPORTED"`)
+
+* `MISMATCHED_IP_VERSION` (value: `"MISMATCHED_IP_VERSION"`)
+
+* `GKE_KONNECTIVITY_PROXY_UNSUPPORTED` (value: `"GKE_KONNECTIVITY_PROXY_UNSUPPORTED"`)
+
+* `RESOURCE_CONFIG_NOT_FOUND` (value: `"RESOURCE_CONFIG_NOT_FOUND"`)
+
+* `VM_INSTANCE_CONFIG_NOT_FOUND` (value: `"VM_INSTANCE_CONFIG_NOT_FOUND"`)
+
+* `NETWORK_CONFIG_NOT_FOUND` (value: `"NETWORK_CONFIG_NOT_FOUND"`)
+
+* `FIREWALL_CONFIG_NOT_FOUND` (value: `"FIREWALL_CONFIG_NOT_FOUND"`)
+
+* `ROUTE_CONFIG_NOT_FOUND` (value: `"ROUTE_CONFIG_NOT_FOUND"`)
+
+* `GOOGLE_MANAGED_SERVICE_AMBIGUOUS_PSC_ENDPOINT` (value: `"GOOGLE_MANAGED_SERVICE_AMBIGUOUS_PSC_ENDPOINT"`)
+
+* `SOURCE_PSC_CLOUD_SQL_UNSUPPORTED` (value: `"SOURCE_PSC_CLOUD_SQL_UNSUPPORTED"`)
+
+* `SOURCE_FORWARDING_RULE_UNSUPPORTED` (value: `"SOURCE_FORWARDING_RULE_UNSUPPORTED"`)
+
+* `NON_ROUTABLE_IP_ADDRESS` (value: `"NON_ROUTABLE_IP_ADDRESS"`)
+
+
+
+

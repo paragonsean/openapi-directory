@@ -1,0 +1,99 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIContent.h \
+    $${PWD}/OAICreateProjectRequest.h \
+    $${PWD}/OAIDeployment.h \
+    $${PWD}/OAIDeploymentConfig.h \
+    $${PWD}/OAIEntryPoint.h \
+    $${PWD}/OAIExecuteStreamResponse.h \
+    $${PWD}/OAIExecutionError.h \
+    $${PWD}/OAIExecutionRequest.h \
+    $${PWD}/OAIExecutionResponse.h \
+    $${PWD}/OAIFile.h \
+    $${PWD}/OAIGoogleAppsScriptTypeAddOnEntryPoint.h \
+    $${PWD}/OAIGoogleAppsScriptTypeExecutionApiConfig.h \
+    $${PWD}/OAIGoogleAppsScriptTypeExecutionApiEntryPoint.h \
+    $${PWD}/OAIGoogleAppsScriptTypeFunction.h \
+    $${PWD}/OAIGoogleAppsScriptTypeFunctionSet.h \
+    $${PWD}/OAIGoogleAppsScriptTypeProcess.h \
+    $${PWD}/OAIGoogleAppsScriptTypeUser.h \
+    $${PWD}/OAIGoogleAppsScriptTypeWebAppConfig.h \
+    $${PWD}/OAIGoogleAppsScriptTypeWebAppEntryPoint.h \
+    $${PWD}/OAIListDeploymentsResponse.h \
+    $${PWD}/OAIListScriptProcessesResponse.h \
+    $${PWD}/OAIListUserProcessesResponse.h \
+    $${PWD}/OAIListValue.h \
+    $${PWD}/OAIListVersionsResponse.h \
+    $${PWD}/OAIMetrics.h \
+    $${PWD}/OAIMetricsValue.h \
+    $${PWD}/OAIOperation.h \
+    $${PWD}/OAIProject.h \
+    $${PWD}/OAIScriptExecutionResult.h \
+    $${PWD}/OAIScriptStackTraceElement.h \
+    $${PWD}/OAIStatus.h \
+    $${PWD}/OAIStruct.h \
+    $${PWD}/OAIUpdateDeploymentRequest.h \
+    $${PWD}/OAIValue.h \
+    $${PWD}/OAIVersion.h \
+# APIs
+    $${PWD}/OAIProcessesApi.h \
+    $${PWD}/OAIProjectsApi.h \
+    $${PWD}/OAIScriptsApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIContent.cpp \
+    $${PWD}/OAICreateProjectRequest.cpp \
+    $${PWD}/OAIDeployment.cpp \
+    $${PWD}/OAIDeploymentConfig.cpp \
+    $${PWD}/OAIEntryPoint.cpp \
+    $${PWD}/OAIExecuteStreamResponse.cpp \
+    $${PWD}/OAIExecutionError.cpp \
+    $${PWD}/OAIExecutionRequest.cpp \
+    $${PWD}/OAIExecutionResponse.cpp \
+    $${PWD}/OAIFile.cpp \
+    $${PWD}/OAIGoogleAppsScriptTypeAddOnEntryPoint.cpp \
+    $${PWD}/OAIGoogleAppsScriptTypeExecutionApiConfig.cpp \
+    $${PWD}/OAIGoogleAppsScriptTypeExecutionApiEntryPoint.cpp \
+    $${PWD}/OAIGoogleAppsScriptTypeFunction.cpp \
+    $${PWD}/OAIGoogleAppsScriptTypeFunctionSet.cpp \
+    $${PWD}/OAIGoogleAppsScriptTypeProcess.cpp \
+    $${PWD}/OAIGoogleAppsScriptTypeUser.cpp \
+    $${PWD}/OAIGoogleAppsScriptTypeWebAppConfig.cpp \
+    $${PWD}/OAIGoogleAppsScriptTypeWebAppEntryPoint.cpp \
+    $${PWD}/OAIListDeploymentsResponse.cpp \
+    $${PWD}/OAIListScriptProcessesResponse.cpp \
+    $${PWD}/OAIListUserProcessesResponse.cpp \
+    $${PWD}/OAIListValue.cpp \
+    $${PWD}/OAIListVersionsResponse.cpp \
+    $${PWD}/OAIMetrics.cpp \
+    $${PWD}/OAIMetricsValue.cpp \
+    $${PWD}/OAIOperation.cpp \
+    $${PWD}/OAIProject.cpp \
+    $${PWD}/OAIScriptExecutionResult.cpp \
+    $${PWD}/OAIScriptStackTraceElement.cpp \
+    $${PWD}/OAIStatus.cpp \
+    $${PWD}/OAIStruct.cpp \
+    $${PWD}/OAIUpdateDeploymentRequest.cpp \
+    $${PWD}/OAIValue.cpp \
+    $${PWD}/OAIVersion.cpp \
+# APIs
+    $${PWD}/OAIProcessesApi.cpp \
+    $${PWD}/OAIProjectsApi.cpp \
+    $${PWD}/OAIScriptsApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

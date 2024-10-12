@@ -1,0 +1,15 @@
+# DataPipelinesApi.GoogleCloudDatapipelinesV1LaunchFlexTemplateParameter
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**containerSpecGcsPath** | **String** | Cloud Storage path to a file with a JSON-serialized ContainerSpec as content. | [optional] 
+**environment** | [**GoogleCloudDatapipelinesV1FlexTemplateRuntimeEnvironment**](GoogleCloudDatapipelinesV1FlexTemplateRuntimeEnvironment.md) |  | [optional] 
+**jobName** | **String** | Required. The job name to use for the created job. For an update job request, the job name should be the same as the existing running job. | [optional] 
+**launchOptions** | **{String: String}** | Launch options for this Flex Template job. This is a common set of options across languages and templates. This should not be used to pass job parameters. | [optional] 
+**parameters** | **{String: String}** | The parameters for the Flex Template. Example: &#x60;{\&quot;num_workers\&quot;:\&quot;5\&quot;}&#x60; | [optional] 
+**transformNameMappings** | **{String: String}** | Use this to pass transform name mappings for streaming update jobs. Example: &#x60;{\&quot;oldTransformName\&quot;:\&quot;newTransformName\&quot;,...}&#x60; | [optional] 
+**update** | **Boolean** | Set this to true if you are sending a request to update a running streaming job. When set, the job name should be the same as the running job. | [optional] 
+
+

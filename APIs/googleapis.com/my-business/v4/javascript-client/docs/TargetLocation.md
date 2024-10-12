@@ -1,0 +1,10 @@
+# GoogleMyBusinessApi.TargetLocation
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**locationAddress** | **String** | The address of the location to which the user is invited. | [optional] 
+**locationName** | **String** | The name of the location to which the user is invited. | [optional] 
+
+

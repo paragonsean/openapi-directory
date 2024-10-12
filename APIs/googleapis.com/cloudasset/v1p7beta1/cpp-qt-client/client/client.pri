@@ -1,0 +1,113 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIAnalyzeIamPolicyLongrunningMetadata.h \
+    $${PWD}/OAIAuditConfig.h \
+    $${PWD}/OAIAuditLogConfig.h \
+    $${PWD}/OAIBinding.h \
+    $${PWD}/OAIExpr.h \
+    $${PWD}/OAIGoogleCloudAssetV1p7beta1Asset.h \
+    $${PWD}/OAIGoogleCloudAssetV1p7beta1BigQueryDestination.h \
+    $${PWD}/OAIGoogleCloudAssetV1p7beta1ExportAssetsRequest.h \
+    $${PWD}/OAIGoogleCloudAssetV1p7beta1GcsDestination.h \
+    $${PWD}/OAIGoogleCloudAssetV1p7beta1OutputConfig.h \
+    $${PWD}/OAIGoogleCloudAssetV1p7beta1PartitionSpec.h \
+    $${PWD}/OAIGoogleCloudAssetV1p7beta1RelatedAsset.h \
+    $${PWD}/OAIGoogleCloudAssetV1p7beta1RelatedAssets.h \
+    $${PWD}/OAIGoogleCloudAssetV1p7beta1RelationshipAttributes.h \
+    $${PWD}/OAIGoogleCloudAssetV1p7beta1Resource.h \
+    $${PWD}/OAIGoogleCloudOrgpolicyV1BooleanPolicy.h \
+    $${PWD}/OAIGoogleCloudOrgpolicyV1ListPolicy.h \
+    $${PWD}/OAIGoogleCloudOrgpolicyV1Policy.h \
+    $${PWD}/OAIGoogleIdentityAccesscontextmanagerV1AccessLevel.h \
+    $${PWD}/OAIGoogleIdentityAccesscontextmanagerV1AccessPolicy.h \
+    $${PWD}/OAIGoogleIdentityAccesscontextmanagerV1ApiOperation.h \
+    $${PWD}/OAIGoogleIdentityAccesscontextmanagerV1BasicLevel.h \
+    $${PWD}/OAIGoogleIdentityAccesscontextmanagerV1Condition.h \
+    $${PWD}/OAIGoogleIdentityAccesscontextmanagerV1CustomLevel.h \
+    $${PWD}/OAIGoogleIdentityAccesscontextmanagerV1DevicePolicy.h \
+    $${PWD}/OAIGoogleIdentityAccesscontextmanagerV1EgressFrom.h \
+    $${PWD}/OAIGoogleIdentityAccesscontextmanagerV1EgressPolicy.h \
+    $${PWD}/OAIGoogleIdentityAccesscontextmanagerV1EgressSource.h \
+    $${PWD}/OAIGoogleIdentityAccesscontextmanagerV1EgressTo.h \
+    $${PWD}/OAIGoogleIdentityAccesscontextmanagerV1IngressFrom.h \
+    $${PWD}/OAIGoogleIdentityAccesscontextmanagerV1IngressPolicy.h \
+    $${PWD}/OAIGoogleIdentityAccesscontextmanagerV1IngressSource.h \
+    $${PWD}/OAIGoogleIdentityAccesscontextmanagerV1IngressTo.h \
+    $${PWD}/OAIGoogleIdentityAccesscontextmanagerV1MethodSelector.h \
+    $${PWD}/OAIGoogleIdentityAccesscontextmanagerV1OsConstraint.h \
+    $${PWD}/OAIGoogleIdentityAccesscontextmanagerV1ServicePerimeter.h \
+    $${PWD}/OAIGoogleIdentityAccesscontextmanagerV1ServicePerimeterConfig.h \
+    $${PWD}/OAIGoogleIdentityAccesscontextmanagerV1VpcAccessibleServices.h \
+    $${PWD}/OAIGoogleIdentityAccesscontextmanagerV1VpcNetworkSource.h \
+    $${PWD}/OAIGoogleIdentityAccesscontextmanagerV1VpcSubNetwork.h \
+    $${PWD}/OAIOperation.h \
+    $${PWD}/OAIPolicy.h \
+    $${PWD}/OAIStatus.h \
+# APIs
+    $${PWD}/OAIOperationsApi.h \
+    $${PWD}/OAIV1p7beta1Api.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIAnalyzeIamPolicyLongrunningMetadata.cpp \
+    $${PWD}/OAIAuditConfig.cpp \
+    $${PWD}/OAIAuditLogConfig.cpp \
+    $${PWD}/OAIBinding.cpp \
+    $${PWD}/OAIExpr.cpp \
+    $${PWD}/OAIGoogleCloudAssetV1p7beta1Asset.cpp \
+    $${PWD}/OAIGoogleCloudAssetV1p7beta1BigQueryDestination.cpp \
+    $${PWD}/OAIGoogleCloudAssetV1p7beta1ExportAssetsRequest.cpp \
+    $${PWD}/OAIGoogleCloudAssetV1p7beta1GcsDestination.cpp \
+    $${PWD}/OAIGoogleCloudAssetV1p7beta1OutputConfig.cpp \
+    $${PWD}/OAIGoogleCloudAssetV1p7beta1PartitionSpec.cpp \
+    $${PWD}/OAIGoogleCloudAssetV1p7beta1RelatedAsset.cpp \
+    $${PWD}/OAIGoogleCloudAssetV1p7beta1RelatedAssets.cpp \
+    $${PWD}/OAIGoogleCloudAssetV1p7beta1RelationshipAttributes.cpp \
+    $${PWD}/OAIGoogleCloudAssetV1p7beta1Resource.cpp \
+    $${PWD}/OAIGoogleCloudOrgpolicyV1BooleanPolicy.cpp \
+    $${PWD}/OAIGoogleCloudOrgpolicyV1ListPolicy.cpp \
+    $${PWD}/OAIGoogleCloudOrgpolicyV1Policy.cpp \
+    $${PWD}/OAIGoogleIdentityAccesscontextmanagerV1AccessLevel.cpp \
+    $${PWD}/OAIGoogleIdentityAccesscontextmanagerV1AccessPolicy.cpp \
+    $${PWD}/OAIGoogleIdentityAccesscontextmanagerV1ApiOperation.cpp \
+    $${PWD}/OAIGoogleIdentityAccesscontextmanagerV1BasicLevel.cpp \
+    $${PWD}/OAIGoogleIdentityAccesscontextmanagerV1Condition.cpp \
+    $${PWD}/OAIGoogleIdentityAccesscontextmanagerV1CustomLevel.cpp \
+    $${PWD}/OAIGoogleIdentityAccesscontextmanagerV1DevicePolicy.cpp \
+    $${PWD}/OAIGoogleIdentityAccesscontextmanagerV1EgressFrom.cpp \
+    $${PWD}/OAIGoogleIdentityAccesscontextmanagerV1EgressPolicy.cpp \
+    $${PWD}/OAIGoogleIdentityAccesscontextmanagerV1EgressSource.cpp \
+    $${PWD}/OAIGoogleIdentityAccesscontextmanagerV1EgressTo.cpp \
+    $${PWD}/OAIGoogleIdentityAccesscontextmanagerV1IngressFrom.cpp \
+    $${PWD}/OAIGoogleIdentityAccesscontextmanagerV1IngressPolicy.cpp \
+    $${PWD}/OAIGoogleIdentityAccesscontextmanagerV1IngressSource.cpp \
+    $${PWD}/OAIGoogleIdentityAccesscontextmanagerV1IngressTo.cpp \
+    $${PWD}/OAIGoogleIdentityAccesscontextmanagerV1MethodSelector.cpp \
+    $${PWD}/OAIGoogleIdentityAccesscontextmanagerV1OsConstraint.cpp \
+    $${PWD}/OAIGoogleIdentityAccesscontextmanagerV1ServicePerimeter.cpp \
+    $${PWD}/OAIGoogleIdentityAccesscontextmanagerV1ServicePerimeterConfig.cpp \
+    $${PWD}/OAIGoogleIdentityAccesscontextmanagerV1VpcAccessibleServices.cpp \
+    $${PWD}/OAIGoogleIdentityAccesscontextmanagerV1VpcNetworkSource.cpp \
+    $${PWD}/OAIGoogleIdentityAccesscontextmanagerV1VpcSubNetwork.cpp \
+    $${PWD}/OAIOperation.cpp \
+    $${PWD}/OAIPolicy.cpp \
+    $${PWD}/OAIStatus.cpp \
+# APIs
+    $${PWD}/OAIOperationsApi.cpp \
+    $${PWD}/OAIV1p7beta1Api.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

@@ -1,0 +1,115 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIGoogleChecksAccountV1alphaApp.h \
+    $${PWD}/OAIGoogleChecksAccountV1alphaListAppsResponse.h \
+    $${PWD}/OAIGoogleChecksReportV1alphaAnalyzeUploadRequest.h \
+    $${PWD}/OAIGoogleChecksReportV1alphaAppBundle.h \
+    $${PWD}/OAIGoogleChecksReportV1alphaCheck.h \
+    $${PWD}/OAIGoogleChecksReportV1alphaCheckCitation.h \
+    $${PWD}/OAIGoogleChecksReportV1alphaCheckDataSecurityEvidence.h \
+    $${PWD}/OAIGoogleChecksReportV1alphaCheckDataSecurityEvidenceDataInTransitInfo.h \
+    $${PWD}/OAIGoogleChecksReportV1alphaCheckDataTypeEvidence.h \
+    $${PWD}/OAIGoogleChecksReportV1alphaCheckEndpointEvidence.h \
+    $${PWD}/OAIGoogleChecksReportV1alphaCheckEndpointRestrictionViolationEvidence.h \
+    $${PWD}/OAIGoogleChecksReportV1alphaCheckEndpointRestrictionViolationEvidenceEndpointDetails.h \
+    $${PWD}/OAIGoogleChecksReportV1alphaCheckEvidence.h \
+    $${PWD}/OAIGoogleChecksReportV1alphaCheckPermissionEvidence.h \
+    $${PWD}/OAIGoogleChecksReportV1alphaCheckPermissionRestrictionViolationEvidence.h \
+    $${PWD}/OAIGoogleChecksReportV1alphaCheckPermissionRestrictionViolationEvidencePermissionDetails.h \
+    $${PWD}/OAIGoogleChecksReportV1alphaCheckPrivacyPolicyTextEvidence.h \
+    $${PWD}/OAIGoogleChecksReportV1alphaCheckSdkEvidence.h \
+    $${PWD}/OAIGoogleChecksReportV1alphaCheckSdkIssueEvidence.h \
+    $${PWD}/OAIGoogleChecksReportV1alphaCheckSdkRestrictionViolationEvidence.h \
+    $${PWD}/OAIGoogleChecksReportV1alphaCheckSdkRestrictionViolationEvidenceSdkDetails.h \
+    $${PWD}/OAIGoogleChecksReportV1alphaCheckStateMetadata.h \
+    $${PWD}/OAIGoogleChecksReportV1alphaDataMonitoring.h \
+    $${PWD}/OAIGoogleChecksReportV1alphaDataMonitoringDataTypeResult.h \
+    $${PWD}/OAIGoogleChecksReportV1alphaDataMonitoringEndpointResult.h \
+    $${PWD}/OAIGoogleChecksReportV1alphaDataMonitoringPermissionResult.h \
+    $${PWD}/OAIGoogleChecksReportV1alphaDataMonitoringResultMetadata.h \
+    $${PWD}/OAIGoogleChecksReportV1alphaDataMonitoringSdkResult.h \
+    $${PWD}/OAIGoogleChecksReportV1alphaDataTypeEndpointEvidence.h \
+    $${PWD}/OAIGoogleChecksReportV1alphaDataTypeEndpointEvidenceAttributedSdk.h \
+    $${PWD}/OAIGoogleChecksReportV1alphaDataTypeEndpointEvidenceEndpointDetails.h \
+    $${PWD}/OAIGoogleChecksReportV1alphaDataTypeEvidence.h \
+    $${PWD}/OAIGoogleChecksReportV1alphaDataTypePermissionEvidence.h \
+    $${PWD}/OAIGoogleChecksReportV1alphaDataTypePrivacyPolicyTextEvidence.h \
+    $${PWD}/OAIGoogleChecksReportV1alphaEndpoint.h \
+    $${PWD}/OAIGoogleChecksReportV1alphaListReportsResponse.h \
+    $${PWD}/OAIGoogleChecksReportV1alphaPermission.h \
+    $${PWD}/OAIGoogleChecksReportV1alphaPolicyFragment.h \
+    $${PWD}/OAIGoogleChecksReportV1alphaReport.h \
+    $${PWD}/OAIGoogleChecksReportV1alphaSdk.h \
+    $${PWD}/OAIListOperationsResponse.h \
+    $${PWD}/OAIOperation.h \
+    $${PWD}/OAIStatus.h \
+    $${PWD}/OAIWaitOperationRequest.h \
+# APIs
+    $${PWD}/OAIAccountsApi.h \
+    $${PWD}/OAIMediaApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIGoogleChecksAccountV1alphaApp.cpp \
+    $${PWD}/OAIGoogleChecksAccountV1alphaListAppsResponse.cpp \
+    $${PWD}/OAIGoogleChecksReportV1alphaAnalyzeUploadRequest.cpp \
+    $${PWD}/OAIGoogleChecksReportV1alphaAppBundle.cpp \
+    $${PWD}/OAIGoogleChecksReportV1alphaCheck.cpp \
+    $${PWD}/OAIGoogleChecksReportV1alphaCheckCitation.cpp \
+    $${PWD}/OAIGoogleChecksReportV1alphaCheckDataSecurityEvidence.cpp \
+    $${PWD}/OAIGoogleChecksReportV1alphaCheckDataSecurityEvidenceDataInTransitInfo.cpp \
+    $${PWD}/OAIGoogleChecksReportV1alphaCheckDataTypeEvidence.cpp \
+    $${PWD}/OAIGoogleChecksReportV1alphaCheckEndpointEvidence.cpp \
+    $${PWD}/OAIGoogleChecksReportV1alphaCheckEndpointRestrictionViolationEvidence.cpp \
+    $${PWD}/OAIGoogleChecksReportV1alphaCheckEndpointRestrictionViolationEvidenceEndpointDetails.cpp \
+    $${PWD}/OAIGoogleChecksReportV1alphaCheckEvidence.cpp \
+    $${PWD}/OAIGoogleChecksReportV1alphaCheckPermissionEvidence.cpp \
+    $${PWD}/OAIGoogleChecksReportV1alphaCheckPermissionRestrictionViolationEvidence.cpp \
+    $${PWD}/OAIGoogleChecksReportV1alphaCheckPermissionRestrictionViolationEvidencePermissionDetails.cpp \
+    $${PWD}/OAIGoogleChecksReportV1alphaCheckPrivacyPolicyTextEvidence.cpp \
+    $${PWD}/OAIGoogleChecksReportV1alphaCheckSdkEvidence.cpp \
+    $${PWD}/OAIGoogleChecksReportV1alphaCheckSdkIssueEvidence.cpp \
+    $${PWD}/OAIGoogleChecksReportV1alphaCheckSdkRestrictionViolationEvidence.cpp \
+    $${PWD}/OAIGoogleChecksReportV1alphaCheckSdkRestrictionViolationEvidenceSdkDetails.cpp \
+    $${PWD}/OAIGoogleChecksReportV1alphaCheckStateMetadata.cpp \
+    $${PWD}/OAIGoogleChecksReportV1alphaDataMonitoring.cpp \
+    $${PWD}/OAIGoogleChecksReportV1alphaDataMonitoringDataTypeResult.cpp \
+    $${PWD}/OAIGoogleChecksReportV1alphaDataMonitoringEndpointResult.cpp \
+    $${PWD}/OAIGoogleChecksReportV1alphaDataMonitoringPermissionResult.cpp \
+    $${PWD}/OAIGoogleChecksReportV1alphaDataMonitoringResultMetadata.cpp \
+    $${PWD}/OAIGoogleChecksReportV1alphaDataMonitoringSdkResult.cpp \
+    $${PWD}/OAIGoogleChecksReportV1alphaDataTypeEndpointEvidence.cpp \
+    $${PWD}/OAIGoogleChecksReportV1alphaDataTypeEndpointEvidenceAttributedSdk.cpp \
+    $${PWD}/OAIGoogleChecksReportV1alphaDataTypeEndpointEvidenceEndpointDetails.cpp \
+    $${PWD}/OAIGoogleChecksReportV1alphaDataTypeEvidence.cpp \
+    $${PWD}/OAIGoogleChecksReportV1alphaDataTypePermissionEvidence.cpp \
+    $${PWD}/OAIGoogleChecksReportV1alphaDataTypePrivacyPolicyTextEvidence.cpp \
+    $${PWD}/OAIGoogleChecksReportV1alphaEndpoint.cpp \
+    $${PWD}/OAIGoogleChecksReportV1alphaListReportsResponse.cpp \
+    $${PWD}/OAIGoogleChecksReportV1alphaPermission.cpp \
+    $${PWD}/OAIGoogleChecksReportV1alphaPolicyFragment.cpp \
+    $${PWD}/OAIGoogleChecksReportV1alphaReport.cpp \
+    $${PWD}/OAIGoogleChecksReportV1alphaSdk.cpp \
+    $${PWD}/OAIListOperationsResponse.cpp \
+    $${PWD}/OAIOperation.cpp \
+    $${PWD}/OAIStatus.cpp \
+    $${PWD}/OAIWaitOperationRequest.cpp \
+# APIs
+    $${PWD}/OAIAccountsApi.cpp \
+    $${PWD}/OAIMediaApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

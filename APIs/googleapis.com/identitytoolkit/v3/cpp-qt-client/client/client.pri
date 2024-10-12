@@ -1,0 +1,109 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAICreateAuthUriResponse.h \
+    $${PWD}/OAIDeleteAccountResponse.h \
+    $${PWD}/OAIDownloadAccountResponse.h \
+    $${PWD}/OAIEmailLinkSigninResponse.h \
+    $${PWD}/OAIEmailTemplate.h \
+    $${PWD}/OAIGetAccountInfoResponse.h \
+    $${PWD}/OAIGetOobConfirmationCodeResponse.h \
+    $${PWD}/OAIGetRecaptchaParamResponse.h \
+    $${PWD}/OAIIdentitytoolkitRelyingpartyCreateAuthUriRequest.h \
+    $${PWD}/OAIIdentitytoolkitRelyingpartyDeleteAccountRequest.h \
+    $${PWD}/OAIIdentitytoolkitRelyingpartyDownloadAccountRequest.h \
+    $${PWD}/OAIIdentitytoolkitRelyingpartyEmailLinkSigninRequest.h \
+    $${PWD}/OAIIdentitytoolkitRelyingpartyGetAccountInfoRequest.h \
+    $${PWD}/OAIIdentitytoolkitRelyingpartyGetProjectConfigResponse.h \
+    $${PWD}/OAIIdentitytoolkitRelyingpartyResetPasswordRequest.h \
+    $${PWD}/OAIIdentitytoolkitRelyingpartySendVerificationCodeRequest.h \
+    $${PWD}/OAIIdentitytoolkitRelyingpartySendVerificationCodeResponse.h \
+    $${PWD}/OAIIdentitytoolkitRelyingpartySetAccountInfoRequest.h \
+    $${PWD}/OAIIdentitytoolkitRelyingpartySetProjectConfigRequest.h \
+    $${PWD}/OAIIdentitytoolkitRelyingpartySetProjectConfigResponse.h \
+    $${PWD}/OAIIdentitytoolkitRelyingpartySignOutUserRequest.h \
+    $${PWD}/OAIIdentitytoolkitRelyingpartySignOutUserResponse.h \
+    $${PWD}/OAIIdentitytoolkitRelyingpartySignupNewUserRequest.h \
+    $${PWD}/OAIIdentitytoolkitRelyingpartyUploadAccountRequest.h \
+    $${PWD}/OAIIdentitytoolkitRelyingpartyVerifyAssertionRequest.h \
+    $${PWD}/OAIIdentitytoolkitRelyingpartyVerifyCustomTokenRequest.h \
+    $${PWD}/OAIIdentitytoolkitRelyingpartyVerifyPasswordRequest.h \
+    $${PWD}/OAIIdentitytoolkitRelyingpartyVerifyPhoneNumberRequest.h \
+    $${PWD}/OAIIdentitytoolkitRelyingpartyVerifyPhoneNumberResponse.h \
+    $${PWD}/OAIIdpConfig.h \
+    $${PWD}/OAIRelyingparty.h \
+    $${PWD}/OAIResetPasswordResponse.h \
+    $${PWD}/OAISetAccountInfoResponse.h \
+    $${PWD}/OAISetAccountInfoResponse_providerUserInfo_inner.h \
+    $${PWD}/OAISignupNewUserResponse.h \
+    $${PWD}/OAIUploadAccountResponse.h \
+    $${PWD}/OAIUploadAccountResponse_error_inner.h \
+    $${PWD}/OAIUserInfo.h \
+    $${PWD}/OAIUserInfo_providerUserInfo_inner.h \
+    $${PWD}/OAIVerifyAssertionResponse.h \
+    $${PWD}/OAIVerifyCustomTokenResponse.h \
+    $${PWD}/OAIVerifyPasswordResponse.h \
+# APIs
+    $${PWD}/OAIRelyingpartyApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAICreateAuthUriResponse.cpp \
+    $${PWD}/OAIDeleteAccountResponse.cpp \
+    $${PWD}/OAIDownloadAccountResponse.cpp \
+    $${PWD}/OAIEmailLinkSigninResponse.cpp \
+    $${PWD}/OAIEmailTemplate.cpp \
+    $${PWD}/OAIGetAccountInfoResponse.cpp \
+    $${PWD}/OAIGetOobConfirmationCodeResponse.cpp \
+    $${PWD}/OAIGetRecaptchaParamResponse.cpp \
+    $${PWD}/OAIIdentitytoolkitRelyingpartyCreateAuthUriRequest.cpp \
+    $${PWD}/OAIIdentitytoolkitRelyingpartyDeleteAccountRequest.cpp \
+    $${PWD}/OAIIdentitytoolkitRelyingpartyDownloadAccountRequest.cpp \
+    $${PWD}/OAIIdentitytoolkitRelyingpartyEmailLinkSigninRequest.cpp \
+    $${PWD}/OAIIdentitytoolkitRelyingpartyGetAccountInfoRequest.cpp \
+    $${PWD}/OAIIdentitytoolkitRelyingpartyGetProjectConfigResponse.cpp \
+    $${PWD}/OAIIdentitytoolkitRelyingpartyResetPasswordRequest.cpp \
+    $${PWD}/OAIIdentitytoolkitRelyingpartySendVerificationCodeRequest.cpp \
+    $${PWD}/OAIIdentitytoolkitRelyingpartySendVerificationCodeResponse.cpp \
+    $${PWD}/OAIIdentitytoolkitRelyingpartySetAccountInfoRequest.cpp \
+    $${PWD}/OAIIdentitytoolkitRelyingpartySetProjectConfigRequest.cpp \
+    $${PWD}/OAIIdentitytoolkitRelyingpartySetProjectConfigResponse.cpp \
+    $${PWD}/OAIIdentitytoolkitRelyingpartySignOutUserRequest.cpp \
+    $${PWD}/OAIIdentitytoolkitRelyingpartySignOutUserResponse.cpp \
+    $${PWD}/OAIIdentitytoolkitRelyingpartySignupNewUserRequest.cpp \
+    $${PWD}/OAIIdentitytoolkitRelyingpartyUploadAccountRequest.cpp \
+    $${PWD}/OAIIdentitytoolkitRelyingpartyVerifyAssertionRequest.cpp \
+    $${PWD}/OAIIdentitytoolkitRelyingpartyVerifyCustomTokenRequest.cpp \
+    $${PWD}/OAIIdentitytoolkitRelyingpartyVerifyPasswordRequest.cpp \
+    $${PWD}/OAIIdentitytoolkitRelyingpartyVerifyPhoneNumberRequest.cpp \
+    $${PWD}/OAIIdentitytoolkitRelyingpartyVerifyPhoneNumberResponse.cpp \
+    $${PWD}/OAIIdpConfig.cpp \
+    $${PWD}/OAIRelyingparty.cpp \
+    $${PWD}/OAIResetPasswordResponse.cpp \
+    $${PWD}/OAISetAccountInfoResponse.cpp \
+    $${PWD}/OAISetAccountInfoResponse_providerUserInfo_inner.cpp \
+    $${PWD}/OAISignupNewUserResponse.cpp \
+    $${PWD}/OAIUploadAccountResponse.cpp \
+    $${PWD}/OAIUploadAccountResponse_error_inner.cpp \
+    $${PWD}/OAIUserInfo.cpp \
+    $${PWD}/OAIUserInfo_providerUserInfo_inner.cpp \
+    $${PWD}/OAIVerifyAssertionResponse.cpp \
+    $${PWD}/OAIVerifyCustomTokenResponse.cpp \
+    $${PWD}/OAIVerifyPasswordResponse.cpp \
+# APIs
+    $${PWD}/OAIRelyingpartyApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

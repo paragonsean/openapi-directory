@@ -1,0 +1,26 @@
+# CloudRuntimeConfigurationApi.Variable
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**name** | **String** | The name of the variable resource, in the format: projects/[PROJECT_ID]/configs/[CONFIG_NAME]/variables/[VARIABLE_NAME] The &#x60;[PROJECT_ID]&#x60; must be a valid project ID, &#x60;[CONFIG_NAME]&#x60; must be a valid RuntimeConfig resource and &#x60;[VARIABLE_NAME]&#x60; follows Unix file system file path naming. The &#x60;[VARIABLE_NAME]&#x60; can contain ASCII letters, numbers, slashes and dashes. Slashes are used as path element separators and are not part of the &#x60;[VARIABLE_NAME]&#x60; itself, so &#x60;[VARIABLE_NAME]&#x60; must contain at least one non-slash character. Multiple slashes are coalesced into single slash character. Each path segment should match [0-9A-Za-z](?:[_.A-Za-z0-9-]{0,62}[_.A-Za-z0-9])? regular expression. The length of a &#x60;[VARIABLE_NAME]&#x60; must be less than 256 characters. Once you create a variable, you cannot change the variable name. | [optional] 
+**state** | **String** | Output only. The current state of the variable. The variable state indicates the outcome of the &#x60;variables().watch&#x60; call and is visible through the &#x60;get&#x60; and &#x60;list&#x60; calls. | [optional] 
+**text** | **String** | The string value of the variable. The length of the value must be less than 4096 bytes. Empty values are also accepted. For example, &#x60;text: \&quot;my text value\&quot;&#x60;. The string must be valid UTF-8. | [optional] 
+**updateTime** | **String** | Output only. The time of the last variable update. Timestamp will be UTC timestamp. | [optional] 
+**value** | **Blob** | The binary value of the variable. The length of the value must be less than 4096 bytes. Empty values are also accepted. The value must be base64 encoded, and must comply with IETF RFC4648 (https://www.ietf.org/rfc/rfc4648.txt). Only one of &#x60;value&#x60; or &#x60;text&#x60; can be set. | [optional] 
+
+
+
+## Enum: StateEnum
+
+
+* `VARIABLE_STATE_UNSPECIFIED` (value: `"VARIABLE_STATE_UNSPECIFIED"`)
+
+* `UPDATED` (value: `"UPDATED"`)
+
+* `DELETED` (value: `"DELETED"`)
+
+
+
+

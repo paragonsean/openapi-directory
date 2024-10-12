@@ -1,0 +1,111 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIGoogleGeoTypeViewport.h \
+    $${PWD}/OAIGoogleMapsPlacesV1AuthorAttribution.h \
+    $${PWD}/OAIGoogleMapsPlacesV1AutocompletePlacesRequest.h \
+    $${PWD}/OAIGoogleMapsPlacesV1AutocompletePlacesRequestLocationBias.h \
+    $${PWD}/OAIGoogleMapsPlacesV1AutocompletePlacesRequestLocationRestriction.h \
+    $${PWD}/OAIGoogleMapsPlacesV1AutocompletePlacesResponse.h \
+    $${PWD}/OAIGoogleMapsPlacesV1AutocompletePlacesResponseSuggestion.h \
+    $${PWD}/OAIGoogleMapsPlacesV1AutocompletePlacesResponseSuggestionFormattableText.h \
+    $${PWD}/OAIGoogleMapsPlacesV1AutocompletePlacesResponseSuggestionPlacePrediction.h \
+    $${PWD}/OAIGoogleMapsPlacesV1AutocompletePlacesResponseSuggestionQueryPrediction.h \
+    $${PWD}/OAIGoogleMapsPlacesV1AutocompletePlacesResponseSuggestionStringRange.h \
+    $${PWD}/OAIGoogleMapsPlacesV1AutocompletePlacesResponseSuggestionStructuredFormat.h \
+    $${PWD}/OAIGoogleMapsPlacesV1Circle.h \
+    $${PWD}/OAIGoogleMapsPlacesV1EVChargeOptions.h \
+    $${PWD}/OAIGoogleMapsPlacesV1EVChargeOptionsConnectorAggregation.h \
+    $${PWD}/OAIGoogleMapsPlacesV1FuelOptions.h \
+    $${PWD}/OAIGoogleMapsPlacesV1FuelOptionsFuelPrice.h \
+    $${PWD}/OAIGoogleMapsPlacesV1Photo.h \
+    $${PWD}/OAIGoogleMapsPlacesV1PhotoMedia.h \
+    $${PWD}/OAIGoogleMapsPlacesV1Place.h \
+    $${PWD}/OAIGoogleMapsPlacesV1PlaceAccessibilityOptions.h \
+    $${PWD}/OAIGoogleMapsPlacesV1PlaceAddressComponent.h \
+    $${PWD}/OAIGoogleMapsPlacesV1PlaceAttribution.h \
+    $${PWD}/OAIGoogleMapsPlacesV1PlaceOpeningHours.h \
+    $${PWD}/OAIGoogleMapsPlacesV1PlaceOpeningHoursPeriod.h \
+    $${PWD}/OAIGoogleMapsPlacesV1PlaceOpeningHoursPeriodPoint.h \
+    $${PWD}/OAIGoogleMapsPlacesV1PlaceOpeningHoursSpecialDay.h \
+    $${PWD}/OAIGoogleMapsPlacesV1PlaceParkingOptions.h \
+    $${PWD}/OAIGoogleMapsPlacesV1PlacePaymentOptions.h \
+    $${PWD}/OAIGoogleMapsPlacesV1PlacePlusCode.h \
+    $${PWD}/OAIGoogleMapsPlacesV1PlaceSubDestination.h \
+    $${PWD}/OAIGoogleMapsPlacesV1Review.h \
+    $${PWD}/OAIGoogleMapsPlacesV1SearchNearbyRequest.h \
+    $${PWD}/OAIGoogleMapsPlacesV1SearchNearbyRequestLocationRestriction.h \
+    $${PWD}/OAIGoogleMapsPlacesV1SearchNearbyResponse.h \
+    $${PWD}/OAIGoogleMapsPlacesV1SearchTextRequest.h \
+    $${PWD}/OAIGoogleMapsPlacesV1SearchTextRequestLocationBias.h \
+    $${PWD}/OAIGoogleMapsPlacesV1SearchTextRequestLocationRestriction.h \
+    $${PWD}/OAIGoogleMapsPlacesV1SearchTextResponse.h \
+    $${PWD}/OAIGoogleTypeDate.h \
+    $${PWD}/OAIGoogleTypeLatLng.h \
+    $${PWD}/OAIGoogleTypeLocalizedText.h \
+    $${PWD}/OAIGoogleTypeMoney.h \
+# APIs
+    $${PWD}/OAIPlacesApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIGoogleGeoTypeViewport.cpp \
+    $${PWD}/OAIGoogleMapsPlacesV1AuthorAttribution.cpp \
+    $${PWD}/OAIGoogleMapsPlacesV1AutocompletePlacesRequest.cpp \
+    $${PWD}/OAIGoogleMapsPlacesV1AutocompletePlacesRequestLocationBias.cpp \
+    $${PWD}/OAIGoogleMapsPlacesV1AutocompletePlacesRequestLocationRestriction.cpp \
+    $${PWD}/OAIGoogleMapsPlacesV1AutocompletePlacesResponse.cpp \
+    $${PWD}/OAIGoogleMapsPlacesV1AutocompletePlacesResponseSuggestion.cpp \
+    $${PWD}/OAIGoogleMapsPlacesV1AutocompletePlacesResponseSuggestionFormattableText.cpp \
+    $${PWD}/OAIGoogleMapsPlacesV1AutocompletePlacesResponseSuggestionPlacePrediction.cpp \
+    $${PWD}/OAIGoogleMapsPlacesV1AutocompletePlacesResponseSuggestionQueryPrediction.cpp \
+    $${PWD}/OAIGoogleMapsPlacesV1AutocompletePlacesResponseSuggestionStringRange.cpp \
+    $${PWD}/OAIGoogleMapsPlacesV1AutocompletePlacesResponseSuggestionStructuredFormat.cpp \
+    $${PWD}/OAIGoogleMapsPlacesV1Circle.cpp \
+    $${PWD}/OAIGoogleMapsPlacesV1EVChargeOptions.cpp \
+    $${PWD}/OAIGoogleMapsPlacesV1EVChargeOptionsConnectorAggregation.cpp \
+    $${PWD}/OAIGoogleMapsPlacesV1FuelOptions.cpp \
+    $${PWD}/OAIGoogleMapsPlacesV1FuelOptionsFuelPrice.cpp \
+    $${PWD}/OAIGoogleMapsPlacesV1Photo.cpp \
+    $${PWD}/OAIGoogleMapsPlacesV1PhotoMedia.cpp \
+    $${PWD}/OAIGoogleMapsPlacesV1Place.cpp \
+    $${PWD}/OAIGoogleMapsPlacesV1PlaceAccessibilityOptions.cpp \
+    $${PWD}/OAIGoogleMapsPlacesV1PlaceAddressComponent.cpp \
+    $${PWD}/OAIGoogleMapsPlacesV1PlaceAttribution.cpp \
+    $${PWD}/OAIGoogleMapsPlacesV1PlaceOpeningHours.cpp \
+    $${PWD}/OAIGoogleMapsPlacesV1PlaceOpeningHoursPeriod.cpp \
+    $${PWD}/OAIGoogleMapsPlacesV1PlaceOpeningHoursPeriodPoint.cpp \
+    $${PWD}/OAIGoogleMapsPlacesV1PlaceOpeningHoursSpecialDay.cpp \
+    $${PWD}/OAIGoogleMapsPlacesV1PlaceParkingOptions.cpp \
+    $${PWD}/OAIGoogleMapsPlacesV1PlacePaymentOptions.cpp \
+    $${PWD}/OAIGoogleMapsPlacesV1PlacePlusCode.cpp \
+    $${PWD}/OAIGoogleMapsPlacesV1PlaceSubDestination.cpp \
+    $${PWD}/OAIGoogleMapsPlacesV1Review.cpp \
+    $${PWD}/OAIGoogleMapsPlacesV1SearchNearbyRequest.cpp \
+    $${PWD}/OAIGoogleMapsPlacesV1SearchNearbyRequestLocationRestriction.cpp \
+    $${PWD}/OAIGoogleMapsPlacesV1SearchNearbyResponse.cpp \
+    $${PWD}/OAIGoogleMapsPlacesV1SearchTextRequest.cpp \
+    $${PWD}/OAIGoogleMapsPlacesV1SearchTextRequestLocationBias.cpp \
+    $${PWD}/OAIGoogleMapsPlacesV1SearchTextRequestLocationRestriction.cpp \
+    $${PWD}/OAIGoogleMapsPlacesV1SearchTextResponse.cpp \
+    $${PWD}/OAIGoogleTypeDate.cpp \
+    $${PWD}/OAIGoogleTypeLatLng.cpp \
+    $${PWD}/OAIGoogleTypeLocalizedText.cpp \
+    $${PWD}/OAIGoogleTypeMoney.cpp \
+# APIs
+    $${PWD}/OAIPlacesApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp
