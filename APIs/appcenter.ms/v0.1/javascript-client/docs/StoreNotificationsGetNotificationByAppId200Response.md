@@ -1,0 +1,11 @@
+# AppCenterClient.StoreNotificationsGetNotificationByAppId200Response
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**service** | **String** |  | [optional] 
+**status** | **String** |  | [optional] 
+**validUntil** | **Number** |  | [optional] 
+
+

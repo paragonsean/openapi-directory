@@ -1,0 +1,25 @@
+
+
+# CreateNetworkGroupPolicyRequestBonjourForwarding
+
+The Bonjour settings for your group policy. Only valid if your network has a wireless configuration.
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**rules** | [**List&lt;CreateNetworkGroupPolicyRequestBonjourForwardingRulesInner&gt;**](CreateNetworkGroupPolicyRequestBonjourForwardingRulesInner.md) | A list of the Bonjour forwarding rules for your group policy. If &#39;settings&#39; is set to &#39;custom&#39;, at least one rule must be specified. |  [optional] |
+|**settings** | [**SettingsEnum**](#SettingsEnum) | How Bonjour rules are applied. Can be &#39;network default&#39;, &#39;ignore&#39; or &#39;custom&#39;. |  [optional] |
+
+
+
+## Enum: SettingsEnum
+
+| Name | Value |
+|---- | -----|
+| CUSTOM | &quot;custom&quot; |
+| IGNORE | &quot;ignore&quot; |
+| NETWORK_DEFAULT | &quot;network default&quot; |
+
+
+

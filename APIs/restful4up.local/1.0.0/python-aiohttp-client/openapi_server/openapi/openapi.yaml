@@ -1,0 +1,423 @@
+openapi: 3.0.0
+info:
+  description: RESTful API 4 Unipacker
+  title: RESTful4Up
+  version: 1.0.0
+  x-apisguru-categories:
+  - developer_tools
+  x-origin:
+  - format: openapi
+    url: https://raw.githubusercontent.com/rpgeeganage/restful4up/master/app/spec/api.yml
+    version: "3.0"
+  x-providerName: restful4up.local
+servers:
+- url: http://restful4up.local
+- url: /v1
+paths:
+  /apply-yara-rules:
+    post:
+      description: apply given YARA rules to the given executable. (upto 10 rules)
+      operationId: apply_yara_rules
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/applyYaraRules_request'
+        required: true
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/applyYaraRules_200_response'
+          description: Yara rules
+        "400":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/error'
+          description: request error
+        "500":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/error'
+          description: server error
+      x-openapi-router-controller: openapi_server.controllers.default_controller
+      x-codegen-request-body-name: body
+  /clean:
+    head:
+      description: clean up the uploaded files
+      operationId: clean
+      responses:
+        "204":
+          description: Ok
+        "500":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/error'
+          description: server error
+      x-openapi-router-controller: openapi_server.controllers.default_controller
+  /emulation-output:
+    post:
+      description: try to get the emulation output after unpacking the file
+      operationId: emulation_output
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/emulationOutput_request'
+        required: true
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/emulationOutput_200_response'
+          description: emulation output after unpacking the file
+        "400":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/error'
+          description: request error
+        "500":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/error'
+          description: server error
+      x-openapi-router-controller: openapi_server.controllers.default_controller
+      x-codegen-request-body-name: body
+  /generate-partial-yara-rules:
+    post:
+      description: generate partial YARA rules for give executable. (Rule without
+        the condition section)
+      operationId: generate_partial_yara_rule
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/generatePartialYaraRule_request'
+        required: true
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/generatePartialYaraRule_200_response'
+          description: Yara rules
+        "400":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/error'
+          description: request error
+        "500":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/error'
+          description: server error
+      x-openapi-router-controller: openapi_server.controllers.default_controller
+      x-codegen-request-body-name: body
+  /unpack:
+    post:
+      description: try to unpack the given file
+      operationId: unpack
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/emulationOutput_request'
+        required: true
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                format: binary
+                type: string
+          description: Ok
+        "400":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/error'
+          description: request error
+        "500":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/error'
+          description: server error
+      x-openapi-router-controller: openapi_server.controllers.default_controller
+      x-codegen-request-body-name: body
+components:
+  schemas:
+    apply_yara_rule:
+      example:
+        error_message: error_message
+        yara_command: yara_command
+        matched_yara_rules:
+        - - string_information:
+            - string_information
+            - string_information
+            rule: rule
+          - string_information:
+            - string_information
+            - string_information
+            rule: rule
+        - - string_information:
+            - string_information
+            - string_information
+            rule: rule
+          - string_information:
+            - string_information
+            - string_information
+            rule: rule
+        is_success: true
+      properties:
+        error_message:
+          description: "error message, if YARA failed"
+          title: error_message
+          type: string
+        is_success:
+          description: is operation success
+          title: is_success
+          type: boolean
+        matched_yara_rules:
+          description: matched YARA rules
+          items:
+            items:
+              $ref: '#/components/schemas/apply_yara_rule_matched_yara_rules_inner_inner'
+            type: array
+          title: matched_yara_rules
+          type: array
+        yara_command:
+          description: Yara command executed
+          title: yara_command
+          type: string
+      required:
+      - is_success
+      - yara_command
+      title: apply_yara_rule
+    error:
+      example:
+        message: message
+        status: 0
+      properties:
+        message:
+          title: message
+          type: string
+        status:
+          title: status
+          type: integer
+      required:
+      - message
+      - status
+      title: error
+      type: object
+    yara:
+      example:
+        strings:
+        - - strings
+          - strings
+        - - strings
+          - strings
+        meta:
+          date: date
+          sha512sum: sha512sum
+          md5sum: md5sum
+          sha256sum: sha256sum
+        name: name
+      properties:
+        meta:
+          $ref: '#/components/schemas/yara_meta'
+        name:
+          description: Yara rule name
+          title: name
+          type: string
+        strings:
+          description: Yara rule string section
+          items:
+            items:
+              type: string
+            maxItems: 2
+            minItems: 2
+            type: array
+          title: strings
+          type: array
+      required:
+      - meta
+      - name
+      - strings
+      title: yara
+    applyYaraRules_request:
+      properties:
+        file:
+          description: file
+          format: binary
+          type: string
+        is_unpacking_required:
+          enum:
+          - "true"
+          - "false"
+          type: string
+        rules:
+          items:
+            description: Rule as BASE-64 encoded string
+            type: string
+          maxItems: 10
+          minItems: 1
+          type: array
+      required:
+      - file
+      - rules
+    applyYaraRules_200_response:
+      example:
+        result:
+          error_message: error_message
+          yara_command: yara_command
+          matched_yara_rules:
+          - - string_information:
+              - string_information
+              - string_information
+              rule: rule
+            - string_information:
+              - string_information
+              - string_information
+              rule: rule
+          - - string_information:
+              - string_information
+              - string_information
+              rule: rule
+            - string_information:
+              - string_information
+              - string_information
+              rule: rule
+          is_success: true
+      properties:
+        result:
+          $ref: '#/components/schemas/apply_yara_rule'
+      title: applyYaraRules_200_response
+    emulationOutput_request:
+      properties:
+        file:
+          description: file
+          format: binary
+          type: string
+      required:
+      - file
+    emulationOutput_200_response:
+      example:
+        output:
+        - output
+        - output
+      properties:
+        output:
+          items:
+            type: string
+          title: output
+          type: array
+      required:
+      - output
+      title: emulationOutput_200_response
+    generatePartialYaraRule_request:
+      properties:
+        file:
+          description: file
+          format: binary
+          type: string
+        is_unpacking_required:
+          enum:
+          - "true"
+          - "false"
+          type: string
+        minimum_string_length:
+          type: string
+        strings_to_ignore:
+          items:
+            type: string
+          maxItems: 1000
+          minItems: 0
+          type: array
+      required:
+      - file
+    generatePartialYaraRule_200_response:
+      example:
+        rule:
+          strings:
+          - - strings
+            - strings
+          - - strings
+            - strings
+          meta:
+            date: date
+            sha512sum: sha512sum
+            md5sum: md5sum
+            sha256sum: sha256sum
+          name: name
+      properties:
+        rule:
+          $ref: '#/components/schemas/yara'
+      title: generatePartialYaraRule_200_response
+    apply_yara_rule_matched_yara_rules_inner_inner:
+      description: Yara rule meta data section
+      example:
+        string_information:
+        - string_information
+        - string_information
+        rule: rule
+      properties:
+        rule:
+          description: matched rule
+          title: rule
+          type: string
+        string_information:
+          description: string which matched during the scanning
+          items:
+            type: string
+          title: string_information
+          type: array
+      required:
+      - rule
+      - string_information
+      title: apply_yara_rule_matched_yara_rules_inner_inner
+      type: object
+    yara_meta:
+      description: Yara rule meta data section
+      example:
+        date: date
+        sha512sum: sha512sum
+        md5sum: md5sum
+        sha256sum: sha256sum
+      properties:
+        date:
+          description: Date of the YARA rule created
+          title: date
+          type: string
+        md5sum:
+          description: MD5 check sum
+          title: md5sum
+          type: string
+        sha256sum:
+          description: SHA 256 check sum
+          title: sha256sum
+          type: string
+        sha512sum:
+          description: SHA 512 check sum
+          title: sha512sum
+          type: string
+      required:
+      - date
+      - md5sum
+      - sha256sum
+      - sha512sum
+      title: yara_meta
+      type: object

@@ -1,0 +1,177 @@
+from typing import List, Dict
+from aiohttp import web
+
+from openapi_server.models.end_user_ping import EndUserPing
+from openapi_server.models.user import User
+from openapi_server.models.users_id_put_request import UsersIdPutRequest
+from openapi_server.models.users_invite_end_user_post_request import UsersInviteEndUserPostRequest
+from openapi_server.models.users_invite_vendor_user_post_request import UsersInviteVendorUserPostRequest
+from openapi_server.models.vendor_users_post_request import VendorUsersPostRequest
+from openapi_server import util
+
+
+async def users_get(request: web.Request, role, account=None, start=None, limit=None, order_by=None, order_dir=None) -> web.Response:
+    """fetch User records
+
+    get a list of User records
+
+    :param role: role
+    :type role: str
+    :param account: Filter by Account ID, if supplied. Only useful if role param is endUser
+    :type account: int
+    :param start: Offset to start at
+    :type start: int
+    :param limit: Limit the number of records returned. Max value can be 300. If limit is set to more than 300 the api will return an error
+    :type limit: int
+    :param order_by: The field to use for sort
+    :type order_by: str
+    :param order_dir: The sort direction
+    :type order_dir: str
+
+    """
+    return web.Response(status=200)
+
+
+async def users_id_delete(request: web.Request, id) -> web.Response:
+    """Delete a User
+
+    This removes most traces of a User&#39;s existence from the system. For an EndUser you might want to consider just letting them churn after a period of inactivity.
+
+    :param id: 
+    :type id: 
+
+    """
+    return web.Response(status=200)
+
+
+async def users_id_get(request: web.Request, id) -> web.Response:
+    """Get a User record
+
+    
+
+    :param id: 
+    :type id: 
+
+    """
+    return web.Response(status=200)
+
+
+async def users_id_put(request: web.Request, id, user=None) -> web.Response:
+    """Update a User
+
+    
+
+    :param id: Feedback&#39;s User ID
+    :type id: 
+    :param user: 
+    :type user: dict | bytes
+
+    """
+    user = UsersIdPutRequest.from_dict(user)
+    return web.Response(status=200)
+
+
+async def users_id_tags_delete(request: web.Request, id) -> web.Response:
+    """Delete custom User tags
+
+    Removes all custom tags associated with the User
+
+    :param id: Feedback&#39;s User ID
+    :type id: 
+
+    """
+    return web.Response(status=200)
+
+
+async def users_id_tags_get(request: web.Request, id) -> web.Response:
+    """Get custom User tags
+
+    
+
+    :param id: Feedback&#39;s User ID
+    :type id: 
+
+    """
+    return web.Response(status=200)
+
+
+async def users_id_tags_post(request: web.Request, id, tags) -> web.Response:
+    """Overwrite current custom User tags with the given tags
+
+    
+
+    :param id: Feedback&#39;s User ID
+    :type id: 
+    :param tags: An array of maps specifying tags under each tag group, for example:  [  {&#39;impacts&#39; &#x3D;&gt; [&#39;sales&#39;]},  {&#39;resources&#39; &#x3D;&gt; [&#39;dev&#39;, &#39;test&#39;, &#39;support&#39;]}  ]
+    :type tags: 
+
+    """
+    return web.Response(status=200)
+
+
+async def users_invite_end_user_post(request: web.Request, data) -> web.Response:
+    """Invite an EndUser (customer)
+
+    
+
+    :param data: 
+    :type data: dict | bytes
+
+    """
+    data = UsersInviteEndUserPostRequest.from_dict(data)
+    return web.Response(status=200)
+
+
+async def users_invite_vendor_user_post(request: web.Request, data) -> web.Response:
+    """Invite a VendorUser (Team member)
+
+    
+
+    :param data: 
+    :type data: dict | bytes
+
+    """
+    data = UsersInviteVendorUserPostRequest.from_dict(data)
+    return web.Response(status=200)
+
+
+async def users_post(request: web.Request, data) -> web.Response:
+    """Ping to create or update an EndUser and Account in one call
+
+    Replicates much of the functionality of the widget ping, allowing callers to create or update User records for End Users. If you call this with a new User and/or Account, the record will be created. If you call for an existing User/Account, the record will be updated. You can also call this at EndUser login time, or more frequently, to notify Feedback that the EndUser has been seen. This keeps Feedback&#39;s &#39;last seen&#39; data fresh and updates your reporting. This endpoint is used by our Zapier integration. The only value allowed in user.roles is &#39;endUser&#39;. The id you supply here for the User and Account should be your own unique id, which Feedback calls external_id. This probably isn&#39;t the same as Feedback&#39;s id seen elsewhere in the API.
+
+    :param data: the account and user
+    :type data: dict | bytes
+
+    """
+    data = EndUserPing.from_dict(data)
+    return web.Response(status=200)
+
+
+async def users_search_get(request: web.Request, external_id=None, email=None, role=None) -> web.Response:
+    """Find a User with a query
+
+    
+
+    :param external_id: Find using your external ID, rather than the ID generated by Feedback
+    :type external_id: str
+    :param email: Find user by their email address. Role param must be specified when using this option
+    :type email: str
+    :param role: Users role (&#39;vendorUser&#39; or &#39;endUser&#39;). Only useful when finding a user by their email address
+    :type role: str
+
+    """
+    return web.Response(status=200)
+
+
+async def vendor_users_post(request: web.Request, data) -> web.Response:
+    """Create or update a team member by their external_id
+
+    the POST /vendor_users is very similar to the POST /users/invite_vendor_user but /vendor_users is intended for consumers to refresh team member data periodically, rather than just a one-off user creation.
+
+    :param data: 
+    :type data: dict | bytes
+
+    """
+    data = VendorUsersPostRequest.from_dict(data)
+    return web.Response(status=200)

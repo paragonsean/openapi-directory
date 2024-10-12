@@ -1,0 +1,340 @@
+/**
+ * PandaScore REST API for All Videogames
+ *  # Introduction  Whether you're looking to build an official Pandascore integration for your service, or you just want to build something awesome, [we can help you get started](/home).  The API works over the HTTPS protocol, and is accessed from the `api.pandascore.co` domain.  - The current endpoint is [https://api.pandascore.co](https://api.pandascore.co). - All data is sent and received as JSON by default. - Blank fields are included with `null` values instead of being omitted. - All timestamps are returned in ISO-8601 format  ### About this documentation  Clicking on a query parameter like `filter` or `search` will show you the available options: ![filter](/doc/images/query_param_details.jpg)  You can also click on a response to see the detailed response schema: ![response](/doc/images/response_schema.jpg)  ## Events hierarchy  The PandaScore API allows you to access data about eSports events by using a certain structure detailed below.  **Leagues**  Leagues are the top level events. They don't have a date and represent a regular competition. A League is composed of one or several series.   Some League of Legends leagues are: _EU LCS, NA LCS, LCK, etc._   Some Dota 2 leagues are: _ESL One, GESC, The International, PGL, etc._  **Series**  A Serie represents an occurrence of a league event.   The EU LCS league has two series per year: _spring 2017, summer 2017, spring 2016, summer 2016 etc._   Some Dota2 Series examples would be: _Changsha Major, Open Bucharest, Frankfurt, i-League Invitational etc._  **Tournaments**  Tournaments groups all the matches of a serie under \"stages\" and \"groups\".   The tournaments of the EU LCS of summer 2017 are: _Group A, Group B, Playoffs, etc._   Some Dota 2 tournaments are: _Group A, Group B, Playoffs, etc._  **Matches**  Finally we have matches which have two players or teams (depending on the played videogame) and several games (the rounds of the match).   Matches of the group A in the EU LCS of summer 2017 are: _G2 vs FNC, MSF vs NIP, etc._   Matches of the group A in the ESL One, Genting tournamnet are: _Lower Round 1, Quarterfinal, Upper Final, etc._    **Please note that some matches may be listed as \"TBD vs TBD\" if the matchup is not announced yet, for example the date of the Final match is known but the quarterfinal is still being played.**   ![Structure](/doc/images/structure.png)  ## Formats  &lt;!-- The API currently supports the JSON format by default, as well as the XML format. Add the desired extension to your request URL in order to get that format. --&gt; The API currently supports the JSON format by default.  Other formats may be added depending on user needs.  ## Pagination  The Pandascore API paginates all resources on the index method.  Requests that return multiple items will be paginated to 50 items by default. You can specify further pages with the `page[number]` parameter. You can also set a custom page size (up to 100) with the `page[size]` parameter.  The `Link` HTTP response header contains pagination data with `first`, `previous`, `next` and `last` raw page links when available, under the format  ``` Link: &lt;https://api.pandascore.co/{Resource}?page=X+1&gt;; rel=\"next\", &lt;https://api.pandascore.co/{Resource}?page=X-1&gt;; rel=\"prev\", &lt;https://api.pandascore.co/{Resource}?page=1&gt;; rel=\"first\", &lt;https://api.pandascore.co/{Resource}?page=X+n&gt;; rel=\"last\" ```  There is also:  * A `X-Page` header field, which contains the current page. * A `X-Per-Page` header field, which contains the current pagination length. * A `X-Total` header field, which contains the total count of items across all pages.  ## Filtering  The `filter` query parameter can be used to filter a collection by one or several fields for one or several values. The `filter` parameter takes the field to filter as a key, and the values to filter as the value. Multiples values must be comma-separated (`,`).  For example, the following is a request for all the champions with a name matching Twitch or Brand exactly, but only with 21 armor:  ``` GET /lol/champions?filter[name]=Brand,Twitch&amp;filter[armor]=21&amp;token=YOUR_ACCESS_TOKEN ```  ## Range  The `range` parameter is a hash that allows filtering fields by an interval. Only values between the given two comma-separated bounds will be returned. The bounds are inclusive.  For example, the following is a request for all the champions with `hp` within 500 and 1000:  ``` GET /lol/champions?range[hp]=500,1000&amp;token=YOUR_ACCESS_TOKEN ```  ## Search  The `search` parameter is a bit like the `filter` parameter, but it will return all results where the values **contain** the given parameter.  Note: this only works on strings. Searching with integer values is not supported and `filter` or `range` parameters may be better suited for your needs here.  For example, to get all the champions with a name containing `\"twi\"`:  ``` $ curl -sg -H 'Authorization: Bearer YOUR_ACCESS_TOKEN' 'https://api.pandascore.co/lol/champions?search[name]=twi' | jq -S '.[].name' \"Twitch\" \"Twisted Fate\" ```  ## Sorting  All index endpoints support multiple sort fields with comma-separation (`,`); the fields are applied in the order specified.  The sort order for each field is ascending unless it is prefixed with a minus (U+002D HYPHEN-MINUS, “-“), in which case it is descending.  For example, `GET /lol/champions?sort=attackdamage,-name&amp;token=YOUR_ACCESS_TOKEN` will return all the champions sorted by attack damage. Any champions with the same attack damage will then be sorted by their names in descending alphabetical order.  ## Rate limiting  Depending on your current plan, you will have a different rate limit. Your plan and your current request count [are available on your dashboard](https://pandascore.co/settings).  With the **free plan**, you have a limit of 1000 requests per hour, others plans have a limit of 4000 requests per hour. The number of remaining requests is available in the `X-Rate-Limit-Remaining` response header.  Your API key is included in all the examples on this page, so you can test any example right away. **Only you can see this value.**  # Authentication  The authentication on the Pandascore API works with access tokens.  All developers need to [create an account](https://pandascore.co/users/sign_in) before getting started, in order to get an access token. The access token should not be shared.  **Your token can be found and regenerated from [your dashboard](https://pandascore.co/settings).**  The access token can be passed in the URL with the `token` query string parameter, or in the `Authorization: Bearer` header field.  &lt;!-- ReDoc-Inject: &lt;security-definitions&gt; --&gt; 
+ *
+ * The version of the OpenAPI document: 2.23.1
+ *
+ * NOTE: This class is auto generated by OpenAPI Generator (https://openapi-generator.tech).
+ * https://openapi-generator.tech
+ * Do not edit the class manually.
+ */
+
+#include "OAIMarketSelection.h"
+
+#include <QDebug>
+#include <QJsonArray>
+#include <QJsonDocument>
+#include <QObject>
+
+#include "OAIHelpers.h"
+
+namespace OpenAPI {
+
+OAIMarketSelection::OAIMarketSelection(QString json) {
+    this->initializeModel();
+    this->fromJson(json);
+}
+
+OAIMarketSelection::OAIMarketSelection() {
+    this->initializeModel();
+}
+
+OAIMarketSelection::~OAIMarketSelection() {}
+
+void OAIMarketSelection::initializeModel() {
+
+    m_line_isSet = false;
+    m_line_isValid = false;
+
+    m_name_isSet = false;
+    m_name_isValid = false;
+
+    m_participant_id_isSet = false;
+    m_participant_id_isValid = false;
+
+    m_participant_type_isSet = false;
+    m_participant_type_isValid = false;
+
+    m_position_isSet = false;
+    m_position_isValid = false;
+
+    m_probability_isSet = false;
+    m_probability_isValid = false;
+
+    m_probability_with_margin_isSet = false;
+    m_probability_with_margin_isValid = false;
+
+    m_result_isSet = false;
+    m_result_isValid = false;
+
+    m_r_template_isSet = false;
+    m_r_template_isValid = false;
+}
+
+void OAIMarketSelection::fromJson(QString jsonString) {
+    QByteArray array(jsonString.toStdString().c_str());
+    QJsonDocument doc = QJsonDocument::fromJson(array);
+    QJsonObject jsonObject = doc.object();
+    this->fromJsonObject(jsonObject);
+}
+
+void OAIMarketSelection::fromJsonObject(QJsonObject json) {
+
+    m_line_isValid = ::OpenAPI::fromJsonValue(m_line, json[QString("line")]);
+    m_line_isSet = !json[QString("line")].isNull() && m_line_isValid;
+
+    m_name_isValid = ::OpenAPI::fromJsonValue(m_name, json[QString("name")]);
+    m_name_isSet = !json[QString("name")].isNull() && m_name_isValid;
+
+    m_participant_id_isValid = ::OpenAPI::fromJsonValue(m_participant_id, json[QString("participant_id")]);
+    m_participant_id_isSet = !json[QString("participant_id")].isNull() && m_participant_id_isValid;
+
+    m_participant_type_isValid = ::OpenAPI::fromJsonValue(m_participant_type, json[QString("participant_type")]);
+    m_participant_type_isSet = !json[QString("participant_type")].isNull() && m_participant_type_isValid;
+
+    m_position_isValid = ::OpenAPI::fromJsonValue(m_position, json[QString("position")]);
+    m_position_isSet = !json[QString("position")].isNull() && m_position_isValid;
+
+    m_probability_isValid = ::OpenAPI::fromJsonValue(m_probability, json[QString("probability")]);
+    m_probability_isSet = !json[QString("probability")].isNull() && m_probability_isValid;
+
+    m_probability_with_margin_isValid = ::OpenAPI::fromJsonValue(m_probability_with_margin, json[QString("probability_with_margin")]);
+    m_probability_with_margin_isSet = !json[QString("probability_with_margin")].isNull() && m_probability_with_margin_isValid;
+
+    m_result_isValid = ::OpenAPI::fromJsonValue(m_result, json[QString("result")]);
+    m_result_isSet = !json[QString("result")].isNull() && m_result_isValid;
+
+    m_r_template_isValid = ::OpenAPI::fromJsonValue(m_r_template, json[QString("template")]);
+    m_r_template_isSet = !json[QString("template")].isNull() && m_r_template_isValid;
+}
+
+QString OAIMarketSelection::asJson() const {
+    QJsonObject obj = this->asJsonObject();
+    QJsonDocument doc(obj);
+    QByteArray bytes = doc.toJson();
+    return QString(bytes);
+}
+
+QJsonObject OAIMarketSelection::asJsonObject() const {
+    QJsonObject obj;
+    if (m_line.isSet()) {
+        obj.insert(QString("line"), ::OpenAPI::toJsonValue(m_line));
+    }
+    if (m_name_isSet) {
+        obj.insert(QString("name"), ::OpenAPI::toJsonValue(m_name));
+    }
+    if (m_participant_id.isSet()) {
+        obj.insert(QString("participant_id"), ::OpenAPI::toJsonValue(m_participant_id));
+    }
+    if (m_participant_type.isSet()) {
+        obj.insert(QString("participant_type"), ::OpenAPI::toJsonValue(m_participant_type));
+    }
+    if (m_position_isSet) {
+        obj.insert(QString("position"), ::OpenAPI::toJsonValue(m_position));
+    }
+    if (m_probability_isSet) {
+        obj.insert(QString("probability"), ::OpenAPI::toJsonValue(m_probability));
+    }
+    if (m_probability_with_margin_isSet) {
+        obj.insert(QString("probability_with_margin"), ::OpenAPI::toJsonValue(m_probability_with_margin));
+    }
+    if (m_result.isSet()) {
+        obj.insert(QString("result"), ::OpenAPI::toJsonValue(m_result));
+    }
+    if (m_r_template_isSet) {
+        obj.insert(QString("template"), ::OpenAPI::toJsonValue(m_r_template));
+    }
+    return obj;
+}
+
+QJsonValue OAIMarketSelection::getLine() const {
+    return m_line;
+}
+void OAIMarketSelection::setLine(const QJsonValue &line) {
+    m_line = line;
+    m_line_isSet = true;
+}
+
+bool OAIMarketSelection::is_line_Set() const{
+    return m_line_isSet;
+}
+
+bool OAIMarketSelection::is_line_Valid() const{
+    return m_line_isValid;
+}
+
+QString OAIMarketSelection::getName() const {
+    return m_name;
+}
+void OAIMarketSelection::setName(const QString &name) {
+    m_name = name;
+    m_name_isSet = true;
+}
+
+bool OAIMarketSelection::is_name_Set() const{
+    return m_name_isSet;
+}
+
+bool OAIMarketSelection::is_name_Valid() const{
+    return m_name_isValid;
+}
+
+OAIOpponentID_1 OAIMarketSelection::getParticipantId() const {
+    return m_participant_id;
+}
+void OAIMarketSelection::setParticipantId(const OAIOpponentID_1 &participant_id) {
+    m_participant_id = participant_id;
+    m_participant_id_isSet = true;
+}
+
+bool OAIMarketSelection::is_participant_id_Set() const{
+    return m_participant_id_isSet;
+}
+
+bool OAIMarketSelection::is_participant_id_Valid() const{
+    return m_participant_id_isValid;
+}
+
+QJsonValue OAIMarketSelection::getParticipantType() const {
+    return m_participant_type;
+}
+void OAIMarketSelection::setParticipantType(const QJsonValue &participant_type) {
+    m_participant_type = participant_type;
+    m_participant_type_isSet = true;
+}
+
+bool OAIMarketSelection::is_participant_type_Set() const{
+    return m_participant_type_isSet;
+}
+
+bool OAIMarketSelection::is_participant_type_Valid() const{
+    return m_participant_type_isValid;
+}
+
+qint32 OAIMarketSelection::getPosition() const {
+    return m_position;
+}
+void OAIMarketSelection::setPosition(const qint32 &position) {
+    m_position = position;
+    m_position_isSet = true;
+}
+
+bool OAIMarketSelection::is_position_Set() const{
+    return m_position_isSet;
+}
+
+bool OAIMarketSelection::is_position_Valid() const{
+    return m_position_isValid;
+}
+
+double OAIMarketSelection::getProbability() const {
+    return m_probability;
+}
+void OAIMarketSelection::setProbability(const double &probability) {
+    m_probability = probability;
+    m_probability_isSet = true;
+}
+
+bool OAIMarketSelection::is_probability_Set() const{
+    return m_probability_isSet;
+}
+
+bool OAIMarketSelection::is_probability_Valid() const{
+    return m_probability_isValid;
+}
+
+double OAIMarketSelection::getProbabilityWithMargin() const {
+    return m_probability_with_margin;
+}
+void OAIMarketSelection::setProbabilityWithMargin(const double &probability_with_margin) {
+    m_probability_with_margin = probability_with_margin;
+    m_probability_with_margin_isSet = true;
+}
+
+bool OAIMarketSelection::is_probability_with_margin_Set() const{
+    return m_probability_with_margin_isSet;
+}
+
+bool OAIMarketSelection::is_probability_with_margin_Valid() const{
+    return m_probability_with_margin_isValid;
+}
+
+QJsonValue OAIMarketSelection::getResult() const {
+    return m_result;
+}
+void OAIMarketSelection::setResult(const QJsonValue &result) {
+    m_result = result;
+    m_result_isSet = true;
+}
+
+bool OAIMarketSelection::is_result_Set() const{
+    return m_result_isSet;
+}
+
+bool OAIMarketSelection::is_result_Valid() const{
+    return m_result_isValid;
+}
+
+QString OAIMarketSelection::getRTemplate() const {
+    return m_r_template;
+}
+void OAIMarketSelection::setRTemplate(const QString &r_template) {
+    m_r_template = r_template;
+    m_r_template_isSet = true;
+}
+
+bool OAIMarketSelection::is_r_template_Set() const{
+    return m_r_template_isSet;
+}
+
+bool OAIMarketSelection::is_r_template_Valid() const{
+    return m_r_template_isValid;
+}
+
+bool OAIMarketSelection::isSet() const {
+    bool isObjectUpdated = false;
+    do {
+        if (m_line.isSet()) {
+            isObjectUpdated = true;
+            break;
+        }
+
+        if (m_name_isSet) {
+            isObjectUpdated = true;
+            break;
+        }
+
+        if (m_participant_id.isSet()) {
+            isObjectUpdated = true;
+            break;
+        }
+
+        if (m_participant_type.isSet()) {
+            isObjectUpdated = true;
+            break;
+        }
+
+        if (m_position_isSet) {
+            isObjectUpdated = true;
+            break;
+        }
+
+        if (m_probability_isSet) {
+            isObjectUpdated = true;
+            break;
+        }
+
+        if (m_probability_with_margin_isSet) {
+            isObjectUpdated = true;
+            break;
+        }
+
+        if (m_result.isSet()) {
+            isObjectUpdated = true;
+            break;
+        }
+
+        if (m_r_template_isSet) {
+            isObjectUpdated = true;
+            break;
+        }
+    } while (false);
+    return isObjectUpdated;
+}
+
+bool OAIMarketSelection::isValid() const {
+    // only required properties are required for the object to be considered valid
+    return m_line_isValid && m_name_isValid && m_participant_id_isValid && m_participant_type_isValid && m_position_isValid && m_probability_isValid && m_probability_with_margin_isValid && m_result_isValid && m_r_template_isValid && true;
+}
+
+} // namespace OpenAPI

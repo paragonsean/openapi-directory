@@ -1,0 +1,4892 @@
+openapi: 3.1.0
+info:
+  contact:
+    email: hello@listennotes.com
+    name: Listen Notes
+    url: https://www.listennotes.com/api/
+    x-twitter: listennotes
+  description: |
+    Simple & no-nonsense podcast search & directory API. Search all podcasts and episodes by people, places, or topics.
+  termsOfService: https://www.listennotes.com/api/terms/
+  title: "Listen API: Podcast Search, Directory, and Insights API"
+  version: "2.0"
+  x-apisguru-categories:
+  - entertainment
+  x-logo:
+    url: https://twitter.com/listennotes/profile_image?size=original
+  x-origin:
+  - converter:
+      url: https://github.com/mermade/oas-kit
+      version: 7.0.4
+    format: openapi
+    url: https://listen-api.listennotes.com/api/v2/openapi.yaml
+    version: "3.1"
+  x-providerName: listennotes.com
+servers:
+- description: API Production Server
+  url: https://listen-api.listennotes.com/api/v2
+tags:
+- description: Endpoints to search podcasts
+  name: Search API
+- description: Endpoints to fetch podcasts data
+  name: Directory API
+- description: Endpoints to fetch Listen Later playlists data
+  name: Playlist API
+- description: Endpoints to improve the podcast database
+  name: Podcaster API
+- description: "Endpoints to get insights of podcasts, e.g., audience demographics"
+  name: Insights API
+paths:
+  /best_podcasts:
+    get:
+      description: |
+        Get a list of curated best podcasts by genre,
+        which are curated by Listen Notes staffs based on various signals from the Internet, e.g.,
+        top charts on other podcast platforms, recommendations from mainstream media,
+        user activities on listennotes.com...
+        You can get the genre ids from `GET /genres` endpoint.
+        This endpoint returns same data as https://www.listennotes.com/best-podcasts/
+      operationId: get_best_podcasts
+      parameters:
+      - $ref: '#/components/parameters/apiKeyParam'
+      - $ref: '#/components/parameters/genreIdParam'
+      - description: Page number of those podcasts in this genre.
+        explode: true
+        in: query
+        name: page
+        required: false
+        schema:
+          type: integer
+        style: form
+      - description: |
+          Filter best podcasts by country/region.
+          Please note that podcasts that are "best" in a country/region may not be produced in that country/region.
+          For example, a podcast from the US may be very popular in Canada.
+          You can get the supported country codes (e.g., us, jp, gb...) from `GET /regions`.
+          If not specified, you'll get "best podcasts" in United States.
+        explode: true
+        in: query
+        name: region
+        required: false
+        schema:
+          default: us
+          type: string
+        style: form
+      - description: |
+          Filter best podcasts by the publisher's country/region.
+          This is to narrow down the results to include "best podcasts" produced in a specific country/region.
+          You can get the supported country codes (e.g., us, jp, gb...) from `GET /regions`.
+          If not specified, you'll get "best podcasts" produced in any country/region.
+          If you want to get a country/region's "best podcasts" that are also produced in that country/region,
+          then you need to specify both **region** and **publisher_region**,
+          e.g., `region=jp` and `publisher_region=jp`.
+        explode: true
+        in: query
+        name: publisher_region
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: |
+          Filter best podcasts by language.
+          You can get a list of supported languages (e.g., English, Chinese, Japanese...) from `GET /languages`.
+          If not specified, you'll get "best podcasts" in any language.
+        explode: true
+        in: query
+        name: language
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: |
+          How do you want to sort these podcasts?
+          If you'd like to sort by popularity, please use **listen_score**.
+        example: listen_score
+        explode: true
+        in: query
+        name: sort
+        required: false
+        schema:
+          default: recent_added_first
+          enum:
+          - recent_added_first
+          - oldest_added_first
+          - recent_published_first
+          - oldest_published_first
+          - listen_score
+          type: string
+        style: form
+      - $ref: '#/components/parameters/safeModeParam'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BestPodcastsResponse'
+          description: OK
+          headers:
+            X-ListenAPI-FreeQuota:
+              $ref: '#/components/headers/X-ListenAPI-FreeQuota'
+            X-ListenAPI-NextBillingDate:
+              $ref: '#/components/headers/X-ListenAPI-NextBillingDate'
+            X-ListenAPI-Usage:
+              $ref: '#/components/headers/X-ListenAPI-Usage'
+            X-listenAPI-Latency-Seconds:
+              $ref: '#/components/headers/X-listenAPI-Latency-Seconds'
+          links:
+            paginate:
+              description: Pagination through podcasts.
+              operationId: getBestPodcasts
+              parameters:
+                page: $response.body#/next_page_number
+        "401":
+          $ref: '#/components/responses/Unauthorized'
+        "404":
+          $ref: '#/components/responses/NotFound'
+        "429":
+          $ref: '#/components/responses/TooManyRequests'
+        "5XX":
+          $ref: '#/components/responses/ServerError'
+      summary: Fetch a list of best podcasts by genre
+      tags:
+      - Directory API
+      x-openapi-router-controller: openapi_server.controllers.directory_api_controller
+  /curated_podcasts:
+    get:
+      description: |
+        A bunch of curated lists from online media. For each list, you'll get basic info of up to 5 podcasts. To get detailed meta data of all podcasts in a specific list, you need to use `GET /curated_podcasts/{id}`. We add new curated lists to the database on a daily basis.
+      operationId: get_curated_podcasts
+      parameters:
+      - $ref: '#/components/parameters/apiKeyParam'
+      - description: Page number of curated lists.
+        example: 2
+        explode: true
+        in: query
+        name: page
+        required: false
+        schema:
+          default: 1
+          type: integer
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetCuratedPodcastsResponse'
+          description: OK
+          headers:
+            X-ListenAPI-FreeQuota:
+              $ref: '#/components/headers/X-ListenAPI-FreeQuota'
+            X-ListenAPI-NextBillingDate:
+              $ref: '#/components/headers/X-ListenAPI-NextBillingDate'
+            X-ListenAPI-Usage:
+              $ref: '#/components/headers/X-ListenAPI-Usage'
+            X-listenAPI-Latency-Seconds:
+              $ref: '#/components/headers/X-listenAPI-Latency-Seconds'
+          links:
+            paginate:
+              description: Pagination through curated lists.
+              operationId: getCuratedPodcasts
+              parameters:
+                page: $response.body#/next_page_number
+        "401":
+          $ref: '#/components/responses/Unauthorized'
+        "429":
+          $ref: '#/components/responses/TooManyRequests'
+        "5XX":
+          $ref: '#/components/responses/ServerError'
+      summary: Fetch curated lists of podcasts
+      tags:
+      - Directory API
+      x-openapi-router-controller: openapi_server.controllers.directory_api_controller
+  /curated_podcasts/{id}:
+    get:
+      description: |
+        Get detailed meta data of all podcasts in a specific curated list.
+        This endpoint returns same data as https://www.listennotes.com/curated-podcasts/
+      operationId: get_curated_podcast_by_id
+      parameters:
+      - $ref: '#/components/parameters/apiKeyParam'
+      - description: |
+          id for a specific curated list of podcasts. You can get the id from the response of `GET /search?type=curated` or `GET /curated_podcasts`.
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CuratedListFull'
+          description: OK
+          headers:
+            X-ListenAPI-FreeQuota:
+              $ref: '#/components/headers/X-ListenAPI-FreeQuota'
+            X-ListenAPI-NextBillingDate:
+              $ref: '#/components/headers/X-ListenAPI-NextBillingDate'
+            X-ListenAPI-Usage:
+              $ref: '#/components/headers/X-ListenAPI-Usage'
+            X-listenAPI-Latency-Seconds:
+              $ref: '#/components/headers/X-listenAPI-Latency-Seconds'
+        "401":
+          $ref: '#/components/responses/Unauthorized'
+        "404":
+          $ref: '#/components/responses/NotFound'
+        "429":
+          $ref: '#/components/responses/TooManyRequests'
+        "5XX":
+          $ref: '#/components/responses/ServerError'
+      summary: Fetch a curated list of podcasts by id
+      tags:
+      - Directory API
+      x-openapi-router-controller: openapi_server.controllers.directory_api_controller
+  /episodes:
+    post:
+      description: |
+        Batch fetch basic meta data for up to 10 episodes. This endpoint could be used to implement custom playlists for individual episodes. For detailed meta data of an individual episode, you need to use `GET /episodes/{id}`. This endpoint is available only in the PRO/ENTERPRISE plan.
+      operationId: get_episodes_in_batch
+      parameters:
+      - $ref: '#/components/parameters/apiKeyParam'
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/GetEpisodesInBatchForm'
+        required: true
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetEpisodesInBatchResponse'
+          description: OK
+          headers:
+            X-ListenAPI-FreeQuota:
+              $ref: '#/components/headers/X-ListenAPI-FreeQuota'
+            X-ListenAPI-NextBillingDate:
+              $ref: '#/components/headers/X-ListenAPI-NextBillingDate'
+            X-ListenAPI-Usage:
+              $ref: '#/components/headers/X-ListenAPI-Usage'
+            X-listenAPI-Latency-Seconds:
+              $ref: '#/components/headers/X-listenAPI-Latency-Seconds'
+        "401":
+          $ref: '#/components/responses/Unauthorized'
+        "429":
+          $ref: '#/components/responses/TooManyRequests'
+        "5XX":
+          $ref: '#/components/responses/ServerError'
+      summary: Batch fetch basic meta data for episodes
+      tags:
+      - Directory API
+      x-openapi-router-controller: openapi_server.controllers.directory_api_controller
+      x-codegen-request-body-name: body
+  /episodes/{id}:
+    get:
+      description: Fetch detailed meta data for a specific episode.
+      operationId: get_episode_by_id
+      parameters:
+      - $ref: '#/components/parameters/apiKeyParam'
+      - description: "id for a specific episode. You can get episode id from using\
+          \ other endpoints, e.g., `GET /search`..."
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: "To include the transcript of this episode or not? If it is 1,\
+          \ then include the transcript in the **transcript** field. The default value\
+          \ is 0 - we don't include transcript by default, because 1) it would make\
+          \ the response data very big, thus slow response time; 2) less than 1% of\
+          \ episodes have transcripts. The transcript field is available only in the\
+          \ PRO/ENTERPRISE plan."
+        explode: false
+        in: query
+        name: show_transcript
+        required: false
+        schema:
+          default: 0
+          type: integer
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EpisodeFull'
+          description: OK
+          headers:
+            X-ListenAPI-FreeQuota:
+              $ref: '#/components/headers/X-ListenAPI-FreeQuota'
+            X-ListenAPI-NextBillingDate:
+              $ref: '#/components/headers/X-ListenAPI-NextBillingDate'
+            X-ListenAPI-Usage:
+              $ref: '#/components/headers/X-ListenAPI-Usage'
+            X-listenAPI-Latency-Seconds:
+              $ref: '#/components/headers/X-listenAPI-Latency-Seconds'
+        "401":
+          $ref: '#/components/responses/Unauthorized'
+        "404":
+          $ref: '#/components/responses/NotFound'
+        "429":
+          $ref: '#/components/responses/TooManyRequests'
+        "5XX":
+          $ref: '#/components/responses/ServerError'
+      summary: Fetch detailed meta data for an episode by id
+      tags:
+      - Directory API
+      x-openapi-router-controller: openapi_server.controllers.directory_api_controller
+  /episodes/{id}/recommendations:
+    get:
+      description: Fetch up to 8 episode recommendations based on the given episode
+        id.
+      operationId: get_episode_recommendations
+      parameters:
+      - $ref: '#/components/parameters/apiKeyParam'
+      - description: Episode id.
+        example: 254444fa6cf64a43a95292a70eb6869b
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - $ref: '#/components/parameters/safeModeParam'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetEpisodeRecommendationsResponse'
+          description: OK
+          headers:
+            X-ListenAPI-FreeQuota:
+              $ref: '#/components/headers/X-ListenAPI-FreeQuota'
+            X-ListenAPI-NextBillingDate:
+              $ref: '#/components/headers/X-ListenAPI-NextBillingDate'
+            X-ListenAPI-Usage:
+              $ref: '#/components/headers/X-ListenAPI-Usage'
+            X-listenAPI-Latency-Seconds:
+              $ref: '#/components/headers/X-listenAPI-Latency-Seconds'
+        "401":
+          $ref: '#/components/responses/Unauthorized'
+        "404":
+          $ref: '#/components/responses/NotFound'
+        "429":
+          $ref: '#/components/responses/TooManyRequests'
+        "5XX":
+          $ref: '#/components/responses/ServerError'
+      summary: Fetch recommendations for an episode
+      tags:
+      - Directory API
+      x-openapi-router-controller: openapi_server.controllers.directory_api_controller
+  /genres:
+    get:
+      description: |
+        Get a list of podcast genres that are supported in Listen Notes.
+        The genre id can be passed to other endpoints as a parameter to get podcasts in a specific genre,
+        e.g., `GET /best_podcasts`, `GET /search`...
+        You may want to cache the list of genres on the client side.
+      operationId: get_genres
+      parameters:
+      - $ref: '#/components/parameters/apiKeyParam'
+      - description: |
+          Just show top level genres? If 1, yes, just show top level genres. If 0, no, show all genres.
+        explode: true
+        in: query
+        name: top_level_only
+        required: false
+        schema:
+          default: 0
+          enum:
+          - 0
+          - 1
+          type: integer
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetGenresResponse'
+          description: OK
+          headers:
+            X-ListenAPI-FreeQuota:
+              $ref: '#/components/headers/X-ListenAPI-FreeQuota'
+            X-ListenAPI-NextBillingDate:
+              $ref: '#/components/headers/X-ListenAPI-NextBillingDate'
+            X-ListenAPI-Usage:
+              $ref: '#/components/headers/X-ListenAPI-Usage'
+            X-listenAPI-Latency-Seconds:
+              $ref: '#/components/headers/X-listenAPI-Latency-Seconds'
+        "401":
+          $ref: '#/components/responses/Unauthorized'
+        "429":
+          $ref: '#/components/responses/TooManyRequests'
+        "5XX":
+          $ref: '#/components/responses/ServerError'
+      summary: Fetch a list of podcast genres
+      tags:
+      - Directory API
+      x-openapi-router-controller: openapi_server.controllers.directory_api_controller
+  /just_listen:
+    get:
+      description: Recently published episodes are more likely to be fetched. Good
+        luck!
+      operationId: just_listen
+      parameters:
+      - $ref: '#/components/parameters/apiKeyParam'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EpisodeSimple'
+          description: OK
+          headers:
+            X-ListenAPI-FreeQuota:
+              $ref: '#/components/headers/X-ListenAPI-FreeQuota'
+            X-ListenAPI-NextBillingDate:
+              $ref: '#/components/headers/X-ListenAPI-NextBillingDate'
+            X-ListenAPI-Usage:
+              $ref: '#/components/headers/X-ListenAPI-Usage'
+            X-listenAPI-Latency-Seconds:
+              $ref: '#/components/headers/X-listenAPI-Latency-Seconds'
+        "401":
+          $ref: '#/components/responses/Unauthorized'
+        "429":
+          $ref: '#/components/responses/TooManyRequests'
+        "5XX":
+          $ref: '#/components/responses/ServerError'
+      summary: Fetch a random podcast episode
+      tags:
+      - Directory API
+      x-openapi-router-controller: openapi_server.controllers.directory_api_controller
+  /languages:
+    get:
+      description: |
+        Get a list of languages that are supported in Listen Notes database. You can use the language string as query parameter in `GET /search`.
+      operationId: get_languages
+      parameters:
+      - $ref: '#/components/parameters/apiKeyParam'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetLanguagesResponse'
+          description: OK
+          headers:
+            X-ListenAPI-FreeQuota:
+              $ref: '#/components/headers/X-ListenAPI-FreeQuota'
+            X-ListenAPI-NextBillingDate:
+              $ref: '#/components/headers/X-ListenAPI-NextBillingDate'
+            X-ListenAPI-Usage:
+              $ref: '#/components/headers/X-ListenAPI-Usage'
+            X-listenAPI-Latency-Seconds:
+              $ref: '#/components/headers/X-listenAPI-Latency-Seconds'
+        "401":
+          $ref: '#/components/responses/Unauthorized'
+        "429":
+          $ref: '#/components/responses/TooManyRequests'
+        "5XX":
+          $ref: '#/components/responses/ServerError'
+      summary: Fetch a list of supported languages for podcasts
+      tags:
+      - Directory API
+      x-openapi-router-controller: openapi_server.controllers.directory_api_controller
+  /playlists:
+    get:
+      description: |
+        This endpoint returns same data as listennotes.com/listen under your account.
+        You can use the **page** parameter to do pagination and fetch more playlists.
+      operationId: get_playlists
+      parameters:
+      - $ref: '#/components/parameters/apiKeyParam'
+      - description: |
+          How do you want to sort playlists?
+        explode: true
+        in: query
+        name: sort
+        required: false
+        schema:
+          default: recent_added_first
+          enum:
+          - recent_added_first
+          - oldest_added_first
+          - name_a_to_z
+          - name_z_to_a
+          type: string
+        style: form
+      - description: |
+          Page number of playlists.
+        explode: true
+        in: query
+        name: page
+        required: false
+        schema:
+          default: 1
+          type: integer
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PlaylistsResponse'
+          description: OK
+          headers:
+            X-ListenAPI-FreeQuota:
+              $ref: '#/components/headers/X-ListenAPI-FreeQuota'
+            X-ListenAPI-NextBillingDate:
+              $ref: '#/components/headers/X-ListenAPI-NextBillingDate'
+            X-ListenAPI-Usage:
+              $ref: '#/components/headers/X-ListenAPI-Usage'
+            X-listenAPI-Latency-Seconds:
+              $ref: '#/components/headers/X-listenAPI-Latency-Seconds'
+          links:
+            paginate:
+              description: Pagination through playlists.
+              operationId: getPlaylists
+              parameters:
+                page: $response.body#/page
+        "401":
+          $ref: '#/components/responses/Unauthorized'
+        "429":
+          $ref: '#/components/responses/TooManyRequests'
+        "5XX":
+          $ref: '#/components/responses/ServerError'
+      summary: Fetch a list of your playlists.
+      tags:
+      - Playlist API
+      x-openapi-router-controller: openapi_server.controllers.playlist_api_controller
+  /playlists/{id}:
+    get:
+      description: |
+        A playlist can be an episode list (i.e., all items are episodes) or a podcast list (i.e., all items are podcasts),
+        which is essentially the same as those created via listennotes.com/listen/.
+        This endpoint fetches a list of items (i.e., episodes or podcasts) in the playlist.
+        You can use the **last_pub_date_ms** parameter to do pagination and fetch more items.
+        A playlist can be **public** (discoverable on ListenNotes.com),
+        **unlisted** (accessible to anyone who knows the playlist id),
+        or **private** (accessible to its owner).
+        You can fetch all playlists created by you, and **public** / **unlisted** playlists created by others.
+      operationId: get_playlist_by_id
+      parameters:
+      - $ref: '#/components/parameters/apiKeyParam'
+      - description: |
+          Playlist id (always 11 characters, e.g., m1pe7z60bsw).
+          You can get the podcast id from the url of a playlist, e.g.,
+          m1pe7z60bsw is the playlist id of listennotes.com/listen/podcasts-about-podcasting-m1pe7z60bsw
+        example: m1pe7z60bsw
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: |
+          The type of this playlist, which should be either **episode_list** or **podcast_list**.
+        explode: true
+        in: query
+        name: type
+        required: false
+        schema:
+          default: episode_list
+          enum:
+          - episode_list
+          - podcast_list
+          type: string
+        style: form
+      - description: |
+          For playlist items pagination.
+          It's the value of **last_timestamp_ms** from the response of last request.
+          If it's 0 or not specified, just return the latest or the oldest 20 items,
+          depending on the value of the **sort** parameter.
+        explode: true
+        in: query
+        name: last_timestamp_ms
+        required: false
+        schema:
+          default: 0
+          type: integer
+        style: form
+      - description: |
+          How do you want to sort playlist items?
+        explode: true
+        in: query
+        name: sort
+        required: false
+        schema:
+          default: recent_added_first
+          enum:
+          - recent_added_first
+          - oldest_added_first
+          - recent_published_first
+          - oldest_published_first
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PlaylistResponse'
+          description: OK
+          headers:
+            X-ListenAPI-FreeQuota:
+              $ref: '#/components/headers/X-ListenAPI-FreeQuota'
+            X-ListenAPI-NextBillingDate:
+              $ref: '#/components/headers/X-ListenAPI-NextBillingDate'
+            X-ListenAPI-Usage:
+              $ref: '#/components/headers/X-ListenAPI-Usage'
+            X-listenAPI-Latency-Seconds:
+              $ref: '#/components/headers/X-listenAPI-Latency-Seconds'
+          links:
+            paginate:
+              description: Pagination through playlist items.
+              operationId: getPlaylistById
+              parameters:
+                last_timestamp_ms: $response.body#/last_timestamp_ms
+        "401":
+          $ref: '#/components/responses/Unauthorized'
+        "404":
+          $ref: '#/components/responses/NotFound'
+        "429":
+          $ref: '#/components/responses/TooManyRequests'
+        "5XX":
+          $ref: '#/components/responses/ServerError'
+      summary: "Fetch a playlist's info and items (i.e., episodes or podcasts)."
+      tags:
+      - Playlist API
+      x-openapi-router-controller: openapi_server.controllers.playlist_api_controller
+  /podcasts:
+    post:
+      description: |
+        Batch fetch basic meta data for up to 10 podcasts.
+        This endpoint could be used to build something like OPML import,
+        allowing users to import a bunch of podcasts via rss urls.
+        For detailed meta data (including episodes) of an individual podcast, you need to use `GET /podcasts/{id}`. This endpoint is available only in the PRO/ENTERPRISE plan.
+      operationId: get_podcasts_in_batch
+      parameters:
+      - $ref: '#/components/parameters/apiKeyParam'
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/GetPodcastsInBatchForm'
+        required: false
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetPodcastsInBatchResponse'
+          description: OK
+          headers:
+            X-ListenAPI-FreeQuota:
+              $ref: '#/components/headers/X-ListenAPI-FreeQuota'
+            X-ListenAPI-NextBillingDate:
+              $ref: '#/components/headers/X-ListenAPI-NextBillingDate'
+            X-ListenAPI-Usage:
+              $ref: '#/components/headers/X-ListenAPI-Usage'
+            X-listenAPI-Latency-Seconds:
+              $ref: '#/components/headers/X-listenAPI-Latency-Seconds'
+          links:
+            paginate:
+              description: Pagination through latest episodes.
+              operationId: getPodcastsInBatch
+              parameters:
+                next_episode_pub_date: $response.body#/next_episode_pub_date
+        "401":
+          $ref: '#/components/responses/Unauthorized'
+        "429":
+          $ref: '#/components/responses/TooManyRequests'
+        "5XX":
+          $ref: '#/components/responses/ServerError'
+      summary: Batch fetch basic meta data for podcasts
+      tags:
+      - Directory API
+      x-openapi-router-controller: openapi_server.controllers.directory_api_controller
+      x-codegen-request-body-name: body
+  /podcasts/domains/{domain_name}:
+    get:
+      description: |
+        Fetch podcasts by a publisher's domain name, e.g., nytimes.com, wondery.com, npr.org...
+        Each request will return up to 10 podcasts. You can use the `page` parameter to paginate.
+      operationId: get_podcasts_by_domain_name
+      parameters:
+      - $ref: '#/components/parameters/apiKeyParam'
+      - description: "A publisher's domain name, e.g., nytimes.com, wondery.com, npr.org..."
+        example: nytimes.com
+        explode: false
+        in: path
+        name: domain_name
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: Page number of the podcasts from this domain name
+        explode: true
+        in: query
+        name: page
+        required: false
+        schema:
+          default: 1
+          type: integer
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PodcastDomainResponse'
+          description: OK
+          headers:
+            X-ListenAPI-FreeQuota:
+              $ref: '#/components/headers/X-ListenAPI-FreeQuota'
+            X-ListenAPI-NextBillingDate:
+              $ref: '#/components/headers/X-ListenAPI-NextBillingDate'
+            X-ListenAPI-Usage:
+              $ref: '#/components/headers/X-ListenAPI-Usage'
+            X-listenAPI-Latency-Seconds:
+              $ref: '#/components/headers/X-listenAPI-Latency-Seconds'
+          links:
+            paginate:
+              description: Pagination through podcasts.
+              operationId: getPodcastsByDomainName
+              parameters:
+                page: $response.body#/next_page_number
+        "401":
+          $ref: '#/components/responses/Unauthorized'
+        "404":
+          $ref: '#/components/responses/NotFound'
+        "429":
+          $ref: '#/components/responses/TooManyRequests'
+        "5XX":
+          $ref: '#/components/responses/ServerError'
+      summary: Fetch podcasts by a publisher's domain name
+      tags:
+      - Insights API
+      x-openapi-router-controller: openapi_server.controllers.insights_api_controller
+  /podcasts/submit:
+    post:
+      description: |
+        Podcast hosting services can use this endpoint to help your users directly submit a new podcast to Listen Notes database. If the podcast doesn't exist in the database, "status" in the response will be "in review", and we'll review it within 12 hours. If the podcast exists, "status" in the response will be "found". If this submission is rejected, "status" in the response will be "rejected". You can use `POST /podcasts` to check if multiple podcasts exist in the database. If you want to get a notification once the podcast is accepted, you can either specify the "email" parameter or configure a webhook url in the dashboard: listennotes.com/api/dashboard/#webhooks
+      operationId: submit_podcast
+      parameters:
+      - $ref: '#/components/parameters/apiKeyParam'
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/SubmitPodcastForm'
+        required: true
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubmitPodcastResponse'
+          description: OK
+          headers:
+            X-ListenAPI-FreeQuota:
+              $ref: '#/components/headers/X-ListenAPI-FreeQuota'
+            X-ListenAPI-NextBillingDate:
+              $ref: '#/components/headers/X-ListenAPI-NextBillingDate'
+            X-ListenAPI-Usage:
+              $ref: '#/components/headers/X-ListenAPI-Usage'
+            X-listenAPI-Latency-Seconds:
+              $ref: '#/components/headers/X-listenAPI-Latency-Seconds'
+        "400":
+          $ref: '#/components/responses/BadRequest'
+        "401":
+          $ref: '#/components/responses/Unauthorized'
+        "429":
+          $ref: '#/components/responses/TooManyRequests'
+        "5XX":
+          $ref: '#/components/responses/ServerError'
+      summary: Submit a podcast to Listen Notes database
+      tags:
+      - Podcaster API
+      x-openapi-router-controller: openapi_server.controllers.podcaster_api_controller
+      x-codegen-request-body-name: body
+  /podcasts/{id}:
+    delete:
+      description: |
+        Podcast hosting services can use this endpoint to streamline the process of podcast deletion on behave of their users (podcasters). We will review the deletion request within 12 hours. If the podcast is already deleted, the "status" field in the response will be "deleted". Otherwise, the status field will be "in review". If you want to get a notification once the podcast is deleted, you can configure a webhook url in the dashboard: listennotes.com/api/dashboard/#webhooks
+      operationId: delete_podcast_by_id
+      parameters:
+      - $ref: '#/components/parameters/apiKeyParam'
+      - description: "Podcast id. You can get podcast id from using other endpoints,\
+          \ e.g., `GET /search`, `GET /best_podcasts`..."
+        example: 4d3fe717742d4963a85562e9f84d8c79
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: "The reason why this podcast should be deleted, e.g., copyright\
+          \ violation, the podcaster wants to delete it... You can put \"testing\"\
+          \ here to indicate that you are testing this endpoint, so we will not actually\
+          \ delete the podcast."
+        example: the podcaster wants to delete it
+        explode: true
+        in: query
+        name: reason
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeletePodcastResponse'
+          description: OK
+          headers:
+            X-ListenAPI-FreeQuota:
+              $ref: '#/components/headers/X-ListenAPI-FreeQuota'
+            X-ListenAPI-NextBillingDate:
+              $ref: '#/components/headers/X-ListenAPI-NextBillingDate'
+            X-ListenAPI-Usage:
+              $ref: '#/components/headers/X-ListenAPI-Usage'
+            X-listenAPI-Latency-Seconds:
+              $ref: '#/components/headers/X-listenAPI-Latency-Seconds'
+        "401":
+          $ref: '#/components/responses/Unauthorized'
+        "404":
+          $ref: '#/components/responses/NotFound'
+        "429":
+          $ref: '#/components/responses/TooManyRequests'
+        "5XX":
+          $ref: '#/components/responses/ServerError'
+      summary: Request to delete a podcast
+      tags:
+      - Podcaster API
+      x-openapi-router-controller: openapi_server.controllers.podcaster_api_controller
+    get:
+      description: |
+        Fetch detailed meta data and episodes for a specific podcast (up to 10 episodes each time).
+        You can use the **next_episode_pub_date** parameter to do pagination and fetch more episodes.
+      operationId: get_podcast_by_id
+      parameters:
+      - $ref: '#/components/parameters/apiKeyParam'
+      - description: "Podcast id. You can get podcast id from using other endpoints,\
+          \ e.g., `GET /search`, `GET /best_podcasts`..."
+        example: 4d3fe717742d4963a85562e9f84d8c79
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: |
+          For episodes pagination. It's the value of **next_episode_pub_date** from the response of last request. If not specified, just return latest 10 episodes or oldest 10 episodes, depending on the value of the **sort** parameter.
+        example: 1479154463000
+        explode: true
+        in: query
+        name: next_episode_pub_date
+        required: false
+        schema:
+          type: integer
+        style: form
+      - description: |
+          How do you want to sort the episodes of this podcast?
+        example: recent_first
+        explode: true
+        in: query
+        name: sort
+        required: false
+        schema:
+          default: recent_first
+          enum:
+          - recent_first
+          - oldest_first
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PodcastFull'
+          description: OK
+          headers:
+            X-ListenAPI-FreeQuota:
+              $ref: '#/components/headers/X-ListenAPI-FreeQuota'
+            X-ListenAPI-NextBillingDate:
+              $ref: '#/components/headers/X-ListenAPI-NextBillingDate'
+            X-ListenAPI-Usage:
+              $ref: '#/components/headers/X-ListenAPI-Usage'
+            X-listenAPI-Latency-Seconds:
+              $ref: '#/components/headers/X-listenAPI-Latency-Seconds'
+          links:
+            paginate:
+              description: Pagination through episodes.
+              operationId: getPodcastById
+              parameters:
+                next_episode_pub_date: $response.body#/next_episode_pub_date
+        "401":
+          $ref: '#/components/responses/Unauthorized'
+        "404":
+          $ref: '#/components/responses/NotFound'
+        "429":
+          $ref: '#/components/responses/TooManyRequests'
+        "5XX":
+          $ref: '#/components/responses/ServerError'
+      summary: Fetch detailed meta data and episodes for a podcast by id
+      tags:
+      - Directory API
+      x-openapi-router-controller: openapi_server.controllers.directory_api_controller
+  /podcasts/{id}/audience:
+    get:
+      description: Fetch audience demographics for a podcast - 1) directly measured
+        on the Listen Notes platform; 2) only supports audience breakdown by regions
+        for now; 3) not every podcast has data.
+      operationId: get_podcast_audience
+      parameters:
+      - $ref: '#/components/parameters/apiKeyParam'
+      - description: Podcast id.
+        example: 25212ac3c53240a880dd5032e547047b
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PodcastAudienceResponse'
+          description: OK
+          headers:
+            X-ListenAPI-FreeQuota:
+              $ref: '#/components/headers/X-ListenAPI-FreeQuota'
+            X-ListenAPI-NextBillingDate:
+              $ref: '#/components/headers/X-ListenAPI-NextBillingDate'
+            X-ListenAPI-Usage:
+              $ref: '#/components/headers/X-ListenAPI-Usage'
+            X-listenAPI-Latency-Seconds:
+              $ref: '#/components/headers/X-listenAPI-Latency-Seconds'
+        "401":
+          $ref: '#/components/responses/Unauthorized'
+        "404":
+          $ref: '#/components/responses/NotFound'
+        "429":
+          $ref: '#/components/responses/TooManyRequests'
+        "5XX":
+          $ref: '#/components/responses/ServerError'
+      summary: Fetch audience demographics for a podcast
+      tags:
+      - Insights API
+      x-openapi-router-controller: openapi_server.controllers.insights_api_controller
+  /podcasts/{id}/recommendations:
+    get:
+      description: Fetch up to 8 podcast recommendations based on the given podcast
+        id.
+      operationId: get_podcast_recommendations
+      parameters:
+      - $ref: '#/components/parameters/apiKeyParam'
+      - description: Podcast id.
+        example: 25212ac3c53240a880dd5032e547047b
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - $ref: '#/components/parameters/safeModeParam'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetPodcastRecommendationsResponse'
+          description: OK
+          headers:
+            X-ListenAPI-FreeQuota:
+              $ref: '#/components/headers/X-ListenAPI-FreeQuota'
+            X-ListenAPI-NextBillingDate:
+              $ref: '#/components/headers/X-ListenAPI-NextBillingDate'
+            X-ListenAPI-Usage:
+              $ref: '#/components/headers/X-ListenAPI-Usage'
+            X-listenAPI-Latency-Seconds:
+              $ref: '#/components/headers/X-listenAPI-Latency-Seconds'
+        "401":
+          $ref: '#/components/responses/Unauthorized'
+        "404":
+          $ref: '#/components/responses/NotFound'
+        "429":
+          $ref: '#/components/responses/TooManyRequests'
+        "5XX":
+          $ref: '#/components/responses/ServerError'
+      summary: Fetch recommendations for a podcast
+      tags:
+      - Directory API
+      x-openapi-router-controller: openapi_server.controllers.directory_api_controller
+  /regions:
+    get:
+      description: |
+        It returns a dictionary of country codes (e.g., us, gb...) & country names (United States, United Kingdom...). The country code is used in the query parameter **region** of `GET /best_podcasts`.
+      operationId: get_regions
+      parameters:
+      - $ref: '#/components/parameters/apiKeyParam'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetRegionsResponse'
+          description: OK
+          headers:
+            X-ListenAPI-FreeQuota:
+              $ref: '#/components/headers/X-ListenAPI-FreeQuota'
+            X-ListenAPI-NextBillingDate:
+              $ref: '#/components/headers/X-ListenAPI-NextBillingDate'
+            X-ListenAPI-Usage:
+              $ref: '#/components/headers/X-ListenAPI-Usage'
+            X-listenAPI-Latency-Seconds:
+              $ref: '#/components/headers/X-listenAPI-Latency-Seconds'
+        "401":
+          $ref: '#/components/responses/Unauthorized'
+        "429":
+          $ref: '#/components/responses/TooManyRequests'
+        "5XX":
+          $ref: '#/components/responses/ServerError'
+      summary: Fetch a list of supported countries/regions for best podcasts
+      tags:
+      - Directory API
+      x-openapi-router-controller: openapi_server.controllers.directory_api_controller
+  /related_searches:
+    get:
+      description: Suggest related search terms. The results are more comprehensive
+        than from `GET /typeahead`. This endpoint is available only in the PRO/ENTERPRISE
+        plan.
+      operationId: get_related_searches
+      parameters:
+      - $ref: '#/components/parameters/apiKeyParam'
+      - description: |
+          Search term, e.g., person, place, topic...
+        explode: true
+        in: query
+        name: q
+        required: true
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RelatedSearchesResponse'
+          description: OK
+          headers:
+            X-ListenAPI-FreeQuota:
+              $ref: '#/components/headers/X-ListenAPI-FreeQuota'
+            X-ListenAPI-NextBillingDate:
+              $ref: '#/components/headers/X-ListenAPI-NextBillingDate'
+            X-ListenAPI-Usage:
+              $ref: '#/components/headers/X-ListenAPI-Usage'
+            X-listenAPI-Latency-Seconds:
+              $ref: '#/components/headers/X-listenAPI-Latency-Seconds'
+        "400":
+          $ref: '#/components/responses/BadRequest'
+        "401":
+          $ref: '#/components/responses/Unauthorized'
+        "429":
+          $ref: '#/components/responses/TooManyRequests'
+        "5XX":
+          $ref: '#/components/responses/ServerError'
+      summary: Fetch related search terms
+      tags:
+      - Search API
+      x-openapi-router-controller: openapi_server.controllers.search_api_controller
+  /search:
+    get:
+      description: |
+        Full-text search on episodes, podcasts, or curated lists of podcasts.
+        Use the `offset` parameter to paginate through search results.
+        The FREE plan allows to see up to 30 search results (or `offset` < 30) per query.
+        The PRO plan allows to see up to 300 search results (or `offset` < 300) per query.
+        The ENTERPRISE plan allows to see up to 10,000 search results (or `offset` < 10000) per query.
+      operationId: search
+      parameters:
+      - $ref: '#/components/parameters/apiKeyParam'
+      - $ref: '#/components/parameters/queryParam'
+      - description: |
+          Sort by date or not? If 0, then sort by relevance. If 1, then sort by date.
+        explode: true
+        in: query
+        name: sort_by_date
+        required: false
+        schema:
+          default: 0
+          enum:
+          - 0
+          - 1
+          type: integer
+        style: form
+      - description: "What type of contents do you want to search for? \n"
+        explode: true
+        in: query
+        name: type
+        required: false
+        schema:
+          default: episode
+          enum:
+          - episode
+          - podcast
+          - curated
+          type: string
+        style: form
+      - description: |
+          Offset for search results, for pagination. You'll use **next_offset** from response for this parameter.
+        explode: true
+        in: query
+        name: offset
+        required: false
+        schema:
+          default: 0
+          type: integer
+        style: form
+      - description: |
+          Minimum audio length in minutes. Applicable only when **type** parameter is **episode** or **podcast**.
+          If **type** parameter is **episode**, it's for audio length of an episode.
+          If **type** parameter is **podcast**, it's for average audio length of all episodes in a podcast.
+        explode: true
+        in: query
+        name: len_min
+        required: false
+        schema:
+          default: 0
+          type: integer
+        style: form
+      - description: |
+          Maximum audio length in minutes. Applicable only when **type** parameter is **episode** or **podcast**.
+          If **type** parameter is **episode**, it's for audio length of an episode.
+          If **type** parameter is **podcast**, it's for average audio length of all episodes in a podcast.
+        explode: true
+        in: query
+        name: len_max
+        required: false
+        schema:
+          type: integer
+        style: form
+      - description: |
+          Minimum number of episodes. Applicable only when type parameter is **podcast**.
+        explode: true
+        in: query
+        name: episode_count_min
+        required: false
+        schema:
+          type: integer
+        style: form
+      - description: |
+          Maximum number of episodes. Applicable only when type parameter is **podcast**.
+        explode: true
+        in: query
+        name: episode_count_max
+        required: false
+        schema:
+          type: integer
+        style: form
+      - description: |
+          Minimum update frequency in hours (how frequently does a podcast release a new episode). For example, if you want to find "weekly" podcasts, then you can set **update_freq_min**=144 hours (or 6 days) and **update_freq_max**=192 hours (or 8 days). Applicable only when type parameter is **podcast**.
+        explode: true
+        in: query
+        name: update_freq_min
+        required: false
+        schema:
+          type: integer
+        style: form
+      - description: |
+          Maximum update frequency in hours (how frequently does a podcast release a new episode). For example, if you want to find "weekly" podcasts, then you can set **update_freq_min**=144 hours (or 6 days) and **update_freq_max**=192 hours (or 8 days). Applicable only when type parameter is **podcast**.
+        explode: true
+        in: query
+        name: update_freq_max
+        required: false
+        schema:
+          type: integer
+        style: form
+      - description: |
+          A comma-delimited string of a list of genre ids. If not specified, then all genres are included. You can find the id and the name of all genres from `GET /genres`. It works only when **type** is *episode* or *podcast*.
+        explode: true
+        in: query
+        name: genre_ids
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: |
+          Only show episodes/podcasts/curated lists published before this timestamp (in milliseconds). If **published_before** & **published_after** are used at the same time, **published_before** should be bigger than **published_after**.
+        explode: true
+        in: query
+        name: published_before
+        required: false
+        schema:
+          type: integer
+        style: form
+      - description: |
+          Only show episodes/podcasts/curated lists published after this timestamp (in milliseconds). If **published_before** & **published_after** are used at the same time, **published_before** should be bigger than **published_after**.
+        explode: true
+        in: query
+        name: published_after
+        required: false
+        schema:
+          default: 0
+          type: integer
+        style: form
+      - description: |
+          A comma-delimited string to search only in specific fields. Allowed values are title, description, author, and audio. If not specified, then search every fields.
+        explode: true
+        in: query
+        name: only_in
+        required: false
+        schema:
+          default: "title,description,author,audio"
+          type: string
+        style: form
+      - description: |
+          Limit search results to a specific language. If not specified, it'll be any language. You can get a list of supported languages from `GET /languages`. It works only when **type** is *episode* or *podcast*.
+        explode: true
+        in: query
+        name: language
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: |
+          Limit search results to a specific region (e.g., us, gb, in...). If not specified, it'll be any region. You can get the supported country codes from `GET /regions`. It works only when **type** is *episode* or *podcast*.
+        explode: true
+        in: query
+        name: region
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: |
+          A comma-delimited string of podcast ids (up to 5 podcasts) - you can get a podcast id from the **podcast_id** field in response. This parameter is to limit search results from only a few specific podcasts. It works only when **type** is *episode*.
+        explode: true
+        in: query
+        name: ocid
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: |
+          A comma-delimited string of podcast ids (up to 5 podcasts) - you can get a podcast id from the **podcast_id** field in response. This parameter is to exclude search results of a few specific podcasts. It works only when **type** is *episode*.
+        explode: true
+        in: query
+        name: ncid
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: |
+          Whether or not to exclude podcasts/episodes with explicit language. 1 is yes and 0 is no. It works only when **type** is *episode* or *podcast*.
+        explode: true
+        in: query
+        name: safe_mode
+        required: false
+        schema:
+          default: 0
+          enum:
+          - 0
+          - 1
+          type: integer
+        style: form
+      - description: |
+          Whether or not to keep only one episode per podcast in search results. 1 is yes and 0 is no. It works only when **type** is *episode*.
+        explode: true
+        in: query
+        name: unique_podcasts
+        required: false
+        schema:
+          default: 0
+          enum:
+          - 0
+          - 1
+          type: integer
+        style: form
+      - description: |
+          The maximum number of search results per page. A valid value should be an integer between 1 and 10 (inclusive).
+        explode: true
+        in: query
+        name: page_size
+        required: false
+        schema:
+          default: 10
+          type: integer
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchResponse'
+          description: OK
+          headers:
+            X-ListenAPI-FreeQuota:
+              $ref: '#/components/headers/X-ListenAPI-FreeQuota'
+            X-ListenAPI-NextBillingDate:
+              $ref: '#/components/headers/X-ListenAPI-NextBillingDate'
+            X-ListenAPI-Usage:
+              $ref: '#/components/headers/X-ListenAPI-Usage'
+            X-listenAPI-Latency-Seconds:
+              $ref: '#/components/headers/X-listenAPI-Latency-Seconds'
+          links:
+            paginate:
+              description: Pagination through search results.
+              operationId: search
+              parameters:
+                offset: $response.body#/next_offset
+        "400":
+          $ref: '#/components/responses/BadRequest'
+        "401":
+          $ref: '#/components/responses/Unauthorized'
+        "429":
+          $ref: '#/components/responses/TooManyRequests'
+        "5XX":
+          $ref: '#/components/responses/ServerError'
+      summary: Full-text search
+      tags:
+      - Search API
+      x-openapi-router-controller: openapi_server.controllers.search_api_controller
+  /spellcheck:
+    get:
+      description: Suggest a list of words that correct the spelling errors of a search
+        term. This endpoint is available only in the PRO/ENTERPRISE plan.
+      operationId: spellcheck
+      parameters:
+      - $ref: '#/components/parameters/apiKeyParam'
+      - description: |
+          Search term, e.g., person, place, topic...
+        explode: true
+        in: query
+        name: q
+        required: true
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpellCheckResponse'
+          description: OK
+          headers:
+            X-ListenAPI-FreeQuota:
+              $ref: '#/components/headers/X-ListenAPI-FreeQuota'
+            X-ListenAPI-NextBillingDate:
+              $ref: '#/components/headers/X-ListenAPI-NextBillingDate'
+            X-ListenAPI-Usage:
+              $ref: '#/components/headers/X-ListenAPI-Usage'
+            X-listenAPI-Latency-Seconds:
+              $ref: '#/components/headers/X-listenAPI-Latency-Seconds'
+        "400":
+          $ref: '#/components/responses/BadRequest'
+        "401":
+          $ref: '#/components/responses/Unauthorized'
+        "429":
+          $ref: '#/components/responses/TooManyRequests'
+        "5XX":
+          $ref: '#/components/responses/ServerError'
+      summary: Spell check on a search term
+      tags:
+      - Search API
+      x-openapi-router-controller: openapi_server.controllers.search_api_controller
+  /trending_searches:
+    get:
+      description: Fetch up to 10 most recent trending search terms on the Listen
+        Notes platform.
+      operationId: get_trending_searches
+      parameters:
+      - $ref: '#/components/parameters/apiKeyParam'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrendingSearchesResponse'
+          description: OK
+          headers:
+            X-ListenAPI-FreeQuota:
+              $ref: '#/components/headers/X-ListenAPI-FreeQuota'
+            X-ListenAPI-NextBillingDate:
+              $ref: '#/components/headers/X-ListenAPI-NextBillingDate'
+            X-ListenAPI-Usage:
+              $ref: '#/components/headers/X-ListenAPI-Usage'
+            X-listenAPI-Latency-Seconds:
+              $ref: '#/components/headers/X-listenAPI-Latency-Seconds'
+        "400":
+          $ref: '#/components/responses/BadRequest'
+        "401":
+          $ref: '#/components/responses/Unauthorized'
+        "429":
+          $ref: '#/components/responses/TooManyRequests'
+        "5XX":
+          $ref: '#/components/responses/ServerError'
+      summary: Fetch trending search terms
+      tags:
+      - Search API
+      x-openapi-router-controller: openapi_server.controllers.search_api_controller
+  /typeahead:
+    get:
+      description: "Suggest search terms, podcast genres, and podcasts."
+      operationId: typeahead
+      parameters:
+      - $ref: '#/components/parameters/apiKeyParam'
+      - $ref: '#/components/parameters/queryParam'
+      - description: |
+          Autosuggest podcasts. This only searches podcast title and publisher and returns very limited info of 5 podcasts. 1 is yes, 0 is no. It's a bit slow to autosuggest podcasts, so we turn it off by default. If show_podcasts=1, you can also pass iTunes id (e.g., 474722933) to the q parameter to fetch podcast meta data.
+        explode: true
+        in: query
+        name: show_podcasts
+        required: false
+        schema:
+          default: 0
+          enum:
+          - 0
+          - 1
+          type: integer
+        style: form
+      - description: |
+          Whether or not to autosuggest genres. 1 is yes, 0 is no.
+        explode: true
+        in: query
+        name: show_genres
+        required: false
+        schema:
+          default: 0
+          enum:
+          - 0
+          - 1
+          type: integer
+        style: form
+      - description: |
+          Whether or not to exclude podcasts/episodes with explicit language. 1 is yes and 0 is no. It works only when **show_podcasts** is *1*.
+        explode: true
+        in: query
+        name: safe_mode
+        required: false
+        schema:
+          default: 0
+          enum:
+          - 0
+          - 1
+          type: integer
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TypeaheadResponse'
+          description: OK
+          headers:
+            X-ListenAPI-FreeQuota:
+              $ref: '#/components/headers/X-ListenAPI-FreeQuota'
+            X-ListenAPI-NextBillingDate:
+              $ref: '#/components/headers/X-ListenAPI-NextBillingDate'
+            X-ListenAPI-Usage:
+              $ref: '#/components/headers/X-ListenAPI-Usage'
+            X-listenAPI-Latency-Seconds:
+              $ref: '#/components/headers/X-listenAPI-Latency-Seconds'
+        "400":
+          $ref: '#/components/responses/BadRequest'
+        "401":
+          $ref: '#/components/responses/Unauthorized'
+        "429":
+          $ref: '#/components/responses/TooManyRequests'
+        "5XX":
+          $ref: '#/components/responses/ServerError'
+      summary: Typeahead search
+      tags:
+      - Search API
+      x-openapi-router-controller: openapi_server.controllers.search_api_controller
+components:
+  headers:
+    X-ListenAPI-FreeQuota:
+      description: Free quotas of API requests included in your api plan.
+      explode: false
+      schema: {}
+      style: simple
+    X-ListenAPI-NextBillingDate:
+      description: The timestamp for the start of next billing cycle. In ISO 8601
+        format.
+      explode: false
+      schema:
+        format: date-time
+      style: simple
+    X-ListenAPI-Usage:
+      description: The number of API requests that you've used in current billing
+        cycle.
+      explode: false
+      schema: {}
+      style: simple
+    X-listenAPI-Latency-Seconds:
+      description: "Latency for this api call, in seconds."
+      explode: false
+      schema: {}
+      style: simple
+  parameters:
+    apiKeyParam:
+      description: Get API Key on listennotes.com/api
+      explode: false
+      in: header
+      name: x_listen_api_key
+      required: true
+      schema:
+        type: string
+      style: simple
+      x-python-connexion-openapi-name: X-ListenAPI-Key
+    genreIdParam:
+      description: "You can get the id from `GET /genres`. If not specified, it'll\
+        \ be the overall best podcasts, which can be considered as a special genre."
+      explode: true
+      in: query
+      name: genre_id
+      required: false
+      schema:
+        type: string
+      style: form
+    queryParam:
+      description: |
+        Search term, e.g., person, place, topic... You can use double quotes to do verbatim match, e.g., "game of thrones". Otherwise, it's fuzzy search.
+      explode: true
+      in: query
+      name: q
+      required: true
+      schema:
+        type: string
+      style: form
+    safeModeParam:
+      description: "Whether or not to exclude podcasts with explicit language. 1 is\
+        \ yes, and 0 is no."
+      explode: true
+      in: query
+      name: safe_mode
+      required: false
+      schema:
+        default: 0
+        enum:
+        - 0
+        - 1
+        type: integer
+      style: form
+  responses:
+    BadRequest:
+      description: "Something wrong on your end (Client side errors), e.g., missing\
+        \ required parameters."
+    NotFound:
+      description: "Endpoint not exist, or podcast / episode not exist."
+    ServerError:
+      description: Something wrong on our end (Unexpected server errors).
+    TooManyRequests:
+      description: "For FREE plan, exceeding the quota limit; or for all plans, sending\
+        \ too many requests too fast and exceeding the rate limit."
+    Unauthorized:
+      description: "Wrong api key, or your account is suspended."
+  schemas:
+    AudioField:
+      description: "Audio url of this episode, which can be played directly."
+      title: audio
+      type: string
+    AudioLengthSecField:
+      description: Audio length of this episode. In seconds.
+      title: audio_length_sec
+      type: integer
+    AvgAudioLengthSecField:
+      description: Average audio length of all episodes of this podcast. In seconds.
+      title: AvgAudioLengthSecField
+      type: integer
+    BestPodcastsLNUrlField:
+      description: "Url of the list of best podcasts on [ListenNotes.com](https://www.ListenNotes.com)."
+      title: listennotes_url
+      type: string
+    BestPodcastsResponse:
+      example:
+        total: 1
+        page_number: 1
+        podcasts:
+        - country: country
+          update_frequency_hours: 7
+          listen_score_global_rank: listen_score_global_rank
+          explicit_content: true
+          itunes_id: 9
+          audio_length_sec: 5
+          description: description
+          language: language
+          title: title
+          type: episodic
+          is_claimed: true
+          rss: rss
+          extra:
+            amazon_music_url: amazon_music_url
+            google_url: google_url
+            spotify_url: spotify_url
+            patreon_handle: patreon_handle
+            wechat_handle: wechat_handle
+            twitter_handle: twitter_handle
+            instagram_handle: instagram_handle
+            url3: url3
+            url1: url1
+            url2: url2
+            facebook_handle: facebook_handle
+            linkedin_url: linkedin_url
+            youtube_url: youtube_url
+          id: id
+          email: email
+          image: image
+          thumbnail: thumbnail
+          website: website
+          earliest_pub_date_ms: 2
+          genre_ids:
+          - 7
+          - 7
+          listennotes_url: listennotes_url
+          total_episodes: 4
+          looking_for:
+            cross_promotion: true
+            sponsors: true
+            guests: true
+            cohosts: true
+          latest_episode_id: latest_episode_id
+          listen_score: 2
+          publisher: publisher
+          latest_pub_date_ms: 3
+        - country: country
+          update_frequency_hours: 7
+          listen_score_global_rank: listen_score_global_rank
+          explicit_content: true
+          itunes_id: 9
+          audio_length_sec: 5
+          description: description
+          language: language
+          title: title
+          type: episodic
+          is_claimed: true
+          rss: rss
+          extra:
+            amazon_music_url: amazon_music_url
+            google_url: google_url
+            spotify_url: spotify_url
+            patreon_handle: patreon_handle
+            wechat_handle: wechat_handle
+            twitter_handle: twitter_handle
+            instagram_handle: instagram_handle
+            url3: url3
+            url1: url1
+            url2: url2
+            facebook_handle: facebook_handle
+            linkedin_url: linkedin_url
+            youtube_url: youtube_url
+          id: id
+          email: email
+          image: image
+          thumbnail: thumbnail
+          website: website
+          earliest_pub_date_ms: 2
+          genre_ids:
+          - 7
+          - 7
+          listennotes_url: listennotes_url
+          total_episodes: 4
+          looking_for:
+            cross_promotion: true
+            sponsors: true
+            guests: true
+            cohosts: true
+          latest_episode_id: latest_episode_id
+          listen_score: 2
+          publisher: publisher
+          latest_pub_date_ms: 3
+        has_previous: true
+        parent_id: 5
+        next_page_number: 6
+        name: name
+        has_next: true
+        id: 0
+        listennotes_url: listennotes_url
+        previous_page_number: 1
+      properties:
+        has_next:
+          title: has_next
+          type: boolean
+        has_previous:
+          title: has_next
+          type: boolean
+        id:
+          description: The id of this genre
+          title: id
+          type: integer
+        listennotes_url:
+          description: "Url of the list of best podcasts on [ListenNotes.com](https://www.ListenNotes.com)."
+          title: listennotes_url
+          type: string
+        name:
+          description: This genre's name.
+          title: name
+          type: string
+        next_page_number:
+          title: next_page_number
+          type: integer
+        page_number:
+          title: page_number
+          type: integer
+        parent_id:
+          description: The id of parent genre.
+          title: parent_id
+          type: integer
+        podcasts:
+          items:
+            $ref: '#/components/schemas/PodcastSimple'
+          title: podcasts
+          type: array
+        previous_page_number:
+          title: previous_page_number
+          type: integer
+        total:
+          title: total
+          type: integer
+      required:
+      - has_next
+      - has_previous
+      - id
+      - listennotes_url
+      - name
+      - next_page_number
+      - page_number
+      - parent_id
+      - podcasts
+      - previous_page_number
+      - total
+      title: BestPodcastsResponse
+    CountryField:
+      description: The country where this podcast is produced.
+      title: CountryField
+      type: string
+    CuratedDescriptionField:
+      description: This curated list's description.
+      title: description
+      type: string
+    CuratedIdField:
+      description: "Curated list id, which can be used to further fetch detailed curated\
+        \ list metadata via `GET /curated_podcasts/{id}`."
+      title: id
+      type: string
+    CuratedLNUrlField:
+      description: "The url of this curated list on [ListenNotes.com](https://www.ListenNotes.com)."
+      title: listennotes_url
+      type: string
+    CuratedListFull:
+      example:
+        total: 6
+        podcasts:
+        - country: country
+          update_frequency_hours: 7
+          listen_score_global_rank: listen_score_global_rank
+          explicit_content: true
+          itunes_id: 9
+          audio_length_sec: 5
+          description: description
+          language: language
+          title: title
+          type: episodic
+          is_claimed: true
+          rss: rss
+          extra:
+            amazon_music_url: amazon_music_url
+            google_url: google_url
+            spotify_url: spotify_url
+            patreon_handle: patreon_handle
+            wechat_handle: wechat_handle
+            twitter_handle: twitter_handle
+            instagram_handle: instagram_handle
+            url3: url3
+            url1: url1
+            url2: url2
+            facebook_handle: facebook_handle
+            linkedin_url: linkedin_url
+            youtube_url: youtube_url
+          id: id
+          email: email
+          image: image
+          thumbnail: thumbnail
+          website: website
+          earliest_pub_date_ms: 2
+          genre_ids:
+          - 7
+          - 7
+          listennotes_url: listennotes_url
+          total_episodes: 4
+          looking_for:
+            cross_promotion: true
+            sponsors: true
+            guests: true
+            cohosts: true
+          latest_episode_id: latest_episode_id
+          listen_score: 2
+          publisher: publisher
+          latest_pub_date_ms: 3
+        - country: country
+          update_frequency_hours: 7
+          listen_score_global_rank: listen_score_global_rank
+          explicit_content: true
+          itunes_id: 9
+          audio_length_sec: 5
+          description: description
+          language: language
+          title: title
+          type: episodic
+          is_claimed: true
+          rss: rss
+          extra:
+            amazon_music_url: amazon_music_url
+            google_url: google_url
+            spotify_url: spotify_url
+            patreon_handle: patreon_handle
+            wechat_handle: wechat_handle
+            twitter_handle: twitter_handle
+            instagram_handle: instagram_handle
+            url3: url3
+            url1: url1
+            url2: url2
+            facebook_handle: facebook_handle
+            linkedin_url: linkedin_url
+            youtube_url: youtube_url
+          id: id
+          email: email
+          image: image
+          thumbnail: thumbnail
+          website: website
+          earliest_pub_date_ms: 2
+          genre_ids:
+          - 7
+          - 7
+          listennotes_url: listennotes_url
+          total_episodes: 4
+          looking_for:
+            cross_promotion: true
+            sponsors: true
+            guests: true
+            cohosts: true
+          latest_episode_id: latest_episode_id
+          listen_score: 2
+          publisher: publisher
+          latest_pub_date_ms: 3
+        source_domain: source_domain
+        description: description
+        id: id
+        title: title
+        pub_date_ms: 0
+        listennotes_url: listennotes_url
+        source_url: source_url
+      properties:
+        description:
+          description: This curated list's description.
+          title: description
+          type: string
+        id:
+          description: "Curated list id, which can be used to further fetch detailed\
+            \ curated list metadata via `GET /curated_podcasts/{id}`."
+          title: id
+          type: string
+        listennotes_url:
+          description: "The url of this curated list on [ListenNotes.com](https://www.ListenNotes.com)."
+          title: listennotes_url
+          type: string
+        podcasts:
+          description: Complete meta data of all podcasts in this curated list.
+          items:
+            $ref: '#/components/schemas/PodcastSimple'
+          title: podcasts
+          type: array
+        pub_date_ms:
+          description: Published date of this curated list. In milliseconds.
+          title: pub_date_ms
+          type: integer
+        source_domain:
+          description: The domain name of the source of this curated list.
+          title: source_domain
+          type: string
+        source_url:
+          description: Url of the source of this curated list.
+          title: source_url
+          type: string
+        title:
+          description: Curated list name.
+          title: title
+          type: string
+        total:
+          description: The total number of podcasts in this curated list.
+          title: total
+          type: integer
+      title: CuratedListFull
+    CuratedListSearchResult:
+      description: When **type** is *curated*.
+      properties:
+        description_highlighted:
+          description: Highlighted segment of this curated list's description
+          title: description_highlighted
+          type: string
+        description_original:
+          description: Plain text of this curated list's description
+          title: description_original
+          type: string
+        id:
+          description: "Curated list id, which can be used to further fetch detailed\
+            \ curated list metadata via `GET /curated_podcasts/{id}`."
+          title: id
+          type: string
+        listennotes_url:
+          description: "The url of this curated list on [ListenNotes.com](https://www.ListenNotes.com)."
+          title: listennotes_url
+          type: string
+        podcasts:
+          description: Up to 5 podcasts in this curated list.
+          items:
+            $ref: '#/components/schemas/PodcastMinimum'
+          title: podcasts
+          type: array
+        pub_date_ms:
+          description: Published date of this curated list. In milliseconds.
+          title: pub_date_ms
+          type: integer
+        source_domain:
+          description: The domain name of the source of this curated list.
+          title: source_domain
+          type: string
+        source_url:
+          description: Url of the source of this curated list.
+          title: source_url
+          type: string
+        title_highlighted:
+          description: Highlighted segment of this curated list's title
+          title: title_highlighted
+          type: string
+        title_original:
+          description: Plain text of this curated list's title
+          title: title_original
+          type: string
+        total:
+          description: The total number of podcasts in this curated list.
+          title: total
+          type: integer
+      title: CuratedListSearchResult
+    CuratedListSimple:
+      example:
+        total: 1
+        podcasts:
+        - image: image
+          thumbnail: thumbnail
+          listen_score_global_rank: listen_score_global_rank
+          listen_score: 0
+          publisher: publisher
+          id: id
+          title: title
+          listennotes_url: listennotes_url
+        - image: image
+          thumbnail: thumbnail
+          listen_score_global_rank: listen_score_global_rank
+          listen_score: 0
+          publisher: publisher
+          id: id
+          title: title
+          listennotes_url: listennotes_url
+        source_domain: source_domain
+        description: description
+        id: id
+        title: title
+        pub_date_ms: 6
+        listennotes_url: listennotes_url
+        source_url: source_url
+      properties:
+        description:
+          description: This curated list's description.
+          title: description
+          type: string
+        id:
+          description: "Curated list id, which can be used to further fetch detailed\
+            \ curated list metadata via `GET /curated_podcasts/{id}`."
+          title: id
+          type: string
+        listennotes_url:
+          description: "The url of this curated list on [ListenNotes.com](https://www.ListenNotes.com)."
+          title: listennotes_url
+          type: string
+        podcasts:
+          description: Minimum meta data of up to 5 podcasts in this curated list.
+          items:
+            $ref: '#/components/schemas/PodcastMinimum'
+          title: podcasts
+          type: array
+        pub_date_ms:
+          description: Published date of this curated list. In milliseconds.
+          title: pub_date_ms
+          type: integer
+        source_domain:
+          description: The domain name of the source of this curated list.
+          title: source_domain
+          type: string
+        source_url:
+          description: Url of the source of this curated list.
+          title: source_url
+          type: string
+        title:
+          description: Curated list name.
+          title: title
+          type: string
+        total:
+          description: The total number of podcasts in this curated list.
+          title: total
+          type: integer
+      title: CuratedListSimple
+    CuratedNameField:
+      description: Curated list name.
+      title: title
+      type: string
+    CuratedPubDateMsField:
+      description: Published date of this curated list. In milliseconds.
+      title: pub_date_ms
+      type: integer
+    CuratedSourceDomainField:
+      description: The domain name of the source of this curated list.
+      title: source_domain
+      type: string
+    CuratedSourceUrlField:
+      description: Url of the source of this curated list.
+      title: source_url
+      type: string
+    CuratedTotalPodcastsField:
+      description: The total number of podcasts in this curated list.
+      title: total
+      type: integer
+    CustomAudio:
+      description: "A custom audio in a playlist, which is a type of playlist item."
+      properties:
+        audio:
+          description: "Audio url, which can be played directly."
+          title: audio
+          type: string
+        audio_length_sec:
+          description: Audio length in seconds.
+          title: audio_length_sec
+          type: integer
+        image:
+          description: High resolution image url of this custom audio.
+          title: image
+          type: string
+        pub_date_ms:
+          description: |
+            Published date (in milliseconds) of this custom audio.
+            For now, it's the same as **added_at_ms** of this playlist item.
+          title: pub_date_ms
+          type: integer
+        thumbnail:
+          description: Low resolution image url of this custom audio.
+          title: thumbnail
+          type: string
+        title:
+          description: Custom audio title.
+          title: title
+          type: string
+      title: CustomAudio
+    DeletePodcastResponse:
+      example:
+        status: deleted
+      properties:
+        status:
+          description: The status of this podcast deletion request.
+          enum:
+          - deleted
+          - in review
+          title: status
+          type: string
+      required:
+      - status
+      title: DeletePodcastResponse
+    DeletedItem:
+      description: |
+        A deleted episode or podcast.
+        An episode or a podcast could be deleted from our podcast database.
+        Possible reasons: 1) Podcast producers sometimes delete their old episodes. 2) Copyright issues.
+      properties:
+        error:
+          description: Why this episode or podcast is deleted?
+          title: error
+          type: string
+        id:
+          description: Episode id or podcast id.
+          title: id
+          type: string
+        status:
+          description: "The status of this episode or podcast. For now, the only possible\
+            \ value is **deleted**."
+          title: status
+          type: string
+        title:
+          description: Episode title or podcast title.
+          title: title
+          type: string
+      title: DeletedItem
+    EarliestPubDateMsField:
+      description: The published date of the oldest episode of this podcast. In milliseconds
+      title: EarliestPubDateMsField
+      type: integer
+    EmailField:
+      description: The email of this podcast's producer. This field is available only
+        in the PRO/ENTERPRISE plan.
+      title: EmailField
+      type: string
+    EpisodeDescriptionField:
+      description: Html of this episode's full description
+      title: description
+      type: string
+    EpisodeFull:
+      example:
+        image: image
+        thumbnail: thumbnail
+        explicit_content: true
+        listennotes_edit_url: listennotes_edit_url
+        audio_length_sec: 0
+        link: link
+        description: description
+        title: title
+        listennotes_url: listennotes_url
+        transcript: transcript
+        podcast:
+          country: country
+          update_frequency_hours: 7
+          listen_score_global_rank: listen_score_global_rank
+          explicit_content: true
+          itunes_id: 9
+          audio_length_sec: 5
+          description: description
+          language: language
+          title: title
+          type: episodic
+          is_claimed: true
+          rss: rss
+          extra:
+            amazon_music_url: amazon_music_url
+            google_url: google_url
+            spotify_url: spotify_url
+            patreon_handle: patreon_handle
+            wechat_handle: wechat_handle
+            twitter_handle: twitter_handle
+            instagram_handle: instagram_handle
+            url3: url3
+            url1: url1
+            url2: url2
+            facebook_handle: facebook_handle
+            linkedin_url: linkedin_url
+            youtube_url: youtube_url
+          id: id
+          email: email
+          image: image
+          thumbnail: thumbnail
+          website: website
+          earliest_pub_date_ms: 2
+          genre_ids:
+          - 7
+          - 7
+          listennotes_url: listennotes_url
+          total_episodes: 4
+          looking_for:
+            cross_promotion: true
+            sponsors: true
+            guests: true
+            cohosts: true
+          latest_episode_id: latest_episode_id
+          listen_score: 2
+          publisher: publisher
+          latest_pub_date_ms: 3
+        audio: audio
+        id: id
+        pub_date_ms: 6
+        maybe_audio_invalid: true
+      properties:
+        audio:
+          description: "Audio url of this episode, which can be played directly."
+          title: audio
+          type: string
+        audio_length_sec:
+          description: Audio length of this episode. In seconds.
+          title: audio_length_sec
+          type: integer
+        description:
+          description: Html of this episode's full description
+          title: description
+          type: string
+        explicit_content:
+          description: Whether this podcast contains explicit language.
+          title: ExplicitField
+          type: boolean
+        id:
+          description: "Episode id, which can be used to further fetch detailed episode\
+            \ metadata via `GET /episodes/{id}`."
+          title: id
+          type: string
+        image:
+          description: |
+            Image url for this episode.
+            If an episode doesn't have its own image, then this field would be the url of the podcast artwork image.
+            If you are using PRO/ENTERPRISE plan, then it's
+            a high resolution image (1400x1400). If you are using FREE plan, then it's the same as **thumbnail**,
+            low resolution image (300x300).
+          title: image
+          type: string
+        link:
+          description: Web link of this episode.
+          title: link
+          type: string
+        listennotes_edit_url:
+          description: Edit url of this episode where you can update the audio url
+            if you find the audio is broken.
+          title: listennotes_edit_url
+          type: string
+        listennotes_url:
+          description: "The url of this episode on [ListenNotes.com](https://www.ListenNotes.com)."
+          title: listennotes_url
+          type: string
+        maybe_audio_invalid:
+          description: Whether or not this episode's audio is invalid. Podcasters
+            may delete the original audio.
+          title: maybe_audio_invalid
+          type: boolean
+        podcast:
+          $ref: '#/components/schemas/PodcastSimple'
+        pub_date_ms:
+          description: Published date for this episode. In millisecond.
+          title: pub_date_ms
+          type: integer
+        thumbnail:
+          description: |
+            Thumbnail image (300x300) url for this episode.
+            If an episode doesn't have its own image, then this field would be the url of the podcast artwork thumbnail image.
+          title: thumbnail
+          type: string
+        title:
+          description: Episode name.
+          title: title
+          type: string
+        transcript:
+          description: "The transcript of this episode, in plain text (with the newline\
+            \ character \\n). If there's not transcript, it is null. This field is\
+            \ available only in the PRO/ENTERPRISE plan."
+          title: transcript
+          type: string
+      title: EpisodeFull
+    EpisodeIdField:
+      description: "Episode id, which can be used to further fetch detailed episode\
+        \ metadata via `GET /episodes/{id}`."
+      title: id
+      type: string
+    EpisodeImageField:
+      description: |
+        Image url for this episode.
+        If an episode doesn't have its own image, then this field would be the url of the podcast artwork image.
+        If you are using PRO/ENTERPRISE plan, then it's
+        a high resolution image (1400x1400). If you are using FREE plan, then it's the same as **thumbnail**,
+        low resolution image (300x300).
+      title: image
+      type: string
+    EpisodeLNEditUrlField:
+      description: Edit url of this episode where you can update the audio url if
+        you find the audio is broken.
+      title: listennotes_edit_url
+      type: string
+    EpisodeLNUrlField:
+      description: "The url of this episode on [ListenNotes.com](https://www.ListenNotes.com)."
+      title: listennotes_url
+      type: string
+    EpisodeMinimum:
+      example:
+        image: image
+        thumbnail: thumbnail
+        explicit_content: true
+        listennotes_edit_url: listennotes_edit_url
+        audio_length_sec: 1
+        link: link
+        description: description
+        title: title
+        listennotes_url: listennotes_url
+        audio: audio
+        id: id
+        pub_date_ms: 5
+        maybe_audio_invalid: true
+      properties:
+        audio:
+          description: "Audio url of this episode, which can be played directly."
+          title: audio
+          type: string
+        audio_length_sec:
+          description: Audio length of this episode. In seconds.
+          title: audio_length_sec
+          type: integer
+        description:
+          description: Html of this episode's full description
+          title: description
+          type: string
+        explicit_content:
+          description: Whether this podcast contains explicit language.
+          title: ExplicitField
+          type: boolean
+        id:
+          description: "Episode id, which can be used to further fetch detailed episode\
+            \ metadata via `GET /episodes/{id}`."
+          title: id
+          type: string
+        image:
+          description: |
+            Image url for this podcast's artwork. If you are using PRO/ENTERPRISE plan, then it's
+            a high resolution image (1400x1400). If you are using FREE plan, then it's the same as **thumbnail**,
+            low resolution image (300x300).
+          title: ImageField
+          type: string
+        link:
+          description: Web link of this episode.
+          title: link
+          type: string
+        listennotes_edit_url:
+          description: Edit url of this episode where you can update the audio url
+            if you find the audio is broken.
+          title: listennotes_edit_url
+          type: string
+        listennotes_url:
+          description: "The url of this episode on [ListenNotes.com](https://www.ListenNotes.com)."
+          title: listennotes_url
+          type: string
+        maybe_audio_invalid:
+          description: Whether or not this episode's audio is invalid. Podcasters
+            may delete the original audio.
+          title: maybe_audio_invalid
+          type: boolean
+        pub_date_ms:
+          description: Published date for this episode. In millisecond.
+          title: pub_date_ms
+          type: integer
+        thumbnail:
+          description: Thumbnail image url for this podcast's artwork (300x300).
+          title: ThumbnailField
+          type: string
+        title:
+          description: Episode name.
+          title: title
+          type: string
+      title: EpisodeMinimum
+    EpisodeNameField:
+      description: Episode name.
+      title: title
+      type: string
+    EpisodePubDateMsField:
+      description: Published date for this episode. In millisecond.
+      title: pub_date_ms
+      type: integer
+    EpisodeSearchResult:
+      description: When **type** is *episode*.
+      example:
+        image: image
+        thumbnail: thumbnail
+        description_original: description_original
+        explicit_content: true
+        itunes_id: 5
+        audio_length_sec: 1
+        link: link
+        listennotes_url: listennotes_url
+        title_highlighted: title_highlighted
+        title_original: title_original
+        rss: rss
+        description_highlighted: description_highlighted
+        podcast:
+          title_highlighted: title_highlighted
+          title_original: title_original
+          image: image
+          thumbnail: thumbnail
+          listen_score_global_rank: listen_score_global_rank
+          publisher_original: publisher_original
+          listen_score: 2
+          publisher_highlighted: publisher_highlighted
+          id: id
+          genre_ids:
+          - 5
+          - 5
+          listennotes_url: listennotes_url
+        audio: audio
+        id: id
+        pub_date_ms: 7
+        transcripts_highlighted:
+        - transcripts_highlighted
+        - transcripts_highlighted
+      properties:
+        audio:
+          description: "Audio url of this episode, which can be played directly."
+          title: audio
+          type: string
+        audio_length_sec:
+          description: Audio length of this episode. In seconds.
+          title: audio_length_sec
+          type: integer
+        description_highlighted:
+          description: Highlighted segment of this episode's description
+          title: description_highlighted
+          type: string
+        description_original:
+          description: Plain text of this episode's description
+          title: description_original
+          type: string
+        explicit_content:
+          description: Whether this podcast contains explicit language.
+          title: ExplicitField
+          type: boolean
+        id:
+          description: "Episode id, which can be used to further fetch detailed episode\
+            \ metadata via `GET /episodes/{id}`."
+          title: id
+          type: string
+        image:
+          description: |
+            Image url for this episode.
+            If an episode doesn't have its own image, then this field would be the url of the podcast artwork image.
+            If you are using PRO/ENTERPRISE plan, then it's
+            a high resolution image (1400x1400). If you are using FREE plan, then it's the same as **thumbnail**,
+            low resolution image (300x300).
+          title: image
+          type: string
+        itunes_id:
+          description: iTunes id for this podcast.
+          title: iTunesIdField
+          type: integer
+        link:
+          description: Web link of this episode.
+          title: link
+          type: string
+        listennotes_url:
+          description: "The url of this episode on [ListenNotes.com](https://www.ListenNotes.com)."
+          title: listennotes_url
+          type: string
+        podcast:
+          $ref: '#/components/schemas/EpisodeSearchResult_podcast'
+        pub_date_ms:
+          description: Published date for this episode. In millisecond.
+          title: pub_date_ms
+          type: integer
+        rss:
+          description: RSS url of this podcast. This field is available only in the
+            PRO/ENTERPRISE plan.
+          title: RssField
+          type: string
+        thumbnail:
+          description: |
+            Thumbnail image (300x300) url for this episode.
+            If an episode doesn't have its own image, then this field would be the url of the podcast artwork thumbnail image.
+          title: thumbnail
+          type: string
+        title_highlighted:
+          description: Highlighted segment of this episode's title
+          title: title_highlighted
+          type: string
+        title_original:
+          description: Plain text of this episode' title
+          title: title_original
+          type: string
+        transcripts_highlighted:
+          description: Up to 2 highlighted segments of the audio transcript of this
+            episode.
+          items:
+            type: string
+          title: transcripts_highlighted
+          type: array
+      title: EpisodeSearchResult
+    EpisodeSimple:
+      example:
+        image: image
+        thumbnail: thumbnail
+        explicit_content: true
+        listennotes_edit_url: listennotes_edit_url
+        audio_length_sec: 0
+        link: link
+        description: description
+        title: title
+        listennotes_url: listennotes_url
+        podcast:
+          image: image
+          thumbnail: thumbnail
+          listen_score_global_rank: listen_score_global_rank
+          listen_score: 0
+          publisher: publisher
+          id: id
+          title: title
+          listennotes_url: listennotes_url
+        audio: audio
+        id: id
+        pub_date_ms: 6
+        maybe_audio_invalid: true
+      properties:
+        audio:
+          description: "Audio url of this episode, which can be played directly."
+          title: audio
+          type: string
+        audio_length_sec:
+          description: Audio length of this episode. In seconds.
+          title: audio_length_sec
+          type: integer
+        description:
+          description: Html of this episode's full description
+          title: description
+          type: string
+        explicit_content:
+          description: Whether this podcast contains explicit language.
+          title: ExplicitField
+          type: boolean
+        id:
+          description: "Episode id, which can be used to further fetch detailed episode\
+            \ metadata via `GET /episodes/{id}`."
+          title: id
+          type: string
+        image:
+          description: |
+            Image url for this episode.
+            If an episode doesn't have its own image, then this field would be the url of the podcast artwork image.
+            If you are using PRO/ENTERPRISE plan, then it's
+            a high resolution image (1400x1400). If you are using FREE plan, then it's the same as **thumbnail**,
+            low resolution image (300x300).
+          title: image
+          type: string
+        link:
+          description: Web link of this episode.
+          title: link
+          type: string
+        listennotes_edit_url:
+          description: Edit url of this episode where you can update the audio url
+            if you find the audio is broken.
+          title: listennotes_edit_url
+          type: string
+        listennotes_url:
+          description: "The url of this episode on [ListenNotes.com](https://www.ListenNotes.com)."
+          title: listennotes_url
+          type: string
+        maybe_audio_invalid:
+          description: Whether or not this episode's audio is invalid. Podcasters
+            may delete the original audio.
+          title: maybe_audio_invalid
+          type: boolean
+        podcast:
+          $ref: '#/components/schemas/PodcastMinimum'
+        pub_date_ms:
+          description: Published date for this episode. In millisecond.
+          title: pub_date_ms
+          type: integer
+        thumbnail:
+          description: |
+            Thumbnail image (300x300) url for this episode.
+            If an episode doesn't have its own image, then this field would be the url of the podcast artwork thumbnail image.
+          title: thumbnail
+          type: string
+        title:
+          description: Episode name.
+          title: title
+          type: string
+      title: EpisodeSimple
+    EpisodeThumbnailField:
+      description: |
+        Thumbnail image (300x300) url for this episode.
+        If an episode doesn't have its own image, then this field would be the url of the podcast artwork thumbnail image.
+      title: thumbnail
+      type: string
+    ExplicitField:
+      description: Whether this podcast contains explicit language.
+      title: ExplicitField
+      type: boolean
+    Genre:
+      example:
+        parent_id: 6
+        name: name
+        id: 0
+      properties:
+        id:
+          description: Genre id
+          title: id
+          type: integer
+        name:
+          description: Genre name.
+          title: name
+          type: string
+        parent_id:
+          description: Parent genre id.
+          title: parent_id
+          type: integer
+      title: Genre
+    GenreIdsField:
+      items:
+        description: Genre ids.
+        type: integer
+      title: GenreIdsField
+      type: array
+    GetCuratedPodcastsResponse:
+      example:
+        total: 7
+        page_number: 5
+        has_previous: true
+        curated_lists:
+        - total: 1
+          podcasts:
+          - image: image
+            thumbnail: thumbnail
+            listen_score_global_rank: listen_score_global_rank
+            listen_score: 0
+            publisher: publisher
+            id: id
+            title: title
+            listennotes_url: listennotes_url
+          - image: image
+            thumbnail: thumbnail
+            listen_score_global_rank: listen_score_global_rank
+            listen_score: 0
+            publisher: publisher
+            id: id
+            title: title
+            listennotes_url: listennotes_url
+          source_domain: source_domain
+          description: description
+          id: id
+          title: title
+          pub_date_ms: 6
+          listennotes_url: listennotes_url
+          source_url: source_url
+        - total: 1
+          podcasts:
+          - image: image
+            thumbnail: thumbnail
+            listen_score_global_rank: listen_score_global_rank
+            listen_score: 0
+            publisher: publisher
+            id: id
+            title: title
+            listennotes_url: listennotes_url
+          - image: image
+            thumbnail: thumbnail
+            listen_score_global_rank: listen_score_global_rank
+            listen_score: 0
+            publisher: publisher
+            id: id
+            title: title
+            listennotes_url: listennotes_url
+          source_domain: source_domain
+          description: description
+          id: id
+          title: title
+          pub_date_ms: 6
+          listennotes_url: listennotes_url
+          source_url: source_url
+        next_page_number: 5
+        has_next: true
+        previous_page_number: 2
+      properties:
+        curated_lists:
+          items:
+            $ref: '#/components/schemas/CuratedListSimple'
+          title: curated_lists
+          type: array
+        has_next:
+          title: has_next
+          type: boolean
+        has_previous:
+          title: has_previous
+          type: boolean
+        next_page_number:
+          title: next_page_number
+          type: integer
+        page_number:
+          title: page_number
+          type: integer
+        previous_page_number:
+          title: previous_page_number
+          type: integer
+        total:
+          title: total
+          type: integer
+      required:
+      - curated_lists
+      - has_next
+      - has_previous
+      - next_page_number
+      - page_number
+      - previous_page_number
+      - total
+      title: GetCuratedPodcastsResponse
+    GetEpisodeRecommendationsResponse:
+      example:
+        recommendations:
+        - image: image
+          thumbnail: thumbnail
+          explicit_content: true
+          listennotes_edit_url: listennotes_edit_url
+          audio_length_sec: 0
+          link: link
+          description: description
+          title: title
+          listennotes_url: listennotes_url
+          podcast:
+            image: image
+            thumbnail: thumbnail
+            listen_score_global_rank: listen_score_global_rank
+            listen_score: 0
+            publisher: publisher
+            id: id
+            title: title
+            listennotes_url: listennotes_url
+          audio: audio
+          id: id
+          pub_date_ms: 6
+          maybe_audio_invalid: true
+        - image: image
+          thumbnail: thumbnail
+          explicit_content: true
+          listennotes_edit_url: listennotes_edit_url
+          audio_length_sec: 0
+          link: link
+          description: description
+          title: title
+          listennotes_url: listennotes_url
+          podcast:
+            image: image
+            thumbnail: thumbnail
+            listen_score_global_rank: listen_score_global_rank
+            listen_score: 0
+            publisher: publisher
+            id: id
+            title: title
+            listennotes_url: listennotes_url
+          audio: audio
+          id: id
+          pub_date_ms: 6
+          maybe_audio_invalid: true
+      properties:
+        recommendations:
+          items:
+            $ref: '#/components/schemas/EpisodeSimple'
+          title: recommendations
+          type: array
+      required:
+      - recommendations
+      title: GetEpisodeRecommendationsResponse
+    GetEpisodesInBatchForm:
+      properties:
+        ids:
+          description: Comma-separated list of episode ids.
+          type: string
+      required:
+      - ids
+    GetEpisodesInBatchResponse:
+      example:
+        episodes:
+        - image: image
+          thumbnail: thumbnail
+          explicit_content: true
+          listennotes_edit_url: listennotes_edit_url
+          audio_length_sec: 0
+          link: link
+          description: description
+          title: title
+          listennotes_url: listennotes_url
+          podcast:
+            image: image
+            thumbnail: thumbnail
+            listen_score_global_rank: listen_score_global_rank
+            listen_score: 0
+            publisher: publisher
+            id: id
+            title: title
+            listennotes_url: listennotes_url
+          audio: audio
+          id: id
+          pub_date_ms: 6
+          maybe_audio_invalid: true
+        - image: image
+          thumbnail: thumbnail
+          explicit_content: true
+          listennotes_edit_url: listennotes_edit_url
+          audio_length_sec: 0
+          link: link
+          description: description
+          title: title
+          listennotes_url: listennotes_url
+          podcast:
+            image: image
+            thumbnail: thumbnail
+            listen_score_global_rank: listen_score_global_rank
+            listen_score: 0
+            publisher: publisher
+            id: id
+            title: title
+            listennotes_url: listennotes_url
+          audio: audio
+          id: id
+          pub_date_ms: 6
+          maybe_audio_invalid: true
+      properties:
+        episodes:
+          items:
+            $ref: '#/components/schemas/EpisodeSimple'
+          title: episodes
+          type: array
+      required:
+      - episodes
+      title: GetEpisodesInBatchResponse
+    GetGenresResponse:
+      example:
+        genres:
+        - parent_id: 6
+          name: name
+          id: 0
+        - parent_id: 6
+          name: name
+          id: 0
+      properties:
+        genres:
+          items:
+            $ref: '#/components/schemas/Genre'
+          title: genres
+          type: array
+      required:
+      - genres
+      title: GetGenresResponse
+    GetLanguagesResponse:
+      example:
+        languages:
+        - languages
+        - languages
+      properties:
+        languages:
+          items:
+            type: string
+          title: languages
+          type: array
+      required:
+      - languages
+      title: GetLanguagesResponse
+    GetPodcastRecommendationsResponse:
+      example:
+        recommendations:
+        - country: country
+          update_frequency_hours: 7
+          listen_score_global_rank: listen_score_global_rank
+          explicit_content: true
+          itunes_id: 9
+          audio_length_sec: 5
+          description: description
+          language: language
+          title: title
+          type: episodic
+          is_claimed: true
+          rss: rss
+          extra:
+            amazon_music_url: amazon_music_url
+            google_url: google_url
+            spotify_url: spotify_url
+            patreon_handle: patreon_handle
+            wechat_handle: wechat_handle
+            twitter_handle: twitter_handle
+            instagram_handle: instagram_handle
+            url3: url3
+            url1: url1
+            url2: url2
+            facebook_handle: facebook_handle
+            linkedin_url: linkedin_url
+            youtube_url: youtube_url
+          id: id
+          email: email
+          image: image
+          thumbnail: thumbnail
+          website: website
+          earliest_pub_date_ms: 2
+          genre_ids:
+          - 7
+          - 7
+          listennotes_url: listennotes_url
+          total_episodes: 4
+          looking_for:
+            cross_promotion: true
+            sponsors: true
+            guests: true
+            cohosts: true
+          latest_episode_id: latest_episode_id
+          listen_score: 2
+          publisher: publisher
+          latest_pub_date_ms: 3
+        - country: country
+          update_frequency_hours: 7
+          listen_score_global_rank: listen_score_global_rank
+          explicit_content: true
+          itunes_id: 9
+          audio_length_sec: 5
+          description: description
+          language: language
+          title: title
+          type: episodic
+          is_claimed: true
+          rss: rss
+          extra:
+            amazon_music_url: amazon_music_url
+            google_url: google_url
+            spotify_url: spotify_url
+            patreon_handle: patreon_handle
+            wechat_handle: wechat_handle
+            twitter_handle: twitter_handle
+            instagram_handle: instagram_handle
+            url3: url3
+            url1: url1
+            url2: url2
+            facebook_handle: facebook_handle
+            linkedin_url: linkedin_url
+            youtube_url: youtube_url
+          id: id
+          email: email
+          image: image
+          thumbnail: thumbnail
+          website: website
+          earliest_pub_date_ms: 2
+          genre_ids:
+          - 7
+          - 7
+          listennotes_url: listennotes_url
+          total_episodes: 4
+          looking_for:
+            cross_promotion: true
+            sponsors: true
+            guests: true
+            cohosts: true
+          latest_episode_id: latest_episode_id
+          listen_score: 2
+          publisher: publisher
+          latest_pub_date_ms: 3
+      properties:
+        recommendations:
+          items:
+            $ref: '#/components/schemas/PodcastSimple'
+          title: recommendations
+          type: array
+      required:
+      - recommendations
+      title: GetPodcastRecommendationsResponse
+    GetPodcastsInBatchForm:
+      properties:
+        ids:
+          description: Comma-separated list of podcast ids.
+          type: string
+        itunes_ids:
+          description: "Comma-separated Apple Podcasts (iTunes) ids, e.g., 659155419"
+          type: string
+        next_episode_pub_date:
+          description: |
+            For latest episodes pagination. It's the value of **next_episode_pub_date** from the response of last request. If not specified, just return latest 15 episodes.
+          type: integer
+        rsses:
+          description: Comma-separated rss urls.
+          type: string
+        show_latest_episodes:
+          default: 0
+          description: |
+            Whether or not to fetch up to 15 latest episodes from these podcasts, sorted by pub_date. 1 is yes, and 0 is no.
+          enum:
+          - 0
+          - 1
+          type: integer
+        spotify_ids:
+          description: "Comma-separated Spotify ids, e.g., 3DDfEsKDIDrTlnPOiG4ZF4"
+          type: string
+    GetPodcastsInBatchResponse:
+      example:
+        podcasts:
+        - country: country
+          update_frequency_hours: 7
+          listen_score_global_rank: listen_score_global_rank
+          explicit_content: true
+          itunes_id: 9
+          audio_length_sec: 5
+          description: description
+          language: language
+          title: title
+          type: episodic
+          is_claimed: true
+          rss: rss
+          extra:
+            amazon_music_url: amazon_music_url
+            google_url: google_url
+            spotify_url: spotify_url
+            patreon_handle: patreon_handle
+            wechat_handle: wechat_handle
+            twitter_handle: twitter_handle
+            instagram_handle: instagram_handle
+            url3: url3
+            url1: url1
+            url2: url2
+            facebook_handle: facebook_handle
+            linkedin_url: linkedin_url
+            youtube_url: youtube_url
+          id: id
+          email: email
+          image: image
+          thumbnail: thumbnail
+          website: website
+          earliest_pub_date_ms: 2
+          genre_ids:
+          - 7
+          - 7
+          listennotes_url: listennotes_url
+          total_episodes: 4
+          looking_for:
+            cross_promotion: true
+            sponsors: true
+            guests: true
+            cohosts: true
+          latest_episode_id: latest_episode_id
+          listen_score: 2
+          publisher: publisher
+          latest_pub_date_ms: 3
+        - country: country
+          update_frequency_hours: 7
+          listen_score_global_rank: listen_score_global_rank
+          explicit_content: true
+          itunes_id: 9
+          audio_length_sec: 5
+          description: description
+          language: language
+          title: title
+          type: episodic
+          is_claimed: true
+          rss: rss
+          extra:
+            amazon_music_url: amazon_music_url
+            google_url: google_url
+            spotify_url: spotify_url
+            patreon_handle: patreon_handle
+            wechat_handle: wechat_handle
+            twitter_handle: twitter_handle
+            instagram_handle: instagram_handle
+            url3: url3
+            url1: url1
+            url2: url2
+            facebook_handle: facebook_handle
+            linkedin_url: linkedin_url
+            youtube_url: youtube_url
+          id: id
+          email: email
+          image: image
+          thumbnail: thumbnail
+          website: website
+          earliest_pub_date_ms: 2
+          genre_ids:
+          - 7
+          - 7
+          listennotes_url: listennotes_url
+          total_episodes: 4
+          looking_for:
+            cross_promotion: true
+            sponsors: true
+            guests: true
+            cohosts: true
+          latest_episode_id: latest_episode_id
+          listen_score: 2
+          publisher: publisher
+          latest_pub_date_ms: 3
+        latest_episodes:
+        - image: image
+          thumbnail: thumbnail
+          explicit_content: true
+          listennotes_edit_url: listennotes_edit_url
+          audio_length_sec: 0
+          link: link
+          description: description
+          title: title
+          listennotes_url: listennotes_url
+          podcast:
+            image: image
+            thumbnail: thumbnail
+            listen_score_global_rank: listen_score_global_rank
+            listen_score: 0
+            publisher: publisher
+            id: id
+            title: title
+            listennotes_url: listennotes_url
+          audio: audio
+          id: id
+          pub_date_ms: 6
+          maybe_audio_invalid: true
+        - image: image
+          thumbnail: thumbnail
+          explicit_content: true
+          listennotes_edit_url: listennotes_edit_url
+          audio_length_sec: 0
+          link: link
+          description: description
+          title: title
+          listennotes_url: listennotes_url
+          podcast:
+            image: image
+            thumbnail: thumbnail
+            listen_score_global_rank: listen_score_global_rank
+            listen_score: 0
+            publisher: publisher
+            id: id
+            title: title
+            listennotes_url: listennotes_url
+          audio: audio
+          id: id
+          pub_date_ms: 6
+          maybe_audio_invalid: true
+      properties:
+        latest_episodes:
+          description: |
+            Up to 10 latest episodes from these podcasts, sorted by **pub_date**. This field shows up only when **show_latest_episodes** is 1.
+          items:
+            $ref: '#/components/schemas/EpisodeSimple'
+          title: latest_episodes
+          type: array
+        podcasts:
+          items:
+            $ref: '#/components/schemas/PodcastSimple'
+          title: podcasts
+          type: array
+      required:
+      - podcasts
+      title: GetPodcastsInBatchResponse
+    GetRegionsResponse:
+      example:
+        regions: "{}"
+      properties:
+        regions:
+          title: regions
+          type: object
+      required:
+      - regions
+      title: GetRegionsResponse
+    ImageField:
+      description: |
+        Image url for this podcast's artwork. If you are using PRO/ENTERPRISE plan, then it's
+        a high resolution image (1400x1400). If you are using FREE plan, then it's the same as **thumbnail**,
+        low resolution image (300x300).
+      title: ImageField
+      type: string
+    IsClaimedField:
+      description: "Whether this podcast is claimed by its producer on [ListenNotes.com](https://www.ListenNotes.com)."
+      title: IsClaimedField
+      type: boolean
+    LanguageField:
+      description: The language of this podcast. You can get all supported languages
+        from `GET /languages`.
+      title: LanguageField
+      type: string
+    LatestEpisodeIdField:
+      description: "The id of the most recently published episode of this podcast,\
+        \ which can be used to further fetch detailed episode metadata via `GET /episodes/{id}`."
+      title: LatestEpisodeIdField
+      type: string
+    LatestPubDateMsField:
+      description: The published date of the latest episode of this podcast. In milliseconds
+      title: LatestPubDateMsField
+      type: integer
+    LinkField:
+      description: Web link of this episode.
+      title: link
+      type: string
+    ListenScoreField:
+      description: |
+        The estimated popularity score of a podcast compared to all other rss-based public podcasts in the world on a scale from 0 to 100.
+        If the score is not available, it'll be null. Learn more at listennotes.com/listen-score
+      title: ListenScoreField
+      type: integer
+    ListenScoreGlobalRankField:
+      description: |
+        The estimated popularity ranking of a podcast compared to all other rss-based public podcasts in the world.
+        For example, if the value is 0.5%, then this podcast is one of the top 0.5% most popular shows out of all podcasts globally, ranked by Listen Score.
+        If the ranking is not available, it'll be null. Learn more at listennotes.com/listen-score
+      title: ListenScoreGlobalRankField
+      type: string
+    MaybeAudioInvalidField:
+      description: Whether or not this episode's audio is invalid. Podcasters may
+        delete the original audio.
+      title: maybe_audio_invalid
+      type: boolean
+    NextEpisodePubDateField:
+      description: "Passed to the **next_episode_pub_date** parameter of `GET /podcasts/{id}`\
+        \ to paginate through episodes of that podcast."
+      title: next_episode_pub_date
+      type: integer
+    PlaylistDescriptionField:
+      description: Playlist description.
+      title: PlaylistDescriptionField
+      type: string
+    PlaylistIdField:
+      description: "A 11-character playlist id, which can be used to further fetch\
+        \ detailed playlist metadata via `GET /playlists/{id}`."
+      title: PlaylistIdField
+      type: string
+    PlaylistImageField:
+      description: High resolution image url of the playlist.
+      title: PlaylistImageField
+      type: string
+    PlaylistItem:
+      description: An item in a playlist
+      example:
+        added_at_ms: 0
+        notes: notes
+        data:
+          image: image
+          thumbnail: thumbnail
+          explicit_content: true
+          listennotes_edit_url: listennotes_edit_url
+          audio_length_sec: 0
+          link: link
+          description: description
+          title: title
+          listennotes_url: listennotes_url
+          podcast:
+            image: image
+            thumbnail: thumbnail
+            listen_score_global_rank: listen_score_global_rank
+            listen_score: 0
+            publisher: publisher
+            id: id
+            title: title
+            listennotes_url: listennotes_url
+          audio: audio
+          id: id
+          pub_date_ms: 6
+          maybe_audio_invalid: true
+        id: 6
+        type: episode
+      properties:
+        added_at_ms:
+          description: Timestamp (in milliseconds) when this item is added.
+          title: added_at_ms
+          type: integer
+        data:
+          $ref: '#/components/schemas/PlaylistItem_data'
+        id:
+          description: Playlist item id.
+          title: id
+          type: integer
+        notes:
+          description: Notes for this item.
+          title: notes
+          type: string
+        type:
+          description: |
+            The type of this playlist item.
+            If a playlist is **episode_list**, then an item could be either **episode** or **custom_audio**.
+            If it's **podcast_list**, then an item can only be **podcast**.
+          enum:
+          - episode
+          - custom_audio
+          - podcast
+          title: type
+          type: string
+      title: PlaylistItem
+    PlaylistLastTimestampMsField:
+      description: |
+        Passed to the **last_timestamp_ms** parameter of `GET /playlists/{id}` to paginate through items of that playlist.
+      title: PlaylistLastTimestampMsField
+      type: integer
+    PlaylistListennotesUrlField:
+      description: The url of this playlist on ListenNotes.com.
+      title: PlaylistListennotesUrlField
+      type: string
+    PlaylistNameField:
+      description: Playlist name.
+      title: PlaylistNameField
+      type: string
+    PlaylistResponse:
+      example:
+        image: image
+        total_audio_length_sec: 5
+        thumbnail: thumbnail
+        total: 5
+        visibility: public
+        name: name
+        description: description
+        id: id
+        last_timestamp_ms: 1
+        type: episode_list
+        items:
+        - added_at_ms: 0
+          notes: notes
+          data:
+            image: image
+            thumbnail: thumbnail
+            explicit_content: true
+            listennotes_edit_url: listennotes_edit_url
+            audio_length_sec: 0
+            link: link
+            description: description
+            title: title
+            listennotes_url: listennotes_url
+            podcast:
+              image: image
+              thumbnail: thumbnail
+              listen_score_global_rank: listen_score_global_rank
+              listen_score: 0
+              publisher: publisher
+              id: id
+              title: title
+              listennotes_url: listennotes_url
+            audio: audio
+            id: id
+            pub_date_ms: 6
+            maybe_audio_invalid: true
+          id: 6
+          type: episode
+        - added_at_ms: 0
+          notes: notes
+          data:
+            image: image
+            thumbnail: thumbnail
+            explicit_content: true
+            listennotes_edit_url: listennotes_edit_url
+            audio_length_sec: 0
+            link: link
+            description: description
+            title: title
+            listennotes_url: listennotes_url
+            podcast:
+              image: image
+              thumbnail: thumbnail
+              listen_score_global_rank: listen_score_global_rank
+              listen_score: 0
+              publisher: publisher
+              id: id
+              title: title
+              listennotes_url: listennotes_url
+            audio: audio
+            id: id
+            pub_date_ms: 6
+            maybe_audio_invalid: true
+          id: 6
+          type: episode
+        listennotes_url: listennotes_url
+      properties:
+        description:
+          description: Playlist description.
+          title: PlaylistDescriptionField
+          type: string
+        id:
+          description: "A 11-character playlist id, which can be used to further fetch\
+            \ detailed playlist metadata via `GET /playlists/{id}`."
+          title: PlaylistIdField
+          type: string
+        image:
+          description: High resolution image url of the playlist.
+          title: PlaylistImageField
+          type: string
+        items:
+          description: A list of playlist items.
+          items:
+            $ref: '#/components/schemas/PlaylistItem'
+          title: items
+          type: array
+        last_timestamp_ms:
+          description: |
+            Passed to the **last_timestamp_ms** parameter of `GET /playlists/{id}` to paginate through items of that playlist.
+          title: PlaylistLastTimestampMsField
+          type: integer
+        listennotes_url:
+          description: The url of this playlist on ListenNotes.com.
+          title: PlaylistListennotesUrlField
+          type: string
+        name:
+          description: Playlist name.
+          title: PlaylistNameField
+          type: string
+        thumbnail:
+          description: Low resolution image url of the playlist.
+          title: PlaylistThumbnailField
+          type: string
+        total:
+          description: Total number of items in this playlist.
+          title: total
+          type: integer
+        total_audio_length_sec:
+          description: "Total audio length of all episodes in this playlist, in seconds.\
+            \ It will have a valid value only when type is **episode_list**. In other\
+            \ words, it will be 0 if type is **podcast_list**."
+          title: total_audio_length_sec
+          type: integer
+        type:
+          description: |
+            The type of this playlist, which should be either **episode_list** or **podcast_list**.
+          enum:
+          - episode_list
+          - podcast_list
+          title: type
+          type: string
+        visibility:
+          $ref: '#/components/schemas/PlaylistVisibilityField'
+      title: PlaylistResponse
+    PlaylistThumbnailField:
+      description: Low resolution image url of the playlist.
+      title: PlaylistThumbnailField
+      type: string
+    PlaylistVisibilityField:
+      description: Visibility of this playlist.
+      enum:
+      - public
+      - unlisted
+      - private
+      title: PlaylistVisibilityField
+      type: string
+    PlaylistsResponse:
+      example:
+        total: 9
+        page_number: 6
+        has_previous: true
+        next_page_number: 0
+        playlists:
+        - image: image
+          total_audio_length_sec: 2
+          thumbnail: thumbnail
+          episode_count: 1
+          visibility: public
+          podcast_count: 5
+          name: name
+          description: description
+          id: id
+          last_timestamp_ms: 5
+          listennotes_url: listennotes_url
+        - image: image
+          total_audio_length_sec: 2
+          thumbnail: thumbnail
+          episode_count: 1
+          visibility: public
+          podcast_count: 5
+          name: name
+          description: description
+          id: id
+          last_timestamp_ms: 5
+          listennotes_url: listennotes_url
+        has_next: true
+        previous_page_number: 7
+      properties:
+        has_next:
+          title: has_next
+          type: boolean
+        has_previous:
+          title: has_previous
+          type: boolean
+        next_page_number:
+          title: next_page_number
+          type: integer
+        page_number:
+          title: page_number
+          type: integer
+        playlists:
+          items:
+            $ref: '#/components/schemas/PlaylistsResponse_playlists_inner'
+          title: playlists
+          type: array
+        previous_page_number:
+          title: previous_page_number
+          type: integer
+        total:
+          title: total
+          type: integer
+      title: PlaylistsResponse
+    PodcastAudienceResponse:
+      example:
+        by_regions:
+        - region: region
+          ratio: ratio
+        - region: region
+          ratio: ratio
+      properties:
+        by_regions:
+          items:
+            $ref: '#/components/schemas/PodcastAudienceResponse_by_regions_inner'
+          title: by_regions
+          type: array
+      title: PodcastAudienceResponse
+    PodcastDescriptionField:
+      description: Html of this episode's full description
+      title: PodcastDescriptionField
+      type: string
+    PodcastDomainResponse:
+      example:
+        page_number: 6
+        podcasts:
+        - country: country
+          update_frequency_hours: 7
+          listen_score_global_rank: listen_score_global_rank
+          explicit_content: true
+          itunes_id: 9
+          audio_length_sec: 5
+          description: description
+          language: language
+          title: title
+          type: episodic
+          is_claimed: true
+          rss: rss
+          extra:
+            amazon_music_url: amazon_music_url
+            google_url: google_url
+            spotify_url: spotify_url
+            patreon_handle: patreon_handle
+            wechat_handle: wechat_handle
+            twitter_handle: twitter_handle
+            instagram_handle: instagram_handle
+            url3: url3
+            url1: url1
+            url2: url2
+            facebook_handle: facebook_handle
+            linkedin_url: linkedin_url
+            youtube_url: youtube_url
+          id: id
+          email: email
+          image: image
+          thumbnail: thumbnail
+          website: website
+          earliest_pub_date_ms: 2
+          genre_ids:
+          - 7
+          - 7
+          listennotes_url: listennotes_url
+          total_episodes: 4
+          looking_for:
+            cross_promotion: true
+            sponsors: true
+            guests: true
+            cohosts: true
+          latest_episode_id: latest_episode_id
+          listen_score: 2
+          publisher: publisher
+          latest_pub_date_ms: 3
+        - country: country
+          update_frequency_hours: 7
+          listen_score_global_rank: listen_score_global_rank
+          explicit_content: true
+          itunes_id: 9
+          audio_length_sec: 5
+          description: description
+          language: language
+          title: title
+          type: episodic
+          is_claimed: true
+          rss: rss
+          extra:
+            amazon_music_url: amazon_music_url
+            google_url: google_url
+            spotify_url: spotify_url
+            patreon_handle: patreon_handle
+            wechat_handle: wechat_handle
+            twitter_handle: twitter_handle
+            instagram_handle: instagram_handle
+            url3: url3
+            url1: url1
+            url2: url2
+            facebook_handle: facebook_handle
+            linkedin_url: linkedin_url
+            youtube_url: youtube_url
+          id: id
+          email: email
+          image: image
+          thumbnail: thumbnail
+          website: website
+          earliest_pub_date_ms: 2
+          genre_ids:
+          - 7
+          - 7
+          listennotes_url: listennotes_url
+          total_episodes: 4
+          looking_for:
+            cross_promotion: true
+            sponsors: true
+            guests: true
+            cohosts: true
+          latest_episode_id: latest_episode_id
+          listen_score: 2
+          publisher: publisher
+          latest_pub_date_ms: 3
+        has_previous: true
+        next_page_number: 0
+        has_next: true
+        previous_page_number: 1
+      properties:
+        has_next:
+          title: has_next
+          type: boolean
+        has_previous:
+          title: has_previous
+          type: boolean
+        next_page_number:
+          title: next_page_number
+          type: integer
+        page_number:
+          title: page_number
+          type: integer
+        podcasts:
+          items:
+            $ref: '#/components/schemas/PodcastSimple'
+          title: podcasts
+          type: array
+        previous_page_number:
+          title: previous_page_number
+          type: integer
+      title: PodcastDomainResponse
+    PodcastExtraField:
+      example:
+        amazon_music_url: amazon_music_url
+        google_url: google_url
+        spotify_url: spotify_url
+        patreon_handle: patreon_handle
+        wechat_handle: wechat_handle
+        twitter_handle: twitter_handle
+        instagram_handle: instagram_handle
+        url3: url3
+        url1: url1
+        url2: url2
+        facebook_handle: facebook_handle
+        linkedin_url: linkedin_url
+        youtube_url: youtube_url
+      properties:
+        amazon_music_url:
+          description: Amazon Music url for this podcast
+          title: amazon_music_url
+          type: string
+        facebook_handle:
+          description: Facebook username affiliated with this podcast
+          title: facebook_handle
+          type: string
+        google_url:
+          description: Google Podcasts url for this podcast
+          title: google_url
+          type: string
+        instagram_handle:
+          description: Instagram username affiliated with this podcast
+          title: instagram_handle
+          type: string
+        linkedin_url:
+          description: LinkedIn url affiliated with this podcast
+          title: linkedin_url
+          type: string
+        patreon_handle:
+          description: Patreon username affiliated with this podcast
+          title: patreon_handle
+          type: string
+        spotify_url:
+          description: Spotify url for this podcast
+          title: spotify_url
+          type: string
+        twitter_handle:
+          description: Twitter username affiliated with this podcast
+          title: twitter_handle
+          type: string
+        url1:
+          description: Url affiliated with this podcast
+          title: url1
+          type: string
+        url2:
+          description: Url affiliated with this podcast
+          title: url2
+          type: string
+        url3:
+          description: Url affiliated with this podcast
+          title: url3
+          type: string
+        wechat_handle:
+          description: WeChat username affiliated with this podcast
+          title: wechat_handle
+          type: string
+        youtube_url:
+          description: YouTube url affiliated with this podcast
+          title: youtube_url
+          type: string
+      title: PodcastExtraField
+    PodcastFull:
+      example:
+        country: country
+        update_frequency_hours: 4
+        listen_score_global_rank: listen_score_global_rank
+        explicit_content: true
+        itunes_id: 2
+        audio_length_sec: 0
+        description: description
+        language: language
+        title: title
+        type: episodic
+        is_claimed: true
+        next_episode_pub_date: 3
+        rss: rss
+        extra:
+          amazon_music_url: amazon_music_url
+          google_url: google_url
+          spotify_url: spotify_url
+          patreon_handle: patreon_handle
+          wechat_handle: wechat_handle
+          twitter_handle: twitter_handle
+          instagram_handle: instagram_handle
+          url3: url3
+          url1: url1
+          url2: url2
+          facebook_handle: facebook_handle
+          linkedin_url: linkedin_url
+          youtube_url: youtube_url
+        id: id
+        email: email
+        episodes:
+        - image: image
+          thumbnail: thumbnail
+          explicit_content: true
+          listennotes_edit_url: listennotes_edit_url
+          audio_length_sec: 1
+          link: link
+          description: description
+          title: title
+          listennotes_url: listennotes_url
+          audio: audio
+          id: id
+          pub_date_ms: 5
+          maybe_audio_invalid: true
+        - image: image
+          thumbnail: thumbnail
+          explicit_content: true
+          listennotes_edit_url: listennotes_edit_url
+          audio_length_sec: 1
+          link: link
+          description: description
+          title: title
+          listennotes_url: listennotes_url
+          audio: audio
+          id: id
+          pub_date_ms: 5
+          maybe_audio_invalid: true
+        image: image
+        thumbnail: thumbnail
+        website: website
+        earliest_pub_date_ms: 6
+        genre_ids:
+        - 5
+        - 5
+        listennotes_url: listennotes_url
+        total_episodes: 2
+        looking_for:
+          cross_promotion: true
+          sponsors: true
+          guests: true
+          cohosts: true
+        latest_episode_id: latest_episode_id
+        listen_score: 9
+        publisher: publisher
+        latest_pub_date_ms: 7
+      properties:
+        audio_length_sec:
+          description: Average audio length of all episodes of this podcast. In seconds.
+          title: AvgAudioLengthSecField
+          type: integer
+        country:
+          description: The country where this podcast is produced.
+          title: CountryField
+          type: string
+        description:
+          description: Html of this episode's full description
+          title: PodcastDescriptionField
+          type: string
+        earliest_pub_date_ms:
+          description: The published date of the oldest episode of this podcast. In
+            milliseconds
+          title: EarliestPubDateMsField
+          type: integer
+        email:
+          description: The email of this podcast's producer. This field is available
+            only in the PRO/ENTERPRISE plan.
+          title: EmailField
+          type: string
+        episodes:
+          items:
+            $ref: '#/components/schemas/EpisodeMinimum'
+          title: episodes
+          type: array
+        explicit_content:
+          description: Whether this podcast contains explicit language.
+          title: ExplicitField
+          type: boolean
+        extra:
+          $ref: '#/components/schemas/PodcastExtraField'
+        genre_ids:
+          items:
+            description: Genre ids.
+            type: integer
+          title: GenreIdsField
+          type: array
+        id:
+          description: "Podcast id, which can be used to further fetch detailed podcast\
+            \ metadata via `GET /podcasts/{id}`."
+          title: PodcastIdField
+          type: string
+        image:
+          description: |
+            Image url for this podcast's artwork. If you are using PRO/ENTERPRISE plan, then it's
+            a high resolution image (1400x1400). If you are using FREE plan, then it's the same as **thumbnail**,
+            low resolution image (300x300).
+          title: ImageField
+          type: string
+        is_claimed:
+          description: "Whether this podcast is claimed by its producer on [ListenNotes.com](https://www.ListenNotes.com)."
+          title: IsClaimedField
+          type: boolean
+        itunes_id:
+          description: iTunes id for this podcast.
+          title: iTunesIdField
+          type: integer
+        language:
+          description: The language of this podcast. You can get all supported languages
+            from `GET /languages`.
+          title: LanguageField
+          type: string
+        latest_episode_id:
+          description: "The id of the most recently published episode of this podcast,\
+            \ which can be used to further fetch detailed episode metadata via `GET\
+            \ /episodes/{id}`."
+          title: LatestEpisodeIdField
+          type: string
+        latest_pub_date_ms:
+          description: The published date of the latest episode of this podcast. In
+            milliseconds
+          title: LatestPubDateMsField
+          type: integer
+        listen_score:
+          description: |
+            The estimated popularity score of a podcast compared to all other rss-based public podcasts in the world on a scale from 0 to 100.
+            If the score is not available, it'll be null. Learn more at listennotes.com/listen-score
+          title: ListenScoreField
+          type: integer
+        listen_score_global_rank:
+          description: |
+            The estimated popularity ranking of a podcast compared to all other rss-based public podcasts in the world.
+            For example, if the value is 0.5%, then this podcast is one of the top 0.5% most popular shows out of all podcasts globally, ranked by Listen Score.
+            If the ranking is not available, it'll be null. Learn more at listennotes.com/listen-score
+          title: ListenScoreGlobalRankField
+          type: string
+        listennotes_url:
+          description: "The url of this podcast on [ListenNotes.com](https://www.ListenNotes.com)."
+          title: PodcastLNUrlField
+          type: string
+        looking_for:
+          $ref: '#/components/schemas/PodcastLookingForField'
+        next_episode_pub_date:
+          description: "Passed to the **next_episode_pub_date** parameter of `GET\
+            \ /podcasts/{id}` to paginate through episodes of that podcast."
+          title: next_episode_pub_date
+          type: integer
+        publisher:
+          description: Podcast publisher name.
+          title: PublisherField
+          type: string
+        rss:
+          description: RSS url of this podcast. This field is available only in the
+            PRO/ENTERPRISE plan.
+          title: RssField
+          type: string
+        thumbnail:
+          description: Thumbnail image url for this podcast's artwork (300x300).
+          title: ThumbnailField
+          type: string
+        title:
+          description: Podcast name.
+          title: PodcastNameField
+          type: string
+        total_episodes:
+          description: Total number of episodes in this podcast.
+          title: TotalEpisodesField
+          type: integer
+        type:
+          $ref: '#/components/schemas/PodcastTypeField'
+        update_frequency_hours:
+          description: "How frequently does this podcast release a new episode? In\
+            \ hours. For example, if the value is 166, then it's every 166 hours (or\
+            \ weekly)."
+          title: UpdateFrequencyHoursField
+          type: integer
+        website:
+          description: Website url of this podcast.
+          title: WebsiteField
+          type: string
+      title: PodcastFull
+    PodcastIdField:
+      description: "Podcast id, which can be used to further fetch detailed podcast\
+        \ metadata via `GET /podcasts/{id}`."
+      title: PodcastIdField
+      type: string
+    PodcastLNUrlField:
+      description: "The url of this podcast on [ListenNotes.com](https://www.ListenNotes.com)."
+      title: PodcastLNUrlField
+      type: string
+    PodcastLookingForField:
+      example:
+        cross_promotion: true
+        sponsors: true
+        guests: true
+        cohosts: true
+      properties:
+        cohosts:
+          description: Whether this podcast is looking for cohosts.
+          title: cohosts
+          type: boolean
+        cross_promotion:
+          description: Whether this podcast is looking for cross promotion opportunities
+            with other podcasts.
+          title: cross_promotion
+          type: boolean
+        guests:
+          description: Whether this podcast is looking for guests.
+          title: guests
+          type: boolean
+        sponsors:
+          description: Whether this podcast is looking for sponsors.
+          title: sponsors
+          type: boolean
+      title: PodcastLookingForField
+    PodcastMinimum:
+      example:
+        image: image
+        thumbnail: thumbnail
+        listen_score_global_rank: listen_score_global_rank
+        listen_score: 0
+        publisher: publisher
+        id: id
+        title: title
+        listennotes_url: listennotes_url
+      properties:
+        id:
+          description: "Podcast id, which can be used to further fetch detailed podcast\
+            \ metadata via `GET /podcasts/{id}`."
+          title: PodcastIdField
+          type: string
+        image:
+          description: |
+            Image url for this podcast's artwork. If you are using PRO/ENTERPRISE plan, then it's
+            a high resolution image (1400x1400). If you are using FREE plan, then it's the same as **thumbnail**,
+            low resolution image (300x300).
+          title: ImageField
+          type: string
+        listen_score:
+          description: |
+            The estimated popularity score of a podcast compared to all other rss-based public podcasts in the world on a scale from 0 to 100.
+            If the score is not available, it'll be null. Learn more at listennotes.com/listen-score
+          title: ListenScoreField
+          type: integer
+        listen_score_global_rank:
+          description: |
+            The estimated popularity ranking of a podcast compared to all other rss-based public podcasts in the world.
+            For example, if the value is 0.5%, then this podcast is one of the top 0.5% most popular shows out of all podcasts globally, ranked by Listen Score.
+            If the ranking is not available, it'll be null. Learn more at listennotes.com/listen-score
+          title: ListenScoreGlobalRankField
+          type: string
+        listennotes_url:
+          description: "The url of this podcast on [ListenNotes.com](https://www.ListenNotes.com)."
+          title: PodcastLNUrlField
+          type: string
+        publisher:
+          description: Podcast publisher name.
+          title: PublisherField
+          type: string
+        thumbnail:
+          description: Thumbnail image url for this podcast's artwork (300x300).
+          title: ThumbnailField
+          type: string
+        title:
+          description: Podcast name.
+          title: PodcastNameField
+          type: string
+      title: PodcastMinimum
+    PodcastMinimumRss:
+      example:
+        image: image
+        thumbnail: thumbnail
+        rss: rss
+        publisher: publisher
+        id: id
+        title: title
+        listennotes_url: listennotes_url
+      properties:
+        id:
+          description: "Podcast id, which can be used to further fetch detailed podcast\
+            \ metadata via `GET /podcasts/{id}`."
+          title: PodcastIdField
+          type: string
+        image:
+          description: |
+            Image url for this podcast's artwork. If you are using PRO/ENTERPRISE plan, then it's
+            a high resolution image (1400x1400). If you are using FREE plan, then it's the same as **thumbnail**,
+            low resolution image (300x300).
+          title: ImageField
+          type: string
+        listennotes_url:
+          description: "The url of this podcast on [ListenNotes.com](https://www.ListenNotes.com)."
+          title: PodcastLNUrlField
+          type: string
+        publisher:
+          description: Podcast publisher name.
+          title: PublisherField
+          type: string
+        rss:
+          description: RSS url of this podcast. This field is available only in the
+            PRO/ENTERPRISE plan.
+          title: RssField
+          type: string
+        thumbnail:
+          description: Thumbnail image url for this podcast's artwork (300x300).
+          title: ThumbnailField
+          type: string
+        title:
+          description: Podcast name.
+          title: PodcastNameField
+          type: string
+      title: PodcastMinimumRss
+    PodcastNameField:
+      description: Podcast name.
+      title: PodcastNameField
+      type: string
+    PodcastSearchResult:
+      description: When **type** is *podcast*.
+      properties:
+        audio_length_sec:
+          description: Average audio length of all episodes of this podcast. In seconds.
+          title: AvgAudioLengthSecField
+          type: integer
+        description_highlighted:
+          description: Highlighted segment of podcast description
+          title: description_highlighted
+          type: string
+        description_original:
+          description: Plain text of podcast description
+          title: description_original
+          type: string
+        earliest_pub_date_ms:
+          description: The published date of the oldest episode of this podcast. In
+            milliseconds
+          title: EarliestPubDateMsField
+          type: integer
+        email:
+          description: The email of this podcast's producer. This field is available
+            only in the PRO/ENTERPRISE plan.
+          title: EmailField
+          type: string
+        explicit_content:
+          description: Whether this podcast contains explicit language.
+          title: ExplicitField
+          type: boolean
+        genre_ids:
+          items:
+            description: Genre ids.
+            type: integer
+          title: GenreIdsField
+          type: array
+        id:
+          description: "Podcast id, which can be used to further fetch detailed podcast\
+            \ metadata via `GET /podcasts/{id}`."
+          title: PodcastIdField
+          type: string
+        image:
+          description: |
+            Image url for this podcast's artwork. If you are using PRO/ENTERPRISE plan, then it's
+            a high resolution image (1400x1400). If you are using FREE plan, then it's the same as **thumbnail**,
+            low resolution image (300x300).
+          title: ImageField
+          type: string
+        itunes_id:
+          description: iTunes id for this podcast.
+          title: iTunesIdField
+          type: integer
+        latest_episode_id:
+          description: "The id of the most recently published episode of this podcast,\
+            \ which can be used to further fetch detailed episode metadata via `GET\
+            \ /episodes/{id}`."
+          title: LatestEpisodeIdField
+          type: string
+        latest_pub_date_ms:
+          description: The published date of the latest episode of this podcast. In
+            milliseconds
+          title: LatestPubDateMsField
+          type: integer
+        listen_score:
+          description: |
+            The estimated popularity score of a podcast compared to all other rss-based public podcasts in the world on a scale from 0 to 100.
+            If the score is not available, it'll be null. Learn more at listennotes.com/listen-score
+          title: ListenScoreField
+          type: integer
+        listen_score_global_rank:
+          description: |
+            The estimated popularity ranking of a podcast compared to all other rss-based public podcasts in the world.
+            For example, if the value is 0.5%, then this podcast is one of the top 0.5% most popular shows out of all podcasts globally, ranked by Listen Score.
+            If the ranking is not available, it'll be null. Learn more at listennotes.com/listen-score
+          title: ListenScoreGlobalRankField
+          type: string
+        listennotes_url:
+          description: "The url of this podcast on [ListenNotes.com](https://www.ListenNotes.com)."
+          title: PodcastLNUrlField
+          type: string
+        publisher_highlighted:
+          description: Highlighted segment of this podcast's publisher name.
+          title: PublisherHighlightedField
+          type: string
+        publisher_original:
+          description: Plain text of this podcast's publisher name.
+          title: PublisherOriginalField
+          type: string
+        rss:
+          description: RSS url of this podcast. This field is available only in the
+            PRO/ENTERPRISE plan.
+          title: RssField
+          type: string
+        thumbnail:
+          description: Thumbnail image url for this podcast's artwork (300x300).
+          title: ThumbnailField
+          type: string
+        title_highlighted:
+          description: Highlighted segment of podcast name.
+          title: PodcastTitleHighlightedField
+          type: string
+        title_original:
+          description: Plain text of podcast name.
+          title: PodcastTitleOriginalField
+          type: string
+        total_episodes:
+          description: Total number of episodes in this podcast.
+          title: TotalEpisodesField
+          type: integer
+        update_frequency_hours:
+          description: "How frequently does this podcast release a new episode? In\
+            \ hours. For example, if the value is 166, then it's every 166 hours (or\
+            \ weekly)."
+          title: UpdateFrequencyHoursField
+          type: integer
+        website:
+          description: Website url of this podcast.
+          title: WebsiteField
+          type: string
+      title: PodcastSearchResult
+    PodcastSimple:
+      example:
+        country: country
+        update_frequency_hours: 7
+        listen_score_global_rank: listen_score_global_rank
+        explicit_content: true
+        itunes_id: 9
+        audio_length_sec: 5
+        description: description
+        language: language
+        title: title
+        type: episodic
+        is_claimed: true
+        rss: rss
+        extra:
+          amazon_music_url: amazon_music_url
+          google_url: google_url
+          spotify_url: spotify_url
+          patreon_handle: patreon_handle
+          wechat_handle: wechat_handle
+          twitter_handle: twitter_handle
+          instagram_handle: instagram_handle
+          url3: url3
+          url1: url1
+          url2: url2
+          facebook_handle: facebook_handle
+          linkedin_url: linkedin_url
+          youtube_url: youtube_url
+        id: id
+        email: email
+        image: image
+        thumbnail: thumbnail
+        website: website
+        earliest_pub_date_ms: 2
+        genre_ids:
+        - 7
+        - 7
+        listennotes_url: listennotes_url
+        total_episodes: 4
+        looking_for:
+          cross_promotion: true
+          sponsors: true
+          guests: true
+          cohosts: true
+        latest_episode_id: latest_episode_id
+        listen_score: 2
+        publisher: publisher
+        latest_pub_date_ms: 3
+      properties:
+        audio_length_sec:
+          description: Average audio length of all episodes of this podcast. In seconds.
+          title: AvgAudioLengthSecField
+          type: integer
+        country:
+          description: The country where this podcast is produced.
+          title: CountryField
+          type: string
+        description:
+          description: Html of this episode's full description
+          title: PodcastDescriptionField
+          type: string
+        earliest_pub_date_ms:
+          description: The published date of the oldest episode of this podcast. In
+            milliseconds
+          title: EarliestPubDateMsField
+          type: integer
+        email:
+          description: The email of this podcast's producer. This field is available
+            only in the PRO/ENTERPRISE plan.
+          title: EmailField
+          type: string
+        explicit_content:
+          description: Whether this podcast contains explicit language.
+          title: ExplicitField
+          type: boolean
+        extra:
+          $ref: '#/components/schemas/PodcastExtraField'
+        genre_ids:
+          items:
+            description: Genre ids.
+            type: integer
+          title: GenreIdsField
+          type: array
+        id:
+          description: "Podcast id, which can be used to further fetch detailed podcast\
+            \ metadata via `GET /podcasts/{id}`."
+          title: PodcastIdField
+          type: string
+        image:
+          description: |
+            Image url for this podcast's artwork. If you are using PRO/ENTERPRISE plan, then it's
+            a high resolution image (1400x1400). If you are using FREE plan, then it's the same as **thumbnail**,
+            low resolution image (300x300).
+          title: ImageField
+          type: string
+        is_claimed:
+          description: "Whether this podcast is claimed by its producer on [ListenNotes.com](https://www.ListenNotes.com)."
+          title: IsClaimedField
+          type: boolean
+        itunes_id:
+          description: iTunes id for this podcast.
+          title: iTunesIdField
+          type: integer
+        language:
+          description: The language of this podcast. You can get all supported languages
+            from `GET /languages`.
+          title: LanguageField
+          type: string
+        latest_episode_id:
+          description: "The id of the most recently published episode of this podcast,\
+            \ which can be used to further fetch detailed episode metadata via `GET\
+            \ /episodes/{id}`."
+          title: LatestEpisodeIdField
+          type: string
+        latest_pub_date_ms:
+          description: The published date of the latest episode of this podcast. In
+            milliseconds
+          title: LatestPubDateMsField
+          type: integer
+        listen_score:
+          description: |
+            The estimated popularity score of a podcast compared to all other rss-based public podcasts in the world on a scale from 0 to 100.
+            If the score is not available, it'll be null. Learn more at listennotes.com/listen-score
+          title: ListenScoreField
+          type: integer
+        listen_score_global_rank:
+          description: |
+            The estimated popularity ranking of a podcast compared to all other rss-based public podcasts in the world.
+            For example, if the value is 0.5%, then this podcast is one of the top 0.5% most popular shows out of all podcasts globally, ranked by Listen Score.
+            If the ranking is not available, it'll be null. Learn more at listennotes.com/listen-score
+          title: ListenScoreGlobalRankField
+          type: string
+        listennotes_url:
+          description: "The url of this podcast on [ListenNotes.com](https://www.ListenNotes.com)."
+          title: PodcastLNUrlField
+          type: string
+        looking_for:
+          $ref: '#/components/schemas/PodcastLookingForField'
+        publisher:
+          description: Podcast publisher name.
+          title: PublisherField
+          type: string
+        rss:
+          description: RSS url of this podcast. This field is available only in the
+            PRO/ENTERPRISE plan.
+          title: RssField
+          type: string
+        thumbnail:
+          description: Thumbnail image url for this podcast's artwork (300x300).
+          title: ThumbnailField
+          type: string
+        title:
+          description: Podcast name.
+          title: PodcastNameField
+          type: string
+        total_episodes:
+          description: Total number of episodes in this podcast.
+          title: TotalEpisodesField
+          type: integer
+        type:
+          $ref: '#/components/schemas/PodcastTypeField'
+        update_frequency_hours:
+          description: "How frequently does this podcast release a new episode? In\
+            \ hours. For example, if the value is 166, then it's every 166 hours (or\
+            \ weekly)."
+          title: UpdateFrequencyHoursField
+          type: integer
+        website:
+          description: Website url of this podcast.
+          title: WebsiteField
+          type: string
+      title: PodcastSimple
+    PodcastTitleHighlightedField:
+      description: Highlighted segment of podcast name.
+      title: PodcastTitleHighlightedField
+      type: string
+    PodcastTitleOriginalField:
+      description: Plain text of podcast name.
+      title: PodcastTitleOriginalField
+      type: string
+    PodcastTypeField:
+      description: The type of this podcast - episodic or serial.
+      enum:
+      - episodic
+      - serial
+      title: PodcastTypeField
+      type: string
+    PodcastTypeaheadResult:
+      example:
+        title_highlighted: title_highlighted
+        title_original: title_original
+        image: image
+        thumbnail: thumbnail
+        explicit_content: true
+        publisher_original: publisher_original
+        publisher_highlighted: publisher_highlighted
+        id: id
+      properties:
+        explicit_content:
+          description: Whether this podcast contains explicit language.
+          title: ExplicitField
+          type: boolean
+        id:
+          description: "Podcast id, which can be used to further fetch detailed podcast\
+            \ metadata via `GET /podcasts/{id}`."
+          title: PodcastIdField
+          type: string
+        image:
+          description: |
+            Image url for this podcast's artwork. If you are using PRO/ENTERPRISE plan, then it's
+            a high resolution image (1400x1400). If you are using FREE plan, then it's the same as **thumbnail**,
+            low resolution image (300x300).
+          title: ImageField
+          type: string
+        publisher_highlighted:
+          description: Highlighted segment of this podcast's publisher name.
+          title: PublisherHighlightedField
+          type: string
+        publisher_original:
+          description: Plain text of this podcast's publisher name.
+          title: PublisherOriginalField
+          type: string
+        thumbnail:
+          description: Thumbnail image url for this podcast's artwork (300x300).
+          title: ThumbnailField
+          type: string
+        title_highlighted:
+          description: Highlighted segment of podcast name.
+          title: PodcastTitleHighlightedField
+          type: string
+        title_original:
+          description: Plain text of podcast name.
+          title: PodcastTitleOriginalField
+          type: string
+      title: PodcastTypeaheadResult
+    PublisherField:
+      description: Podcast publisher name.
+      title: PublisherField
+      type: string
+    PublisherHighlightedField:
+      description: Highlighted segment of this podcast's publisher name.
+      title: PublisherHighlightedField
+      type: string
+    PublisherOriginalField:
+      description: Plain text of this podcast's publisher name.
+      title: PublisherOriginalField
+      type: string
+    RelatedSearchesResponse:
+      example:
+        terms:
+        - terms
+        - terms
+      properties:
+        terms:
+          description: Related search terms
+          items:
+            type: string
+          title: terms
+          type: array
+      required:
+      - terms
+      title: RelatedSearchesResponse
+    RssField:
+      description: RSS url of this podcast. This field is available only in the PRO/ENTERPRISE
+        plan.
+      title: RssField
+      type: string
+    SearchResponse:
+      example:
+        took: 9.301444243932576
+        total: 3
+        count: 0
+        next_offset: 6
+        results:
+        - image: image
+          thumbnail: thumbnail
+          description_original: description_original
+          explicit_content: true
+          itunes_id: 5
+          audio_length_sec: 1
+          link: link
+          listennotes_url: listennotes_url
+          title_highlighted: title_highlighted
+          title_original: title_original
+          rss: rss
+          description_highlighted: description_highlighted
+          podcast:
+            title_highlighted: title_highlighted
+            title_original: title_original
+            image: image
+            thumbnail: thumbnail
+            listen_score_global_rank: listen_score_global_rank
+            publisher_original: publisher_original
+            listen_score: 2
+            publisher_highlighted: publisher_highlighted
+            id: id
+            genre_ids:
+            - 5
+            - 5
+            listennotes_url: listennotes_url
+          audio: audio
+          id: id
+          pub_date_ms: 7
+          transcripts_highlighted:
+          - transcripts_highlighted
+          - transcripts_highlighted
+        - image: image
+          thumbnail: thumbnail
+          description_original: description_original
+          explicit_content: true
+          itunes_id: 5
+          audio_length_sec: 1
+          link: link
+          listennotes_url: listennotes_url
+          title_highlighted: title_highlighted
+          title_original: title_original
+          rss: rss
+          description_highlighted: description_highlighted
+          podcast:
+            title_highlighted: title_highlighted
+            title_original: title_original
+            image: image
+            thumbnail: thumbnail
+            listen_score_global_rank: listen_score_global_rank
+            publisher_original: publisher_original
+            listen_score: 2
+            publisher_highlighted: publisher_highlighted
+            id: id
+            genre_ids:
+            - 5
+            - 5
+            listennotes_url: listennotes_url
+          audio: audio
+          id: id
+          pub_date_ms: 7
+          transcripts_highlighted:
+          - transcripts_highlighted
+          - transcripts_highlighted
+      properties:
+        count:
+          description: The number of search results in this page.
+          title: count
+          type: integer
+        next_offset:
+          description: Pass this value to the **offset** parameter to do pagination
+            of search results.
+          title: next_offset
+          type: integer
+        results:
+          description: A list of search results.
+          items:
+            $ref: '#/components/schemas/SearchResponse_results_inner'
+          title: results
+          type: array
+        took:
+          description: The time it took to fetch these search results. In seconds.
+          title: took
+          type: number
+        total:
+          description: The total number of search results.
+          title: total
+          type: integer
+      title: SearchResponse
+    SpellCheckResponse:
+      example:
+        corrected_text_html: corrected_text_html
+        tokens:
+        - offset: 0
+          suggestion: suggestion
+          token: token
+        - offset: 0
+          suggestion: suggestion
+          token: token
+      properties:
+        corrected_text_html:
+          description: "The corrected text for the entire search term (multiple words/tokens),\
+            \ where misspelled tokens are replaced with the correct texts and html\
+            \ tags <b><i>"
+          title: corrected_text_html
+          type: string
+        tokens:
+          description: The word in the text query string that is not spelled correctly
+          items:
+            $ref: '#/components/schemas/SpellCheckResponse_tokens_inner'
+          title: tokens
+          type: array
+      required:
+      - corrected_text_html
+      - tokens
+      title: SpellCheckResponse
+    SubmitPodcastForm:
+      properties:
+        email:
+          description: "A valid email address. If **email** is specified, then we'll\
+            \ notify this email address once the podcast is accepted."
+          type: string
+        rss:
+          description: A valid podcast rss url.
+          type: string
+      required:
+      - rss
+    SubmitPodcastResponse:
+      example:
+        podcast:
+          image: image
+          thumbnail: thumbnail
+          listen_score_global_rank: listen_score_global_rank
+          listen_score: 0
+          publisher: publisher
+          id: id
+          title: title
+          listennotes_url: listennotes_url
+        status: found
+      properties:
+        podcast:
+          $ref: '#/components/schemas/PodcastMinimum'
+        status:
+          description: The status of this submission.
+          enum:
+          - found
+          - in review
+          - rejected
+          title: status
+          type: string
+      required:
+      - podcast
+      - status
+      title: SubmitPodcastResponse
+    ThumbnailField:
+      description: Thumbnail image url for this podcast's artwork (300x300).
+      title: ThumbnailField
+      type: string
+    TotalEpisodesField:
+      description: Total number of episodes in this podcast.
+      title: TotalEpisodesField
+      type: integer
+    TranscriptField:
+      description: "The transcript of this episode, in plain text (with the newline\
+        \ character \\n). If there's not transcript, it is null. This field is available\
+        \ only in the PRO/ENTERPRISE plan."
+      title: transcript
+      type: string
+    TrendingSearchesResponse:
+      example:
+        terms:
+        - terms
+        - terms
+      properties:
+        terms:
+          description: Trending search terms
+          items:
+            type: string
+          title: terms
+          type: array
+      required:
+      - terms
+      title: TrendingSearchesResponse
+    TypeaheadResponse:
+      example:
+        podcasts:
+        - title_highlighted: title_highlighted
+          title_original: title_original
+          image: image
+          thumbnail: thumbnail
+          explicit_content: true
+          publisher_original: publisher_original
+          publisher_highlighted: publisher_highlighted
+          id: id
+        - title_highlighted: title_highlighted
+          title_original: title_original
+          image: image
+          thumbnail: thumbnail
+          explicit_content: true
+          publisher_original: publisher_original
+          publisher_highlighted: publisher_highlighted
+          id: id
+        terms:
+        - terms
+        - terms
+        genres:
+        - parent_id: 6
+          name: name
+          id: 0
+        - parent_id: 6
+          name: name
+          id: 0
+      properties:
+        genres:
+          description: Genre suggestions. It'll show up when the **show_genres** parameter
+            is *1*.
+          items:
+            $ref: '#/components/schemas/Genre'
+          title: genres
+          type: array
+        podcasts:
+          description: Podcast suggestions. It'll show up when the **show_podcasts**
+            parameter is 1.
+          items:
+            $ref: '#/components/schemas/PodcastTypeaheadResult'
+          title: podcasts
+          type: array
+        terms:
+          description: Search term suggestions.
+          items:
+            type: string
+          title: terms
+          type: array
+      required:
+      - terms
+      title: TypeaheadResponse
+    UpdateFrequencyHoursField:
+      description: "How frequently does this podcast release a new episode? In hours.\
+        \ For example, if the value is 166, then it's every 166 hours (or weekly)."
+      title: UpdateFrequencyHoursField
+      type: integer
+    WebsiteField:
+      description: Website url of this podcast.
+      title: WebsiteField
+      type: string
+    iTunesIdField:
+      description: iTunes id for this podcast.
+      title: iTunesIdField
+      type: integer
+    EpisodeSearchResult_podcast:
+      description: The podcast that this episode belongs to.
+      example:
+        title_highlighted: title_highlighted
+        title_original: title_original
+        image: image
+        thumbnail: thumbnail
+        listen_score_global_rank: listen_score_global_rank
+        publisher_original: publisher_original
+        listen_score: 2
+        publisher_highlighted: publisher_highlighted
+        id: id
+        genre_ids:
+        - 5
+        - 5
+        listennotes_url: listennotes_url
+      properties:
+        genre_ids:
+          items:
+            description: Genre ids.
+            type: integer
+          title: GenreIdsField
+          type: array
+        id:
+          description: "Podcast id, which can be used to further fetch detailed podcast\
+            \ metadata via `GET /podcasts/{id}`."
+          title: PodcastIdField
+          type: string
+        image:
+          description: |
+            Image url for this podcast's artwork. If you are using PRO/ENTERPRISE plan, then it's
+            a high resolution image (1400x1400). If you are using FREE plan, then it's the same as **thumbnail**,
+            low resolution image (300x300).
+          title: ImageField
+          type: string
+        listen_score:
+          description: |
+            The estimated popularity score of a podcast compared to all other rss-based public podcasts in the world on a scale from 0 to 100.
+            If the score is not available, it'll be null. Learn more at listennotes.com/listen-score
+          title: ListenScoreField
+          type: integer
+        listen_score_global_rank:
+          description: |
+            The estimated popularity ranking of a podcast compared to all other rss-based public podcasts in the world.
+            For example, if the value is 0.5%, then this podcast is one of the top 0.5% most popular shows out of all podcasts globally, ranked by Listen Score.
+            If the ranking is not available, it'll be null. Learn more at listennotes.com/listen-score
+          title: ListenScoreGlobalRankField
+          type: string
+        listennotes_url:
+          description: "The url of this podcast on [ListenNotes.com](https://www.ListenNotes.com)."
+          title: PodcastLNUrlField
+          type: string
+        publisher_highlighted:
+          description: Highlighted segment of this podcast's publisher name.
+          title: PublisherHighlightedField
+          type: string
+        publisher_original:
+          description: Plain text of this podcast's publisher name.
+          title: PublisherOriginalField
+          type: string
+        thumbnail:
+          description: Thumbnail image url for this podcast's artwork (300x300).
+          title: ThumbnailField
+          type: string
+        title_highlighted:
+          description: Highlighted segment of podcast name.
+          title: PodcastTitleHighlightedField
+          type: string
+        title_original:
+          description: Plain text of podcast name.
+          title: PodcastTitleOriginalField
+          type: string
+      title: EpisodeSearchResult_podcast
+    PlaylistItem_data:
+      oneOf:
+      - $ref: '#/components/schemas/EpisodeSimple'
+      - $ref: '#/components/schemas/PodcastSimple'
+      - $ref: '#/components/schemas/CustomAudio'
+      - $ref: '#/components/schemas/DeletedItem'
+      title: PlaylistItem_data
+    PlaylistsResponse_playlists_inner:
+      description: A playlist
+      example:
+        image: image
+        total_audio_length_sec: 2
+        thumbnail: thumbnail
+        episode_count: 1
+        visibility: public
+        podcast_count: 5
+        name: name
+        description: description
+        id: id
+        last_timestamp_ms: 5
+        listennotes_url: listennotes_url
+      properties:
+        description:
+          description: Playlist description.
+          title: PlaylistDescriptionField
+          type: string
+        episode_count:
+          description: The number of episodes (including custom audio) in this playlist.
+          title: episode_count
+          type: integer
+        id:
+          description: "A 11-character playlist id, which can be used to further fetch\
+            \ detailed playlist metadata via `GET /playlists/{id}`."
+          title: PlaylistIdField
+          type: string
+        image:
+          description: High resolution image url of the playlist.
+          title: PlaylistImageField
+          type: string
+        last_timestamp_ms:
+          description: |
+            Passed to the **last_timestamp_ms** parameter of `GET /playlists/{id}` to paginate through items of that playlist.
+          title: PlaylistLastTimestampMsField
+          type: integer
+        listennotes_url:
+          description: The url of this playlist on ListenNotes.com.
+          title: PlaylistListennotesUrlField
+          type: string
+        name:
+          description: Playlist name.
+          title: PlaylistNameField
+          type: string
+        podcast_count:
+          description: The number of podcasts in this playlist.
+          title: podcast_count
+          type: integer
+        thumbnail:
+          description: Low resolution image url of the playlist.
+          title: PlaylistThumbnailField
+          type: string
+        total_audio_length_sec:
+          description: "Total audio length of all episodes in this playlist, in seconds."
+          title: total_audio_length_sec
+          type: integer
+        visibility:
+          $ref: '#/components/schemas/PlaylistVisibilityField'
+      title: PlaylistsResponse_playlists_inner
+    PodcastAudienceResponse_by_regions_inner:
+      example:
+        region: region
+        ratio: ratio
+      properties:
+        ratio:
+          description: percentage of audience from this specific region
+          title: ratio
+          type: string
+        region:
+          description: 2-letter country code of a region.
+          title: region
+          type: string
+      title: PodcastAudienceResponse_by_regions_inner
+    SearchResponse_results_inner:
+      oneOf:
+      - $ref: '#/components/schemas/EpisodeSearchResult'
+      - $ref: '#/components/schemas/PodcastSearchResult'
+      - $ref: '#/components/schemas/CuratedListSearchResult'
+      title: SearchResponse_results_inner
+    SpellCheckResponse_tokens_inner:
+      example:
+        offset: 0
+        suggestion: suggestion
+        token: token
+      properties:
+        offset:
+          description: The zero-based offset from the beginning of the text query
+            string to the word that is misspelled
+          title: offset
+          type: integer
+        suggestion:
+          description: A word that corrects the spelling error
+          title: suggestion
+          type: string
+        token:
+          description: The misspelled word
+          title: token
+          type: string
+      title: SpellCheckResponse_tokens_inner

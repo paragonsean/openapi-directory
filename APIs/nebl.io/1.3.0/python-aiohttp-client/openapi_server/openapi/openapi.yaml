@@ -1,0 +1,3375 @@
+openapi: 3.0.0
+info:
+  contact:
+    x-twitter: NeblioTeam
+  description: APIs for Interacting with NTP1 Tokens & The Neblio Blockchain
+  title: Neblio REST API Suite
+  version: 1.3.0
+  x-apisguru-categories:
+  - enterprise
+  x-logo:
+    url: https://twitter.com/NeblioTeam/profile_image?size=original
+  x-origin:
+  - format: openapi
+    url: https://raw.githubusercontent.com/NeblioTeam/neblio-api-swagger-docs/master/swagger.yaml
+    version: "3.0"
+  x-providerName: nebl.io
+servers:
+- url: https://ntp1node.nebl.io/
+paths:
+  /:
+    post:
+      description: Call any Neblio RPC command from the Neblio API libraries. Useful
+        for signing transactions with a local node and other functions. Will not work
+        from a browser due to CORS restrictions. Requires a node to be running locally
+        at 127.0.0.1
+      operationId: json_rpc
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/rpcRequest'
+        required: true
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/rpcResponse'
+          description: Object containing the JSON response from the Neblio node.
+        "401":
+          description: Authentication information is missing or invalid
+          headers:
+            WWW_Authenticate:
+              explode: false
+              schema:
+                type: string
+              style: simple
+      security:
+      - rpcAuth: []
+      servers:
+      - description: Communicate with locally running Neblio node on Mainnet
+        url: http://127.0.0.1:6326
+      - description: Communicate with locally running Neblio node on Testnet
+        url: http://127.0.0.1:16326
+      summary: Send a JSON-RPC call to a localhost neblio-Qt or nebliod node
+      tags:
+      - JSON-RPC
+      x-openapi-router-controller: openapi_server.controllers.jsonrpc_controller
+      x-codegen-request-body-name: body
+  /ins/addr/{address}:
+    get:
+      description: Returns NEBL address object containing information on a specific
+        address
+      operationId: get_address
+      parameters:
+      - description: Address
+        explode: false
+        in: path
+        name: address
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/getAddressResponse'
+          description: Object containing address info
+      summary: Returns address object
+      tags:
+      - Insight
+      x-openapi-router-controller: openapi_server.controllers.insight_controller
+  /ins/addr/{address}/balance:
+    get:
+      description: Returns NEBL address balance in satoshis
+      operationId: get_address_balance
+      parameters:
+      - description: Address
+        explode: false
+        in: path
+        name: address
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/getAddressBalanceResponse'
+          description: Address balance
+      summary: Returns address balance in sats
+      tags:
+      - Insight
+      x-openapi-router-controller: openapi_server.controllers.insight_controller
+  /ins/addr/{address}/totalReceived:
+    get:
+      description: Returns total NEBL received by address in satoshis
+      operationId: get_address_total_received
+      parameters:
+      - description: Address
+        explode: false
+        in: path
+        name: address
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/getAddressTotalReceivedResponse'
+          description: Total received by address
+      summary: Returns total received by address in sats
+      tags:
+      - Insight
+      x-openapi-router-controller: openapi_server.controllers.insight_controller
+  /ins/addr/{address}/totalSent:
+    get:
+      description: Returns total NEBL sent by address in satoshis
+      operationId: get_address_total_sent
+      parameters:
+      - description: Address
+        explode: false
+        in: path
+        name: address
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/getAddressTotalSentResponse'
+          description: Total sent by address
+      summary: Returns total sent by address in sats
+      tags:
+      - Insight
+      x-openapi-router-controller: openapi_server.controllers.insight_controller
+  /ins/addr/{address}/unconfirmedBalance:
+    get:
+      description: Returns NEBL address unconfirmed balance in satoshis
+      operationId: get_address_unconfirmed_balance
+      parameters:
+      - description: Address
+        explode: false
+        in: path
+        name: address
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/getAddressUnconfirmedBalanceResponse'
+          description: Address unconfirmed balance
+      summary: Returns address unconfirmed balance in sats
+      tags:
+      - Insight
+      x-openapi-router-controller: openapi_server.controllers.insight_controller
+  /ins/addr/{address}/utxo:
+    get:
+      description: Returns information on each Unspent Transaction Output contained
+        at an address
+      operationId: get_address_utxos
+      parameters:
+      - description: Address
+        explode: false
+        in: path
+        name: address
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/getAddressUtxosResponse'
+          description: UTXOs at an address
+      summary: Returns all UTXOs at a given address
+      tags:
+      - Insight
+      x-openapi-router-controller: openapi_server.controllers.insight_controller
+  /ins/block-index/{blockindex}:
+    get:
+      description: Returns the block hash of a block at a given block index
+      operationId: get_block_index
+      parameters:
+      - description: Block Index
+        explode: false
+        in: path
+        name: blockindex
+        required: true
+        schema:
+          type: number
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/getBlockIndexResponse'
+          description: Object containing block hash
+      summary: Returns block hash of block
+      tags:
+      - Insight
+      x-openapi-router-controller: openapi_server.controllers.insight_controller
+  /ins/block/{blockhash}:
+    get:
+      description: Returns blockchain data for a given block based upon the block
+        hash
+      operationId: get_block
+      parameters:
+      - description: Block Hash
+        explode: false
+        in: path
+        name: blockhash
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/getBlockResponse'
+          description: Object containing all information on a blockchain block
+      summary: Returns information regarding a Neblio block
+      tags:
+      - Insight
+      x-openapi-router-controller: openapi_server.controllers.insight_controller
+  /ins/rawtx/{txid}:
+    get:
+      description: Returns raw transaction hex representing a NEBL transaction
+      operationId: get_raw_tx
+      parameters:
+      - description: Transaction ID
+        explode: false
+        in: path
+        name: txid
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/getRawTxResponse'
+          description: Object containing raw hex of transaction
+      summary: Returns raw transaction hex
+      tags:
+      - Insight
+      x-openapi-router-controller: openapi_server.controllers.insight_controller
+  /ins/status:
+    get:
+      description: "Utility API for calling several blockchain node functions - getInfo,\
+        \ getDifficulty, getBestBlockHash, getLastBlockHash"
+      operationId: get_status
+      parameters:
+      - description: "Function to call, getInfo, getDifficulty, getBestBlockHash,\
+          \ or getLastBlockHash"
+        explode: true
+        in: query
+        name: q
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/getStatusResponse'
+          description: Function Response
+      summary: Utility API for calling several blockchain node functions
+      tags:
+      - Insight
+      x-openapi-router-controller: openapi_server.controllers.insight_controller
+  /ins/sync:
+    get:
+      description: Returns information on the node's sync progress
+      operationId: get_sync
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/getSyncResponse'
+          description: Sync Info
+      summary: Get node sync status
+      tags:
+      - Insight
+      x-openapi-router-controller: openapi_server.controllers.insight_controller
+  /ins/tx/send:
+    post:
+      description: |
+        Broadcasts a signed raw transaction to the network. If successful returns the txid of the broadcast trasnaction.
+      operationId: send_tx
+      requestBody:
+        $ref: '#/components/requestBodies/sendTxRequest'
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/broadcastTxResponse'
+          description: An object containing the TXID if the broadcast was successful
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Unexpected error
+      summary: Broadcasts a signed raw transaction to the network (not NTP1 specific)
+      tags:
+      - Insight
+      x-openapi-router-controller: openapi_server.controllers.insight_controller
+      x-codegen-request-body-name: body
+  /ins/tx/{txid}:
+    get:
+      description: Returns NEBL transaction object representing a NEBL transaction
+      operationId: get_tx
+      parameters:
+      - description: Transaction ID
+        explode: false
+        in: path
+        name: txid
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/getTxResponse'
+          description: Object containing transaction info
+      summary: Returns transaction object
+      tags:
+      - Insight
+      x-openapi-router-controller: openapi_server.controllers.insight_controller
+  /ins/txs:
+    get:
+      description: Returns all transactions by block or address
+      operationId: get_txs
+      parameters:
+      - description: Address
+        explode: true
+        in: query
+        name: address
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Block Hash
+        explode: true
+        in: query
+        name: block
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Page number to display
+        explode: true
+        in: query
+        name: pageNum
+        required: false
+        schema:
+          type: number
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/getTxsResponse'
+          description: List of transactions
+      summary: Get transactions by block or address
+      tags:
+      - Insight
+      x-openapi-router-controller: openapi_server.controllers.insight_controller
+  /ntp1/addressinfo/{address}:
+    get:
+      description: |
+        Returns both NEBL and NTP1 token UTXOs held at the given address.
+      operationId: get_address_info
+      parameters:
+      - description: Neblio Address to get information on.
+        explode: false
+        in: path
+        name: address
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/getAddressInfoResponse'
+          description: An object with an array of UTXOs for this address
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Unexpected error
+      summary: Information On a Neblio Address
+      tags:
+      - NTP1
+      x-openapi-router-controller: openapi_server.controllers.ntp1_controller
+  /ntp1/broadcast:
+    post:
+      description: |
+        Broadcasts a signed raw transaction to the network. If successful returns the txid of the broadcast trasnaction.
+      operationId: broadcast_tx
+      requestBody:
+        $ref: '#/components/requestBodies/broadcastTxRequest'
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/broadcastTxResponse'
+          description: An object containing the TXID if the broadcast was successful
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Unexpected error
+      summary: Broadcasts a signed raw transaction to the network
+      tags:
+      - NTP1
+      x-openapi-router-controller: openapi_server.controllers.ntp1_controller
+      x-codegen-request-body-name: body
+  /ntp1/burntoken:
+    post:
+      description: |
+        Builds an unsigned raw transaction that burns an NTP1 token on the Neblio blockchain.
+      operationId: burn_token
+      requestBody:
+        $ref: '#/components/requestBodies/burnTokenRequest'
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/burnTokenResponse'
+          description: An object representing the tx to burn the token
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Unexpected error
+      summary: Builds a transaction that burns an NTP1 Token
+      tags:
+      - NTP1
+      x-openapi-router-controller: openapi_server.controllers.ntp1_controller
+      x-codegen-request-body-name: body
+  /ntp1/issue:
+    post:
+      description: |
+        Builds an unsigned raw transaction that issues a new NTP1 token on the Neblio blockchain.
+      operationId: issue_token
+      requestBody:
+        $ref: '#/components/requestBodies/issueTokenRequest'
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/issueTokenResponse'
+          description: An object representing the token created
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Unexpected error
+      summary: Builds a transaction that issues a new NTP1 Token
+      tags:
+      - NTP1
+      x-openapi-router-controller: openapi_server.controllers.ntp1_controller
+      x-codegen-request-body-name: body
+  /ntp1/sendtoken:
+    post:
+      description: |
+        Builds an unsigned raw transaction that sends an NTP1 token on the Neblio blockchain.
+      operationId: send_token
+      requestBody:
+        $ref: '#/components/requestBodies/sendTokenRequest'
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/sendTokenResponse'
+          description: An object representing the tx to send the token
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Unexpected error
+      summary: Builds a transaction that sends an NTP1 Token
+      tags:
+      - NTP1
+      x-openapi-router-controller: openapi_server.controllers.ntp1_controller
+      x-codegen-request-body-name: body
+  /ntp1/stakeholders/{tokenid}:
+    get:
+      description: |
+        Returns the the the addresses holding a token and how many tokens are held
+      operationId: get_token_holders
+      parameters:
+      - description: TokenId to request metadata for
+        explode: false
+        in: path
+        name: tokenid
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/getTokenHoldersResponse'
+          description: An object containing all of the addresses holding a token
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Unexpected error
+      summary: Get Addresses Holding a Token
+      tags:
+      - NTP1
+      x-openapi-router-controller: openapi_server.controllers.ntp1_controller
+  /ntp1/tokenid/{tokensymbol}:
+    get:
+      description: |
+        Translates a token symbol to a tokenId if a token exists with that symbol on the network
+      operationId: get_token_id
+      parameters:
+      - description: Token symbol
+        explode: false
+        in: path
+        name: tokensymbol
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/getTokenIdResponse'
+          description: "Object containing the token symbol and ID, if token symbol\
+            \ does not exist on network, empty object is returned."
+      summary: Returns the tokenId representing a token
+      tags:
+      - NTP1
+      x-openapi-router-controller: openapi_server.controllers.ntp1_controller
+  /ntp1/tokenmetadata/{tokenid}:
+    get:
+      description: |
+        Returns the metadata associated with a token.
+      operationId: get_token_metadata
+      parameters:
+      - description: TokenId to request metadata for
+        explode: false
+        in: path
+        name: tokenid
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: "0 (Default) is fastest, 1 contains token stats, 2 contains token\
+          \ holding addresses"
+        explode: true
+        in: query
+        name: verbosity
+        required: false
+        schema:
+          type: number
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/getTokenMetadataResponse'
+          description: An object containing the metadata of a token
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Unexpected error
+      summary: Get Metadata of Token
+      tags:
+      - NTP1
+      x-openapi-router-controller: openapi_server.controllers.ntp1_controller
+  /ntp1/tokenmetadata/{tokenid}/{utxo}:
+    get:
+      description: |
+        Returns the metadata associated with a token for that specific utxo instead of the issuance transaction.
+      operationId: get_token_metadata_of_utxo
+      parameters:
+      - description: TokenId to request metadata for
+        explode: false
+        in: path
+        name: tokenid
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: Specific UTXO to request metadata for
+        explode: false
+        in: path
+        name: utxo
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: "0 (Default) is fastest, 1 contains token stats, 2 contains token\
+          \ holding addresses"
+        explode: true
+        in: query
+        name: verbosity
+        required: false
+        schema:
+          type: number
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/getTokenMetadataResponse'
+          description: An object containing the metadata of a token for a UTXO
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Unexpected error
+      summary: Get UTXO Metadata of Token
+      tags:
+      - NTP1
+      x-openapi-router-controller: openapi_server.controllers.ntp1_controller
+  /ntp1/transactioninfo/{txid}:
+    get:
+      description: |
+        Returns detailed information regarding an NTP1 transaction.
+      operationId: get_transaction_info
+      parameters:
+      - description: Neblio txid to get information on.
+        explode: false
+        in: path
+        name: txid
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/getTransactionInfoResponse'
+          description: An object represending this transaction
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Unexpected error
+      summary: Information On an NTP1 Transaction
+      tags:
+      - NTP1
+      x-openapi-router-controller: openapi_server.controllers.ntp1_controller
+  /testnet/faucet:
+    get:
+      description: |
+        Withdraw testnet NEBL to your Neblio Testnet address. By default amount is 1500000000 or 15 NEBL and has a max of 50 NEBL. Only 2 withdrawals allowed per 24 hour period.
+      operationId: testnet_get_faucet
+      parameters:
+      - description: Your Neblio Testnet Address
+        explode: true
+        in: query
+        name: address
+        required: true
+        schema:
+          type: string
+        style: form
+      - description: Amount of NEBL to withdrawal in satoshis
+        explode: true
+        in: query
+        name: amount
+        required: false
+        schema:
+          type: number
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/getFaucetResponse'
+          description: Object containing the transaction ID of the withdrawal.
+      summary: Withdraws testnet NEBL to the specified address
+      tags:
+      - Testnet-Faucet
+      x-openapi-router-controller: openapi_server.controllers.testnet_faucet_controller
+  /testnet/ins/addr/{address}:
+    get:
+      description: Returns NEBL address object containing information on a specific
+        address
+      operationId: testnet_get_address
+      parameters:
+      - description: Address
+        explode: false
+        in: path
+        name: address
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/getAddressResponse'
+          description: Object containing address info
+      summary: Returns address object
+      tags:
+      - Testnet-Insight
+      x-openapi-router-controller: openapi_server.controllers.testnet_insight_controller
+  /testnet/ins/addr/{address}/balance:
+    get:
+      description: Returns NEBL address balance in satoshis
+      operationId: testnet_get_address_balance
+      parameters:
+      - description: Address
+        explode: false
+        in: path
+        name: address
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/getAddressBalanceResponse'
+          description: Address balance
+      summary: Returns address balance in sats
+      tags:
+      - Testnet-Insight
+      x-openapi-router-controller: openapi_server.controllers.testnet_insight_controller
+  /testnet/ins/addr/{address}/totalReceived:
+    get:
+      description: Returns total NEBL received by address in satoshis
+      operationId: testnet_get_address_total_received
+      parameters:
+      - description: Address
+        explode: false
+        in: path
+        name: address
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/getAddressTotalReceivedResponse'
+          description: Total received by address
+      summary: Returns total received by address in sats
+      tags:
+      - Testnet-Insight
+      x-openapi-router-controller: openapi_server.controllers.testnet_insight_controller
+  /testnet/ins/addr/{address}/totalSent:
+    get:
+      description: Returns total NEBL sent by address in satoshis
+      operationId: testnet_get_address_total_sent
+      parameters:
+      - description: Address
+        explode: false
+        in: path
+        name: address
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/getAddressTotalSentResponse'
+          description: Total sent by address
+      summary: Returns total sent by address in sats
+      tags:
+      - Testnet-Insight
+      x-openapi-router-controller: openapi_server.controllers.testnet_insight_controller
+  /testnet/ins/addr/{address}/unconfirmedBalance:
+    get:
+      description: Returns NEBL address unconfirmed balance in satoshis
+      operationId: testnet_get_address_unconfirmed_balance
+      parameters:
+      - description: Address
+        explode: false
+        in: path
+        name: address
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/getAddressUnconfirmedBalanceResponse'
+          description: Address unconfirmed balance
+      summary: Returns address unconfirmed balance in sats
+      tags:
+      - Testnet-Insight
+      x-openapi-router-controller: openapi_server.controllers.testnet_insight_controller
+  /testnet/ins/addr/{address}/utxo:
+    get:
+      description: Returns information on each Unspent Transaction Output contained
+        at an address
+      operationId: testnet_get_address_utxos
+      parameters:
+      - description: Address
+        explode: false
+        in: path
+        name: address
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/getAddressUtxosResponse'
+          description: UTXOs at an address
+      summary: Returns all UTXOs at a given address
+      tags:
+      - Testnet-Insight
+      x-openapi-router-controller: openapi_server.controllers.testnet_insight_controller
+  /testnet/ins/block-index/{blockindex}:
+    get:
+      description: Returns the block hash of a block at a given block index
+      operationId: testnet_get_block_index
+      parameters:
+      - description: Block Index
+        explode: false
+        in: path
+        name: blockindex
+        required: true
+        schema:
+          type: number
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/getBlockIndexResponse'
+          description: Object containing block hash
+      summary: Returns block hash of block
+      tags:
+      - Testnet-Insight
+      x-openapi-router-controller: openapi_server.controllers.testnet_insight_controller
+  /testnet/ins/block/{blockhash}:
+    get:
+      description: Returns blockchain data for a given block based upon the block
+        hash
+      operationId: testnet_get_block
+      parameters:
+      - description: Block Hash
+        explode: false
+        in: path
+        name: blockhash
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/getBlockResponse'
+          description: Object containing all information on a blockchain block
+      summary: Returns information regarding a Neblio block
+      tags:
+      - Testnet-Insight
+      x-openapi-router-controller: openapi_server.controllers.testnet_insight_controller
+  /testnet/ins/rawtx/{txid}:
+    get:
+      description: Returns raw transaction hex representing a NEBL transaction
+      operationId: testnet_get_raw_tx
+      parameters:
+      - description: Transaction ID
+        explode: false
+        in: path
+        name: txid
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/getRawTxResponse'
+          description: Object containing raw hex of transaction
+      summary: Returns raw transaction hex
+      tags:
+      - Testnet-Insight
+      x-openapi-router-controller: openapi_server.controllers.testnet_insight_controller
+  /testnet/ins/status:
+    get:
+      description: "Utility API for calling several blockchain node functions - getInfo,\
+        \ getDifficulty, getBestBlockHash, getLastBlockHash"
+      operationId: testnet_get_status
+      parameters:
+      - description: "Function to call, getInfo, getDifficulty, getBestBlockHash,\
+          \ or getLastBlockHash"
+        explode: true
+        in: query
+        name: q
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/getStatusResponse'
+          description: Function Response
+      summary: Utility API for calling several blockchain node functions
+      tags:
+      - Testnet-Insight
+      x-openapi-router-controller: openapi_server.controllers.testnet_insight_controller
+  /testnet/ins/sync:
+    get:
+      description: Returns information on the node's sync progress
+      operationId: testnet_get_sync
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/getSyncResponse'
+          description: Sync Info
+      summary: Get node sync status
+      tags:
+      - Testnet-Insight
+      x-openapi-router-controller: openapi_server.controllers.testnet_insight_controller
+  /testnet/ins/tx/send:
+    post:
+      description: |
+        Broadcasts a signed raw transaction to the network. If successful returns the txid of the broadcast trasnaction.
+      operationId: testnet_send_tx
+      requestBody:
+        $ref: '#/components/requestBodies/sendTxRequest'
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/broadcastTxResponse'
+          description: An object containing the TXID if the broadcast was successful
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Unexpected error
+      summary: Broadcasts a signed raw transaction to the network (not NTP1 specific)
+      tags:
+      - Testnet-Insight
+      x-openapi-router-controller: openapi_server.controllers.testnet_insight_controller
+      x-codegen-request-body-name: body
+  /testnet/ins/tx/{txid}:
+    get:
+      description: Returns NEBL transaction object representing a NEBL transaction
+      operationId: testnet_get_tx
+      parameters:
+      - description: Transaction ID
+        explode: false
+        in: path
+        name: txid
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/getTxResponse'
+          description: Object containing transaction info
+      summary: Returns transaction object
+      tags:
+      - Testnet-Insight
+      x-openapi-router-controller: openapi_server.controllers.testnet_insight_controller
+  /testnet/ins/txs:
+    get:
+      description: Returns all transactions by block or address
+      operationId: testnet_get_txs
+      parameters:
+      - description: Address
+        explode: true
+        in: query
+        name: address
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Block Hash
+        explode: true
+        in: query
+        name: block
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Page number to display
+        explode: true
+        in: query
+        name: pageNum
+        required: false
+        schema:
+          type: number
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/getTxsResponse'
+          description: List of transactions
+      summary: Get transactions by block or address
+      tags:
+      - Testnet-Insight
+      x-openapi-router-controller: openapi_server.controllers.testnet_insight_controller
+  /testnet/ntp1/addressinfo/{address}:
+    get:
+      description: |
+        Returns both NEBL and NTP1 token UTXOs held at the given address.
+      operationId: testnet_get_address_info
+      parameters:
+      - description: Neblio Address to get information on.
+        explode: false
+        in: path
+        name: address
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/getAddressInfoResponse'
+          description: An object with an array of UTXOs for this address
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Unexpected error
+      summary: Information On a Neblio Address
+      tags:
+      - Testnet-NTP1
+      x-openapi-router-controller: openapi_server.controllers.testnet_ntp1_controller
+  /testnet/ntp1/broadcast:
+    post:
+      description: |
+        Broadcasts a signed raw transaction to the network. If successful returns the txid of the broadcast trasnaction.
+      operationId: testnet_broadcast_tx
+      requestBody:
+        $ref: '#/components/requestBodies/broadcastTxRequest'
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/broadcastTxResponse'
+          description: An object containing the TXID if the broadcast was successful
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Unexpected error
+      summary: Broadcasts a signed raw transaction to the network
+      tags:
+      - Testnet-NTP1
+      x-openapi-router-controller: openapi_server.controllers.testnet_ntp1_controller
+      x-codegen-request-body-name: body
+  /testnet/ntp1/burntoken:
+    post:
+      description: |
+        Builds an unsigned raw transaction that burns an NTP1 token on the Neblio blockchain.
+      operationId: testnet_burn_token
+      requestBody:
+        $ref: '#/components/requestBodies/burnTokenRequest'
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/burnTokenResponse'
+          description: An object representing the tx to burn the token
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Unexpected error
+      summary: Builds a transaction that burns an NTP1 Token
+      tags:
+      - Testnet-NTP1
+      x-openapi-router-controller: openapi_server.controllers.testnet_ntp1_controller
+      x-codegen-request-body-name: body
+  /testnet/ntp1/issue:
+    post:
+      description: |
+        Builds an unsigned raw transaction that issues a new NTP1 token on the Neblio blockchain.
+      operationId: testnet_issue_token
+      requestBody:
+        $ref: '#/components/requestBodies/issueTokenRequest'
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/issueTokenResponse'
+          description: An object representing the token created
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Unexpected error
+      summary: Builds a transaction that issues a new NTP1 Token
+      tags:
+      - Testnet-NTP1
+      x-openapi-router-controller: openapi_server.controllers.testnet_ntp1_controller
+      x-codegen-request-body-name: body
+  /testnet/ntp1/sendtoken:
+    post:
+      description: |
+        Builds an unsigned raw transaction that sends an NTP1 token on the Neblio blockchain.
+      operationId: testnet_send_token
+      requestBody:
+        $ref: '#/components/requestBodies/sendTokenRequest'
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/sendTokenResponse'
+          description: An object representing the tx to send the token
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Unexpected error
+      summary: Builds a transaction that sends an NTP1 Token
+      tags:
+      - Testnet-NTP1
+      x-openapi-router-controller: openapi_server.controllers.testnet_ntp1_controller
+      x-codegen-request-body-name: body
+  /testnet/ntp1/stakeholders/{tokenid}:
+    get:
+      description: |
+        Returns the the the addresses holding a token and how many tokens are held
+      operationId: testnet_get_token_holders
+      parameters:
+      - description: TokenId to request metadata for
+        explode: false
+        in: path
+        name: tokenid
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/getTokenHoldersResponse'
+          description: An object containing all of the addresses holding a token
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Unexpected error
+      summary: Get Addresses Holding a Token
+      tags:
+      - Testnet-NTP1
+      x-openapi-router-controller: openapi_server.controllers.testnet_ntp1_controller
+  /testnet/ntp1/tokenid/{tokensymbol}:
+    get:
+      description: |
+        Translates a token symbol to a tokenId if a token exists with that symbol on the network
+      operationId: testnet_get_token_id
+      parameters:
+      - description: Token symbol
+        explode: false
+        in: path
+        name: tokensymbol
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/getTokenIdResponse'
+          description: "Object containing the token symbol and ID, if token symbol\
+            \ does not exist on network, empty object is returned."
+      summary: Returns the tokenId representing a token
+      tags:
+      - Testnet-NTP1
+      x-openapi-router-controller: openapi_server.controllers.testnet_ntp1_controller
+  /testnet/ntp1/tokenmetadata/{tokenid}:
+    get:
+      description: |
+        Returns the metadata associated with a token.
+      operationId: testnet_get_token_metadata
+      parameters:
+      - description: TokenId to request metadata for
+        explode: false
+        in: path
+        name: tokenid
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: "0 (Default) is fastest, 1 contains token stats, 2 contains token\
+          \ holding addresses"
+        explode: true
+        in: query
+        name: verbosity
+        required: false
+        schema:
+          type: number
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/getTokenMetadataResponse'
+          description: An object containing the metadata of a token
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Unexpected error
+      summary: Get Metadata of Token
+      tags:
+      - Testnet-NTP1
+      x-openapi-router-controller: openapi_server.controllers.testnet_ntp1_controller
+  /testnet/ntp1/tokenmetadata/{tokenid}/{utxo}:
+    get:
+      description: |
+        Returns the metadata associated with a token for that specific utxo instead of the issuance transaction.
+      operationId: testnet_get_token_metadata_of_utxo
+      parameters:
+      - description: TokenId to request metadata for
+        explode: false
+        in: path
+        name: tokenid
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: Specific UTXO to request metadata for
+        explode: false
+        in: path
+        name: utxo
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: "0 (Default) is fastest, 1 contains token stats, 2 contains token\
+          \ holding addresses"
+        explode: true
+        in: query
+        name: verbosity
+        required: false
+        schema:
+          type: number
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/getTokenMetadataResponse'
+          description: An object containing the metadata of a token for a UTXO
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Unexpected error
+      summary: Get UTXO Metadata of Token
+      tags:
+      - Testnet-NTP1
+      x-openapi-router-controller: openapi_server.controllers.testnet_ntp1_controller
+  /testnet/ntp1/transactioninfo/{txid}:
+    get:
+      description: |
+        Returns detailed information regarding an NTP1 transaction.
+      operationId: testnet_get_transaction_info
+      parameters:
+      - description: Neblio txid to get information on.
+        explode: false
+        in: path
+        name: txid
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/getTransactionInfoResponse'
+          description: An object represending this transaction
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Unexpected error
+      summary: Information On an NTP1 Transaction
+      tags:
+      - Testnet-NTP1
+      x-openapi-router-controller: openapi_server.controllers.testnet_ntp1_controller
+components:
+  requestBodies:
+    broadcastTxRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/broadcastTxRequest'
+      description: Object representing a transaction to broadcast
+      required: true
+    burnTokenRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/burnTokenRequest'
+      description: Object representing the token to be burned
+      required: true
+    issueTokenRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/issueTokenRequest'
+      description: Object representing the token to be created
+      required: true
+    sendTokenRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/sendTokenRequest'
+      description: Object representing the token to be sent
+      required: true
+    sendTxRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/sendTxRequest'
+      description: Object representing a transaction to broadcast
+      required: true
+  schemas:
+    Error:
+      example:
+        code: 0
+        fields: fields
+        message: message
+      properties:
+        code:
+          format: int32
+          title: code
+          type: integer
+        fields:
+          title: fields
+          type: string
+        message:
+          title: message
+          type: string
+      title: Error
+      type: object
+    broadcastTxRequest:
+      properties:
+        txHex:
+          description: Signed raw tx hex to broadcast
+          title: txHex
+          type: string
+      required:
+      - txHex
+      title: broadcastTxRequest
+      type: object
+    broadcastTxResponse:
+      example:
+        txid: txid
+      properties:
+        txid:
+          description: Txid of successfully broadcasted transaction
+          title: txid
+          type: string
+      title: broadcastTxResponse
+      type: object
+    burnTokenRequest:
+      properties:
+        burn:
+          description: Array of objects representing tokens to be burned
+          items:
+            $ref: '#/components/schemas/burnTokenRequest_burn_inner'
+          title: burn
+          type: array
+        fee:
+          description: Fee in satoshi to include in the issuance transaction min 10000
+            (0.0001 NEBL)
+          title: fee
+          type: number
+        from:
+          description: Array of addresses to send the token from
+          items:
+            type: string
+          title: from
+          type: array
+        transfer:
+          items:
+            $ref: '#/components/schemas/burnTokenRequest_transfer_inner'
+          title: transfer
+          type: array
+      required:
+      - burn
+      - fee
+      title: burnTokenRequest
+      type: object
+    burnTokenResponse:
+      example:
+        multisigOutputs:
+        - 0.8008281904610115
+        - 0.8008281904610115
+        txHex: txHex
+        ntp1OutputIndexes:
+        - 6.027456183070403
+        - 6.027456183070403
+      properties:
+        multisigOutputs:
+          description: Array of indexes of multisig outputs
+          items:
+            type: number
+          title: multisigOutputs
+          type: array
+        ntp1OutputIndexes:
+          description: Array of indexes transfering NTP1 tokens
+          items:
+            type: number
+          title: ntp1OutputIndexes
+          type: array
+        txHex:
+          description: "Unsigned, raw transaction hex of the transaction to burn the\
+            \ token"
+          title: txHex
+          type: string
+      title: burnTokenResponse
+      type: object
+    getAddressBalanceResponse:
+      description: Address balance in satoshis
+      type: number
+    getAddressInfoResponse:
+      example:
+        address: address
+        utxos:
+        - scriptPubKey: "{}"
+          blocktime: 6.027456183070403
+          index: 1.4658129805029452
+          txid: txid
+          tokens:
+          - amount: 5.962133916683182
+            aggregationPolicy: aggregationPolicy
+            lockStatus: true
+            tokenId: tokenId
+            issueTxid: issueTxid
+            divisibility: 5.637376656633329
+          - amount: 5.962133916683182
+            aggregationPolicy: aggregationPolicy
+            lockStatus: true
+            tokenId: tokenId
+            issueTxid: issueTxid
+            divisibility: 5.637376656633329
+          used: true
+          value: 2.3021358869347655
+          blockheight: 0.8008281904610115
+        - scriptPubKey: "{}"
+          blocktime: 6.027456183070403
+          index: 1.4658129805029452
+          txid: txid
+          tokens:
+          - amount: 5.962133916683182
+            aggregationPolicy: aggregationPolicy
+            lockStatus: true
+            tokenId: tokenId
+            issueTxid: issueTxid
+            divisibility: 5.637376656633329
+          - amount: 5.962133916683182
+            aggregationPolicy: aggregationPolicy
+            lockStatus: true
+            tokenId: tokenId
+            issueTxid: issueTxid
+            divisibility: 5.637376656633329
+          used: true
+          value: 2.3021358869347655
+          blockheight: 0.8008281904610115
+      properties:
+        address:
+          description: The Neblio Address
+          title: address
+          type: string
+        utxos:
+          description: Array of UTXOs held at this address.
+          items:
+            $ref: '#/components/schemas/getAddressInfoResponse_utxos_inner'
+          title: utxos
+          type: array
+      title: getAddressInfoResponse
+      type: object
+    getAddressResponse:
+      example:
+        unconfirmedBalance: 9.301444243932576
+        totalReceivedSat: 5.962133916683182
+        balance: 0.8008281904610115
+        balanceSat: 6.027456183070403
+        totalSentSat: 2.3021358869347655
+        txAppearances: 7.061401241503109
+        unconfirmedTxAppearances: 2.027123023002322
+        addrStr: addrStr
+        totalReceived: 1.4658129805029452
+        totalSent: 5.637376656633329
+        unconfirmedBalanceSat: 3.616076749251911
+        transactions:
+        - transactions
+        - transactions
+      properties:
+        addrStr:
+          description: Address in string form
+          title: addrStr
+          type: string
+        balance:
+          description: NEBL balance
+          title: balance
+          type: number
+        balanceSat:
+          description: NEBL balance in satoshis
+          title: balanceSat
+          type: number
+        totalReceived:
+          description: Total NEBL received
+          title: totalReceived
+          type: number
+        totalReceivedSat:
+          description: Total NEBL received in satoshis
+          title: totalReceivedSat
+          type: number
+        totalSent:
+          description: Total NEBL sent
+          title: totalSent
+          type: number
+        totalSentSat:
+          description: Total NEBL sent satoshis
+          title: totalSentSat
+          type: number
+        transactions:
+          description: Array of transaction ids for this address
+          items:
+            type: string
+          title: transactions
+          type: array
+        txAppearances:
+          description: Number of transactions for this address
+          title: txAppearances
+          type: number
+        unconfirmedBalance:
+          description: Unconfirmed NEBL balance
+          title: unconfirmedBalance
+          type: number
+        unconfirmedBalanceSat:
+          description: Unconfirmed NEBL balance in satoshis
+          title: unconfirmedBalanceSat
+          type: number
+        unconfirmedTxAppearances:
+          description: Number of unconfirmed transactions for this address
+          title: unconfirmedTxAppearances
+          type: number
+      title: getAddressResponse
+      type: object
+    getAddressTotalReceivedResponse:
+      description: Address total received in satoshis
+      type: number
+    getAddressTotalSentResponse:
+      description: Address total sent in satoshis
+      type: number
+    getAddressUnconfirmedBalanceResponse:
+      description: Address unconfirmed balance in satoshis
+      type: number
+    getAddressUtxosResponse:
+      description: Array of objects representing this address' UTXOs
+      items:
+        $ref: '#/components/schemas/getAddressUtxosResponse_inner'
+      type: array
+    getBlockIndexResponse:
+      example:
+        blockHash: blockHash
+      properties:
+        blockHash:
+          description: Hash of the requested block
+          title: blockHash
+          type: string
+      title: getBlockIndexResponse
+      type: object
+    getBlockResponse:
+      example:
+        reward: 5.637376656633329
+        tx:
+        - tx
+        - tx
+        previousblockhash: previousblockhash
+        bits: bits
+        confirmations: 0.8008281904610115
+        nonce: 5.962133916683182
+        version: 9.301444243932576
+        nextblockhash: nextblockhash
+        difficulty: 6.027456183070403
+        size: 2.3021358869347655
+        merkleroot: merkleroot
+        time: 7.061401241503109
+        hash: hash
+        height: 1.4658129805029452
+      properties:
+        bits:
+          description: Block bits
+          title: bits
+          type: string
+        confirmations:
+          description: Number of confirmations block has
+          title: confirmations
+          type: number
+        difficulty:
+          description: Block difficulty
+          title: difficulty
+          type: number
+        hash:
+          description: Block hash
+          title: hash
+          type: string
+        height:
+          description: Block height
+          title: height
+          type: number
+        merkleroot:
+          description: Merkleroot of block
+          title: merkleroot
+          type: string
+        nextblockhash:
+          description: Hash of the next block on the chain
+          title: nextblockhash
+          type: string
+        nonce:
+          description: Block nonce
+          title: nonce
+          type: number
+        previousblockhash:
+          description: Hash of the previous block on the chain
+          title: previousblockhash
+          type: string
+        reward:
+          description: Number of NEBL awarded in this block
+          title: reward
+          type: number
+        size:
+          description: Block size in bytes
+          title: size
+          type: number
+        time:
+          description: Block time relative to epoch
+          title: time
+          type: number
+        tx:
+          description: Array of tx ids in the block
+          items:
+            type: string
+          title: tx
+          type: array
+        version:
+          description: Block version
+          title: version
+          type: number
+      title: getBlockResponse
+      type: object
+    getFaucetResponse:
+      example:
+        data:
+          txId: txId
+        status: status
+      properties:
+        data:
+          $ref: '#/components/schemas/getFaucetResponse_data'
+        status:
+          description: Whether the withdrawal was successful
+          title: status
+          type: string
+      title: getFaucetResponse
+      type: object
+    getRawTxResponse:
+      example:
+        rawtx: rawtx
+      properties:
+        rawtx:
+          description: Raw hex representing the transaction
+          title: rawtx
+          type: string
+      title: getRawTxResponse
+      type: object
+    getStatusResponse:
+      description: "Depending on the function called, the structure and information\
+        \ contained in this object will vary"
+      type: object
+    getSyncResponse:
+      description: Object containing node sync status
+      example:
+        syncPercentage: 1.4658129805029452
+        blockChainHeight: 0.8008281904610115
+        error: error
+        type: type
+        height: 6.027456183070403
+        status: status
+      properties:
+        blockChainHeight:
+          description: Current blockchain height
+          title: blockChainHeight
+          type: number
+        error:
+          description: Recent sync error messages
+          title: error
+          type: string
+        height:
+          description: Height node is synced to
+          title: height
+          type: number
+        status:
+          description: Current sync status
+          title: status
+          type: string
+        syncPercentage:
+          description: Current sync percentage
+          title: syncPercentage
+          type: number
+        type:
+          description: Node type
+          title: type
+          type: string
+      title: getSyncResponse
+      type: object
+    getTokenHoldersResponse:
+      example:
+        aggregationPolicy: aggregationPolicy
+        lockStatus: true
+        tokenId: tokenId
+        holders:
+        - amount: 6.027456183070403
+          address: address
+        - amount: 6.027456183070403
+          address: address
+        someUtxo: someUtxo
+        divibility: 0.8008281904610115
+      properties:
+        aggregationPolicy:
+          description: Whether the tokesn are aggregatable
+          title: aggregationPolicy
+          type: string
+        divibility:
+          description: How many decimal points the token is divisble to
+          title: divibility
+          type: number
+        holders:
+          items:
+            $ref: '#/components/schemas/getTokenHoldersResponse_holders_inner'
+          title: holders
+          type: array
+        lockStatus:
+          description: Whether new issuances of this token are locked
+          title: lockStatus
+          type: boolean
+        someUtxo:
+          description: A UTXO of this token
+          title: someUtxo
+          type: string
+        tokenId:
+          description: TokenId of the token
+          title: tokenId
+          type: string
+      title: getTokenHoldersResponse
+      type: object
+    getTokenIdResponse:
+      example:
+        tokenId: tokenId
+        tokenName: tokenName
+      properties:
+        tokenId:
+          description: Unique ID of the token
+          title: tokenId
+          type: string
+        tokenName:
+          description: String representing the token Symbol
+          title: tokenName
+          type: string
+      title: getTokenIdResponse
+      type: object
+    getTokenMetadataResponse:
+      example:
+        initialIssuanceAmount: 1.4658129805029452
+        metadataOfUtxo:
+          userData:
+            meta:
+            - "{}"
+            - "{}"
+        tokenId: tokenId
+        totalSupply: 9.301444243932576
+        numOfHolders: 5.637376656633329
+        numOfBurns: 5.962133916683182
+        numOfIssuance: 2.3021358869347655
+        aggregationPolicy: aggregationPolicy
+        firstBlock: 6.027456183070403
+        numOfTransfers: 7.061401241503109
+        lockStatus: true
+        someUtxo: someUtxo
+        metadataOfIssuance:
+          data:
+            userData:
+              meta:
+              - value: value
+                key: key
+              - value: value
+                key: key
+            tokenName: tokenName
+            description: description
+            issuer: issuer
+        issuanceTxid: issuanceTxid
+        divisibility: 0.8008281904610115
+        issueAddress: issueAddress
+      properties:
+        aggregationPolicy:
+          description: Whether the tokens are aggregatable
+          title: aggregationPolicy
+          type: string
+        divisibility:
+          description: Decimal places the token is divisible to
+          title: divisibility
+          type: number
+        firstBlock:
+          description: Block number token was issued in
+          title: firstBlock
+          type: number
+        initialIssuanceAmount:
+          description: Total tokens issued in initial issuance
+          title: initialIssuanceAmount
+          type: number
+        issuanceTxid:
+          description: TXID the token was issued with
+          title: issuanceTxid
+          type: string
+        issueAddress:
+          description: Address that issued the tokens
+          title: issueAddress
+          type: string
+        lockStatus:
+          description: Whether issuance of more tokens is locked
+          title: lockStatus
+          type: boolean
+        metadataOfIssuance:
+          $ref: '#/components/schemas/getTokenMetadataResponse_metadataOfIssuance'
+        metadataOfUtxo:
+          $ref: '#/components/schemas/getTokenMetadataResponse_metadataOfUtxo'
+        numOfBurns:
+          description: Number of times tokens have been burned
+          title: numOfBurns
+          type: number
+        numOfHolders:
+          description: Total number of addresses this token is held at
+          title: numOfHolders
+          type: number
+        numOfIssuance:
+          description: Total number of times this token has been issued
+          title: numOfIssuance
+          type: number
+        numOfTransfers:
+          description: Total number of transactions of this token
+          title: numOfTransfers
+          type: number
+        someUtxo:
+          description: Example UTXO containing this token.
+          title: someUtxo
+          type: string
+        tokenId:
+          description: ID of the token
+          title: tokenId
+          type: string
+        totalSupply:
+          description: Total number of tokens in supply
+          title: totalSupply
+          type: number
+      title: getTokenMetadataResponse
+      type: object
+    getTransactionInfoResponse:
+      example:
+        locktime: 5.637376656633329
+        fee: 5.962133916683182
+        txid: txid
+        confirmations: 1.4658129805029452
+        version: 9.301444243932576
+        blockheight: 0.8008281904610115
+        vout:
+        - scriptPubKey:
+            addresses:
+            - addresses
+            - addresses
+            asm: asm
+            hex: hex
+            type: type
+            reqSigs: 5.025004791520295
+          usedBlockheight: 6.84685269835264
+          usedTxid: usedTxid
+          tokens:
+          - amount: 2.027123023002322
+            aggregationPolicy: aggregationPolicy
+            lockStatus: true
+            tokenId: tokenId
+            issueTxid: issueTxid
+            divisibility: 4.145608029883936
+          - amount: 2.027123023002322
+            aggregationPolicy: aggregationPolicy
+            lockStatus: true
+            tokenId: tokenId
+            issueTxid: issueTxid
+            divisibility: 4.145608029883936
+          used: true
+          value: 7.457744773683766
+          "n": 1.4894159098541704
+          blockheight: 1.0246457001441578
+        - scriptPubKey:
+            addresses:
+            - addresses
+            - addresses
+            asm: asm
+            hex: hex
+            type: type
+            reqSigs: 5.025004791520295
+          usedBlockheight: 6.84685269835264
+          usedTxid: usedTxid
+          tokens:
+          - amount: 2.027123023002322
+            aggregationPolicy: aggregationPolicy
+            lockStatus: true
+            tokenId: tokenId
+            issueTxid: issueTxid
+            divisibility: 4.145608029883936
+          - amount: 2.027123023002322
+            aggregationPolicy: aggregationPolicy
+            lockStatus: true
+            tokenId: tokenId
+            issueTxid: issueTxid
+            divisibility: 4.145608029883936
+          used: true
+          value: 7.457744773683766
+          "n": 1.4894159098541704
+          blockheight: 1.0246457001441578
+        blockhash: blockhash
+        blocktime: 6.027456183070403
+        totalsent: 7.061401241503109
+        hex: hex
+        vin:
+        - previousOutput:
+            addresses:
+            - addresses
+            - addresses
+            asm: asm
+            hex: hex
+            type: type
+            reqSigs: 5.025004791520295
+          sequence: 3.616076749251911
+          scriptSig:
+            asm: asm
+            hex: hex
+          txid: txid
+          tokens:
+          - amount: 2.027123023002322
+            aggregationPolicy: aggregationPolicy
+            lockStatus: true
+            tokenId: tokenId
+            issueTxid: issueTxid
+            divisibility: 4.145608029883936
+          - amount: 2.027123023002322
+            aggregationPolicy: aggregationPolicy
+            lockStatus: true
+            tokenId: tokenId
+            issueTxid: issueTxid
+            divisibility: 4.145608029883936
+          value: 7.386281948385884
+          vout: 1.2315135367772556
+        - previousOutput:
+            addresses:
+            - addresses
+            - addresses
+            asm: asm
+            hex: hex
+            type: type
+            reqSigs: 5.025004791520295
+          sequence: 3.616076749251911
+          scriptSig:
+            asm: asm
+            hex: hex
+          txid: txid
+          tokens:
+          - amount: 2.027123023002322
+            aggregationPolicy: aggregationPolicy
+            lockStatus: true
+            tokenId: tokenId
+            issueTxid: issueTxid
+            divisibility: 4.145608029883936
+          - amount: 2.027123023002322
+            aggregationPolicy: aggregationPolicy
+            lockStatus: true
+            tokenId: tokenId
+            issueTxid: issueTxid
+            divisibility: 4.145608029883936
+          value: 7.386281948385884
+          vout: 1.2315135367772556
+        time: 2.3021358869347655
+      properties:
+        blockhash:
+          description: Hash of the block this transaction is in
+          title: blockhash
+          type: string
+        blockheight:
+          description: Block height of this transaction
+          title: blockheight
+          type: number
+        blocktime:
+          description: Block time of this transaction
+          title: blocktime
+          type: number
+        confirmations:
+          description: Number of transaction confirmations
+          title: confirmations
+          type: number
+        fee:
+          description: Total NEBL used as fee for this transcation in satoshis
+          title: fee
+          type: number
+        hex:
+          description: Transaction in raw hex
+          title: hex
+          type: string
+        locktime:
+          description: Transaction locktime
+          title: locktime
+          type: number
+        time:
+          description: Transaction time
+          title: time
+          type: number
+        totalsent:
+          description: Total NEBL sent in this transaction in satoshis
+          title: totalsent
+          type: number
+        txid:
+          description: TXID of transaction
+          title: txid
+          type: string
+        version:
+          description: Transaction version
+          title: version
+          type: number
+        vin:
+          description: Array of transaction inputs
+          items:
+            $ref: '#/components/schemas/getTransactionInfoResponse_vin_inner'
+          title: vin
+          type: array
+        vout:
+          description: Array of transaction outputs
+          items:
+            $ref: '#/components/schemas/getTransactionInfoResponse_vout_inner'
+          title: vout
+          type: array
+      title: getTransactionInfoResponse
+      type: object
+    getTxResponse:
+      example:
+        fees: 5.637376656633329
+        locktime: 2.3021358869347655
+        fee: 5.962133916683182
+        txid: txid
+        confirmations: 1.4658129805029452
+        version: 7.386281948385884
+        blockheight: 0.8008281904610115
+        valueOut: 4.145608029883936
+        vout:
+        - scriptPubKey:
+            addresses:
+            - addresses
+            - addresses
+            asm: asm
+            hex: hex
+            type: type
+            reqSigs: 5.025004791520295
+          usedBlockheight: 9.965781217890562
+          usedTxid: usedTxid
+          used: true
+          value: 9.369310271410669
+          "n": 4.965218492984954
+          blockheight: 1.1730742509559433
+        - scriptPubKey:
+            addresses:
+            - addresses
+            - addresses
+            asm: asm
+            hex: hex
+            type: type
+            reqSigs: 5.025004791520295
+          usedBlockheight: 9.965781217890562
+          usedTxid: usedTxid
+          used: true
+          value: 9.369310271410669
+          "n": 4.965218492984954
+          blockheight: 1.1730742509559433
+        blockhash: blockhash
+        size: 7.061401241503109
+        blocktime: 6.027456183070403
+        valueIn: 2.027123023002322
+        totalsent: 3.616076749251911
+        vin:
+        - sequence: 1.0246457001441578
+          scriptSig:
+            asm: asm
+            hex: hex
+          valueSat: 6.84685269835264
+          txid: txid
+          value: 1.4894159098541704
+          "n": 1.2315135367772556
+          vout: 7.457744773683766
+        - sequence: 1.0246457001441578
+          scriptSig:
+            asm: asm
+            hex: hex
+          valueSat: 6.84685269835264
+          txid: txid
+          value: 1.4894159098541704
+          "n": 1.2315135367772556
+          vout: 7.457744773683766
+        time: 9.301444243932576
+      properties:
+        blockhash:
+          description: Hash of the block this transaction is in
+          title: blockhash
+          type: string
+        blockheight:
+          description: Block height of this transaction
+          title: blockheight
+          type: number
+        blocktime:
+          description: Block time of this transaction
+          title: blocktime
+          type: number
+        confirmations:
+          description: Number of transaction confirmations
+          title: confirmations
+          type: number
+        fee:
+          description: Total NEBL used as fee for this transcation in satoshis
+          title: fee
+          type: number
+        fees:
+          description: Total NEBL used in fees for this transaction
+          title: fees
+          type: number
+        locktime:
+          description: Transaction locktime
+          title: locktime
+          type: number
+        size:
+          description: Transcation size in bytes
+          title: size
+          type: number
+        time:
+          description: Transaction time
+          title: time
+          type: number
+        totalsent:
+          description: Total NEBL sent in this transaction in satoshis
+          title: totalsent
+          type: number
+        txid:
+          description: TXID of transaction
+          title: txid
+          type: string
+        valueIn:
+          description: Total NEBL input in this transaction
+          title: valueIn
+          type: number
+        valueOut:
+          description: Total NEBL output in this transaction
+          title: valueOut
+          type: number
+        version:
+          description: Transaction version
+          title: version
+          type: number
+        vin:
+          description: Array of transaction inputs
+          items:
+            $ref: '#/components/schemas/getTxResponse_vin_inner'
+          title: vin
+          type: array
+        vout:
+          description: Array of transaction outputs
+          items:
+            $ref: '#/components/schemas/getTxResponse_vout_inner'
+          title: vout
+          type: array
+      title: getTxResponse
+      type: object
+    getTxsResponse:
+      description: Object containing an array of transaction objects
+      example:
+        txs:
+        - fees: 5.637376656633329
+          locktime: 2.3021358869347655
+          fee: 5.962133916683182
+          txid: txid
+          confirmations: 1.4658129805029452
+          version: 7.386281948385884
+          blockheight: 0.8008281904610115
+          valueOut: 4.145608029883936
+          vout:
+          - scriptPubKey:
+              addresses:
+              - addresses
+              - addresses
+              asm: asm
+              hex: hex
+              type: type
+              reqSigs: 5.025004791520295
+            usedBlockheight: 9.965781217890562
+            usedTxid: usedTxid
+            used: true
+            value: 9.369310271410669
+            "n": 4.965218492984954
+            blockheight: 1.1730742509559433
+          - scriptPubKey:
+              addresses:
+              - addresses
+              - addresses
+              asm: asm
+              hex: hex
+              type: type
+              reqSigs: 5.025004791520295
+            usedBlockheight: 9.965781217890562
+            usedTxid: usedTxid
+            used: true
+            value: 9.369310271410669
+            "n": 4.965218492984954
+            blockheight: 1.1730742509559433
+          blockhash: blockhash
+          size: 7.061401241503109
+          blocktime: 6.027456183070403
+          valueIn: 2.027123023002322
+          totalsent: 3.616076749251911
+          vin:
+          - sequence: 1.0246457001441578
+            scriptSig:
+              asm: asm
+              hex: hex
+            valueSat: 6.84685269835264
+            txid: txid
+            value: 1.4894159098541704
+            "n": 1.2315135367772556
+            vout: 7.457744773683766
+          - sequence: 1.0246457001441578
+            scriptSig:
+              asm: asm
+              hex: hex
+            valueSat: 6.84685269835264
+            txid: txid
+            value: 1.4894159098541704
+            "n": 1.2315135367772556
+            vout: 7.457744773683766
+          time: 9.301444243932576
+        - fees: 5.637376656633329
+          locktime: 2.3021358869347655
+          fee: 5.962133916683182
+          txid: txid
+          confirmations: 1.4658129805029452
+          version: 7.386281948385884
+          blockheight: 0.8008281904610115
+          valueOut: 4.145608029883936
+          vout:
+          - scriptPubKey:
+              addresses:
+              - addresses
+              - addresses
+              asm: asm
+              hex: hex
+              type: type
+              reqSigs: 5.025004791520295
+            usedBlockheight: 9.965781217890562
+            usedTxid: usedTxid
+            used: true
+            value: 9.369310271410669
+            "n": 4.965218492984954
+            blockheight: 1.1730742509559433
+          - scriptPubKey:
+              addresses:
+              - addresses
+              - addresses
+              asm: asm
+              hex: hex
+              type: type
+              reqSigs: 5.025004791520295
+            usedBlockheight: 9.965781217890562
+            usedTxid: usedTxid
+            used: true
+            value: 9.369310271410669
+            "n": 4.965218492984954
+            blockheight: 1.1730742509559433
+          blockhash: blockhash
+          size: 7.061401241503109
+          blocktime: 6.027456183070403
+          valueIn: 2.027123023002322
+          totalsent: 3.616076749251911
+          vin:
+          - sequence: 1.0246457001441578
+            scriptSig:
+              asm: asm
+              hex: hex
+            valueSat: 6.84685269835264
+            txid: txid
+            value: 1.4894159098541704
+            "n": 1.2315135367772556
+            vout: 7.457744773683766
+          - sequence: 1.0246457001441578
+            scriptSig:
+              asm: asm
+              hex: hex
+            valueSat: 6.84685269835264
+            txid: txid
+            value: 1.4894159098541704
+            "n": 1.2315135367772556
+            vout: 7.457744773683766
+          time: 9.301444243932576
+        pagesTotal: 0.8008281904610115
+      properties:
+        pagesTotal:
+          description: Number of pages of transactions
+          title: pagesTotal
+          type: number
+        txs:
+          description: Array of transaction objects
+          items:
+            $ref: '#/components/schemas/getTxResponse'
+          title: txs
+          type: array
+      title: getTxsResponse
+      type: object
+    issueTokenRequest:
+      properties:
+        amount:
+          description: Number of tokens to issue
+          title: amount
+          type: number
+        divisibility:
+          description: Number of decimal places the token should be divisble by (0-7)
+          title: divisibility
+          type: number
+        fee:
+          description: Fee in satoshi to include in the issuance transaction min 1000000000
+            (10 NEBL)
+          title: fee
+          type: number
+        flags:
+          $ref: '#/components/schemas/issueTokenRequest_flags'
+        issueAddress:
+          description: Address issuing the token
+          title: issueAddress
+          type: string
+        metadata:
+          $ref: '#/components/schemas/issueTokenRequest_metadata'
+        reissuable:
+          description: whether the token should be reissuable
+          title: reissuable
+          type: boolean
+        transfer:
+          items:
+            $ref: '#/components/schemas/issueTokenRequest_transfer_inner'
+          title: transfer
+          type: array
+      required:
+      - amount
+      - divisibility
+      - fee
+      - issueAddress
+      - reissuable
+      - transfer
+      title: issueTokenRequest
+      type: object
+    issueTokenResponse:
+      example:
+        tokenId: tokenId
+        txHex: txHex
+      properties:
+        tokenId:
+          description: TokenId of the to be issued token
+          title: tokenId
+          type: string
+        txHex:
+          description: "Unsigned, raw transaction hex of the transaction to issue\
+            \ the token"
+          title: txHex
+          type: string
+      title: issueTokenResponse
+      type: object
+    rpcRequest:
+      properties:
+        id:
+          default: neblio-apis
+          description: Identifier of RCP caller
+          example: neblio-apis
+          title: id
+          type: string
+        jsonrpc:
+          default: "1.0"
+          description: JSON-RPC version
+          example: "1.0"
+          title: jsonrpc
+          type: string
+        method:
+          description: Name of the Neblio RPC method to call
+          example: getstakinginfo
+          title: method
+          type: string
+        params:
+          description: Array of string params that should be passed to the RPC method.
+          example: []
+          items:
+            type: string
+          title: params
+          type: array
+      required:
+      - id
+      - jsonrpc
+      - method
+      - params
+      title: rpcRequest
+      type: object
+    rpcResponse:
+      description: Object containing the JSON response from the Neblio node.
+      example:
+        result: "{}"
+        id: id
+        error: "{}"
+      properties:
+        error:
+          description: Object containing any error information.
+          title: error
+          type: object
+        id:
+          description: Identifier of RCP caller
+          title: id
+          type: string
+        result:
+          description: Object containing the response output.
+          title: result
+          type: object
+      title: rpcResponse
+      type: object
+    sendTokenRequest:
+      properties:
+        fee:
+          description: Fee in satoshi to include in the issuance transaction min 10000
+            (0.0001 NEBL)
+          title: fee
+          type: number
+        flags:
+          $ref: '#/components/schemas/issueTokenRequest_flags'
+        from:
+          description: Array of addresses to send the token from
+          items:
+            type: string
+          title: from
+          type: array
+        metadata:
+          $ref: '#/components/schemas/issueTokenRequest_metadata'
+        sendutxo:
+          description: Array of UTXOs to send the token from
+          items:
+            type: string
+          title: sendutxo
+          type: array
+        to:
+          items:
+            $ref: '#/components/schemas/burnTokenRequest_transfer_inner'
+          title: to
+          type: array
+      required:
+      - fee
+      - to
+      title: sendTokenRequest
+      type: object
+    sendTokenResponse:
+      example:
+        multisigOutputs:
+        - 0.8008281904610115
+        - 0.8008281904610115
+        txHex: txHex
+        ntp1OutputIndexes:
+        - 6.027456183070403
+        - 6.027456183070403
+      properties:
+        multisigOutputs:
+          description: Array of indexes of multisig outputs
+          items:
+            type: number
+          title: multisigOutputs
+          type: array
+        ntp1OutputIndexes:
+          description: Array of indexes transfering NTP1 tokens
+          items:
+            type: number
+          title: ntp1OutputIndexes
+          type: array
+        txHex:
+          description: "Unsigned, raw transaction hex of the transaction to send the\
+            \ token"
+          title: txHex
+          type: string
+      title: sendTokenResponse
+      type: object
+    sendTxRequest:
+      properties:
+        rawtx:
+          description: Signed raw tx hex to broadcast
+          title: rawtx
+          type: string
+      required:
+      - rawtx
+      title: sendTxRequest
+      type: object
+    burnTokenRequest_burn_inner:
+      properties:
+        amount:
+          description: Amount of tokens to burn
+          title: amount
+          type: number
+        tokenId:
+          description: Unique token id we are burning
+          title: tokenId
+          type: string
+      title: burnTokenRequest_burn_inner
+      type: object
+    burnTokenRequest_transfer_inner:
+      properties:
+        address:
+          description: Address to transfer tokens to
+          title: address
+          type: string
+        amount:
+          description: Number of tokens to send
+          title: amount
+          type: number
+        tokenId:
+          description: ID of token we are sending
+          title: tokenId
+          type: string
+      title: burnTokenRequest_transfer_inner
+      type: object
+    getAddressInfoResponse_utxos_inner_tokens_inner:
+      example:
+        amount: 5.962133916683182
+        aggregationPolicy: aggregationPolicy
+        lockStatus: true
+        tokenId: tokenId
+        issueTxid: issueTxid
+        divisibility: 5.637376656633329
+      properties:
+        aggregationPolicy:
+          description: Whether the tokens can be aggregated together
+          title: aggregationPolicy
+          type: string
+        amount:
+          description: Number of Tokens
+          title: amount
+          type: number
+        divisibility:
+          description: Decimal places the token is divisible to
+          title: divisibility
+          type: number
+        issueTxid:
+          description: TXID the token originally was issued in
+          title: issueTxid
+          type: string
+        lockStatus:
+          description: "Whether the token is locked, preventing more from being issued"
+          title: lockStatus
+          type: boolean
+        tokenId:
+          description: Unique NTP1 identifier for this token
+          title: tokenId
+          type: string
+      title: getAddressInfoResponse_utxos_inner_tokens_inner
+      type: object
+    getAddressInfoResponse_utxos_inner:
+      example:
+        scriptPubKey: "{}"
+        blocktime: 6.027456183070403
+        index: 1.4658129805029452
+        txid: txid
+        tokens:
+        - amount: 5.962133916683182
+          aggregationPolicy: aggregationPolicy
+          lockStatus: true
+          tokenId: tokenId
+          issueTxid: issueTxid
+          divisibility: 5.637376656633329
+        - amount: 5.962133916683182
+          aggregationPolicy: aggregationPolicy
+          lockStatus: true
+          tokenId: tokenId
+          issueTxid: issueTxid
+          divisibility: 5.637376656633329
+        used: true
+        value: 2.3021358869347655
+        blockheight: 0.8008281904610115
+      properties:
+        blockheight:
+          description: Blockheight of the UTXO
+          title: blockheight
+          type: number
+        blocktime:
+          description: Blocktime of the UTXO
+          title: blocktime
+          type: number
+        index:
+          description: Index of the UTXO at this address
+          title: index
+          type: number
+        scriptPubKey:
+          description: Object representing the scruptPubKey of the UTXO
+          title: scriptPubKey
+          type: object
+        tokens:
+          description: Array of NTP1 tokens in this UTXO.
+          items:
+            $ref: '#/components/schemas/getAddressInfoResponse_utxos_inner_tokens_inner'
+          title: tokens
+          type: array
+        txid:
+          description: Txid of this UTXO
+          title: txid
+          type: string
+        used:
+          description: Whether the UTXO has been used
+          title: used
+          type: boolean
+        value:
+          description: Value of the UTXO in NEBL satoshi
+          title: value
+          type: number
+      title: getAddressInfoResponse_utxos_inner
+      type: object
+    getAddressUtxosResponse_inner:
+      example:
+        scriptPubKey: scriptPubKey
+        amount: 0.8008281904610115
+        address: address
+        txid: txid
+        confirmations: 6.027456183070403
+        ts: 1.4658129805029452
+        vout: 5.962133916683182
+      properties:
+        address:
+          description: Address
+          title: address
+          type: string
+        amount:
+          description: NEBL amount
+          title: amount
+          type: number
+        confirmations:
+          description: Number of confirmations
+          title: confirmations
+          type: number
+        scriptPubKey:
+          description: scriptPubKey
+          title: scriptPubKey
+          type: string
+        ts:
+          description: Timestamp
+          title: ts
+          type: number
+        txid:
+          description: Transaction ID
+          title: txid
+          type: string
+        vout:
+          description: vout
+          title: vout
+          type: number
+      title: getAddressUtxosResponse_inner
+      type: object
+    getFaucetResponse_data:
+      example:
+        txId: txId
+      properties:
+        txId:
+          description: TXID of a successful withdrawal
+          title: txId
+          type: string
+      title: getFaucetResponse_data
+      type: object
+    getTokenHoldersResponse_holders_inner:
+      example:
+        amount: 6.027456183070403
+        address: address
+      properties:
+        address:
+          title: address
+          type: string
+        amount:
+          title: amount
+          type: number
+      title: getTokenHoldersResponse_holders_inner
+      type: object
+    getTokenMetadataResponse_metadataOfIssuance_data_userData_meta_inner:
+      example:
+        value: value
+        key: key
+      properties:
+        key:
+          title: key
+          type: string
+        value:
+          title: value
+          type: string
+      title: getTokenMetadataResponse_metadataOfIssuance_data_userData_meta_inner
+      type: object
+    getTokenMetadataResponse_metadataOfIssuance_data_userData:
+      description: Metadata set by user on token
+      example:
+        meta:
+        - value: value
+          key: key
+        - value: value
+          key: key
+      properties:
+        meta:
+          items:
+            $ref: '#/components/schemas/getTokenMetadataResponse_metadataOfIssuance_data_userData_meta_inner'
+          title: meta
+          type: array
+      title: getTokenMetadataResponse_metadataOfIssuance_data_userData
+      type: object
+    getTokenMetadataResponse_metadataOfIssuance_data:
+      example:
+        userData:
+          meta:
+          - value: value
+            key: key
+          - value: value
+            key: key
+        tokenName: tokenName
+        description: description
+        issuer: issuer
+      properties:
+        description:
+          description: Token description
+          title: description
+          type: string
+        issuer:
+          description: Name of token issuer
+          title: issuer
+          type: string
+        tokenName:
+          description: Token symbol
+          title: tokenName
+          type: string
+        userData:
+          $ref: '#/components/schemas/getTokenMetadataResponse_metadataOfIssuance_data_userData'
+      title: getTokenMetadataResponse_metadataOfIssuance_data
+      type: object
+    getTokenMetadataResponse_metadataOfIssuance:
+      description: Metadata set at issuance
+      example:
+        data:
+          userData:
+            meta:
+            - value: value
+              key: key
+            - value: value
+              key: key
+          tokenName: tokenName
+          description: description
+          issuer: issuer
+      properties:
+        data:
+          $ref: '#/components/schemas/getTokenMetadataResponse_metadataOfIssuance_data'
+      title: getTokenMetadataResponse_metadataOfIssuance
+      type: object
+    getTokenMetadataResponse_metadataOfUtxo_userData:
+      description: Metadata set by user on token for UTXO
+      example:
+        meta:
+        - "{}"
+        - "{}"
+      properties:
+        meta:
+          items:
+            type: object
+          title: meta
+          type: array
+      title: getTokenMetadataResponse_metadataOfUtxo_userData
+      type: object
+    getTokenMetadataResponse_metadataOfUtxo:
+      description: Metadata set for UTXO
+      example:
+        userData:
+          meta:
+          - "{}"
+          - "{}"
+      properties:
+        userData:
+          $ref: '#/components/schemas/getTokenMetadataResponse_metadataOfUtxo_userData'
+      title: getTokenMetadataResponse_metadataOfUtxo
+      type: object
+    getTransactionInfoResponse_vin_inner_previousOutput:
+      example:
+        addresses:
+        - addresses
+        - addresses
+        asm: asm
+        hex: hex
+        type: type
+        reqSigs: 5.025004791520295
+      properties:
+        addresses:
+          items:
+            type: string
+          title: addresses
+          type: array
+        asm:
+          title: asm
+          type: string
+        hex:
+          title: hex
+          type: string
+        reqSigs:
+          title: reqSigs
+          type: number
+        type:
+          title: type
+          type: string
+      title: getTransactionInfoResponse_vin_inner_previousOutput
+      type: object
+    getTransactionInfoResponse_vin_inner_scriptSig:
+      example:
+        asm: asm
+        hex: hex
+      properties:
+        asm:
+          title: asm
+          type: string
+        hex:
+          title: hex
+          type: string
+      title: getTransactionInfoResponse_vin_inner_scriptSig
+      type: object
+    getTransactionInfoResponse_vin_inner_tokens_inner:
+      example:
+        amount: 2.027123023002322
+        aggregationPolicy: aggregationPolicy
+        lockStatus: true
+        tokenId: tokenId
+        issueTxid: issueTxid
+        divisibility: 4.145608029883936
+      properties:
+        aggregationPolicy:
+          description: Whether the tokens are aggregatable
+          title: aggregationPolicy
+          type: string
+        amount:
+          description: Number of tokens
+          title: amount
+          type: number
+        divisibility:
+          description: Decimal places the token is divisible to
+          title: divisibility
+          type: number
+        issueTxid:
+          description: TXID the token was issued in
+          title: issueTxid
+          type: string
+        lockStatus:
+          description: Whether issuance of more tokens is locked
+          title: lockStatus
+          type: boolean
+        tokenId:
+          description: ID of the token
+          title: tokenId
+          type: string
+      title: getTransactionInfoResponse_vin_inner_tokens_inner
+      type: object
+    getTransactionInfoResponse_vin_inner:
+      example:
+        previousOutput:
+          addresses:
+          - addresses
+          - addresses
+          asm: asm
+          hex: hex
+          type: type
+          reqSigs: 5.025004791520295
+        sequence: 3.616076749251911
+        scriptSig:
+          asm: asm
+          hex: hex
+        txid: txid
+        tokens:
+        - amount: 2.027123023002322
+          aggregationPolicy: aggregationPolicy
+          lockStatus: true
+          tokenId: tokenId
+          issueTxid: issueTxid
+          divisibility: 4.145608029883936
+        - amount: 2.027123023002322
+          aggregationPolicy: aggregationPolicy
+          lockStatus: true
+          tokenId: tokenId
+          issueTxid: issueTxid
+          divisibility: 4.145608029883936
+        value: 7.386281948385884
+        vout: 1.2315135367772556
+      properties:
+        previousOutput:
+          $ref: '#/components/schemas/getTransactionInfoResponse_vin_inner_previousOutput'
+        scriptSig:
+          $ref: '#/components/schemas/getTransactionInfoResponse_vin_inner_scriptSig'
+        sequence:
+          title: sequence
+          type: number
+        tokens:
+          items:
+            $ref: '#/components/schemas/getTransactionInfoResponse_vin_inner_tokens_inner'
+          title: tokens
+          type: array
+        txid:
+          description: TXID of the input
+          title: txid
+          type: string
+        value:
+          description: Value of input in NEBL satoshi
+          title: value
+          type: number
+        vout:
+          description: output index
+          title: vout
+          type: number
+      title: getTransactionInfoResponse_vin_inner
+      type: object
+    getTransactionInfoResponse_vout_inner:
+      example:
+        scriptPubKey:
+          addresses:
+          - addresses
+          - addresses
+          asm: asm
+          hex: hex
+          type: type
+          reqSigs: 5.025004791520295
+        usedBlockheight: 6.84685269835264
+        usedTxid: usedTxid
+        tokens:
+        - amount: 2.027123023002322
+          aggregationPolicy: aggregationPolicy
+          lockStatus: true
+          tokenId: tokenId
+          issueTxid: issueTxid
+          divisibility: 4.145608029883936
+        - amount: 2.027123023002322
+          aggregationPolicy: aggregationPolicy
+          lockStatus: true
+          tokenId: tokenId
+          issueTxid: issueTxid
+          divisibility: 4.145608029883936
+        used: true
+        value: 7.457744773683766
+        "n": 1.4894159098541704
+        blockheight: 1.0246457001441578
+      properties:
+        blockheight:
+          description: Blockheight of this transaction
+          title: blockheight
+          type: number
+        "n":
+          description: Output index
+          title: "n"
+          type: number
+        scriptPubKey:
+          $ref: '#/components/schemas/getTransactionInfoResponse_vin_inner_previousOutput'
+        tokens:
+          items:
+            $ref: '#/components/schemas/getTransactionInfoResponse_vin_inner_tokens_inner'
+          title: tokens
+          type: array
+        used:
+          description: Whether this output has now been used
+          title: used
+          type: boolean
+        usedBlockheight:
+          description: Blockheight this output was used in
+          title: usedBlockheight
+          type: number
+        usedTxid:
+          description: TXID this output was used in
+          title: usedTxid
+          type: string
+        value:
+          description: Value of the output in NEBL satoshi
+          title: value
+          type: number
+      title: getTransactionInfoResponse_vout_inner
+      type: object
+    getTxResponse_vin_inner:
+      example:
+        sequence: 1.0246457001441578
+        scriptSig:
+          asm: asm
+          hex: hex
+        valueSat: 6.84685269835264
+        txid: txid
+        value: 1.4894159098541704
+        "n": 1.2315135367772556
+        vout: 7.457744773683766
+      properties:
+        "n":
+          description: input index
+          title: "n"
+          type: number
+        scriptSig:
+          $ref: '#/components/schemas/getTransactionInfoResponse_vin_inner_scriptSig'
+        sequence:
+          title: sequence
+          type: number
+        txid:
+          description: TXID of the input
+          title: txid
+          type: string
+        value:
+          description: Value of input in NEBL
+          title: value
+          type: number
+        valueSat:
+          description: Value of input in NEBL satoshi
+          title: valueSat
+          type: number
+        vout:
+          description: output index
+          title: vout
+          type: number
+      title: getTxResponse_vin_inner
+      type: object
+    getTxResponse_vout_inner:
+      example:
+        scriptPubKey:
+          addresses:
+          - addresses
+          - addresses
+          asm: asm
+          hex: hex
+          type: type
+          reqSigs: 5.025004791520295
+        usedBlockheight: 9.965781217890562
+        usedTxid: usedTxid
+        used: true
+        value: 9.369310271410669
+        "n": 4.965218492984954
+        blockheight: 1.1730742509559433
+      properties:
+        blockheight:
+          description: Blockheight of this transaction
+          title: blockheight
+          type: number
+        "n":
+          description: Output index
+          title: "n"
+          type: number
+        scriptPubKey:
+          $ref: '#/components/schemas/getTransactionInfoResponse_vin_inner_previousOutput'
+        used:
+          description: Whether this output has now been used
+          title: used
+          type: boolean
+        usedBlockheight:
+          description: Blockheight this output was used in
+          title: usedBlockheight
+          type: number
+        usedTxid:
+          description: TXID this output was used in
+          title: usedTxid
+          type: string
+        value:
+          description: Value of the output in NEBL
+          title: value
+          type: number
+      title: getTxResponse_vout_inner
+      type: object
+    issueTokenRequest_flags:
+      description: Object representing flags that potentialy modify this transaction
+      properties:
+        splitChange:
+          description: "If true change will be split into 2 outputs, one for NEBL\
+            \ change and one for NTP1 change (recommended)"
+          title: splitChange
+          type: boolean
+      title: issueTokenRequest_flags
+      type: object
+    issueTokenRequest_metadata_encryptions_inner:
+      properties:
+        format:
+          description: key format (pem or der)
+          title: format
+          type: string
+        key:
+          description: userData key to encrypt
+          title: key
+          type: string
+        pubkey:
+          description: RSA public key used for encryption
+          title: pubkey
+          type: string
+        type:
+          description: pkcs1 or pkcs8
+          title: type
+          type: string
+      title: issueTokenRequest_metadata_encryptions_inner
+      type: object
+    issueTokenRequest_metadata_rules_expiration:
+      description: Object describing expiration rules of the token
+      properties:
+        locked:
+          description: Whether this rule can be modified in future transactions
+          title: locked
+          type: boolean
+        validUntil:
+          description: Blockheight at wh
+          title: validUntil
+          type: number
+      title: issueTokenRequest_metadata_rules_expiration
+      type: object
+    issueTokenRequest_metadata_rules_fees_items_inner:
+      properties:
+        address:
+          description: Address fee is auto sent to
+          title: address
+          type: string
+        tokenId:
+          description: "How fee should be paid, either with a tokenId, or with NEBL\
+            \ if null"
+          title: tokenId
+          type: string
+        value:
+          description: "Amount of NTP1 token, or NEBL (in satoshi) to pay as fee"
+          title: value
+          type: string
+      title: issueTokenRequest_metadata_rules_fees_items_inner
+      type: object
+    issueTokenRequest_metadata_rules_fees:
+      properties:
+        items:
+          description: Array of objects describing fee rules
+          items:
+            $ref: '#/components/schemas/issueTokenRequest_metadata_rules_fees_items_inner'
+          title: items
+          type: array
+        locked:
+          description: Whether this rule can be modified in future transactions
+          title: locked
+          type: boolean
+      title: issueTokenRequest_metadata_rules_fees
+      type: object
+    issueTokenRequest_metadata_rules_holders_inner:
+      properties:
+        address:
+          description: Address that can hold the token
+          title: address
+          type: string
+        locked:
+          description: Whether this rule can be modified in future transactions
+          title: locked
+          type: boolean
+      title: issueTokenRequest_metadata_rules_holders_inner
+      type: object
+    issueTokenRequest_metadata_rules:
+      description: Object describing token rules
+      properties:
+        expiration:
+          $ref: '#/components/schemas/issueTokenRequest_metadata_rules_expiration'
+        fees:
+          $ref: '#/components/schemas/issueTokenRequest_metadata_rules_fees'
+        holders:
+          description: Array of objects describing what addresses can hold the token
+          items:
+            $ref: '#/components/schemas/issueTokenRequest_metadata_rules_holders_inner'
+          title: holders
+          type: array
+      title: issueTokenRequest_metadata_rules
+      type: object
+    issueTokenRequest_metadata_urls_inner:
+      properties:
+        dataHash:
+          description: "Hash of data at the URL, used for verification"
+          title: dataHash
+          type: string
+        mimeType:
+          description: mimeType of URL content
+          title: mimeType
+          type: string
+        name:
+          description: Name of the URL
+          title: name
+          type: string
+        url:
+          description: Actual URL
+          title: url
+          type: string
+      title: issueTokenRequest_metadata_urls_inner
+      type: object
+    issueTokenRequest_metadata:
+      description: Object representing all metadata at token issuance
+      properties:
+        description:
+          description: Long name or description of token (ex. Nibble)
+          title: description
+          type: string
+        encryptions:
+          description: Array of encryption instruction objects for encrypting userData
+          items:
+            $ref: '#/components/schemas/issueTokenRequest_metadata_encryptions_inner'
+          title: encryptions
+          type: array
+        issuer:
+          description: Name of token issuer
+          title: issuer
+          type: string
+        rules:
+          $ref: '#/components/schemas/issueTokenRequest_metadata_rules'
+        tokenName:
+          description: Token Symbol it will be identified by (ex. NIBBL)
+          title: tokenName
+          type: string
+        urls:
+          items:
+            $ref: '#/components/schemas/issueTokenRequest_metadata_urls_inner'
+          title: urls
+          type: array
+        userData:
+          $ref: '#/components/schemas/getTokenMetadataResponse_metadataOfIssuance_data_userData'
+      title: issueTokenRequest_metadata
+      type: object
+    issueTokenRequest_transfer_inner:
+      properties:
+        address:
+          description: Address to send the amount of issued tokens to
+          title: address
+          type: string
+        amount:
+          title: amount
+          type: number
+      title: issueTokenRequest_transfer_inner
+      type: object
+  securitySchemes:
+    rpcAuth:
+      scheme: basic
+      type: http
+      x-basicInfoFunc: openapi_server.controllers.security_controller.info_from_rpcAuth

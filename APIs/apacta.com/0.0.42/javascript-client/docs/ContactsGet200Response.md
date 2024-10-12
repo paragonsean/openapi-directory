@@ -1,0 +1,11 @@
+# Apacta.ContactsGet200Response
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**data** | [**[Contact]**](Contact.md) |  | [optional] 
+**pagination** | [**PaginationDetails**](PaginationDetails.md) |  | [optional] 
+**success** | **Boolean** |  | [optional] [default to true]
+
+

@@ -1,0 +1,9 @@
+# GoogleHome.LowShelf1
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**gainDb** | **Number** |  | 
+
+

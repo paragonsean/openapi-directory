@@ -1,0 +1,1330 @@
+/**
+ * 
+ * This document is intended as a detailed reference for the precise behavior of the drchrono API. If this is your first time using the API, start with our <a href=\"/api-docs-old/tutorial\">tutorial</a>. If you are upgrading from a previous version, take a look at the changelog section.  # Authorization  ## Initial authorization  There are three main steps in the OAuth 2.0 authentication workflow:  1. Redirect the provider to the authorization page. 2. The provider authorizes your application and is redirected back to    your web application. 3. Your application exchanges the `authorization_code` that came with    the redirect for an `access_token` and `refresh_token`.  ### Step 1: Redirect to drchrono  The first step is redirecting your user to drchrono, typically with a button labeled \"Connect to drchrono\" or \"Login with drchrono\".  This is just a link that takes your user to the following URL:      https://drchrono.com/o/authorize/?redirect_uri=REDIRECT_URI_ENCODED&response_type=code&client_id=CLIENT_ID_ENCODED&scope=SCOPES_ENCODED  - `REDIRECT_URI_ENCODED` is the URL-encoded version of the redirect URI (as registered for your application and used in later steps). - `CLIENT_ID_ENCODED` is the URL-encoded version of your application's client ID. - `SCOPES_ENCODED` is a URL-encoded version of a space-separated list of scopes, which can be found in each endpoint or omitted to default to all scopes.  The `scope` parameter consists of an optional, space-separated list of scopes your application is requesting. If omitted, all scopes will be requested.  Scopes are of the form `BASE_SCOPE:[read|write]` where `BASE_SCOPE` is any of `user`, `calendar`, `patients`, `patients:summary`, `billing`, `clinical` and `labs`. You should request only the scopes you need. For instance, an application which sends \"Happy Birthday!\" emails to a doctor's patients on their birthdays would use the scope parameter `\"patients:summary:read\"`, while one that allows patients to schedule appointments online would need at least `\"patients:summary:read patients:summary:write calendar:read calendar:write clinical:read clinical:write\"`.  ### Step 2: Provider authorization  After logging in (if necessary), the provider will be presented with a screen with your application's name and the list of permissions you requested (via the `scope` parameter).  When they click the \"Authorize\" button, they will be redirected to your redirect URI with a `code` query parameter appended, which contains an authorization code to be used in step 3.  If they click the \"Cancel\" button, they will be redirected to your redirect URI with `error=access_denied` instead.  Note: This authorization code expires extremely quickly, so you must perform step 3 immediately, ideally before rendering the resulting page for the end user.  ### Step 3: Token exchange  The `code` obtained from step 2 is usable exactly once to obtain an access token and refresh token.  Here is an example token exchange in Python:      import datetime, pytz, requests      if 'error' in get_params:         raise ValueError('Error authorizing application: %s' % get_params[error])      response = requests.post('https://drchrono.com/o/token/', data={         'code': get_params['code'],         'grant_type': 'authorization_code',         'redirect_uri': 'http://mytestapp.com/redirect_uri',         'client_id': 'abcdefg12345',         'client_secret': 'abcdefg12345',     })     response.raise_for_status()     data = response.json()      # Save these in your database associated with the user     access_token = data['access_token']     refresh_token = data['refresh_token']     expires_timestamp = datetime.datetime.now(pytz.utc) + datetime.timedelta(seconds=data['expires_in'])  You now have all you need to make API requests authenticated as that provider. When using this access token, you'll only be able to access the data that the user has access to and that you have been granted permissions for.  ## Refreshing an access token  Access tokens only last 48 hours (given in seconds in the `'expires_in'` key in the token exchange step above), so they occasionally need to be refreshed.  It would be inconvenient to ask the user to re-authorize every time, so instead you can use the refresh token like the original authorization to obtain a new access token.  Replace the `code` parameter with `refresh_token`, change the value `grant_type` from `authorization_code` to `refresh_token`, and omit the `redirect_uri` parameter.  Example in Python:      ...     response = requests.post('https://drchrono.com/o/token/', data={         'refresh_token': get_refresh_token(),         'grant_type': 'refresh_token',         'client_id': 'abcdefg12345',         'client_secret': 'abcdefg12345',     })     ...  # Webhooks  In order to use drchrono API webhooks, you first need to have an API application on file (even if it is in Test Model). Each API webhook is associated with one API application, go to <a href=\"/api-management/\" target=\"_blank\">here</a> to set up both API applications and webhooks!  Once you registered an API application, you will see webhook section in each saved API applications. Create a webhook and register some events there and save all the changes, then you are good to go!  ## Webhooks setup  All fields under webhooks section are required.  **Callback URL** Callback URl is used to receive all hooks when subscribed events are triggered. This should be an URL under your control.  **Secret token** Secret token is used to verify webhooks, this is very important, please set something with high entropy. Also we will talk more about this later.  **Events**  Events is used to register events you want to receiver notification when they happen. Currently we support following events.  Event name | Event description ---------- | ----------------- `APPOINTMENT_CREATE` | We will deliver a hook any time an appointment is created `APPOINTMENT_MODIFY` | We will deliver a hook any time an appointment is modified `PATIENT_CREATE` | We will deliver a hook any time a patient is created `PATIENT_MODIFY` | We will deliver a hook any time a patient is modified `PATIENT_PROBLEM_CREATE` | We will deliver a hook any time a patient problem is created `PATIENT_PROBLEM_MODIFY` | We will deliver a hook any time a patient problem is modified `PATIENT_ALLERGY_CREATE` | We will deliver a hook any time a patient allergy is created `PATIENT_ALLERGY_MODIFY` | We will deliver a hook any time a patient allergy is modified `PATIENT_MEDICATION_CREATE` | We will deliver a hook any time a patient medication is created `PATIENT_MEDICATION_MODIFY` | We will deliver a hook any time a patient medication is modified `CLINICAL_NOTE_LOCK` | We will deliver a hook any time a clinical note is locked `CLINICAL_NOTE_UNLOCK` | We will deliver a hook any time a clinical note is unlocked `TASK_CREATE` | We will deliver a hook any time a task is created `TASK_MODIFY` | We will deliver a hook any time a task is modified and any time creation, modification and deletion of task notes, associated task item `TASK_DELETE` | We will deliver a hook any time a task is deleted   ## Webhooks verification  In order to make sure the callback URL in webhook is under your control, we added a verification step before we send any hooks out to you.  Verification can be done by clicking \"Verify webhook\" button in webhooks setup page. After you click the button, we will send a `GET` request to the callback URL, along with a parameter called `msg`.  Please use your webhook's secret token as hash key and SHA-256 as digest constructor, hash the `msg` value with <a href=\"https://tools.ietf.org/html/rfc2104.html\">HMAC algorithm</a>. And we expect a `200` JSON response, in JSON response body, there should be a key called `secret_token` existing, and its value should be equal to the <strong>hashed</strong> `msg`. Otherwise, verification will fail.  Here is an example webhook verification in Python:      import hashlib, hmac      def webhook_verify(request):         secret_token = hmac.new(WEBHOOK_SECRET_TOKEN, request.GET['msg'], hashlib.sha256).hexdigest()         return json_response({             'secret_token': secret_token         })  <div class=\"alert alert-warning\"> <b>Note:</b> Verification will be needed when webhook is first created and anytime callback URl is changed. </div>   ## Webhooks header and body  **Header**  Key | Value --- | ----- `X-drchrono-event` | Event that triggered this hook, could be any one event above or `PING` `X-drchrono-signature` | Secret token associated with this webhook `X-drchrono-delivery` | ID of this delivery  **Body**  Key | Value --- | ----- `receiver` | This will be an JSON representation of the webhook `object` | This will be an JSON representation of the object related to the triggered event, this would share same serializer as drchrono API  ## Webhooks ping and deliveries  Webhooks ping and deliveries will be sent as `POST` requests.  **PING**:  You can always ping your webhook to check things, by clicking the \"Ping webhook\" button in webhook setup page. And a hook with header `X-drchrono-event: PING` would be sent to the callback URL.  **Deliveries**:  You can check recent deliveries by clicking the \"deliveries\" link in webhook setup page. And you can resend a hook by clicking \"redeliver\" button after select a specific delivery.  ## Webhooks delivery mechanism  We will delivery a hook the moment a subscribed event is triggered. We will not record any response header or body you send back after you receive the hook. However we only consider the response status code. We will consider any `2xx` responses as successfully delivered. Any other responses, like `302` would be considered failing. And we will try to redeliver unsuccessfully delivered hooks 3 times, first redeliver happens at 1 hour after the initial event, second receliver happens 3 hours after the initial event, and the third redeliver happens 7 hours after the initial event. After these redeliveries, if the delivery is still unsuccessful, you have to redeliver it by hand.   ## Webhooks security  You may want to secure your webhooks to only consider requests send out from drchrono. And this is where <code>secret_token</code> is needed in request header. Try to set the <code>secret_token</code> to something with high entropy, a good example could be taking the output of <code>ruby -rsecurerandom -e 'puts SecureRandom.hex(20)'</code>. After this, you might want to verify all request headers you received on your server with this token.   # iframe integration  Some API apps provide additional functionality for interacting with patient data not offered by drchrono, and can benefit by being incorporated into drchrono's patient information page via iframe.  We have created a simple API to make this possible.  To make an existing API application accessible via an iframe on the patient page, you need to update either \"Patient iframe\" or \"Clinical note iframe\" section in API management page, to make the iframe to appear on (either the patient page or the clinical note page), with the URL that the iframe will use for each page, and the height it should have. The application will be reviewed before it is approved to ensure that it is functional and secure.  ## Register a Doctor  iframe applications will appear as choices on the left-hand menu of the patient page for doctors registered with your application.  To register a doctor with your application, make a `POST` request to the `/api/iframe_integration` endpoint using the access token for the corresponding doctor. This endpoint does not expect any payload.  To disable your iframe application for a doctor, make a `DELETE` request to the same endpoint.  ## Populating the iframe  There are two places where the iframe can be displayed, either within the patient detail page or the clinical note page, shown below respectively:  <img src=\"{% asset 'public/images/iframe_patient_page.png' %}\" alt=\"Iframe on the patient page\"/>  <img src=\"{% asset 'public/images/iframe_clinical_note.png' %}\" alt=\"Iframe on the clinical note page\"/>  When requesting approval for your iframe app, you must specify a URL for one or both of these pages which will serve as the base URL for your IFrame contents. When a doctor views your iframe, the source URL will have various query parameters appended to it, for example for the patient page the `src` parameter of the IFrame will be:  ``` <iframe_url>?doctor_id=<doctor_id>&patient_id=<patient_id>&practice_id=<practice_id>&iat=<iat>&jwt=<jwt> ```  The `jwt` parameter is crucial if your application transfers any sort of PHI and does not implement its own login system.  It encapsulates the other parameters in a [JSON web token (JWT)](http://jwt.io) and signs them using SHA-256 HMAC with your `client_secret` as the key.  This verifies that the iframe is being loaded within one of drchrono's pages by an authorized user.  In production, you should validate the JWT using an approved library (which are listed on the [official site](http://jwt.io)), and only use the parameters extracted from the JWT.  Using Python and Django, this might look like:      import jwt      CLIENT_SECRET = <client_secret>     MAX_TIME_DRIFT_SECONDS = 60      def validate_parameters(request):         token = request.GET['jwt']          return jwt.decode(token, CLIENT_SECRET, algorithms=['HS256'], leeway=MAX_TIME_DRIFT_SECONDS)  Modern browsers' same-origin policy means that data cannot be passed between your application and drchrono's page through the iframe.  Therefore, interaction must happen through the API, using information provided in JWT.  # Versions and deprecation  ## Stability Policy  Changes to this API version will be limited to adding endpoints, or adding fields to existing endpoints, or adding optional query parameters. Any new fields which are not read-only will be optional.  ## Deprecation Policy  The drchrono API is versioned. Versions can be in the following states:  * **Active:** This is our latest and greatest version of the API. It is actively supported by our API team and is improved upon with new features, bug fixes and optimizations that do not break backwards compatibility.  * **Deprecated:** A deprecated API version is considered second best--having been surpassed by our active API version. An API version remains in this state for one year, after which time it falls to the not supported state. A deprecated API version is passively supported; while it won't be removed until becoming unsupported, it may not receive new features but will likely be subject to security updates and performance improvements.  * **Unsupported:** An API version in the not supported state may be deactivated at any time. An application using an unsupported API version should migrate to an active API version.  ## Version Map | Version Name | Previous Name | Start Date | Deprecation Date | |--------------|---------------|------------|------------------| | v2           | v2015_08      | 08/2015    | TBA              | | v3           | v2016_06      | 06/2016    |                  | | v4           | N/A           | 09/2018    |                  |  If you are looking for documentation for an older version  - [V4(Hunt Valley)](/api-docs-old/v4/documentation) (old V4 documentation) - [V3(Sunnyvale)](/api-docs-old/v3/documentation) - [V2(Mountain View)](/api-docs-old/v2/documentation)  # Changelog  Here's changelog for different versions  - [V4 Changelog](/api-docs-old/v4/changelog) - [V3 changelog](/api-docs-old/v3/changelog)  
+ *
+ * The version of the OpenAPI document: v4 (Hunt Valley)
+ *
+ * NOTE: This class is auto generated by OpenAPI Generator (https://openapi-generator.tech).
+ * https://openapi-generator.tech
+ * Do not edit the class manually.
+ */
+
+#include "OAIAutoAccidentInsurance.h"
+
+#include <QDebug>
+#include <QJsonArray>
+#include <QJsonDocument>
+#include <QObject>
+
+#include "OAIHelpers.h"
+
+namespace OpenAPI {
+
+OAIAutoAccidentInsurance::OAIAutoAccidentInsurance(QString json) {
+    this->initializeModel();
+    this->fromJson(json);
+}
+
+OAIAutoAccidentInsurance::OAIAutoAccidentInsurance() {
+    this->initializeModel();
+}
+
+OAIAutoAccidentInsurance::~OAIAutoAccidentInsurance() {}
+
+void OAIAutoAccidentInsurance::initializeModel() {
+
+    m_auto_accident_case_number_isSet = false;
+    m_auto_accident_case_number_isValid = false;
+
+    m_auto_accident_claim_rep_address_isSet = false;
+    m_auto_accident_claim_rep_address_isValid = false;
+
+    m_auto_accident_claim_rep_city_isSet = false;
+    m_auto_accident_claim_rep_city_isValid = false;
+
+    m_auto_accident_claim_rep_is_insurer_isSet = false;
+    m_auto_accident_claim_rep_is_insurer_isValid = false;
+
+    m_auto_accident_claim_rep_name_isSet = false;
+    m_auto_accident_claim_rep_name_isValid = false;
+
+    m_auto_accident_claim_rep_state_isSet = false;
+    m_auto_accident_claim_rep_state_isValid = false;
+
+    m_auto_accident_claim_rep_zip_isSet = false;
+    m_auto_accident_claim_rep_zip_isValid = false;
+
+    m_auto_accident_company_isSet = false;
+    m_auto_accident_company_isValid = false;
+
+    m_auto_accident_date_of_accident_isSet = false;
+    m_auto_accident_date_of_accident_isValid = false;
+
+    m_auto_accident_disabled_from_date_isSet = false;
+    m_auto_accident_disabled_from_date_isValid = false;
+
+    m_auto_accident_disabled_to_date_isSet = false;
+    m_auto_accident_disabled_to_date_isValid = false;
+
+    m_auto_accident_had_similar_condition_isSet = false;
+    m_auto_accident_had_similar_condition_isValid = false;
+
+    m_auto_accident_is_subscriber_the_patient_isSet = false;
+    m_auto_accident_is_subscriber_the_patient_isValid = false;
+
+    m_auto_accident_notes_isSet = false;
+    m_auto_accident_notes_isValid = false;
+
+    m_auto_accident_patient_relationship_to_subscriber_isSet = false;
+    m_auto_accident_patient_relationship_to_subscriber_isValid = false;
+
+    m_auto_accident_payer_address_isSet = false;
+    m_auto_accident_payer_address_isValid = false;
+
+    m_auto_accident_payer_city_isSet = false;
+    m_auto_accident_payer_city_isValid = false;
+
+    m_auto_accident_payer_id_isSet = false;
+    m_auto_accident_payer_id_isValid = false;
+
+    m_auto_accident_payer_state_isSet = false;
+    m_auto_accident_payer_state_isValid = false;
+
+    m_auto_accident_payer_zip_isSet = false;
+    m_auto_accident_payer_zip_isValid = false;
+
+    m_auto_accident_policy_number_isSet = false;
+    m_auto_accident_policy_number_isValid = false;
+
+    m_auto_accident_return_to_work_date_isSet = false;
+    m_auto_accident_return_to_work_date_isValid = false;
+
+    m_auto_accident_significant_injury_isSet = false;
+    m_auto_accident_significant_injury_isValid = false;
+
+    m_auto_accident_significant_injury_notes_isSet = false;
+    m_auto_accident_significant_injury_notes_isValid = false;
+
+    m_auto_accident_similar_condition_date_isSet = false;
+    m_auto_accident_similar_condition_date_isValid = false;
+
+    m_auto_accident_similar_condition_notes_isSet = false;
+    m_auto_accident_similar_condition_notes_isValid = false;
+
+    m_auto_accident_state_of_occurrence_isSet = false;
+    m_auto_accident_state_of_occurrence_isValid = false;
+
+    m_auto_accident_still_under_care_isSet = false;
+    m_auto_accident_still_under_care_isValid = false;
+
+    m_auto_accident_subscriber_address_isSet = false;
+    m_auto_accident_subscriber_address_isValid = false;
+
+    m_auto_accident_subscriber_city_isSet = false;
+    m_auto_accident_subscriber_city_isValid = false;
+
+    m_auto_accident_subscriber_date_of_birth_isSet = false;
+    m_auto_accident_subscriber_date_of_birth_isValid = false;
+
+    m_auto_accident_subscriber_first_name_isSet = false;
+    m_auto_accident_subscriber_first_name_isValid = false;
+
+    m_auto_accident_subscriber_last_name_isSet = false;
+    m_auto_accident_subscriber_last_name_isValid = false;
+
+    m_auto_accident_subscriber_middle_name_isSet = false;
+    m_auto_accident_subscriber_middle_name_isValid = false;
+
+    m_auto_accident_subscriber_phone_number_isSet = false;
+    m_auto_accident_subscriber_phone_number_isValid = false;
+
+    m_auto_accident_subscriber_social_security_isSet = false;
+    m_auto_accident_subscriber_social_security_isValid = false;
+
+    m_auto_accident_subscriber_state_isSet = false;
+    m_auto_accident_subscriber_state_isValid = false;
+
+    m_auto_accident_subscriber_suffix_isSet = false;
+    m_auto_accident_subscriber_suffix_isValid = false;
+
+    m_auto_accident_subscriber_zip_code_isSet = false;
+    m_auto_accident_subscriber_zip_code_isValid = false;
+
+    m_auto_accident_treatment_duration_isSet = false;
+    m_auto_accident_treatment_duration_isValid = false;
+
+    m_auto_accident_will_require_therapy_isSet = false;
+    m_auto_accident_will_require_therapy_isValid = false;
+
+    m_auto_accident_will_require_therapy_rec_isSet = false;
+    m_auto_accident_will_require_therapy_rec_isValid = false;
+}
+
+void OAIAutoAccidentInsurance::fromJson(QString jsonString) {
+    QByteArray array(jsonString.toStdString().c_str());
+    QJsonDocument doc = QJsonDocument::fromJson(array);
+    QJsonObject jsonObject = doc.object();
+    this->fromJsonObject(jsonObject);
+}
+
+void OAIAutoAccidentInsurance::fromJsonObject(QJsonObject json) {
+
+    m_auto_accident_case_number_isValid = ::OpenAPI::fromJsonValue(m_auto_accident_case_number, json[QString("auto_accident_case_number")]);
+    m_auto_accident_case_number_isSet = !json[QString("auto_accident_case_number")].isNull() && m_auto_accident_case_number_isValid;
+
+    m_auto_accident_claim_rep_address_isValid = ::OpenAPI::fromJsonValue(m_auto_accident_claim_rep_address, json[QString("auto_accident_claim_rep_address")]);
+    m_auto_accident_claim_rep_address_isSet = !json[QString("auto_accident_claim_rep_address")].isNull() && m_auto_accident_claim_rep_address_isValid;
+
+    m_auto_accident_claim_rep_city_isValid = ::OpenAPI::fromJsonValue(m_auto_accident_claim_rep_city, json[QString("auto_accident_claim_rep_city")]);
+    m_auto_accident_claim_rep_city_isSet = !json[QString("auto_accident_claim_rep_city")].isNull() && m_auto_accident_claim_rep_city_isValid;
+
+    m_auto_accident_claim_rep_is_insurer_isValid = ::OpenAPI::fromJsonValue(m_auto_accident_claim_rep_is_insurer, json[QString("auto_accident_claim_rep_is_insurer")]);
+    m_auto_accident_claim_rep_is_insurer_isSet = !json[QString("auto_accident_claim_rep_is_insurer")].isNull() && m_auto_accident_claim_rep_is_insurer_isValid;
+
+    m_auto_accident_claim_rep_name_isValid = ::OpenAPI::fromJsonValue(m_auto_accident_claim_rep_name, json[QString("auto_accident_claim_rep_name")]);
+    m_auto_accident_claim_rep_name_isSet = !json[QString("auto_accident_claim_rep_name")].isNull() && m_auto_accident_claim_rep_name_isValid;
+
+    m_auto_accident_claim_rep_state_isValid = ::OpenAPI::fromJsonValue(m_auto_accident_claim_rep_state, json[QString("auto_accident_claim_rep_state")]);
+    m_auto_accident_claim_rep_state_isSet = !json[QString("auto_accident_claim_rep_state")].isNull() && m_auto_accident_claim_rep_state_isValid;
+
+    m_auto_accident_claim_rep_zip_isValid = ::OpenAPI::fromJsonValue(m_auto_accident_claim_rep_zip, json[QString("auto_accident_claim_rep_zip")]);
+    m_auto_accident_claim_rep_zip_isSet = !json[QString("auto_accident_claim_rep_zip")].isNull() && m_auto_accident_claim_rep_zip_isValid;
+
+    m_auto_accident_company_isValid = ::OpenAPI::fromJsonValue(m_auto_accident_company, json[QString("auto_accident_company")]);
+    m_auto_accident_company_isSet = !json[QString("auto_accident_company")].isNull() && m_auto_accident_company_isValid;
+
+    m_auto_accident_date_of_accident_isValid = ::OpenAPI::fromJsonValue(m_auto_accident_date_of_accident, json[QString("auto_accident_date_of_accident")]);
+    m_auto_accident_date_of_accident_isSet = !json[QString("auto_accident_date_of_accident")].isNull() && m_auto_accident_date_of_accident_isValid;
+
+    m_auto_accident_disabled_from_date_isValid = ::OpenAPI::fromJsonValue(m_auto_accident_disabled_from_date, json[QString("auto_accident_disabled_from_date")]);
+    m_auto_accident_disabled_from_date_isSet = !json[QString("auto_accident_disabled_from_date")].isNull() && m_auto_accident_disabled_from_date_isValid;
+
+    m_auto_accident_disabled_to_date_isValid = ::OpenAPI::fromJsonValue(m_auto_accident_disabled_to_date, json[QString("auto_accident_disabled_to_date")]);
+    m_auto_accident_disabled_to_date_isSet = !json[QString("auto_accident_disabled_to_date")].isNull() && m_auto_accident_disabled_to_date_isValid;
+
+    m_auto_accident_had_similar_condition_isValid = ::OpenAPI::fromJsonValue(m_auto_accident_had_similar_condition, json[QString("auto_accident_had_similar_condition")]);
+    m_auto_accident_had_similar_condition_isSet = !json[QString("auto_accident_had_similar_condition")].isNull() && m_auto_accident_had_similar_condition_isValid;
+
+    m_auto_accident_is_subscriber_the_patient_isValid = ::OpenAPI::fromJsonValue(m_auto_accident_is_subscriber_the_patient, json[QString("auto_accident_is_subscriber_the_patient")]);
+    m_auto_accident_is_subscriber_the_patient_isSet = !json[QString("auto_accident_is_subscriber_the_patient")].isNull() && m_auto_accident_is_subscriber_the_patient_isValid;
+
+    m_auto_accident_notes_isValid = ::OpenAPI::fromJsonValue(m_auto_accident_notes, json[QString("auto_accident_notes")]);
+    m_auto_accident_notes_isSet = !json[QString("auto_accident_notes")].isNull() && m_auto_accident_notes_isValid;
+
+    m_auto_accident_patient_relationship_to_subscriber_isValid = ::OpenAPI::fromJsonValue(m_auto_accident_patient_relationship_to_subscriber, json[QString("auto_accident_patient_relationship_to_subscriber")]);
+    m_auto_accident_patient_relationship_to_subscriber_isSet = !json[QString("auto_accident_patient_relationship_to_subscriber")].isNull() && m_auto_accident_patient_relationship_to_subscriber_isValid;
+
+    m_auto_accident_payer_address_isValid = ::OpenAPI::fromJsonValue(m_auto_accident_payer_address, json[QString("auto_accident_payer_address")]);
+    m_auto_accident_payer_address_isSet = !json[QString("auto_accident_payer_address")].isNull() && m_auto_accident_payer_address_isValid;
+
+    m_auto_accident_payer_city_isValid = ::OpenAPI::fromJsonValue(m_auto_accident_payer_city, json[QString("auto_accident_payer_city")]);
+    m_auto_accident_payer_city_isSet = !json[QString("auto_accident_payer_city")].isNull() && m_auto_accident_payer_city_isValid;
+
+    m_auto_accident_payer_id_isValid = ::OpenAPI::fromJsonValue(m_auto_accident_payer_id, json[QString("auto_accident_payer_id")]);
+    m_auto_accident_payer_id_isSet = !json[QString("auto_accident_payer_id")].isNull() && m_auto_accident_payer_id_isValid;
+
+    m_auto_accident_payer_state_isValid = ::OpenAPI::fromJsonValue(m_auto_accident_payer_state, json[QString("auto_accident_payer_state")]);
+    m_auto_accident_payer_state_isSet = !json[QString("auto_accident_payer_state")].isNull() && m_auto_accident_payer_state_isValid;
+
+    m_auto_accident_payer_zip_isValid = ::OpenAPI::fromJsonValue(m_auto_accident_payer_zip, json[QString("auto_accident_payer_zip")]);
+    m_auto_accident_payer_zip_isSet = !json[QString("auto_accident_payer_zip")].isNull() && m_auto_accident_payer_zip_isValid;
+
+    m_auto_accident_policy_number_isValid = ::OpenAPI::fromJsonValue(m_auto_accident_policy_number, json[QString("auto_accident_policy_number")]);
+    m_auto_accident_policy_number_isSet = !json[QString("auto_accident_policy_number")].isNull() && m_auto_accident_policy_number_isValid;
+
+    m_auto_accident_return_to_work_date_isValid = ::OpenAPI::fromJsonValue(m_auto_accident_return_to_work_date, json[QString("auto_accident_return_to_work_date")]);
+    m_auto_accident_return_to_work_date_isSet = !json[QString("auto_accident_return_to_work_date")].isNull() && m_auto_accident_return_to_work_date_isValid;
+
+    m_auto_accident_significant_injury_isValid = ::OpenAPI::fromJsonValue(m_auto_accident_significant_injury, json[QString("auto_accident_significant_injury")]);
+    m_auto_accident_significant_injury_isSet = !json[QString("auto_accident_significant_injury")].isNull() && m_auto_accident_significant_injury_isValid;
+
+    m_auto_accident_significant_injury_notes_isValid = ::OpenAPI::fromJsonValue(m_auto_accident_significant_injury_notes, json[QString("auto_accident_significant_injury_notes")]);
+    m_auto_accident_significant_injury_notes_isSet = !json[QString("auto_accident_significant_injury_notes")].isNull() && m_auto_accident_significant_injury_notes_isValid;
+
+    m_auto_accident_similar_condition_date_isValid = ::OpenAPI::fromJsonValue(m_auto_accident_similar_condition_date, json[QString("auto_accident_similar_condition_date")]);
+    m_auto_accident_similar_condition_date_isSet = !json[QString("auto_accident_similar_condition_date")].isNull() && m_auto_accident_similar_condition_date_isValid;
+
+    m_auto_accident_similar_condition_notes_isValid = ::OpenAPI::fromJsonValue(m_auto_accident_similar_condition_notes, json[QString("auto_accident_similar_condition_notes")]);
+    m_auto_accident_similar_condition_notes_isSet = !json[QString("auto_accident_similar_condition_notes")].isNull() && m_auto_accident_similar_condition_notes_isValid;
+
+    m_auto_accident_state_of_occurrence_isValid = ::OpenAPI::fromJsonValue(m_auto_accident_state_of_occurrence, json[QString("auto_accident_state_of_occurrence")]);
+    m_auto_accident_state_of_occurrence_isSet = !json[QString("auto_accident_state_of_occurrence")].isNull() && m_auto_accident_state_of_occurrence_isValid;
+
+    m_auto_accident_still_under_care_isValid = ::OpenAPI::fromJsonValue(m_auto_accident_still_under_care, json[QString("auto_accident_still_under_care")]);
+    m_auto_accident_still_under_care_isSet = !json[QString("auto_accident_still_under_care")].isNull() && m_auto_accident_still_under_care_isValid;
+
+    m_auto_accident_subscriber_address_isValid = ::OpenAPI::fromJsonValue(m_auto_accident_subscriber_address, json[QString("auto_accident_subscriber_address")]);
+    m_auto_accident_subscriber_address_isSet = !json[QString("auto_accident_subscriber_address")].isNull() && m_auto_accident_subscriber_address_isValid;
+
+    m_auto_accident_subscriber_city_isValid = ::OpenAPI::fromJsonValue(m_auto_accident_subscriber_city, json[QString("auto_accident_subscriber_city")]);
+    m_auto_accident_subscriber_city_isSet = !json[QString("auto_accident_subscriber_city")].isNull() && m_auto_accident_subscriber_city_isValid;
+
+    m_auto_accident_subscriber_date_of_birth_isValid = ::OpenAPI::fromJsonValue(m_auto_accident_subscriber_date_of_birth, json[QString("auto_accident_subscriber_date_of_birth")]);
+    m_auto_accident_subscriber_date_of_birth_isSet = !json[QString("auto_accident_subscriber_date_of_birth")].isNull() && m_auto_accident_subscriber_date_of_birth_isValid;
+
+    m_auto_accident_subscriber_first_name_isValid = ::OpenAPI::fromJsonValue(m_auto_accident_subscriber_first_name, json[QString("auto_accident_subscriber_first_name")]);
+    m_auto_accident_subscriber_first_name_isSet = !json[QString("auto_accident_subscriber_first_name")].isNull() && m_auto_accident_subscriber_first_name_isValid;
+
+    m_auto_accident_subscriber_last_name_isValid = ::OpenAPI::fromJsonValue(m_auto_accident_subscriber_last_name, json[QString("auto_accident_subscriber_last_name")]);
+    m_auto_accident_subscriber_last_name_isSet = !json[QString("auto_accident_subscriber_last_name")].isNull() && m_auto_accident_subscriber_last_name_isValid;
+
+    m_auto_accident_subscriber_middle_name_isValid = ::OpenAPI::fromJsonValue(m_auto_accident_subscriber_middle_name, json[QString("auto_accident_subscriber_middle_name")]);
+    m_auto_accident_subscriber_middle_name_isSet = !json[QString("auto_accident_subscriber_middle_name")].isNull() && m_auto_accident_subscriber_middle_name_isValid;
+
+    m_auto_accident_subscriber_phone_number_isValid = ::OpenAPI::fromJsonValue(m_auto_accident_subscriber_phone_number, json[QString("auto_accident_subscriber_phone_number")]);
+    m_auto_accident_subscriber_phone_number_isSet = !json[QString("auto_accident_subscriber_phone_number")].isNull() && m_auto_accident_subscriber_phone_number_isValid;
+
+    m_auto_accident_subscriber_social_security_isValid = ::OpenAPI::fromJsonValue(m_auto_accident_subscriber_social_security, json[QString("auto_accident_subscriber_social_security")]);
+    m_auto_accident_subscriber_social_security_isSet = !json[QString("auto_accident_subscriber_social_security")].isNull() && m_auto_accident_subscriber_social_security_isValid;
+
+    m_auto_accident_subscriber_state_isValid = ::OpenAPI::fromJsonValue(m_auto_accident_subscriber_state, json[QString("auto_accident_subscriber_state")]);
+    m_auto_accident_subscriber_state_isSet = !json[QString("auto_accident_subscriber_state")].isNull() && m_auto_accident_subscriber_state_isValid;
+
+    m_auto_accident_subscriber_suffix_isValid = ::OpenAPI::fromJsonValue(m_auto_accident_subscriber_suffix, json[QString("auto_accident_subscriber_suffix")]);
+    m_auto_accident_subscriber_suffix_isSet = !json[QString("auto_accident_subscriber_suffix")].isNull() && m_auto_accident_subscriber_suffix_isValid;
+
+    m_auto_accident_subscriber_zip_code_isValid = ::OpenAPI::fromJsonValue(m_auto_accident_subscriber_zip_code, json[QString("auto_accident_subscriber_zip_code")]);
+    m_auto_accident_subscriber_zip_code_isSet = !json[QString("auto_accident_subscriber_zip_code")].isNull() && m_auto_accident_subscriber_zip_code_isValid;
+
+    m_auto_accident_treatment_duration_isValid = ::OpenAPI::fromJsonValue(m_auto_accident_treatment_duration, json[QString("auto_accident_treatment_duration")]);
+    m_auto_accident_treatment_duration_isSet = !json[QString("auto_accident_treatment_duration")].isNull() && m_auto_accident_treatment_duration_isValid;
+
+    m_auto_accident_will_require_therapy_isValid = ::OpenAPI::fromJsonValue(m_auto_accident_will_require_therapy, json[QString("auto_accident_will_require_therapy")]);
+    m_auto_accident_will_require_therapy_isSet = !json[QString("auto_accident_will_require_therapy")].isNull() && m_auto_accident_will_require_therapy_isValid;
+
+    m_auto_accident_will_require_therapy_rec_isValid = ::OpenAPI::fromJsonValue(m_auto_accident_will_require_therapy_rec, json[QString("auto_accident_will_require_therapy_rec")]);
+    m_auto_accident_will_require_therapy_rec_isSet = !json[QString("auto_accident_will_require_therapy_rec")].isNull() && m_auto_accident_will_require_therapy_rec_isValid;
+}
+
+QString OAIAutoAccidentInsurance::asJson() const {
+    QJsonObject obj = this->asJsonObject();
+    QJsonDocument doc(obj);
+    QByteArray bytes = doc.toJson();
+    return QString(bytes);
+}
+
+QJsonObject OAIAutoAccidentInsurance::asJsonObject() const {
+    QJsonObject obj;
+    if (m_auto_accident_case_number_isSet) {
+        obj.insert(QString("auto_accident_case_number"), ::OpenAPI::toJsonValue(m_auto_accident_case_number));
+    }
+    if (m_auto_accident_claim_rep_address_isSet) {
+        obj.insert(QString("auto_accident_claim_rep_address"), ::OpenAPI::toJsonValue(m_auto_accident_claim_rep_address));
+    }
+    if (m_auto_accident_claim_rep_city_isSet) {
+        obj.insert(QString("auto_accident_claim_rep_city"), ::OpenAPI::toJsonValue(m_auto_accident_claim_rep_city));
+    }
+    if (m_auto_accident_claim_rep_is_insurer_isSet) {
+        obj.insert(QString("auto_accident_claim_rep_is_insurer"), ::OpenAPI::toJsonValue(m_auto_accident_claim_rep_is_insurer));
+    }
+    if (m_auto_accident_claim_rep_name_isSet) {
+        obj.insert(QString("auto_accident_claim_rep_name"), ::OpenAPI::toJsonValue(m_auto_accident_claim_rep_name));
+    }
+    if (m_auto_accident_claim_rep_state_isSet) {
+        obj.insert(QString("auto_accident_claim_rep_state"), ::OpenAPI::toJsonValue(m_auto_accident_claim_rep_state));
+    }
+    if (m_auto_accident_claim_rep_zip_isSet) {
+        obj.insert(QString("auto_accident_claim_rep_zip"), ::OpenAPI::toJsonValue(m_auto_accident_claim_rep_zip));
+    }
+    if (m_auto_accident_company_isSet) {
+        obj.insert(QString("auto_accident_company"), ::OpenAPI::toJsonValue(m_auto_accident_company));
+    }
+    if (m_auto_accident_date_of_accident_isSet) {
+        obj.insert(QString("auto_accident_date_of_accident"), ::OpenAPI::toJsonValue(m_auto_accident_date_of_accident));
+    }
+    if (m_auto_accident_disabled_from_date_isSet) {
+        obj.insert(QString("auto_accident_disabled_from_date"), ::OpenAPI::toJsonValue(m_auto_accident_disabled_from_date));
+    }
+    if (m_auto_accident_disabled_to_date_isSet) {
+        obj.insert(QString("auto_accident_disabled_to_date"), ::OpenAPI::toJsonValue(m_auto_accident_disabled_to_date));
+    }
+    if (m_auto_accident_had_similar_condition_isSet) {
+        obj.insert(QString("auto_accident_had_similar_condition"), ::OpenAPI::toJsonValue(m_auto_accident_had_similar_condition));
+    }
+    if (m_auto_accident_is_subscriber_the_patient_isSet) {
+        obj.insert(QString("auto_accident_is_subscriber_the_patient"), ::OpenAPI::toJsonValue(m_auto_accident_is_subscriber_the_patient));
+    }
+    if (m_auto_accident_notes_isSet) {
+        obj.insert(QString("auto_accident_notes"), ::OpenAPI::toJsonValue(m_auto_accident_notes));
+    }
+    if (m_auto_accident_patient_relationship_to_subscriber_isSet) {
+        obj.insert(QString("auto_accident_patient_relationship_to_subscriber"), ::OpenAPI::toJsonValue(m_auto_accident_patient_relationship_to_subscriber));
+    }
+    if (m_auto_accident_payer_address_isSet) {
+        obj.insert(QString("auto_accident_payer_address"), ::OpenAPI::toJsonValue(m_auto_accident_payer_address));
+    }
+    if (m_auto_accident_payer_city_isSet) {
+        obj.insert(QString("auto_accident_payer_city"), ::OpenAPI::toJsonValue(m_auto_accident_payer_city));
+    }
+    if (m_auto_accident_payer_id_isSet) {
+        obj.insert(QString("auto_accident_payer_id"), ::OpenAPI::toJsonValue(m_auto_accident_payer_id));
+    }
+    if (m_auto_accident_payer_state_isSet) {
+        obj.insert(QString("auto_accident_payer_state"), ::OpenAPI::toJsonValue(m_auto_accident_payer_state));
+    }
+    if (m_auto_accident_payer_zip_isSet) {
+        obj.insert(QString("auto_accident_payer_zip"), ::OpenAPI::toJsonValue(m_auto_accident_payer_zip));
+    }
+    if (m_auto_accident_policy_number_isSet) {
+        obj.insert(QString("auto_accident_policy_number"), ::OpenAPI::toJsonValue(m_auto_accident_policy_number));
+    }
+    if (m_auto_accident_return_to_work_date_isSet) {
+        obj.insert(QString("auto_accident_return_to_work_date"), ::OpenAPI::toJsonValue(m_auto_accident_return_to_work_date));
+    }
+    if (m_auto_accident_significant_injury_isSet) {
+        obj.insert(QString("auto_accident_significant_injury"), ::OpenAPI::toJsonValue(m_auto_accident_significant_injury));
+    }
+    if (m_auto_accident_significant_injury_notes_isSet) {
+        obj.insert(QString("auto_accident_significant_injury_notes"), ::OpenAPI::toJsonValue(m_auto_accident_significant_injury_notes));
+    }
+    if (m_auto_accident_similar_condition_date_isSet) {
+        obj.insert(QString("auto_accident_similar_condition_date"), ::OpenAPI::toJsonValue(m_auto_accident_similar_condition_date));
+    }
+    if (m_auto_accident_similar_condition_notes_isSet) {
+        obj.insert(QString("auto_accident_similar_condition_notes"), ::OpenAPI::toJsonValue(m_auto_accident_similar_condition_notes));
+    }
+    if (m_auto_accident_state_of_occurrence_isSet) {
+        obj.insert(QString("auto_accident_state_of_occurrence"), ::OpenAPI::toJsonValue(m_auto_accident_state_of_occurrence));
+    }
+    if (m_auto_accident_still_under_care_isSet) {
+        obj.insert(QString("auto_accident_still_under_care"), ::OpenAPI::toJsonValue(m_auto_accident_still_under_care));
+    }
+    if (m_auto_accident_subscriber_address_isSet) {
+        obj.insert(QString("auto_accident_subscriber_address"), ::OpenAPI::toJsonValue(m_auto_accident_subscriber_address));
+    }
+    if (m_auto_accident_subscriber_city_isSet) {
+        obj.insert(QString("auto_accident_subscriber_city"), ::OpenAPI::toJsonValue(m_auto_accident_subscriber_city));
+    }
+    if (m_auto_accident_subscriber_date_of_birth_isSet) {
+        obj.insert(QString("auto_accident_subscriber_date_of_birth"), ::OpenAPI::toJsonValue(m_auto_accident_subscriber_date_of_birth));
+    }
+    if (m_auto_accident_subscriber_first_name_isSet) {
+        obj.insert(QString("auto_accident_subscriber_first_name"), ::OpenAPI::toJsonValue(m_auto_accident_subscriber_first_name));
+    }
+    if (m_auto_accident_subscriber_last_name_isSet) {
+        obj.insert(QString("auto_accident_subscriber_last_name"), ::OpenAPI::toJsonValue(m_auto_accident_subscriber_last_name));
+    }
+    if (m_auto_accident_subscriber_middle_name_isSet) {
+        obj.insert(QString("auto_accident_subscriber_middle_name"), ::OpenAPI::toJsonValue(m_auto_accident_subscriber_middle_name));
+    }
+    if (m_auto_accident_subscriber_phone_number_isSet) {
+        obj.insert(QString("auto_accident_subscriber_phone_number"), ::OpenAPI::toJsonValue(m_auto_accident_subscriber_phone_number));
+    }
+    if (m_auto_accident_subscriber_social_security_isSet) {
+        obj.insert(QString("auto_accident_subscriber_social_security"), ::OpenAPI::toJsonValue(m_auto_accident_subscriber_social_security));
+    }
+    if (m_auto_accident_subscriber_state_isSet) {
+        obj.insert(QString("auto_accident_subscriber_state"), ::OpenAPI::toJsonValue(m_auto_accident_subscriber_state));
+    }
+    if (m_auto_accident_subscriber_suffix_isSet) {
+        obj.insert(QString("auto_accident_subscriber_suffix"), ::OpenAPI::toJsonValue(m_auto_accident_subscriber_suffix));
+    }
+    if (m_auto_accident_subscriber_zip_code_isSet) {
+        obj.insert(QString("auto_accident_subscriber_zip_code"), ::OpenAPI::toJsonValue(m_auto_accident_subscriber_zip_code));
+    }
+    if (m_auto_accident_treatment_duration_isSet) {
+        obj.insert(QString("auto_accident_treatment_duration"), ::OpenAPI::toJsonValue(m_auto_accident_treatment_duration));
+    }
+    if (m_auto_accident_will_require_therapy_isSet) {
+        obj.insert(QString("auto_accident_will_require_therapy"), ::OpenAPI::toJsonValue(m_auto_accident_will_require_therapy));
+    }
+    if (m_auto_accident_will_require_therapy_rec_isSet) {
+        obj.insert(QString("auto_accident_will_require_therapy_rec"), ::OpenAPI::toJsonValue(m_auto_accident_will_require_therapy_rec));
+    }
+    return obj;
+}
+
+QString OAIAutoAccidentInsurance::getAutoAccidentCaseNumber() const {
+    return m_auto_accident_case_number;
+}
+void OAIAutoAccidentInsurance::setAutoAccidentCaseNumber(const QString &auto_accident_case_number) {
+    m_auto_accident_case_number = auto_accident_case_number;
+    m_auto_accident_case_number_isSet = true;
+}
+
+bool OAIAutoAccidentInsurance::is_auto_accident_case_number_Set() const{
+    return m_auto_accident_case_number_isSet;
+}
+
+bool OAIAutoAccidentInsurance::is_auto_accident_case_number_Valid() const{
+    return m_auto_accident_case_number_isValid;
+}
+
+QString OAIAutoAccidentInsurance::getAutoAccidentClaimRepAddress() const {
+    return m_auto_accident_claim_rep_address;
+}
+void OAIAutoAccidentInsurance::setAutoAccidentClaimRepAddress(const QString &auto_accident_claim_rep_address) {
+    m_auto_accident_claim_rep_address = auto_accident_claim_rep_address;
+    m_auto_accident_claim_rep_address_isSet = true;
+}
+
+bool OAIAutoAccidentInsurance::is_auto_accident_claim_rep_address_Set() const{
+    return m_auto_accident_claim_rep_address_isSet;
+}
+
+bool OAIAutoAccidentInsurance::is_auto_accident_claim_rep_address_Valid() const{
+    return m_auto_accident_claim_rep_address_isValid;
+}
+
+QString OAIAutoAccidentInsurance::getAutoAccidentClaimRepCity() const {
+    return m_auto_accident_claim_rep_city;
+}
+void OAIAutoAccidentInsurance::setAutoAccidentClaimRepCity(const QString &auto_accident_claim_rep_city) {
+    m_auto_accident_claim_rep_city = auto_accident_claim_rep_city;
+    m_auto_accident_claim_rep_city_isSet = true;
+}
+
+bool OAIAutoAccidentInsurance::is_auto_accident_claim_rep_city_Set() const{
+    return m_auto_accident_claim_rep_city_isSet;
+}
+
+bool OAIAutoAccidentInsurance::is_auto_accident_claim_rep_city_Valid() const{
+    return m_auto_accident_claim_rep_city_isValid;
+}
+
+bool OAIAutoAccidentInsurance::isAutoAccidentClaimRepIsInsurer() const {
+    return m_auto_accident_claim_rep_is_insurer;
+}
+void OAIAutoAccidentInsurance::setAutoAccidentClaimRepIsInsurer(const bool &auto_accident_claim_rep_is_insurer) {
+    m_auto_accident_claim_rep_is_insurer = auto_accident_claim_rep_is_insurer;
+    m_auto_accident_claim_rep_is_insurer_isSet = true;
+}
+
+bool OAIAutoAccidentInsurance::is_auto_accident_claim_rep_is_insurer_Set() const{
+    return m_auto_accident_claim_rep_is_insurer_isSet;
+}
+
+bool OAIAutoAccidentInsurance::is_auto_accident_claim_rep_is_insurer_Valid() const{
+    return m_auto_accident_claim_rep_is_insurer_isValid;
+}
+
+QString OAIAutoAccidentInsurance::getAutoAccidentClaimRepName() const {
+    return m_auto_accident_claim_rep_name;
+}
+void OAIAutoAccidentInsurance::setAutoAccidentClaimRepName(const QString &auto_accident_claim_rep_name) {
+    m_auto_accident_claim_rep_name = auto_accident_claim_rep_name;
+    m_auto_accident_claim_rep_name_isSet = true;
+}
+
+bool OAIAutoAccidentInsurance::is_auto_accident_claim_rep_name_Set() const{
+    return m_auto_accident_claim_rep_name_isSet;
+}
+
+bool OAIAutoAccidentInsurance::is_auto_accident_claim_rep_name_Valid() const{
+    return m_auto_accident_claim_rep_name_isValid;
+}
+
+QString OAIAutoAccidentInsurance::getAutoAccidentClaimRepState() const {
+    return m_auto_accident_claim_rep_state;
+}
+void OAIAutoAccidentInsurance::setAutoAccidentClaimRepState(const QString &auto_accident_claim_rep_state) {
+    m_auto_accident_claim_rep_state = auto_accident_claim_rep_state;
+    m_auto_accident_claim_rep_state_isSet = true;
+}
+
+bool OAIAutoAccidentInsurance::is_auto_accident_claim_rep_state_Set() const{
+    return m_auto_accident_claim_rep_state_isSet;
+}
+
+bool OAIAutoAccidentInsurance::is_auto_accident_claim_rep_state_Valid() const{
+    return m_auto_accident_claim_rep_state_isValid;
+}
+
+QString OAIAutoAccidentInsurance::getAutoAccidentClaimRepZip() const {
+    return m_auto_accident_claim_rep_zip;
+}
+void OAIAutoAccidentInsurance::setAutoAccidentClaimRepZip(const QString &auto_accident_claim_rep_zip) {
+    m_auto_accident_claim_rep_zip = auto_accident_claim_rep_zip;
+    m_auto_accident_claim_rep_zip_isSet = true;
+}
+
+bool OAIAutoAccidentInsurance::is_auto_accident_claim_rep_zip_Set() const{
+    return m_auto_accident_claim_rep_zip_isSet;
+}
+
+bool OAIAutoAccidentInsurance::is_auto_accident_claim_rep_zip_Valid() const{
+    return m_auto_accident_claim_rep_zip_isValid;
+}
+
+QString OAIAutoAccidentInsurance::getAutoAccidentCompany() const {
+    return m_auto_accident_company;
+}
+void OAIAutoAccidentInsurance::setAutoAccidentCompany(const QString &auto_accident_company) {
+    m_auto_accident_company = auto_accident_company;
+    m_auto_accident_company_isSet = true;
+}
+
+bool OAIAutoAccidentInsurance::is_auto_accident_company_Set() const{
+    return m_auto_accident_company_isSet;
+}
+
+bool OAIAutoAccidentInsurance::is_auto_accident_company_Valid() const{
+    return m_auto_accident_company_isValid;
+}
+
+QString OAIAutoAccidentInsurance::getAutoAccidentDateOfAccident() const {
+    return m_auto_accident_date_of_accident;
+}
+void OAIAutoAccidentInsurance::setAutoAccidentDateOfAccident(const QString &auto_accident_date_of_accident) {
+    m_auto_accident_date_of_accident = auto_accident_date_of_accident;
+    m_auto_accident_date_of_accident_isSet = true;
+}
+
+bool OAIAutoAccidentInsurance::is_auto_accident_date_of_accident_Set() const{
+    return m_auto_accident_date_of_accident_isSet;
+}
+
+bool OAIAutoAccidentInsurance::is_auto_accident_date_of_accident_Valid() const{
+    return m_auto_accident_date_of_accident_isValid;
+}
+
+QString OAIAutoAccidentInsurance::getAutoAccidentDisabledFromDate() const {
+    return m_auto_accident_disabled_from_date;
+}
+void OAIAutoAccidentInsurance::setAutoAccidentDisabledFromDate(const QString &auto_accident_disabled_from_date) {
+    m_auto_accident_disabled_from_date = auto_accident_disabled_from_date;
+    m_auto_accident_disabled_from_date_isSet = true;
+}
+
+bool OAIAutoAccidentInsurance::is_auto_accident_disabled_from_date_Set() const{
+    return m_auto_accident_disabled_from_date_isSet;
+}
+
+bool OAIAutoAccidentInsurance::is_auto_accident_disabled_from_date_Valid() const{
+    return m_auto_accident_disabled_from_date_isValid;
+}
+
+QString OAIAutoAccidentInsurance::getAutoAccidentDisabledToDate() const {
+    return m_auto_accident_disabled_to_date;
+}
+void OAIAutoAccidentInsurance::setAutoAccidentDisabledToDate(const QString &auto_accident_disabled_to_date) {
+    m_auto_accident_disabled_to_date = auto_accident_disabled_to_date;
+    m_auto_accident_disabled_to_date_isSet = true;
+}
+
+bool OAIAutoAccidentInsurance::is_auto_accident_disabled_to_date_Set() const{
+    return m_auto_accident_disabled_to_date_isSet;
+}
+
+bool OAIAutoAccidentInsurance::is_auto_accident_disabled_to_date_Valid() const{
+    return m_auto_accident_disabled_to_date_isValid;
+}
+
+bool OAIAutoAccidentInsurance::isAutoAccidentHadSimilarCondition() const {
+    return m_auto_accident_had_similar_condition;
+}
+void OAIAutoAccidentInsurance::setAutoAccidentHadSimilarCondition(const bool &auto_accident_had_similar_condition) {
+    m_auto_accident_had_similar_condition = auto_accident_had_similar_condition;
+    m_auto_accident_had_similar_condition_isSet = true;
+}
+
+bool OAIAutoAccidentInsurance::is_auto_accident_had_similar_condition_Set() const{
+    return m_auto_accident_had_similar_condition_isSet;
+}
+
+bool OAIAutoAccidentInsurance::is_auto_accident_had_similar_condition_Valid() const{
+    return m_auto_accident_had_similar_condition_isValid;
+}
+
+bool OAIAutoAccidentInsurance::isAutoAccidentIsSubscriberThePatient() const {
+    return m_auto_accident_is_subscriber_the_patient;
+}
+void OAIAutoAccidentInsurance::setAutoAccidentIsSubscriberThePatient(const bool &auto_accident_is_subscriber_the_patient) {
+    m_auto_accident_is_subscriber_the_patient = auto_accident_is_subscriber_the_patient;
+    m_auto_accident_is_subscriber_the_patient_isSet = true;
+}
+
+bool OAIAutoAccidentInsurance::is_auto_accident_is_subscriber_the_patient_Set() const{
+    return m_auto_accident_is_subscriber_the_patient_isSet;
+}
+
+bool OAIAutoAccidentInsurance::is_auto_accident_is_subscriber_the_patient_Valid() const{
+    return m_auto_accident_is_subscriber_the_patient_isValid;
+}
+
+QString OAIAutoAccidentInsurance::getAutoAccidentNotes() const {
+    return m_auto_accident_notes;
+}
+void OAIAutoAccidentInsurance::setAutoAccidentNotes(const QString &auto_accident_notes) {
+    m_auto_accident_notes = auto_accident_notes;
+    m_auto_accident_notes_isSet = true;
+}
+
+bool OAIAutoAccidentInsurance::is_auto_accident_notes_Set() const{
+    return m_auto_accident_notes_isSet;
+}
+
+bool OAIAutoAccidentInsurance::is_auto_accident_notes_Valid() const{
+    return m_auto_accident_notes_isValid;
+}
+
+QString OAIAutoAccidentInsurance::getAutoAccidentPatientRelationshipToSubscriber() const {
+    return m_auto_accident_patient_relationship_to_subscriber;
+}
+void OAIAutoAccidentInsurance::setAutoAccidentPatientRelationshipToSubscriber(const QString &auto_accident_patient_relationship_to_subscriber) {
+    m_auto_accident_patient_relationship_to_subscriber = auto_accident_patient_relationship_to_subscriber;
+    m_auto_accident_patient_relationship_to_subscriber_isSet = true;
+}
+
+bool OAIAutoAccidentInsurance::is_auto_accident_patient_relationship_to_subscriber_Set() const{
+    return m_auto_accident_patient_relationship_to_subscriber_isSet;
+}
+
+bool OAIAutoAccidentInsurance::is_auto_accident_patient_relationship_to_subscriber_Valid() const{
+    return m_auto_accident_patient_relationship_to_subscriber_isValid;
+}
+
+QString OAIAutoAccidentInsurance::getAutoAccidentPayerAddress() const {
+    return m_auto_accident_payer_address;
+}
+void OAIAutoAccidentInsurance::setAutoAccidentPayerAddress(const QString &auto_accident_payer_address) {
+    m_auto_accident_payer_address = auto_accident_payer_address;
+    m_auto_accident_payer_address_isSet = true;
+}
+
+bool OAIAutoAccidentInsurance::is_auto_accident_payer_address_Set() const{
+    return m_auto_accident_payer_address_isSet;
+}
+
+bool OAIAutoAccidentInsurance::is_auto_accident_payer_address_Valid() const{
+    return m_auto_accident_payer_address_isValid;
+}
+
+QString OAIAutoAccidentInsurance::getAutoAccidentPayerCity() const {
+    return m_auto_accident_payer_city;
+}
+void OAIAutoAccidentInsurance::setAutoAccidentPayerCity(const QString &auto_accident_payer_city) {
+    m_auto_accident_payer_city = auto_accident_payer_city;
+    m_auto_accident_payer_city_isSet = true;
+}
+
+bool OAIAutoAccidentInsurance::is_auto_accident_payer_city_Set() const{
+    return m_auto_accident_payer_city_isSet;
+}
+
+bool OAIAutoAccidentInsurance::is_auto_accident_payer_city_Valid() const{
+    return m_auto_accident_payer_city_isValid;
+}
+
+QString OAIAutoAccidentInsurance::getAutoAccidentPayerId() const {
+    return m_auto_accident_payer_id;
+}
+void OAIAutoAccidentInsurance::setAutoAccidentPayerId(const QString &auto_accident_payer_id) {
+    m_auto_accident_payer_id = auto_accident_payer_id;
+    m_auto_accident_payer_id_isSet = true;
+}
+
+bool OAIAutoAccidentInsurance::is_auto_accident_payer_id_Set() const{
+    return m_auto_accident_payer_id_isSet;
+}
+
+bool OAIAutoAccidentInsurance::is_auto_accident_payer_id_Valid() const{
+    return m_auto_accident_payer_id_isValid;
+}
+
+QString OAIAutoAccidentInsurance::getAutoAccidentPayerState() const {
+    return m_auto_accident_payer_state;
+}
+void OAIAutoAccidentInsurance::setAutoAccidentPayerState(const QString &auto_accident_payer_state) {
+    m_auto_accident_payer_state = auto_accident_payer_state;
+    m_auto_accident_payer_state_isSet = true;
+}
+
+bool OAIAutoAccidentInsurance::is_auto_accident_payer_state_Set() const{
+    return m_auto_accident_payer_state_isSet;
+}
+
+bool OAIAutoAccidentInsurance::is_auto_accident_payer_state_Valid() const{
+    return m_auto_accident_payer_state_isValid;
+}
+
+QString OAIAutoAccidentInsurance::getAutoAccidentPayerZip() const {
+    return m_auto_accident_payer_zip;
+}
+void OAIAutoAccidentInsurance::setAutoAccidentPayerZip(const QString &auto_accident_payer_zip) {
+    m_auto_accident_payer_zip = auto_accident_payer_zip;
+    m_auto_accident_payer_zip_isSet = true;
+}
+
+bool OAIAutoAccidentInsurance::is_auto_accident_payer_zip_Set() const{
+    return m_auto_accident_payer_zip_isSet;
+}
+
+bool OAIAutoAccidentInsurance::is_auto_accident_payer_zip_Valid() const{
+    return m_auto_accident_payer_zip_isValid;
+}
+
+QString OAIAutoAccidentInsurance::getAutoAccidentPolicyNumber() const {
+    return m_auto_accident_policy_number;
+}
+void OAIAutoAccidentInsurance::setAutoAccidentPolicyNumber(const QString &auto_accident_policy_number) {
+    m_auto_accident_policy_number = auto_accident_policy_number;
+    m_auto_accident_policy_number_isSet = true;
+}
+
+bool OAIAutoAccidentInsurance::is_auto_accident_policy_number_Set() const{
+    return m_auto_accident_policy_number_isSet;
+}
+
+bool OAIAutoAccidentInsurance::is_auto_accident_policy_number_Valid() const{
+    return m_auto_accident_policy_number_isValid;
+}
+
+QString OAIAutoAccidentInsurance::getAutoAccidentReturnToWorkDate() const {
+    return m_auto_accident_return_to_work_date;
+}
+void OAIAutoAccidentInsurance::setAutoAccidentReturnToWorkDate(const QString &auto_accident_return_to_work_date) {
+    m_auto_accident_return_to_work_date = auto_accident_return_to_work_date;
+    m_auto_accident_return_to_work_date_isSet = true;
+}
+
+bool OAIAutoAccidentInsurance::is_auto_accident_return_to_work_date_Set() const{
+    return m_auto_accident_return_to_work_date_isSet;
+}
+
+bool OAIAutoAccidentInsurance::is_auto_accident_return_to_work_date_Valid() const{
+    return m_auto_accident_return_to_work_date_isValid;
+}
+
+QString OAIAutoAccidentInsurance::getAutoAccidentSignificantInjury() const {
+    return m_auto_accident_significant_injury;
+}
+void OAIAutoAccidentInsurance::setAutoAccidentSignificantInjury(const QString &auto_accident_significant_injury) {
+    m_auto_accident_significant_injury = auto_accident_significant_injury;
+    m_auto_accident_significant_injury_isSet = true;
+}
+
+bool OAIAutoAccidentInsurance::is_auto_accident_significant_injury_Set() const{
+    return m_auto_accident_significant_injury_isSet;
+}
+
+bool OAIAutoAccidentInsurance::is_auto_accident_significant_injury_Valid() const{
+    return m_auto_accident_significant_injury_isValid;
+}
+
+QString OAIAutoAccidentInsurance::getAutoAccidentSignificantInjuryNotes() const {
+    return m_auto_accident_significant_injury_notes;
+}
+void OAIAutoAccidentInsurance::setAutoAccidentSignificantInjuryNotes(const QString &auto_accident_significant_injury_notes) {
+    m_auto_accident_significant_injury_notes = auto_accident_significant_injury_notes;
+    m_auto_accident_significant_injury_notes_isSet = true;
+}
+
+bool OAIAutoAccidentInsurance::is_auto_accident_significant_injury_notes_Set() const{
+    return m_auto_accident_significant_injury_notes_isSet;
+}
+
+bool OAIAutoAccidentInsurance::is_auto_accident_significant_injury_notes_Valid() const{
+    return m_auto_accident_significant_injury_notes_isValid;
+}
+
+QString OAIAutoAccidentInsurance::getAutoAccidentSimilarConditionDate() const {
+    return m_auto_accident_similar_condition_date;
+}
+void OAIAutoAccidentInsurance::setAutoAccidentSimilarConditionDate(const QString &auto_accident_similar_condition_date) {
+    m_auto_accident_similar_condition_date = auto_accident_similar_condition_date;
+    m_auto_accident_similar_condition_date_isSet = true;
+}
+
+bool OAIAutoAccidentInsurance::is_auto_accident_similar_condition_date_Set() const{
+    return m_auto_accident_similar_condition_date_isSet;
+}
+
+bool OAIAutoAccidentInsurance::is_auto_accident_similar_condition_date_Valid() const{
+    return m_auto_accident_similar_condition_date_isValid;
+}
+
+QString OAIAutoAccidentInsurance::getAutoAccidentSimilarConditionNotes() const {
+    return m_auto_accident_similar_condition_notes;
+}
+void OAIAutoAccidentInsurance::setAutoAccidentSimilarConditionNotes(const QString &auto_accident_similar_condition_notes) {
+    m_auto_accident_similar_condition_notes = auto_accident_similar_condition_notes;
+    m_auto_accident_similar_condition_notes_isSet = true;
+}
+
+bool OAIAutoAccidentInsurance::is_auto_accident_similar_condition_notes_Set() const{
+    return m_auto_accident_similar_condition_notes_isSet;
+}
+
+bool OAIAutoAccidentInsurance::is_auto_accident_similar_condition_notes_Valid() const{
+    return m_auto_accident_similar_condition_notes_isValid;
+}
+
+QString OAIAutoAccidentInsurance::getAutoAccidentStateOfOccurrence() const {
+    return m_auto_accident_state_of_occurrence;
+}
+void OAIAutoAccidentInsurance::setAutoAccidentStateOfOccurrence(const QString &auto_accident_state_of_occurrence) {
+    m_auto_accident_state_of_occurrence = auto_accident_state_of_occurrence;
+    m_auto_accident_state_of_occurrence_isSet = true;
+}
+
+bool OAIAutoAccidentInsurance::is_auto_accident_state_of_occurrence_Set() const{
+    return m_auto_accident_state_of_occurrence_isSet;
+}
+
+bool OAIAutoAccidentInsurance::is_auto_accident_state_of_occurrence_Valid() const{
+    return m_auto_accident_state_of_occurrence_isValid;
+}
+
+bool OAIAutoAccidentInsurance::isAutoAccidentStillUnderCare() const {
+    return m_auto_accident_still_under_care;
+}
+void OAIAutoAccidentInsurance::setAutoAccidentStillUnderCare(const bool &auto_accident_still_under_care) {
+    m_auto_accident_still_under_care = auto_accident_still_under_care;
+    m_auto_accident_still_under_care_isSet = true;
+}
+
+bool OAIAutoAccidentInsurance::is_auto_accident_still_under_care_Set() const{
+    return m_auto_accident_still_under_care_isSet;
+}
+
+bool OAIAutoAccidentInsurance::is_auto_accident_still_under_care_Valid() const{
+    return m_auto_accident_still_under_care_isValid;
+}
+
+QString OAIAutoAccidentInsurance::getAutoAccidentSubscriberAddress() const {
+    return m_auto_accident_subscriber_address;
+}
+void OAIAutoAccidentInsurance::setAutoAccidentSubscriberAddress(const QString &auto_accident_subscriber_address) {
+    m_auto_accident_subscriber_address = auto_accident_subscriber_address;
+    m_auto_accident_subscriber_address_isSet = true;
+}
+
+bool OAIAutoAccidentInsurance::is_auto_accident_subscriber_address_Set() const{
+    return m_auto_accident_subscriber_address_isSet;
+}
+
+bool OAIAutoAccidentInsurance::is_auto_accident_subscriber_address_Valid() const{
+    return m_auto_accident_subscriber_address_isValid;
+}
+
+QString OAIAutoAccidentInsurance::getAutoAccidentSubscriberCity() const {
+    return m_auto_accident_subscriber_city;
+}
+void OAIAutoAccidentInsurance::setAutoAccidentSubscriberCity(const QString &auto_accident_subscriber_city) {
+    m_auto_accident_subscriber_city = auto_accident_subscriber_city;
+    m_auto_accident_subscriber_city_isSet = true;
+}
+
+bool OAIAutoAccidentInsurance::is_auto_accident_subscriber_city_Set() const{
+    return m_auto_accident_subscriber_city_isSet;
+}
+
+bool OAIAutoAccidentInsurance::is_auto_accident_subscriber_city_Valid() const{
+    return m_auto_accident_subscriber_city_isValid;
+}
+
+QString OAIAutoAccidentInsurance::getAutoAccidentSubscriberDateOfBirth() const {
+    return m_auto_accident_subscriber_date_of_birth;
+}
+void OAIAutoAccidentInsurance::setAutoAccidentSubscriberDateOfBirth(const QString &auto_accident_subscriber_date_of_birth) {
+    m_auto_accident_subscriber_date_of_birth = auto_accident_subscriber_date_of_birth;
+    m_auto_accident_subscriber_date_of_birth_isSet = true;
+}
+
+bool OAIAutoAccidentInsurance::is_auto_accident_subscriber_date_of_birth_Set() const{
+    return m_auto_accident_subscriber_date_of_birth_isSet;
+}
+
+bool OAIAutoAccidentInsurance::is_auto_accident_subscriber_date_of_birth_Valid() const{
+    return m_auto_accident_subscriber_date_of_birth_isValid;
+}
+
+QString OAIAutoAccidentInsurance::getAutoAccidentSubscriberFirstName() const {
+    return m_auto_accident_subscriber_first_name;
+}
+void OAIAutoAccidentInsurance::setAutoAccidentSubscriberFirstName(const QString &auto_accident_subscriber_first_name) {
+    m_auto_accident_subscriber_first_name = auto_accident_subscriber_first_name;
+    m_auto_accident_subscriber_first_name_isSet = true;
+}
+
+bool OAIAutoAccidentInsurance::is_auto_accident_subscriber_first_name_Set() const{
+    return m_auto_accident_subscriber_first_name_isSet;
+}
+
+bool OAIAutoAccidentInsurance::is_auto_accident_subscriber_first_name_Valid() const{
+    return m_auto_accident_subscriber_first_name_isValid;
+}
+
+QString OAIAutoAccidentInsurance::getAutoAccidentSubscriberLastName() const {
+    return m_auto_accident_subscriber_last_name;
+}
+void OAIAutoAccidentInsurance::setAutoAccidentSubscriberLastName(const QString &auto_accident_subscriber_last_name) {
+    m_auto_accident_subscriber_last_name = auto_accident_subscriber_last_name;
+    m_auto_accident_subscriber_last_name_isSet = true;
+}
+
+bool OAIAutoAccidentInsurance::is_auto_accident_subscriber_last_name_Set() const{
+    return m_auto_accident_subscriber_last_name_isSet;
+}
+
+bool OAIAutoAccidentInsurance::is_auto_accident_subscriber_last_name_Valid() const{
+    return m_auto_accident_subscriber_last_name_isValid;
+}
+
+QString OAIAutoAccidentInsurance::getAutoAccidentSubscriberMiddleName() const {
+    return m_auto_accident_subscriber_middle_name;
+}
+void OAIAutoAccidentInsurance::setAutoAccidentSubscriberMiddleName(const QString &auto_accident_subscriber_middle_name) {
+    m_auto_accident_subscriber_middle_name = auto_accident_subscriber_middle_name;
+    m_auto_accident_subscriber_middle_name_isSet = true;
+}
+
+bool OAIAutoAccidentInsurance::is_auto_accident_subscriber_middle_name_Set() const{
+    return m_auto_accident_subscriber_middle_name_isSet;
+}
+
+bool OAIAutoAccidentInsurance::is_auto_accident_subscriber_middle_name_Valid() const{
+    return m_auto_accident_subscriber_middle_name_isValid;
+}
+
+QString OAIAutoAccidentInsurance::getAutoAccidentSubscriberPhoneNumber() const {
+    return m_auto_accident_subscriber_phone_number;
+}
+void OAIAutoAccidentInsurance::setAutoAccidentSubscriberPhoneNumber(const QString &auto_accident_subscriber_phone_number) {
+    m_auto_accident_subscriber_phone_number = auto_accident_subscriber_phone_number;
+    m_auto_accident_subscriber_phone_number_isSet = true;
+}
+
+bool OAIAutoAccidentInsurance::is_auto_accident_subscriber_phone_number_Set() const{
+    return m_auto_accident_subscriber_phone_number_isSet;
+}
+
+bool OAIAutoAccidentInsurance::is_auto_accident_subscriber_phone_number_Valid() const{
+    return m_auto_accident_subscriber_phone_number_isValid;
+}
+
+QString OAIAutoAccidentInsurance::getAutoAccidentSubscriberSocialSecurity() const {
+    return m_auto_accident_subscriber_social_security;
+}
+void OAIAutoAccidentInsurance::setAutoAccidentSubscriberSocialSecurity(const QString &auto_accident_subscriber_social_security) {
+    m_auto_accident_subscriber_social_security = auto_accident_subscriber_social_security;
+    m_auto_accident_subscriber_social_security_isSet = true;
+}
+
+bool OAIAutoAccidentInsurance::is_auto_accident_subscriber_social_security_Set() const{
+    return m_auto_accident_subscriber_social_security_isSet;
+}
+
+bool OAIAutoAccidentInsurance::is_auto_accident_subscriber_social_security_Valid() const{
+    return m_auto_accident_subscriber_social_security_isValid;
+}
+
+QString OAIAutoAccidentInsurance::getAutoAccidentSubscriberState() const {
+    return m_auto_accident_subscriber_state;
+}
+void OAIAutoAccidentInsurance::setAutoAccidentSubscriberState(const QString &auto_accident_subscriber_state) {
+    m_auto_accident_subscriber_state = auto_accident_subscriber_state;
+    m_auto_accident_subscriber_state_isSet = true;
+}
+
+bool OAIAutoAccidentInsurance::is_auto_accident_subscriber_state_Set() const{
+    return m_auto_accident_subscriber_state_isSet;
+}
+
+bool OAIAutoAccidentInsurance::is_auto_accident_subscriber_state_Valid() const{
+    return m_auto_accident_subscriber_state_isValid;
+}
+
+QString OAIAutoAccidentInsurance::getAutoAccidentSubscriberSuffix() const {
+    return m_auto_accident_subscriber_suffix;
+}
+void OAIAutoAccidentInsurance::setAutoAccidentSubscriberSuffix(const QString &auto_accident_subscriber_suffix) {
+    m_auto_accident_subscriber_suffix = auto_accident_subscriber_suffix;
+    m_auto_accident_subscriber_suffix_isSet = true;
+}
+
+bool OAIAutoAccidentInsurance::is_auto_accident_subscriber_suffix_Set() const{
+    return m_auto_accident_subscriber_suffix_isSet;
+}
+
+bool OAIAutoAccidentInsurance::is_auto_accident_subscriber_suffix_Valid() const{
+    return m_auto_accident_subscriber_suffix_isValid;
+}
+
+QString OAIAutoAccidentInsurance::getAutoAccidentSubscriberZipCode() const {
+    return m_auto_accident_subscriber_zip_code;
+}
+void OAIAutoAccidentInsurance::setAutoAccidentSubscriberZipCode(const QString &auto_accident_subscriber_zip_code) {
+    m_auto_accident_subscriber_zip_code = auto_accident_subscriber_zip_code;
+    m_auto_accident_subscriber_zip_code_isSet = true;
+}
+
+bool OAIAutoAccidentInsurance::is_auto_accident_subscriber_zip_code_Set() const{
+    return m_auto_accident_subscriber_zip_code_isSet;
+}
+
+bool OAIAutoAccidentInsurance::is_auto_accident_subscriber_zip_code_Valid() const{
+    return m_auto_accident_subscriber_zip_code_isValid;
+}
+
+QString OAIAutoAccidentInsurance::getAutoAccidentTreatmentDuration() const {
+    return m_auto_accident_treatment_duration;
+}
+void OAIAutoAccidentInsurance::setAutoAccidentTreatmentDuration(const QString &auto_accident_treatment_duration) {
+    m_auto_accident_treatment_duration = auto_accident_treatment_duration;
+    m_auto_accident_treatment_duration_isSet = true;
+}
+
+bool OAIAutoAccidentInsurance::is_auto_accident_treatment_duration_Set() const{
+    return m_auto_accident_treatment_duration_isSet;
+}
+
+bool OAIAutoAccidentInsurance::is_auto_accident_treatment_duration_Valid() const{
+    return m_auto_accident_treatment_duration_isValid;
+}
+
+bool OAIAutoAccidentInsurance::isAutoAccidentWillRequireTherapy() const {
+    return m_auto_accident_will_require_therapy;
+}
+void OAIAutoAccidentInsurance::setAutoAccidentWillRequireTherapy(const bool &auto_accident_will_require_therapy) {
+    m_auto_accident_will_require_therapy = auto_accident_will_require_therapy;
+    m_auto_accident_will_require_therapy_isSet = true;
+}
+
+bool OAIAutoAccidentInsurance::is_auto_accident_will_require_therapy_Set() const{
+    return m_auto_accident_will_require_therapy_isSet;
+}
+
+bool OAIAutoAccidentInsurance::is_auto_accident_will_require_therapy_Valid() const{
+    return m_auto_accident_will_require_therapy_isValid;
+}
+
+QString OAIAutoAccidentInsurance::getAutoAccidentWillRequireTherapyRec() const {
+    return m_auto_accident_will_require_therapy_rec;
+}
+void OAIAutoAccidentInsurance::setAutoAccidentWillRequireTherapyRec(const QString &auto_accident_will_require_therapy_rec) {
+    m_auto_accident_will_require_therapy_rec = auto_accident_will_require_therapy_rec;
+    m_auto_accident_will_require_therapy_rec_isSet = true;
+}
+
+bool OAIAutoAccidentInsurance::is_auto_accident_will_require_therapy_rec_Set() const{
+    return m_auto_accident_will_require_therapy_rec_isSet;
+}
+
+bool OAIAutoAccidentInsurance::is_auto_accident_will_require_therapy_rec_Valid() const{
+    return m_auto_accident_will_require_therapy_rec_isValid;
+}
+
+bool OAIAutoAccidentInsurance::isSet() const {
+    bool isObjectUpdated = false;
+    do {
+        if (m_auto_accident_case_number_isSet) {
+            isObjectUpdated = true;
+            break;
+        }
+
+        if (m_auto_accident_claim_rep_address_isSet) {
+            isObjectUpdated = true;
+            break;
+        }
+
+        if (m_auto_accident_claim_rep_city_isSet) {
+            isObjectUpdated = true;
+            break;
+        }
+
+        if (m_auto_accident_claim_rep_is_insurer_isSet) {
+            isObjectUpdated = true;
+            break;
+        }
+
+        if (m_auto_accident_claim_rep_name_isSet) {
+            isObjectUpdated = true;
+            break;
+        }
+
+        if (m_auto_accident_claim_rep_state_isSet) {
+            isObjectUpdated = true;
+            break;
+        }
+
+        if (m_auto_accident_claim_rep_zip_isSet) {
+            isObjectUpdated = true;
+            break;
+        }
+
+        if (m_auto_accident_company_isSet) {
+            isObjectUpdated = true;
+            break;
+        }
+
+        if (m_auto_accident_date_of_accident_isSet) {
+            isObjectUpdated = true;
+            break;
+        }
+
+        if (m_auto_accident_disabled_from_date_isSet) {
+            isObjectUpdated = true;
+            break;
+        }
+
+        if (m_auto_accident_disabled_to_date_isSet) {
+            isObjectUpdated = true;
+            break;
+        }
+
+        if (m_auto_accident_had_similar_condition_isSet) {
+            isObjectUpdated = true;
+            break;
+        }
+
+        if (m_auto_accident_is_subscriber_the_patient_isSet) {
+            isObjectUpdated = true;
+            break;
+        }
+
+        if (m_auto_accident_notes_isSet) {
+            isObjectUpdated = true;
+            break;
+        }
+
+        if (m_auto_accident_patient_relationship_to_subscriber_isSet) {
+            isObjectUpdated = true;
+            break;
+        }
+
+        if (m_auto_accident_payer_address_isSet) {
+            isObjectUpdated = true;
+            break;
+        }
+
+        if (m_auto_accident_payer_city_isSet) {
+            isObjectUpdated = true;
+            break;
+        }
+
+        if (m_auto_accident_payer_id_isSet) {
+            isObjectUpdated = true;
+            break;
+        }
+
+        if (m_auto_accident_payer_state_isSet) {
+            isObjectUpdated = true;
+            break;
+        }
+
+        if (m_auto_accident_payer_zip_isSet) {
+            isObjectUpdated = true;
+            break;
+        }
+
+        if (m_auto_accident_policy_number_isSet) {
+            isObjectUpdated = true;
+            break;
+        }
+
+        if (m_auto_accident_return_to_work_date_isSet) {
+            isObjectUpdated = true;
+            break;
+        }
+
+        if (m_auto_accident_significant_injury_isSet) {
+            isObjectUpdated = true;
+            break;
+        }
+
+        if (m_auto_accident_significant_injury_notes_isSet) {
+            isObjectUpdated = true;
+            break;
+        }
+
+        if (m_auto_accident_similar_condition_date_isSet) {
+            isObjectUpdated = true;
+            break;
+        }
+
+        if (m_auto_accident_similar_condition_notes_isSet) {
+            isObjectUpdated = true;
+            break;
+        }
+
+        if (m_auto_accident_state_of_occurrence_isSet) {
+            isObjectUpdated = true;
+            break;
+        }
+
+        if (m_auto_accident_still_under_care_isSet) {
+            isObjectUpdated = true;
+            break;
+        }
+
+        if (m_auto_accident_subscriber_address_isSet) {
+            isObjectUpdated = true;
+            break;
+        }
+
+        if (m_auto_accident_subscriber_city_isSet) {
+            isObjectUpdated = true;
+            break;
+        }
+
+        if (m_auto_accident_subscriber_date_of_birth_isSet) {
+            isObjectUpdated = true;
+            break;
+        }
+
+        if (m_auto_accident_subscriber_first_name_isSet) {
+            isObjectUpdated = true;
+            break;
+        }
+
+        if (m_auto_accident_subscriber_last_name_isSet) {
+            isObjectUpdated = true;
+            break;
+        }
+
+        if (m_auto_accident_subscriber_middle_name_isSet) {
+            isObjectUpdated = true;
+            break;
+        }
+
+        if (m_auto_accident_subscriber_phone_number_isSet) {
+            isObjectUpdated = true;
+            break;
+        }
+
+        if (m_auto_accident_subscriber_social_security_isSet) {
+            isObjectUpdated = true;
+            break;
+        }
+
+        if (m_auto_accident_subscriber_state_isSet) {
+            isObjectUpdated = true;
+            break;
+        }
+
+        if (m_auto_accident_subscriber_suffix_isSet) {
+            isObjectUpdated = true;
+            break;
+        }
+
+        if (m_auto_accident_subscriber_zip_code_isSet) {
+            isObjectUpdated = true;
+            break;
+        }
+
+        if (m_auto_accident_treatment_duration_isSet) {
+            isObjectUpdated = true;
+            break;
+        }
+
+        if (m_auto_accident_will_require_therapy_isSet) {
+            isObjectUpdated = true;
+            break;
+        }
+
+        if (m_auto_accident_will_require_therapy_rec_isSet) {
+            isObjectUpdated = true;
+            break;
+        }
+    } while (false);
+    return isObjectUpdated;
+}
+
+bool OAIAutoAccidentInsurance::isValid() const {
+    // only required properties are required for the object to be considered valid
+    return true;
+}
+
+} // namespace OpenAPI
