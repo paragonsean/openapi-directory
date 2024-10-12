@@ -1,0 +1,11 @@
+# coding: utf-8
+
+# import models into model package
+from openapi_server.models.activation_key_result import ActivationKeyResult
+from openapi_server.models.registration import Registration
+from openapi_server.models.registration_list import RegistrationList
+from openapi_server.models.registration_parameter import RegistrationParameter
+from openapi_server.models.registration_parameter_properties import RegistrationParameterProperties
+from openapi_server.models.registration_properties import RegistrationProperties
+from openapi_server.models.registrations_list_default_response import RegistrationsListDefaultResponse
+from openapi_server.models.registrations_list_default_response_error import RegistrationsListDefaultResponseError

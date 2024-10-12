@@ -1,0 +1,114 @@
+# ConnectorsApi.Field
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**additionalDetails** | **{String: Object}** | The following map contains fields that are not explicitly mentioned above,this give connectors the flexibility to add new metadata fields. | [optional] 
+**dataType** | **String** | The data type of the Field. | [optional] 
+**defaultValue** | **Object** | The following field specifies the default value of the Field provided by the external system if a value is not provided. | [optional] 
+**description** | **String** | A brief description of the Field. | [optional] 
+**jsonSchema** | [**JsonSchema**](JsonSchema.md) |  | [optional] 
+**key** | **Boolean** | The following boolean field specifies if the current Field acts as a primary key or id if the parent is of type entity. | [optional] 
+**name** | **String** | Name of the Field. | [optional] 
+**nullable** | **Boolean** | Specifies whether a null value is allowed. | [optional] 
+**reference** | [**Reference**](Reference.md) |  | [optional] 
+
+
+
+## Enum: DataTypeEnum
+
+
+* `DATA_TYPE_UNSPECIFIED` (value: `"DATA_TYPE_UNSPECIFIED"`)
+
+* `INT` (value: `"INT"`)
+
+* `SMALLINT` (value: `"SMALLINT"`)
+
+* `DOUBLE` (value: `"DOUBLE"`)
+
+* `DATE` (value: `"DATE"`)
+
+* `DATETIME` (value: `"DATETIME"`)
+
+* `TIME` (value: `"TIME"`)
+
+* `STRING` (value: `"STRING"`)
+
+* `LONG` (value: `"LONG"`)
+
+* `BOOLEAN` (value: `"BOOLEAN"`)
+
+* `DECIMAL` (value: `"DECIMAL"`)
+
+* `UUID` (value: `"UUID"`)
+
+* `BLOB` (value: `"BLOB"`)
+
+* `BIT` (value: `"BIT"`)
+
+* `TINYINT` (value: `"TINYINT"`)
+
+* `INTEGER` (value: `"INTEGER"`)
+
+* `BIGINT` (value: `"BIGINT"`)
+
+* `FLOAT` (value: `"FLOAT"`)
+
+* `REAL` (value: `"REAL"`)
+
+* `NUMERIC` (value: `"NUMERIC"`)
+
+* `CHAR` (value: `"CHAR"`)
+
+* `VARCHAR` (value: `"VARCHAR"`)
+
+* `LONGVARCHAR` (value: `"LONGVARCHAR"`)
+
+* `TIMESTAMP` (value: `"TIMESTAMP"`)
+
+* `NCHAR` (value: `"NCHAR"`)
+
+* `NVARCHAR` (value: `"NVARCHAR"`)
+
+* `LONGNVARCHAR` (value: `"LONGNVARCHAR"`)
+
+* `NULL` (value: `"NULL"`)
+
+* `OTHER` (value: `"OTHER"`)
+
+* `JAVA_OBJECT` (value: `"JAVA_OBJECT"`)
+
+* `DISTINCT` (value: `"DISTINCT"`)
+
+* `STRUCT` (value: `"STRUCT"`)
+
+* `ARRAY` (value: `"ARRAY"`)
+
+* `CLOB` (value: `"CLOB"`)
+
+* `REF` (value: `"REF"`)
+
+* `DATALINK` (value: `"DATALINK"`)
+
+* `ROWID` (value: `"ROWID"`)
+
+* `BINARY` (value: `"BINARY"`)
+
+* `VARBINARY` (value: `"VARBINARY"`)
+
+* `LONGVARBINARY` (value: `"LONGVARBINARY"`)
+
+* `NCLOB` (value: `"NCLOB"`)
+
+* `SQLXML` (value: `"SQLXML"`)
+
+* `REF_CURSOR` (value: `"REF_CURSOR"`)
+
+* `TIME_WITH_TIMEZONE` (value: `"TIME_WITH_TIMEZONE"`)
+
+* `TIMESTAMP_WITH_TIMEZONE` (value: `"TIMESTAMP_WITH_TIMEZONE"`)
+
+
+
+

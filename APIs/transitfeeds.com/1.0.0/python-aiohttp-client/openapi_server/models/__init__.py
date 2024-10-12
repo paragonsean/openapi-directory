@@ -1,0 +1,19 @@
+# coding: utf-8
+
+# import models into model package
+from openapi_server.models.api401_response import API401Response
+from openapi_server.models.api404_response import API404Response
+from openapi_server.models.feed import Feed
+from openapi_server.models.feed_latest import FeedLatest
+from openapi_server.models.feed_u import FeedU
+from openapi_server.models.feed_version import FeedVersion
+from openapi_server.models.feed_version_d import FeedVersionD
+from openapi_server.models.feed_version_issue import FeedVersionIssue
+from openapi_server.models.get_feed_versions_response import GetFeedVersionsResponse
+from openapi_server.models.get_feed_versions_response_results import GetFeedVersionsResponseResults
+from openapi_server.models.get_feeds_response import GetFeedsResponse
+from openapi_server.models.get_feeds_response_results import GetFeedsResponseResults
+from openapi_server.models.get_latest_feed_version_response import GetLatestFeedVersionResponse
+from openapi_server.models.get_locations_response import GetLocationsResponse
+from openapi_server.models.get_locations_response_results import GetLocationsResponseResults
+from openapi_server.models.location import Location

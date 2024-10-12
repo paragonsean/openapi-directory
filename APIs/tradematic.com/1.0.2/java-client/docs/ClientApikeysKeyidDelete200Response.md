@@ -1,0 +1,13 @@
+
+
+# ClientApikeysKeyidDelete200Response
+
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**keyid** | **Integer** |  |  [optional] |
+
+
+

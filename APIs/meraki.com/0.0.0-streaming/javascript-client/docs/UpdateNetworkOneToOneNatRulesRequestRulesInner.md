@@ -1,0 +1,24 @@
+# MerakiDashboardApi.UpdateNetworkOneToOneNatRulesRequestRulesInner
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**allowedInbound** | [**[UpdateNetworkOneToOneNatRulesRequestRulesInnerAllowedInboundInner]**](UpdateNetworkOneToOneNatRulesRequestRulesInnerAllowedInboundInner.md) | The ports this mapping will provide access on, and the remote IPs that will be allowed access to the resource | [optional] 
+**lanIp** | **String** | The IP address of the server or device that hosts the internal resource that you wish to make available on the WAN | 
+**name** | **String** | A descriptive name for the rule | [optional] 
+**publicIp** | **String** | The IP address that will be used to access the internal resource from the WAN | [optional] 
+**uplink** | **String** | The physical WAN interface on which the traffic will arrive (&#39;internet1&#39; or, if available, &#39;internet2&#39;) | [optional] 
+
+
+
+## Enum: UplinkEnum
+
+
+* `internet1` (value: `"internet1"`)
+
+* `internet2` (value: `"internet2"`)
+
+
+
+

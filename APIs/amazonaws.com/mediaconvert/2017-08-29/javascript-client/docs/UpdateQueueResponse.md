@@ -1,9 +1,0 @@
-# AwsElementalMediaConvert.UpdateQueueResponse
-
-## Properties
-
-Name | Type | Description | Notes
------------- | ------------- | ------------- | -------------
-**queue** | [**CreateQueueResponseQueue**](CreateQueueResponseQueue.md) |  | [optional] 
-
-

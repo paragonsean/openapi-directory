@@ -1,0 +1,49 @@
+# FrankieFinancialApi.DisplayMarkUp
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**attribute** | **String** | Comma seperated list of attributes to apply to value when rendering. | [optional] 
+**children** | [**[DisplayMarkUp]**](DisplayMarkUp.md) | Children of element. This data structure is recursive with a DisplayMarkup  element having 0 or more DisplayMarkup children | [optional] 
+**confirmation** | **String** | Does this statement need to be confirmed (with a checkbox)? Confirmation can be mandatory or optional. When the confirmation element is present a key element must also be present. The keys of all confirmed statements must be sent in the switch request. The absence of any mandatory confirmation will result in an error response from the switch request. | [optional] 
+**key** | **String** | For elements that require confirmation, the key of each element that the user has accepted must be send in the switch request. The absence of any mandatory confirmation will result in an error response from the switch request. | [optional] 
+**name** | **String** | Text to display as header/title of value. | [optional] 
+**parameters** | [**{String: DisplayMarkUpParametersValue}**](DisplayMarkUpParametersValue.md) | Optional element which has a keyvalue pair associated with every data binding contained in the value element of the current object. | [optional] 
+**type** | **String** | Type of component to be used for rendering | [optional] 
+**value** | **String** | Data to be rendered. This data can contain data bindings (contained in {{ }}). If present in the string the parameters object will contain a key with the same name and the associated data (e.g a link).&lt;br&gt;&lt;br&gt;&lt;div style&#x3D;\&quot;background-color:black;color:white;\&quot;&gt;{&lt;br&gt;&amp;nbsp;&amp;nbsp;\&quot;type\&quot;:&amp;nbsp;\&quot;text\&quot;,&lt;br&gt;&amp;nbsp;&amp;nbsp;\&quot;value\&quot;:&amp;nbsp;\&quot;I&amp;nbsp;accept&amp;nbsp;the&amp;nbsp;{{Terms&amp;nbsp;and&amp;nbsp;Conditions}}.\&quot;,&lt;br&gt;&amp;nbsp;&amp;nbsp;\&quot;parameters\&quot;:&amp;nbsp;{&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;\&quot;Terms&amp;nbsp;and&amp;nbsp;Conditions\&quot;:&amp;nbsp;{&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;\&quot;type\&quot;:&amp;nbsp;\&quot;link\&quot;,&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;\&quot;value\&quot;:&amp;nbsp;\&quot;https://www.accurassi.com.au/sample-terms-and-conditions/\&quot;&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;}&lt;br&gt;&amp;nbsp;&amp;nbsp;}&lt;br&gt;}&lt;/div&gt; | [optional] 
+
+
+
+## Enum: AttributeEnum
+
+
+* `bold` (value: `"bold"`)
+
+
+
+
+
+## Enum: ConfirmationEnum
+
+
+* `optional` (value: `"optional"`)
+
+* `mandatory` (value: `"mandatory"`)
+
+
+
+
+
+## Enum: TypeEnum
+
+
+* `text` (value: `"text"`)
+
+* `unorderedlist` (value: `"unorderedlist"`)
+
+* `orderedlist` (value: `"orderedlist"`)
+
+
+
+

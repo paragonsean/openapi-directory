@@ -1,0 +1,26 @@
+
+
+# JobManagerTask
+
+The Job Manager task is automatically started when the job is created. The Batch service tries to schedule the Job Manager task before any other tasks in the job. When shrinking a pool, the Batch service tries to preserve compute nodes where Job Manager tasks are running for as long as possible (that is, nodes running 'normal' tasks are removed before nodes running Job Manager tasks). When a Job Manager task fails and needs to be restarted, the system tries to schedule it at the highest priority. If there are no idle nodes available, the system may terminate one of the running tasks in the pool and return it to the queue in order to make room for the Job Manager task to restart. Note that a Job Manager task in one job does not have priority over tasks in other jobs. Across jobs, only job level priorities are observed. For example, if a Job Manager in a priority 0 job needs to be restarted, it will not displace tasks of a priority 1 job.
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**allowLowPriorityNode** | **Boolean** | The default value is false. |  [optional] |
+|**applicationPackageReferences** | [**List&lt;ApplicationPackageReference&gt;**](ApplicationPackageReference.md) | Application packages are downloaded and deployed to a shared directory, not the task working directory. Therefore, if a referenced package is already on the compute node, and is up to date, then it is not re-downloaded; the existing copy on the compute node is used. If a referenced application package cannot be installed, for example because the package has been deleted or because download failed, the task fails. |  [optional] |
+|**authenticationTokenSettings** | [**AuthenticationTokenSettings**](AuthenticationTokenSettings.md) |  |  [optional] |
+|**commandLine** | **String** | The command line does not run under a shell, and therefore cannot take advantage of shell features such as environment variable expansion. If you want to take advantage of such features, you should invoke the shell in the command line, for example using \&quot;cmd /c MyCommand\&quot; in Windows or \&quot;/bin/sh -c MyCommand\&quot; in Linux. |  |
+|**constraints** | [**TaskConstraints**](TaskConstraints.md) |  |  [optional] |
+|**displayName** | **String** | It need not be unique and can contain any Unicode characters up to a maximum length of 1024. |  [optional] |
+|**environmentSettings** | [**List&lt;EnvironmentSetting&gt;**](EnvironmentSetting.md) |  |  [optional] |
+|**id** | **String** | The ID can contain any combination of alphanumeric characters including hyphens and underscores and cannot contain more than 64 characters. |  |
+|**killJobOnCompletion** | **Boolean** | If true, when the Job Manager task completes, the Batch service marks the job as complete. If any tasks are still running at this time (other than Job Release), those tasks are terminated. If false, the completion of the Job Manager task does not affect the job status. In this case, you should either use the onAllTasksComplete attribute to terminate the job, or have a client or user terminate the job explicitly. An example of this is if the Job Manager creates a set of tasks but then takes no further role in their execution. The default value is true. If you are using the onAllTasksComplete and onTaskFailure attributes to control job lifetime, and using the Job Manager task only to create the tasks for the job (not to monitor progress), then it is important to set killJobOnCompletion to false. |  [optional] |
+|**outputFiles** | [**List&lt;OutputFile&gt;**](OutputFile.md) | For multi-instance tasks, the files will only be uploaded from the compute node on which the primary task is executed. |  [optional] |
+|**resourceFiles** | [**List&lt;ResourceFile&gt;**](ResourceFile.md) | Files listed under this element are located in the task&#39;s working directory. |  [optional] |
+|**runExclusive** | **Boolean** | If true, no other tasks will run on the same compute node for as long as the Job Manager is running. If false, other tasks can run simultaneously with the Job Manager on a compute node. The Job Manager task counts normally against the node&#39;s concurrent task limit, so this is only relevant if the node allows multiple concurrent tasks. The default value is true. |  [optional] |
+|**userIdentity** | [**UserIdentity**](UserIdentity.md) |  |  [optional] |
+
+
+

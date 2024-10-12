@@ -1,0 +1,8 @@
+# coding: utf-8
+
+# import models into model package
+from openapi_server.models.all_tax_rates200_response_inner import AllTaxRates200ResponseInner
+from openapi_server.models.all_tax_rates200_response_inner_rates_inner import AllTaxRates200ResponseInnerRatesInner
+from openapi_server.models.tax_rates_by_country_code200_response import TaxRatesByCountryCode200Response
+from openapi_server.models.tax_rates_by_country_code200_response_taxes_inner import TaxRatesByCountryCode200ResponseTaxesInner
+from openapi_server.models.tax_rates_by_country_code500_response import TaxRatesByCountryCode500Response

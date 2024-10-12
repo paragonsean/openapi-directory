@@ -1,0 +1,58 @@
+# BackupManagementClient.BackupApi
+
+All URIs are relative to *https://adminmanagement.local.azurestack.external*
+
+Method | HTTP request | Description
+------------- | ------------- | -------------
+[**operationsList**](BackupApi.md#operationsList) | **GET** /providers/Microsoft.Backup.Admin/operations | 
+
+
+
+## operationsList
+
+> OperationList operationsList(apiVersion)
+
+
+
+Returns the list of support REST operations.
+
+### Example
+
+```javascript
+import BackupManagementClient from 'backup_management_client';
+let defaultClient = BackupManagementClient.ApiClient.instance;
+// Configure OAuth2 access token for authorization: azure_auth
+let azure_auth = defaultClient.authentications['azure_auth'];
+azure_auth.accessToken = 'YOUR ACCESS TOKEN';
+
+let apiInstance = new BackupManagementClient.BackupApi();
+let apiVersion = "'2018-09-01'"; // String | Client API version.
+apiInstance.operationsList(apiVersion, (error, data, response) => {
+  if (error) {
+    console.error(error);
+  } else {
+    console.log('API called successfully. Returned data: ' + data);
+  }
+});
+```
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **apiVersion** | **String**| Client API version. | [default to &#39;2018-09-01&#39;]
+
+### Return type
+
+[**OperationList**](OperationList.md)
+
+### Authorization
+
+[azure_auth](../README.md#azure_auth)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+

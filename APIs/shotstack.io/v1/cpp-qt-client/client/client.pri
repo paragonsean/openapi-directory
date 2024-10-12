@@ -1,0 +1,89 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIAssetRenderResponse.h \
+    $${PWD}/OAIAssetResponse.h \
+    $${PWD}/OAIAssetResponseAttributes.h \
+    $${PWD}/OAIAssetResponseData.h \
+    $${PWD}/OAIAudioAsset.h \
+    $${PWD}/OAIClip.h \
+    $${PWD}/OAIClip_asset.h \
+    $${PWD}/OAICrop.h \
+    $${PWD}/OAIEdit.h \
+    $${PWD}/OAIFont.h \
+    $${PWD}/OAIHtmlAsset.h \
+    $${PWD}/OAIImageAsset.h \
+    $${PWD}/OAILumaAsset.h \
+    $${PWD}/OAIOffset.h \
+    $${PWD}/OAIOutput.h \
+    $${PWD}/OAIOutput_destinations_inner.h \
+    $${PWD}/OAIPoster.h \
+    $${PWD}/OAIQueuedResponse.h \
+    $${PWD}/OAIQueuedResponseData.h \
+    $${PWD}/OAIRange.h \
+    $${PWD}/OAIRenderResponse.h \
+    $${PWD}/OAIRenderResponseData.h \
+    $${PWD}/OAIShotstackDestination.h \
+    $${PWD}/OAISize.h \
+    $${PWD}/OAISoundtrack.h \
+    $${PWD}/OAIThumbnail.h \
+    $${PWD}/OAITimeline.h \
+    $${PWD}/OAITitleAsset.h \
+    $${PWD}/OAITrack.h \
+    $${PWD}/OAITransition.h \
+    $${PWD}/OAIVideoAsset.h \
+# APIs
+    $${PWD}/OAIEditApi.h \
+    $${PWD}/OAIServeApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIAssetRenderResponse.cpp \
+    $${PWD}/OAIAssetResponse.cpp \
+    $${PWD}/OAIAssetResponseAttributes.cpp \
+    $${PWD}/OAIAssetResponseData.cpp \
+    $${PWD}/OAIAudioAsset.cpp \
+    $${PWD}/OAIClip.cpp \
+    $${PWD}/OAIClip_asset.cpp \
+    $${PWD}/OAICrop.cpp \
+    $${PWD}/OAIEdit.cpp \
+    $${PWD}/OAIFont.cpp \
+    $${PWD}/OAIHtmlAsset.cpp \
+    $${PWD}/OAIImageAsset.cpp \
+    $${PWD}/OAILumaAsset.cpp \
+    $${PWD}/OAIOffset.cpp \
+    $${PWD}/OAIOutput.cpp \
+    $${PWD}/OAIOutput_destinations_inner.cpp \
+    $${PWD}/OAIPoster.cpp \
+    $${PWD}/OAIQueuedResponse.cpp \
+    $${PWD}/OAIQueuedResponseData.cpp \
+    $${PWD}/OAIRange.cpp \
+    $${PWD}/OAIRenderResponse.cpp \
+    $${PWD}/OAIRenderResponseData.cpp \
+    $${PWD}/OAIShotstackDestination.cpp \
+    $${PWD}/OAISize.cpp \
+    $${PWD}/OAISoundtrack.cpp \
+    $${PWD}/OAIThumbnail.cpp \
+    $${PWD}/OAITimeline.cpp \
+    $${PWD}/OAITitleAsset.cpp \
+    $${PWD}/OAITrack.cpp \
+    $${PWD}/OAITransition.cpp \
+    $${PWD}/OAIVideoAsset.cpp \
+# APIs
+    $${PWD}/OAIEditApi.cpp \
+    $${PWD}/OAIServeApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

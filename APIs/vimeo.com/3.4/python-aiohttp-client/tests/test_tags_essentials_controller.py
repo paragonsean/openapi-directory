@@ -1,0 +1,28 @@
+# coding: utf-8
+
+import pytest
+import json
+from aiohttp import web
+
+from openapi_server.models.tag import Tag
+
+
+pytestmark = pytest.mark.asyncio
+
+async def test_get_tag(client):
+    """Test case for get_tag
+
+    Get a specific tag
+    """
+    headers = { 
+        'Accept': 'application/vnd.vimeo.tag+json',
+        'Authorization': 'Bearer special-key',
+        'Authorization': 'Bearer special-key',
+    }
+    response = await client.request(
+        method='GET',
+        path='/tags/{word}'.format(word='awesome'),
+        headers=headers,
+        )
+    assert response.status == 200, 'Response body is : ' + (await response.read()).decode('utf-8')
+

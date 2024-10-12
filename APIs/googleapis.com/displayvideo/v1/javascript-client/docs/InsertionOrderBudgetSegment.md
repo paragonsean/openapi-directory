@@ -1,0 +1,12 @@
+# DisplayVideo360Api.InsertionOrderBudgetSegment
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**budgetAmountMicros** | **String** | Required. The budget amount the insertion order will spend for the given date_range. The amount is in micros. Must be greater than 0. For example, 500000000 represents 500 standard units of the currency. | [optional] 
+**campaignBudgetId** | **String** | The budget_id of the campaign budget that this insertion order budget segment is a part of. | [optional] 
+**dateRange** | [**DateRange**](DateRange.md) |  | [optional] 
+**description** | **String** | The budget segment description. It can be used to enter Purchase Order information for each budget segment and have that information printed on the invoices. Must be UTF-8 encoded. | [optional] 
+
+

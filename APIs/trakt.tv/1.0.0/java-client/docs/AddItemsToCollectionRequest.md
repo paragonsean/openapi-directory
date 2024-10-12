@@ -1,0 +1,16 @@
+
+
+# AddItemsToCollectionRequest
+
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**episodes** | [**List&lt;AddItemsToCollectionRequestEpisodesInner&gt;**](AddItemsToCollectionRequestEpisodesInner.md) |  |  [optional] |
+|**movies** | [**List&lt;AddItemsToCollectionRequestMoviesInner&gt;**](AddItemsToCollectionRequestMoviesInner.md) |  |  [optional] |
+|**seasons** | [**List&lt;AddItemsToCollectionRequestSeasonsInner&gt;**](AddItemsToCollectionRequestSeasonsInner.md) |  |  [optional] |
+|**shows** | [**List&lt;AddItemsToCollectionRequestShowsInner&gt;**](AddItemsToCollectionRequestShowsInner.md) |  |  [optional] |
+
+
+

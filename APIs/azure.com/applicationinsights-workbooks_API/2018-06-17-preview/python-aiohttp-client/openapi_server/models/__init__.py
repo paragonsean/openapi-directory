@@ -1,0 +1,11 @@
+# coding: utf-8
+
+# import models into model package
+from openapi_server.models.error_field_contract import ErrorFieldContract
+from openapi_server.models.resource import Resource
+from openapi_server.models.workbook import Workbook
+from openapi_server.models.workbook_error import WorkbookError
+from openapi_server.models.workbook_properties import WorkbookProperties
+from openapi_server.models.workbook_properties_update_parameters import WorkbookPropertiesUpdateParameters
+from openapi_server.models.workbook_update_parameters import WorkbookUpdateParameters
+from openapi_server.models.workbooks_list_result import WorkbooksListResult

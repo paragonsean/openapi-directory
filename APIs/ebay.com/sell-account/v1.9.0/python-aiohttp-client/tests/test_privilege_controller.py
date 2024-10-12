@@ -1,0 +1,27 @@
+# coding: utf-8
+
+import pytest
+import json
+from aiohttp import web
+
+from openapi_server.models.selling_privileges import SellingPrivileges
+
+
+pytestmark = pytest.mark.asyncio
+
+async def test_get_privileges(client):
+    """Test case for get_privileges
+
+    
+    """
+    headers = { 
+        'Accept': 'application/json',
+        'Authorization': 'Bearer special-key',
+    }
+    response = await client.request(
+        method='GET',
+        path='/sell/account/v1/privilege',
+        headers=headers,
+        )
+    assert response.status == 200, 'Response body is : ' + (await response.read()).decode('utf-8')
+

@@ -1,0 +1,7 @@
+# coding: utf-8
+
+# import models into model package
+from openapi_server.models.record import Record
+from openapi_server.models.record_locations_inner import RecordLocationsInner
+from openapi_server.models.records_format_get200_response import RecordsFormatGet200Response
+from openapi_server.models.records_record_id_more_like_this_format_get200_response import RecordsRecordIdMoreLikeThisFormatGet200Response

@@ -1,0 +1,47 @@
+# CloudSpannerApi.Instance
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**autoscalingConfig** | [**AutoscalingConfig**](AutoscalingConfig.md) |  | [optional] 
+**config** | **String** | Required. The name of the instance&#39;s configuration. Values are of the form &#x60;projects//instanceConfigs/&#x60;. See also InstanceConfig and ListInstanceConfigs. | [optional] 
+**createTime** | **String** | Output only. The time at which the instance was created. | [optional] [readonly] 
+**displayName** | **String** | Required. The descriptive name for this instance as it appears in UIs. Must be unique per project and between 4 and 30 characters in length. | [optional] 
+**endpointUris** | **[String]** | Deprecated. This field is not populated. | [optional] 
+**freeInstanceMetadata** | [**FreeInstanceMetadata**](FreeInstanceMetadata.md) |  | [optional] 
+**instanceType** | **String** | The &#x60;InstanceType&#x60; of the current instance. | [optional] 
+**labels** | **{String: String}** | Cloud Labels are a flexible and lightweight mechanism for organizing cloud resources into groups that reflect a customer&#39;s organizational needs and deployment strategies. Cloud Labels can be used to filter collections of resources. They can be used to control how resource metrics are aggregated. And they can be used as arguments to policy management rules (e.g. route, firewall, load balancing, etc.). * Label keys must be between 1 and 63 characters long and must conform to the following regular expression: &#x60;a-z{0,62}&#x60;. * Label values must be between 0 and 63 characters long and must conform to the regular expression &#x60;[a-z0-9_-]{0,63}&#x60;. * No more than 64 labels can be associated with a given resource. See https://goo.gl/xmQnxf for more information on and examples of labels. If you plan to use labels in your own code, please note that additional characters may be allowed in the future. And so you are advised to use an internal label representation, such as JSON, which doesn&#39;t rely upon specific characters being disallowed. For example, representing labels as the string: name + \&quot;_\&quot; + value would prove problematic if we were to allow \&quot;_\&quot; in a future release. | [optional] 
+**name** | **String** | Required. A unique identifier for the instance, which cannot be changed after the instance is created. Values are of the form &#x60;projects//instances/a-z*[a-z0-9]&#x60;. The final segment of the name must be between 2 and 64 characters in length. | [optional] 
+**nodeCount** | **Number** | The number of nodes allocated to this instance. At most one of either node_count or processing_units should be present in the message. Users can set the node_count field to specify the target number of nodes allocated to the instance. This may be zero in API responses for instances that are not yet in state &#x60;READY&#x60;. See [the documentation](https://cloud.google.com/spanner/docs/compute-capacity) for more information about nodes and processing units. | [optional] 
+**processingUnits** | **Number** | The number of processing units allocated to this instance. At most one of processing_units or node_count should be present in the message. Users can set the processing_units field to specify the target number of processing units allocated to the instance. This may be zero in API responses for instances that are not yet in state &#x60;READY&#x60;. See [the documentation](https://cloud.google.com/spanner/docs/compute-capacity) for more information about nodes and processing units. | [optional] 
+**state** | **String** | Output only. The current instance state. For CreateInstance, the state must be either omitted or set to &#x60;CREATING&#x60;. For UpdateInstance, the state must be either omitted or set to &#x60;READY&#x60;. | [optional] [readonly] 
+**updateTime** | **String** | Output only. The time at which the instance was most recently updated. | [optional] [readonly] 
+
+
+
+## Enum: InstanceTypeEnum
+
+
+* `INSTANCE_TYPE_UNSPECIFIED` (value: `"INSTANCE_TYPE_UNSPECIFIED"`)
+
+* `PROVISIONED` (value: `"PROVISIONED"`)
+
+* `FREE_INSTANCE` (value: `"FREE_INSTANCE"`)
+
+
+
+
+
+## Enum: StateEnum
+
+
+* `STATE_UNSPECIFIED` (value: `"STATE_UNSPECIFIED"`)
+
+* `CREATING` (value: `"CREATING"`)
+
+* `READY` (value: `"READY"`)
+
+
+
+

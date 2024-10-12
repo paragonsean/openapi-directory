@@ -1,9 +1,0 @@
-# AmazonSimpleWorkflowService.CloseStatusFilter
-
-## Properties
-
-Name | Type | Description | Notes
------------- | ------------- | ------------- | -------------
-**status** | [**CloseStatus**](CloseStatus.md) |  | 
-
-

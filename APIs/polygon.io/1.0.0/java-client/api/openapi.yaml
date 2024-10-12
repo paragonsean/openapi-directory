@@ -1,0 +1,949 @@
+openapi: 3.0.1
+info:
+  contact: {}
+  description: The future of fintech.
+  title: Polygon
+  version: 1.0.0
+  x-apisguru-categories:
+  - financial
+  x-logo:
+    url: https://twitter.com/polygon_io/profile_image?size=original
+  x-origin:
+  - format: swagger
+    url: https://polygon.io/docs/swagger.json
+    version: "2.0"
+  x-providerName: polygon.io
+servers:
+- url: https://api.polygon.io/
+security:
+- apiKey: []
+paths:
+  /v1/companies:
+    get:
+      description: |
+        Get a list of the traded companies that polygon.io streams. Company includes some details about the company which we hope to add more to soon.
+      parameters:
+      - description: Which field to sort by. For desc place a `-` in front of the
+          field name. eg `?sort=-marketcap`
+        in: query
+        name: sort
+        schema:
+          type: string
+      - description: How many items to be on each page during pagination
+        in: query
+        name: perpage
+        schema:
+          type: number
+      - description: Which page of results to return
+        in: query
+        name: page
+        schema:
+          default: 1.0
+          type: number
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/Company'
+                type: array
+          description: An array of companies
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Unexpected error
+      summary: Available Companies
+      tags:
+      - Stocks
+      x-accepts:
+      - application/json
+  /v1/currencies:
+    get:
+      description: |
+        Get a list of the currencies that polygon.io streams.
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  type: string
+                type: array
+          description: An array of currencies
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Unexpected error
+      summary: Available Currencies
+      tags:
+      - Currencies
+      x-accepts:
+      - application/json
+  /v1/historic/agg/{size}/{symbol}/{date}:
+    get:
+      description: |
+        Get historic aggregations for a symbol.
+      parameters:
+      - description: Size of the aggregation. `second` or `minute`
+        in: path
+        name: size
+        required: true
+        schema:
+          enum:
+          - second
+          - minute
+          type: string
+      - description: Symbol of the company to retrieve
+        in: path
+        name: symbol
+        required: true
+        schema:
+          type: string
+      - description: Date/Day of the historic ticks to retreive
+        in: path
+        name: date
+        required: true
+        schema:
+          format: date
+          type: string
+      - description: "Timestamp offset, used for pagination"
+        in: query
+        name: offset
+        schema:
+          type: integer
+      - description: "Limit the size of response, max: 10000"
+        in: query
+        name: limit
+        schema:
+          default: 100
+          type: integer
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/_v1_historic_agg__size___symbol___date__get_200_response'
+          description: An array of aggregates
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Unexpected error
+      summary: Historic Aggregates
+      tags:
+      - Stocks
+      x-accepts:
+      - application/json
+  /v1/historic/forex/{from}/{to}/{date}:
+    get:
+      description: |
+        Get historic ticks for a currency pair. Example for **USD/JPY** the from would be **USD** and to would be **JPY**. The date formatted like **2017-6-22**
+      parameters:
+      - description: From Symbol of the currency pair
+        in: path
+        name: from
+        required: true
+        schema:
+          type: string
+      - description: To Symbol of the currency pair
+        in: path
+        name: to
+        required: true
+        schema:
+          type: string
+      - description: Date/Day of the historic ticks to retreive
+        in: path
+        name: date
+        required: true
+        schema:
+          format: date
+          type: string
+      - description: "Timestamp offset, used for pagination"
+        in: query
+        name: offset
+        schema:
+          type: integer
+      - description: "Limit the size of response, max: 10000"
+        in: query
+        name: limit
+        schema:
+          default: 100
+          type: integer
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/_v1_historic_forex__from___to___date__get_200_response'
+          description: An array of forex ticks
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Unexpected error
+      summary: Historic Forex Ticks
+      tags:
+      - Currencies
+      x-accepts:
+      - application/json
+  /v1/historic/quotes/{symbol}/{date}:
+    get:
+      description: |
+        Get historic quotes for a symbol.
+      parameters:
+      - description: Symbol of the company to retrieve
+        in: path
+        name: symbol
+        required: true
+        schema:
+          type: string
+      - description: Date/Day of the historic ticks to retreive
+        in: path
+        name: date
+        required: true
+        schema:
+          format: date
+          type: string
+      - description: "Timestamp offset, used for pagination"
+        in: query
+        name: offset
+        schema:
+          type: integer
+      - description: "Limit the size of response, max: 10000"
+        in: query
+        name: limit
+        schema:
+          default: 100
+          type: integer
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/_v1_historic_quotes__symbol___date__get_200_response'
+          description: An array of quotes
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Unexpected error
+      summary: Historic Quotes
+      tags:
+      - Stocks
+      x-accepts:
+      - application/json
+  /v1/historic/trades/{symbol}/{date}:
+    get:
+      description: |
+        Get historic trades for a symbol.
+      parameters:
+      - description: Symbol of the company to retrieve
+        in: path
+        name: symbol
+        required: true
+        schema:
+          type: string
+      - description: Date/Day of the historic ticks to retreive
+        in: path
+        name: date
+        required: true
+        schema:
+          format: date
+          type: string
+      - description: "Timestamp offset, used for pagination"
+        in: query
+        name: offset
+        schema:
+          type: integer
+      - description: "Limit the size of response, max: 10000"
+        in: query
+        name: limit
+        schema:
+          default: 100
+          type: integer
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/_v1_historic_trades__symbol___date__get_200_response'
+          description: An array of trades
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Unexpected error
+      summary: Historic Trades
+      tags:
+      - Stocks
+      x-accepts:
+      - application/json
+  /v1/last/currencies/{from}/{to}:
+    get:
+      description: |
+        Get Last Trade Tick for a Currency Pair.
+      parameters:
+      - description: From Symbol of the pair
+        in: path
+        name: from
+        required: true
+        schema:
+          type: string
+      - description: To Symbol of the pair
+        in: path
+        name: to
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/_v1_last_currencies__from___to__get_200_response'
+          description: Last tick for this currency pair
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Unexpected error
+      summary: Last Trade for a Currency Pair
+      tags:
+      - Currencies
+      x-accepts:
+      - application/json
+  /v1/last/stocks/{symbol}:
+    get:
+      description: |
+        Get the last trade for a given stock.
+      parameters:
+      - description: Symbol of the stock to get
+        in: path
+        name: symbol
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/_v1_last_stocks__symbol__get_200_response'
+          description: Last trade for this stock
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Unexpected error
+      summary: Last Trade for a Symbol
+      tags:
+      - Stocks
+      x-accepts:
+      - application/json
+  /v1/last_quote/currencies/{from}/{to}:
+    get:
+      description: |
+        Get Last Quote Tick for a Currency Pair.
+      parameters:
+      - description: From Symbol of the pair
+        in: path
+        name: from
+        required: true
+        schema:
+          type: string
+      - description: To Symbol of the pair
+        in: path
+        name: to
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/_v1_last_quote_currencies__from___to__get_200_response'
+          description: Last quote tick for this currency pair
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Unexpected error
+      summary: Last Quote for a Currency Pair
+      tags:
+      - Currencies
+      x-accepts:
+      - application/json
+  /v1/last_quote/stocks/{symbol}:
+    get:
+      description: |
+        Get the last quote tick for a given stock.
+      parameters:
+      - description: Symbol of the stock to get
+        in: path
+        name: symbol
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/_v1_last_quote_stocks__symbol__get_200_response'
+          description: Last quote tick for this stock
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Unexpected error
+      summary: Last Quote for a Symbol
+      tags:
+      - Stocks
+      x-accepts:
+      - application/json
+components:
+  schemas:
+    Aggregate:
+      example:
+        c: 6
+        t: 7
+        v: 9
+        h: 1
+        k: 5
+        l: 5
+        o: 2
+      properties:
+        c:
+          description: Close price
+          type: integer
+        h:
+          description: High price
+          type: integer
+        k:
+          description: Transactions ( 1 transaction contains X shares exchanged )
+          type: integer
+        l:
+          description: Low price
+          type: integer
+        o:
+          description: Open price
+          type: integer
+        t:
+          description: Timestamp of this aggregation
+          type: integer
+        v:
+          description: Total Volume of all trades ( total shares exchanged )
+          type: integer
+      type: object
+    Company:
+      example:
+        country: country
+        marketcap: 0.8008281904610115
+        symbol: symbol
+        name: name
+        exchange: exchange
+        industry: industry
+        sector: sector
+        updated: 2000-01-23T04:56:07.000+00:00
+      properties:
+        country:
+          description: Country in which this country is based.
+          type: string
+        exchange:
+          description: Exchange this company is traded on.
+          type: string
+        industry:
+          description: Industry this country operated/produces in.
+          type: string
+        marketcap:
+          description: Market cap as of the last updated timestamp.
+          format: double
+          type: number
+        name:
+          description: Name of the company.
+          type: string
+        sector:
+          description: Sector that this company is traded in.
+          type: string
+        symbol:
+          description: The actual exchange symbol this company is traded under.
+          type: string
+        updated:
+          description: Last time this company record was updated.
+          format: date-time
+          type: string
+      type: object
+    Error:
+      example:
+        code: 6
+        fields: fields
+        message: message
+      properties:
+        code:
+          format: int32
+          type: integer
+        fields:
+          type: string
+        message:
+          type: string
+      type: object
+    Forex:
+      example:
+        a: 6
+        b: 1
+        t: 5
+      properties:
+        a:
+          description: Ask price
+          type: integer
+        b:
+          description: Bid price
+          type: integer
+        t:
+          description: Timestamp of this trade
+          type: integer
+      type: object
+    LastForexQuote:
+      example:
+        askprice: 0.8008281904610115
+        bidprice: 6.027456183070403
+        timestamp: 1
+      properties:
+        askprice:
+          description: Ask Price
+          format: double
+          type: number
+        bidprice:
+          description: Bid Price
+          format: double
+          type: number
+        timestamp:
+          description: Timestamp of this trade
+          type: integer
+      type: object
+    LastForexTrade:
+      example:
+        price: 6.027456183070403
+        exchange: 0
+        timestamp: 1
+      properties:
+        exchange:
+          description: Exchange this trade happened on
+          type: integer
+        price:
+          description: Price of the trade
+          format: double
+          type: number
+        timestamp:
+          description: Timestamp of this trade
+          type: integer
+      type: object
+    LastQuote:
+      example:
+        bidexchange: 5
+        askprice: 6.027456183070403
+        askexchange: 0
+        bidsize: 2
+        asksize: 1
+        bidprice: 5.637376656633329
+        cond: 7
+        timestamp: 9
+      properties:
+        askexchange:
+          description: Exchange the ask happened on
+          type: integer
+        askprice:
+          description: Ask Price
+          format: double
+          type: number
+        asksize:
+          description: Ask Size
+          type: integer
+        bidexchange:
+          description: Exchange the bid happened on
+          type: integer
+        bidprice:
+          description: Bid Price
+          format: double
+          type: number
+        bidsize:
+          description: Bid Size
+          type: integer
+        cond:
+          description: Condition of the quote
+          type: integer
+        timestamp:
+          description: Timestamp of this trade
+          type: integer
+      type: object
+    LastTrade:
+      example:
+        size: 7
+        cond4: 5
+        cond3: 1
+        price: 2.3021358869347655
+        cond2: 6
+        cond1: 0
+        exchange: 5
+        timestamp: 9
+      properties:
+        cond1:
+          description: Condition 1 of the trade
+          type: integer
+        cond2:
+          description: Condition 2 of the trade
+          type: integer
+        cond3:
+          description: Condition 3 of the trade
+          type: integer
+        cond4:
+          description: Condition 4 of the trade
+          type: integer
+        exchange:
+          description: Exchange this trade happened on
+          type: integer
+        price:
+          description: Price of the trade
+          format: double
+          type: number
+        size:
+          description: Size of this trade
+          type: integer
+        timestamp:
+          description: Timestamp of this trade
+          type: integer
+      type: object
+    Quote:
+      example:
+        bS: 5
+        aS: 1
+        bE: bE
+        c: 2
+        aE: aE
+        t: 7
+        bP: 5.962133916683182
+        aP: 6.027456183070403
+      properties:
+        aE:
+          description: Ask Exchange
+          type: string
+        aP:
+          description: Ask Price
+          format: double
+          type: number
+        aS:
+          description: Ask Size
+          type: integer
+        bE:
+          description: Bid Exchange
+          type: string
+        bP:
+          description: Bid Price
+          format: double
+          type: number
+        bS:
+          description: Bid Size
+          type: integer
+        c:
+          description: Condition of this quote
+          type: integer
+        t:
+          description: Timestamp of this trade
+          type: integer
+      type: object
+    Trade:
+      example:
+        c3: 5
+        p: 2.3021358869347655
+        c4: 5
+        s: 7
+        t: 9
+        e: e
+        c1: 6
+        c2: 1
+      properties:
+        c1:
+          description: Condition 1 of this trade
+          type: integer
+        c2:
+          description: Condition 2 of this trade
+          type: integer
+        c3:
+          description: Condition 3 of this trade
+          type: integer
+        c4:
+          description: Condition 4 of this trade
+          type: integer
+        e:
+          description: The exchange this trade happened on
+          type: string
+        p:
+          description: Price of this trade
+          format: double
+          type: number
+        s:
+          description: Size of the trade
+          type: integer
+        t:
+          description: Timestamp of this trade
+          type: integer
+      type: object
+    _v1_historic_agg__size___symbol___date__get_200_response:
+      example:
+        symbol: symbol
+        msLatency: 0
+        ticks:
+        - c: 6
+          t: 7
+          v: 9
+          h: 1
+          k: 5
+          l: 5
+          o: 2
+        - c: 6
+          t: 7
+          v: 9
+          h: 1
+          k: 5
+          l: 5
+          o: 2
+        day: 2000-01-23
+        status: status
+      properties:
+        day:
+          description: Date that was evaluated from the request
+          format: date
+          type: string
+        msLatency:
+          description: Milliseconds of latency for the query results
+          type: integer
+        status:
+          description: Status of this requests response
+          type: string
+        symbol:
+          description: Symbol that was evaluated from the request
+          type: string
+        ticks:
+          items:
+            $ref: '#/components/schemas/Aggregate'
+          type: array
+      type: object
+    _v1_historic_forex__from___to___date__get_200_response:
+      example:
+        symbol: symbol
+        msLatency: 0
+        ticks:
+        - a: 6
+          b: 1
+          t: 5
+        - a: 6
+          b: 1
+          t: 5
+        day: 2000-01-23
+        status: status
+      properties:
+        day:
+          description: Date that was evaluated from the request
+          format: date
+          type: string
+        msLatency:
+          description: Milliseconds of latency for the query results
+          type: integer
+        status:
+          description: Status of this requests response
+          type: string
+        symbol:
+          description: Symbol that was evaluated from the request
+          type: string
+        ticks:
+          items:
+            $ref: '#/components/schemas/Forex'
+          type: array
+      type: object
+    _v1_historic_quotes__symbol___date__get_200_response:
+      example:
+        symbol: symbol
+        msLatency: 0
+        ticks:
+        - bS: 5
+          aS: 1
+          bE: bE
+          c: 2
+          aE: aE
+          t: 7
+          bP: 5.962133916683182
+          aP: 6.027456183070403
+        - bS: 5
+          aS: 1
+          bE: bE
+          c: 2
+          aE: aE
+          t: 7
+          bP: 5.962133916683182
+          aP: 6.027456183070403
+        day: 2000-01-23
+        status: status
+      properties:
+        day:
+          description: Date that was evaluated from the request
+          format: date
+          type: string
+        msLatency:
+          description: Milliseconds of latency for the query results
+          type: integer
+        status:
+          description: Status of this requests response
+          type: string
+        symbol:
+          description: Symbol that was evaluated from the request
+          type: string
+        ticks:
+          items:
+            $ref: '#/components/schemas/Quote'
+          type: array
+      type: object
+    _v1_historic_trades__symbol___date__get_200_response:
+      example:
+        symbol: symbol
+        msLatency: 0
+        ticks:
+        - c3: 5
+          p: 2.3021358869347655
+          c4: 5
+          s: 7
+          t: 9
+          e: e
+          c1: 6
+          c2: 1
+        - c3: 5
+          p: 2.3021358869347655
+          c4: 5
+          s: 7
+          t: 9
+          e: e
+          c1: 6
+          c2: 1
+        day: 2000-01-23
+        status: status
+      properties:
+        day:
+          description: Date that was evaluated from the request
+          format: date
+          type: string
+        msLatency:
+          description: Milliseconds of latency for the query results
+          type: integer
+        status:
+          description: Status of this requests response
+          type: string
+        symbol:
+          description: Symbol that was evaluated from the request
+          type: string
+        ticks:
+          items:
+            $ref: '#/components/schemas/Trade'
+          type: array
+      type: object
+    _v1_last_currencies__from___to__get_200_response:
+      example:
+        symbol: symbol
+        last:
+          price: 6.027456183070403
+          exchange: 0
+          timestamp: 1
+        status: status
+      properties:
+        last:
+          $ref: '#/components/schemas/LastForexTrade'
+        status:
+          description: Status of this requests response
+          type: string
+        symbol:
+          description: Symbol Pair that was evaluated from the request
+          type: string
+      type: object
+    _v1_last_stocks__symbol__get_200_response:
+      example:
+        symbol: symbol
+        last:
+          size: 7
+          cond4: 5
+          cond3: 1
+          price: 2.3021358869347655
+          cond2: 6
+          cond1: 0
+          exchange: 5
+          timestamp: 9
+        status: status
+      properties:
+        last:
+          $ref: '#/components/schemas/LastTrade'
+        status:
+          description: Status of this requests response
+          type: string
+        symbol:
+          description: Symbol that was evaluated from the request
+          type: string
+      type: object
+    _v1_last_quote_currencies__from___to__get_200_response:
+      example:
+        symbol: symbol
+        last:
+          askprice: 0.8008281904610115
+          bidprice: 6.027456183070403
+          timestamp: 1
+        status: status
+      properties:
+        last:
+          $ref: '#/components/schemas/LastForexQuote'
+        status:
+          description: Status of this requests response
+          type: string
+        symbol:
+          description: Symbol Pair that was evaluated from the request
+          type: string
+      type: object
+    _v1_last_quote_stocks__symbol__get_200_response:
+      example:
+        symbol: symbol
+        last:
+          bidexchange: 5
+          askprice: 6.027456183070403
+          askexchange: 0
+          bidsize: 2
+          asksize: 1
+          bidprice: 5.637376656633329
+          cond: 7
+          timestamp: 9
+        status: status
+      properties:
+        last:
+          $ref: '#/components/schemas/LastQuote'
+        status:
+          description: Status of this requests response
+          type: string
+        symbol:
+          description: Symbol that was evaluated from the request
+          type: string
+      type: object
+  securitySchemes:
+    apiKey:
+      in: query
+      name: apiKey
+      type: apiKey
+x-original-swagger-version: "2.0"
+

@@ -1,0 +1,99 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIActivationError.h \
+    $${PWD}/OAIAddOrganizationUnit.h \
+    $${PWD}/OAIAddOrganizationUnitResponse.h \
+    $${PWD}/OAIAddParticipant.h \
+    $${PWD}/OAIAddProject.h \
+    $${PWD}/OAIAddUser.h \
+    $${PWD}/OAIAddUserGroup.h \
+    $${PWD}/OAIAddUserGroupMember.h \
+    $${PWD}/OAIAddUserResponse.h \
+    $${PWD}/OAIBackOfficeRole.h \
+    $${PWD}/OAIClientRole.h \
+    $${PWD}/OAIClientRoles.h \
+    $${PWD}/OAICourseDesign.h \
+    $${PWD}/OAIError.h \
+    $${PWD}/OAIGlobalUserGroup.h \
+    $${PWD}/OAIGroupId.h \
+    $${PWD}/OAILoginLink.h \
+    $${PWD}/OAIOrgUnit.h \
+    $${PWD}/OAIOrgUnits.h \
+    $${PWD}/OAIParticipation.h \
+    $${PWD}/OAIProductFailure.h \
+    $${PWD}/OAIProject.h \
+    $${PWD}/OAIProjectTeamMember.h \
+    $${PWD}/OAITeamRole.h \
+    $${PWD}/OAIUpdateOrganizationUnit.h \
+    $${PWD}/OAIUpdateProject.h \
+    $${PWD}/OAIUser.h \
+    $${PWD}/OAIUserGroup.h \
+    $${PWD}/OAIUserId.h \
+    $${PWD}/OAIUserParticipationInfo.h \
+    $${PWD}/OAIUserPreferences.h \
+    $${PWD}/OAIUserWithPermissions.h \
+# APIs
+    $${PWD}/OAICourseDesignsApi.h \
+    $${PWD}/OAIGlobalUserGroupsApi.h \
+    $${PWD}/OAIOrganizationUnitsApi.h \
+    $${PWD}/OAIProjectsApi.h \
+    $${PWD}/OAIUserGroupsApi.h \
+    $${PWD}/OAIUsersApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIActivationError.cpp \
+    $${PWD}/OAIAddOrganizationUnit.cpp \
+    $${PWD}/OAIAddOrganizationUnitResponse.cpp \
+    $${PWD}/OAIAddParticipant.cpp \
+    $${PWD}/OAIAddProject.cpp \
+    $${PWD}/OAIAddUser.cpp \
+    $${PWD}/OAIAddUserGroup.cpp \
+    $${PWD}/OAIAddUserGroupMember.cpp \
+    $${PWD}/OAIAddUserResponse.cpp \
+    $${PWD}/OAIBackOfficeRole.cpp \
+    $${PWD}/OAIClientRole.cpp \
+    $${PWD}/OAIClientRoles.cpp \
+    $${PWD}/OAICourseDesign.cpp \
+    $${PWD}/OAIError.cpp \
+    $${PWD}/OAIGlobalUserGroup.cpp \
+    $${PWD}/OAIGroupId.cpp \
+    $${PWD}/OAILoginLink.cpp \
+    $${PWD}/OAIOrgUnit.cpp \
+    $${PWD}/OAIOrgUnits.cpp \
+    $${PWD}/OAIParticipation.cpp \
+    $${PWD}/OAIProductFailure.cpp \
+    $${PWD}/OAIProject.cpp \
+    $${PWD}/OAIProjectTeamMember.cpp \
+    $${PWD}/OAITeamRole.cpp \
+    $${PWD}/OAIUpdateOrganizationUnit.cpp \
+    $${PWD}/OAIUpdateProject.cpp \
+    $${PWD}/OAIUser.cpp \
+    $${PWD}/OAIUserGroup.cpp \
+    $${PWD}/OAIUserId.cpp \
+    $${PWD}/OAIUserParticipationInfo.cpp \
+    $${PWD}/OAIUserPreferences.cpp \
+    $${PWD}/OAIUserWithPermissions.cpp \
+# APIs
+    $${PWD}/OAICourseDesignsApi.cpp \
+    $${PWD}/OAIGlobalUserGroupsApi.cpp \
+    $${PWD}/OAIOrganizationUnitsApi.cpp \
+    $${PWD}/OAIProjectsApi.cpp \
+    $${PWD}/OAIUserGroupsApi.cpp \
+    $${PWD}/OAIUsersApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

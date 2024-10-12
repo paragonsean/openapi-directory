@@ -1,0 +1,83 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIAdverbs_inner.h \
+    $${PWD}/OAIAnalysis.h \
+    $${PWD}/OAIDocumentListSummary.h \
+    $${PWD}/OAIDocumentResponseDetailed.h \
+    $${PWD}/OAIDocumentResponseDetailed_paragraphs_inner.h \
+    $${PWD}/OAIDocumentResponseDetailed_paragraphs_inner_stats.h \
+    $${PWD}/OAIDocumentResponseDetailed_scanSettings.h \
+    $${PWD}/OAIDocumentResponseNotReady.h \
+    $${PWD}/OAIHiddenVerbs_inner.h \
+    $${PWD}/OAILongSentences_inner.h \
+    $${PWD}/OAINewDocumentResponse.h \
+    $${PWD}/OAINewScan.h \
+    $${PWD}/OAINewScanResponse.h \
+    $${PWD}/OAINewScanResponse_webUrls_inner.h \
+    $${PWD}/OAINewScan_scanSettings.h \
+    $${PWD}/OAINewScan_webUrls_inner.h \
+    $${PWD}/OAIPassives_inner.h \
+    $${PWD}/OAIScanDetailed.h \
+    $${PWD}/OAIScanResponseDetailed.h \
+    $${PWD}/OAIScanResponseSummary.h \
+    $${PWD}/OAIScanSummary.h \
+    $${PWD}/OAISearch.h \
+    $${PWD}/OAIStats.h \
+    $${PWD}/OAIVeryLongSentences_inner.h \
+    $${PWD}/OAIWebResponseNotReady.h \
+    $${PWD}/OAIWebUrl.h \
+    $${PWD}/OAIWebUrlDetail.h \
+    $${PWD}/OAIWebUrlHeader.h \
+# APIs
+    $${PWD}/OAIDocumentsApi.h \
+    $${PWD}/OAIWebscansApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIAdverbs_inner.cpp \
+    $${PWD}/OAIAnalysis.cpp \
+    $${PWD}/OAIDocumentListSummary.cpp \
+    $${PWD}/OAIDocumentResponseDetailed.cpp \
+    $${PWD}/OAIDocumentResponseDetailed_paragraphs_inner.cpp \
+    $${PWD}/OAIDocumentResponseDetailed_paragraphs_inner_stats.cpp \
+    $${PWD}/OAIDocumentResponseDetailed_scanSettings.cpp \
+    $${PWD}/OAIDocumentResponseNotReady.cpp \
+    $${PWD}/OAIHiddenVerbs_inner.cpp \
+    $${PWD}/OAILongSentences_inner.cpp \
+    $${PWD}/OAINewDocumentResponse.cpp \
+    $${PWD}/OAINewScan.cpp \
+    $${PWD}/OAINewScanResponse.cpp \
+    $${PWD}/OAINewScanResponse_webUrls_inner.cpp \
+    $${PWD}/OAINewScan_scanSettings.cpp \
+    $${PWD}/OAINewScan_webUrls_inner.cpp \
+    $${PWD}/OAIPassives_inner.cpp \
+    $${PWD}/OAIScanDetailed.cpp \
+    $${PWD}/OAIScanResponseDetailed.cpp \
+    $${PWD}/OAIScanResponseSummary.cpp \
+    $${PWD}/OAIScanSummary.cpp \
+    $${PWD}/OAISearch.cpp \
+    $${PWD}/OAIStats.cpp \
+    $${PWD}/OAIVeryLongSentences_inner.cpp \
+    $${PWD}/OAIWebResponseNotReady.cpp \
+    $${PWD}/OAIWebUrl.cpp \
+    $${PWD}/OAIWebUrlDetail.cpp \
+    $${PWD}/OAIWebUrlHeader.cpp \
+# APIs
+    $${PWD}/OAIDocumentsApi.cpp \
+    $${PWD}/OAIWebscansApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

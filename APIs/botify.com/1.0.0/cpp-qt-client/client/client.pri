@@ -1,0 +1,115 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIAnalysis.h \
+    $${PWD}/OAIAnalysisDetail.h \
+    $${PWD}/OAICrawlDatamodel.h \
+    $${PWD}/OAICrawlDatamodelField.h \
+    $${PWD}/OAICrawlDatamodelGroup.h \
+    $${PWD}/OAICrawlOrphanURLs.h \
+    $${PWD}/OAICrawlStatistics.h \
+    $${PWD}/OAICrawlStatisticsTime.h \
+    $${PWD}/OAICrawlStatisticsTimePoint.h \
+    $${PWD}/OAICrawlStatisticsUrls.h \
+    $${PWD}/OAICsvExportStatus.h \
+    $${PWD}/OAIDefaultPayload.h \
+    $${PWD}/OAIDefaultPayload_error.h \
+    $${PWD}/OAIFieldValues.h \
+    $${PWD}/OAIFieldValuesResult.h \
+    $${PWD}/OAIGetGanalyticsOrphanURLs_200_response.h \
+    $${PWD}/OAIGetLinksTopDomains_200_response.h \
+    $${PWD}/OAIGetProjectAnalyses_200_response.h \
+    $${PWD}/OAIGetSavedFilters_200_response.h \
+    $${PWD}/OAIGetSitemapsSamplesOutOfConfig_200_response.h \
+    $${PWD}/OAIGetUrlsExports_200_response.h \
+    $${PWD}/OAIGetUrls_200_response.h \
+    $${PWD}/OAIGetUserProjects_200_response.h \
+    $${PWD}/OAILinksPercentiles.h \
+    $${PWD}/OAILinksPercentilesItem.h \
+    $${PWD}/OAILinksTopDomains.h \
+    $${PWD}/OAILinksTopDomainsSamples.h \
+    $${PWD}/OAIPageRankLost.h \
+    $${PWD}/OAIProject.h \
+    $${PWD}/OAIProjectSavedFilter.h \
+    $${PWD}/OAIProjectSettingsSerializer.h \
+    $${PWD}/OAIRewritingRuleSerializer.h \
+    $${PWD}/OAISitemapsReport.h \
+    $${PWD}/OAISitemapsReportOnly.h \
+    $${PWD}/OAISitemapsReportSitemap.h \
+    $${PWD}/OAISitemapsReportSitemapError.h \
+    $${PWD}/OAIURLRewritingRulesSerializer.h \
+    $${PWD}/OAIUrlsAgg.h \
+    $${PWD}/OAIUrlsAggs.h \
+    $${PWD}/OAIUrlsAggsQuery.h \
+    $${PWD}/OAIUrlsErrorAgg.h \
+    $${PWD}/OAIUrlsQuery.h \
+    $${PWD}/OAIUser.h \
+# APIs
+    $${PWD}/OAIAnalysisApi.h \
+    $${PWD}/OAIProjectApi.h \
+    $${PWD}/OAIUserApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIAnalysis.cpp \
+    $${PWD}/OAIAnalysisDetail.cpp \
+    $${PWD}/OAICrawlDatamodel.cpp \
+    $${PWD}/OAICrawlDatamodelField.cpp \
+    $${PWD}/OAICrawlDatamodelGroup.cpp \
+    $${PWD}/OAICrawlOrphanURLs.cpp \
+    $${PWD}/OAICrawlStatistics.cpp \
+    $${PWD}/OAICrawlStatisticsTime.cpp \
+    $${PWD}/OAICrawlStatisticsTimePoint.cpp \
+    $${PWD}/OAICrawlStatisticsUrls.cpp \
+    $${PWD}/OAICsvExportStatus.cpp \
+    $${PWD}/OAIDefaultPayload.cpp \
+    $${PWD}/OAIDefaultPayload_error.cpp \
+    $${PWD}/OAIFieldValues.cpp \
+    $${PWD}/OAIFieldValuesResult.cpp \
+    $${PWD}/OAIGetGanalyticsOrphanURLs_200_response.cpp \
+    $${PWD}/OAIGetLinksTopDomains_200_response.cpp \
+    $${PWD}/OAIGetProjectAnalyses_200_response.cpp \
+    $${PWD}/OAIGetSavedFilters_200_response.cpp \
+    $${PWD}/OAIGetSitemapsSamplesOutOfConfig_200_response.cpp \
+    $${PWD}/OAIGetUrlsExports_200_response.cpp \
+    $${PWD}/OAIGetUrls_200_response.cpp \
+    $${PWD}/OAIGetUserProjects_200_response.cpp \
+    $${PWD}/OAILinksPercentiles.cpp \
+    $${PWD}/OAILinksPercentilesItem.cpp \
+    $${PWD}/OAILinksTopDomains.cpp \
+    $${PWD}/OAILinksTopDomainsSamples.cpp \
+    $${PWD}/OAIPageRankLost.cpp \
+    $${PWD}/OAIProject.cpp \
+    $${PWD}/OAIProjectSavedFilter.cpp \
+    $${PWD}/OAIProjectSettingsSerializer.cpp \
+    $${PWD}/OAIRewritingRuleSerializer.cpp \
+    $${PWD}/OAISitemapsReport.cpp \
+    $${PWD}/OAISitemapsReportOnly.cpp \
+    $${PWD}/OAISitemapsReportSitemap.cpp \
+    $${PWD}/OAISitemapsReportSitemapError.cpp \
+    $${PWD}/OAIURLRewritingRulesSerializer.cpp \
+    $${PWD}/OAIUrlsAgg.cpp \
+    $${PWD}/OAIUrlsAggs.cpp \
+    $${PWD}/OAIUrlsAggsQuery.cpp \
+    $${PWD}/OAIUrlsErrorAgg.cpp \
+    $${PWD}/OAIUrlsQuery.cpp \
+    $${PWD}/OAIUser.cpp \
+# APIs
+    $${PWD}/OAIAnalysisApi.cpp \
+    $${PWD}/OAIProjectApi.cpp \
+    $${PWD}/OAIUserApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

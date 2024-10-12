@@ -1,0 +1,37 @@
+from typing import List, Dict
+from aiohttp import web
+
+from openapi_server.models.publisher import Publisher
+from openapi_server import util
+
+
+async def publisher_name_get(request: web.Request, name, page=None, page_size=None) -> web.Response:
+    """Gets publisher details
+
+    Returns details and a list of books by the publisher.
+
+    :param name: The name of a publisher in the Publisher&#39;s database
+    :type name: str
+    :param page: The number of page to retrieve, please note the API will not return more than 10,000 results no matter how you paginate them
+    :type page: str
+    :param page_size: How many items should be returned per page, maximum of 1,000
+    :type page_size: str
+
+    """
+    return web.Response(status=200)
+
+
+async def publishers_query_get(request: web.Request, query, page_size=None, page=None) -> web.Response:
+    """Search publishers
+
+    This returns a list of publishers that match the given query
+
+    :param query: A string to search for in the Publisher’s database
+    :type query: str
+    :param page_size: How many items should be returned per page, maximum of 1,000
+    :type page_size: str
+    :param page: The number of page to retrieve, please note the API will not return more than 10,000 results no matter how you paginate them
+    :type page: str
+
+    """
+    return web.Response(status=200)

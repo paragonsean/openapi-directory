@@ -1,0 +1,16 @@
+
+
+# AzureSubscriptionAddRequest
+
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**isBilling** | **Boolean** | If the subscription is used for billing |  [optional] |
+|**subscriptionId** | **UUID** | The azure subscription id |  |
+|**subscriptionName** | **String** | The name of the azure subscription |  |
+|**tenantId** | **UUID** | The tenant id of the azure subscription belongs to |  |
+
+
+

@@ -1,0 +1,7 @@
+# coding: utf-8
+
+# import models into model package
+from openapi_server.models.advanced_threat_protection_get_default_response import AdvancedThreatProtectionGetDefaultResponse
+from openapi_server.models.advanced_threat_protection_get_default_response_error import AdvancedThreatProtectionGetDefaultResponseError
+from openapi_server.models.advanced_threat_protection_properties import AdvancedThreatProtectionProperties
+from openapi_server.models.advanced_threat_protection_setting import AdvancedThreatProtectionSetting

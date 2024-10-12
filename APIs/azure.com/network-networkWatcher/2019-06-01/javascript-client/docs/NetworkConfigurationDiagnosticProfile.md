@@ -1,0 +1,13 @@
+# NetworkManagementClient.NetworkConfigurationDiagnosticProfile
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**destination** | **String** | Traffic destination. Accepted values are: &#39;*&#39;, IP Address/CIDR, Service Tag. | 
+**destinationPort** | **String** | Traffic destination port. Accepted values are &#39;*&#39;, port (for example, 3389) and port range (for example, 80-100). | 
+**direction** | [**Direction**](Direction.md) |  | 
+**protocol** | **String** | Protocol to be verified on. Accepted values are &#39;*&#39;, TCP, UDP. | 
+**source** | **String** | Traffic source. Accepted values are &#39;*&#39;, IP Address/CIDR, Service Tag. | 
+
+

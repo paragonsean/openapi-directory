@@ -1,0 +1,114 @@
+# TypeTypePointGeomagIaga2002Api
+
+All URIs are relative to *https://geodesystems.com:443*
+
+| Method | HTTP request | Description |
+|------------- | ------------- | -------------|
+| [**searchTypePointGeomagIaga2002**](TypeTypePointGeomagIaga2002Api.md#searchTypePointGeomagIaga2002) | **GET** /repository/search/type/type_point_geomag_iaga2002 | Search API for &#39;IAGA 2002 Geomagnetism Data&#39; entry type |
+
+
+<a id="searchTypePointGeomagIaga2002"></a>
+# **searchTypePointGeomagIaga2002**
+> searchTypePointGeomagIaga2002(text, name, description, fromdate, todate, createdateFrom, createdateTo, changedateFrom, changedateTo, group, filesuffix, maxlatitude, minlongitude, minlatitude, maxlongitude, max, skip, searchTypePointGeomagIaga2002IagaCode, searchTypePointGeomagIaga2002StationName, searchTypePointGeomagIaga2002SourceOfData, searchTypePointGeomagIaga2002DigitalSampling, searchTypePointGeomagIaga2002DataInterval, searchTypePointGeomagIaga2002DataType)
+
+Search API for &#39;IAGA 2002 Geomagnetism Data&#39; entry type
+
+API to search for entries of type IAGA 2002 Geomagnetism Data
+
+### Example
+```java
+// Import classes:
+import org.openapitools.client.ApiClient;
+import org.openapitools.client.ApiException;
+import org.openapitools.client.Configuration;
+import org.openapitools.client.models.*;
+import org.openapitools.client.api.TypeTypePointGeomagIaga2002Api;
+
+public class Example {
+  public static void main(String[] args) {
+    ApiClient defaultClient = Configuration.getDefaultApiClient();
+    defaultClient.setBasePath("https://geodesystems.com:443");
+
+    TypeTypePointGeomagIaga2002Api apiInstance = new TypeTypePointGeomagIaga2002Api(defaultClient);
+    String text = "text_example"; // String | Search text
+    String name = "name_example"; // String | Search name
+    String description = "description_example"; // String | Search description
+    OffsetDateTime fromdate = OffsetDateTime.now(); // OffsetDateTime | From date
+    OffsetDateTime todate = OffsetDateTime.now(); // OffsetDateTime | To date
+    OffsetDateTime createdateFrom = OffsetDateTime.now(); // OffsetDateTime | Archive create date from
+    OffsetDateTime createdateTo = OffsetDateTime.now(); // OffsetDateTime | Archive create date to
+    OffsetDateTime changedateFrom = OffsetDateTime.now(); // OffsetDateTime | Archive change date from
+    OffsetDateTime changedateTo = OffsetDateTime.now(); // OffsetDateTime | Archive change date to
+    String group = "group_example"; // String | Parent entry
+    String filesuffix = "filesuffix_example"; // String | File suffix
+    Float maxlatitude = 3.4F; // Float | Northern bounds of search
+    Float minlongitude = 3.4F; // Float | Western bounds of search
+    Float minlatitude = 3.4F; // Float | Southern bounds of search
+    Float maxlongitude = 3.4F; // Float | Eastern bounds of search
+    Integer max = 56; // Integer | Max number of results
+    Integer skip = 56; // Integer | Number to skip
+    String searchTypePointGeomagIaga2002IagaCode = "searchTypePointGeomagIaga2002IagaCode_example"; // String | IAGA Code
+    String searchTypePointGeomagIaga2002StationName = "searchTypePointGeomagIaga2002StationName_example"; // String | Station Name
+    String searchTypePointGeomagIaga2002SourceOfData = "searchTypePointGeomagIaga2002SourceOfData_example"; // String | Source of data
+    String searchTypePointGeomagIaga2002DigitalSampling = "searchTypePointGeomagIaga2002DigitalSampling_example"; // String | Digital Sampling
+    String searchTypePointGeomagIaga2002DataInterval = "searchTypePointGeomagIaga2002DataInterval_example"; // String | Data Interval
+    String searchTypePointGeomagIaga2002DataType = "searchTypePointGeomagIaga2002DataType_example"; // String | Data Type
+    try {
+      apiInstance.searchTypePointGeomagIaga2002(text, name, description, fromdate, todate, createdateFrom, createdateTo, changedateFrom, changedateTo, group, filesuffix, maxlatitude, minlongitude, minlatitude, maxlongitude, max, skip, searchTypePointGeomagIaga2002IagaCode, searchTypePointGeomagIaga2002StationName, searchTypePointGeomagIaga2002SourceOfData, searchTypePointGeomagIaga2002DigitalSampling, searchTypePointGeomagIaga2002DataInterval, searchTypePointGeomagIaga2002DataType);
+    } catch (ApiException e) {
+      System.err.println("Exception when calling TypeTypePointGeomagIaga2002Api#searchTypePointGeomagIaga2002");
+      System.err.println("Status code: " + e.getCode());
+      System.err.println("Reason: " + e.getResponseBody());
+      System.err.println("Response headers: " + e.getResponseHeaders());
+      e.printStackTrace();
+    }
+  }
+}
+```
+
+### Parameters
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **text** | **String**| Search text | [optional] |
+| **name** | **String**| Search name | [optional] |
+| **description** | **String**| Search description | [optional] |
+| **fromdate** | **OffsetDateTime**| From date | [optional] |
+| **todate** | **OffsetDateTime**| To date | [optional] |
+| **createdateFrom** | **OffsetDateTime**| Archive create date from | [optional] |
+| **createdateTo** | **OffsetDateTime**| Archive create date to | [optional] |
+| **changedateFrom** | **OffsetDateTime**| Archive change date from | [optional] |
+| **changedateTo** | **OffsetDateTime**| Archive change date to | [optional] |
+| **group** | **String**| Parent entry | [optional] |
+| **filesuffix** | **String**| File suffix | [optional] |
+| **maxlatitude** | **Float**| Northern bounds of search | [optional] |
+| **minlongitude** | **Float**| Western bounds of search | [optional] |
+| **minlatitude** | **Float**| Southern bounds of search | [optional] |
+| **maxlongitude** | **Float**| Eastern bounds of search | [optional] |
+| **max** | **Integer**| Max number of results | [optional] |
+| **skip** | **Integer**| Number to skip | [optional] |
+| **searchTypePointGeomagIaga2002IagaCode** | **String**| IAGA Code | [optional] |
+| **searchTypePointGeomagIaga2002StationName** | **String**| Station Name | [optional] |
+| **searchTypePointGeomagIaga2002SourceOfData** | **String**| Source of data | [optional] |
+| **searchTypePointGeomagIaga2002DigitalSampling** | **String**| Digital Sampling | [optional] |
+| **searchTypePointGeomagIaga2002DataInterval** | **String**| Data Interval | [optional] |
+| **searchTypePointGeomagIaga2002DataType** | **String**| Data Type | [optional] |
+
+### Return type
+
+null (empty response body)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: Not defined
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | No response was specified |  -  |
+

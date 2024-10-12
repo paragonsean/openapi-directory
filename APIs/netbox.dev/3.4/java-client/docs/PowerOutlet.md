@@ -1,0 +1,36 @@
+
+
+# PowerOutlet
+
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**occupied** | **Boolean** |  |  [optional] [readonly] |
+|**cable** | [**NestedCable**](NestedCable.md) |  |  [optional] |
+|**cableEnd** | **String** |  |  [optional] [readonly] |
+|**connectedEndpoints** | **List&lt;String&gt;** |  Return the appropriate serializer for the type of connected object.  |  [optional] [readonly] |
+|**connectedEndpointsReachable** | **Boolean** |  |  [optional] [readonly] |
+|**connectedEndpointsType** | **String** |  |  [optional] [readonly] |
+|**created** | **OffsetDateTime** |  |  [optional] [readonly] |
+|**customFields** | **Object** |  |  [optional] |
+|**description** | **String** |  |  [optional] |
+|**device** | [**NestedDevice**](NestedDevice.md) |  |  |
+|**display** | **String** |  |  [optional] [readonly] |
+|**feedLeg** | [**FeedLeg**](FeedLeg.md) |  |  [optional] |
+|**id** | **Integer** |  |  [optional] [readonly] |
+|**label** | **String** | Physical label |  [optional] |
+|**lastUpdated** | **OffsetDateTime** |  |  [optional] [readonly] |
+|**linkPeers** | **List&lt;String&gt;** |  Return the appropriate serializer for the link termination model.  |  [optional] [readonly] |
+|**linkPeersType** | **String** |  |  [optional] [readonly] |
+|**markConnected** | **Boolean** | Treat as if a cable is connected |  [optional] |
+|**module** | [**ComponentNestedModule**](ComponentNestedModule.md) |  |  [optional] |
+|**name** | **String** |  |  |
+|**powerPort** | [**NestedPowerPort**](NestedPowerPort.md) |  |  [optional] |
+|**tags** | [**List&lt;NestedTag&gt;**](NestedTag.md) |  |  [optional] |
+|**type** | [**Type6**](Type6.md) |  |  [optional] |
+|**url** | **URI** |  |  [optional] [readonly] |
+
+
+

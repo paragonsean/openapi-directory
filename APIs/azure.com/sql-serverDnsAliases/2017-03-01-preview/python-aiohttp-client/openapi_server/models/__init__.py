@@ -1,7 +1,0 @@
-# coding: utf-8
-
-# import models into model package
-from openapi_server.models.server_dns_alias import ServerDnsAlias
-from openapi_server.models.server_dns_alias_acquisition import ServerDnsAliasAcquisition
-from openapi_server.models.server_dns_alias_list_result import ServerDnsAliasListResult
-from openapi_server.models.server_dns_alias_properties import ServerDnsAliasProperties

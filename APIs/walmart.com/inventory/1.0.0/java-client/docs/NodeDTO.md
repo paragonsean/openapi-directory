@@ -1,0 +1,17 @@
+
+
+# NodeDTO
+
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**availToSellQty** | [**GetMultiNodeInventoryForAllSkuAndAllShipNodes200ResponseElementsInventoriesInnerNodesInnerAvailToSellQty**](GetMultiNodeInventoryForAllSkuAndAllShipNodes200ResponseElementsInventoriesInnerNodesInnerAvailToSellQty.md) |  |  [optional] |
+|**errors** | [**List&lt;GetMultiNodeInventoryForSkuAndAllShipnodes200ResponseNodesInnerErrorsInner&gt;**](GetMultiNodeInventoryForSkuAndAllShipnodes200ResponseNodesInnerErrorsInner.md) |  |  [optional] |
+|**inputQty** | [**GetMultiNodeInventoryForAllSkuAndAllShipNodes200ResponseElementsInventoriesInnerNodesInnerInputQty**](GetMultiNodeInventoryForAllSkuAndAllShipNodes200ResponseElementsInventoriesInnerNodesInnerInputQty.md) |  |  [optional] |
+|**reservedQty** | [**GetMultiNodeInventoryForAllSkuAndAllShipNodes200ResponseElementsInventoriesInnerNodesInnerReservedQty**](GetMultiNodeInventoryForAllSkuAndAllShipNodes200ResponseElementsInventoriesInnerNodesInnerReservedQty.md) |  |  [optional] |
+|**shipNode** | **String** | ShipNode Id of the ship node for which the inventory is requested |  [optional] |
+
+
+

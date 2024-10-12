@@ -1,0 +1,101 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/Long.h \
+    $${PWD}/OAIApiTokenStatus.h \
+    $${PWD}/OAIAudioFile.h \
+    $${PWD}/OAIAudioType.h \
+    $${PWD}/OAIAuthenticationToken.h \
+    $${PWD}/OAIBigram.h \
+    $${PWD}/OAICategory.h \
+    $${PWD}/OAICitation.h \
+    $${PWD}/OAIContentProvider.h \
+    $${PWD}/OAIDefinition.h \
+    $${PWD}/OAIDefinitionSearchResults.h \
+    $${PWD}/OAIExample.h \
+    $${PWD}/OAIExampleSearchResults.h \
+    $${PWD}/OAIExampleUsage.h \
+    $${PWD}/OAIFacet.h \
+    $${PWD}/OAIFacetValue.h \
+    $${PWD}/OAIFrequency.h \
+    $${PWD}/OAIFrequencySummary.h \
+    $${PWD}/OAILabel.h \
+    $${PWD}/OAINote.h \
+    $${PWD}/OAIPartOfSpeech.h \
+    $${PWD}/OAIRelated.h \
+    $${PWD}/OAIRoot.h \
+    $${PWD}/OAIScoredWord.h \
+    $${PWD}/OAISentence.h \
+    $${PWD}/OAISimpleDefinition.h \
+    $${PWD}/OAISimpleExample.h \
+    $${PWD}/OAIStringValue.h \
+    $${PWD}/OAISyllable.h \
+    $${PWD}/OAITextPron.h \
+    $${PWD}/OAIUser.h \
+    $${PWD}/OAIWordList.h \
+    $${PWD}/OAIWordListWord.h \
+    $${PWD}/OAIWordObject.h \
+    $${PWD}/OAIWordOfTheDay.h \
+    $${PWD}/OAIWordSearchResult.h \
+    $${PWD}/OAIWordSearchResults.h \
+# APIs
+    $${PWD}/OAIWordApi.h \
+    $${PWD}/OAIWordsApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/Long.cpp \
+    $${PWD}/OAIApiTokenStatus.cpp \
+    $${PWD}/OAIAudioFile.cpp \
+    $${PWD}/OAIAudioType.cpp \
+    $${PWD}/OAIAuthenticationToken.cpp \
+    $${PWD}/OAIBigram.cpp \
+    $${PWD}/OAICategory.cpp \
+    $${PWD}/OAICitation.cpp \
+    $${PWD}/OAIContentProvider.cpp \
+    $${PWD}/OAIDefinition.cpp \
+    $${PWD}/OAIDefinitionSearchResults.cpp \
+    $${PWD}/OAIExample.cpp \
+    $${PWD}/OAIExampleSearchResults.cpp \
+    $${PWD}/OAIExampleUsage.cpp \
+    $${PWD}/OAIFacet.cpp \
+    $${PWD}/OAIFacetValue.cpp \
+    $${PWD}/OAIFrequency.cpp \
+    $${PWD}/OAIFrequencySummary.cpp \
+    $${PWD}/OAILabel.cpp \
+    $${PWD}/OAINote.cpp \
+    $${PWD}/OAIPartOfSpeech.cpp \
+    $${PWD}/OAIRelated.cpp \
+    $${PWD}/OAIRoot.cpp \
+    $${PWD}/OAIScoredWord.cpp \
+    $${PWD}/OAISentence.cpp \
+    $${PWD}/OAISimpleDefinition.cpp \
+    $${PWD}/OAISimpleExample.cpp \
+    $${PWD}/OAIStringValue.cpp \
+    $${PWD}/OAISyllable.cpp \
+    $${PWD}/OAITextPron.cpp \
+    $${PWD}/OAIUser.cpp \
+    $${PWD}/OAIWordList.cpp \
+    $${PWD}/OAIWordListWord.cpp \
+    $${PWD}/OAIWordObject.cpp \
+    $${PWD}/OAIWordOfTheDay.cpp \
+    $${PWD}/OAIWordSearchResult.cpp \
+    $${PWD}/OAIWordSearchResults.cpp \
+# APIs
+    $${PWD}/OAIWordApi.cpp \
+    $${PWD}/OAIWordsApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

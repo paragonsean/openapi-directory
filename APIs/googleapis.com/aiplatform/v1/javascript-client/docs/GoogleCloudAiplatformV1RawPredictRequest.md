@@ -1,9 +1,0 @@
-# VertexAiApi.GoogleCloudAiplatformV1RawPredictRequest
-
-## Properties
-
-Name | Type | Description | Notes
------------- | ------------- | ------------- | -------------
-**httpBody** | [**GoogleApiHttpBody**](GoogleApiHttpBody.md) |  | [optional] 
-
-

@@ -1,0 +1,15 @@
+
+
+# VpnClientRevokedCertificatePropertiesFormat
+
+Properties of the revoked VPN client certificate of virtual network gateway
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**provisioningState** | **String** | Gets or sets Provisioning state of the VPN client revoked certificate resource Updating/Deleting/Failed |  [optional] |
+|**thumbprint** | **String** | Gets or sets the revoked Vpn client certificate thumbprint |  [optional] |
+
+
+

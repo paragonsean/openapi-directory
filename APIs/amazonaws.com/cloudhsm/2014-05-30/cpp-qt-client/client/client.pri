@@ -1,0 +1,113 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIAddTagsToResourceRequest.h \
+    $${PWD}/OAIAddTagsToResourceResponse.h \
+    $${PWD}/OAIClientVersion.h \
+    $${PWD}/OAICloudHsmObjectState.h \
+    $${PWD}/OAICreateHapgRequest.h \
+    $${PWD}/OAICreateHapgResponse.h \
+    $${PWD}/OAICreateHsmRequest.h \
+    $${PWD}/OAICreateHsmResponse.h \
+    $${PWD}/OAICreateLunaClientRequest.h \
+    $${PWD}/OAICreateLunaClientResponse.h \
+    $${PWD}/OAIDeleteHapgRequest.h \
+    $${PWD}/OAIDeleteHapgResponse.h \
+    $${PWD}/OAIDeleteHsmRequest.h \
+    $${PWD}/OAIDeleteHsmResponse.h \
+    $${PWD}/OAIDeleteLunaClientRequest.h \
+    $${PWD}/OAIDeleteLunaClientResponse.h \
+    $${PWD}/OAIDescribeHapgRequest.h \
+    $${PWD}/OAIDescribeHapgResponse.h \
+    $${PWD}/OAIDescribeHsmRequest.h \
+    $${PWD}/OAIDescribeHsmResponse.h \
+    $${PWD}/OAIDescribeLunaClientRequest.h \
+    $${PWD}/OAIDescribeLunaClientResponse.h \
+    $${PWD}/OAIGetConfigRequest.h \
+    $${PWD}/OAIGetConfigResponse.h \
+    $${PWD}/OAIHsmStatus.h \
+    $${PWD}/OAIListAvailableZonesResponse.h \
+    $${PWD}/OAIListHapgsRequest.h \
+    $${PWD}/OAIListHapgsResponse.h \
+    $${PWD}/OAIListHsmsRequest.h \
+    $${PWD}/OAIListHsmsResponse.h \
+    $${PWD}/OAIListLunaClientsRequest.h \
+    $${PWD}/OAIListLunaClientsResponse.h \
+    $${PWD}/OAIListTagsForResourceRequest.h \
+    $${PWD}/OAIListTagsForResourceResponse.h \
+    $${PWD}/OAIModifyHapgRequest.h \
+    $${PWD}/OAIModifyHapgResponse.h \
+    $${PWD}/OAIModifyHsmRequest.h \
+    $${PWD}/OAIModifyHsmResponse.h \
+    $${PWD}/OAIModifyLunaClientRequest.h \
+    $${PWD}/OAIModifyLunaClientResponse.h \
+    $${PWD}/OAIRemoveTagsFromResourceRequest.h \
+    $${PWD}/OAIRemoveTagsFromResourceResponse.h \
+    $${PWD}/OAISubscriptionType.h \
+    $${PWD}/OAITag.h \
+# APIs
+    $${PWD}/OAIDefaultApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIAddTagsToResourceRequest.cpp \
+    $${PWD}/OAIAddTagsToResourceResponse.cpp \
+    $${PWD}/OAIClientVersion.cpp \
+    $${PWD}/OAICloudHsmObjectState.cpp \
+    $${PWD}/OAICreateHapgRequest.cpp \
+    $${PWD}/OAICreateHapgResponse.cpp \
+    $${PWD}/OAICreateHsmRequest.cpp \
+    $${PWD}/OAICreateHsmResponse.cpp \
+    $${PWD}/OAICreateLunaClientRequest.cpp \
+    $${PWD}/OAICreateLunaClientResponse.cpp \
+    $${PWD}/OAIDeleteHapgRequest.cpp \
+    $${PWD}/OAIDeleteHapgResponse.cpp \
+    $${PWD}/OAIDeleteHsmRequest.cpp \
+    $${PWD}/OAIDeleteHsmResponse.cpp \
+    $${PWD}/OAIDeleteLunaClientRequest.cpp \
+    $${PWD}/OAIDeleteLunaClientResponse.cpp \
+    $${PWD}/OAIDescribeHapgRequest.cpp \
+    $${PWD}/OAIDescribeHapgResponse.cpp \
+    $${PWD}/OAIDescribeHsmRequest.cpp \
+    $${PWD}/OAIDescribeHsmResponse.cpp \
+    $${PWD}/OAIDescribeLunaClientRequest.cpp \
+    $${PWD}/OAIDescribeLunaClientResponse.cpp \
+    $${PWD}/OAIGetConfigRequest.cpp \
+    $${PWD}/OAIGetConfigResponse.cpp \
+    $${PWD}/OAIHsmStatus.cpp \
+    $${PWD}/OAIListAvailableZonesResponse.cpp \
+    $${PWD}/OAIListHapgsRequest.cpp \
+    $${PWD}/OAIListHapgsResponse.cpp \
+    $${PWD}/OAIListHsmsRequest.cpp \
+    $${PWD}/OAIListHsmsResponse.cpp \
+    $${PWD}/OAIListLunaClientsRequest.cpp \
+    $${PWD}/OAIListLunaClientsResponse.cpp \
+    $${PWD}/OAIListTagsForResourceRequest.cpp \
+    $${PWD}/OAIListTagsForResourceResponse.cpp \
+    $${PWD}/OAIModifyHapgRequest.cpp \
+    $${PWD}/OAIModifyHapgResponse.cpp \
+    $${PWD}/OAIModifyHsmRequest.cpp \
+    $${PWD}/OAIModifyHsmResponse.cpp \
+    $${PWD}/OAIModifyLunaClientRequest.cpp \
+    $${PWD}/OAIModifyLunaClientResponse.cpp \
+    $${PWD}/OAIRemoveTagsFromResourceRequest.cpp \
+    $${PWD}/OAIRemoveTagsFromResourceResponse.cpp \
+    $${PWD}/OAISubscriptionType.cpp \
+    $${PWD}/OAITag.cpp \
+# APIs
+    $${PWD}/OAIDefaultApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

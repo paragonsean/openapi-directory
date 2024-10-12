@@ -1,0 +1,8 @@
+# coding: utf-8
+
+# import models into model package
+from openapi_server.models.diagnostic_settings_category import DiagnosticSettingsCategory
+from openapi_server.models.diagnostic_settings_category_resource import DiagnosticSettingsCategoryResource
+from openapi_server.models.diagnostic_settings_category_resource_collection import DiagnosticSettingsCategoryResourceCollection
+from openapi_server.models.error_response import ErrorResponse
+from openapi_server.models.proxy_only_resource import ProxyOnlyResource

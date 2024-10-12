@@ -51,7 +51,7 @@ import org.openapitools.client.JSON;
 /**
  * AssetsCorrelationMatrixTheoryImpliedPostRequestAssetsInner
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2024-10-12T07:52:17.384654-04:00[America/New_York]", comments = "Generator version: 7.9.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2024-10-12T12:43:16.175509-04:00[America/New_York]", comments = "Generator version: 7.9.0")
 public class AssetsCorrelationMatrixTheoryImpliedPostRequestAssetsInner {
   public static final String SERIALIZED_NAME_ASSET_HIERARCHICAL_CLASSIFICATION = "assetHierarchicalClassification";
   @SerializedName(SERIALIZED_NAME_ASSET_HIERARCHICAL_CLASSIFICATION)

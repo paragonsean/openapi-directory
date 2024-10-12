@@ -1,0 +1,11 @@
+# coding: utf-8
+
+# import models into model package
+from openapi_server.models.ad import Ad
+from openapi_server.models.bid_percentages import BidPercentages
+from openapi_server.models.error import Error
+from openapi_server.models.error_parameter import ErrorParameter
+from openapi_server.models.find_listing_recommendation_request import FindListingRecommendationRequest
+from openapi_server.models.listing_recommendation import ListingRecommendation
+from openapi_server.models.marketing_recommendation import MarketingRecommendation
+from openapi_server.models.paged_listing_recommendation_collection import PagedListingRecommendationCollection

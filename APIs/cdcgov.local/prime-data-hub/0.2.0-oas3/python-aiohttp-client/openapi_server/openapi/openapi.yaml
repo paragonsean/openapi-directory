@@ -1,0 +1,1378 @@
+openapi: 3.0.2
+info:
+  contact:
+    email: reportstream@cdc.gov
+    name: USDS at Centers for Disease Control and Prevention
+    url: https://reportstream.cdc.gov
+  description: A router of public health data from multiple senders and receivers
+  title: Prime ReportStream
+  version: 0.2.0-oas3
+  x-apisguru-categories:
+  - open_data
+  - collaboration
+  x-origin:
+  - format: openapi
+    url: https://raw.githubusercontent.com/CDCgov/prime-reportstream/master/prime-router/docs/openapi.yml
+    version: "3.0"
+  x-providerName: cdcgov.local
+  x-serviceName: prime-data-hub
+servers:
+- url: http://cdcgov.local
+paths:
+  /reports:
+    post:
+      operationId: reports_post
+      parameters:
+      - description: The client's name that matches the client name in metadata
+        example: simple_report
+        explode: true
+        in: query
+        name: client
+        required: true
+        schema:
+          type: string
+        style: form
+      - description: Optional ways to process the request
+        example: ValidatePayload
+        explode: true
+        in: query
+        name: option
+        required: false
+        schema:
+          enum:
+          - ValidatePayload
+          - CheckConnections
+          - SendImmediately
+          - SkipSend
+          - SkipInvalidItems
+          type: string
+        style: form
+      - description: Dynamic default values for an element. ':' or %3A is used to
+          seperate element name and value
+        example: processing_mode_code%3AD
+        explode: false
+        in: query
+        name: default
+        required: false
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: A comma speparated list of receiver names. Limit the list of
+          possible receivers to these receivers.
+        example: "fl-phd.elr,fl-phd.download"
+        explode: true
+        in: query
+        name: routeTo
+        required: false
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      requestBody:
+        content:
+          text/csv:
+            example: |-
+              header1, header2
+              value1, value2
+            schema:
+              type: string
+        description: The public health information being routed
+        required: true
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Report'
+          description: OK
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Report'
+          description: "Created. A report was created, but items may have been rejected."
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Report'
+          description: Invalid request. No report created.
+        "500":
+          description: Internal Server Error
+      security:
+      - ApiKeyAuth: []
+      summary: Post a report to the data hub
+      x-openapi-router-controller: openapi_server.controllers.default_controller
+      x-codegen-request-body-name: body
+  /settings/organizations:
+    get:
+      description: The settings for all organizations of the system. Must have admin
+        access.
+      operationId: settings_organizations_get
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/Organization'
+                type: array
+          description: OK
+          headers:
+            Last-Modified:
+              description: The date and time any setting was modified in GMT.
+              example: "Wed, 21 Oct 2015 07:28:00 GMT"
+              explode: false
+              required: false
+              schema:
+                type: string
+              style: simple
+      security:
+      - OAuth2:
+        - system_admin
+      x-openapi-router-controller: openapi_server.controllers.default_controller
+    head:
+      description: Retrived the last modified for all settings of the system. Must
+        have admin access.
+      operationId: settings_organizations_head
+      responses:
+        "200":
+          description: OK
+          headers:
+            Last-Modified:
+              description: The Last-Modified response HTTP header contains the date
+                and time any setting was modified.
+              example: "Wed, 21 Oct 2015 07:28:00 GMT"
+              explode: false
+              required: false
+              schema:
+                type: string
+              style: simple
+      security:
+      - OAuth2:
+        - system_admin
+      x-openapi-router-controller: openapi_server.controllers.default_controller
+  /settings/organizations/{organizationName}:
+    delete:
+      description: Delete an organization (and the associated receivers and senders)
+      operationId: settings_organizations_organization_name_delete
+      parameters:
+      - description: The name of the organization
+        explode: false
+        in: path
+        name: organizationName
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Organization'
+          description: "OK, the organization setting was deleted"
+        "400":
+          description: Bad Request
+        "401":
+          description: Unauthorized
+      security:
+      - OAuth2:
+        - system_admin
+      x-openapi-router-controller: openapi_server.controllers.default_controller
+    get:
+      description: A single organization settings
+      operationId: settings_organizations_organization_name_get
+      parameters:
+      - description: The name of the organization
+        explode: false
+        in: path
+        name: organizationName
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Organization'
+          description: OK
+      security:
+      - OAuth2:
+        - user
+      x-openapi-router-controller: openapi_server.controllers.default_controller
+    put:
+      description: Create or update the direct settings associated with an organization
+      operationId: settings_organizations_organization_name_put
+      parameters:
+      - description: The name of the organization
+        explode: false
+        in: path
+        name: organizationName
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Organization'
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Organization'
+          description: "OK, the organization setting was updated"
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Organization'
+          description: Created
+        "400":
+          description: Bad Request
+        "401":
+          description: Unauthorized
+      security:
+      - OAuth2:
+        - system_admin
+      x-openapi-router-controller: openapi_server.controllers.default_controller
+      x-codegen-request-body-name: body
+  /settings/organizations/{organizationName}/receivers:
+    get:
+      description: A list of receivers and their current settings
+      operationId: settings_organizations_organization_name_receivers_get
+      parameters:
+      - description: Fetch receivers with this organization name
+        example: az-phd
+        explode: false
+        in: path
+        name: organizationName
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/Receiver'
+                type: array
+          description: OK
+        "400":
+          description: Bad Request
+        "401":
+          description: Unauthorized
+      security:
+      - OAuth2:
+        - user
+      x-openapi-router-controller: openapi_server.controllers.default_controller
+  /settings/organizations/{organizationName}/receivers/{receiverName}:
+    delete:
+      description: Delete a receiver
+      operationId: settings_organizations_organization_name_receivers_receiver_name_delete
+      parameters:
+      - description: the organization name
+        example: az-phd
+        explode: false
+        in: path
+        name: organizationName
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: The name of the receiver
+        example: elr
+        explode: false
+        in: path
+        name: receiverName
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Receiver'
+          description: "OK, the receiver was deleted"
+        "400":
+          description: Bad Request
+        "401":
+          description: Unauthorized
+      security:
+      - OAuth2:
+        - org_admin
+      x-openapi-router-controller: openapi_server.controllers.default_controller
+    get:
+      description: The settings of a single of receiver
+      operationId: settings_organizations_organization_name_receivers_receiver_name_get
+      parameters:
+      - description: Create receivers under this organization name
+        example: az-phd
+        explode: false
+        in: path
+        name: organizationName
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: The name of the receiver
+        example: elr
+        explode: false
+        in: path
+        name: receiverName
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Receiver'
+          description: OK
+        "400":
+          description: Bad Request
+        "401":
+          description: Unauthorized
+      security:
+      - OAuth2:
+        - user
+      x-openapi-router-controller: openapi_server.controllers.default_controller
+    put:
+      description: Update a single reciever
+      operationId: settings_organizations_organization_name_receivers_receiver_name_put
+      parameters:
+      - description: Create receivers under this organization name
+        example: az-phd
+        explode: false
+        in: path
+        name: organizationName
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: The name of the receiver
+        example: elr
+        explode: false
+        in: path
+        name: receiverName
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Receiver'
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Receiver'
+          description: "OK, the receiver setting was updated"
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Receiver'
+          description: Created
+        "400":
+          description: Bad Request
+        "401":
+          description: Unauthorized
+      security:
+      - OAuth2:
+        - org_admin
+      x-openapi-router-controller: openapi_server.controllers.default_controller
+      x-codegen-request-body-name: body
+  /settings/organizations/{organizationName}/senders:
+    get:
+      description: A list of senders
+      operationId: settings_organizations_organization_name_senders_get
+      parameters:
+      - description: Fetch senders with this organization name
+        example: az-phd
+        explode: false
+        in: path
+        name: organizationName
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/Sender'
+                type: array
+          description: OK
+        "400":
+          description: Bad Request
+        "401":
+          description: Unauthorized
+      security:
+      - OAuth2:
+        - user
+      x-openapi-router-controller: openapi_server.controllers.default_controller
+  /settings/organizations/{organizationName}/senders/{senderName}:
+    delete:
+      description: Delete a sender
+      operationId: settings_organizations_organization_name_senders_sender_name_delete
+      parameters:
+      - description: the organization name
+        example: az-phd
+        explode: false
+        in: path
+        name: organizationName
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: The name of a sender to the data hub
+        example: default
+        explode: false
+        in: path
+        name: senderName
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Sender'
+          description: "OK, the sender was deleted"
+        "400":
+          description: Bad Request
+        "401":
+          description: Unauthorized
+      security:
+      - OAuth2:
+        - org_admin
+      x-openapi-router-controller: openapi_server.controllers.default_controller
+    get:
+      description: The settings of a single of sender
+      operationId: settings_organizations_organization_name_senders_sender_name_get
+      parameters:
+      - description: Fetch senders with this organization name
+        example: az-phd
+        explode: false
+        in: path
+        name: organizationName
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: The name of a sender to the data hub
+        example: default
+        explode: false
+        in: path
+        name: senderName
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Sender'
+          description: OK
+        "400":
+          description: Bad Request
+        "401":
+          description: Unauthorized
+      security:
+      - OAuth2:
+        - user
+      x-openapi-router-controller: openapi_server.controllers.default_controller
+    put:
+      description: Update a single sender
+      operationId: settings_organizations_organization_name_senders_sender_name_put
+      parameters:
+      - description: Fetch senders with this organization name
+        example: az-phd
+        explode: false
+        in: path
+        name: organizationName
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: The name of a sender to the data hub
+        example: default
+        explode: false
+        in: path
+        name: senderName
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Sender'
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/Sender'
+                type: array
+          description: OK
+        "201":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/Sender'
+                type: array
+          description: OK
+        "400":
+          description: Bad Request
+        "401":
+          description: Unauthorized
+      security:
+      - OAuth2:
+        - org_admin
+      x-openapi-router-controller: openapi_server.controllers.default_controller
+      x-codegen-request-body-name: body
+components:
+  schemas:
+    AS2Transport:
+      description: Describes a single AS2 connection in all of it variations
+      properties:
+        contentDescription:
+          default: SARS-CoV-2 Electronic Lab Results
+          description: "A description of the content of the message. Usually, the\
+            \ same for all messages."
+          title: contentDescription
+          type: string
+        mimeType:
+          default: application/hl7-v2
+          description: The MIME type of the message
+          title: mimeType
+          type: string
+        receiverId:
+          description: "The AS2 id of the receiver. Usually, the same for all senders."
+          example: exampleAS2Id
+          title: receiverId
+          type: string
+        receiverUrl:
+          description: The URL to the AS2 end-point
+          example: https://as2.example.com/receiver.aspx
+          title: receiverUrl
+          type: string
+        senderEmail:
+          default: reportstream@cdc.gov
+          description: The email address to contact someone about the message
+          title: senderEmail
+          type: string
+        senderId:
+          description: "The AS2 id of the sender. Usually, assigned by receiver to\
+            \ PRIME."
+          example: primeAS2Id
+          title: senderId
+          type: string
+        type:
+          description: The discriminator
+          example: AS2
+          title: type
+          type: string
+      required:
+      - receiverId
+      - receiverUrl
+      - senderId
+      - type
+      title: AS2Transport
+      type: object
+    BlobStoreTransport:
+      description: Moves results to a Azure Blob Store. Typcially used for HHS Protect
+        interfaces.
+      properties:
+        containerName:
+          description: This name of the Azure container
+          example: hhsprotect
+          title: containerName
+          type: string
+        storageName:
+          description: This looks for an env var with this name. env var value is
+            the connection string
+          title: storageName
+          type: string
+        type:
+          description: The discriminator
+          example: BLOBSTORE
+          title: type
+          type: string
+      required:
+      - containerName
+      - storageName
+      - type
+      title: BlobStoreTransport
+      type: object
+    CustomConfiguration:
+      description: A custom configuration for a custom schema
+      example:
+        nameFormat: standard
+        receivingOrganization: receivingOrganization
+        format: CSV
+        transport:
+          port: 22
+          filePath: /in/test
+          host: sftp.phd.gov
+          type: SFTP
+        schemaName: schemaName
+        type: CUSTOM
+      properties:
+        format:
+          description: The format of the serializer
+          enum:
+          - CSV
+          - HL7
+          title: format
+          type: string
+        nameFormat:
+          default: standard
+          description: The format to use for the file name generated by the translation
+          title: nameFormat
+          type: string
+        receivingOrganization:
+          description: The name of the receiving organization in the message
+          title: receivingOrganization
+          type: string
+        schemaName:
+          description: The name of the custom schema
+          title: schemaName
+          type: string
+        transport:
+          $ref: '#/components/schemas/CustomConfiguration_transport'
+        type:
+          description: The discrimenator
+          example: CUSTOM
+          title: type
+          type: string
+      required:
+      - format
+      - schemaName
+      - transport
+      - type
+      title: CustomConfiguration
+      type: object
+    Destination:
+      example:
+        sending_at: 2000-01-23T04:56:07.000+00:00
+        service: service
+        organization: organization
+        organization_id: organization_id
+        itemCount: 6
+      properties:
+        itemCount:
+          description: The number of reports being sent to this destination
+          title: itemCount
+          type: integer
+        organization:
+          description: The name of the organization reciving the report
+          title: organization
+          type: string
+        organization_id:
+          description: "The organization id (i.e. {state abbreviation}-phd)"
+          title: organization_id
+          type: string
+        sending_at:
+          description: The time at which the report will be sent
+          format: date-time
+          title: sending_at
+          type: string
+        service:
+          description: The service used for delivering the report
+          title: service
+          type: string
+      title: Destination
+      type: object
+    Detail:
+      example:
+        scope: Parameter
+        detail: detail
+        id: id
+      properties:
+        detail:
+          description: The details of the error
+          title: detail
+          type: string
+        id:
+          description: "Depends on scope, either the item's id (message_id) or the\
+            \ report's id"
+          title: id
+          type: string
+        scope:
+          description: Does the error apply to one item
+          enum:
+          - Parameter
+          - Report
+          - Item
+          title: scope
+          type: string
+      title: Detail
+      type: object
+    ItemRouting:
+      example:
+        destinations:
+        - destinations
+        - destinations
+        reportIndex: 5
+        trackingId: trackingId
+      properties:
+        destinations:
+          description: The organization and service destinations
+          items:
+            type: string
+          title: destinations
+          type: array
+        reportIndex:
+          description: the index of the item in the submitted report (0 based)
+          title: reportIndex
+          type: integer
+        trackingId:
+          description: "The tracking id provided by the sender defined in the schema,\
+            \ null otherwise"
+          title: trackingId
+          type: string
+      title: ItemRouting
+      type: object
+    NullTransport:
+      description: A transport type that does not do anything
+      properties:
+        dummy:
+          description: A dummy value
+          title: dummy
+          type: string
+        type:
+          description: The discriminator
+          title: type
+          type: string
+          example: null
+      required:
+      - type
+      title: NullTransport
+      type: object
+    Organization:
+      description: An organization connected to data hub
+      example:
+        meta:
+          createdAt: createdAt
+          createdBy: jj@phd.gov
+          version: 11
+        jurisdiction: National
+        name: az-phd
+        description: Arizona PHD
+        stateCode: AZ
+        countyName: Pima
+      properties:
+        countyName:
+          description: the county name (must match FIPS name)
+          example: Pima
+          title: countyName
+          type: string
+        description:
+          description: the displayable description of the organization
+          example: Arizona PHD
+          title: description
+          type: string
+        jurisdiction:
+          enum:
+          - National
+          - State
+          - County
+          title: jurisdiction
+          type: string
+        meta:
+          $ref: '#/components/schemas/SettingMetadata'
+        name:
+          description: the unique id for the organization
+          example: az-phd
+          title: name
+          type: string
+        stateCode:
+          description: the two letter code for the organization
+          example: AZ
+          title: stateCode
+          type: string
+      required:
+      - description
+      - jurisdiction
+      - name
+      title: Organization
+      type: object
+    Receiver:
+      description: A receiver of reports from the data hub
+      example:
+        organizationName: az-phd
+        meta:
+          createdAt: createdAt
+          createdBy: jj@phd.gov
+          version: 11
+        timing:
+          dailyAt: 0.8008281904610115
+          frequency: REAL_TIME
+        translations:
+        - nameFormat: standard
+          receivingOrganization: receivingOrganization
+          format: CSV
+          transport:
+            port: 22
+            filePath: /in/test
+            host: sftp.phd.gov
+            type: SFTP
+          schemaName: schemaName
+          type: CUSTOM
+        - nameFormat: standard
+          receivingOrganization: receivingOrganization
+          format: CSV
+          transport:
+            port: 22
+            filePath: /in/test
+            host: sftp.phd.gov
+            type: SFTP
+          schemaName: schemaName
+          type: CUSTOM
+        jurisdictionalFilters:
+        - matchFields: FACILITY_OR_PATIENT_ADDRESS
+          doesNotMatch: false
+          matchValues:
+          - matchValues
+          - matchValues
+        - matchFields: FACILITY_OR_PATIENT_ADDRESS
+          doesNotMatch: false
+          matchValues:
+          - matchValues
+          - matchValues
+        name: az-phd.elr
+        description: Arizona PHD ELR feed
+        topic: covid-19
+      properties:
+        description:
+          description: Display ready description of the receiver
+          example: Arizona PHD ELR feed
+          title: description
+          type: string
+        jurisdictionalFilters:
+          description: What items to include in the report.
+          items:
+            $ref: '#/components/schemas/Receiver_jurisdictionalFilters_inner'
+          required:
+          - matchFields
+          title: jurisdictionalFilters
+          type: array
+        meta:
+          $ref: '#/components/schemas/SettingMetadata'
+        name:
+          description: The unique name for the receiver. Should include the organization
+            name as a prefix.
+          example: az-phd.elr
+          title: name
+          type: string
+        organizationName:
+          description: The name of the organization that this receiver belongs to
+          example: az-phd
+          readOnly: true
+          title: organizationName
+          type: string
+        timing:
+          $ref: '#/components/schemas/Receiver_timing'
+        topic:
+          description: The topic of for this receiver. Must match the supported topics.
+          example: covid-19
+          title: topic
+          type: string
+        translations:
+          description: How the report is translated from the sender. A report can
+            be sent in multiple ways.
+          items:
+            $ref: '#/components/schemas/Receiver_translations_inner'
+          title: translations
+          type: array
+      required:
+      - description
+      - jurisdictionalFilter
+      - name
+      - reportConfiguations
+      - timing
+      - topic
+      title: Receiver
+      type: object
+    RedoxConfiguration: {}
+    RedoxTransport:
+      description: Describe the Redox transport
+      properties:
+        baseUrl:
+          description: "the base URL to send the Redox message. If missing, production\
+            \ Redox URL is used"
+          type: string
+        type:
+          description: The discriminator
+          example: REDOX
+          type: string
+      required:
+      - type
+      type: object
+    Report:
+      example:
+        routing:
+        - destinations:
+          - destinations
+          - destinations
+          reportIndex: 5
+          trackingId: trackingId
+        - destinations:
+          - destinations
+          - destinations
+          reportIndex: 5
+          trackingId: trackingId
+        destinations:
+        - sending_at: 2000-01-23T04:56:07.000+00:00
+          service: service
+          organization: organization
+          organization_id: organization_id
+          itemCount: 6
+        - sending_at: 2000-01-23T04:56:07.000+00:00
+          service: service
+          organization: organization
+          organization_id: organization_id
+          itemCount: 6
+        warnings:
+        - scope: Parameter
+          detail: detail
+          id: id
+        - scope: Parameter
+          detail: detail
+          id: id
+        topic: topic
+        id: id
+        warningCount: 2
+        reportItemCount: 5
+        destinationCount: 0
+        errorCount: 1
+        errors:
+        - scope: Parameter
+          detail: detail
+          id: id
+        - scope: Parameter
+          detail: detail
+          id: id
+        timestamp: timestamp
+      properties:
+        destinationCount:
+          description: total destinations recieving the report(s)
+          title: destinationCount
+          type: integer
+        destinations:
+          description: where the report is being sent to
+          items:
+            $ref: '#/components/schemas/Destination'
+          title: destinations
+          type: array
+        errorCount:
+          description: total errors found during initial validation.  There may be
+            multiple errors per item.
+          title: errorCount
+          type: integer
+        errors:
+          description: a list of errors in the report
+          items:
+            $ref: '#/components/schemas/Detail'
+          title: errors
+          type: array
+        id:
+          description: the id for the report assigned by the Hub
+          title: id
+          type: string
+        reportItemCount:
+          description: "total number of individual reports sent to the Hub (in a csv,\
+            \ the number of data lines sent)"
+          title: reportItemCount
+          type: integer
+        routing:
+          description: The receiver destination names for each item in the report.
+            This is displayed when verbose=true is present on the query string.
+          items:
+            $ref: '#/components/schemas/ItemRouting'
+          title: routing
+          type: array
+        timestamp:
+          description: the timestamp for this report submission
+          format: time-date
+          title: timestamp
+          type: string
+        topic:
+          description: the topic configured for the client organization sender
+          title: topic
+          type: string
+        warningCount:
+          description: total warnings found during initial validation.  There may
+            be multiple warnings per item.
+          title: warningCount
+          type: integer
+        warnings:
+          description: a list of warnings in the report
+          items:
+            $ref: '#/components/schemas/Detail'
+          title: warnings
+          type: array
+      required:
+      - id
+      title: Report
+      type: object
+    SFTPTransport:
+      description: Describes a single SFTP connection in all of it variations
+      example:
+        port: 22
+        filePath: /in/test
+        host: sftp.phd.gov
+        type: SFTP
+      properties:
+        filePath:
+          description: The file path to place the report
+          example: /in/test
+          title: filePath
+          type: string
+        host:
+          description: Host name and domain
+          example: sftp.phd.gov
+          title: host
+          type: string
+        port:
+          description: The port to use
+          example: 22
+          title: port
+          type: number
+        type:
+          description: The discriminator
+          example: SFTP
+          title: type
+          type: string
+      required:
+      - filePath
+      - host
+      - port
+      - type
+      title: SFTPTransport
+      type: object
+    Sender:
+      description: An sender of reports to the data hub
+      example:
+        schema: az-phd-covid-19
+        organizationName: az-phd
+        meta:
+          createdAt: createdAt
+          createdBy: jj@phd.gov
+          version: 11
+        format: CSV
+        name: simple_report.default
+        description: description
+        topic: covid-19
+      properties:
+        description:
+          description: Display ready description of the sender
+          title: description
+          type: string
+        format:
+          description: the payload format
+          enum:
+          - CSV
+          title: format
+          type: string
+        meta:
+          $ref: '#/components/schemas/SettingMetadata'
+        name:
+          description: "Unique name for the senders, includes the orgninzation name"
+          example: simple_report.default
+          title: name
+          type: string
+        organizationName:
+          description: Name of the organization that this sender belongs to
+          example: az-phd
+          readOnly: true
+          title: organizationName
+          type: string
+        schema:
+          description: the schema name for this sender
+          example: az-phd-covid-19
+          title: schema
+          type: string
+        topic:
+          description: Topic of for this sender. Must match the supported topics.
+          example: covid-19
+          title: topic
+          type: string
+      required:
+      - description
+      - format
+      - name
+      - schema
+      - topic
+      title: Sender
+      type: object
+    SettingMetadata:
+      description: The metadata associated with an setting
+      example:
+        createdAt: createdAt
+        createdBy: jj@phd.gov
+        version: 11
+      properties:
+        createdAt:
+          description: the time that the particular revision was created
+          format: time-date
+          readOnly: true
+          title: createdAt
+          type: string
+        createdBy:
+          description: the user who created the particular revision
+          example: jj@phd.gov
+          readOnly: true
+          title: createdBy
+          type: string
+        version:
+          description: the version number of the object
+          example: 11
+          readOnly: true
+          title: version
+          type: number
+      title: SettingMetadata
+      type: object
+    StandardHL7Configuration:
+      description: A standard HL7 configuration
+      properties:
+        convertTimestampToDateTime:
+          description: A comma delimited list of HL7 fields to convert to the yyyMMddHHmmss
+            format
+          title: convertTimestampToDateTime
+          type: string
+        defaultAoeToUnknown:
+          default: false
+          description: Default the AOE result to UNK
+          title: defaultAoeToUnknown
+          type: boolean
+        includeAOE:
+          description: Include the AOE
+          title: includeAOE
+          type: boolean
+        nameFormat:
+          default: standard
+          description: The format to use for the file name generated by the translation
+          title: nameFormat
+          type: string
+        phoneNumberFormatting:
+          default: STANDARD
+          description: How to format phone numbers (XTN fields)
+          enum:
+          - STANDARD
+          - ONLY_DIGITS_IN_COMPONENT_ONE
+          - AREA_LOCAL_IN_COMPONENT_ONE
+          title: phoneNumberFormatting
+          type: string
+        receivingApplicationName:
+          description: The receiving application name (needed for HL7 formats)
+          title: receivingApplicationName
+          type: string
+        receivingApplicationOID:
+          description: The receiving application OID
+          title: receivingApplicationOID
+          type: string
+        receivingFacilityName:
+          description: The receiving facility name
+          title: receivingFacilityName
+          type: string
+        receivingFacilityOID:
+          description: The receiving facility name
+          title: receivingFacilityOID
+          type: string
+        receivingOrganization:
+          description: The name of the receiving organization in the message
+          title: receivingOrganization
+          type: string
+        reportingFacilityId:
+          description: The reporting facility id (if different from CDC PRIME's OID)
+          title: reportingFacilityId
+          type: string
+        reportingFacilityIdType:
+          description: The reporting facility id type (if different from OID)
+          title: reportingFacilityIdType
+          type: string
+        reportingFacilityName:
+          description: The reporting facility name (if different from CDC PRIME)
+          title: reportingFacilityName
+          type: string
+        suppressAoe:
+          default: false
+          description: Suppress the AOE OBX results
+          title: suppressAoe
+          type: boolean
+        suppressHl7Fields:
+          description: A comma delimited list of HL7 fields to suppress
+          title: suppressHl7Fields
+          type: string
+        suppressQstForAoe:
+          default: false
+          description: Suppress QST component is AOE OBX segments
+          title: suppressQstForAoe
+          type: boolean
+        transport:
+          $ref: '#/components/schemas/StandardHL7Configuration_transport'
+        truncateHDNamespaceIds:
+          default: false
+          description: Truncate the HD fields to HD_TRUNCATION_LIMIT
+          title: truncateHDNamespaceIds
+          type: boolean
+        type:
+          description: The discrimenator
+          example: STANDARD_HL7
+          title: type
+          type: string
+        useBatchHeaders:
+          description: Use BHS and FHS header
+          title: useBatchHeaders
+          type: boolean
+        useBlankInsteadOfUnknown:
+          description: A comma delimited list of element names that should use blank
+            instead of unknown
+          title: useBlankInsteadOfUnknown
+          type: string
+        usePid14ForPatientEmail:
+          default: false
+          description: Use the PID-14 field for patient email instead of the standard
+            PID-13 field
+          title: usePid14ForPatientEmail
+          type: boolean
+        useTestProcessingMode:
+          default: false
+          description: Set a test process mode flag
+          title: useTestProcessingMode
+          type: boolean
+      required:
+      - includeAOE
+      - transport
+      - type
+      - useBatchHeaders
+      title: StandardHL7Configuration
+      type: object
+    CustomConfiguration_transport:
+      description: The transport to use
+      oneOf:
+      - $ref: '#/components/schemas/SFTPTransport'
+      - $ref: '#/components/schemas/AS2Transport'
+      - $ref: '#/components/schemas/BlobStoreTransport'
+      - $ref: '#/components/schemas/NullTransport'
+      title: CustomConfiguration_transport
+    Receiver_jurisdictionalFilters_inner:
+      description: A single filter
+      example:
+        matchFields: FACILITY_OR_PATIENT_ADDRESS
+        doesNotMatch: false
+        matchValues:
+        - matchValues
+        - matchValues
+      properties:
+        doesNotMatch:
+          default: false
+          description: Ensure that the result does not match
+          title: doesNotMatch
+          type: boolean
+        matchFields:
+          description: What fields to match in the filter
+          enum:
+          - FACILITY_OR_PATIENT_ADDRESS
+          - FACILITY_ADDRESS
+          - FACILITY_NAME
+          - ABNORMAL_VALUE
+          title: matchFields
+          type: string
+        matchValues:
+          description: What is the value to match against
+          items:
+            type: string
+          title: matchValues
+          type: array
+      title: Receiver_jurisdictionalFilters_inner
+      type: object
+    Receiver_timing:
+      description: When the report is sent if not immediately
+      example:
+        dailyAt: 0.8008281904610115
+        frequency: REAL_TIME
+      properties:
+        dailyAt:
+          description: The UTC hour to send a daily batch
+          title: dailyAt
+          type: number
+        frequency:
+          description: How often send a report
+          enum:
+          - REAL_TIME
+          - HOURLY
+          - DAILY
+          title: frequency
+          type: string
+      required:
+      - frequency
+      title: Receiver_timing
+      type: object
+    Receiver_translations_inner:
+      anyOf:
+      - $ref: '#/components/schemas/CustomConfiguration'
+      - $ref: '#/components/schemas/StandardHL7Configuration'
+      discriminator:
+        propertyName: type
+      nullable: true
+      title: Receiver_translations_inner
+    StandardHL7Configuration_transport:
+      oneOf:
+      - $ref: '#/components/schemas/SFTPTransport'
+      - $ref: '#/components/schemas/AS2Transport'
+      - $ref: '#/components/schemas/BlobStoreTransport'
+      - $ref: '#/components/schemas/NullTransport'
+      title: StandardHL7Configuration_transport
+  securitySchemes:
+    ApiKeyAuth:
+      in: header
+      name: x-functions-key
+      type: apiKey
+      x-apikeyInfoFunc: openapi_server.controllers.security_controller.info_from_ApiKeyAuth
+    OAuth2:
+      flows:
+        authorizationCode:
+          authorizationUrl: https://hhs-prime.okta.com/oauth/authorize
+          scopes:
+            org_admin: Grants write access to single org
+            system_admin: Grants access to admin operations
+            user: Grants read access
+          tokenUrl: https://hhs-prime.okta.com/oauth/token
+      type: oauth2
+      x-tokenInfoFunc: openapi_server.controllers.security_controller.info_from_OAuth2
+      x-scopeValidateFunc: openapi_server.controllers.security_controller.validate_scope_OAuth2

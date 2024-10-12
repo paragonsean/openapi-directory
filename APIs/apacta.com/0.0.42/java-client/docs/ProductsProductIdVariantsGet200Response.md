@@ -1,0 +1,15 @@
+
+
+# ProductsProductIdVariantsGet200Response
+
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**data** | [**List&lt;ProductVariant&gt;**](ProductVariant.md) |  |  [optional] |
+|**pagination** | [**PaginationDetails**](PaginationDetails.md) |  |  [optional] |
+|**success** | **Boolean** |  |  [optional] |
+
+
+

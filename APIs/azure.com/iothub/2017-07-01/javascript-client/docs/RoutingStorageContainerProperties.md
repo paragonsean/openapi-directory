@@ -1,0 +1,17 @@
+# IotHubClient.RoutingStorageContainerProperties
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**batchFrequencyInSeconds** | **Number** | Time interval at which blobs are written to storage. Value should be between 60 and 720 seconds. Default value is 300 seconds. | [optional] 
+**connectionString** | **String** | The connection string of the storage account. | 
+**containerName** | **String** | The name of storage container in the storage account. | 
+**encoding** | **String** | Encoding that is used to serialize messages to blobs. Supported values are &#39;avro&#39; and &#39;avroDeflate&#39;. Default value is &#39;avro&#39;. | [optional] 
+**fileNameFormat** | **String** | File name format for the blob. Default format is {iothub}/{partition}/{YYYY}/{MM}/{DD}/{HH}/{mm}. All parameters are mandatory but can be reordered. | [optional] 
+**maxChunkSizeInBytes** | **Number** | Maximum number of bytes for each blob written to storage. Value should be between 10485760(10MB) and 524288000(500MB). Default value is 314572800(300MB). | [optional] 
+**name** | **String** | The name that identifies this endpoint. The name can only include alphanumeric characters, periods, underscores, hyphens and has a maximum length of 64 characters. The following names are reserved:  events, operationsMonitoringEvents, fileNotifications, $default. Endpoint names must be unique across endpoint types. | 
+**resourceGroup** | **String** | The name of the resource group of the storage account. | [optional] 
+**subscriptionId** | **String** | The subscription identifier of the storage account. | [optional] 
+
+

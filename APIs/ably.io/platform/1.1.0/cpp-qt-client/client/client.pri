@@ -1,0 +1,83 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIChannelDetails.h \
+    $${PWD}/OAIChannelStatus.h \
+    $${PWD}/OAIDeviceDetails.h \
+    $${PWD}/OAIError.h \
+    $${PWD}/OAIExtras.h \
+    $${PWD}/OAIGetMetadataOfAllChannels_2XX_response.h \
+    $${PWD}/OAIMessage.h \
+    $${PWD}/OAINotification.h \
+    $${PWD}/OAIOccupancy.h \
+    $${PWD}/OAIPresenceMessage.h \
+    $${PWD}/OAIPublishMessagesToChannel_2XX_response.h \
+    $${PWD}/OAIPublishPushNotificationToDevices_request.h \
+    $${PWD}/OAIPush.h \
+    $${PWD}/OAIPush_apns.h \
+    $${PWD}/OAIPush_fcm.h \
+    $${PWD}/OAIPush_web.h \
+    $${PWD}/OAIRecipient.h \
+    $${PWD}/OAIRequestAccessToken_request.h \
+    $${PWD}/OAISignedTokenRequest.h \
+    $${PWD}/OAISubscribePushDeviceToChannel_request.h \
+    $${PWD}/OAISubscribePushDeviceToChannel_request_oneOf.h \
+    $${PWD}/OAISubscribePushDeviceToChannel_request_oneOf_1.h \
+    $${PWD}/OAITokenDetails.h \
+    $${PWD}/OAITokenRequest.h \
+# APIs
+    $${PWD}/OAIAuthenticationApi.h \
+    $${PWD}/OAIHistoryApi.h \
+    $${PWD}/OAIPublishingApi.h \
+    $${PWD}/OAIPushApi.h \
+    $${PWD}/OAIStatsApi.h \
+    $${PWD}/OAIStatusApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIChannelDetails.cpp \
+    $${PWD}/OAIChannelStatus.cpp \
+    $${PWD}/OAIDeviceDetails.cpp \
+    $${PWD}/OAIError.cpp \
+    $${PWD}/OAIExtras.cpp \
+    $${PWD}/OAIGetMetadataOfAllChannels_2XX_response.cpp \
+    $${PWD}/OAIMessage.cpp \
+    $${PWD}/OAINotification.cpp \
+    $${PWD}/OAIOccupancy.cpp \
+    $${PWD}/OAIPresenceMessage.cpp \
+    $${PWD}/OAIPublishMessagesToChannel_2XX_response.cpp \
+    $${PWD}/OAIPublishPushNotificationToDevices_request.cpp \
+    $${PWD}/OAIPush.cpp \
+    $${PWD}/OAIPush_apns.cpp \
+    $${PWD}/OAIPush_fcm.cpp \
+    $${PWD}/OAIPush_web.cpp \
+    $${PWD}/OAIRecipient.cpp \
+    $${PWD}/OAIRequestAccessToken_request.cpp \
+    $${PWD}/OAISignedTokenRequest.cpp \
+    $${PWD}/OAISubscribePushDeviceToChannel_request.cpp \
+    $${PWD}/OAISubscribePushDeviceToChannel_request_oneOf.cpp \
+    $${PWD}/OAISubscribePushDeviceToChannel_request_oneOf_1.cpp \
+    $${PWD}/OAITokenDetails.cpp \
+    $${PWD}/OAITokenRequest.cpp \
+# APIs
+    $${PWD}/OAIAuthenticationApi.cpp \
+    $${PWD}/OAIHistoryApi.cpp \
+    $${PWD}/OAIPublishingApi.cpp \
+    $${PWD}/OAIPushApi.cpp \
+    $${PWD}/OAIStatsApi.cpp \
+    $${PWD}/OAIStatusApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

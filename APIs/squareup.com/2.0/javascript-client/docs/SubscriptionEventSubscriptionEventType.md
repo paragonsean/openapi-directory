@@ -1,0 +1,16 @@
+# SquareConnectApi.SubscriptionEventSubscriptionEventType
+
+## Enum
+
+
+* `START_SUBSCRIPTION` (value: `"START_SUBSCRIPTION"`)
+
+* `PLAN_CHANGE` (value: `"PLAN_CHANGE"`)
+
+* `STOP_SUBSCRIPTION` (value: `"STOP_SUBSCRIPTION"`)
+
+* `DEACTIVATE_SUBSCRIPTION` (value: `"DEACTIVATE_SUBSCRIPTION"`)
+
+* `RESUME_SUBSCRIPTION` (value: `"RESUME_SUBSCRIPTION"`)
+
+

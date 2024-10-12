@@ -1,0 +1,113 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIAPIDefinition.h \
+    $${PWD}/OAIAPIDefinition_auth.h \
+    $${PWD}/OAIAPIDefinition_definition.h \
+    $${PWD}/OAIAPIDefinition_notifications.h \
+    $${PWD}/OAIAPIDefinition_oauth_meta.h \
+    $${PWD}/OAIAPIDefinition_uptime_tests.h \
+    $${PWD}/OAIAPIDefinition_uptime_tests_CORS.h \
+    $${PWD}/OAIAPIDefinition_uptime_tests_cache_options.h \
+    $${PWD}/OAIAPIDefinition_uptime_tests_check_list_inner.h \
+    $${PWD}/OAIAPIDefinition_uptime_tests_config.h \
+    $${PWD}/OAIAPIDefinition_uptime_tests_custom_middleware.h \
+    $${PWD}/OAIAPIDefinition_uptime_tests_proxy.h \
+    $${PWD}/OAIAPIDefinition_uptime_tests_response_processors_inner.h \
+    $${PWD}/OAIAPIDefinition_version_data.h \
+    $${PWD}/OAIAccessRights.h \
+    $${PWD}/OAIEndPointMeta.h \
+    $${PWD}/OAIEndpointMethodMeta.h \
+    $${PWD}/OAIHeaderInjectionMeta.h \
+    $${PWD}/OAIMiddlewareDefinition.h \
+    $${PWD}/OAIOAuthClient.h \
+    $${PWD}/OAIServiceDiscoverConfiguration.h \
+    $${PWD}/OAISessionObject.h \
+    $${PWD}/OAISessionObject_basic_auth_data.h \
+    $${PWD}/OAISessionObject_jwt_data.h \
+    $${PWD}/OAISessionObject_monitor.h \
+    $${PWD}/OAITemplateMeta.h \
+    $${PWD}/OAITemplateMeta_template_data.h \
+    $${PWD}/OAIVersionDefinition.h \
+    $${PWD}/OAIVersionDefinition_extended_paths.h \
+    $${PWD}/OAIVersionDefinition_extended_paths_circuit_breakers_inner.h \
+    $${PWD}/OAIVersionDefinition_extended_paths_hard_timeouts_inner.h \
+    $${PWD}/OAIVersionDefinition_extended_paths_size_limits_inner.h \
+    $${PWD}/OAIVersionDefinition_extended_paths_url_rewrites_inner.h \
+    $${PWD}/OAIVersionDefinition_extended_paths_virtual_inner.h \
+    $${PWD}/OAI_tyk_apis__apiID__delete_200_response.h \
+    $${PWD}/OAI_tyk_apis__post_200_response.h \
+    $${PWD}/OAI_tyk_health__get_200_response.h \
+    $${PWD}/OAI_tyk_keys__get_200_response.h \
+    $${PWD}/OAI_tyk_keys__keyId__post_200_response.h \
+    $${PWD}/OAI_tyk_keys__keyId__put_200_response.h \
+    $${PWD}/OAI_tyk_keys_create_post_200_response.h \
+    $${PWD}/OAI_tyk_oauth_authorize_client__post_200_response.h \
+    $${PWD}/OAI_tyk_oauth_clients_create_post_request.h \
+    $${PWD}/OAI_tyk_reload__get_200_response.h \
+# APIs
+    $${PWD}/OAIDefaultApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIAPIDefinition.cpp \
+    $${PWD}/OAIAPIDefinition_auth.cpp \
+    $${PWD}/OAIAPIDefinition_definition.cpp \
+    $${PWD}/OAIAPIDefinition_notifications.cpp \
+    $${PWD}/OAIAPIDefinition_oauth_meta.cpp \
+    $${PWD}/OAIAPIDefinition_uptime_tests.cpp \
+    $${PWD}/OAIAPIDefinition_uptime_tests_CORS.cpp \
+    $${PWD}/OAIAPIDefinition_uptime_tests_cache_options.cpp \
+    $${PWD}/OAIAPIDefinition_uptime_tests_check_list_inner.cpp \
+    $${PWD}/OAIAPIDefinition_uptime_tests_config.cpp \
+    $${PWD}/OAIAPIDefinition_uptime_tests_custom_middleware.cpp \
+    $${PWD}/OAIAPIDefinition_uptime_tests_proxy.cpp \
+    $${PWD}/OAIAPIDefinition_uptime_tests_response_processors_inner.cpp \
+    $${PWD}/OAIAPIDefinition_version_data.cpp \
+    $${PWD}/OAIAccessRights.cpp \
+    $${PWD}/OAIEndPointMeta.cpp \
+    $${PWD}/OAIEndpointMethodMeta.cpp \
+    $${PWD}/OAIHeaderInjectionMeta.cpp \
+    $${PWD}/OAIMiddlewareDefinition.cpp \
+    $${PWD}/OAIOAuthClient.cpp \
+    $${PWD}/OAIServiceDiscoverConfiguration.cpp \
+    $${PWD}/OAISessionObject.cpp \
+    $${PWD}/OAISessionObject_basic_auth_data.cpp \
+    $${PWD}/OAISessionObject_jwt_data.cpp \
+    $${PWD}/OAISessionObject_monitor.cpp \
+    $${PWD}/OAITemplateMeta.cpp \
+    $${PWD}/OAITemplateMeta_template_data.cpp \
+    $${PWD}/OAIVersionDefinition.cpp \
+    $${PWD}/OAIVersionDefinition_extended_paths.cpp \
+    $${PWD}/OAIVersionDefinition_extended_paths_circuit_breakers_inner.cpp \
+    $${PWD}/OAIVersionDefinition_extended_paths_hard_timeouts_inner.cpp \
+    $${PWD}/OAIVersionDefinition_extended_paths_size_limits_inner.cpp \
+    $${PWD}/OAIVersionDefinition_extended_paths_url_rewrites_inner.cpp \
+    $${PWD}/OAIVersionDefinition_extended_paths_virtual_inner.cpp \
+    $${PWD}/OAI_tyk_apis__apiID__delete_200_response.cpp \
+    $${PWD}/OAI_tyk_apis__post_200_response.cpp \
+    $${PWD}/OAI_tyk_health__get_200_response.cpp \
+    $${PWD}/OAI_tyk_keys__get_200_response.cpp \
+    $${PWD}/OAI_tyk_keys__keyId__post_200_response.cpp \
+    $${PWD}/OAI_tyk_keys__keyId__put_200_response.cpp \
+    $${PWD}/OAI_tyk_keys_create_post_200_response.cpp \
+    $${PWD}/OAI_tyk_oauth_authorize_client__post_200_response.cpp \
+    $${PWD}/OAI_tyk_oauth_clients_create_post_request.cpp \
+    $${PWD}/OAI_tyk_reload__get_200_response.cpp \
+# APIs
+    $${PWD}/OAIDefaultApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

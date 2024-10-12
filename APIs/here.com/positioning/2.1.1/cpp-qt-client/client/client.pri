@@ -1,0 +1,79 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIApiHealthStatus.h \
+    $${PWD}/OAIApiVersion.h \
+    $${PWD}/OAIAuthError.h \
+    $${PWD}/OAICdma.h \
+    $${PWD}/OAICdmaLocalId.h \
+    $${PWD}/OAICdmaNmr.h \
+    $${PWD}/OAIClientInfo.h \
+    $${PWD}/OAIError.h \
+    $${PWD}/OAIErrorDetail.h \
+    $${PWD}/OAIGsm.h \
+    $${PWD}/OAIGsmLocalId.h \
+    $${PWD}/OAIGsmNmr.h \
+    $${PWD}/OAIGsmNmrGlobalId.h \
+    $${PWD}/OAILocate.h \
+    $${PWD}/OAILte.h \
+    $${PWD}/OAILteLocalId.h \
+    $${PWD}/OAILteNmr.h \
+    $${PWD}/OAIPositionLocate.h \
+    $${PWD}/OAIPostLocate_200_response.h \
+    $${PWD}/OAITdscdma.h \
+    $${PWD}/OAITdscdmaLocalId.h \
+    $${PWD}/OAITdscdmaNmr.h \
+    $${PWD}/OAIWcdma.h \
+    $${PWD}/OAIWcdmaLocalId.h \
+    $${PWD}/OAIWcdmaNmr.h \
+    $${PWD}/OAIWlanLocate.h \
+# APIs
+    $${PWD}/OAIAPIInformationApi.h \
+    $${PWD}/OAILocationApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIApiHealthStatus.cpp \
+    $${PWD}/OAIApiVersion.cpp \
+    $${PWD}/OAIAuthError.cpp \
+    $${PWD}/OAICdma.cpp \
+    $${PWD}/OAICdmaLocalId.cpp \
+    $${PWD}/OAICdmaNmr.cpp \
+    $${PWD}/OAIClientInfo.cpp \
+    $${PWD}/OAIError.cpp \
+    $${PWD}/OAIErrorDetail.cpp \
+    $${PWD}/OAIGsm.cpp \
+    $${PWD}/OAIGsmLocalId.cpp \
+    $${PWD}/OAIGsmNmr.cpp \
+    $${PWD}/OAIGsmNmrGlobalId.cpp \
+    $${PWD}/OAILocate.cpp \
+    $${PWD}/OAILte.cpp \
+    $${PWD}/OAILteLocalId.cpp \
+    $${PWD}/OAILteNmr.cpp \
+    $${PWD}/OAIPositionLocate.cpp \
+    $${PWD}/OAIPostLocate_200_response.cpp \
+    $${PWD}/OAITdscdma.cpp \
+    $${PWD}/OAITdscdmaLocalId.cpp \
+    $${PWD}/OAITdscdmaNmr.cpp \
+    $${PWD}/OAIWcdma.cpp \
+    $${PWD}/OAIWcdmaLocalId.cpp \
+    $${PWD}/OAIWcdmaNmr.cpp \
+    $${PWD}/OAIWlanLocate.cpp \
+# APIs
+    $${PWD}/OAIAPIInformationApi.cpp \
+    $${PWD}/OAILocationApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

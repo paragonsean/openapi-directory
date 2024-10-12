@@ -1,0 +1,17 @@
+# coding: utf-8
+
+# import models into model package
+from openapi_server.models.contact import Contact
+from openapi_server.models.contact_add import ContactAdd
+from openapi_server.models.contact_custom_field_schema import ContactCustomFieldSchema
+from openapi_server.models.contact_list import ContactList
+from openapi_server.models.contact_list_event_customization import ContactListEventCustomization
+from openapi_server.models.contact_list_page import ContactListPage
+from openapi_server.models.contact_list_update import ContactListUpdate
+from openapi_server.models.contact_page import ContactPage
+from openapi_server.models.contact_update import ContactUpdate
+from openapi_server.models.contacts_get401_response_inner import ContactsGet401ResponseInner
+from openapi_server.models.contacts_get404_response_inner import ContactsGet404ResponseInner
+from openapi_server.models.contacts_get422_response_inner import ContactsGet422ResponseInner
+from openapi_server.models.new_id import NewId
+from openapi_server.models.subscription_request import SubscriptionRequest

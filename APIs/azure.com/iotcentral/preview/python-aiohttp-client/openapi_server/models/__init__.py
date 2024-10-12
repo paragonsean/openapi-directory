@@ -1,0 +1,35 @@
+# coding: utf-8
+
+# import models into model package
+from openapi_server.models.api_token import ApiToken
+from openapi_server.models.api_token_collection import ApiTokenCollection
+from openapi_server.models.capability import Capability
+from openapi_server.models.capability_model import CapabilityModel
+from openapi_server.models.capability_reference import CapabilityReference
+from openapi_server.models.component import Component
+from openapi_server.models.continuous_data_export import ContinuousDataExport
+from openapi_server.models.continuous_data_export_collection import ContinuousDataExportCollection
+from openapi_server.models.device import Device
+from openapi_server.models.device_collection import DeviceCollection
+from openapi_server.models.device_command import DeviceCommand
+from openapi_server.models.device_command_collection import DeviceCommandCollection
+from openapi_server.models.device_credentials import DeviceCredentials
+from openapi_server.models.device_template import DeviceTemplate
+from openapi_server.models.device_template_collection import DeviceTemplateCollection
+from openapi_server.models.endpoint import Endpoint
+from openapi_server.models.entity import Entity
+from openapi_server.models.event_hubs_endpoint import EventHubsEndpoint
+from openapi_server.models.initial_value import InitialValue
+from openapi_server.models.interface import Interface
+from openapi_server.models.named_entity import NamedEntity
+from openapi_server.models.override import Override
+from openapi_server.models.permission import Permission
+from openapi_server.models.role import Role
+from openapi_server.models.role_collection import RoleCollection
+from openapi_server.models.service_bus_queue_endpoint import ServiceBusQueueEndpoint
+from openapi_server.models.service_bus_topic_endpoint import ServiceBusTopicEndpoint
+from openapi_server.models.solution_model import SolutionModel
+from openapi_server.models.storage_endpoint import StorageEndpoint
+from openapi_server.models.symmetric_key import SymmetricKey
+from openapi_server.models.value import Value
+from openapi_server.models.value_detail import ValueDetail

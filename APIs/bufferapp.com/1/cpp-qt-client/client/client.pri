@@ -1,0 +1,115 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIConfiguration.h \
+    $${PWD}/OAIConfiguration_media.h \
+    $${PWD}/OAIConfiguration_services.h \
+    $${PWD}/OAIConfiguration_services_appdotnet.h \
+    $${PWD}/OAIConfiguration_services_appdotnet_types.h \
+    $${PWD}/OAIConfiguration_services_appdotnet_types_profile.h \
+    $${PWD}/OAIConfiguration_services_appdotnet_types_profile_icons.h \
+    $${PWD}/OAIConfiguration_services_appdotnet_urls.h \
+    $${PWD}/OAIConfiguration_services_facebook.h \
+    $${PWD}/OAIConfiguration_services_facebook_types.h \
+    $${PWD}/OAIConfiguration_services_facebook_types_group.h \
+    $${PWD}/OAIConfiguration_services_facebook_urls.h \
+    $${PWD}/OAIConfiguration_services_google.h \
+    $${PWD}/OAIConfiguration_services_google_types.h \
+    $${PWD}/OAIConfiguration_services_twitter.h \
+    $${PWD}/OAIConfiguration_services_twitter_types.h \
+    $${PWD}/OAIConfiguration_services_twitter_urls.h \
+    $${PWD}/OAIIndividual_update.h \
+    $${PWD}/OAIIndividual_update_update.h \
+    $${PWD}/OAIIndividual_update_update_media.h \
+    $${PWD}/OAIInteractions.h \
+    $${PWD}/OAIInteractions_interactions_inner.h \
+    $${PWD}/OAIInteractions_interactions_inner_user.h \
+    $${PWD}/OAINewUpdate.h \
+    $${PWD}/OAINewUpdate_updates_inner.h \
+    $${PWD}/OAIProfile.h \
+    $${PWD}/OAIProfile_schedules_inner.h \
+    $${PWD}/OAIProfile_statistics.h \
+    $${PWD}/OAIProfiles_inner.h \
+    $${PWD}/OAIProfiles_inner_counts.h \
+    $${PWD}/OAIProfiles_inner_schedules_inner.h \
+    $${PWD}/OAIProfiles_inner_shortener.h \
+    $${PWD}/OAIProfiles_inner_statistics.h \
+    $${PWD}/OAIReorder.h \
+    $${PWD}/OAIReorder_updates_inner.h \
+    $${PWD}/OAISchedules.h \
+    $${PWD}/OAISchedules_update.h \
+    $${PWD}/OAIShare.h \
+    $${PWD}/OAIShares.h \
+    $${PWD}/OAIShuffle.h \
+    $${PWD}/OAISuccess.h \
+    $${PWD}/OAIUpdate.h \
+    $${PWD}/OAIUpdate_statistics.h \
+    $${PWD}/OAIUpdates_array.h \
+    $${PWD}/OAIUser.h \
+# APIs
+    $${PWD}/OAIDefaultApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIConfiguration.cpp \
+    $${PWD}/OAIConfiguration_media.cpp \
+    $${PWD}/OAIConfiguration_services.cpp \
+    $${PWD}/OAIConfiguration_services_appdotnet.cpp \
+    $${PWD}/OAIConfiguration_services_appdotnet_types.cpp \
+    $${PWD}/OAIConfiguration_services_appdotnet_types_profile.cpp \
+    $${PWD}/OAIConfiguration_services_appdotnet_types_profile_icons.cpp \
+    $${PWD}/OAIConfiguration_services_appdotnet_urls.cpp \
+    $${PWD}/OAIConfiguration_services_facebook.cpp \
+    $${PWD}/OAIConfiguration_services_facebook_types.cpp \
+    $${PWD}/OAIConfiguration_services_facebook_types_group.cpp \
+    $${PWD}/OAIConfiguration_services_facebook_urls.cpp \
+    $${PWD}/OAIConfiguration_services_google.cpp \
+    $${PWD}/OAIConfiguration_services_google_types.cpp \
+    $${PWD}/OAIConfiguration_services_twitter.cpp \
+    $${PWD}/OAIConfiguration_services_twitter_types.cpp \
+    $${PWD}/OAIConfiguration_services_twitter_urls.cpp \
+    $${PWD}/OAIIndividual_update.cpp \
+    $${PWD}/OAIIndividual_update_update.cpp \
+    $${PWD}/OAIIndividual_update_update_media.cpp \
+    $${PWD}/OAIInteractions.cpp \
+    $${PWD}/OAIInteractions_interactions_inner.cpp \
+    $${PWD}/OAIInteractions_interactions_inner_user.cpp \
+    $${PWD}/OAINewUpdate.cpp \
+    $${PWD}/OAINewUpdate_updates_inner.cpp \
+    $${PWD}/OAIProfile.cpp \
+    $${PWD}/OAIProfile_schedules_inner.cpp \
+    $${PWD}/OAIProfile_statistics.cpp \
+    $${PWD}/OAIProfiles_inner.cpp \
+    $${PWD}/OAIProfiles_inner_counts.cpp \
+    $${PWD}/OAIProfiles_inner_schedules_inner.cpp \
+    $${PWD}/OAIProfiles_inner_shortener.cpp \
+    $${PWD}/OAIProfiles_inner_statistics.cpp \
+    $${PWD}/OAIReorder.cpp \
+    $${PWD}/OAIReorder_updates_inner.cpp \
+    $${PWD}/OAISchedules.cpp \
+    $${PWD}/OAISchedules_update.cpp \
+    $${PWD}/OAIShare.cpp \
+    $${PWD}/OAIShares.cpp \
+    $${PWD}/OAIShuffle.cpp \
+    $${PWD}/OAISuccess.cpp \
+    $${PWD}/OAIUpdate.cpp \
+    $${PWD}/OAIUpdate_statistics.cpp \
+    $${PWD}/OAIUpdates_array.cpp \
+    $${PWD}/OAIUser.cpp \
+# APIs
+    $${PWD}/OAIDefaultApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

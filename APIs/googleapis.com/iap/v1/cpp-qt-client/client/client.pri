@@ -1,0 +1,83 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIAccessDeniedPageSettings.h \
+    $${PWD}/OAIAccessSettings.h \
+    $${PWD}/OAIAllowedDomainsSettings.h \
+    $${PWD}/OAIApplicationSettings.h \
+    $${PWD}/OAIAttributePropagationSettings.h \
+    $${PWD}/OAIBinding.h \
+    $${PWD}/OAIBrand.h \
+    $${PWD}/OAICorsSettings.h \
+    $${PWD}/OAICsmSettings.h \
+    $${PWD}/OAIExpr.h \
+    $${PWD}/OAIGcipSettings.h \
+    $${PWD}/OAIGetIamPolicyRequest.h \
+    $${PWD}/OAIGetPolicyOptions.h \
+    $${PWD}/OAIIapSettings.h \
+    $${PWD}/OAIIdentityAwareProxyClient.h \
+    $${PWD}/OAIListBrandsResponse.h \
+    $${PWD}/OAIListIdentityAwareProxyClientsResponse.h \
+    $${PWD}/OAIListTunnelDestGroupsResponse.h \
+    $${PWD}/OAIOAuthSettings.h \
+    $${PWD}/OAIPolicy.h \
+    $${PWD}/OAIPolicyDelegationSettings.h \
+    $${PWD}/OAIPolicyName.h \
+    $${PWD}/OAIReauthSettings.h \
+    $${PWD}/OAIResource.h \
+    $${PWD}/OAISetIamPolicyRequest.h \
+    $${PWD}/OAITestIamPermissionsRequest.h \
+    $${PWD}/OAITestIamPermissionsResponse.h \
+    $${PWD}/OAITunnelDestGroup.h \
+# APIs
+    $${PWD}/OAIProjectsApi.h \
+    $${PWD}/OAIV1Api.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIAccessDeniedPageSettings.cpp \
+    $${PWD}/OAIAccessSettings.cpp \
+    $${PWD}/OAIAllowedDomainsSettings.cpp \
+    $${PWD}/OAIApplicationSettings.cpp \
+    $${PWD}/OAIAttributePropagationSettings.cpp \
+    $${PWD}/OAIBinding.cpp \
+    $${PWD}/OAIBrand.cpp \
+    $${PWD}/OAICorsSettings.cpp \
+    $${PWD}/OAICsmSettings.cpp \
+    $${PWD}/OAIExpr.cpp \
+    $${PWD}/OAIGcipSettings.cpp \
+    $${PWD}/OAIGetIamPolicyRequest.cpp \
+    $${PWD}/OAIGetPolicyOptions.cpp \
+    $${PWD}/OAIIapSettings.cpp \
+    $${PWD}/OAIIdentityAwareProxyClient.cpp \
+    $${PWD}/OAIListBrandsResponse.cpp \
+    $${PWD}/OAIListIdentityAwareProxyClientsResponse.cpp \
+    $${PWD}/OAIListTunnelDestGroupsResponse.cpp \
+    $${PWD}/OAIOAuthSettings.cpp \
+    $${PWD}/OAIPolicy.cpp \
+    $${PWD}/OAIPolicyDelegationSettings.cpp \
+    $${PWD}/OAIPolicyName.cpp \
+    $${PWD}/OAIReauthSettings.cpp \
+    $${PWD}/OAIResource.cpp \
+    $${PWD}/OAISetIamPolicyRequest.cpp \
+    $${PWD}/OAITestIamPermissionsRequest.cpp \
+    $${PWD}/OAITestIamPermissionsResponse.cpp \
+    $${PWD}/OAITunnelDestGroup.cpp \
+# APIs
+    $${PWD}/OAIProjectsApi.cpp \
+    $${PWD}/OAIV1Api.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

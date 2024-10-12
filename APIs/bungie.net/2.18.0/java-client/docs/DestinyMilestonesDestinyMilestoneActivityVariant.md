@@ -1,0 +1,108 @@
+
+
+# DestinyMilestonesDestinyMilestoneActivityVariant
+
+Represents custom data that we know about an individual variant of an activity.
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**activityHash** | **Integer** | The hash for the specific variant of the activity related to this milestone. You can pull more detailed static info from the DestinyActivityDefinition, such as difficulty level. |  [optional] |
+|**activityModeHash** | **Integer** | The hash identifier of the most specific Activity Mode under which this activity is played. This is useful for situations where the activity in question is - for instance - a PVP map, but it&#39;s not clear what mode the PVP map is being played under. If it&#39;s a playlist, this will be less specific: but hopefully useful in some way. |  [optional] |
+|**activityModeType** | [**ActivityModeTypeEnum**](#ActivityModeTypeEnum) | The enumeration equivalent of the most specific Activity Mode under which this activity is played. |  [optional] |
+|**completionStatus** | [**DestinyMilestonesDestinyMilestoneActivityCompletionStatus**](DestinyMilestonesDestinyMilestoneActivityCompletionStatus.md) | An OPTIONAL component: if it makes sense to talk about this activity variant in terms of whether or not it has been completed or what progress you have made in it, this will be returned. Otherwise, this will be NULL. |  [optional] |
+
+
+
+## Enum: ActivityModeTypeEnum
+
+| Name | Value |
+|---- | -----|
+| NUMBER_0 | 0 |
+| NUMBER_2 | 2 |
+| NUMBER_3 | 3 |
+| NUMBER_4 | 4 |
+| NUMBER_5 | 5 |
+| NUMBER_6 | 6 |
+| NUMBER_7 | 7 |
+| NUMBER_9 | 9 |
+| NUMBER_10 | 10 |
+| NUMBER_11 | 11 |
+| NUMBER_12 | 12 |
+| NUMBER_13 | 13 |
+| NUMBER_15 | 15 |
+| NUMBER_16 | 16 |
+| NUMBER_17 | 17 |
+| NUMBER_18 | 18 |
+| NUMBER_19 | 19 |
+| NUMBER_20 | 20 |
+| NUMBER_21 | 21 |
+| NUMBER_22 | 22 |
+| NUMBER_24 | 24 |
+| NUMBER_25 | 25 |
+| NUMBER_26 | 26 |
+| NUMBER_27 | 27 |
+| NUMBER_28 | 28 |
+| NUMBER_29 | 29 |
+| NUMBER_30 | 30 |
+| NUMBER_31 | 31 |
+| NUMBER_32 | 32 |
+| NUMBER_37 | 37 |
+| NUMBER_38 | 38 |
+| NUMBER_39 | 39 |
+| NUMBER_40 | 40 |
+| NUMBER_41 | 41 |
+| NUMBER_42 | 42 |
+| NUMBER_43 | 43 |
+| NUMBER_44 | 44 |
+| NUMBER_45 | 45 |
+| NUMBER_46 | 46 |
+| NUMBER_47 | 47 |
+| NUMBER_48 | 48 |
+| NUMBER_49 | 49 |
+| NUMBER_50 | 50 |
+| NUMBER_51 | 51 |
+| NUMBER_52 | 52 |
+| NUMBER_53 | 53 |
+| NUMBER_54 | 54 |
+| NUMBER_55 | 55 |
+| NUMBER_56 | 56 |
+| NUMBER_57 | 57 |
+| NUMBER_58 | 58 |
+| NUMBER_59 | 59 |
+| NUMBER_60 | 60 |
+| NUMBER_61 | 61 |
+| NUMBER_62 | 62 |
+| NUMBER_63 | 63 |
+| NUMBER_64 | 64 |
+| NUMBER_65 | 65 |
+| NUMBER_66 | 66 |
+| NUMBER_67 | 67 |
+| NUMBER_68 | 68 |
+| NUMBER_69 | 69 |
+| NUMBER_70 | 70 |
+| NUMBER_71 | 71 |
+| NUMBER_72 | 72 |
+| NUMBER_73 | 73 |
+| NUMBER_74 | 74 |
+| NUMBER_75 | 75 |
+| NUMBER_76 | 76 |
+| NUMBER_77 | 77 |
+| NUMBER_78 | 78 |
+| NUMBER_79 | 79 |
+| NUMBER_80 | 80 |
+| NUMBER_81 | 81 |
+| NUMBER_82 | 82 |
+| NUMBER_83 | 83 |
+| NUMBER_84 | 84 |
+| NUMBER_85 | 85 |
+| NUMBER_86 | 86 |
+| NUMBER_87 | 87 |
+| NUMBER_88 | 88 |
+| NUMBER_89 | 89 |
+| NUMBER_90 | 90 |
+| NUMBER_91 | 91 |
+
+
+

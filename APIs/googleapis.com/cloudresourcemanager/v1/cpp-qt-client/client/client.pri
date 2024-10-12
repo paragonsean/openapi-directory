@@ -1,0 +1,117 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIAncestor.h \
+    $${PWD}/OAIAuditConfig.h \
+    $${PWD}/OAIAuditLogConfig.h \
+    $${PWD}/OAIBinding.h \
+    $${PWD}/OAIBooleanPolicy.h \
+    $${PWD}/OAIClearOrgPolicyRequest.h \
+    $${PWD}/OAICloudresourcemanagerGoogleCloudResourcemanagerV2alpha1FolderOperation.h \
+    $${PWD}/OAICloudresourcemanagerGoogleCloudResourcemanagerV2beta1FolderOperation.h \
+    $${PWD}/OAIConstraint.h \
+    $${PWD}/OAICreateFolderMetadata.h \
+    $${PWD}/OAICreateProjectMetadata.h \
+    $${PWD}/OAIExpr.h \
+    $${PWD}/OAIFolderOperation.h \
+    $${PWD}/OAIFolderOperationError.h \
+    $${PWD}/OAIGetAncestryResponse.h \
+    $${PWD}/OAIGetEffectiveOrgPolicyRequest.h \
+    $${PWD}/OAIGetIamPolicyRequest.h \
+    $${PWD}/OAIGetOrgPolicyRequest.h \
+    $${PWD}/OAIGetPolicyOptions.h \
+    $${PWD}/OAILien.h \
+    $${PWD}/OAIListAvailableOrgPolicyConstraintsRequest.h \
+    $${PWD}/OAIListAvailableOrgPolicyConstraintsResponse.h \
+    $${PWD}/OAIListConstraint.h \
+    $${PWD}/OAIListLiensResponse.h \
+    $${PWD}/OAIListOrgPoliciesRequest.h \
+    $${PWD}/OAIListOrgPoliciesResponse.h \
+    $${PWD}/OAIListPolicy.h \
+    $${PWD}/OAIListProjectsResponse.h \
+    $${PWD}/OAIMoveFolderMetadata.h \
+    $${PWD}/OAIOperation.h \
+    $${PWD}/OAIOrgPolicy.h \
+    $${PWD}/OAIOrganization.h \
+    $${PWD}/OAIOrganizationOwner.h \
+    $${PWD}/OAIPolicy.h \
+    $${PWD}/OAIProject.h \
+    $${PWD}/OAIProjectCreationStatus.h \
+    $${PWD}/OAIResourceId.h \
+    $${PWD}/OAISearchOrganizationsRequest.h \
+    $${PWD}/OAISearchOrganizationsResponse.h \
+    $${PWD}/OAISetIamPolicyRequest.h \
+    $${PWD}/OAISetOrgPolicyRequest.h \
+    $${PWD}/OAIStatus.h \
+    $${PWD}/OAITestIamPermissionsRequest.h \
+    $${PWD}/OAITestIamPermissionsResponse.h \
+# APIs
+    $${PWD}/OAILiensApi.h \
+    $${PWD}/OAIOrganizationsApi.h \
+    $${PWD}/OAIProjectsApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIAncestor.cpp \
+    $${PWD}/OAIAuditConfig.cpp \
+    $${PWD}/OAIAuditLogConfig.cpp \
+    $${PWD}/OAIBinding.cpp \
+    $${PWD}/OAIBooleanPolicy.cpp \
+    $${PWD}/OAIClearOrgPolicyRequest.cpp \
+    $${PWD}/OAICloudresourcemanagerGoogleCloudResourcemanagerV2alpha1FolderOperation.cpp \
+    $${PWD}/OAICloudresourcemanagerGoogleCloudResourcemanagerV2beta1FolderOperation.cpp \
+    $${PWD}/OAIConstraint.cpp \
+    $${PWD}/OAICreateFolderMetadata.cpp \
+    $${PWD}/OAICreateProjectMetadata.cpp \
+    $${PWD}/OAIExpr.cpp \
+    $${PWD}/OAIFolderOperation.cpp \
+    $${PWD}/OAIFolderOperationError.cpp \
+    $${PWD}/OAIGetAncestryResponse.cpp \
+    $${PWD}/OAIGetEffectiveOrgPolicyRequest.cpp \
+    $${PWD}/OAIGetIamPolicyRequest.cpp \
+    $${PWD}/OAIGetOrgPolicyRequest.cpp \
+    $${PWD}/OAIGetPolicyOptions.cpp \
+    $${PWD}/OAILien.cpp \
+    $${PWD}/OAIListAvailableOrgPolicyConstraintsRequest.cpp \
+    $${PWD}/OAIListAvailableOrgPolicyConstraintsResponse.cpp \
+    $${PWD}/OAIListConstraint.cpp \
+    $${PWD}/OAIListLiensResponse.cpp \
+    $${PWD}/OAIListOrgPoliciesRequest.cpp \
+    $${PWD}/OAIListOrgPoliciesResponse.cpp \
+    $${PWD}/OAIListPolicy.cpp \
+    $${PWD}/OAIListProjectsResponse.cpp \
+    $${PWD}/OAIMoveFolderMetadata.cpp \
+    $${PWD}/OAIOperation.cpp \
+    $${PWD}/OAIOrgPolicy.cpp \
+    $${PWD}/OAIOrganization.cpp \
+    $${PWD}/OAIOrganizationOwner.cpp \
+    $${PWD}/OAIPolicy.cpp \
+    $${PWD}/OAIProject.cpp \
+    $${PWD}/OAIProjectCreationStatus.cpp \
+    $${PWD}/OAIResourceId.cpp \
+    $${PWD}/OAISearchOrganizationsRequest.cpp \
+    $${PWD}/OAISearchOrganizationsResponse.cpp \
+    $${PWD}/OAISetIamPolicyRequest.cpp \
+    $${PWD}/OAISetOrgPolicyRequest.cpp \
+    $${PWD}/OAIStatus.cpp \
+    $${PWD}/OAITestIamPermissionsRequest.cpp \
+    $${PWD}/OAITestIamPermissionsResponse.cpp \
+# APIs
+    $${PWD}/OAILiensApi.cpp \
+    $${PWD}/OAIOrganizationsApi.cpp \
+    $${PWD}/OAIProjectsApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

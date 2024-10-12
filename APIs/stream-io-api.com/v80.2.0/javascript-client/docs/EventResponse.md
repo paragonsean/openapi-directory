@@ -1,0 +1,10 @@
+# StreamChatApi.EventResponse
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**duration** | **String** | Duration of the request in human-readable format | 
+**event** | [**Event**](Event.md) |  | [optional] 
+
+

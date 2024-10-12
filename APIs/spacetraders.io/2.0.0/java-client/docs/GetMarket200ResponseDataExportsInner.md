@@ -1,0 +1,132 @@
+
+
+# GetMarket200ResponseDataExportsInner
+
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**description** | **String** |  |  |
+|**name** | **String** |  |  |
+|**symbol** | [**SymbolEnum**](#SymbolEnum) |  |  |
+
+
+
+## Enum: SymbolEnum
+
+| Name | Value |
+|---- | -----|
+| PRECIOUS_STONES | &quot;PRECIOUS_STONES&quot; |
+| QUARTZ_SAND | &quot;QUARTZ_SAND&quot; |
+| SILICON_CRYSTALS | &quot;SILICON_CRYSTALS&quot; |
+| AMMONIA_ICE | &quot;AMMONIA_ICE&quot; |
+| LIQUID_HYDROGEN | &quot;LIQUID_HYDROGEN&quot; |
+| LIQUID_NITROGEN | &quot;LIQUID_NITROGEN&quot; |
+| ICE_WATER | &quot;ICE_WATER&quot; |
+| EXOTIC_MATTER | &quot;EXOTIC_MATTER&quot; |
+| ADVANCED_CIRCUITRY | &quot;ADVANCED_CIRCUITRY&quot; |
+| GRAVITON_EMITTERS | &quot;GRAVITON_EMITTERS&quot; |
+| IRON | &quot;IRON&quot; |
+| IRON_ORE | &quot;IRON_ORE&quot; |
+| COPPER | &quot;COPPER&quot; |
+| COPPER_ORE | &quot;COPPER_ORE&quot; |
+| ALUMINUM | &quot;ALUMINUM&quot; |
+| ALUMINUM_ORE | &quot;ALUMINUM_ORE&quot; |
+| SILVER | &quot;SILVER&quot; |
+| SILVER_ORE | &quot;SILVER_ORE&quot; |
+| GOLD | &quot;GOLD&quot; |
+| GOLD_ORE | &quot;GOLD_ORE&quot; |
+| PLATINUM | &quot;PLATINUM&quot; |
+| PLATINUM_ORE | &quot;PLATINUM_ORE&quot; |
+| DIAMONDS | &quot;DIAMONDS&quot; |
+| URANITE | &quot;URANITE&quot; |
+| URANITE_ORE | &quot;URANITE_ORE&quot; |
+| MERITIUM | &quot;MERITIUM&quot; |
+| MERITIUM_ORE | &quot;MERITIUM_ORE&quot; |
+| HYDROCARBON | &quot;HYDROCARBON&quot; |
+| ANTIMATTER | &quot;ANTIMATTER&quot; |
+| FERTILIZERS | &quot;FERTILIZERS&quot; |
+| FABRICS | &quot;FABRICS&quot; |
+| FOOD | &quot;FOOD&quot; |
+| JEWELRY | &quot;JEWELRY&quot; |
+| MACHINERY | &quot;MACHINERY&quot; |
+| FIREARMS | &quot;FIREARMS&quot; |
+| ASSAULT_RIFLES | &quot;ASSAULT_RIFLES&quot; |
+| MILITARY_EQUIPMENT | &quot;MILITARY_EQUIPMENT&quot; |
+| EXPLOSIVES | &quot;EXPLOSIVES&quot; |
+| LAB_INSTRUMENTS | &quot;LAB_INSTRUMENTS&quot; |
+| AMMUNITION | &quot;AMMUNITION&quot; |
+| ELECTRONICS | &quot;ELECTRONICS&quot; |
+| SHIP_PLATING | &quot;SHIP_PLATING&quot; |
+| EQUIPMENT | &quot;EQUIPMENT&quot; |
+| FUEL | &quot;FUEL&quot; |
+| MEDICINE | &quot;MEDICINE&quot; |
+| DRUGS | &quot;DRUGS&quot; |
+| CLOTHING | &quot;CLOTHING&quot; |
+| MICROPROCESSORS | &quot;MICROPROCESSORS&quot; |
+| PLASTICS | &quot;PLASTICS&quot; |
+| POLYNUCLEOTIDES | &quot;POLYNUCLEOTIDES&quot; |
+| BIOCOMPOSITES | &quot;BIOCOMPOSITES&quot; |
+| NANOBOTS | &quot;NANOBOTS&quot; |
+| AI_MAINFRAMES | &quot;AI_MAINFRAMES&quot; |
+| QUANTUM_DRIVES | &quot;QUANTUM_DRIVES&quot; |
+| ROBOTIC_DRONES | &quot;ROBOTIC_DRONES&quot; |
+| CYBER_IMPLANTS | &quot;CYBER_IMPLANTS&quot; |
+| GENE_THERAPEUTICS | &quot;GENE_THERAPEUTICS&quot; |
+| NEURAL_CHIPS | &quot;NEURAL_CHIPS&quot; |
+| MOOD_REGULATORS | &quot;MOOD_REGULATORS&quot; |
+| VIRAL_AGENTS | &quot;VIRAL_AGENTS&quot; |
+| MICRO_FUSION_GENERATORS | &quot;MICRO_FUSION_GENERATORS&quot; |
+| SUPERGRAINS | &quot;SUPERGRAINS&quot; |
+| LASER_RIFLES | &quot;LASER_RIFLES&quot; |
+| HOLOGRAPHICS | &quot;HOLOGRAPHICS&quot; |
+| SHIP_SALVAGE | &quot;SHIP_SALVAGE&quot; |
+| RELIC_TECH | &quot;RELIC_TECH&quot; |
+| NOVEL_LIFEFORMS | &quot;NOVEL_LIFEFORMS&quot; |
+| BOTANICAL_SPECIMENS | &quot;BOTANICAL_SPECIMENS&quot; |
+| CULTURAL_ARTIFACTS | &quot;CULTURAL_ARTIFACTS&quot; |
+| REACTOR_SOLAR_I | &quot;REACTOR_SOLAR_I&quot; |
+| REACTOR_FUSION_I | &quot;REACTOR_FUSION_I&quot; |
+| REACTOR_FISSION_I | &quot;REACTOR_FISSION_I&quot; |
+| REACTOR_CHEMICAL_I | &quot;REACTOR_CHEMICAL_I&quot; |
+| REACTOR_ANTIMATTER_I | &quot;REACTOR_ANTIMATTER_I&quot; |
+| ENGINE_IMPULSE_DRIVE_I | &quot;ENGINE_IMPULSE_DRIVE_I&quot; |
+| ENGINE_ION_DRIVE_I | &quot;ENGINE_ION_DRIVE_I&quot; |
+| ENGINE_ION_DRIVE_II | &quot;ENGINE_ION_DRIVE_II&quot; |
+| ENGINE_HYPER_DRIVE_I | &quot;ENGINE_HYPER_DRIVE_I&quot; |
+| MODULE_MINERAL_PROCESSOR_I | &quot;MODULE_MINERAL_PROCESSOR_I&quot; |
+| MODULE_CARGO_HOLD_I | &quot;MODULE_CARGO_HOLD_I&quot; |
+| MODULE_CREW_QUARTERS_I | &quot;MODULE_CREW_QUARTERS_I&quot; |
+| MODULE_ENVOY_QUARTERS_I | &quot;MODULE_ENVOY_QUARTERS_I&quot; |
+| MODULE_PASSENGER_CABIN_I | &quot;MODULE_PASSENGER_CABIN_I&quot; |
+| MODULE_MICRO_REFINERY_I | &quot;MODULE_MICRO_REFINERY_I&quot; |
+| MODULE_ORE_REFINERY_I | &quot;MODULE_ORE_REFINERY_I&quot; |
+| MODULE_FUEL_REFINERY_I | &quot;MODULE_FUEL_REFINERY_I&quot; |
+| MODULE_SCIENCE_LAB_I | &quot;MODULE_SCIENCE_LAB_I&quot; |
+| MODULE_JUMP_DRIVE_I | &quot;MODULE_JUMP_DRIVE_I&quot; |
+| MODULE_JUMP_DRIVE_II | &quot;MODULE_JUMP_DRIVE_II&quot; |
+| MODULE_JUMP_DRIVE_III | &quot;MODULE_JUMP_DRIVE_III&quot; |
+| MODULE_WARP_DRIVE_I | &quot;MODULE_WARP_DRIVE_I&quot; |
+| MODULE_WARP_DRIVE_II | &quot;MODULE_WARP_DRIVE_II&quot; |
+| MODULE_WARP_DRIVE_III | &quot;MODULE_WARP_DRIVE_III&quot; |
+| MODULE_SHIELD_GENERATOR_I | &quot;MODULE_SHIELD_GENERATOR_I&quot; |
+| MODULE_SHIELD_GENERATOR_II | &quot;MODULE_SHIELD_GENERATOR_II&quot; |
+| MOUNT_GAS_SIPHON_I | &quot;MOUNT_GAS_SIPHON_I&quot; |
+| MOUNT_GAS_SIPHON_II | &quot;MOUNT_GAS_SIPHON_II&quot; |
+| MOUNT_GAS_SIPHON_III | &quot;MOUNT_GAS_SIPHON_III&quot; |
+| MOUNT_SURVEYOR_I | &quot;MOUNT_SURVEYOR_I&quot; |
+| MOUNT_SURVEYOR_II | &quot;MOUNT_SURVEYOR_II&quot; |
+| MOUNT_SURVEYOR_III | &quot;MOUNT_SURVEYOR_III&quot; |
+| MOUNT_SENSOR_ARRAY_I | &quot;MOUNT_SENSOR_ARRAY_I&quot; |
+| MOUNT_SENSOR_ARRAY_II | &quot;MOUNT_SENSOR_ARRAY_II&quot; |
+| MOUNT_SENSOR_ARRAY_III | &quot;MOUNT_SENSOR_ARRAY_III&quot; |
+| MOUNT_MINING_LASER_I | &quot;MOUNT_MINING_LASER_I&quot; |
+| MOUNT_MINING_LASER_II | &quot;MOUNT_MINING_LASER_II&quot; |
+| MOUNT_MINING_LASER_III | &quot;MOUNT_MINING_LASER_III&quot; |
+| MOUNT_LASER_CANNON_I | &quot;MOUNT_LASER_CANNON_I&quot; |
+| MOUNT_MISSILE_LAUNCHER_I | &quot;MOUNT_MISSILE_LAUNCHER_I&quot; |
+| MOUNT_TURRET_I | &quot;MOUNT_TURRET_I&quot; |
+
+
+

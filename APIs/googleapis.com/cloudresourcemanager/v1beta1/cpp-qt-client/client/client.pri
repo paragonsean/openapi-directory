@@ -1,0 +1,79 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIAncestor.h \
+    $${PWD}/OAIAuditConfig.h \
+    $${PWD}/OAIAuditLogConfig.h \
+    $${PWD}/OAIBinding.h \
+    $${PWD}/OAICloudresourcemanagerGoogleCloudResourcemanagerV2alpha1FolderOperation.h \
+    $${PWD}/OAICloudresourcemanagerGoogleCloudResourcemanagerV2beta1FolderOperation.h \
+    $${PWD}/OAICreateFolderMetadata.h \
+    $${PWD}/OAICreateProjectMetadata.h \
+    $${PWD}/OAIExpr.h \
+    $${PWD}/OAIFolderOperation.h \
+    $${PWD}/OAIFolderOperationError.h \
+    $${PWD}/OAIGetAncestryResponse.h \
+    $${PWD}/OAIGetIamPolicyRequest.h \
+    $${PWD}/OAIGetPolicyOptions.h \
+    $${PWD}/OAIListOrganizationsResponse.h \
+    $${PWD}/OAIListProjectsResponse.h \
+    $${PWD}/OAIMoveFolderMetadata.h \
+    $${PWD}/OAIOrganization.h \
+    $${PWD}/OAIOrganizationOwner.h \
+    $${PWD}/OAIPolicy.h \
+    $${PWD}/OAIProject.h \
+    $${PWD}/OAIProjectCreationStatus.h \
+    $${PWD}/OAIResourceId.h \
+    $${PWD}/OAISetIamPolicyRequest.h \
+    $${PWD}/OAITestIamPermissionsRequest.h \
+    $${PWD}/OAITestIamPermissionsResponse.h \
+# APIs
+    $${PWD}/OAIOrganizationsApi.h \
+    $${PWD}/OAIProjectsApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIAncestor.cpp \
+    $${PWD}/OAIAuditConfig.cpp \
+    $${PWD}/OAIAuditLogConfig.cpp \
+    $${PWD}/OAIBinding.cpp \
+    $${PWD}/OAICloudresourcemanagerGoogleCloudResourcemanagerV2alpha1FolderOperation.cpp \
+    $${PWD}/OAICloudresourcemanagerGoogleCloudResourcemanagerV2beta1FolderOperation.cpp \
+    $${PWD}/OAICreateFolderMetadata.cpp \
+    $${PWD}/OAICreateProjectMetadata.cpp \
+    $${PWD}/OAIExpr.cpp \
+    $${PWD}/OAIFolderOperation.cpp \
+    $${PWD}/OAIFolderOperationError.cpp \
+    $${PWD}/OAIGetAncestryResponse.cpp \
+    $${PWD}/OAIGetIamPolicyRequest.cpp \
+    $${PWD}/OAIGetPolicyOptions.cpp \
+    $${PWD}/OAIListOrganizationsResponse.cpp \
+    $${PWD}/OAIListProjectsResponse.cpp \
+    $${PWD}/OAIMoveFolderMetadata.cpp \
+    $${PWD}/OAIOrganization.cpp \
+    $${PWD}/OAIOrganizationOwner.cpp \
+    $${PWD}/OAIPolicy.cpp \
+    $${PWD}/OAIProject.cpp \
+    $${PWD}/OAIProjectCreationStatus.cpp \
+    $${PWD}/OAIResourceId.cpp \
+    $${PWD}/OAISetIamPolicyRequest.cpp \
+    $${PWD}/OAITestIamPermissionsRequest.cpp \
+    $${PWD}/OAITestIamPermissionsResponse.cpp \
+# APIs
+    $${PWD}/OAIOrganizationsApi.cpp \
+    $${PWD}/OAIProjectsApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

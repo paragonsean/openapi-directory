@@ -1,9 +1,0 @@
-# NotionApi.AppendBlockChildrenRequestChildrenInnerHeading2TextInnerText
-
-## Properties
-
-Name | Type | Description | Notes
------------- | ------------- | ------------- | -------------
-**content** | **String** |  | [optional] 
-
-

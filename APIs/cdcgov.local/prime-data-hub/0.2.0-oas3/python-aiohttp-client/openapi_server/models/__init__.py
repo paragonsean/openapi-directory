@@ -1,0 +1,23 @@
+# coding: utf-8
+
+# import models into model package
+from openapi_server.models.as2_transport import AS2Transport
+from openapi_server.models.blob_store_transport import BlobStoreTransport
+from openapi_server.models.custom_configuration import CustomConfiguration
+from openapi_server.models.custom_configuration_transport import CustomConfigurationTransport
+from openapi_server.models.destination import Destination
+from openapi_server.models.detail import Detail
+from openapi_server.models.item_routing import ItemRouting
+from openapi_server.models.null_transport import NullTransport
+from openapi_server.models.organization import Organization
+from openapi_server.models.receiver import Receiver
+from openapi_server.models.receiver_jurisdictional_filters_inner import ReceiverJurisdictionalFiltersInner
+from openapi_server.models.receiver_timing import ReceiverTiming
+from openapi_server.models.receiver_translations_inner import ReceiverTranslationsInner
+from openapi_server.models.redox_transport import RedoxTransport
+from openapi_server.models.report import Report
+from openapi_server.models.sftp_transport import SFTPTransport
+from openapi_server.models.sender import Sender
+from openapi_server.models.setting_metadata import SettingMetadata
+from openapi_server.models.standard_hl7_configuration import StandardHL7Configuration
+from openapi_server.models.standard_hl7_configuration_transport import StandardHL7ConfigurationTransport

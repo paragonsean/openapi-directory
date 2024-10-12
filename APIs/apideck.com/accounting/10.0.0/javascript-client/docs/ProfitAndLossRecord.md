@@ -1,0 +1,12 @@
+# AccountingApi.ProfitAndLossRecord
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**id** | **String** |  | [optional] 
+**title** | **String** |  | [optional] 
+**type** | **String** |  | 
+**value** | **Number** |  | [optional] 
+
+

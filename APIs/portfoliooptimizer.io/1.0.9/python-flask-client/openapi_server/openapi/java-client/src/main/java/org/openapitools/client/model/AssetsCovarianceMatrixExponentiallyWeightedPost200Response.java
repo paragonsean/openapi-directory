@@ -51,7 +51,7 @@ import org.openapitools.client.JSON;
 /**
  * AssetsCovarianceMatrixExponentiallyWeightedPost200Response
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2024-10-12T07:52:30.576111-04:00[America/New_York]", comments = "Generator version: 7.9.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2024-10-12T12:43:28.475174-04:00[America/New_York]", comments = "Generator version: 7.9.0")
 public class AssetsCovarianceMatrixExponentiallyWeightedPost200Response {
   public static final String SERIALIZED_NAME_ASSETS_COVARIANCE_MATRIX = "assetsCovarianceMatrix";
   @SerializedName(SERIALIZED_NAME_ASSETS_COVARIANCE_MATRIX)

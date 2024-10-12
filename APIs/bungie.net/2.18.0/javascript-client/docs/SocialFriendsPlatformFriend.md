@@ -1,0 +1,42 @@
+# BungieNetApi.SocialFriendsPlatformFriend
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**bungieGlobalDisplayName** | **String** |  | [optional] 
+**bungieGlobalDisplayNameCode** | **Number** |  | [optional] 
+**bungieNetMembershipId** | **Number** |  | [optional] 
+**destinyMembershipId** | **Number** |  | [optional] 
+**destinyMembershipType** | **Number** |  | [optional] 
+**friendPlatform** | **Number** |  | [optional] 
+**platformDisplayName** | **String** |  | [optional] 
+
+
+
+## Enum: DestinyMembershipTypeEnum
+
+
+* `0` (value: `0`)
+
+* `1` (value: `1`)
+
+* `2` (value: `2`)
+
+* `3` (value: `3`)
+
+* `4` (value: `4`)
+
+* `5` (value: `5`)
+
+* `6` (value: `6`)
+
+* `10` (value: `10`)
+
+* `254` (value: `254`)
+
+* `-1` (value: `-1`)
+
+
+
+

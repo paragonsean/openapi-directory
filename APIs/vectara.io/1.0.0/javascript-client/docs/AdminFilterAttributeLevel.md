@@ -1,0 +1,12 @@
+# VectaraRestApi.AdminFilterAttributeLevel
+
+## Enum
+
+
+* `UNDEFINED` (value: `"FILTER_ATTRIBUTE_LEVEL__UNDEFINED"`)
+
+* `DOCUMENT` (value: `"FILTER_ATTRIBUTE_LEVEL__DOCUMENT"`)
+
+* `DOCUMENT_PART` (value: `"FILTER_ATTRIBUTE_LEVEL__DOCUMENT_PART"`)
+
+

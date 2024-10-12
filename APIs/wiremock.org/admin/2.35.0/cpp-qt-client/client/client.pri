@@ -1,0 +1,107 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIJSONPath_match.h \
+    $${PWD}/OAIJSON_equals.h \
+    $${PWD}/OAILog_normal.h \
+    $${PWD}/OAINegative_regular_expression_match.h \
+    $${PWD}/OAIRegular_expression_match.h \
+    $${PWD}/OAIString_contains.h \
+    $${PWD}/OAIString_equals.h \
+    $${PWD}/OAIUniform.h \
+    $${PWD}/OAIXML_equality.h \
+    $${PWD}/OAIXPath_match.h \
+    $${PWD}/OAI___admin_mappings_find_by_metadata_post_request.h \
+    $${PWD}/OAI___admin_mappings_get_200_response.h \
+    $${PWD}/OAI___admin_mappings_get_200_response_mappings_inner.h \
+    $${PWD}/OAI___admin_mappings_get_200_response_mappings_inner_request.h \
+    $${PWD}/OAI___admin_mappings_get_200_response_mappings_inner_request_basicAuthCredentials.h \
+    $${PWD}/OAI___admin_mappings_get_200_response_mappings_inner_response.h \
+    $${PWD}/OAI___admin_mappings_get_200_response_mappings_inner_response_allOf_delayDistribution.h \
+    $${PWD}/OAI___admin_mappings_get_200_response_meta.h \
+    $${PWD}/OAI___admin_near_misses_request_post_200_response.h \
+    $${PWD}/OAI___admin_near_misses_request_post_request.h \
+    $${PWD}/OAI___admin_recordings_snapshot_post_request.h \
+    $${PWD}/OAI___admin_recordings_snapshot_post_request_allOf_captureHeaders_value.h \
+    $${PWD}/OAI___admin_recordings_snapshot_post_request_allOf_extractBodyCriteria.h \
+    $${PWD}/OAI___admin_recordings_snapshot_post_request_allOf_filters.h \
+    $${PWD}/OAI___admin_recordings_snapshot_post_request_allOf_requestBodyPattern.h \
+    $${PWD}/OAI___admin_recordings_snapshot_post_request_allOf_requestBodyPattern_oneOf.h \
+    $${PWD}/OAI___admin_recordings_snapshot_post_request_allOf_requestBodyPattern_oneOf_1.h \
+    $${PWD}/OAI___admin_recordings_snapshot_post_request_allOf_requestBodyPattern_oneOf_2.h \
+    $${PWD}/OAI___admin_recordings_snapshot_post_request_allOf_requestBodyPattern_oneOf_3.h \
+    $${PWD}/OAI___admin_recordings_start_post_request.h \
+    $${PWD}/OAI___admin_recordings_start_post_request_allOf_filters.h \
+    $${PWD}/OAI___admin_recordings_status_get_200_response.h \
+    $${PWD}/OAI___admin_requests_count_post_200_response.h \
+    $${PWD}/OAI___admin_scenarios_get_200_response.h \
+    $${PWD}/OAI___admin_scenarios_get_200_response_scenarios_inner.h \
+    $${PWD}/OAI___admin_settings_post_request.h \
+# APIs
+    $${PWD}/OAINearMissesApi.h \
+    $${PWD}/OAIRecordingsApi.h \
+    $${PWD}/OAIRequestsApi.h \
+    $${PWD}/OAIScenariosApi.h \
+    $${PWD}/OAIStubMappingsApi.h \
+    $${PWD}/OAISystemApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIJSONPath_match.cpp \
+    $${PWD}/OAIJSON_equals.cpp \
+    $${PWD}/OAILog_normal.cpp \
+    $${PWD}/OAINegative_regular_expression_match.cpp \
+    $${PWD}/OAIRegular_expression_match.cpp \
+    $${PWD}/OAIString_contains.cpp \
+    $${PWD}/OAIString_equals.cpp \
+    $${PWD}/OAIUniform.cpp \
+    $${PWD}/OAIXML_equality.cpp \
+    $${PWD}/OAIXPath_match.cpp \
+    $${PWD}/OAI___admin_mappings_find_by_metadata_post_request.cpp \
+    $${PWD}/OAI___admin_mappings_get_200_response.cpp \
+    $${PWD}/OAI___admin_mappings_get_200_response_mappings_inner.cpp \
+    $${PWD}/OAI___admin_mappings_get_200_response_mappings_inner_request.cpp \
+    $${PWD}/OAI___admin_mappings_get_200_response_mappings_inner_request_basicAuthCredentials.cpp \
+    $${PWD}/OAI___admin_mappings_get_200_response_mappings_inner_response.cpp \
+    $${PWD}/OAI___admin_mappings_get_200_response_mappings_inner_response_allOf_delayDistribution.cpp \
+    $${PWD}/OAI___admin_mappings_get_200_response_meta.cpp \
+    $${PWD}/OAI___admin_near_misses_request_post_200_response.cpp \
+    $${PWD}/OAI___admin_near_misses_request_post_request.cpp \
+    $${PWD}/OAI___admin_recordings_snapshot_post_request.cpp \
+    $${PWD}/OAI___admin_recordings_snapshot_post_request_allOf_captureHeaders_value.cpp \
+    $${PWD}/OAI___admin_recordings_snapshot_post_request_allOf_extractBodyCriteria.cpp \
+    $${PWD}/OAI___admin_recordings_snapshot_post_request_allOf_filters.cpp \
+    $${PWD}/OAI___admin_recordings_snapshot_post_request_allOf_requestBodyPattern.cpp \
+    $${PWD}/OAI___admin_recordings_snapshot_post_request_allOf_requestBodyPattern_oneOf.cpp \
+    $${PWD}/OAI___admin_recordings_snapshot_post_request_allOf_requestBodyPattern_oneOf_1.cpp \
+    $${PWD}/OAI___admin_recordings_snapshot_post_request_allOf_requestBodyPattern_oneOf_2.cpp \
+    $${PWD}/OAI___admin_recordings_snapshot_post_request_allOf_requestBodyPattern_oneOf_3.cpp \
+    $${PWD}/OAI___admin_recordings_start_post_request.cpp \
+    $${PWD}/OAI___admin_recordings_start_post_request_allOf_filters.cpp \
+    $${PWD}/OAI___admin_recordings_status_get_200_response.cpp \
+    $${PWD}/OAI___admin_requests_count_post_200_response.cpp \
+    $${PWD}/OAI___admin_scenarios_get_200_response.cpp \
+    $${PWD}/OAI___admin_scenarios_get_200_response_scenarios_inner.cpp \
+    $${PWD}/OAI___admin_settings_post_request.cpp \
+# APIs
+    $${PWD}/OAINearMissesApi.cpp \
+    $${PWD}/OAIRecordingsApi.cpp \
+    $${PWD}/OAIRequestsApi.cpp \
+    $${PWD}/OAIScenariosApi.cpp \
+    $${PWD}/OAIStubMappingsApi.cpp \
+    $${PWD}/OAISystemApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

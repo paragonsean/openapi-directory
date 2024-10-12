@@ -1,0 +1,9 @@
+# coding: utf-8
+
+# import models into model package
+from openapi_server.models.bindtoanothersku_request import BindtoanotherskuRequest
+from openapi_server.models.get_sk_useller200_response import GetSKUseller200Response
+from openapi_server.models.getallby_seller_id200_response_inner import GetallbySellerId200ResponseInner
+from openapi_server.models.getby_sku_id200_response_inner import GetbySkuId200ResponseInner
+from openapi_server.models.getpagedadmin200_response import Getpagedadmin200Response
+from openapi_server.models.insert_sku_binding_request import InsertSKUBindingRequest

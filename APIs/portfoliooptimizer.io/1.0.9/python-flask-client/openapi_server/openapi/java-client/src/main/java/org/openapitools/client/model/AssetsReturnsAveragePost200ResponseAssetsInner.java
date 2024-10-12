@@ -49,7 +49,7 @@ import org.openapitools.client.JSON;
 /**
  * AssetsReturnsAveragePost200ResponseAssetsInner
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2024-10-12T07:52:30.576111-04:00[America/New_York]", comments = "Generator version: 7.9.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2024-10-12T12:43:28.475174-04:00[America/New_York]", comments = "Generator version: 7.9.0")
 public class AssetsReturnsAveragePost200ResponseAssetsInner {
   public static final String SERIALIZED_NAME_ASSET_AVERAGE_RETURN = "assetAverageReturn";
   @SerializedName(SERIALIZED_NAME_ASSET_AVERAGE_RETURN)

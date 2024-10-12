@@ -1,0 +1,87 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIAccountDetailBalance.h \
+    $${PWD}/OAIAccountDetailBalanceWrapper.h \
+    $${PWD}/OAIAccountHolderBalanceRequest.h \
+    $${PWD}/OAIAccountHolderBalanceResponse.h \
+    $${PWD}/OAIAccountHolderTransactionListRequest.h \
+    $${PWD}/OAIAccountHolderTransactionListResponse.h \
+    $${PWD}/OAIAccountTransactionList.h \
+    $${PWD}/OAIAccountTransactionListWrapper.h \
+    $${PWD}/OAIAmount.h \
+    $${PWD}/OAIAmountWrapper.h \
+    $${PWD}/OAIBankAccountDetail.h \
+    $${PWD}/OAIDebitAccountHolderRequest.h \
+    $${PWD}/OAIDebitAccountHolderResponse.h \
+    $${PWD}/OAIDetailBalance.h \
+    $${PWD}/OAIPayoutAccountHolderRequest.h \
+    $${PWD}/OAIPayoutAccountHolderResponse.h \
+    $${PWD}/OAIRefundFundsTransferRequest.h \
+    $${PWD}/OAIRefundFundsTransferResponse.h \
+    $${PWD}/OAIRefundNotPaidOutTransfersRequest.h \
+    $${PWD}/OAIRefundNotPaidOutTransfersResponse.h \
+    $${PWD}/OAIServiceError.h \
+    $${PWD}/OAISetupBeneficiaryRequest.h \
+    $${PWD}/OAISetupBeneficiaryResponse.h \
+    $${PWD}/OAISplit.h \
+    $${PWD}/OAISplitAmount.h \
+    $${PWD}/OAITransaction.h \
+    $${PWD}/OAITransactionListForAccount.h \
+    $${PWD}/OAITransactionListForAccountWrapper.h \
+    $${PWD}/OAITransactionWrapper.h \
+    $${PWD}/OAITransferFundsRequest.h \
+    $${PWD}/OAITransferFundsResponse.h \
+# APIs
+    $${PWD}/OAIGeneralApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIAccountDetailBalance.cpp \
+    $${PWD}/OAIAccountDetailBalanceWrapper.cpp \
+    $${PWD}/OAIAccountHolderBalanceRequest.cpp \
+    $${PWD}/OAIAccountHolderBalanceResponse.cpp \
+    $${PWD}/OAIAccountHolderTransactionListRequest.cpp \
+    $${PWD}/OAIAccountHolderTransactionListResponse.cpp \
+    $${PWD}/OAIAccountTransactionList.cpp \
+    $${PWD}/OAIAccountTransactionListWrapper.cpp \
+    $${PWD}/OAIAmount.cpp \
+    $${PWD}/OAIAmountWrapper.cpp \
+    $${PWD}/OAIBankAccountDetail.cpp \
+    $${PWD}/OAIDebitAccountHolderRequest.cpp \
+    $${PWD}/OAIDebitAccountHolderResponse.cpp \
+    $${PWD}/OAIDetailBalance.cpp \
+    $${PWD}/OAIPayoutAccountHolderRequest.cpp \
+    $${PWD}/OAIPayoutAccountHolderResponse.cpp \
+    $${PWD}/OAIRefundFundsTransferRequest.cpp \
+    $${PWD}/OAIRefundFundsTransferResponse.cpp \
+    $${PWD}/OAIRefundNotPaidOutTransfersRequest.cpp \
+    $${PWD}/OAIRefundNotPaidOutTransfersResponse.cpp \
+    $${PWD}/OAIServiceError.cpp \
+    $${PWD}/OAISetupBeneficiaryRequest.cpp \
+    $${PWD}/OAISetupBeneficiaryResponse.cpp \
+    $${PWD}/OAISplit.cpp \
+    $${PWD}/OAISplitAmount.cpp \
+    $${PWD}/OAITransaction.cpp \
+    $${PWD}/OAITransactionListForAccount.cpp \
+    $${PWD}/OAITransactionListForAccountWrapper.cpp \
+    $${PWD}/OAITransactionWrapper.cpp \
+    $${PWD}/OAITransferFundsRequest.cpp \
+    $${PWD}/OAITransferFundsResponse.cpp \
+# APIs
+    $${PWD}/OAIGeneralApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

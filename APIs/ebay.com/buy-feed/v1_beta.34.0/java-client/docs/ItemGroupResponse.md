@@ -1,0 +1,14 @@
+
+
+# ItemGroupResponse
+
+The type that defines the array for the items returned in the <b>Item Group</b> feed file.
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**itemGroups** | [**List&lt;ItemGroup&gt;**](ItemGroup.md) | The container for the array of items groups returned by the &lt;b&gt; getItemGroupFeed&lt;/b&gt; method. The data in the file is tab separated and the first row is the header, which labels the columns and indicates the order of the values for each item. The header labels match the fields that are described in the &lt;a href&#x3D;\&quot;/api-docs/buy/feed/resources/item_group/methods/getItemGroupFeed#h3-response-fields\&quot;&gt;Response fields&lt;/a&gt; section. |  [optional] |
+
+
+

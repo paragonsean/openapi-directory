@@ -1,0 +1,93 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIArticle.h \
+    $${PWD}/OAIArticleFlareTag.h \
+    $${PWD}/OAIArticleIndex.h \
+    $${PWD}/OAIArticle_article.h \
+    $${PWD}/OAIComment.h \
+    $${PWD}/OAIDisplayAd.h \
+    $${PWD}/OAIFollowedTag.h \
+    $${PWD}/OAIGetFollowers_200_response_inner.h \
+    $${PWD}/OAIOrganization.h \
+    $${PWD}/OAIPage.h \
+    $${PWD}/OAIPodcastEpisodeIndex.h \
+    $${PWD}/OAIProfileImage.h \
+    $${PWD}/OAISharedOrganization.h \
+    $${PWD}/OAISharedPodcast.h \
+    $${PWD}/OAISharedUser.h \
+    $${PWD}/OAITag.h \
+    $${PWD}/OAIUser.h \
+    $${PWD}/OAIUserInviteParam.h \
+    $${PWD}/OAIVideoArticle.h \
+    $${PWD}/OAIVideoArticle_user.h \
+    $${PWD}/OAI_api_pages_post_request.h \
+# APIs
+    $${PWD}/OAIArticlesApi.h \
+    $${PWD}/OAICommentsApi.h \
+    $${PWD}/OAIDisplayAdsApi.h \
+    $${PWD}/OAIFollowedTagsApi.h \
+    $${PWD}/OAIFollowersApi.h \
+    $${PWD}/OAIOrganizationsApi.h \
+    $${PWD}/OAIPagesApi.h \
+    $${PWD}/OAIPodcastEpisodesApi.h \
+    $${PWD}/OAIProfileImagesApi.h \
+    $${PWD}/OAIReactionsApi.h \
+    $${PWD}/OAIReadinglistApi.h \
+    $${PWD}/OAITagsApi.h \
+    $${PWD}/OAIUsersApi.h \
+    $${PWD}/OAIVideosApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIArticle.cpp \
+    $${PWD}/OAIArticleFlareTag.cpp \
+    $${PWD}/OAIArticleIndex.cpp \
+    $${PWD}/OAIArticle_article.cpp \
+    $${PWD}/OAIComment.cpp \
+    $${PWD}/OAIDisplayAd.cpp \
+    $${PWD}/OAIFollowedTag.cpp \
+    $${PWD}/OAIGetFollowers_200_response_inner.cpp \
+    $${PWD}/OAIOrganization.cpp \
+    $${PWD}/OAIPage.cpp \
+    $${PWD}/OAIPodcastEpisodeIndex.cpp \
+    $${PWD}/OAIProfileImage.cpp \
+    $${PWD}/OAISharedOrganization.cpp \
+    $${PWD}/OAISharedPodcast.cpp \
+    $${PWD}/OAISharedUser.cpp \
+    $${PWD}/OAITag.cpp \
+    $${PWD}/OAIUser.cpp \
+    $${PWD}/OAIUserInviteParam.cpp \
+    $${PWD}/OAIVideoArticle.cpp \
+    $${PWD}/OAIVideoArticle_user.cpp \
+    $${PWD}/OAI_api_pages_post_request.cpp \
+# APIs
+    $${PWD}/OAIArticlesApi.cpp \
+    $${PWD}/OAICommentsApi.cpp \
+    $${PWD}/OAIDisplayAdsApi.cpp \
+    $${PWD}/OAIFollowedTagsApi.cpp \
+    $${PWD}/OAIFollowersApi.cpp \
+    $${PWD}/OAIOrganizationsApi.cpp \
+    $${PWD}/OAIPagesApi.cpp \
+    $${PWD}/OAIPodcastEpisodesApi.cpp \
+    $${PWD}/OAIProfileImagesApi.cpp \
+    $${PWD}/OAIReactionsApi.cpp \
+    $${PWD}/OAIReadinglistApi.cpp \
+    $${PWD}/OAITagsApi.cpp \
+    $${PWD}/OAIUsersApi.cpp \
+    $${PWD}/OAIVideosApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

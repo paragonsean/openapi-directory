@@ -1,0 +1,2203 @@
+openapi: 3.0.0
+info:
+  title: Remote Settings PROD
+  version: "1.22"
+  x-apisguru-categories:
+  - cloud
+  x-logo:
+    backgroundColor: '#FFFFFF'
+    url: https://cloud.githubusercontent.com/assets/21603/24036792/23286ed2-0af3-11e7-9353-7a772636dee1.png
+  x-origin:
+  - format: openapi
+    url: https://firefox.settings.services.mozilla.com/v1/__api__
+    version: "3.0"
+  x-providerName: mozilla.com
+  x-serviceName: kinto
+servers:
+- url: https://firefox.settings.services.mozilla.com/v1
+tags:
+- name: Collection-changeset
+- name: Changess
+- name: Attachment
+- name: Batch
+- name: Utilities
+- name: Buckets
+- name: Collections
+- name: Groups
+- name: Records
+paths:
+  /:
+    get:
+      operationId: server_info
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                additionalProperties: {}
+                title: SchemaNode
+                type: object
+          description: Return information about the running Instance.
+      security: []
+      tags:
+      - Utilities
+      x-openapi-router-controller: openapi_server.controllers.utilities_controller
+  /__api__:
+    get:
+      operationId: get_openapi_spec
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                additionalProperties: {}
+                title: SchemaNode
+                type: object
+          description: Return an OpenAPI description of the running instance.
+      security: []
+      tags:
+      - Utilities
+      x-openapi-router-controller: openapi_server.controllers.utilities_controller
+  /__heartbeat__:
+    get:
+      operationId: heartbeat
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                additionalProperties: {}
+                title: SchemaNode
+                type: object
+          description: Server is working properly.
+        "503":
+          content:
+            application/json:
+              schema:
+                additionalProperties: {}
+                title: SchemaNode
+                type: object
+          description: One or more subsystems failing.
+      security: []
+      tags:
+      - Utilities
+      x-openapi-router-controller: openapi_server.controllers.utilities_controller
+  /__lbheartbeat__:
+    get:
+      operationId: lbheartbeat
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                title: SchemaNode
+                type: object
+          description: Returned if server is reachable.
+      security: []
+      tags:
+      - Utilities
+      x-openapi-router-controller: openapi_server.controllers.utilities_controller
+  /__user_data__: {}
+  /__user_data__/{principal}: {}
+  /__version__:
+    get:
+      operationId: version
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                additionalProperties: {}
+                title: SchemaNode
+                type: object
+          description: Return the running Instance version information.
+      security: []
+      tags:
+      - Utilities
+      x-openapi-router-controller: openapi_server.controllers.utilities_controller
+  /batch:
+    post:
+      operationId: batch
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BatchPayloadSchema'
+        required: true
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BatchResponseBodySchema'
+          description: Return a list of operation responses.
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorSchema'
+          description: The request was badly formatted.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorSchema'
+          description: an unknown error occurred.
+      security: []
+      tags:
+      - Batch
+      x-openapi-router-controller: openapi_server.controllers.batch_controller
+      x-codegen-request-body-name: body
+  /buckets:
+    get:
+      operationId: get_buckets
+      parameters:
+      - explode: true
+        in: query
+        name: _limit
+        required: false
+        schema:
+          maximum: 9223372036854776000
+          minimum: 0
+          type: integer
+        style: form
+      - explode: false
+        in: query
+        name: _sort
+        required: false
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - explode: true
+        in: query
+        name: _token
+        required: false
+        schema:
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: _since
+        required: false
+        schema:
+          maximum: 9223372036854776000
+          minimum: 0
+          type: integer
+        style: form
+      - explode: true
+        in: query
+        name: _to
+        required: false
+        schema:
+          maximum: 9223372036854776000
+          minimum: 0
+          type: integer
+        style: form
+      - explode: true
+        in: query
+        name: _before
+        required: false
+        schema:
+          maximum: 9223372036854776000
+          minimum: 0
+          type: integer
+        style: form
+      - explode: true
+        in: query
+        name: id
+        required: false
+        schema:
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: last_modified
+        required: false
+        schema:
+          maximum: 9223372036854776000
+          minimum: 0
+          type: integer
+        style: form
+      - explode: false
+        in: query
+        name: _fields
+        required: false
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - explode: false
+        in: header
+        name: If-Match
+        required: false
+        schema:
+          pattern: "^\"([0-9]+?)\"$|\\*"
+          type: string
+        style: simple
+      - explode: false
+        in: header
+        name: If-None-Match
+        required: false
+        schema:
+          pattern: "^\"([0-9]+?)\"$|\\*"
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Schema'
+          description: Return a list of matching objects.
+          headers:
+            Etag:
+              explode: false
+              schema:
+                pattern: "^\"([0-9]+?)\"$|\\*"
+                type: string
+              style: simple
+            Last-Modified:
+              explode: false
+              schema:
+                type: string
+              style: simple
+        "304":
+          description: Reponse has not changed since value in If-None-Match header
+          headers:
+            Etag:
+              explode: false
+              schema:
+                pattern: "^\"([0-9]+?)\"$|\\*"
+                type: string
+              style: simple
+            Last-Modified:
+              explode: false
+              schema:
+                type: string
+              style: simple
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorSchema'
+          description: The request is invalid.
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorSchema'
+          description: The request is missing authentication headers.
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorSchema'
+          description: "The user is not allowed to perform the operation, or the resource\
+            \ is not accessible."
+        "406":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorSchema'
+          description: The client doesn't accept supported responses Content-Type.
+        "412":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorSchema'
+          description: Object was changed or deleted since value in `If-Match` header.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorSchema'
+          description: Unexpected error.
+      security: []
+      tags:
+      - Buckets
+      x-openapi-router-controller: openapi_server.controllers.buckets_controller
+  /buckets/monitor/collections/changes/records:
+    get:
+      operationId: get_changess
+      parameters:
+      - explode: true
+        in: query
+        name: _limit
+        required: false
+        schema:
+          maximum: 9223372036854776000
+          minimum: 0
+          type: integer
+        style: form
+      - explode: false
+        in: query
+        name: _sort
+        required: false
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - explode: true
+        in: query
+        name: _token
+        required: false
+        schema:
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: _since
+        required: false
+        schema:
+          maximum: 9223372036854776000
+          minimum: 0
+          type: integer
+        style: form
+      - explode: true
+        in: query
+        name: _to
+        required: false
+        schema:
+          maximum: 9223372036854776000
+          minimum: 0
+          type: integer
+        style: form
+      - explode: true
+        in: query
+        name: _before
+        required: false
+        schema:
+          maximum: 9223372036854776000
+          minimum: 0
+          type: integer
+        style: form
+      - explode: true
+        in: query
+        name: id
+        required: false
+        schema:
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: last_modified
+        required: false
+        schema:
+          maximum: 9223372036854776000
+          minimum: 0
+          type: integer
+        style: form
+      - explode: false
+        in: query
+        name: _fields
+        required: false
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - explode: false
+        in: header
+        name: If-Match
+        required: false
+        schema:
+          pattern: "^\"([0-9]+?)\"$|\\*"
+          type: string
+        style: simple
+      - explode: false
+        in: header
+        name: If-None-Match
+        required: false
+        schema:
+          pattern: "^\"([0-9]+?)\"$|\\*"
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Schema_1'
+          description: Return a list of matching objects.
+          headers:
+            Etag:
+              explode: false
+              schema:
+                pattern: "^\"([0-9]+?)\"$|\\*"
+                type: string
+              style: simple
+            Last-Modified:
+              explode: false
+              schema:
+                type: string
+              style: simple
+        "304":
+          description: Reponse has not changed since value in If-None-Match header
+          headers:
+            Etag:
+              explode: false
+              schema:
+                pattern: "^\"([0-9]+?)\"$|\\*"
+                type: string
+              style: simple
+            Last-Modified:
+              explode: false
+              schema:
+                type: string
+              style: simple
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorSchema'
+          description: The request is invalid.
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorSchema'
+          description: The request is missing authentication headers.
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorSchema'
+          description: "The user is not allowed to perform the operation, or the resource\
+            \ is not accessible."
+        "406":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorSchema'
+          description: The client doesn't accept supported responses Content-Type.
+        "412":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorSchema'
+          description: Object was changed or deleted since value in `If-Match` header.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorSchema'
+          description: Unexpected error.
+      security: []
+      tags:
+      - Changess
+      x-openapi-router-controller: openapi_server.controllers.changess_controller
+  /buckets/{bid}/collections/{cid}/changeset:
+    get:
+      operationId: get_collection_changeset
+      parameters:
+      - explode: false
+        in: path
+        name: bid
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: cid
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: true
+        in: query
+        name: _since
+        required: false
+        schema:
+          pattern: "^\"([0-9]+?)\"$"
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: _expected
+        required: true
+        schema:
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: _limit
+        required: false
+        schema:
+          type: integer
+        style: form
+      - explode: true
+        in: query
+        name: bucket
+        required: false
+        schema:
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: collection
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        default:
+          description: UNDOCUMENTED RESPONSE
+      security: []
+      tags:
+      - Collection-changeset
+      x-openapi-router-controller: openapi_server.controllers.collection_changeset_controller
+  /buckets/{bucket_id}/collections:
+    get:
+      operationId: get_collections
+      parameters:
+      - explode: false
+        in: path
+        name: bucket_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: true
+        in: query
+        name: _limit
+        required: false
+        schema:
+          maximum: 9223372036854776000
+          minimum: 0
+          type: integer
+        style: form
+      - explode: false
+        in: query
+        name: _sort
+        required: false
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - explode: true
+        in: query
+        name: _token
+        required: false
+        schema:
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: _since
+        required: false
+        schema:
+          maximum: 9223372036854776000
+          minimum: 0
+          type: integer
+        style: form
+      - explode: true
+        in: query
+        name: _to
+        required: false
+        schema:
+          maximum: 9223372036854776000
+          minimum: 0
+          type: integer
+        style: form
+      - explode: true
+        in: query
+        name: _before
+        required: false
+        schema:
+          maximum: 9223372036854776000
+          minimum: 0
+          type: integer
+        style: form
+      - explode: true
+        in: query
+        name: id
+        required: false
+        schema:
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: last_modified
+        required: false
+        schema:
+          maximum: 9223372036854776000
+          minimum: 0
+          type: integer
+        style: form
+      - explode: false
+        in: query
+        name: _fields
+        required: false
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - explode: false
+        in: header
+        name: If-Match
+        required: false
+        schema:
+          pattern: "^\"([0-9]+?)\"$|\\*"
+          type: string
+        style: simple
+      - explode: false
+        in: header
+        name: If-None-Match
+        required: false
+        schema:
+          pattern: "^\"([0-9]+?)\"$|\\*"
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Schema_2'
+          description: Return a list of matching objects.
+          headers:
+            Etag:
+              explode: false
+              schema:
+                pattern: "^\"([0-9]+?)\"$|\\*"
+                type: string
+              style: simple
+            Last-Modified:
+              explode: false
+              schema:
+                type: string
+              style: simple
+        "304":
+          description: Reponse has not changed since value in If-None-Match header
+          headers:
+            Etag:
+              explode: false
+              schema:
+                pattern: "^\"([0-9]+?)\"$|\\*"
+                type: string
+              style: simple
+            Last-Modified:
+              explode: false
+              schema:
+                type: string
+              style: simple
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorSchema'
+          description: The request is invalid.
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorSchema'
+          description: The request is missing authentication headers.
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorSchema'
+          description: "The user is not allowed to perform the operation, or the resource\
+            \ is not accessible."
+        "406":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorSchema'
+          description: The client doesn't accept supported responses Content-Type.
+        "412":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorSchema'
+          description: Object was changed or deleted since value in `If-Match` header.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorSchema'
+          description: Unexpected error.
+      security: []
+      tags:
+      - Collections
+      x-openapi-router-controller: openapi_server.controllers.collections_controller
+  /buckets/{bucket_id}/collections/{collection_id}/records:
+    get:
+      operationId: get_records
+      parameters:
+      - explode: false
+        in: path
+        name: bucket_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: collection_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: true
+        in: query
+        name: _limit
+        required: false
+        schema:
+          maximum: 9223372036854776000
+          minimum: 0
+          type: integer
+        style: form
+      - explode: false
+        in: query
+        name: _sort
+        required: false
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - explode: true
+        in: query
+        name: _token
+        required: false
+        schema:
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: _since
+        required: false
+        schema:
+          maximum: 9223372036854776000
+          minimum: 0
+          type: integer
+        style: form
+      - explode: true
+        in: query
+        name: _to
+        required: false
+        schema:
+          maximum: 9223372036854776000
+          minimum: 0
+          type: integer
+        style: form
+      - explode: true
+        in: query
+        name: _before
+        required: false
+        schema:
+          maximum: 9223372036854776000
+          minimum: 0
+          type: integer
+        style: form
+      - explode: true
+        in: query
+        name: id
+        required: false
+        schema:
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: last_modified
+        required: false
+        schema:
+          maximum: 9223372036854776000
+          minimum: 0
+          type: integer
+        style: form
+      - explode: false
+        in: query
+        name: _fields
+        required: false
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - explode: false
+        in: header
+        name: If-Match
+        required: false
+        schema:
+          pattern: "^\"([0-9]+?)\"$|\\*"
+          type: string
+        style: simple
+      - explode: false
+        in: header
+        name: If-None-Match
+        required: false
+        schema:
+          pattern: "^\"([0-9]+?)\"$|\\*"
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Schema_3'
+          description: Return a list of matching objects.
+          headers:
+            Etag:
+              explode: false
+              schema:
+                pattern: "^\"([0-9]+?)\"$|\\*"
+                type: string
+              style: simple
+            Last-Modified:
+              explode: false
+              schema:
+                type: string
+              style: simple
+        "304":
+          description: Reponse has not changed since value in If-None-Match header
+          headers:
+            Etag:
+              explode: false
+              schema:
+                pattern: "^\"([0-9]+?)\"$|\\*"
+                type: string
+              style: simple
+            Last-Modified:
+              explode: false
+              schema:
+                type: string
+              style: simple
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorSchema'
+          description: The request is invalid.
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorSchema'
+          description: The request is missing authentication headers.
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorSchema'
+          description: "The user is not allowed to perform the operation, or the resource\
+            \ is not accessible."
+        "406":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorSchema'
+          description: The client doesn't accept supported responses Content-Type.
+        "412":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorSchema'
+          description: Object was changed or deleted since value in `If-Match` header.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorSchema'
+          description: Unexpected error.
+      security: []
+      tags:
+      - Records
+      x-openapi-router-controller: openapi_server.controllers.records_controller
+  /buckets/{bucket_id}/collections/{collection_id}/records/{id}:
+    get:
+      operationId: get_record
+      parameters:
+      - explode: false
+        in: path
+        name: bucket_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: collection_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: query
+        name: _fields
+        required: false
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - explode: false
+        in: header
+        name: If-Match
+        required: false
+        schema:
+          pattern: "^\"([0-9]+?)\"$|\\*"
+          type: string
+        style: simple
+      - explode: false
+        in: header
+        name: If-None-Match
+        required: false
+        schema:
+          pattern: "^\"([0-9]+?)\"$|\\*"
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObjectSchema'
+          description: Return the target object.
+          headers:
+            Etag:
+              explode: false
+              schema:
+                pattern: "^\"([0-9]+?)\"$|\\*"
+                type: string
+              style: simple
+            Last-Modified:
+              explode: false
+              schema:
+                type: string
+              style: simple
+        "304":
+          description: Reponse has not changed since value in If-None-Match header
+          headers:
+            Etag:
+              explode: false
+              schema:
+                pattern: "^\"([0-9]+?)\"$|\\*"
+                type: string
+              style: simple
+            Last-Modified:
+              explode: false
+              schema:
+                type: string
+              style: simple
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorSchema'
+          description: The request is invalid.
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorSchema'
+          description: The request is missing authentication headers.
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorSchema'
+          description: "The user is not allowed to perform the operation, or the resource\
+            \ is not accessible."
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorSchema'
+          description: The object does not exist or was deleted.
+        "406":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorSchema'
+          description: The client doesn't accept supported responses Content-Type.
+        "412":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorSchema'
+          description: Object was changed or deleted since value in `If-Match` header.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorSchema'
+          description: Unexpected error.
+      security: []
+      tags:
+      - Records
+      x-openapi-router-controller: openapi_server.controllers.records_controller
+  /buckets/{bucket_id}/collections/{collection_id}/records/{id}/attachment:
+    delete:
+      operationId: delete_attachment
+      parameters:
+      - explode: false
+        in: path
+        name: bucket_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: collection_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        default:
+          description: UNDOCUMENTED RESPONSE
+      security: []
+      tags:
+      - Attachment
+      x-openapi-router-controller: openapi_server.controllers.attachment_controller
+    post:
+      operationId: create_attachment
+      parameters:
+      - explode: false
+        in: path
+        name: bucket_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: collection_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        default:
+          description: UNDOCUMENTED RESPONSE
+      security: []
+      tags:
+      - Attachment
+      x-openapi-router-controller: openapi_server.controllers.attachment_controller
+  /buckets/{bucket_id}/collections/{id}:
+    get:
+      operationId: get_collection
+      parameters:
+      - explode: false
+        in: path
+        name: bucket_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: query
+        name: _fields
+        required: false
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - explode: false
+        in: header
+        name: If-Match
+        required: false
+        schema:
+          pattern: "^\"([0-9]+?)\"$|\\*"
+          type: string
+        style: simple
+      - explode: false
+        in: header
+        name: If-None-Match
+        required: false
+        schema:
+          pattern: "^\"([0-9]+?)\"$|\\*"
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObjectSchema_1'
+          description: Return the target object.
+          headers:
+            Etag:
+              explode: false
+              schema:
+                pattern: "^\"([0-9]+?)\"$|\\*"
+                type: string
+              style: simple
+            Last-Modified:
+              explode: false
+              schema:
+                type: string
+              style: simple
+        "304":
+          description: Reponse has not changed since value in If-None-Match header
+          headers:
+            Etag:
+              explode: false
+              schema:
+                pattern: "^\"([0-9]+?)\"$|\\*"
+                type: string
+              style: simple
+            Last-Modified:
+              explode: false
+              schema:
+                type: string
+              style: simple
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorSchema'
+          description: The request is invalid.
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorSchema'
+          description: The request is missing authentication headers.
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorSchema'
+          description: "The user is not allowed to perform the operation, or the resource\
+            \ is not accessible."
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorSchema'
+          description: The object does not exist or was deleted.
+        "406":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorSchema'
+          description: The client doesn't accept supported responses Content-Type.
+        "412":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorSchema'
+          description: Object was changed or deleted since value in `If-Match` header.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorSchema'
+          description: Unexpected error.
+      security: []
+      tags:
+      - Collections
+      x-openapi-router-controller: openapi_server.controllers.collections_controller
+  /buckets/{bucket_id}/groups:
+    get:
+      operationId: get_groups
+      parameters:
+      - explode: false
+        in: path
+        name: bucket_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: true
+        in: query
+        name: _limit
+        required: false
+        schema:
+          maximum: 9223372036854776000
+          minimum: 0
+          type: integer
+        style: form
+      - explode: false
+        in: query
+        name: _sort
+        required: false
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - explode: true
+        in: query
+        name: _token
+        required: false
+        schema:
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: _since
+        required: false
+        schema:
+          maximum: 9223372036854776000
+          minimum: 0
+          type: integer
+        style: form
+      - explode: true
+        in: query
+        name: _to
+        required: false
+        schema:
+          maximum: 9223372036854776000
+          minimum: 0
+          type: integer
+        style: form
+      - explode: true
+        in: query
+        name: _before
+        required: false
+        schema:
+          maximum: 9223372036854776000
+          minimum: 0
+          type: integer
+        style: form
+      - explode: true
+        in: query
+        name: id
+        required: false
+        schema:
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: last_modified
+        required: false
+        schema:
+          maximum: 9223372036854776000
+          minimum: 0
+          type: integer
+        style: form
+      - explode: false
+        in: query
+        name: _fields
+        required: false
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - explode: false
+        in: header
+        name: If-Match
+        required: false
+        schema:
+          pattern: "^\"([0-9]+?)\"$|\\*"
+          type: string
+        style: simple
+      - explode: false
+        in: header
+        name: If-None-Match
+        required: false
+        schema:
+          pattern: "^\"([0-9]+?)\"$|\\*"
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Schema_4'
+          description: Return a list of matching objects.
+          headers:
+            Etag:
+              explode: false
+              schema:
+                pattern: "^\"([0-9]+?)\"$|\\*"
+                type: string
+              style: simple
+            Last-Modified:
+              explode: false
+              schema:
+                type: string
+              style: simple
+        "304":
+          description: Reponse has not changed since value in If-None-Match header
+          headers:
+            Etag:
+              explode: false
+              schema:
+                pattern: "^\"([0-9]+?)\"$|\\*"
+                type: string
+              style: simple
+            Last-Modified:
+              explode: false
+              schema:
+                type: string
+              style: simple
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorSchema'
+          description: The request is invalid.
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorSchema'
+          description: The request is missing authentication headers.
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorSchema'
+          description: "The user is not allowed to perform the operation, or the resource\
+            \ is not accessible."
+        "406":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorSchema'
+          description: The client doesn't accept supported responses Content-Type.
+        "412":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorSchema'
+          description: Object was changed or deleted since value in `If-Match` header.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorSchema'
+          description: Unexpected error.
+      security: []
+      tags:
+      - Groups
+      x-openapi-router-controller: openapi_server.controllers.groups_controller
+  /buckets/{bucket_id}/groups/{id}:
+    get:
+      operationId: get_group
+      parameters:
+      - explode: false
+        in: path
+        name: bucket_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: query
+        name: _fields
+        required: false
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - explode: false
+        in: header
+        name: If-Match
+        required: false
+        schema:
+          pattern: "^\"([0-9]+?)\"$|\\*"
+          type: string
+        style: simple
+      - explode: false
+        in: header
+        name: If-None-Match
+        required: false
+        schema:
+          pattern: "^\"([0-9]+?)\"$|\\*"
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObjectSchema_2'
+          description: Return the target object.
+          headers:
+            Etag:
+              explode: false
+              schema:
+                pattern: "^\"([0-9]+?)\"$|\\*"
+                type: string
+              style: simple
+            Last-Modified:
+              explode: false
+              schema:
+                type: string
+              style: simple
+        "304":
+          description: Reponse has not changed since value in If-None-Match header
+          headers:
+            Etag:
+              explode: false
+              schema:
+                pattern: "^\"([0-9]+?)\"$|\\*"
+                type: string
+              style: simple
+            Last-Modified:
+              explode: false
+              schema:
+                type: string
+              style: simple
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorSchema'
+          description: The request is invalid.
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorSchema'
+          description: The request is missing authentication headers.
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorSchema'
+          description: "The user is not allowed to perform the operation, or the resource\
+            \ is not accessible."
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorSchema'
+          description: The object does not exist or was deleted.
+        "406":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorSchema'
+          description: The client doesn't accept supported responses Content-Type.
+        "412":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorSchema'
+          description: Object was changed or deleted since value in `If-Match` header.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorSchema'
+          description: Unexpected error.
+      security: []
+      tags:
+      - Groups
+      x-openapi-router-controller: openapi_server.controllers.groups_controller
+  /buckets/{id}:
+    get:
+      operationId: get_bucket
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: query
+        name: _fields
+        required: false
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - explode: false
+        in: header
+        name: If-Match
+        required: false
+        schema:
+          pattern: "^\"([0-9]+?)\"$|\\*"
+          type: string
+        style: simple
+      - explode: false
+        in: header
+        name: If-None-Match
+        required: false
+        schema:
+          pattern: "^\"([0-9]+?)\"$|\\*"
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObjectSchema_3'
+          description: Return the target object.
+          headers:
+            Etag:
+              explode: false
+              schema:
+                pattern: "^\"([0-9]+?)\"$|\\*"
+                type: string
+              style: simple
+            Last-Modified:
+              explode: false
+              schema:
+                type: string
+              style: simple
+        "304":
+          description: Reponse has not changed since value in If-None-Match header
+          headers:
+            Etag:
+              explode: false
+              schema:
+                pattern: "^\"([0-9]+?)\"$|\\*"
+                type: string
+              style: simple
+            Last-Modified:
+              explode: false
+              schema:
+                type: string
+              style: simple
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorSchema'
+          description: The request is invalid.
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorSchema'
+          description: The request is missing authentication headers.
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorSchema'
+          description: "The user is not allowed to perform the operation, or the resource\
+            \ is not accessible."
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorSchema'
+          description: The object does not exist or was deleted.
+        "406":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorSchema'
+          description: The client doesn't accept supported responses Content-Type.
+        "412":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorSchema'
+          description: Object was changed or deleted since value in `If-Match` header.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorSchema'
+          description: Unexpected error.
+      security: []
+      tags:
+      - Buckets
+      x-openapi-router-controller: openapi_server.controllers.buckets_controller
+  /contribute.json:
+    get:
+      operationId: contribute
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                additionalProperties: {}
+                title: SchemaNode
+                type: object
+          description: Return open source contributing information.
+      security: []
+      tags:
+      - Utilities
+      x-openapi-router-controller: openapi_server.controllers.utilities_controller
+components:
+  schemas:
+    BatchResponseBodySchema:
+      example:
+        responses:
+        - headers:
+            key: ""
+          path: path
+          body:
+            key: ""
+          status: 0
+        - headers:
+            key: ""
+          path: path
+          body:
+            key: ""
+          status: 0
+      properties:
+        responses:
+          items:
+            $ref: '#/components/schemas/Responses_inner'
+          title: Responses
+          type: array
+      required:
+      - responses
+      title: BatchResponseBodySchema
+      type: object
+    ObjectSchema_1:
+      example:
+        data:
+          schema:
+            key: ""
+          cache_expires: 0
+        permissions:
+          read:
+          - read
+          - read
+          record:create:
+          - record:create
+          - record:create
+          write:
+          - write
+          - write
+      properties:
+        data:
+          $ref: '#/components/schemas/Data_2'
+        permissions:
+          $ref: '#/components/schemas/Permissions_1'
+      title: ObjectSchema
+      type: object
+    ObjectSchema_2:
+      example:
+        data:
+          members:
+          - members
+          - members
+        permissions:
+          read:
+          - read
+          - read
+          write:
+          - write
+          - write
+      properties:
+        data:
+          $ref: '#/components/schemas/Data_3'
+        permissions:
+          $ref: '#/components/schemas/Permissions'
+      title: ObjectSchema
+      type: object
+    Responses_inner:
+      example:
+        headers:
+          key: ""
+        path: path
+        body:
+          key: ""
+        status: 0
+      properties:
+        body:
+          additionalProperties: {}
+          title: Body
+          type: object
+        headers:
+          additionalProperties: {}
+          title: Headers
+          type: object
+        path:
+          title: Path
+          type: string
+        status:
+          title: Status
+          type: integer
+      required:
+      - path
+      - status
+      title: Responses_inner
+      type: object
+    ObjectSchema_3:
+      example:
+        data:
+          group:schema:
+            key: ""
+          collection:schema:
+            key: ""
+          record:schema:
+            key: ""
+        permissions:
+          read:
+          - read
+          - read
+          group:create:
+          - group:create
+          - group:create
+          collection:create:
+          - collection:create
+          - collection:create
+          write:
+          - write
+          - write
+      properties:
+        data:
+          $ref: '#/components/schemas/Data'
+        permissions:
+          $ref: '#/components/schemas/Permissions_2'
+      title: ObjectSchema
+      type: object
+    Schema:
+      example:
+        data:
+        - group:schema:
+            key: ""
+          collection:schema:
+            key: ""
+          record:schema:
+            key: ""
+        - group:schema:
+            key: ""
+          collection:schema:
+            key: ""
+          record:schema:
+            key: ""
+      properties:
+        data:
+          default: []
+          items:
+            $ref: '#/components/schemas/Data'
+          title: data
+          type: array
+      title: Schema
+      type: object
+    Data_3:
+      additionalProperties: {}
+      example:
+        members:
+        - members
+        - members
+      properties:
+        members:
+          default: []
+          items:
+            type: string
+          title: Members
+          type: array
+      title: Data
+      type: object
+    ErrorSchema:
+      example:
+        errno: 1
+        code: 6
+        details: ""
+        error: error
+        message: message
+        info: info
+      properties:
+        code:
+          title: Code
+          type: integer
+        details:
+          title: details
+        errno:
+          title: Errno
+          type: integer
+        error:
+          title: Error
+          type: string
+        info:
+          title: Info
+          type: string
+        message:
+          title: Message
+          type: string
+      required:
+      - code
+      - errno
+      - error
+      title: ErrorSchema
+      type: object
+    Data:
+      additionalProperties: {}
+      example:
+        group:schema:
+          key: ""
+        collection:schema:
+          key: ""
+        record:schema:
+          key: ""
+      properties:
+        collection:schema:
+          additionalProperties: {}
+          type: object
+        group:schema:
+          additionalProperties: {}
+          type: object
+        record:schema:
+          additionalProperties: {}
+          type: object
+      title: Data
+      type: object
+    Data_1:
+      example:
+        bucket: bucket
+        host: host
+        collection: collection
+      properties:
+        bucket:
+          title: Bucket
+          type: string
+        collection:
+          title: Collection
+          type: string
+        host:
+          title: Host
+          type: string
+      required:
+      - bucket
+      - collection
+      - host
+      title: Data
+      type: object
+    Data_2:
+      additionalProperties: {}
+      example:
+        schema:
+          key: ""
+        cache_expires: 0
+      properties:
+        cache_expires:
+          title: Cache Expires
+          type: integer
+        schema:
+          additionalProperties: {}
+          title: Schema
+          type: object
+      title: Data
+      type: object
+    Schema_2:
+      example:
+        data:
+        - schema:
+            key: ""
+          cache_expires: 0
+        - schema:
+            key: ""
+          cache_expires: 0
+      properties:
+        data:
+          default: []
+          items:
+            $ref: '#/components/schemas/Data_2'
+          title: data
+          type: array
+      title: Schema
+      type: object
+    Permissions_2:
+      example:
+        read:
+        - read
+        - read
+        group:create:
+        - group:create
+        - group:create
+        collection:create:
+        - collection:create
+        - collection:create
+        write:
+        - write
+        - write
+      properties:
+        collection:create:
+          items:
+            type: string
+          title: Collection:Create
+          type: array
+        group:create:
+          items:
+            type: string
+          title: Group:Create
+          type: array
+        read:
+          items:
+            type: string
+          title: Read
+          type: array
+        write:
+          items:
+            type: string
+          title: Write
+          type: array
+      title: Permissions
+      type: object
+    Schema_3:
+      example:
+        data:
+        - key: ""
+        - key: ""
+      properties:
+        data:
+          default: []
+          items:
+            additionalProperties: {}
+            title: Data
+            type: object
+          title: data
+          type: array
+      title: Schema
+      type: object
+    Permissions_1:
+      example:
+        read:
+        - read
+        - read
+        record:create:
+        - record:create
+        - record:create
+        write:
+        - write
+        - write
+      properties:
+        read:
+          items:
+            type: string
+          title: Read
+          type: array
+        record:create:
+          items:
+            type: string
+          title: Record:Create
+          type: array
+        write:
+          items:
+            type: string
+          title: Write
+          type: array
+      title: Permissions
+      type: object
+    Schema_4:
+      example:
+        data:
+        - members:
+          - members
+          - members
+        - members:
+          - members
+          - members
+      properties:
+        data:
+          default: []
+          items:
+            $ref: '#/components/schemas/Data_3'
+          title: data
+          type: array
+      title: Schema
+      type: object
+    Defaults:
+      example:
+        headers:
+          key: ""
+        path: path
+        method: GET
+        body:
+          key: ""
+      properties:
+        body:
+          additionalProperties: {}
+          title: Body
+          type: object
+        headers:
+          additionalProperties: {}
+          title: Headers
+          type: object
+        method:
+          enum:
+          - GET
+          - HEAD
+          - DELETE
+          - TRACE
+          - POST
+          - PUT
+          - PATCH
+          title: Method
+          type: string
+        path:
+          pattern: ^/
+          title: Path
+          type: string
+      title: Defaults
+      type: object
+    Requests_inner:
+      example:
+        headers:
+          key: ""
+        path: path
+        method: GET
+        body:
+          key: ""
+      properties:
+        body:
+          additionalProperties: {}
+          title: Body
+          type: object
+        headers:
+          additionalProperties: {}
+          title: Headers
+          type: object
+        method:
+          enum:
+          - GET
+          - HEAD
+          - DELETE
+          - TRACE
+          - POST
+          - PUT
+          - PATCH
+          title: Method
+          type: string
+        path:
+          pattern: ^/
+          title: Path
+          type: string
+      required:
+      - path
+      title: Requests_inner
+      type: object
+    ObjectSchema:
+      example:
+        data:
+          key: ""
+        permissions:
+          read:
+          - read
+          - read
+          write:
+          - write
+          - write
+      properties:
+        data:
+          additionalProperties: {}
+          title: Data
+          type: object
+        permissions:
+          $ref: '#/components/schemas/Permissions'
+      title: ObjectSchema
+      type: object
+    Schema_1:
+      example:
+        data:
+        - bucket: bucket
+          host: host
+          collection: collection
+        - bucket: bucket
+          host: host
+          collection: collection
+      properties:
+        data:
+          default: []
+          items:
+            $ref: '#/components/schemas/Data_1'
+          title: data
+          type: array
+      title: Schema
+      type: object
+    Permissions:
+      example:
+        read:
+        - read
+        - read
+        write:
+        - write
+        - write
+      properties:
+        read:
+          items:
+            type: string
+          title: Read
+          type: array
+        write:
+          items:
+            type: string
+          title: Write
+          type: array
+      title: Permissions
+      type: object
+    BatchPayloadSchema:
+      example:
+        defaults:
+          headers:
+            key: ""
+          path: path
+          method: GET
+          body:
+            key: ""
+        requests:
+        - headers:
+            key: ""
+          path: path
+          method: GET
+          body:
+            key: ""
+        - headers:
+            key: ""
+          path: path
+          method: GET
+          body:
+            key: ""
+      properties:
+        defaults:
+          $ref: '#/components/schemas/Defaults'
+        requests:
+          items:
+            $ref: '#/components/schemas/Requests_inner'
+          title: Requests
+          type: array
+      required:
+      - requests
+      title: BatchPayloadSchema
+      type: object

@@ -1,0 +1,85 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIGetNumberInsightAdvanced_200_response.h \
+    $${PWD}/OAIGetNumberInsightAsync_200_response.h \
+    $${PWD}/OAIGetNumberInsightStandard_200_response.h \
+    $${PWD}/OAINiAsyncResponse.h \
+    $${PWD}/OAINiBasicStatus.h \
+    $${PWD}/OAINiCallerIdentity.h \
+    $${PWD}/OAINiCurrentCarrierProperties.h \
+    $${PWD}/OAINiInitialCarrierProperties.h \
+    $${PWD}/OAINiRealtimeData.h \
+    $${PWD}/OAINiResponseAsync.h \
+    $${PWD}/OAINiResponseJsonAdvancedAsync.h \
+    $${PWD}/OAINiResponseJsonAdvancedRoamingUnknown.h \
+    $${PWD}/OAINiResponseJsonAdvancedSync.h \
+    $${PWD}/OAINiResponseJsonBasic.h \
+    $${PWD}/OAINiResponseJsonStandard.h \
+    $${PWD}/OAINiResponseJsonStandardRoamingUnknown.h \
+    $${PWD}/OAINiResponseXmlAdvanced.h \
+    $${PWD}/OAINiResponseXmlAdvanced_caller_identity.h \
+    $${PWD}/OAINiResponseXmlAdvanced_error.h \
+    $${PWD}/OAINiResponseXmlAdvanced_local_number.h \
+    $${PWD}/OAINiResponseXmlAdvanced_lookup_outcome.h \
+    $${PWD}/OAINiResponseXmlAdvanced_ported.h \
+    $${PWD}/OAINiResponseXmlBasic.h \
+    $${PWD}/OAINiResponseXmlBasic_error.h \
+    $${PWD}/OAINiResponseXmlBasic_local_number.h \
+    $${PWD}/OAINiResponseXmlStandard.h \
+    $${PWD}/OAINiResponseXmlStandard_caller_identity.h \
+    $${PWD}/OAINiResponseXmlStandard_ported.h \
+    $${PWD}/OAINiRoaming.h \
+    $${PWD}/OAINiStandardAdvancedStatus.h \
+# APIs
+    $${PWD}/OAIDefaultApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIGetNumberInsightAdvanced_200_response.cpp \
+    $${PWD}/OAIGetNumberInsightAsync_200_response.cpp \
+    $${PWD}/OAIGetNumberInsightStandard_200_response.cpp \
+    $${PWD}/OAINiAsyncResponse.cpp \
+    $${PWD}/OAINiBasicStatus.cpp \
+    $${PWD}/OAINiCallerIdentity.cpp \
+    $${PWD}/OAINiCurrentCarrierProperties.cpp \
+    $${PWD}/OAINiInitialCarrierProperties.cpp \
+    $${PWD}/OAINiRealtimeData.cpp \
+    $${PWD}/OAINiResponseAsync.cpp \
+    $${PWD}/OAINiResponseJsonAdvancedAsync.cpp \
+    $${PWD}/OAINiResponseJsonAdvancedRoamingUnknown.cpp \
+    $${PWD}/OAINiResponseJsonAdvancedSync.cpp \
+    $${PWD}/OAINiResponseJsonBasic.cpp \
+    $${PWD}/OAINiResponseJsonStandard.cpp \
+    $${PWD}/OAINiResponseJsonStandardRoamingUnknown.cpp \
+    $${PWD}/OAINiResponseXmlAdvanced.cpp \
+    $${PWD}/OAINiResponseXmlAdvanced_caller_identity.cpp \
+    $${PWD}/OAINiResponseXmlAdvanced_error.cpp \
+    $${PWD}/OAINiResponseXmlAdvanced_local_number.cpp \
+    $${PWD}/OAINiResponseXmlAdvanced_lookup_outcome.cpp \
+    $${PWD}/OAINiResponseXmlAdvanced_ported.cpp \
+    $${PWD}/OAINiResponseXmlBasic.cpp \
+    $${PWD}/OAINiResponseXmlBasic_error.cpp \
+    $${PWD}/OAINiResponseXmlBasic_local_number.cpp \
+    $${PWD}/OAINiResponseXmlStandard.cpp \
+    $${PWD}/OAINiResponseXmlStandard_caller_identity.cpp \
+    $${PWD}/OAINiResponseXmlStandard_ported.cpp \
+    $${PWD}/OAINiRoaming.cpp \
+    $${PWD}/OAINiStandardAdvancedStatus.cpp \
+# APIs
+    $${PWD}/OAIDefaultApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

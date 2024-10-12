@@ -1,0 +1,15 @@
+
+
+# Amount
+
+The currency and value of the item.
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**currency** | **String** | The three-letter ISO 4217 code representing the currency of the amount in the value field. Default: The currency of the authenticated user&#39;s country. For implementation help, refer to &lt;a href&#x3D;&#39;https://developer.ebay.com/api-docs/buy/deal/types/bas:CurrencyCodeEnum&#39;&gt;eBay API documentation&lt;/a&gt; |  [optional] |
+|**value** | **String** | The monetary value, in the currency specified by the currency field. |  [optional] |
+
+
+

@@ -1,0 +1,30 @@
+# coding: utf-8
+
+# import models into model package
+from openapi_server.models.attendee_by_group import AttendeeByGroup
+from openapi_server.models.attendee_by_meeting import AttendeeByMeeting
+from openapi_server.models.attendee_by_organizer import AttendeeByOrganizer
+from openapi_server.models.group import Group
+from openapi_server.models.historical_meeting import HistoricalMeeting
+from openapi_server.models.historical_meeting_by_group import HistoricalMeetingByGroup
+from openapi_server.models.history_meeting_by_group import HistoryMeetingByGroup
+from openapi_server.models.meeting_by_id import MeetingById
+from openapi_server.models.meeting_by_organizer import MeetingByOrganizer
+from openapi_server.models.meeting_created import MeetingCreated
+from openapi_server.models.meeting_history import MeetingHistory
+from openapi_server.models.meeting_req_create import MeetingReqCreate
+from openapi_server.models.meeting_req_update import MeetingReqUpdate
+from openapi_server.models.meeting_scheduled import MeetingScheduled
+from openapi_server.models.meeting_status import MeetingStatus
+from openapi_server.models.meeting_type import MeetingType
+from openapi_server.models.organizer import Organizer
+from openapi_server.models.organizer_by_group import OrganizerByGroup
+from openapi_server.models.organizer_req import OrganizerReq
+from openapi_server.models.organizer_short import OrganizerShort
+from openapi_server.models.organizer_status import OrganizerStatus
+from openapi_server.models.product import Product
+from openapi_server.models.scheduled_meeting_by_group import ScheduledMeetingByGroup
+from openapi_server.models.start_url import StartUrl
+from openapi_server.models.status import Status
+from openapi_server.models.upcoming_meeting import UpcomingMeeting
+from openapi_server.models.upcoming_meeting_by_group import UpcomingMeetingByGroup

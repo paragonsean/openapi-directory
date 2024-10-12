@@ -1,0 +1,5 @@
+# coding: utf-8
+
+# import models into model package
+from openapi_server.models.application_insights_component_web_test_location import ApplicationInsightsComponentWebTestLocation
+from openapi_server.models.application_insights_web_test_locations_list_result import ApplicationInsightsWebTestLocationsListResult

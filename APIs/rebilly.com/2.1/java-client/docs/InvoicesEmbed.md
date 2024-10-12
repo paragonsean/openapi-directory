@@ -1,0 +1,14 @@
+
+
+# InvoicesEmbed
+
+Invoices collection.
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**invoices** | [**List&lt;Invoice&gt;**](Invoice.md) |  |  [optional] |
+
+
+

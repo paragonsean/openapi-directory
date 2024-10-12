@@ -1,6 +1,0 @@
-# coding: utf-8
-
-# import models into model package
-from openapi_server.models.private_link_resource import PrivateLinkResource
-from openapi_server.models.private_link_resource_list_result import PrivateLinkResourceListResult
-from openapi_server.models.private_link_resource_properties import PrivateLinkResourceProperties

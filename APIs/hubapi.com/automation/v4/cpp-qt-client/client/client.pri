@@ -1,0 +1,83 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIBatchInputCallbackCompletionBatchRequest.h \
+    $${PWD}/OAICallbackCompletionBatchRequest.h \
+    $${PWD}/OAICallbackCompletionRequest.h \
+    $${PWD}/OAICollectionResponsePublicActionDefinitionForwardPaging.h \
+    $${PWD}/OAICollectionResponsePublicActionFunctionIdentifierNoPaging.h \
+    $${PWD}/OAICollectionResponsePublicActionRevisionForwardPaging.h \
+    $${PWD}/OAIError.h \
+    $${PWD}/OAIErrorDetail.h \
+    $${PWD}/OAIFieldTypeDefinition.h \
+    $${PWD}/OAIForwardPaging.h \
+    $${PWD}/OAIInputFieldDefinition.h \
+    $${PWD}/OAINextPage.h \
+    $${PWD}/OAIOption.h \
+    $${PWD}/OAIOutputFieldDefinition.h \
+    $${PWD}/OAIPublicActionDefinition.h \
+    $${PWD}/OAIPublicActionDefinitionEgg.h \
+    $${PWD}/OAIPublicActionDefinitionPatch.h \
+    $${PWD}/OAIPublicActionDefinition_inputFieldDependencies_inner.h \
+    $${PWD}/OAIPublicActionFunction.h \
+    $${PWD}/OAIPublicActionFunctionIdentifier.h \
+    $${PWD}/OAIPublicActionLabels.h \
+    $${PWD}/OAIPublicActionRevision.h \
+    $${PWD}/OAIPublicConditionalSingleFieldDependency.h \
+    $${PWD}/OAIPublicExecutionTranslationRule.h \
+    $${PWD}/OAIPublicObjectRequestOptions.h \
+    $${PWD}/OAIPublicSingleFieldDependency.h \
+# APIs
+    $${PWD}/OAICallbacksApi.h \
+    $${PWD}/OAIDefinitionsApi.h \
+    $${PWD}/OAIFunctionsApi.h \
+    $${PWD}/OAIRevisionsApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIBatchInputCallbackCompletionBatchRequest.cpp \
+    $${PWD}/OAICallbackCompletionBatchRequest.cpp \
+    $${PWD}/OAICallbackCompletionRequest.cpp \
+    $${PWD}/OAICollectionResponsePublicActionDefinitionForwardPaging.cpp \
+    $${PWD}/OAICollectionResponsePublicActionFunctionIdentifierNoPaging.cpp \
+    $${PWD}/OAICollectionResponsePublicActionRevisionForwardPaging.cpp \
+    $${PWD}/OAIError.cpp \
+    $${PWD}/OAIErrorDetail.cpp \
+    $${PWD}/OAIFieldTypeDefinition.cpp \
+    $${PWD}/OAIForwardPaging.cpp \
+    $${PWD}/OAIInputFieldDefinition.cpp \
+    $${PWD}/OAINextPage.cpp \
+    $${PWD}/OAIOption.cpp \
+    $${PWD}/OAIOutputFieldDefinition.cpp \
+    $${PWD}/OAIPublicActionDefinition.cpp \
+    $${PWD}/OAIPublicActionDefinitionEgg.cpp \
+    $${PWD}/OAIPublicActionDefinitionPatch.cpp \
+    $${PWD}/OAIPublicActionDefinition_inputFieldDependencies_inner.cpp \
+    $${PWD}/OAIPublicActionFunction.cpp \
+    $${PWD}/OAIPublicActionFunctionIdentifier.cpp \
+    $${PWD}/OAIPublicActionLabels.cpp \
+    $${PWD}/OAIPublicActionRevision.cpp \
+    $${PWD}/OAIPublicConditionalSingleFieldDependency.cpp \
+    $${PWD}/OAIPublicExecutionTranslationRule.cpp \
+    $${PWD}/OAIPublicObjectRequestOptions.cpp \
+    $${PWD}/OAIPublicSingleFieldDependency.cpp \
+# APIs
+    $${PWD}/OAICallbacksApi.cpp \
+    $${PWD}/OAIDefinitionsApi.cpp \
+    $${PWD}/OAIFunctionsApi.cpp \
+    $${PWD}/OAIRevisionsApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

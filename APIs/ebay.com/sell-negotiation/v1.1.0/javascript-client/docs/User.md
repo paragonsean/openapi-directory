@@ -1,0 +1,9 @@
+# NegotiationApi.User
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**maskedUsername** | **String** | The masked user name is a user name that has certain characters hidden for privacy of the user. | [optional] 
+
+

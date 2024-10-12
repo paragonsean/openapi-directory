@@ -1,0 +1,19 @@
+# AppStoreConnectApi.AppBetaTestersLinkagesRequestDataInner
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**id** | **String** |  | 
+**type** | **String** |  | 
+
+
+
+## Enum: TypeEnum
+
+
+* `betaTesters` (value: `"betaTesters"`)
+
+
+
+

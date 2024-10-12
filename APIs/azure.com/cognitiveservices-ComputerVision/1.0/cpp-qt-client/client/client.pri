@@ -1,0 +1,87 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIAdultInfo.h \
+    $${PWD}/OAIAnalyzeImage_request.h \
+    $${PWD}/OAICategory.h \
+    $${PWD}/OAICategoryDetail.h \
+    $${PWD}/OAICelebritiesModel.h \
+    $${PWD}/OAICelebrityResults.h \
+    $${PWD}/OAIColorInfo.h \
+    $${PWD}/OAIComputerVisionError.h \
+    $${PWD}/OAIDomainModelResults.h \
+    $${PWD}/OAIFaceDescription.h \
+    $${PWD}/OAIFaceRectangle.h \
+    $${PWD}/OAIImageAnalysis.h \
+    $${PWD}/OAIImageCaption.h \
+    $${PWD}/OAIImageDescription.h \
+    $${PWD}/OAIImageDescriptionDetails.h \
+    $${PWD}/OAIImageMetadata.h \
+    $${PWD}/OAIImageTag.h \
+    $${PWD}/OAIImageType.h \
+    $${PWD}/OAILandmarkResults.h \
+    $${PWD}/OAILandmarkResults_landmarks_inner.h \
+    $${PWD}/OAILine.h \
+    $${PWD}/OAIListModelsResult.h \
+    $${PWD}/OAIModelDescription.h \
+    $${PWD}/OAIOcrLine.h \
+    $${PWD}/OAIOcrRegion.h \
+    $${PWD}/OAIOcrResult.h \
+    $${PWD}/OAIOcrWord.h \
+    $${PWD}/OAIRecognitionResult.h \
+    $${PWD}/OAITagResult.h \
+    $${PWD}/OAITextOperationResult.h \
+    $${PWD}/OAIWord.h \
+# APIs
+    $${PWD}/OAIDefaultApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIAdultInfo.cpp \
+    $${PWD}/OAIAnalyzeImage_request.cpp \
+    $${PWD}/OAICategory.cpp \
+    $${PWD}/OAICategoryDetail.cpp \
+    $${PWD}/OAICelebritiesModel.cpp \
+    $${PWD}/OAICelebrityResults.cpp \
+    $${PWD}/OAIColorInfo.cpp \
+    $${PWD}/OAIComputerVisionError.cpp \
+    $${PWD}/OAIDomainModelResults.cpp \
+    $${PWD}/OAIFaceDescription.cpp \
+    $${PWD}/OAIFaceRectangle.cpp \
+    $${PWD}/OAIImageAnalysis.cpp \
+    $${PWD}/OAIImageCaption.cpp \
+    $${PWD}/OAIImageDescription.cpp \
+    $${PWD}/OAIImageDescriptionDetails.cpp \
+    $${PWD}/OAIImageMetadata.cpp \
+    $${PWD}/OAIImageTag.cpp \
+    $${PWD}/OAIImageType.cpp \
+    $${PWD}/OAILandmarkResults.cpp \
+    $${PWD}/OAILandmarkResults_landmarks_inner.cpp \
+    $${PWD}/OAILine.cpp \
+    $${PWD}/OAIListModelsResult.cpp \
+    $${PWD}/OAIModelDescription.cpp \
+    $${PWD}/OAIOcrLine.cpp \
+    $${PWD}/OAIOcrRegion.cpp \
+    $${PWD}/OAIOcrResult.cpp \
+    $${PWD}/OAIOcrWord.cpp \
+    $${PWD}/OAIRecognitionResult.cpp \
+    $${PWD}/OAITagResult.cpp \
+    $${PWD}/OAITextOperationResult.cpp \
+    $${PWD}/OAIWord.cpp \
+# APIs
+    $${PWD}/OAIDefaultApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

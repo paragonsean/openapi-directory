@@ -1,0 +1,16 @@
+# BioLinkApi.SimMatch
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**id** | **String** | ID or CURIE e.g. MGI:1201606 | 
+**label** | **String** | RDFS Label | [optional] 
+**taxon** | [**Node**](Node.md) | taxon | [optional] 
+**type** | **String** | node type (eg phenotype, disease) | [optional] 
+**pairwiseMatch** | [**[SimMatchAllOfPairwiseMatch]**](SimMatchAllOfPairwiseMatch.md) |  | [optional] 
+**rank** | **String** | rank | [optional] 
+**score** | **Number** | sim score | [optional] 
+**significance** | **String** | p-value | [optional] 
+
+

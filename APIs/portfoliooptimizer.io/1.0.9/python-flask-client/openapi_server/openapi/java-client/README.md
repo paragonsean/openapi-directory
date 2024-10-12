@@ -2,7 +2,7 @@
 
 Portfolio Optimizer
 - API version: 1.0.9
-  - Build date: 2024-10-12T07:52:30.576111-04:00[America/New_York]
+  - Build date: 2024-10-12T12:43:28.475174-04:00[America/New_York]
   - Generator version: 7.9.0
 
 Portfolio Optimizer is a [Web API](https://en.wikipedia.org/wiki/Web_API) to analyze and optimize investment portfolios (collection of financial assets such as stocks, bonds, ETFs, crypto-currencies) using modern portfolio theory algorithms (mean-variance, VaR, etc.).

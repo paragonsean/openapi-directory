@@ -1,0 +1,20 @@
+# HetznerCloudApi.CreatePlacementGroupRequest
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**labels** | **Object** | User-defined labels (key-value pairs) | [optional] 
+**name** | **String** | Name of the PlacementGroup | 
+**type** | **String** | Define the Placement Group Type. | 
+
+
+
+## Enum: TypeEnum
+
+
+* `spread` (value: `"spread"`)
+
+
+
+

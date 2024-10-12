@@ -1,0 +1,14 @@
+# LetMcApiV2FreeTier1.CompanyModel
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**companyName** | **String** | Company name | [optional] 
+**companyRegistration** | **String** | Company registration number | [optional] 
+**eTag** | **String** | A unique identifier defining the object and change revision. | [optional] 
+**marketingCompanyName** | **String** | Company Marketing Name | [optional] 
+**OID** | **String** | The unique Object ID (OID). | [optional] 
+**shortName** | **String** | The unique identifier assigned to the client | [optional] 
+
+

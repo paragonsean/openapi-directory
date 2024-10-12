@@ -1,0 +1,25 @@
+from typing import List, Dict
+from aiohttp import web
+
+from openapi_server.models.hpcer400_response import Hpcer400Response
+from openapi_server.models.hpcer401_response import Hpcer401Response
+from openapi_server.models.hpcer404_response import Hpcer404Response
+from openapi_server.models.hpcer500_response import Hpcer500Response
+from openapi_server.models.hpcer502_response import Hpcer502Response
+from openapi_server.models.hpcer503_response import Hpcer503Response
+from openapi_server.models.hpcer504_response import Hpcer504Response
+from openapi_server.models.hpcer_request import HpcerRequest
+from openapi_server import util
+
+
+async def hpcer(request: web.Request, body=None) -> web.Response:
+    """Class XII Passing Certificate
+
+    API to verify Class XII Passing Certificate.
+
+    :param body: Request format
+    :type body: dict | bytes
+
+    """
+    body = HpcerRequest.from_dict(body)
+    return web.Response(status=200)

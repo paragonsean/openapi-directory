@@ -1,0 +1,9 @@
+# DFlightApi.WxRouteResponse
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**found** | **Object** |  | 
+
+

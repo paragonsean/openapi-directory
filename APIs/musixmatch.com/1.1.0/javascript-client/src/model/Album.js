@@ -1,0 +1,342 @@
+/**
+ * Musixmatch API
+ * Musixmatch lyrics API is a robust service that permits you to search and retrieve lyrics in the simplest possible way. It just works.  Include millions of licensed lyrics on your website or in your application legally.  The fastest, most powerful and legal way to display lyrics on your website or in your application.  #### Read musixmatch API Terms & Conditions and the Privacy Policy: Before getting started, you must take a look at the [API Terms & Conditions](http://musixmatch.com/apiterms/) and the [Privacy Policy](https://developer.musixmatch.com/privacy). We’ve worked hard to make this service completely legal so that we are all protected from any foreseeable liability. Take the time to read this stuff.  #### Register for an API key: All you need to do is [register](https://developer.musixmatch.com/signup) in order to get your API key, a mandatory parameter for most of our API calls. It’s your personal identifier and should be kept secret:  ```   https://api.musixmatch.com/ws/v1.1/track.get?apikey=YOUR_API_KEY ``` #### Integrate the musixmatch service with your web site or application In the most common scenario you only need to implement two API calls:  The first call is to match your catalog to ours using the [track.search](#!/Track/get_track_search) function and the second is to get the lyrics using the [track.lyrics.get](#!/Lyrics/get_track_lyrics_get) api. That’s it!  ## API Methods What does the musiXmatch API do?  The musiXmatch API allows you to read objects from our huge 100% licensed lyrics database.  To make your life easier we are providing you with one or more examples to show you how it could work in the wild. You’ll find both the API request and API response in all the available output formats for each API call. Follow the links below for the details.  The current API version is 1.1, the root URL is located at https://api.musixmatch.com/ws/1.1/  Supported input parameters can be found on the page [Input Parameters](https://developer.musixmatch.com/documentation/input-parameters). Use UTF-8 to encode arguments when calling API methods.  Every response includes a status_code. A list of all status codes can be consulted at [Status Codes](https://developer.musixmatch.com/documentation/status-codes).  ## Music meta data The musiXmatch api is built around lyrics, but there are many other data we provide through the api that can be used to improve every existent music service.  ## Track Inside the track object you can get the following extra information:  ### TRACK RATING  The track rating is a score 0-100 identifying how popular is a song in musixmatch.  You can use this information to sort search results, like the most popular songs of an artist, of a music genre, of a lyrics language.  ### INSTRUMENTAL AND EXPLICIT FLAGS  The instrumental flag identifies songs with music only, no lyrics.  The explicit flag identifies songs with explicit lyrics or explicit title. We're able to identify explicit words and set the flag for the most common languages.  ### FAVOURITES  How many users have this song in their list of favourites.  Can be used to sort tracks by num favourite to identify more popular tracks within a set.  ### MUSIC GENRE  The music genere of the song.  Can be used to group songs by genre, as input for similarity alghorithms, artist genre identification, navigate songs by genere, etc.  ### SONG TITLES TRANSLATIONS  The track title, as translated in different lanauages, can be used to display the right writing for a given user, example:  LIES (Bigbang) becomes 在光化門 in chinese HALLELUJAH (Bigbang) becomes ハレルヤ in japanese   ## Artist Inside the artist object you can get the following nice extra information:  ### COMMENTS AND COUNTRY  An artist comment is a short snippet of text which can be mainly used for disambiguation.  The artist country is the born country of the artist/group  There are two perfect search result if you search by artist with the keyword \"U2\". Indeed there are two distinct music groups with this same name, one is the most known irish group of Bono Vox, the other is a less popular (world wide speaking) group from Japan.  Here's how you can made use of the artist comment in your search result page:  U2 (Irish rock band) U2 (あきやまうに) You can also show the artist country for even better disambiguation:  U2 (Irish rock band) from Ireland U2 (あきやまうに) from Japan ARTIST TRANSLATIONS  When you create a world wide music related service you have to take into consideration to display the artist name in the user's local language. These translation are also used as aliases to improve the search results.  Let's use PSY for this example.  Western people know him as PSY but korean want to see the original name 싸이.  Using the name translations provided by our api you can show to every user the writing they expect to see.  Furthermore, when you search for \"psy gangnam style\" or \"싸이 gangnam style\" with our search/match api you will still be able to find the song.  ### ARTIST RATING  The artist rating is a score 0-100 identifying how popular is an artist in musixmatch.  You can use this information to build charts, for suggestions, to sort search results. In the example above about U2, we use the artist rating to show the irish band before the japanese one in our serp.  ### ARTIST MUSIC GENRE  We provide one or more main artist genre, this information can be used to calculate similar artist, suggestions, or the filter a search by artist genre.    ## Album Inside the album object you can get the following nice extra information:  ### ALBUM RATING  The album rating is a score 0-100 identifying how popular is an album in musixmatch.  You can use this information to sort search results, like the most popular albums of an artist.  ### ALBUM RATING  The album rating is a score 0-100 identifying how popular is an album in musixmatch.  You can use this information to sort search results, like the most popular albums of an artist.  ### ALBUM COPYRIGHT AND LABEL  For most of our albums we can provide extra information like for example:  Label: Universal-Island Records Ltd. Copyright: (P) 2013 Rubyworks, under license to Columbia Records, a Division of Sony Music Entertainment. ALBUM TYPE AND RELEASE DATE  The album official release date can be used to sort an artist's albums view starting by the most recent one.  Album can also be filtered or grouped by type: Single, Album, Compilation, Remix, Live. This can help to build an artist page with a more organized structure.  ### ALBUM MUSIC GENRE  For most of the albums we provide two groups of music genres. Primary and secondary. This information can be used to help user navigate albums by genre.  An example could be:  Primary genere: POP Secondary genre: K-POP or Mandopop 
+ *
+ * The version of the OpenAPI document: 1.1.0
+ * Contact: info@musixmatch.com
+ *
+ * NOTE: This class is auto generated by OpenAPI Generator (https://openapi-generator.tech).
+ * https://openapi-generator.tech
+ * Do not edit the class manually.
+ *
+ */
+
+import ApiClient from '../ApiClient';
+import AlbumPrimaryGenres from './AlbumPrimaryGenres';
+import AlbumSecondaryGenres from './AlbumSecondaryGenres';
+
+/**
+ * The Album model module.
+ * @module model/Album
+ * @version 1.1.0
+ */
+class Album {
+    /**
+     * Constructs a new <code>Album</code>.
+     * a album of songs in the Musixmatch database.
+     * @alias module:model/Album
+     */
+    constructor() { 
+        
+        Album.initialize(this);
+    }
+
+    /**
+     * Initializes the fields of this object.
+     * This method is used by the constructors of any subclasses, in order to implement multiple inheritance (mix-ins).
+     * Only for internal use.
+     */
+    static initialize(obj) { 
+    }
+
+    /**
+     * Constructs a <code>Album</code> from a plain JavaScript object, optionally creating a new instance.
+     * Copies all relevant properties from <code>data</code> to <code>obj</code> if supplied or a new instance if not.
+     * @param {Object} data The plain JavaScript object bearing properties of interest.
+     * @param {module:model/Album} obj Optional instance to populate.
+     * @return {module:model/Album} The populated <code>Album</code> instance.
+     */
+    static constructFromObject(data, obj) {
+        if (data) {
+            obj = obj || new Album();
+
+            if (data.hasOwnProperty('album_copyright')) {
+                obj['album_copyright'] = ApiClient.convertToType(data['album_copyright'], 'String');
+            }
+            if (data.hasOwnProperty('album_coverart_100x100')) {
+                obj['album_coverart_100x100'] = ApiClient.convertToType(data['album_coverart_100x100'], 'String');
+            }
+            if (data.hasOwnProperty('album_coverart_350x350')) {
+                obj['album_coverart_350x350'] = ApiClient.convertToType(data['album_coverart_350x350'], 'String');
+            }
+            if (data.hasOwnProperty('album_coverart_500x500')) {
+                obj['album_coverart_500x500'] = ApiClient.convertToType(data['album_coverart_500x500'], 'String');
+            }
+            if (data.hasOwnProperty('album_coverart_800x800')) {
+                obj['album_coverart_800x800'] = ApiClient.convertToType(data['album_coverart_800x800'], 'String');
+            }
+            if (data.hasOwnProperty('album_edit_url')) {
+                obj['album_edit_url'] = ApiClient.convertToType(data['album_edit_url'], 'String');
+            }
+            if (data.hasOwnProperty('album_id')) {
+                obj['album_id'] = ApiClient.convertToType(data['album_id'], 'Number');
+            }
+            if (data.hasOwnProperty('album_label')) {
+                obj['album_label'] = ApiClient.convertToType(data['album_label'], 'String');
+            }
+            if (data.hasOwnProperty('album_mbid')) {
+                obj['album_mbid'] = ApiClient.convertToType(data['album_mbid'], 'String');
+            }
+            if (data.hasOwnProperty('album_name')) {
+                obj['album_name'] = ApiClient.convertToType(data['album_name'], 'String');
+            }
+            if (data.hasOwnProperty('album_pline')) {
+                obj['album_pline'] = ApiClient.convertToType(data['album_pline'], 'String');
+            }
+            if (data.hasOwnProperty('album_rating')) {
+                obj['album_rating'] = ApiClient.convertToType(data['album_rating'], 'Number');
+            }
+            if (data.hasOwnProperty('album_release_date')) {
+                obj['album_release_date'] = ApiClient.convertToType(data['album_release_date'], 'String');
+            }
+            if (data.hasOwnProperty('album_release_type')) {
+                obj['album_release_type'] = ApiClient.convertToType(data['album_release_type'], 'String');
+            }
+            if (data.hasOwnProperty('album_track_count')) {
+                obj['album_track_count'] = ApiClient.convertToType(data['album_track_count'], 'Number');
+            }
+            if (data.hasOwnProperty('album_vanity_id')) {
+                obj['album_vanity_id'] = ApiClient.convertToType(data['album_vanity_id'], 'String');
+            }
+            if (data.hasOwnProperty('artist_id')) {
+                obj['artist_id'] = ApiClient.convertToType(data['artist_id'], 'Number');
+            }
+            if (data.hasOwnProperty('artist_name')) {
+                obj['artist_name'] = ApiClient.convertToType(data['artist_name'], 'String');
+            }
+            if (data.hasOwnProperty('primary_genres')) {
+                obj['primary_genres'] = AlbumPrimaryGenres.constructFromObject(data['primary_genres']);
+            }
+            if (data.hasOwnProperty('restricted')) {
+                obj['restricted'] = ApiClient.convertToType(data['restricted'], 'Number');
+            }
+            if (data.hasOwnProperty('secondary_genres')) {
+                obj['secondary_genres'] = AlbumSecondaryGenres.constructFromObject(data['secondary_genres']);
+            }
+            if (data.hasOwnProperty('updated_time')) {
+                obj['updated_time'] = ApiClient.convertToType(data['updated_time'], 'String');
+            }
+        }
+        return obj;
+    }
+
+    /**
+     * Validates the JSON data with respect to <code>Album</code>.
+     * @param {Object} data The plain JavaScript object bearing properties of interest.
+     * @return {boolean} to indicate whether the JSON data is valid with respect to <code>Album</code>.
+     */
+    static validateJSON(data) {
+        // ensure the json data is a string
+        if (data['album_copyright'] && !(typeof data['album_copyright'] === 'string' || data['album_copyright'] instanceof String)) {
+            throw new Error("Expected the field `album_copyright` to be a primitive type in the JSON string but got " + data['album_copyright']);
+        }
+        // ensure the json data is a string
+        if (data['album_coverart_100x100'] && !(typeof data['album_coverart_100x100'] === 'string' || data['album_coverart_100x100'] instanceof String)) {
+            throw new Error("Expected the field `album_coverart_100x100` to be a primitive type in the JSON string but got " + data['album_coverart_100x100']);
+        }
+        // ensure the json data is a string
+        if (data['album_coverart_350x350'] && !(typeof data['album_coverart_350x350'] === 'string' || data['album_coverart_350x350'] instanceof String)) {
+            throw new Error("Expected the field `album_coverart_350x350` to be a primitive type in the JSON string but got " + data['album_coverart_350x350']);
+        }
+        // ensure the json data is a string
+        if (data['album_coverart_500x500'] && !(typeof data['album_coverart_500x500'] === 'string' || data['album_coverart_500x500'] instanceof String)) {
+            throw new Error("Expected the field `album_coverart_500x500` to be a primitive type in the JSON string but got " + data['album_coverart_500x500']);
+        }
+        // ensure the json data is a string
+        if (data['album_coverart_800x800'] && !(typeof data['album_coverart_800x800'] === 'string' || data['album_coverart_800x800'] instanceof String)) {
+            throw new Error("Expected the field `album_coverart_800x800` to be a primitive type in the JSON string but got " + data['album_coverart_800x800']);
+        }
+        // ensure the json data is a string
+        if (data['album_edit_url'] && !(typeof data['album_edit_url'] === 'string' || data['album_edit_url'] instanceof String)) {
+            throw new Error("Expected the field `album_edit_url` to be a primitive type in the JSON string but got " + data['album_edit_url']);
+        }
+        // ensure the json data is a string
+        if (data['album_label'] && !(typeof data['album_label'] === 'string' || data['album_label'] instanceof String)) {
+            throw new Error("Expected the field `album_label` to be a primitive type in the JSON string but got " + data['album_label']);
+        }
+        // ensure the json data is a string
+        if (data['album_mbid'] && !(typeof data['album_mbid'] === 'string' || data['album_mbid'] instanceof String)) {
+            throw new Error("Expected the field `album_mbid` to be a primitive type in the JSON string but got " + data['album_mbid']);
+        }
+        // ensure the json data is a string
+        if (data['album_name'] && !(typeof data['album_name'] === 'string' || data['album_name'] instanceof String)) {
+            throw new Error("Expected the field `album_name` to be a primitive type in the JSON string but got " + data['album_name']);
+        }
+        // ensure the json data is a string
+        if (data['album_pline'] && !(typeof data['album_pline'] === 'string' || data['album_pline'] instanceof String)) {
+            throw new Error("Expected the field `album_pline` to be a primitive type in the JSON string but got " + data['album_pline']);
+        }
+        // ensure the json data is a string
+        if (data['album_release_date'] && !(typeof data['album_release_date'] === 'string' || data['album_release_date'] instanceof String)) {
+            throw new Error("Expected the field `album_release_date` to be a primitive type in the JSON string but got " + data['album_release_date']);
+        }
+        // ensure the json data is a string
+        if (data['album_release_type'] && !(typeof data['album_release_type'] === 'string' || data['album_release_type'] instanceof String)) {
+            throw new Error("Expected the field `album_release_type` to be a primitive type in the JSON string but got " + data['album_release_type']);
+        }
+        // ensure the json data is a string
+        if (data['album_vanity_id'] && !(typeof data['album_vanity_id'] === 'string' || data['album_vanity_id'] instanceof String)) {
+            throw new Error("Expected the field `album_vanity_id` to be a primitive type in the JSON string but got " + data['album_vanity_id']);
+        }
+        // ensure the json data is a string
+        if (data['artist_name'] && !(typeof data['artist_name'] === 'string' || data['artist_name'] instanceof String)) {
+            throw new Error("Expected the field `artist_name` to be a primitive type in the JSON string but got " + data['artist_name']);
+        }
+        // validate the optional field `primary_genres`
+        if (data['primary_genres']) { // data not null
+          AlbumPrimaryGenres.validateJSON(data['primary_genres']);
+        }
+        // validate the optional field `secondary_genres`
+        if (data['secondary_genres']) { // data not null
+          AlbumSecondaryGenres.validateJSON(data['secondary_genres']);
+        }
+        // ensure the json data is a string
+        if (data['updated_time'] && !(typeof data['updated_time'] === 'string' || data['updated_time'] instanceof String)) {
+            throw new Error("Expected the field `updated_time` to be a primitive type in the JSON string but got " + data['updated_time']);
+        }
+
+        return true;
+    }
+
+
+}
+
+
+
+/**
+ * 
+ * @member {String} album_copyright
+ */
+Album.prototype['album_copyright'] = undefined;
+
+/**
+ * 
+ * @member {String} album_coverart_100x100
+ */
+Album.prototype['album_coverart_100x100'] = undefined;
+
+/**
+ * 
+ * @member {String} album_coverart_350x350
+ */
+Album.prototype['album_coverart_350x350'] = undefined;
+
+/**
+ * 
+ * @member {String} album_coverart_500x500
+ */
+Album.prototype['album_coverart_500x500'] = undefined;
+
+/**
+ * 
+ * @member {String} album_coverart_800x800
+ */
+Album.prototype['album_coverart_800x800'] = undefined;
+
+/**
+ * 
+ * @member {String} album_edit_url
+ */
+Album.prototype['album_edit_url'] = undefined;
+
+/**
+ * 
+ * @member {Number} album_id
+ */
+Album.prototype['album_id'] = undefined;
+
+/**
+ * 
+ * @member {String} album_label
+ */
+Album.prototype['album_label'] = undefined;
+
+/**
+ * 
+ * @member {String} album_mbid
+ */
+Album.prototype['album_mbid'] = undefined;
+
+/**
+ * 
+ * @member {String} album_name
+ */
+Album.prototype['album_name'] = undefined;
+
+/**
+ * 
+ * @member {String} album_pline
+ */
+Album.prototype['album_pline'] = undefined;
+
+/**
+ * 
+ * @member {Number} album_rating
+ */
+Album.prototype['album_rating'] = undefined;
+
+/**
+ * 
+ * @member {String} album_release_date
+ */
+Album.prototype['album_release_date'] = undefined;
+
+/**
+ * 
+ * @member {String} album_release_type
+ */
+Album.prototype['album_release_type'] = undefined;
+
+/**
+ * 
+ * @member {Number} album_track_count
+ */
+Album.prototype['album_track_count'] = undefined;
+
+/**
+ * 
+ * @member {String} album_vanity_id
+ */
+Album.prototype['album_vanity_id'] = undefined;
+
+/**
+ * 
+ * @member {Number} artist_id
+ */
+Album.prototype['artist_id'] = undefined;
+
+/**
+ * 
+ * @member {String} artist_name
+ */
+Album.prototype['artist_name'] = undefined;
+
+/**
+ * @member {module:model/AlbumPrimaryGenres} primary_genres
+ */
+Album.prototype['primary_genres'] = undefined;
+
+/**
+ * 
+ * @member {Number} restricted
+ */
+Album.prototype['restricted'] = undefined;
+
+/**
+ * @member {module:model/AlbumSecondaryGenres} secondary_genres
+ */
+Album.prototype['secondary_genres'] = undefined;
+
+/**
+ * 
+ * @member {String} updated_time
+ */
+Album.prototype['updated_time'] = undefined;
+
+
+
+
+
+
+export default Album;
+

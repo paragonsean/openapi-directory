@@ -1,0 +1,23 @@
+# MessagesApi.ChannelOptionsMessengerMessenger
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**category** | **String** | The use of different category tags enables the business to send messages for different use cases. For Facebook Messenger they need to comply with their [Messaging Types policy](https://developers.facebook.com/docs/messenger-platform/send-messages#messaging_types). Vonage maps our &#x60;category&#x60; to their &#x60;messaging_type&#x60;. If &#x60;message_tag&#x60; is used, then an additional &#x60;tag&#x60; for that type is mandatory. By default Vonage sends the &#x60;response&#x60; category to Facebook Messenger. | [optional] 
+**tag** | **String** | A tag describing the type and relevance of the 1:1 communication between your app and the end user. A full list of available tags is available [here](https://developers.facebook.com/docs/messenger-platform/send-messages/message-tags) | [optional] 
+
+
+
+## Enum: CategoryEnum
+
+
+* `response` (value: `"response"`)
+
+* `update` (value: `"update"`)
+
+* `message_tag` (value: `"message_tag"`)
+
+
+
+

@@ -1,9 +1,0 @@
-# coding: utf-8
-
-# import models into model package
-from openapi_server.models.error_object import ErrorObject
-from openapi_server.models.stream_configuration_object import StreamConfigurationObject
-from openapi_server.models.stream_information_object import StreamInformationObject
-from openapi_server.models.upload_parameter_object import UploadParameterObject
-from openapi_server.models.uploader_information_object import UploaderInformationObject
-from openapi_server.models.video_object import VideoObject

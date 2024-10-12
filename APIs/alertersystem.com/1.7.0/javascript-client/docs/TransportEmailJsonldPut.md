@@ -1,0 +1,16 @@
+# AlerterSystemApi.TransportEmailJsonldPut
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**dataSegmentCode** | **String** | User-provided string on which to segment and filter data. Max 50 characters. | [optional] 
+**emailFromAddress** | **String** | The sender email address for the SMTP Email service. | 
+**emailFromName** | **String** | The sender name for the SMTP Email service. | 
+**emailPassword** | **String** | The password for the SMTP Email service. Stored in encrypted format. | 
+**emailPort** | **Number** | The port for the SMTP Email service. | 
+**emailServer** | **String** | The server for the SMTP Email service. | 
+**emailUsername** | **String** | The username for the SMTP Email service. | 
+**transportName** | **String** | The name of the transport. | 
+
+

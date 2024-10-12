@@ -1,0 +1,3250 @@
+openapi: 3.0.0
+info:
+  contact:
+    x-twitter: contribly
+  title: Contribly
+  version: 1.0.0
+  x-apisguru-categories:
+  - social
+  x-logo:
+    url: https://twitter.com/contribly/profile_image?size=original
+  x-origin:
+  - format: openapi
+    url: https://api.contribly.com/1/swagger.json
+    version: "3.0"
+  x-providerName: contribly.com
+servers:
+- url: https://api.contribly.com/1
+tags:
+- description: Create and list assignments
+  name: assignment
+- description: "Submit, moderate and retrieve user contributions"
+  name: contribution
+- description: Create and edit forms
+  name: form
+- description: Submit media
+  name: media
+- description: Notifications are templated email messages which can be sent to contributors.
+    A notification might be used to request further information from a contributor
+    or inform them when their contribution has been published.
+  name: notifications
+- description: Subscribe to be alerted when events occur. For example receive email
+    notification when a contribution is flagged.
+  name: subscriptions
+- description: Create and list tags and tag sets
+  name: tag
+- description: Manage users
+  name: user
+- description: Authentication related
+  name: auth
+paths:
+  /artifact-formats:
+    get:
+      description: List the available artifact formats
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ArtifactFormats'
+          description: A list of artifact formats
+      summary: Artifact formats
+      tags:
+      - info
+      x-accepts:
+      - application/json
+  /assignments:
+    get:
+      parameters:
+      - description: Restrict results to assignments owned by this user.
+        explode: true
+        in: query
+        name: ownedBy
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Pagination page
+        explode: true
+        in: query
+        name: page
+        required: false
+        schema:
+          type: integer
+        style: form
+      - description: Pagination page size
+        explode: true
+        in: query
+        name: pageSize
+        required: false
+        schema:
+          type: integer
+        style: form
+      - description: Restrict results to assignments whose name or description matches
+          this keyword.
+        explode: true
+        in: query
+        name: q
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Select an assignment by urlWords.
+        explode: true
+        in: query
+        name: urlWords
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Select open or closed assignments
+        explode: true
+        in: query
+        name: open
+        required: false
+        schema:
+          type: boolean
+        style: form
+      - description: Select assignments with no closing date.
+        explode: true
+        in: query
+        name: alwaysOpen
+        required: false
+        schema:
+          type: boolean
+        style: form
+      - description: Restrict results to assignments which are tagged with this tag.
+        explode: true
+        in: query
+        name: tag
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Restrict results to the assignment (or potentially assignments)
+          with this exact name
+        explode: true
+        in: query
+        name: name
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/Assignment'
+                type: array
+          description: A list of assignments
+          headers:
+            X-total-count:
+              description: Total number of matching contributions
+              explode: false
+              schema:
+                type: number
+              style: simple
+      summary: List assignments
+      tags:
+      - assignment
+      x-accepts:
+      - application/json
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AssignmentSubmission'
+        description: Assignment object to be created
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Assignment'
+          description: Assignment created
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: The new assignment vailed to validate. Check the response body
+            for details.
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Failed to create the new assignment due to an unexpected error.
+      summary: Create a new assignment
+      tags:
+      - assignment
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+  /assignments/{id}:
+    delete:
+      parameters:
+      - description: Id of the assignment to return
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          description: Assignment deleted
+        "403":
+          description: Not permitted to delete this assignment.
+        "404":
+          description: Not found
+      summary: Delete this assignment and all of it's contributions
+      tags:
+      - assignment
+      x-accepts:
+      - application/json
+    get:
+      parameters:
+      - description: Id of the assignment to return
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Assignment'
+          description: Assignment found
+        "404":
+          description: Not found
+      summary: Get a single assigment by id
+      tags:
+      - assignment
+      x-accepts:
+      - application/json
+  /change-log:
+    get:
+      description: The Contribly change log.
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/ChangeLogItem'
+                type: array
+          description: A list of change log items
+      summary: Recent changes
+      tags:
+      - info
+      x-accepts:
+      - application/json
+  /contribution-refinement-types:
+    get:
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  type: string
+                type: array
+          description: An array of refinement types. These are the possible values
+            of the get contribution refinements parameter.
+      summary: List valid contribution refinement types
+      tags:
+      - contribution
+      x-accepts:
+      - application/json
+  /contribution-refinements:
+    get:
+      description: Given a contribution list query determine the available filter
+        options. Can be used to generate the UI to refinement a filter.
+      parameters:
+      - description: Restrict results to contributions submitted to this assignment.
+        explode: true
+        in: query
+        name: assignment
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Limit results to contributions which have a publicly visible
+          location within the given country (specified by two letter country code).
+        explode: true
+        in: query
+        name: country
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Limit results to contributions created before this date time.
+        explode: true
+        in: query
+        name: createdBefore
+        required: false
+        schema:
+          format: date-time
+          type: string
+        style: form
+      - description: Limit results to contributions created after this date time.
+        explode: true
+        in: query
+        name: createdAfter
+        required: false
+        schema:
+          format: date-time
+          type: string
+        style: form
+      - description: Restrict results to contributions which have specified a location
+          which falls within this geohash (or comma seperated list of multiple geohashes)
+        explode: true
+        in: query
+        name: geohash
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Restrict results to contributions which have a publicly visible
+          location.
+        explode: true
+        in: query
+        name: hasLocation
+        required: false
+        schema:
+          type: boolean
+        style: form
+      - description: Limit results to contributions with location near this latitude
+          and longitude (comma seperated lat/long pair). Also see radius
+        explode: true
+        in: query
+        name: latLong
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: "When limiting result by location with the latLong parameter,\
+          \ specify the radius in kilometers."
+        explode: true
+        in: query
+        name: radius
+        required: false
+        schema:
+          format: double
+          type: number
+        style: form
+      - description: Restrict results to contributions which include a media file
+          of the given type (ie. image / video)
+        explode: true
+        in: query
+        name: mediaType
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Restrict results to contributions which are fall under the jurisdiction
+          by this user.
+        explode: true
+        in: query
+        name: ownedBy
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Restrict results to contributions whose headline text matches
+          this keyword.
+        explode: true
+        in: query
+        name: q
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Locate a specific contribution by URL words
+        explode: true
+        in: query
+        name: urlWords
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Restrict results to contributions by this user identified by
+          id.
+        explode: true
+        in: query
+        name: user
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Comma seperated list of refinement names.
+        explode: true
+        in: query
+        name: refinements
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Number of refinement options to return.
+        explode: true
+        in: query
+        name: refinementSize
+        required: false
+        schema:
+          type: number
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                additionalProperties:
+                  items:
+                    type: string
+                  type: array
+                type: object
+          description: A map of refinement names to lists of options
+      summary: List contribution refinement options
+      tags:
+      - contribution
+      x-accepts:
+      - application/json
+  /contributions:
+    get:
+      description: Retrieve contributions.
+      parameters:
+      - description: Restrict results to contributions submitted to this assignment.
+        explode: true
+        in: query
+        name: assignment
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Limit results to contributions which have a publicly visible
+          location within the given country (specified by two letter country code).
+        explode: true
+        in: query
+        name: country
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Limit results to contributions created before this date time.
+        explode: true
+        in: query
+        name: createdBefore
+        required: false
+        schema:
+          format: date-time
+          type: string
+        style: form
+      - description: Limit results to contributions created after this date time.
+        explode: true
+        in: query
+        name: createdAfter
+        required: false
+        schema:
+          format: date-time
+          type: string
+        style: form
+      - description: Limit results to contributions created on this day.
+        explode: true
+        in: query
+        name: createdDay
+        required: false
+        schema:
+          format: date
+          type: string
+        style: form
+      - description: Limit results to contributions created during this month.
+        explode: true
+        in: query
+        name: createdMonth
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Restrict results to contributions which have specified a location
+          which falls within this geohash (or comma seperated list of multiple geohashes)
+        explode: true
+        in: query
+        name: geohash
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Restrict results to contributions which have a publicly visible
+          location.
+        explode: true
+        in: query
+        name: hasLocation
+        required: false
+        schema:
+          type: boolean
+        style: form
+      - description: Limit results to contributions with location near this latitude
+          and longitude (comma seperated lat/long pair). Also see radius
+        explode: true
+        in: query
+        name: latLong
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: "When limiting result by location with the latLong parameter,\
+          \ specify the radius in kilometers."
+        explode: true
+        in: query
+        name: radius
+        required: false
+        schema:
+          format: double
+          type: number
+        style: form
+      - description: Restrict results to contributions which include a media file
+          of the given type (ie. image / video)
+        explode: true
+        in: query
+        name: mediaType
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Restrict results to contributions which are fall under the jurisdiction
+          by this user.
+        explode: true
+        in: query
+        name: ownedBy
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Restrict results to contributions whose headline text matches
+          this keyword.
+        explode: true
+        in: query
+        name: q
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Locate a specific contribution by URL words
+        explode: true
+        in: query
+        name: urlWords
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Restrict results to contributions by this user identified by
+          id.
+        explode: true
+        in: query
+        name: user
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Restrict results to a list of specific contributions identified
+          by a comma seperated list of ids.
+        explode: true
+        in: query
+        name: ids
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Select output format. 'json' or 'rss'. Defaults to JSON.
+        explode: true
+        in: query
+        name: format
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/Contribution'
+                type: array
+          description: A list of contributions
+      summary: List contributions
+      tags:
+      - contribution
+      x-accepts:
+      - application/json
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Contribution'
+        description: Contribution object to be created
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Contribution'
+          description: Contribution created
+      security:
+      - oauth:
+        - full
+      summary: Create a new contribution
+      tags:
+      - contribution
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+  /contributions/{id}:
+    delete:
+      parameters:
+      - description: Id of the contribution to delete
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Contribution'
+          description: The deletion request has been accepted and will be processed
+            in the background.
+        "403":
+          description: The currently authorised user is not allowed to delete this
+            contribution.
+        "404":
+          description: Not found
+      summary: Delete this contribution
+      tags:
+      - contribution
+      x-accepts:
+      - application/json
+    get:
+      parameters:
+      - description: Id of the contribution to return
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Contribution'
+          description: Successful
+        "404":
+          description: Not found
+      summary: Get a single contribution by id
+      tags:
+      - contribution
+      x-accepts:
+      - application/json
+  /contributions/{id}/flag:
+    post:
+      description: Allows end users to bring potential issues with publicly visible
+        content to the attention of moderators.
+      parameters:
+      - description: Id of the contribution to flag
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Flag'
+        description: Flag to be created
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Flag'
+          description: Flag created
+      summary: Raise a flag against this contribution
+      tags:
+      - contribution
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+  /contributions/{id}/like:
+    post:
+      parameters:
+      - description: Id of the contribution
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: number
+          description: The updated like count for this contribution.
+      summary: Allows a user to mark a contribution as liked
+      tags:
+      - contribution
+      x-accepts:
+      - application/json
+  /contributions/{id}/likes:
+    get:
+      description: Returns a list of user ids of users who have liked this conribution
+      parameters:
+      - description: Id of the contribution
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  type: string
+                type: array
+          description: A list of user ids.
+      summary: List users who have liked this contributions
+      tags:
+      - contribution
+      x-accepts:
+      - application/json
+  /contributions/{id}/moderate:
+    post:
+      description: Allows the contribution to approved of rejected.
+      parameters:
+      - description: Id of the contribution to moderate
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ModerationHistoryItemSubmission'
+        description: A moderation action
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: string
+          description: The moderation action was successfully applied
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: The submission falied to validate. Check the response body
+            for details.
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: The request was not correctly authorised.
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: You do not have permission to perform this moderation action.
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: An unexpected error occurred.
+      summary: Perform a moderation action on this contribution
+      tags:
+      - contribution
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+  /credentials:
+    get:
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/Credential'
+                type: array
+          description: A list of credentials associated with this user.
+        "401":
+          description: Not authorised
+      summary: List the credentials associated with the authenticated user.
+      tags:
+      - auth
+      x-accepts:
+      - application/json
+  /event-types:
+    get:
+      description: List available notification event types
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/EventType'
+                type: array
+          description: A list of event types
+      summary: Event types
+      tags:
+      - info
+      x-accepts:
+      - application/json
+  /export:
+    post:
+      description: Begin an export job. Returns a export job which can be polled to
+        follow the progress of an export.
+      parameters:
+      - description: Restrict results to contributions submitted to this assignment.
+        explode: true
+        in: query
+        name: assignment
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Limit results to contributions which have a publicly visible
+          location within the given country (specified by two letter country code).
+        explode: true
+        in: query
+        name: country
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Limit results to contributions created before this date time.
+        explode: true
+        in: query
+        name: createdBefore
+        required: false
+        schema:
+          format: date-time
+          type: string
+        style: form
+      - description: Limit results to contributions created after this date time.
+        explode: true
+        in: query
+        name: createdAfter
+        required: false
+        schema:
+          format: date-time
+          type: string
+        style: form
+      - description: Restrict results to contributions which have specified a location
+          which falls within this geohash (or comma seperated list of multiple geohashes)
+        explode: true
+        in: query
+        name: geohash
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Restrict results to contributions which have a publicly visible
+          location.
+        explode: true
+        in: query
+        name: hasLocation
+        required: false
+        schema:
+          type: boolean
+        style: form
+      - description: Limit results to contributions with location near this latitude
+          and longitude (comma seperated lat/long pair). Also see radius
+        explode: true
+        in: query
+        name: latLong
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: "When limiting result by location with the latLong parameter,\
+          \ specify the radius in kilometers."
+        explode: true
+        in: query
+        name: radius
+        required: false
+        schema:
+          format: double
+          type: number
+        style: form
+      - description: Restrict results to contributions which include a media file
+          of the given type (ie. image / video)
+        explode: true
+        in: query
+        name: mediaType
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Restrict results to contributions which are fall under the jurisdiction
+          by this user.
+        explode: true
+        in: query
+        name: ownedBy
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Restrict results to contributions whose headline text matches
+          this keyword.
+        explode: true
+        in: query
+        name: q
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Locate a specific contribution by URL words
+        explode: true
+        in: query
+        name: urlWords
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Restrict results to contributions by this user identified by
+          id.
+        explode: true
+        in: query
+        name: user
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Should exported media files be tagged with metadata. Deprecated;
+          use format instead.
+        explode: true
+        in: query
+        name: tagged
+        required: false
+        schema:
+          type: boolean
+        style: form
+      - description: Included a combined file with all contribution text.
+        explode: true
+        in: query
+        name: combined
+        required: false
+        schema:
+          type: boolean
+        style: form
+      - description: Include individual text files for each contribution.
+        explode: true
+        in: query
+        name: individual
+        required: false
+        schema:
+          type: boolean
+        style: form
+      - description: "Media format to export; none, fullsize, tagged or original."
+        explode: true
+        in: query
+        name: format
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Include raw JSON for each contribution.
+        explode: true
+        in: query
+        name: json
+        required: false
+        schema:
+          type: boolean
+        style: form
+      responses:
+        "202":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Export'
+          description: An export job describing the state of an export job.
+      summary: Export contributions.
+      tags:
+      - contribution
+      x-accepts:
+      - application/json
+  /export-summary:
+    post:
+      description: Provide a preflight summary of an export request.
+      parameters:
+      - description: Restrict results to contributions submitted to this assignment.
+        explode: true
+        in: query
+        name: assignment
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Limit results to contributions which have a publicly visible
+          location within the given country (specified by two letter country code).
+        explode: true
+        in: query
+        name: country
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Limit results to contributions created before this date time.
+        explode: true
+        in: query
+        name: createdBefore
+        required: false
+        schema:
+          format: date-time
+          type: string
+        style: form
+      - description: Limit results to contributions created after this date time.
+        explode: true
+        in: query
+        name: createdAfter
+        required: false
+        schema:
+          format: date-time
+          type: string
+        style: form
+      - description: Restrict results to contributions which have specified a location
+          which falls within this geohash (or comma seperated list of multiple geohashes)
+        explode: true
+        in: query
+        name: geohash
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Restrict results to contributions which have a publicly visible
+          location.
+        explode: true
+        in: query
+        name: hasLocation
+        required: false
+        schema:
+          type: boolean
+        style: form
+      - description: Limit results to contributions with location near this latitude
+          and longitude (comma seperated lat/long pair). Also see radius
+        explode: true
+        in: query
+        name: latLong
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: "When limiting result by location with the latLong parameter,\
+          \ specify the radius in kilometers."
+        explode: true
+        in: query
+        name: radius
+        required: false
+        schema:
+          format: double
+          type: number
+        style: form
+      - description: Restrict results to contributions which include a media file
+          of the given type (ie. image / video)
+        explode: true
+        in: query
+        name: mediaType
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Restrict results to contributions which are fall under the jurisdiction
+          by this user.
+        explode: true
+        in: query
+        name: ownedBy
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Restrict results to contributions whose headline text matches
+          this keyword.
+        explode: true
+        in: query
+        name: q
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Locate a specific contribution by URL words
+        explode: true
+        in: query
+        name: urlWords
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Restrict results to contributions by this user identified by
+          id.
+        explode: true
+        in: query
+        name: user
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExportSummary'
+          description: "A summary of the number of contributions, media files and\
+            \ approximate total size of media files."
+      summary: Export contributions preflight summary.
+      tags:
+      - contribution
+      x-accepts:
+      - application/json
+  /exports/{id}:
+    get:
+      parameters:
+      - description: Id of the export job to return
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Export'
+          description: Successful
+        "404":
+          description: Not found
+      summary: Get a single export job; poll to follow export progress.
+      tags:
+      - contribution
+      x-accepts:
+      - application/json
+  /form-responses:
+    get:
+      parameters:
+      - description: Restrict results to responses submitted by this user.
+        explode: true
+        in: query
+        name: user
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Restrict results to responses submitted to this form.
+        explode: true
+        in: query
+        name: form
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Restrict results to responses relating to this contribution.
+        explode: true
+        in: query
+        name: contribution
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/FormResponse'
+                type: array
+          description: A list of form responses
+          headers:
+            X-total-count:
+              description: Total number of matching form responses
+              explode: false
+              schema:
+                type: number
+              style: simple
+      summary: List form responses
+      tags:
+      - form
+      x-accepts:
+      - application/json
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FormResponseSubmission'
+        description: Form response
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FormResponse'
+          description: Form response saved
+      summary: Submit a response to a form
+      tags:
+      - form
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+  /form-responses/{id}:
+    get:
+      parameters:
+      - description: Id of the assignment to return
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FormResponse'
+          description: Form response found
+        "404":
+          description: Not found
+      summary: Get a single form response by id
+      tags:
+      - form
+      x-accepts:
+      - application/json
+  /forms:
+    get:
+      parameters:
+      - description: Restrict results to forms owned by this user.
+        explode: true
+        in: query
+        name: ownedBy
+        required: true
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/Form'
+                type: array
+          description: A list of forms
+          headers:
+            X-total-count:
+              description: Total number of matching forms
+              explode: false
+              schema:
+                type: number
+              style: simple
+      summary: List forms
+      tags:
+      - form
+      x-accepts:
+      - application/json
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FormSubmission'
+        description: Form object to be created
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Form'
+          description: Form created
+      summary: Create a form
+      tags:
+      - form
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+  /forms/{id}:
+    delete:
+      parameters:
+      - description: Id of the form to delete
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          description: Form deleted
+        "404":
+          description: Not found
+      summary: Delete this form and all of it's responses.
+      tags:
+      - form
+      x-accepts:
+      - application/json
+    get:
+      parameters:
+      - description: Id of the form to return
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Form'
+          description: Form found
+        "404":
+          description: Not found
+      summary: Get a single form by id
+      tags:
+      - form
+      x-accepts:
+      - application/json
+  /media:
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              format: byte
+              type: string
+        description: Binary media file
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Media'
+          description: Media created
+      security:
+      - oauth:
+        - full
+      summary: Submit a new media file
+      tags:
+      - media
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+  /notifications/contributions/{id}/preview:
+    get:
+      parameters:
+      - description: Id of the contribution to preview a notification for
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: Type of message to preview.
+        explode: true
+        in: query
+        name: message
+        required: true
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotificationPreview'
+          description: Notification preview
+      tags:
+      - notifications
+      x-accepts:
+      - application/json
+  /scopes:
+    get:
+      description: List available token scopes
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  type: string
+                type: array
+          description: A list of scopes
+      summary: Scopes
+      tags:
+      - auth
+      x-accepts:
+      - application/json
+  /subscription-types:
+    get:
+      description: List available subscription types
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/SubscriptionType'
+                type: array
+          description: A list of subscription event types
+      summary: Subscription types
+      tags:
+      - subscriptions
+      x-accepts:
+      - application/json
+  /subscriptions:
+    get:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SubscriptionSubmission'
+        description: Subscription to be created
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/Subscription'
+                type: array
+          description: A list of notification subscriptions
+          headers:
+            X-total-count:
+              description: Total number of matching subscriptions
+              explode: false
+              schema:
+                type: number
+              style: simple
+      summary: List subscriptions for the authorised user.
+      tags:
+      - subscriptions
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+  /subscriptions/{id}:
+    delete:
+      parameters:
+      - description: Id of the subscription to delete
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          description: The subscription has been successfully deleted.
+      summary: Delete a subscription.
+      tags:
+      - subscriptions
+      x-accepts:
+      - application/json
+  /tags:
+    get:
+      description: Retrieve tags.
+      parameters:
+      - description: Restrict results to those owned by this user.
+        explode: true
+        in: query
+        name: ownedBy
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Restrict results to tags belonging to this tag set.
+        explode: true
+        in: query
+        name: tagSet
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Restrict results by urlWords. Should be used with ownedBy when
+          searching for one of your own tags.
+        explode: true
+        in: query
+        name: urlWords
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/Tag'
+                type: array
+          description: A list of tags
+          headers:
+            X-total-count:
+              description: Total number of matching tags
+              explode: false
+              schema:
+                type: number
+              style: simple
+      summary: List tags
+      tags:
+      - tag
+      x-accepts:
+      - application/json
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TagSubmission'
+        description: Tag object to be created
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tag'
+          description: Tag created
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: The new tag submission failed to validate. Check the response
+            body for details.
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Failed to create the new tag due to an unexcepted error.
+      summary: Create a new tag
+      tags:
+      - tag
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+  /tags/{id}:
+    get:
+      parameters:
+      - description: Id of the tag to return
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tag'
+          description: The tag
+        "404":
+          description: Not found
+      summary: Retrieve a single tag by id
+      tags:
+      - tag
+      x-accepts:
+      - application/json
+  /tagsets:
+    get:
+      description: Retrieve tag sets.
+      parameters:
+      - description: Restrict results to those owned by this user.
+        explode: true
+        in: query
+        name: ownedBy
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Restrict results by urlWords. Should be used with ownedBy when
+          searching for one of your own tag sets.
+        explode: true
+        in: query
+        name: urlWords
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/TagSet'
+                type: array
+          description: A list of tag sets
+          headers:
+            X-total-count:
+              description: Total number of matching tag sets
+              explode: false
+              schema:
+                type: number
+              style: simple
+      summary: List tag sets
+      tags:
+      - tag
+      x-accepts:
+      - application/json
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TagSetSubmission'
+        description: Tag set to be created
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TagSet'
+          description: Tagset created
+      summary: Create a new tag set
+      tags:
+      - tag
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+  /tagsets/{id}:
+    get:
+      parameters:
+      - description: Id of the tag set to return
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TagSet'
+          description: The tag set
+        "404":
+          description: Not found
+      summary: Retrieve a single tag set by id
+      tags:
+      - tag
+      x-accepts:
+      - application/json
+  /users:
+    get:
+      parameters:
+      - description: Restrict results to the users who have contributed to this assignment.
+        explode: true
+        in: query
+        name: assignment
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Restrict results to the users who have submitted a contribution
+          with a public location located within this country.
+        explode: true
+        in: query
+        name: country
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Restrict results to the users who have submitted at least this
+          many contributions.
+        explode: true
+        in: query
+        name: minimumContributions
+        required: false
+        schema:
+          type: number
+        style: form
+      - description: Restrict results to the users who a linked profile of this type.
+        explode: true
+        in: query
+        name: linkedProfile
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Restrict results to the users who are owned by of this owner.
+        explode: true
+        in: query
+        name: ownedBy
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Limit results to users who have submitted at least one contribution
+          before this date time.
+        explode: true
+        in: query
+        name: submittedBefore
+        required: false
+        schema:
+          format: date-time
+          type: string
+        style: form
+      - description: Limit results to users who have submitted at least one contribution
+          after this date time.
+        explode: true
+        in: query
+        name: submittedAfter
+        required: false
+        schema:
+          format: date-time
+          type: string
+        style: form
+      - description: Restrict results to the user with this username.
+        explode: true
+        in: query
+        name: username
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/User'
+                type: array
+          description: A list of users
+          headers:
+            X-total-count:
+              description: Total number of matching users
+              explode: false
+              schema:
+                type: number
+              style: simple
+      summary: List users
+      tags:
+      - user
+      x-accepts:
+      - application/json
+  /users/{id}:
+    get:
+      parameters:
+      - description: Id of the user to return
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: Successful
+        "404":
+          description: Not found
+      summary: Retrieve a single user by id
+      tags:
+      - user
+      x-accepts:
+      - application/json
+  /users/{id}/linked/{type}:
+    get:
+      parameters:
+      - description: Id of the user to return
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: Type of the linked profile to fetch
+        explode: false
+        in: path
+        name: type
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LinkedProfile'
+          description: Successful
+        "404":
+          description: Not found
+      summary: Retrieve a users linked profile by type
+      tags:
+      - user
+      x-accepts:
+      - application/json
+  /verify:
+    post:
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Authority'
+          description: Token is valid
+      security:
+      - oauth:
+        - full
+      summary: Verify token and return details of the owning user
+      tags:
+      - auth
+      x-accepts:
+      - application/json
+components:
+  schemas:
+    Artifact:
+      example:
+        width: 1.4658129805029452
+        contentLength: 0.8008281904610115
+        label: label
+        contentType: contentType
+        url: url
+        height: 6.027456183070403
+      properties:
+        contentLength:
+          type: number
+        contentType:
+          type: string
+        height:
+          type: number
+        label:
+          type: string
+        url:
+          type: string
+        width:
+          type: number
+      type: object
+    ArtifactFormat:
+      example:
+        public: true
+        fileExtension: fileExtension
+        upscaleAllowed: true
+        preserveAspectRatio: true
+        forContentType: forContentType
+        label: label
+        contentType: contentType
+      properties:
+        contentType:
+          type: string
+        fileExtension:
+          type: string
+        forContentType:
+          type: string
+        label:
+          type: string
+        preserveAspectRatio:
+          type: boolean
+        public:
+          type: boolean
+        upscaleAllowed:
+          type: boolean
+      type: object
+    ArtifactFormats:
+      example:
+        cover:
+        - public: true
+          fileExtension: fileExtension
+          upscaleAllowed: true
+          preserveAspectRatio: true
+          forContentType: forContentType
+          label: label
+          contentType: contentType
+        - public: true
+          fileExtension: fileExtension
+          upscaleAllowed: true
+          preserveAspectRatio: true
+          forContentType: forContentType
+          label: label
+          contentType: contentType
+        contribution:
+        - public: true
+          fileExtension: fileExtension
+          upscaleAllowed: true
+          preserveAspectRatio: true
+          forContentType: forContentType
+          label: label
+          contentType: contentType
+        - public: true
+          fileExtension: fileExtension
+          upscaleAllowed: true
+          preserveAspectRatio: true
+          forContentType: forContentType
+          label: label
+          contentType: contentType
+        profileImage:
+        - public: true
+          fileExtension: fileExtension
+          upscaleAllowed: true
+          preserveAspectRatio: true
+          forContentType: forContentType
+          label: label
+          contentType: contentType
+        - public: true
+          fileExtension: fileExtension
+          upscaleAllowed: true
+          preserveAspectRatio: true
+          forContentType: forContentType
+          label: label
+          contentType: contentType
+      properties:
+        contribution:
+          items:
+            $ref: '#/components/schemas/ArtifactFormat'
+          type: array
+        cover:
+          items:
+            $ref: '#/components/schemas/ArtifactFormat'
+          type: array
+        profileImage:
+          items:
+            $ref: '#/components/schemas/ArtifactFormat'
+          type: array
+      type: object
+    Assignment:
+      example:
+        featured: true
+        urlWords: urlWords
+        created: 2000-01-23T04:56:07.000+00:00
+        moderator: moderator
+        description: description
+        mediaRequired: true
+        callToAction: callToAction
+        tags:
+        - tagSet:
+            name: name
+            id: id
+          colour: '#0061a6'
+          urlWords: urlWords
+          name: name
+          id: id
+        - tagSet:
+            name: name
+            id: id
+          colour: '#0061a6'
+          urlWords: urlWords
+          name: name
+          id: id
+        cover:
+          id: id
+          media:
+            duration: 5.962133916683182
+            id: id
+            place:
+              country: country
+              latLong:
+                latitude: 5.637376656633329
+                longitude: 2.3021358869347655
+              geohash: geohash
+              name: name
+              osm:
+                osmId: 7.061401241503109
+                osmType: osmType
+              google: google
+            type: type
+          artifacts:
+          - width: 1.4658129805029452
+            contentLength: 0.8008281904610115
+            label: label
+            contentType: contentType
+            url: url
+            height: 6.027456183070403
+          - width: 1.4658129805029452
+            contentLength: 0.8008281904610115
+            label: label
+            contentType: contentType
+            url: url
+            height: 6.027456183070403
+        receiptMessage: receiptMessage
+        webUrl: webUrl
+        ends: 2000-01-23T04:56:07.000+00:00
+        allowsAnonymousContributions: true
+        name: name
+        embargo: 2000-01-23T04:56:07.000+00:00
+        id: id
+        starts: 2000-01-23T04:56:07.000+00:00
+        open: true
+      properties:
+        allowsAnonymousContributions:
+          type: boolean
+        callToAction:
+          description: An optional call to action specific to this assignment. ie.
+            Submit your snow pictures.
+          type: string
+        cover:
+          $ref: '#/components/schemas/MediaUsage'
+        created:
+          format: date-time
+          type: string
+        description:
+          type: string
+        embargo:
+          format: date-time
+          type: string
+        ends:
+          format: date-time
+          type: string
+        featured:
+          type: boolean
+        id:
+          type: string
+        mediaRequired:
+          type: boolean
+        moderator:
+          description: Optional credential id of the moderator who owns this particular
+            assignment.
+          type: string
+        name:
+          type: string
+        open:
+          description: Helper value. Is this assignment currently open? Based on the
+            value of the ends field.
+          type: boolean
+        receiptMessage:
+          description: "An optional assignment specific message to be displayed on\
+            \ successful contribution submission. For example, this might be used\
+            \ to inform contributors of assignment specific moderation time frames."
+          type: string
+        starts:
+          format: date-time
+          type: string
+        tags:
+          items:
+            $ref: '#/components/schemas/Tag'
+          type: array
+        urlWords:
+          type: string
+        webUrl:
+          type: string
+      type: object
+    AssignmentSubmission:
+      example:
+        featured: true
+        urlWords: urlWords
+        moderator: moderator
+        description: description
+        mediaRequired: true
+        tags:
+        - tagSet:
+            name: name
+            id: id
+          colour: '#0061a6'
+          urlWords: urlWords
+          name: name
+          id: id
+        - tagSet:
+            name: name
+            id: id
+          colour: '#0061a6'
+          urlWords: urlWords
+          name: name
+          id: id
+        cover:
+          id: id
+          media:
+            duration: 5.962133916683182
+            id: id
+            place:
+              country: country
+              latLong:
+                latitude: 5.637376656633329
+                longitude: 2.3021358869347655
+              geohash: geohash
+              name: name
+              osm:
+                osmId: 7.061401241503109
+                osmType: osmType
+              google: google
+            type: type
+          artifacts:
+          - width: 1.4658129805029452
+            contentLength: 0.8008281904610115
+            label: label
+            contentType: contentType
+            url: url
+            height: 6.027456183070403
+          - width: 1.4658129805029452
+            contentLength: 0.8008281904610115
+            label: label
+            contentType: contentType
+            url: url
+            height: 6.027456183070403
+        receiptMessage: receiptMessage
+        ends: 2000-01-23T04:56:07.000+00:00
+        allowsAnonymousContributions: true
+        name: name
+        embargo: 2000-01-23T04:56:07.000+00:00
+        id: id
+        starts: 2000-01-23T04:56:07.000+00:00
+      properties:
+        allowsAnonymousContributions:
+          type: boolean
+        cover:
+          $ref: '#/components/schemas/MediaUsage'
+        description:
+          type: string
+        embargo:
+          format: date-time
+          type: string
+        ends:
+          format: date-time
+          type: string
+        featured:
+          type: boolean
+        id:
+          type: string
+        mediaRequired:
+          type: boolean
+        moderator:
+          description: Optional credential id of the login which will moderator this
+            assignment.
+          type: string
+        name:
+          type: string
+        receiptMessage:
+          description: "An optional assignment specific message to be displayed on\
+            \ successful contribution submission. For example, this might be used\
+            \ to inform contributors of assignment specific moderation time frames."
+          type: string
+        starts:
+          format: date-time
+          type: string
+        tags:
+          items:
+            $ref: '#/components/schemas/Tag'
+          type: array
+        urlWords:
+          type: string
+      required:
+      - name
+      type: object
+    Authority:
+      example:
+        client:
+          name: name
+          id: id
+        id: id
+        user:
+          displayName: displayName
+          bio: bio
+          registered: 2000-01-23T04:56:07.000+00:00
+          id: id
+          username: username
+      properties:
+        client:
+          $ref: '#/components/schemas/Client'
+        id:
+          type: string
+        user:
+          $ref: '#/components/schemas/User'
+      type: object
+    ChangeLogItem:
+      example:
+        date: 2000-01-23T04:56:07.000+00:00
+        description: description
+        title: title
+      properties:
+        date:
+          format: date-time
+          type: string
+        description:
+          type: string
+        title:
+          type: string
+      required:
+      - date
+      - title
+      type: object
+    Client:
+      example:
+        name: name
+        id: id
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+      type: object
+    Contribution:
+      example:
+        urlWords: urlWords
+        assignment:
+          featured: true
+          urlWords: urlWords
+          created: 2000-01-23T04:56:07.000+00:00
+          moderator: moderator
+          description: description
+          mediaRequired: true
+          callToAction: callToAction
+          tags:
+          - tagSet:
+              name: name
+              id: id
+            colour: '#0061a6'
+            urlWords: urlWords
+            name: name
+            id: id
+          - tagSet:
+              name: name
+              id: id
+            colour: '#0061a6'
+            urlWords: urlWords
+            name: name
+            id: id
+          cover:
+            id: id
+            media:
+              duration: 5.962133916683182
+              id: id
+              place:
+                country: country
+                latLong:
+                  latitude: 5.637376656633329
+                  longitude: 2.3021358869347655
+                geohash: geohash
+                name: name
+                osm:
+                  osmId: 7.061401241503109
+                  osmType: osmType
+                google: google
+              type: type
+            artifacts:
+            - width: 1.4658129805029452
+              contentLength: 0.8008281904610115
+              label: label
+              contentType: contentType
+              url: url
+              height: 6.027456183070403
+            - width: 1.4658129805029452
+              contentLength: 0.8008281904610115
+              label: label
+              contentType: contentType
+              url: url
+              height: 6.027456183070403
+          receiptMessage: receiptMessage
+          webUrl: webUrl
+          ends: 2000-01-23T04:56:07.000+00:00
+          allowsAnonymousContributions: true
+          name: name
+          embargo: 2000-01-23T04:56:07.000+00:00
+          id: id
+          starts: 2000-01-23T04:56:07.000+00:00
+          open: true
+        created: 2000-01-23T04:56:07.000+00:00
+        attribution: attribution
+        moderationHistory:
+        - date: 2000-01-23T04:56:07.000+00:00
+          notes: notes
+          action:
+            resultingState:
+              public: true
+              id: id
+              label: label
+            id: id
+            label: label
+        - date: 2000-01-23T04:56:07.000+00:00
+          notes: notes
+          action:
+            resultingState:
+              public: true
+              id: id
+              label: label
+            id: id
+            label: label
+        id: id
+        place:
+          country: country
+          latLong:
+            latitude: 5.637376656633329
+            longitude: 2.3021358869347655
+          geohash: geohash
+          name: name
+          osm:
+            osmId: 7.061401241503109
+            osmType: osmType
+          google: google
+        body: body
+        headline: headline
+        mediaUsages:
+        - id: id
+          media:
+            duration: 5.962133916683182
+            id: id
+            place:
+              country: country
+              latLong:
+                latitude: 5.637376656633329
+                longitude: 2.3021358869347655
+              geohash: geohash
+              name: name
+              osm:
+                osmId: 7.061401241503109
+                osmType: osmType
+              google: google
+            type: type
+          artifacts:
+          - width: 1.4658129805029452
+            contentLength: 0.8008281904610115
+            label: label
+            contentType: contentType
+            url: url
+            height: 6.027456183070403
+          - width: 1.4658129805029452
+            contentLength: 0.8008281904610115
+            label: label
+            contentType: contentType
+            url: url
+            height: 6.027456183070403
+        - id: id
+          media:
+            duration: 5.962133916683182
+            id: id
+            place:
+              country: country
+              latLong:
+                latitude: 5.637376656633329
+                longitude: 2.3021358869347655
+              geohash: geohash
+              name: name
+              osm:
+                osmId: 7.061401241503109
+                osmType: osmType
+              google: google
+            type: type
+          artifacts:
+          - width: 1.4658129805029452
+            contentLength: 0.8008281904610115
+            label: label
+            contentType: contentType
+            url: url
+            height: 6.027456183070403
+          - width: 1.4658129805029452
+            contentLength: 0.8008281904610115
+            label: label
+            contentType: contentType
+            url: url
+            height: 6.027456183070403
+        via:
+          ipAddressPlace:
+            country: country
+            latLong:
+              latitude: 5.637376656633329
+              longitude: 2.3021358869347655
+            geohash: geohash
+            name: name
+            osm:
+              osmId: 7.061401241503109
+              osmType: osmType
+            google: google
+          authority:
+            client:
+              name: name
+              id: id
+            id: id
+            user:
+              displayName: displayName
+              bio: bio
+              registered: 2000-01-23T04:56:07.000+00:00
+              id: id
+              username: username
+          ipAddress: ipAddress
+      properties:
+        assignment:
+          $ref: '#/components/schemas/Assignment'
+        attribution:
+          description: The public attribution for this contribution. This will be
+            the display name of the registered user or the contributor's first and
+            last name if they provided them while making a non authenticated contribution.
+            A blank attribution field indicates and anonymous contribution.
+          type: string
+        body:
+          type: string
+        created:
+          format: date-time
+          type: string
+        headline:
+          type: string
+        id:
+          type: string
+        mediaUsages:
+          items:
+            $ref: '#/components/schemas/MediaUsage'
+          type: array
+        moderationHistory:
+          items:
+            $ref: '#/components/schemas/ModerationHistoryItem'
+          type: array
+        place:
+          $ref: '#/components/schemas/Place'
+        urlWords:
+          type: string
+        via:
+          $ref: '#/components/schemas/Via'
+      type: object
+    Credential:
+      example:
+        scopes:
+        - scopes
+        - scopes
+        type: type
+        user: user
+        value: value
+      properties:
+        scopes:
+          items:
+            type: string
+          type: array
+        type:
+          type: string
+        user:
+          type: string
+        value:
+          type: string
+      type: object
+    ErrorField:
+      example:
+        name: name
+        message: message
+      properties:
+        message:
+          type: string
+        name:
+          type: string
+      required:
+      - name
+      type: object
+    ErrorResponse:
+      example:
+        fields:
+        - name: name
+          message: message
+        - name: name
+          message: message
+        message: message
+      properties:
+        fields:
+          items:
+            $ref: '#/components/schemas/ErrorField'
+          type: array
+        message:
+          type: string
+      type: object
+    EventType:
+      example:
+        name: name
+        id: id
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+      required:
+      - id
+      - name
+      type: object
+    Export:
+      example:
+        owner: owner
+        downloadUrl: downloadUrl
+        progress: 0.8008281904610115
+        finished: 2000-01-23T04:56:07.000+00:00
+        started: 2000-01-23T04:56:07.000+00:00
+        step: step
+        id: id
+      properties:
+        downloadUrl:
+          type: string
+        finished:
+          format: date-time
+          type: string
+        id:
+          type: string
+        owner:
+          type: string
+        progress:
+          type: number
+        started:
+          format: date-time
+          type: string
+        step:
+          type: string
+      required:
+      - id
+      - owner
+      - started
+      type: object
+    ExportSummary:
+      example:
+        contributions: 0.8008281904610115
+        estimatedSize: estimatedSize
+        totalMediaSize: 1.4658129805029452
+        media: 6.027456183070403
+      properties:
+        contributions:
+          description: The number of contributions selected for export.
+          type: number
+        estimatedSize:
+          description: Human readable estimate of the export size. ie. '10MB'.
+          type: string
+        media:
+          description: The number of media files included in this export.
+          type: number
+        totalMediaSize:
+          description: The expected total size of the media files to be exported.
+          type: number
+      required:
+      - contributions
+      - media
+      - totalMediaSize
+      type: object
+    Flag:
+      example:
+        date: 2000-01-23T04:56:07.000+00:00
+        notes: notes
+        id: id
+        type: type
+        email: email
+      properties:
+        date:
+          format: date-time
+          type: string
+        email:
+          type: string
+        id:
+          type: string
+        notes:
+          type: string
+        type:
+          type: string
+      type: object
+    Form:
+      example:
+        noCss: true
+        cssUrl: cssUrl
+        heading: heading
+        name: name
+        id: id
+        fields:
+        - public: true
+          name: name
+          options:
+          - options
+          - options
+          description: description
+          label: label
+          type: type
+          required: true
+        - public: true
+          name: name
+          options:
+          - options
+          - options
+          description: description
+          label: label
+          type: type
+          required: true
+        ownedBy: ownedBy
+        callToAction: callToAction
+        tags:
+        - tagSet:
+            name: name
+            id: id
+          colour: '#0061a6'
+          urlWords: urlWords
+          name: name
+          id: id
+        - tagSet:
+            name: name
+            id: id
+          colour: '#0061a6'
+          urlWords: urlWords
+          name: name
+          id: id
+      properties:
+        callToAction:
+          type: string
+        cssUrl:
+          type: string
+        fields:
+          items:
+            $ref: '#/components/schemas/FormField'
+          type: array
+        heading:
+          type: string
+        id:
+          type: string
+        name:
+          type: string
+        noCss:
+          type: boolean
+        ownedBy:
+          type: string
+        tags:
+          items:
+            $ref: '#/components/schemas/Tag'
+          type: array
+      type: object
+    FormField:
+      example:
+        public: true
+        name: name
+        options:
+        - options
+        - options
+        description: description
+        label: label
+        type: type
+        required: true
+      properties:
+        description:
+          type: string
+        label:
+          type: string
+        name:
+          type: string
+        options:
+          items:
+            type: string
+          type: array
+        public:
+          type: boolean
+        required:
+          type: boolean
+        type:
+          type: string
+      type: object
+    FormResponse:
+      example:
+        date: 2000-01-23T04:56:07.000+00:00
+        contribution: contribution
+        form: form
+        responses:
+          key: responses
+        id: id
+        user: user
+      properties:
+        contribution:
+          type: string
+        date:
+          format: date-time
+          type: string
+        form:
+          type: string
+        id:
+          type: string
+        responses:
+          additionalProperties:
+            type: string
+          type: object
+        user:
+          type: string
+      type: object
+    FormResponseSubmission:
+      example:
+        contribution: contribution
+        form: form
+        responses:
+          key: responses
+      properties:
+        contribution:
+          type: string
+        form:
+          type: string
+        responses:
+          additionalProperties:
+            type: string
+          type: object
+      type: object
+    FormSubmission:
+      example:
+        noCss: true
+        cssUrl: cssUrl
+        heading: heading
+        name: name
+        fields:
+        - public: true
+          name: name
+          options:
+          - options
+          - options
+          description: description
+          label: label
+          type: type
+          required: true
+        - public: true
+          name: name
+          options:
+          - options
+          - options
+          description: description
+          label: label
+          type: type
+          required: true
+        callToAction: callToAction
+        tags:
+        - tagSet:
+            name: name
+            id: id
+          colour: '#0061a6'
+          urlWords: urlWords
+          name: name
+          id: id
+        - tagSet:
+            name: name
+            id: id
+          colour: '#0061a6'
+          urlWords: urlWords
+          name: name
+          id: id
+      properties:
+        callToAction:
+          type: string
+        cssUrl:
+          type: string
+        fields:
+          items:
+            $ref: '#/components/schemas/FormField'
+          type: array
+        heading:
+          type: string
+        name:
+          type: string
+        noCss:
+          type: boolean
+        tags:
+          items:
+            $ref: '#/components/schemas/Tag'
+          type: array
+      type: object
+    Group:
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+      type: object
+    LatLong:
+      example:
+        latitude: 5.637376656633329
+        longitude: 2.3021358869347655
+      properties:
+        latitude:
+          format: double
+          type: number
+        longitude:
+          format: double
+          type: number
+      type: object
+    LinkedProfile:
+      example:
+        profile: profile
+        name: name
+        bio: bio
+        registered: 2000-01-23T04:56:07.000+00:00
+        id: id
+        email: email
+        picture: picture
+      properties:
+        bio:
+          type: string
+        email:
+          type: string
+        id:
+          type: string
+        name:
+          type: string
+        picture:
+          type: string
+        profile:
+          type: string
+        registered:
+          format: date-time
+          type: string
+      type: object
+    Media:
+      example:
+        duration: 5.962133916683182
+        id: id
+        place:
+          country: country
+          latLong:
+            latitude: 5.637376656633329
+            longitude: 2.3021358869347655
+          geohash: geohash
+          name: name
+          osm:
+            osmId: 7.061401241503109
+            osmType: osmType
+          google: google
+        type: type
+      properties:
+        duration:
+          type: number
+        id:
+          type: string
+        place:
+          $ref: '#/components/schemas/Place'
+        type:
+          type: string
+      type: object
+    MediaUsage:
+      example:
+        id: id
+        media:
+          duration: 5.962133916683182
+          id: id
+          place:
+            country: country
+            latLong:
+              latitude: 5.637376656633329
+              longitude: 2.3021358869347655
+            geohash: geohash
+            name: name
+            osm:
+              osmId: 7.061401241503109
+              osmType: osmType
+            google: google
+          type: type
+        artifacts:
+        - width: 1.4658129805029452
+          contentLength: 0.8008281904610115
+          label: label
+          contentType: contentType
+          url: url
+          height: 6.027456183070403
+        - width: 1.4658129805029452
+          contentLength: 0.8008281904610115
+          label: label
+          contentType: contentType
+          url: url
+          height: 6.027456183070403
+      properties:
+        artifacts:
+          items:
+            $ref: '#/components/schemas/Artifact'
+          type: array
+        id:
+          type: string
+        media:
+          $ref: '#/components/schemas/Media'
+      type: object
+    ModerationAction:
+      example:
+        resultingState:
+          public: true
+          id: id
+          label: label
+        id: id
+        label: label
+      properties:
+        id:
+          type: string
+        label:
+          type: string
+        resultingState:
+          $ref: '#/components/schemas/ModerationState'
+      required:
+      - id
+      - label
+      - resultingState
+      type: object
+    ModerationHistoryItem:
+      example:
+        date: 2000-01-23T04:56:07.000+00:00
+        notes: notes
+        action:
+          resultingState:
+            public: true
+            id: id
+            label: label
+          id: id
+          label: label
+      properties:
+        action:
+          $ref: '#/components/schemas/ModerationAction'
+        date:
+          format: date-time
+          type: string
+        notes:
+          type: string
+      required:
+      - date
+      type: object
+    ModerationHistoryItemSubmission:
+      example:
+        notes: notes
+        action:
+          resultingState:
+            public: true
+            id: id
+            label: label
+          id: id
+          label: label
+      properties:
+        action:
+          $ref: '#/components/schemas/ModerationAction'
+        notes:
+          type: string
+      type: object
+    ModerationState:
+      example:
+        public: true
+        id: id
+        label: label
+      properties:
+        id:
+          type: string
+        label:
+          type: string
+        public:
+          type: boolean
+      required:
+      - id
+      - label
+      - public
+      type: object
+    NotificationPreview:
+      example:
+        subject: subject
+        html: html
+        email: email
+      properties:
+        email:
+          type: string
+        html:
+          type: string
+        subject:
+          type: string
+      type: object
+    OsmId:
+      example:
+        osmId: 7.061401241503109
+        osmType: osmType
+      properties:
+        osmId:
+          type: number
+        osmType:
+          type: string
+      type: object
+    Place:
+      example:
+        country: country
+        latLong:
+          latitude: 5.637376656633329
+          longitude: 2.3021358869347655
+        geohash: geohash
+        name: name
+        osm:
+          osmId: 7.061401241503109
+          osmType: osmType
+        google: google
+      properties:
+        country:
+          type: string
+        geohash:
+          type: string
+        google:
+          type: string
+        latLong:
+          $ref: '#/components/schemas/LatLong'
+        name:
+          type: string
+        osm:
+          $ref: '#/components/schemas/OsmId'
+      type: object
+    Subscription:
+      example:
+        types:
+        - types
+        - types
+        includeBody: true
+        assignment: assignment
+        slackChannel: slackChannel
+        includeThumbenail: true
+        id: id
+        user: user
+        email: email
+        token: token
+      properties:
+        assignment:
+          type: string
+        email:
+          type: string
+        id:
+          type: string
+        includeBody:
+          type: boolean
+        includeThumbenail:
+          type: boolean
+        slackChannel:
+          type: string
+        token:
+          type: string
+        types:
+          items:
+            type: string
+          type: array
+        user:
+          type: string
+      required:
+      - id
+      - includeBody
+      - includeThumbnail
+      - token
+      - types
+      - user
+      type: object
+    SubscriptionSubmission:
+      example:
+        types:
+        - types
+        - types
+        includeBody: true
+        assignment: assignment
+        slackChannel: slackChannel
+        includeThumbenail: true
+        email: email
+      properties:
+        assignment:
+          type: string
+        email:
+          type: string
+        includeBody:
+          type: boolean
+        includeThumbenail:
+          type: boolean
+        slackChannel:
+          type: string
+        types:
+          items:
+            type: string
+          type: array
+      required:
+      - includeBody
+      - includeThumbnail
+      - types
+      type: object
+    SubscriptionType:
+      example:
+        name: name
+        id: id
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+      required:
+      - id
+      - name
+      type: object
+    Tag:
+      example:
+        tagSet:
+          name: name
+          id: id
+        colour: '#0061a6'
+        urlWords: urlWords
+        name: name
+        id: id
+      properties:
+        colour:
+          description: Optional HTML hexcode colour
+          example: '#0061a6'
+          type: string
+        id:
+          type: string
+        name:
+          type: string
+        tagSet:
+          $ref: '#/components/schemas/TagSet'
+        urlWords:
+          type: string
+      required:
+      - id
+      - name
+      type: object
+    TagSet:
+      example:
+        name: name
+        id: id
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+      required:
+      - id
+      - name
+      type: object
+    TagSetSubmission:
+      example:
+        urlWords: urlWords
+        name: name
+      properties:
+        name:
+          type: string
+        urlWords:
+          type: string
+      required:
+      - name
+      - urlWords
+      type: object
+    TagSubmission:
+      example:
+        tagSet:
+          name: name
+          id: id
+        colour: colour
+        urlWords: urlWords
+        name: name
+      properties:
+        colour:
+          type: string
+        name:
+          type: string
+        tagSet:
+          $ref: '#/components/schemas/TagSet'
+        urlWords:
+          type: string
+      required:
+      - name
+      type: object
+    User:
+      example:
+        displayName: displayName
+        bio: bio
+        registered: 2000-01-23T04:56:07.000+00:00
+        id: id
+        username: username
+      properties:
+        bio:
+          type: string
+        displayName:
+          type: string
+        id:
+          type: string
+        registered:
+          format: date-time
+          type: string
+        username:
+          type: string
+      type: object
+    Via:
+      example:
+        ipAddressPlace:
+          country: country
+          latLong:
+            latitude: 5.637376656633329
+            longitude: 2.3021358869347655
+          geohash: geohash
+          name: name
+          osm:
+            osmId: 7.061401241503109
+            osmType: osmType
+          google: google
+        authority:
+          client:
+            name: name
+            id: id
+          id: id
+          user:
+            displayName: displayName
+            bio: bio
+            registered: 2000-01-23T04:56:07.000+00:00
+            id: id
+            username: username
+        ipAddress: ipAddress
+      properties:
+        authority:
+          $ref: '#/components/schemas/Authority'
+        ipAddress:
+          type: string
+        ipAddressPlace:
+          $ref: '#/components/schemas/Place'
+      type: object
+  securitySchemes:
+    oauth:
+      flows:
+        password:
+          scopes:
+            full: Full access
+          tokenUrl: https://api.contriby.com/1/token
+      type: oauth2
+

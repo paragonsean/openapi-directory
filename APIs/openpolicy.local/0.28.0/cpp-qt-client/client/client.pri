@@ -1,0 +1,113 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAI200Explanations.h \
+    $${PWD}/OAI200Metrics.h \
+    $${PWD}/OAI200Provenance.h \
+    $${PWD}/OAI200Result.h \
+    $${PWD}/OAI200SingleResult.h \
+    $${PWD}/OAI400.h \
+    $${PWD}/OAI404.h \
+    $${PWD}/OAIGetDocumentWithWebHook_200_response.h \
+    $${PWD}/OAIPatchesSchema_inner.h \
+    $${PWD}/OAIPostCompile_200_response.h \
+    $${PWD}/OAI_200Explanations_explanation_inner.h \
+    $${PWD}/OAI_200Explanations_explanation_inner_locals_inner.h \
+    $${PWD}/OAI_200Explanations_explanation_inner_locals_inner_key.h \
+    $${PWD}/OAI_200Explanations_explanation_inner_node.h \
+    $${PWD}/OAI_200Explanations_explanation_inner_node_terms_inner.h \
+    $${PWD}/OAI_200Metrics_metrics.h \
+    $${PWD}/OAI_200Provenance_provenance.h \
+    $${PWD}/OAI_200Result_result_inner.h \
+    $${PWD}/OAI_200Result_result_inner_ast.h \
+    $${PWD}/OAI_200Result_result_inner_ast_package.h \
+    $${PWD}/OAI_200Result_result_inner_ast_package_path_inner.h \
+    $${PWD}/OAI_200Result_result_inner_ast_rules_inner.h \
+    $${PWD}/OAI_200Result_result_inner_ast_rules_inner_body_inner.h \
+    $${PWD}/OAI_200Result_result_inner_ast_rules_inner_body_inner_terms_inner.h \
+    $${PWD}/OAI_200Result_result_inner_ast_rules_inner_body_inner_terms_inner_value_inner.h \
+    $${PWD}/OAI_200Result_result_inner_ast_rules_inner_head.h \
+    $${PWD}/OAI_200Result_result_inner_ast_rules_inner_head_key.h \
+    $${PWD}/OAI_200SingleResult_result.h \
+    $${PWD}/OAI_200SingleResult_result_bundles.h \
+    $${PWD}/OAI_200SingleResult_result_bundles_authz.h \
+    $${PWD}/OAI_200SingleResult_result_decision_logs.h \
+    $${PWD}/OAI_200SingleResult_result_keys.h \
+    $${PWD}/OAI_200SingleResult_result_keys_global_key.h \
+    $${PWD}/OAI_200SingleResult_result_labels.h \
+    $${PWD}/OAI_200SingleResult_result_services.h \
+    $${PWD}/OAI_200SingleResult_result_services_acmecorp.h \
+    $${PWD}/OAI_200SingleResult_result_status.h \
+    $${PWD}/OAI_400_errors_inner.h \
+    $${PWD}/OAI_400_errors_inner_location.h \
+# APIs
+    $${PWD}/OAICompileAPIApi.h \
+    $${PWD}/OAIConfigAPIApi.h \
+    $${PWD}/OAIDataAPIApi.h \
+    $${PWD}/OAIHealthAPIApi.h \
+    $${PWD}/OAIPolicyAPIApi.h \
+    $${PWD}/OAIQueryAPIApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAI200Explanations.cpp \
+    $${PWD}/OAI200Metrics.cpp \
+    $${PWD}/OAI200Provenance.cpp \
+    $${PWD}/OAI200Result.cpp \
+    $${PWD}/OAI200SingleResult.cpp \
+    $${PWD}/OAI400.cpp \
+    $${PWD}/OAI404.cpp \
+    $${PWD}/OAIGetDocumentWithWebHook_200_response.cpp \
+    $${PWD}/OAIPatchesSchema_inner.cpp \
+    $${PWD}/OAIPostCompile_200_response.cpp \
+    $${PWD}/OAI_200Explanations_explanation_inner.cpp \
+    $${PWD}/OAI_200Explanations_explanation_inner_locals_inner.cpp \
+    $${PWD}/OAI_200Explanations_explanation_inner_locals_inner_key.cpp \
+    $${PWD}/OAI_200Explanations_explanation_inner_node.cpp \
+    $${PWD}/OAI_200Explanations_explanation_inner_node_terms_inner.cpp \
+    $${PWD}/OAI_200Metrics_metrics.cpp \
+    $${PWD}/OAI_200Provenance_provenance.cpp \
+    $${PWD}/OAI_200Result_result_inner.cpp \
+    $${PWD}/OAI_200Result_result_inner_ast.cpp \
+    $${PWD}/OAI_200Result_result_inner_ast_package.cpp \
+    $${PWD}/OAI_200Result_result_inner_ast_package_path_inner.cpp \
+    $${PWD}/OAI_200Result_result_inner_ast_rules_inner.cpp \
+    $${PWD}/OAI_200Result_result_inner_ast_rules_inner_body_inner.cpp \
+    $${PWD}/OAI_200Result_result_inner_ast_rules_inner_body_inner_terms_inner.cpp \
+    $${PWD}/OAI_200Result_result_inner_ast_rules_inner_body_inner_terms_inner_value_inner.cpp \
+    $${PWD}/OAI_200Result_result_inner_ast_rules_inner_head.cpp \
+    $${PWD}/OAI_200Result_result_inner_ast_rules_inner_head_key.cpp \
+    $${PWD}/OAI_200SingleResult_result.cpp \
+    $${PWD}/OAI_200SingleResult_result_bundles.cpp \
+    $${PWD}/OAI_200SingleResult_result_bundles_authz.cpp \
+    $${PWD}/OAI_200SingleResult_result_decision_logs.cpp \
+    $${PWD}/OAI_200SingleResult_result_keys.cpp \
+    $${PWD}/OAI_200SingleResult_result_keys_global_key.cpp \
+    $${PWD}/OAI_200SingleResult_result_labels.cpp \
+    $${PWD}/OAI_200SingleResult_result_services.cpp \
+    $${PWD}/OAI_200SingleResult_result_services_acmecorp.cpp \
+    $${PWD}/OAI_200SingleResult_result_status.cpp \
+    $${PWD}/OAI_400_errors_inner.cpp \
+    $${PWD}/OAI_400_errors_inner_location.cpp \
+# APIs
+    $${PWD}/OAICompileAPIApi.cpp \
+    $${PWD}/OAIConfigAPIApi.cpp \
+    $${PWD}/OAIDataAPIApi.cpp \
+    $${PWD}/OAIHealthAPIApi.cpp \
+    $${PWD}/OAIPolicyAPIApi.cpp \
+    $${PWD}/OAIQueryAPIApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

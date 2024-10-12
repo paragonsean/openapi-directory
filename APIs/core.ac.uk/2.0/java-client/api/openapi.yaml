@@ -1,0 +1,2797 @@
+openapi: 3.0.1
+info:
+  contact: {}
+  description: "<p style=\"text-align: justify;\">You can use the CORE API to access\
+    \ the \n    resources harvested and enriched by CORE. If you encounter any problems\
+    \ with the API, please <a href=\"/contact\">report them to us</a>.</p>\n\n<h2>Overview</h2>\n\
+    <p style=\"text-align: justify;\">The API is organised by resource type. The resources\
+    \ are <b>articles</b>, \n    <b>journals</b> and <b>repositories</b> and are represented\
+    \ using JSON data format. Furthermore, \n    each resource has a list of methods.\
+    \ The API also provides two global methods for accessing all resources at once.</p>\n\
+    \n<h2>Response format</h2>\n<p style=\"text-align: justify;\">Response for each\
+    \ query contains two fields: <b>status</b> and <b>data</b>.\n    In case of an\
+    \ error status, the data field is empty. The data field contains a single object\n\
+    \    in case the request is for a specific identifier (e.g. CORE ID, CORE repository\
+    \ ID, etc.), or  \n    contains a list of objects, for example for search queries.\
+    \ In case of batch requests, the response\n    is an array of objects, each of\
+    \ which contains its own <b>status</b> and <b>data</b> fields.\n    For search\
+    \ queries the response contains an additional field <b>totalHits</b>, which is\
+    \ the \n    total number of items which match the search criteria.</p>\n\n<h2>Search\
+    \ query syntax</h2>\n\n<p style=\"text-align: justify\">Complex search queries\
+    \ can be used in all of the API search methods.\n    The query can be a simple\
+    \ string or it can be built using terms and operators described in Elasticsearch\n\
+    \    <a href=\"http://www.elastic.co/guide/en/elasticsearch/reference/1.4/query-dsl-query-string-query.html#query-string-syntax\"\
+    >documentation</a>.\n    The usable field names are <strong>title</strong>, <strong>description</strong>,\
+    \ <strong>fullText</strong>, \n    <strong>authors</strong>, <strong>publisher</strong>,\
+    \ <strong>repositories.id</strong>, <strong>repositories.name</strong>, \n   \
+    \ <strong>doi</strong>, <strong>oai</strong>, <strong>identifiers</strong> (which\
+    \ is a list of article identifiers including OAI, URL, etc.), <strong>language.name</strong>\
+    \ \n    and <strong>year</strong>. Some example queries:\n</p>\n\n<ul style=\"\
+    margin-left: 30px;\">\n    <li><p>title:psychology and language.name:English</p></li>\n\
+    \    <li><p>repositories.id:86 AND year:2014</p></li>\n    <li><p>identifiers:\"\
+    oai:aura.abdn.ac.uk:2164/3837\" OR identifiers:\"oai:aura.abdn.ac.uk:2164/3843\"\
+    </p></li>\n    <li><p>doi:\"10.1186/1471-2458-6-309\"</p></li>\n</ul>\n\n<h3>Retrieving\
+    \ the latest Articles</h3>\n<p style=\"text-align: justify\">\n    You can retrieve\
+    \ the harvested items since specific dates using the following queries:\n</p>\n\
+    \n<ul style=\"margin-left: 30px;\">\n    <li><p>repositoryDocument.metadataUpdated:>2017-02-10</p></li>\n\
+    \    <li><p>repositoryDocument.metadataUpdated:>2017-03-01 AND repositoryDocument.metadataUpdated:<2017-03-31</p></li>\
+    \    \n</ul>\n\n<h2>Sort order</h2>\n\n<p style=\"text-align: justify;\">For search\
+    \ queries, the results are ordered by relevance score. For batch \n    requests,\
+    \ the results are retrieved in the order of the requests.</p>\n\n<h2>Parameters</h2>\n\
+    <p style=\"text-align: justify;\">The API methods allow different parameters to\
+    \ be passed. Additionally, there is an API key parameter which is common to all\
+    \ API methods. For all API methods \n    the API key can be provided either as\
+    \ a query parameter or in the request header. If the API key \n    is not provided,\
+    \ the API will return HTTP 401 error. You can register for an API key <a href=\"\
+    /services#api\">here</a>.</p>\n\n<h2>API methods</h2>"
+  title: CORE API v2
+  version: "2.0"
+  x-apisguru-categories:
+  - open_data
+  x-logo:
+    url: https://twitter.com/oacore/profile_image?size=original
+  x-origin:
+  - converter:
+      url: https://github.com/lucybot/api-spec-converter
+      version: 2.7.31
+    format: swagger
+    url: http://core.ac.uk/api-v2/doc
+    version: "1.2"
+  x-providerName: core.ac.uk
+servers:
+- url: http://core.ac.uk/api-v2
+security:
+- apiKey: []
+tags:
+- description: Global operations
+  name: all
+- description: Operations for retrieving articles
+  name: articles
+- description: Operations for retrieving journals
+  name: journals
+- description: Operations for retrieving repositories
+  name: repositories
+paths:
+  /articles/dedup:
+    post:
+      description: Method accepts values for several parameters and retrieves a JSON
+        array of articles which have near duplicate content matching the input parameters'
+        values. The response array contains ids of the near duplicate articles along
+        with their relevance scores.
+      operationId: nearDuplicateArticles
+      parameters:
+      - description: The DOI for which the duplicates will be identified
+        in: query
+        name: doi
+        schema:
+          type: string
+      - description: Title to match when looking for duplicate articles. Only useful
+          when either value for @year or @description is supplied.
+        in: query
+        name: title
+        schema:
+          type: string
+      - description: 'Year the article was published. Only useful when value for @title
+          is supplied. '
+        in: query
+        name: year
+        schema:
+          type: string
+      - description: Abstract for an article based on which its duplicates will be
+          found. Only useful when value for @title is supplied.
+        in: query
+        name: description
+        schema:
+          type: string
+      - description: Full text for an article based on which its duplicates will be
+          found.
+        in: query
+        name: fulltext
+        schema:
+          type: string
+      - description: Article identifier for which the duplicates will be identified.
+          Only useful when either values for @doi or (@title and @year) or (@title
+          and @abstract) or @fulltext are supplied.
+        in: query
+        name: identifier
+        schema:
+          type: string
+      - description: 'Limit the duplicates search to particular repository id. '
+        in: query
+        name: repositoryId
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ArticleDedupResponse'
+          description: Successful operation
+        "400":
+          content: {}
+          description: Insufficient/Unsuitable input parameters.
+        "401":
+          content: {}
+          description: Invalid or no API key provided
+        "503":
+          content: {}
+          description: Could not run the deduplication service at this time; please
+            try again later.
+      summary: Get all near duplicate articles
+      tags:
+      - articles
+      x-accepts:
+      - application/json
+  /articles/get:
+    post:
+      description: Method accepts a JSON array of CORE IDs and retrieves a list of
+        articles. The response array is ordered based on the order of the IDs in the
+        request array.
+      operationId: getArticleByCoreIdBatch
+      parameters:
+      - description: Whether to retrieve the full article metadata or only the IDs.
+          The default value is true
+        in: query
+        name: metadata
+        schema:
+          default: true
+          type: boolean
+      - description: Whether to retrieve fulltexts of the articles. The default value
+          is false
+        in: query
+        name: fulltext
+        schema:
+          default: false
+          type: boolean
+      - description: Whether to retrieve citations found in the articles. The default
+          value is false
+        in: query
+        name: citations
+        schema:
+          default: false
+          type: boolean
+      - description: "Whether to retrieve lists of similar articles. The default value\
+          \ is false. Because the similar articles are calculated on demand, setting\
+          \ this parameter to true might slightly slow down the response time"
+        in: query
+        name: similar
+        schema:
+          default: false
+          type: boolean
+      - description: Whether to retrieve CORE IDs of different versions of the articles.
+          The default value is false
+        in: query
+        name: duplicate
+        schema:
+          default: false
+          type: boolean
+      - description: Whether to retrieve lists of URLs of the article fulltexts. The
+          default value is false
+        in: query
+        name: urls
+        schema:
+          default: false
+          type: boolean
+      - description: Returns the records raw XML metadata from the original repository.
+          The default value is false
+        in: query
+        name: faithfulMetadata
+        schema:
+          default: false
+          type: boolean
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              items:
+                type: integer
+              type: array
+        description: JSON array with CORE IDs of articles that need to be fetched
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/ArticleResponse'
+                type: array
+          description: Successful operation
+        "400":
+          content: {}
+          description: Missing or malformed JSON in request body
+        "401":
+          content: {}
+          description: Invalid or no API key provided
+        "403":
+          content: {}
+          description: Too many queries in request body
+        "429":
+          content: {}
+          description: Too many requests in given amount of time
+      summary: Batch operation for retrieving articles by CORE ID
+      tags:
+      - articles
+      x-codegen-request-body-name: body
+      x-content-type: '*/*'
+      x-accepts:
+      - application/json
+  /articles/get/{coreId}:
+    get:
+      description: Method will retrieve an article based on given CORE ID.
+      operationId: getArticleByCoreId
+      parameters:
+      - description: CORE ID of the article that needs to be fetched.
+        in: path
+        name: coreId
+        required: true
+        schema:
+          format: int64
+          type: integer
+      - description: Whether to retrieve the full article metadata or only the ID.
+          The default value is true.
+        in: query
+        name: metadata
+        schema:
+          default: true
+          type: boolean
+      - description: Whether to retrieve full text of the article. The default value
+          is false
+        in: query
+        name: fulltext
+        schema:
+          default: false
+          type: boolean
+      - description: Whether to retrieve citations found in the article. The default
+          value is false
+        in: query
+        name: citations
+        schema:
+          default: false
+          type: boolean
+      - description: "Whether to retrieve a list of similar articles. The default\
+          \ value is false. Because the similar articles are calculated on demand,\
+          \ setting this parameter to true might slightly slow down the response time"
+        in: query
+        name: similar
+        schema:
+          default: false
+          type: boolean
+      - description: Whether to retrieve a list of CORE IDs of different versions
+          of the article. The default value is false
+        in: query
+        name: duplicate
+        schema:
+          default: false
+          type: boolean
+      - description: Whether to retrieve a list of URLs from which the article can
+          be downloaded. This can include links to PDFs as well as HTML pages. The
+          default value is false
+        in: query
+        name: urls
+        schema:
+          default: false
+          type: boolean
+      - description: Returns the records raw XML metadata from the original repository.
+          The default value is false
+        in: query
+        name: faithfulMetadata
+        schema:
+          default: false
+          type: boolean
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ArticleResponse'
+          description: Successful operation
+        "400":
+          content: {}
+          description: Invalid identifier supplied
+        "401":
+          content: {}
+          description: Invalid or no API key provided
+        "429":
+          content: {}
+          description: Too many requests in given amount of time
+      summary: Get article by CORE ID
+      tags:
+      - articles
+      x-accepts:
+      - application/json
+  /articles/get/{coreId}/download/pdf:
+    get:
+      description: Method will retrieve an article based on given CORE ID.
+      operationId: getArticlePdfByCoreId
+      parameters:
+      - description: ID of article history that needs to be fetched
+        in: path
+        name: coreId
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content: {}
+          description: Successful operation
+        "401":
+          content: {}
+          description: Invalid or no API key provided
+        "404":
+          content: {}
+          description: No Article pdf found
+        "429":
+          content: {}
+          description: Too many requests in given amount of time
+      summary: Get fulltext PDF by CORE ID
+      tags:
+      - articles
+      x-accepts:
+      - application/json
+  /articles/get/{coreId}/history:
+    get:
+      description: "Method accepts a single CORE ID and returns a list of all historical\
+        \ versions of the article, which are stored in CORE database. The results\
+        \ are ordered from the newest one to the oldest one."
+      operationId: getArticleHistoryByCoreId
+      parameters:
+      - description: CORE ID of the article which history should be fetched
+        in: path
+        name: coreId
+        required: true
+        schema:
+          type: string
+      - description: "Which page of the history results should be retrieved. Can be\
+          \ any number betwen 1 and 100, default is 1 (first page)."
+        in: query
+        name: page
+        schema:
+          default: 1
+          format: int32
+          maximum: 100
+          minimum: 1
+          type: integer
+      - description: "The number of results to return per page. Can be any number\
+          \ between 10 and 100, default is 10."
+        in: query
+        name: pageSize
+        schema:
+          default: 10
+          format: int32
+          maximum: 100
+          minimum: 10
+          type: integer
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ArticleHistoryResponse'
+          description: Successful operation
+        "400":
+          content: {}
+          description: Parameter invalid or out of bounds
+        "401":
+          content: {}
+          description: Invalid or no API key provided
+        "429":
+          content: {}
+          description: Too many requests in given amount of time
+      summary: Get article history by CORE ID
+      tags:
+      - articles
+      x-accepts:
+      - application/json
+  /articles/search:
+    post:
+      description: "Method accepts a JSON array of search queries and parameters.\
+        \ It then searches through all articles and returns a JSON array of search\
+        \ results for each of the queries. Method searches through all article fields\
+        \ (title, authors, subjects, identifiers, etc.)."
+      operationId: searchArticlesBatch
+      parameters:
+      - description: Whether to retrieve the full article metadata or only the ID.
+          The default value is true.
+        in: query
+        name: metadata
+        schema:
+          default: true
+          type: boolean
+      - description: Whether to retrieve full text of the article. The default value
+          is false
+        in: query
+        name: fulltext
+        schema:
+          default: false
+          type: boolean
+      - description: Whether to retrieve citations found in the article. The default
+          value is false
+        in: query
+        name: citations
+        schema:
+          default: false
+          type: boolean
+      - description: "Whether to retrieve a list of similar articles. The default\
+          \ value is false. Because the similar articles are calculated on demand,\
+          \ setting this parameter to true might slightly slow down the response time"
+        in: query
+        name: similar
+        schema:
+          default: false
+          type: boolean
+      - description: Whether to retrieve a list of CORE IDs of different versions
+          of the article. The default value is false
+        in: query
+        name: duplicate
+        schema:
+          default: false
+          type: boolean
+      - description: Whether to retrieve a list of URLs from which the article can
+          be downloaded. This can include links to PDFs as well as HTML pages. The
+          default value is false
+        in: query
+        name: urls
+        schema:
+          default: false
+          type: boolean
+      - description: Whether to retrieve the raw XML metadata of the article. The
+          default value is false
+        in: query
+        name: faithfulMetadata
+        schema:
+          default: false
+          type: boolean
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              items:
+                $ref: '#/components/schemas/SearchRequest'
+              type: array
+        description: JSON array with search queries and parameters. One request can
+          contain up to 100 queries
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/ArticleSearchResponse'
+                type: array
+          description: Successful operation
+        "400":
+          content: {}
+          description: Missing or malformed JSON in request body
+        "401":
+          content: {}
+          description: Invalid or no API key provided
+        "403":
+          content: {}
+          description: Too many queries in request body
+        "429":
+          content: {}
+          description: Too many requests in given amount of time
+      summary: Batch operation for search through articles
+      tags:
+      - articles
+      x-codegen-request-body-name: body
+      x-content-type: '*/*'
+      x-accepts:
+      - application/json
+  /articles/search/{query}:
+    get:
+      description: Searches through all articles and returns a JSON array with search
+        results. Method searches through all article fields.
+      operationId: searchArticles
+      parameters:
+      - description: The search query
+        in: path
+        name: query
+        required: true
+        schema:
+          format: int64
+          type: integer
+      - description: "Which page of the search results should be retrieved. Can be\
+          \ any number betwen 1 and 100, default is 1 (first page)."
+        in: query
+        name: page
+        schema:
+          default: 1
+          format: int32
+          maximum: 100
+          minimum: 1
+          type: integer
+      - description: "The number of results to return per page. Can be any number\
+          \ between 10 and 100, default is 10."
+        in: query
+        name: pageSize
+        schema:
+          default: 10
+          format: int32
+          maximum: 100
+          minimum: 10
+          type: integer
+      - description: Whether to retrieve the full article metadata or only the ID.
+          The default value is true.
+        in: query
+        name: metadata
+        schema:
+          default: true
+          type: boolean
+      - description: Whether to retrieve full text of the article. The default value
+          is false
+        in: query
+        name: fulltext
+        schema:
+          default: false
+          type: boolean
+      - description: Whether to retrieve citations found in the article. The default
+          value is false
+        in: query
+        name: citations
+        schema:
+          default: false
+          type: boolean
+      - description: "Whether to retrieve a list of similar articles. The default\
+          \ value is false. Because the similar articles are calculated on demand,\
+          \ setting this parameter to true might slightly slow down the response time"
+        in: query
+        name: similar
+        schema:
+          default: false
+          type: boolean
+      - description: Whether to retrieve a list of CORE IDs of different versions
+          of the article. The default value is false
+        in: query
+        name: duplicate
+        schema:
+          default: false
+          type: boolean
+      - description: Whether to retrieve a list of URLs from which the article can
+          be downloaded. This can include links to PDFs as well as HTML pages. The
+          default value is false
+        in: query
+        name: urls
+        schema:
+          default: false
+          type: boolean
+      - description: Returns the records raw XML metadata from the original repository.
+          The default value is false
+        in: query
+        name: faithfulMetadata
+        schema:
+          default: false
+          type: boolean
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ArticleSearchResponse'
+          description: Successful operation
+        "400":
+          content: {}
+          description: Parameter invalid or out of bounds
+        "401":
+          content: {}
+          description: Invalid or no API key provided
+        "429":
+          content: {}
+          description: Too many requests in given amount of time
+      summary: Search through all documents
+      tags:
+      - articles
+      x-accepts:
+      - application/json
+  /articles/similar:
+    post:
+      description: "Method accepts a text and retrieves a JSON array of articles which\
+        \ are similar to the given text. The response array is ordered based on similarity\
+        \ score, starting from the most similar."
+      operationId: similarArticles
+      parameters:
+      - description: "How many similar articles to retrieve at most. Can be any number\
+          \ betwen 1 and 100, default is 10"
+        in: query
+        name: limit
+        schema:
+          default: 10
+          maximum: 100
+          minimum: 1
+          type: integer
+      - description: Whether to retrieve the full article metadata or only the IDs
+          of the similar articles. The default value is true
+        in: query
+        name: metadata
+        schema:
+          default: true
+          type: boolean
+      - description: Whether to retrieve fulltexts of the similar articles. The default
+          value is false
+        in: query
+        name: fulltext
+        schema:
+          default: false
+          type: boolean
+      - description: Whether to retrieve citations found in the articles. The default
+          value is false
+        in: query
+        name: citations
+        schema:
+          default: false
+          type: boolean
+      - description: "Whether to retrieve lists of similar articles. The default value\
+          \ is false. Because the similar articles are calculated on demand, setting\
+          \ this parameter to true might slightly slow down the response time"
+        in: query
+        name: similar
+        schema:
+          default: false
+          type: boolean
+      - description: Whether to retrieve CORE IDs of different versions of the articles.
+          The default value is false
+        in: query
+        name: duplicate
+        schema:
+          default: false
+          type: boolean
+      - description: Whether to retrieve lists of URLs of the article fulltexts. The
+          default value is false
+        in: query
+        name: urls
+        schema:
+          default: false
+          type: boolean
+      - description: Whether to retrieve the raw XML metadata of the articles. The
+          default value is false
+        in: query
+        name: faithfulMetadata
+        schema:
+          default: false
+          type: boolean
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/SimilarRequest'
+        description: The text that requires similar articles to be calculated on
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ArticleSimilarResponse'
+          description: Successful operation
+        "400":
+          content: {}
+          description: Missing text in request body or parameter out of bounds or
+            invalid parameter
+        "401":
+          content: {}
+          description: Invalid or no API key provided
+        "429":
+          content: {}
+          description: Too many requests in given amount of time
+      summary: Get articles by similarity to a text
+      tags:
+      - articles
+      x-codegen-request-body-name: body
+      x-content-type: '*/*'
+      x-accepts:
+      - application/json
+  /journals/get:
+    post:
+      description: Method accepts a JSON array of ISSNs and retrieves a list of journals.
+      operationId: getJournalByIssnBatch
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              items:
+                type: string
+              type: array
+        description: JSON array with ISSNs of journals that need to be fetched
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/JournalResponse'
+                type: array
+          description: Successful operation
+        "400":
+          content: {}
+          description: Missing or malformed JSON in request body
+        "401":
+          content: {}
+          description: Invalid or no API key provided
+        "403":
+          content: {}
+          description: Too many queries in request body
+      summary: Batch operation for retrieving journals by ISSN
+      tags:
+      - journals
+      x-codegen-request-body-name: body
+      x-content-type: '*/*'
+      x-accepts:
+      - application/json
+  /journals/get/{issn}:
+    get:
+      description: Returns a journal with given ISSN identifier.
+      operationId: getJournalByIssn
+      parameters:
+      - description: ISSN identifier of journal that needs to be fetched.
+        in: path
+        name: issn
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JournalResponse'
+          description: Successful operation
+        "400":
+          content: {}
+          description: Invalid ISSN identifier supplied
+        "401":
+          content: {}
+          description: Invalid or no API key provided
+      summary: Find journal by ISSN
+      tags:
+      - journals
+      x-accepts:
+      - application/json
+  /journals/search:
+    post:
+      description: "Method accepts a JSON array of search queries and parameters.\
+        \ It then searches through all journals and returns a JSON array of search\
+        \ results for each of the queries. Method searches through all journal fields\
+        \ (title, identifiers, subjects, language, rights and publisher)."
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              items:
+                $ref: '#/components/schemas/SearchRequest'
+              type: array
+        description: JSON array with search queries and parameters. One request can
+          contain up to 100 queries.
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/JournalResponse'
+                type: array
+          description: Successful operation
+        "400":
+          content: {}
+          description: Missing or malformed JSON in request body
+        "401":
+          content: {}
+          description: Invalid or no API key provided
+        "403":
+          content: {}
+          description: Too many queries in request body
+      summary: Batch operation for search through journals
+      tags:
+      - journals
+      x-codegen-request-body-name: body
+      x-content-type: '*/*'
+      x-accepts:
+      - application/json
+  /journals/search/{query}:
+    get:
+      description: "Searches through all journals and returns a JSON array of search\
+        \ results. Method searches through all journal fields (title, identifiers,\
+        \ subjects, language, rights and publisher)."
+      parameters:
+      - description: Search query
+        in: path
+        name: query
+        required: true
+        schema:
+          type: string
+      - description: "Which page of the search results should be retrieved. Can be\
+          \ any number betwen 1 and 100, default is 1 (first page)."
+        in: query
+        name: page
+        schema:
+          default: 1
+          format: int32
+          maximum: 100
+          minimum: 1
+          type: integer
+      - description: "The number of results to return per page. Can be any number\
+          \ between 10 and 100, default is 10."
+        in: query
+        name: pageSize
+        schema:
+          default: 10
+          format: int32
+          maximum: 100
+          minimum: 10
+          type: integer
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JournalSearchResponse'
+          description: Successful operation
+        "400":
+          content: {}
+          description: Parameter invalid or out of bounds
+        "401":
+          content: {}
+          description: Invalid or no API key provided
+      summary: Search through journals
+      tags:
+      - journals
+      x-accepts:
+      - application/json
+  /repositories/get:
+    post:
+      description: Method accepts a JSON array of CORE repository IDs and retrieves
+        a list of repositories. The response array is ordered based on the order of
+        the IDs in the request array. The maximum number of IDs in request is 100.
+      operationId: getRepositoryByIdBatch
+      parameters:
+      - description: Whether to retrieve statistics about the repository. The default
+          value is false
+        in: query
+        name: stats
+        schema:
+          default: false
+          type: boolean
+      - description: Returns deposit history over time
+        in: query
+        name: depositHistory
+        schema:
+          default: false
+          type: boolean
+      - description: Returns deposit history over time
+        in: query
+        name: depositHistoryCumulative
+        schema:
+          default: false
+          type: boolean
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              items:
+                type: integer
+              type: array
+        description: JSON array with CORE repository IDs of repositories that need
+          to be fetched
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/RepositoryResponse'
+                type: array
+          description: Successful operation
+        "400":
+          content: {}
+          description: Missing or malformed JSON in request body
+        "401":
+          content: {}
+          description: Invalid or no API key provided
+        "403":
+          content: {}
+          description: Too many queries in request body
+        "429":
+          content: {}
+          description: Too many requests in given amount of time
+      summary: Batch operation for retrieving repositories by CORE repository ID
+      tags:
+      - repositories
+      x-codegen-request-body-name: body
+      x-content-type: '*/*'
+      x-accepts:
+      - application/json
+  /repositories/get/{repositoryId}:
+    get:
+      description: Method will retrieve a repository based on given CORE repository
+        ID.
+      operationId: getRepositoryById
+      parameters:
+      - description: CORE repository ID of the article that needs to be fetched.
+        in: path
+        name: repositoryId
+        required: true
+        schema:
+          type: integer
+      - description: Whether to retrieve statistics about the repository. The default
+          value is false
+        in: query
+        name: stats
+        schema:
+          default: false
+          type: boolean
+      - description: Returns deposit history over time
+        in: query
+        name: depositHistory
+        schema:
+          default: false
+          type: boolean
+      - description: Returns deposit history over time
+        in: query
+        name: depositHistoryCumulative
+        schema:
+          default: false
+          type: boolean
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RepositoryResponse'
+          description: Successful operation
+        "400":
+          content: {}
+          description: Invalid identifier supplied
+        "401":
+          content: {}
+          description: Invalid or no API key provided
+        "429":
+          content: {}
+          description: Too many requests in given amount of time
+      summary: Get repository by CORE repository ID
+      tags:
+      - repositories
+      x-accepts:
+      - application/json
+  /repositories/search:
+    post:
+      description: Method accepts a JSON array of search queries and parameters. It
+        then searches through all repositories and returns a JSON array of search
+        results for each of the queries. Method searches through all repository fields.
+      parameters:
+      - description: Whether to retrieve statistics about the repository. The default
+          value is false
+        in: query
+        name: stats
+        schema:
+          default: false
+          type: boolean
+      - description: Returns deposit history over time
+        in: query
+        name: depositHistory
+        schema:
+          default: false
+          type: boolean
+      - description: Returns deposit history over time
+        in: query
+        name: depositHistoryCumulative
+        schema:
+          default: false
+          type: boolean
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              items:
+                $ref: '#/components/schemas/SearchRequest'
+              type: array
+        description: JSON array with search queries and parameters. One request can
+          contain up to 100 queries
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RepositorySearchResponse'
+          description: Successful operation
+        "400":
+          content: {}
+          description: Missing or malformed JSON in request body
+        "401":
+          content: {}
+          description: Invalid or no API key provided
+        "403":
+          content: {}
+          description: Too many queries in request body
+        "429":
+          content: {}
+          description: Too many requests in given amount of time
+      summary: Batch operation for searching through repositories
+      tags:
+      - repositories
+      x-codegen-request-body-name: body
+      x-content-type: '*/*'
+      x-accepts:
+      - application/json
+  /repositories/search/{query}:
+    get:
+      description: Searches through all repositories and returns a JSON array with
+        search results. Method searches through all repository fields.
+      parameters:
+      - description: The search query
+        in: path
+        name: query
+        required: true
+        schema:
+          type: string
+      - description: "Which page of the search results should be retrieved. Can be\
+          \ any number betwen 1 and 100, default is 1 (first page)."
+        in: query
+        name: page
+        schema:
+          default: 1
+          format: int32
+          maximum: 100
+          minimum: 1
+          type: integer
+      - description: "The number of results to return per page. Can be any number\
+          \ between 10 and 100, default is 10."
+        in: query
+        name: pageSize
+        schema:
+          default: 10
+          format: int32
+          maximum: 100
+          minimum: 10
+          type: integer
+      - description: Whether to retrieve statistics about the repository. The default
+          value is false
+        in: query
+        name: stats
+        schema:
+          default: false
+          type: boolean
+      - description: Returns deposit history over time
+        in: query
+        name: depositHistory
+        schema:
+          default: false
+          type: boolean
+      - description: Returns deposit history over time
+        in: query
+        name: depositHistoryCumulative
+        schema:
+          default: false
+          type: boolean
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RepositorySearchResponse'
+          description: Successful operation
+        "400":
+          content: {}
+          description: Parameter invalid or out of bounds
+        "401":
+          content: {}
+          description: Invalid or no API key provided
+        "429":
+          content: {}
+          description: Too many requests in given amount of time
+      summary: Search through all repositories
+      tags:
+      - repositories
+      x-accepts:
+      - application/json
+  /search:
+    post:
+      description: "Method accepts a JSON array of search queries. It searches through\
+        \ all resources and returns a JSON array with search results for each of the\
+        \ queries. Method searches through all resources and all fields. The results\
+        \ are ordered by relevance score and contain type of the relevant resource\
+        \ and its ID. Furthermore, the responses are oredered based on the order of\
+        \ the request items. The metadata of each resource need to be obtained through\
+        \ an appropriate method."
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              items:
+                $ref: '#/components/schemas/SearchRequest'
+              type: array
+        description: JSON array with search queries and pagination parameters. One
+          request can contain up to 100 queries
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/SearchAllResponse'
+                type: array
+          description: Successful operation
+        "400":
+          content: {}
+          description: Missing or malformed JSON in request body
+        "401":
+          content: {}
+          description: Invalid or no API key provided
+        "403":
+          content: {}
+          description: Too many queries in request body
+        "429":
+          content: {}
+          description: Too many requests in given amount of time
+      summary: Batch operation for search through all resources
+      tags:
+      - all
+      x-codegen-request-body-name: body
+      x-content-type: '*/*'
+      x-accepts:
+      - application/json
+  /search/{query}:
+    get:
+      description: Searches through all resources and returns a JSON array with search
+        results. Method searches through all resources and all fields. The results
+        are ordered by relevance score and contain type of the relevant resource and
+        its ID. The metadata of each resource need to be obtained through an appropriate
+        method.
+      parameters:
+      - description: The search query
+        in: path
+        name: query
+        required: true
+        schema:
+          type: string
+      - description: "Which page of the search results should be retrieved. Can be\
+          \ any number betwen 1 and 100, default is 1 (first page)."
+        in: query
+        name: page
+        schema:
+          default: 1
+          format: int32
+          maximum: 100
+          minimum: 1
+          type: integer
+      - description: "The number of results to return per page. Can be any number\
+          \ between 10 and 100, default is 10."
+        in: query
+        name: pageSize
+        schema:
+          default: 10
+          format: int32
+          maximum: 100
+          minimum: 10
+          type: integer
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchAllResponse'
+          description: Successful operation
+        "400":
+          content: {}
+          description: Parameter invalid or out of bounds
+        "401":
+          content: {}
+          description: Invalid or no API key provided
+        "429":
+          content: {}
+          description: Too many requests in given amount of time
+      summary: Search through all resources
+      tags:
+      - all
+      x-accepts:
+      - application/json
+components:
+  schemas:
+    Article:
+      example:
+        year: 6
+        downloadUrl: downloadUrl
+        description: description
+        language:
+          pdfOrigin: pdfOrigin
+          pdfSize: 5
+          pdfStatus: 5
+          metadataUpdated: 2000-01-23
+          tdmOnly: true
+          indexed: 1
+          textStatus: 2
+          depositedDate: 2000-01-23
+          deletedStatus: 6
+          timestamp: 2000-01-23
+        fulltextIdentifier: fulltextIdentifier
+        title: title
+        citations:
+        - date: date
+          raw: raw
+          title: title
+          authors: authors
+          doi: doi
+        - date: date
+          raw: raw
+          title: title
+          authors: authors
+          doi: doi
+        repositories:
+        - dataProviderSourceStats:
+          - "{}"
+          - "{}"
+          openDoarId: 9
+          repositoryLocation:
+            country: country
+            countryCode: countryCode
+            latitude: 2
+            id: 3
+            repositoryName: repositoryName
+            longitude: 4
+          lastSeen: 2000-01-23T04:56:07.000+00:00
+          urlOaipmh: urlOaipmh
+          name: name
+          urlHomepage: urlHomepage
+          history:
+          - "{}"
+          - "{}"
+          id: 7
+          historyCumulative:
+          - "{}"
+          - "{}"
+          repositoryStats:
+            countFulltext: 7
+            dateLastProcessed: dateLastProcessed
+            countMetadata: 1
+          uri: uri
+        - dataProviderSourceStats:
+          - "{}"
+          - "{}"
+          openDoarId: 9
+          repositoryLocation:
+            country: country
+            countryCode: countryCode
+            latitude: 2
+            id: 3
+            repositoryName: repositoryName
+            longitude: 4
+          lastSeen: 2000-01-23T04:56:07.000+00:00
+          urlOaipmh: urlOaipmh
+          name: name
+          urlHomepage: urlHomepage
+          history:
+          - "{}"
+          - "{}"
+          id: 7
+          historyCumulative:
+          - "{}"
+          - "{}"
+          repositoryStats:
+            countFulltext: 7
+            dateLastProcessed: dateLastProcessed
+            countMetadata: 1
+          uri: uri
+        fulltextUrls:
+        - fulltextUrls
+        - fulltextUrls
+        oai: oai
+        fulltext: fulltext
+        id: 0
+        types:
+        - types
+        - types
+        identifiers:
+        - identifiers
+        - identifiers
+        topics:
+        - topics
+        - topics
+        subjects:
+        - subjects
+        - subjects
+        journals:
+        - identifiers:
+          - identifiers
+          - identifiers
+          title: title
+        - identifiers:
+          - identifiers
+          - identifiers
+          title: title
+        rawRecordXml:
+          datetime: datetime
+          metadata: metadata
+        datePublished: datePublished
+        similarities:
+        - score: 1.4894159098541704
+          id: 1
+          title: title
+        - score: 1.4894159098541704
+          id: 1
+          title: title
+        publisher: publisher
+        contributors:
+        - contributors
+        - contributors
+        relations:
+        - relations
+        - relations
+        repositoryDocument: "{}"
+        authors:
+        - authors
+        - authors
+        doi: doi
+      properties:
+        authors:
+          description: List of article authors
+          items:
+            type: string
+          type: array
+        citations:
+          description: Citations found in the article
+          items:
+            $ref: '#/components/schemas/Citation'
+          type: array
+        contributors:
+          description: List of article contributors
+          items:
+            type: string
+          type: array
+        datePublished:
+          description: Date article published
+          type: string
+        description:
+          description: The abstract
+          type: string
+        doi:
+          description: The DOI of the article
+          type: string
+        downloadUrl:
+          description: "The download PDF URL which is displayed on our /display/[ArticleID]\
+            \ page"
+          type: string
+        fulltext:
+          description: Article full text
+          type: string
+        fulltextIdentifier:
+          description: The URL to the fulltext
+          type: string
+        fulltextUrls:
+          description: URLs of the fulltext version of this article
+          items:
+            type: string
+          type: array
+        id:
+          description: Article ID
+          type: integer
+        identifiers:
+          description: List of document identifiers
+          items:
+            type: string
+          type: array
+        journals:
+          description: List of journals this article belongs to
+          items:
+            $ref: '#/components/schemas/ArticleJournal'
+          type: array
+        language:
+          $ref: '#/components/schemas/Language'
+        oai:
+          description: The OAI of the article
+          type: string
+        publisher:
+          description: Publisher of the article
+          type: string
+        rawRecordXml:
+          $ref: '#/components/schemas/RawRecordXml'
+        relations:
+          description: "URLs of relating articles, etc."
+          items:
+            type: string
+          type: array
+        repositories:
+          description: List of repositories this article belongs to
+          items:
+            $ref: '#/components/schemas/Repository'
+          type: array
+        repositoryDocument:
+          type: object
+        similarities:
+          description: Similar articles
+          items:
+            $ref: '#/components/schemas/Similar'
+          type: array
+        subjects:
+          description: Article subjects
+          items:
+            type: string
+          type: array
+        title:
+          description: Article title
+          type: string
+        topics:
+          description: Article topics
+          items:
+            type: string
+          type: array
+        types:
+          description: "Types, e.g. conference paper, journal paper, etc."
+          items:
+            type: string
+          type: array
+        year:
+          description: Year the article was published
+          type: integer
+      required:
+      - id
+      type: object
+    ArticleDedupResponse:
+      type: object
+    ArticleHistoryResponse:
+      example:
+        data:
+        - datetime: datetime
+          metadata: metadata
+        - datetime: datetime
+          metadata: metadata
+        status: OK
+      properties:
+        data:
+          description: List of article versions
+          items:
+            $ref: '#/components/schemas/RawRecordXml'
+          type: array
+        status:
+          description: Operation status
+          enum:
+          - OK
+          - Not found
+          - Too many queries
+          - Missing parameter
+          - Invalid parameter
+          - Parameter out of bounds
+          type: string
+      required:
+      - status
+      type: object
+    ArticleJournal:
+      example:
+        identifiers:
+        - identifiers
+        - identifiers
+        title: title
+      properties:
+        identifiers:
+          description: List of journal identifiers
+          items:
+            type: string
+          type: array
+        title:
+          description: Title of the journal
+          type: string
+      type: object
+    ArticleResponse:
+      example:
+        data:
+          year: 6
+          downloadUrl: downloadUrl
+          description: description
+          language:
+            pdfOrigin: pdfOrigin
+            pdfSize: 5
+            pdfStatus: 5
+            metadataUpdated: 2000-01-23
+            tdmOnly: true
+            indexed: 1
+            textStatus: 2
+            depositedDate: 2000-01-23
+            deletedStatus: 6
+            timestamp: 2000-01-23
+          fulltextIdentifier: fulltextIdentifier
+          title: title
+          citations:
+          - date: date
+            raw: raw
+            title: title
+            authors: authors
+            doi: doi
+          - date: date
+            raw: raw
+            title: title
+            authors: authors
+            doi: doi
+          repositories:
+          - dataProviderSourceStats:
+            - "{}"
+            - "{}"
+            openDoarId: 9
+            repositoryLocation:
+              country: country
+              countryCode: countryCode
+              latitude: 2
+              id: 3
+              repositoryName: repositoryName
+              longitude: 4
+            lastSeen: 2000-01-23T04:56:07.000+00:00
+            urlOaipmh: urlOaipmh
+            name: name
+            urlHomepage: urlHomepage
+            history:
+            - "{}"
+            - "{}"
+            id: 7
+            historyCumulative:
+            - "{}"
+            - "{}"
+            repositoryStats:
+              countFulltext: 7
+              dateLastProcessed: dateLastProcessed
+              countMetadata: 1
+            uri: uri
+          - dataProviderSourceStats:
+            - "{}"
+            - "{}"
+            openDoarId: 9
+            repositoryLocation:
+              country: country
+              countryCode: countryCode
+              latitude: 2
+              id: 3
+              repositoryName: repositoryName
+              longitude: 4
+            lastSeen: 2000-01-23T04:56:07.000+00:00
+            urlOaipmh: urlOaipmh
+            name: name
+            urlHomepage: urlHomepage
+            history:
+            - "{}"
+            - "{}"
+            id: 7
+            historyCumulative:
+            - "{}"
+            - "{}"
+            repositoryStats:
+              countFulltext: 7
+              dateLastProcessed: dateLastProcessed
+              countMetadata: 1
+            uri: uri
+          fulltextUrls:
+          - fulltextUrls
+          - fulltextUrls
+          oai: oai
+          fulltext: fulltext
+          id: 0
+          types:
+          - types
+          - types
+          identifiers:
+          - identifiers
+          - identifiers
+          topics:
+          - topics
+          - topics
+          subjects:
+          - subjects
+          - subjects
+          journals:
+          - identifiers:
+            - identifiers
+            - identifiers
+            title: title
+          - identifiers:
+            - identifiers
+            - identifiers
+            title: title
+          rawRecordXml:
+            datetime: datetime
+            metadata: metadata
+          datePublished: datePublished
+          similarities:
+          - score: 1.4894159098541704
+            id: 1
+            title: title
+          - score: 1.4894159098541704
+            id: 1
+            title: title
+          publisher: publisher
+          contributors:
+          - contributors
+          - contributors
+          relations:
+          - relations
+          - relations
+          repositoryDocument: "{}"
+          authors:
+          - authors
+          - authors
+          doi: doi
+        status: OK
+      properties:
+        data:
+          $ref: '#/components/schemas/Article'
+        status:
+          description: Operation status
+          enum:
+          - OK
+          - Not found
+          - Too many queries
+          - Missing parameter
+          - Invalid parameter
+          - Parameter out of bounds
+          type: string
+      required:
+      - data
+      - status
+      type: object
+    ArticleSearchResponse:
+      example:
+        data:
+        - year: 6
+          downloadUrl: downloadUrl
+          description: description
+          language:
+            pdfOrigin: pdfOrigin
+            pdfSize: 5
+            pdfStatus: 5
+            metadataUpdated: 2000-01-23
+            tdmOnly: true
+            indexed: 1
+            textStatus: 2
+            depositedDate: 2000-01-23
+            deletedStatus: 6
+            timestamp: 2000-01-23
+          fulltextIdentifier: fulltextIdentifier
+          title: title
+          citations:
+          - date: date
+            raw: raw
+            title: title
+            authors: authors
+            doi: doi
+          - date: date
+            raw: raw
+            title: title
+            authors: authors
+            doi: doi
+          repositories:
+          - dataProviderSourceStats:
+            - "{}"
+            - "{}"
+            openDoarId: 9
+            repositoryLocation:
+              country: country
+              countryCode: countryCode
+              latitude: 2
+              id: 3
+              repositoryName: repositoryName
+              longitude: 4
+            lastSeen: 2000-01-23T04:56:07.000+00:00
+            urlOaipmh: urlOaipmh
+            name: name
+            urlHomepage: urlHomepage
+            history:
+            - "{}"
+            - "{}"
+            id: 7
+            historyCumulative:
+            - "{}"
+            - "{}"
+            repositoryStats:
+              countFulltext: 7
+              dateLastProcessed: dateLastProcessed
+              countMetadata: 1
+            uri: uri
+          - dataProviderSourceStats:
+            - "{}"
+            - "{}"
+            openDoarId: 9
+            repositoryLocation:
+              country: country
+              countryCode: countryCode
+              latitude: 2
+              id: 3
+              repositoryName: repositoryName
+              longitude: 4
+            lastSeen: 2000-01-23T04:56:07.000+00:00
+            urlOaipmh: urlOaipmh
+            name: name
+            urlHomepage: urlHomepage
+            history:
+            - "{}"
+            - "{}"
+            id: 7
+            historyCumulative:
+            - "{}"
+            - "{}"
+            repositoryStats:
+              countFulltext: 7
+              dateLastProcessed: dateLastProcessed
+              countMetadata: 1
+            uri: uri
+          fulltextUrls:
+          - fulltextUrls
+          - fulltextUrls
+          oai: oai
+          fulltext: fulltext
+          id: 0
+          types:
+          - types
+          - types
+          identifiers:
+          - identifiers
+          - identifiers
+          topics:
+          - topics
+          - topics
+          subjects:
+          - subjects
+          - subjects
+          journals:
+          - identifiers:
+            - identifiers
+            - identifiers
+            title: title
+          - identifiers:
+            - identifiers
+            - identifiers
+            title: title
+          rawRecordXml:
+            datetime: datetime
+            metadata: metadata
+          datePublished: datePublished
+          similarities:
+          - score: 1.4894159098541704
+            id: 1
+            title: title
+          - score: 1.4894159098541704
+            id: 1
+            title: title
+          publisher: publisher
+          contributors:
+          - contributors
+          - contributors
+          relations:
+          - relations
+          - relations
+          repositoryDocument: "{}"
+          authors:
+          - authors
+          - authors
+          doi: doi
+        - year: 6
+          downloadUrl: downloadUrl
+          description: description
+          language:
+            pdfOrigin: pdfOrigin
+            pdfSize: 5
+            pdfStatus: 5
+            metadataUpdated: 2000-01-23
+            tdmOnly: true
+            indexed: 1
+            textStatus: 2
+            depositedDate: 2000-01-23
+            deletedStatus: 6
+            timestamp: 2000-01-23
+          fulltextIdentifier: fulltextIdentifier
+          title: title
+          citations:
+          - date: date
+            raw: raw
+            title: title
+            authors: authors
+            doi: doi
+          - date: date
+            raw: raw
+            title: title
+            authors: authors
+            doi: doi
+          repositories:
+          - dataProviderSourceStats:
+            - "{}"
+            - "{}"
+            openDoarId: 9
+            repositoryLocation:
+              country: country
+              countryCode: countryCode
+              latitude: 2
+              id: 3
+              repositoryName: repositoryName
+              longitude: 4
+            lastSeen: 2000-01-23T04:56:07.000+00:00
+            urlOaipmh: urlOaipmh
+            name: name
+            urlHomepage: urlHomepage
+            history:
+            - "{}"
+            - "{}"
+            id: 7
+            historyCumulative:
+            - "{}"
+            - "{}"
+            repositoryStats:
+              countFulltext: 7
+              dateLastProcessed: dateLastProcessed
+              countMetadata: 1
+            uri: uri
+          - dataProviderSourceStats:
+            - "{}"
+            - "{}"
+            openDoarId: 9
+            repositoryLocation:
+              country: country
+              countryCode: countryCode
+              latitude: 2
+              id: 3
+              repositoryName: repositoryName
+              longitude: 4
+            lastSeen: 2000-01-23T04:56:07.000+00:00
+            urlOaipmh: urlOaipmh
+            name: name
+            urlHomepage: urlHomepage
+            history:
+            - "{}"
+            - "{}"
+            id: 7
+            historyCumulative:
+            - "{}"
+            - "{}"
+            repositoryStats:
+              countFulltext: 7
+              dateLastProcessed: dateLastProcessed
+              countMetadata: 1
+            uri: uri
+          fulltextUrls:
+          - fulltextUrls
+          - fulltextUrls
+          oai: oai
+          fulltext: fulltext
+          id: 0
+          types:
+          - types
+          - types
+          identifiers:
+          - identifiers
+          - identifiers
+          topics:
+          - topics
+          - topics
+          subjects:
+          - subjects
+          - subjects
+          journals:
+          - identifiers:
+            - identifiers
+            - identifiers
+            title: title
+          - identifiers:
+            - identifiers
+            - identifiers
+            title: title
+          rawRecordXml:
+            datetime: datetime
+            metadata: metadata
+          datePublished: datePublished
+          similarities:
+          - score: 1.4894159098541704
+            id: 1
+            title: title
+          - score: 1.4894159098541704
+            id: 1
+            title: title
+          publisher: publisher
+          contributors:
+          - contributors
+          - contributors
+          relations:
+          - relations
+          - relations
+          repositoryDocument: "{}"
+          authors:
+          - authors
+          - authors
+          doi: doi
+        totalHits: 0
+        status: OK
+      properties:
+        data:
+          description: Search results
+          items:
+            $ref: '#/components/schemas/Article'
+          type: array
+        status:
+          description: Operation status
+          enum:
+          - OK
+          - Not found
+          - Too many queries
+          - Missing parameter
+          - Invalid parameter
+          - Parameter out of bounds
+          type: string
+        totalHits:
+          description: Total number of articles matching the search criteria
+          type: integer
+      required:
+      - data
+      - status
+      - totalHits
+      type: object
+    ArticleSimilarResponse:
+      example:
+        data:
+        - year: 6
+          downloadUrl: downloadUrl
+          description: description
+          language:
+            pdfOrigin: pdfOrigin
+            pdfSize: 5
+            pdfStatus: 5
+            metadataUpdated: 2000-01-23
+            tdmOnly: true
+            indexed: 1
+            textStatus: 2
+            depositedDate: 2000-01-23
+            deletedStatus: 6
+            timestamp: 2000-01-23
+          fulltextIdentifier: fulltextIdentifier
+          title: title
+          citations:
+          - date: date
+            raw: raw
+            title: title
+            authors: authors
+            doi: doi
+          - date: date
+            raw: raw
+            title: title
+            authors: authors
+            doi: doi
+          repositories:
+          - dataProviderSourceStats:
+            - "{}"
+            - "{}"
+            openDoarId: 9
+            repositoryLocation:
+              country: country
+              countryCode: countryCode
+              latitude: 2
+              id: 3
+              repositoryName: repositoryName
+              longitude: 4
+            lastSeen: 2000-01-23T04:56:07.000+00:00
+            urlOaipmh: urlOaipmh
+            name: name
+            urlHomepage: urlHomepage
+            history:
+            - "{}"
+            - "{}"
+            id: 7
+            historyCumulative:
+            - "{}"
+            - "{}"
+            repositoryStats:
+              countFulltext: 7
+              dateLastProcessed: dateLastProcessed
+              countMetadata: 1
+            uri: uri
+          - dataProviderSourceStats:
+            - "{}"
+            - "{}"
+            openDoarId: 9
+            repositoryLocation:
+              country: country
+              countryCode: countryCode
+              latitude: 2
+              id: 3
+              repositoryName: repositoryName
+              longitude: 4
+            lastSeen: 2000-01-23T04:56:07.000+00:00
+            urlOaipmh: urlOaipmh
+            name: name
+            urlHomepage: urlHomepage
+            history:
+            - "{}"
+            - "{}"
+            id: 7
+            historyCumulative:
+            - "{}"
+            - "{}"
+            repositoryStats:
+              countFulltext: 7
+              dateLastProcessed: dateLastProcessed
+              countMetadata: 1
+            uri: uri
+          fulltextUrls:
+          - fulltextUrls
+          - fulltextUrls
+          oai: oai
+          fulltext: fulltext
+          id: 0
+          types:
+          - types
+          - types
+          identifiers:
+          - identifiers
+          - identifiers
+          topics:
+          - topics
+          - topics
+          subjects:
+          - subjects
+          - subjects
+          journals:
+          - identifiers:
+            - identifiers
+            - identifiers
+            title: title
+          - identifiers:
+            - identifiers
+            - identifiers
+            title: title
+          rawRecordXml:
+            datetime: datetime
+            metadata: metadata
+          datePublished: datePublished
+          similarities:
+          - score: 1.4894159098541704
+            id: 1
+            title: title
+          - score: 1.4894159098541704
+            id: 1
+            title: title
+          publisher: publisher
+          contributors:
+          - contributors
+          - contributors
+          relations:
+          - relations
+          - relations
+          repositoryDocument: "{}"
+          authors:
+          - authors
+          - authors
+          doi: doi
+        - year: 6
+          downloadUrl: downloadUrl
+          description: description
+          language:
+            pdfOrigin: pdfOrigin
+            pdfSize: 5
+            pdfStatus: 5
+            metadataUpdated: 2000-01-23
+            tdmOnly: true
+            indexed: 1
+            textStatus: 2
+            depositedDate: 2000-01-23
+            deletedStatus: 6
+            timestamp: 2000-01-23
+          fulltextIdentifier: fulltextIdentifier
+          title: title
+          citations:
+          - date: date
+            raw: raw
+            title: title
+            authors: authors
+            doi: doi
+          - date: date
+            raw: raw
+            title: title
+            authors: authors
+            doi: doi
+          repositories:
+          - dataProviderSourceStats:
+            - "{}"
+            - "{}"
+            openDoarId: 9
+            repositoryLocation:
+              country: country
+              countryCode: countryCode
+              latitude: 2
+              id: 3
+              repositoryName: repositoryName
+              longitude: 4
+            lastSeen: 2000-01-23T04:56:07.000+00:00
+            urlOaipmh: urlOaipmh
+            name: name
+            urlHomepage: urlHomepage
+            history:
+            - "{}"
+            - "{}"
+            id: 7
+            historyCumulative:
+            - "{}"
+            - "{}"
+            repositoryStats:
+              countFulltext: 7
+              dateLastProcessed: dateLastProcessed
+              countMetadata: 1
+            uri: uri
+          - dataProviderSourceStats:
+            - "{}"
+            - "{}"
+            openDoarId: 9
+            repositoryLocation:
+              country: country
+              countryCode: countryCode
+              latitude: 2
+              id: 3
+              repositoryName: repositoryName
+              longitude: 4
+            lastSeen: 2000-01-23T04:56:07.000+00:00
+            urlOaipmh: urlOaipmh
+            name: name
+            urlHomepage: urlHomepage
+            history:
+            - "{}"
+            - "{}"
+            id: 7
+            historyCumulative:
+            - "{}"
+            - "{}"
+            repositoryStats:
+              countFulltext: 7
+              dateLastProcessed: dateLastProcessed
+              countMetadata: 1
+            uri: uri
+          fulltextUrls:
+          - fulltextUrls
+          - fulltextUrls
+          oai: oai
+          fulltext: fulltext
+          id: 0
+          types:
+          - types
+          - types
+          identifiers:
+          - identifiers
+          - identifiers
+          topics:
+          - topics
+          - topics
+          subjects:
+          - subjects
+          - subjects
+          journals:
+          - identifiers:
+            - identifiers
+            - identifiers
+            title: title
+          - identifiers:
+            - identifiers
+            - identifiers
+            title: title
+          rawRecordXml:
+            datetime: datetime
+            metadata: metadata
+          datePublished: datePublished
+          similarities:
+          - score: 1.4894159098541704
+            id: 1
+            title: title
+          - score: 1.4894159098541704
+            id: 1
+            title: title
+          publisher: publisher
+          contributors:
+          - contributors
+          - contributors
+          relations:
+          - relations
+          - relations
+          repositoryDocument: "{}"
+          authors:
+          - authors
+          - authors
+          doi: doi
+        status: OK
+      properties:
+        data:
+          description: Similar articles
+          items:
+            $ref: '#/components/schemas/Article'
+          type: array
+        status:
+          description: Operation status
+          enum:
+          - OK
+          - Not found
+          - Too many queries
+          - Missing parameter
+          - Invalid parameter
+          - Parameter out of bounds
+          type: string
+      required:
+      - data
+      - status
+      type: object
+    Citation:
+      example:
+        date: date
+        raw: raw
+        title: title
+        authors: authors
+        doi: doi
+      properties:
+        authors:
+          description: Authors of the article
+          type: string
+        date:
+          description: Date the cited article was published
+          type: string
+        doi:
+          description: Digital Object Identifier
+          type: string
+        raw:
+          description: Citation as raw string
+          type: string
+        title:
+          description: Title of the cited article
+          type: string
+      type: object
+    Journal:
+      example:
+        identifiers:
+        - identifiers
+        - identifiers
+        rights: rights
+        subjects:
+        - subjects
+        - subjects
+        publisher: publisher
+        language: language
+        title: title
+      properties:
+        identifiers:
+          description: "List of journal identifiers (e.g. URL, OAI or ISSN). The type\
+            \ is prepended to the identifier string (e.g. 'issn:2296-0597')"
+          items:
+            type: string
+          type: array
+        language:
+          description: Language of the journal
+          type: string
+        publisher:
+          description: Publisher of the journal
+          type: string
+        rights:
+          description: Copyright license of the journal
+          type: string
+        subjects:
+          description: List of journal subjects
+          items:
+            type: string
+          type: array
+        title:
+          description: Journal title
+          type: string
+      required:
+      - identifiers
+      type: object
+    JournalResponse:
+      example:
+        data:
+          identifiers:
+          - identifiers
+          - identifiers
+          rights: rights
+          subjects:
+          - subjects
+          - subjects
+          publisher: publisher
+          language: language
+          title: title
+        status: OK
+      properties:
+        data:
+          $ref: '#/components/schemas/Journal'
+        status:
+          description: Operation status
+          enum:
+          - OK
+          - NOT_FOUND
+          - TOO_MANY_QUERIES
+          - MISSING_PARAMETER
+          - INVALID_PARAMETER
+          type: string
+      required:
+      - status
+      type: object
+    JournalSearchResponse:
+      example:
+        data:
+        - identifiers:
+          - identifiers
+          - identifiers
+          rights: rights
+          subjects:
+          - subjects
+          - subjects
+          publisher: publisher
+          language: language
+          title: title
+        - identifiers:
+          - identifiers
+          - identifiers
+          rights: rights
+          subjects:
+          - subjects
+          - subjects
+          publisher: publisher
+          language: language
+          title: title
+        totalHits: 0
+        status: OK
+      properties:
+        data:
+          description: Search results
+          items:
+            $ref: '#/components/schemas/Journal'
+          type: array
+        status:
+          description: Operation status
+          enum:
+          - OK
+          - NOT_FOUND
+          - TOO_MANY_QUERIES
+          - MISSING_PARAMETER
+          - INVALID_PARAMETER
+          type: string
+        totalHits:
+          description: Total number of journals matching the search criteria
+          type: integer
+      required:
+      - status
+      - totalHits
+      type: object
+    Language:
+      example:
+        pdfOrigin: pdfOrigin
+        pdfSize: 5
+        pdfStatus: 5
+        metadataUpdated: 2000-01-23
+        tdmOnly: true
+        indexed: 1
+        textStatus: 2
+        depositedDate: 2000-01-23
+        deletedStatus: 6
+        timestamp: 2000-01-23
+      properties:
+        deletedStatus:
+          description: "The deleted status of the document: 0 for allowed, 1 for deleted,\
+            \ 2 for disabled"
+          type: integer
+        depositedDate:
+          description: The date the item was deposited in the Data Provider (repository/Journal)
+          format: date
+          type: string
+        indexed:
+          description: "The index status of the document: 0 for not indexed, 1 for\
+            \ indexed"
+          type: integer
+        metadataUpdated:
+          description: The last date metadata of this article were updated
+          format: date
+          type: string
+        pdfOrigin:
+          description: The remote URL where we aquired the PDF
+          type: string
+        pdfSize:
+          description: The size of pdf in bytes
+          type: integer
+        pdfStatus:
+          description: "The pdf status flag of article: 0 no pdf, 1 pdf exists"
+          type: integer
+        tdmOnly:
+          description: "The tdmOnly flag of the article: 0 normal, 1 tdm only"
+          type: boolean
+        textStatus:
+          description: "The text status flag of article: 0 does not exist, 1 exists"
+          type: integer
+        timestamp:
+          description: The date of article as given by the repository
+          format: date
+          type: string
+      type: object
+    RawRecordXml:
+      example:
+        datetime: datetime
+        metadata: metadata
+      properties:
+        datetime:
+          description: Timestamp when CORE harvested the metadata
+          format: date-format
+          type: string
+        metadata:
+          description: The raw XML metadata
+          type: string
+      type: object
+    Repository:
+      example:
+        dataProviderSourceStats:
+        - "{}"
+        - "{}"
+        openDoarId: 9
+        repositoryLocation:
+          country: country
+          countryCode: countryCode
+          latitude: 2
+          id: 3
+          repositoryName: repositoryName
+          longitude: 4
+        lastSeen: 2000-01-23T04:56:07.000+00:00
+        urlOaipmh: urlOaipmh
+        name: name
+        urlHomepage: urlHomepage
+        history:
+        - "{}"
+        - "{}"
+        id: 7
+        historyCumulative:
+        - "{}"
+        - "{}"
+        repositoryStats:
+          countFulltext: 7
+          dateLastProcessed: dateLastProcessed
+          countMetadata: 1
+        uri: uri
+      properties:
+        dataProviderSourceStats:
+          description: Statistics based on the Data Provider/repository rather than
+            data processed and filtered by CORE. This array is in beta and may change
+            in the future
+          items:
+            type: object
+          type: array
+        history:
+          description: The number of deposits in the repository per date. This field
+            is in beta and may change in the future
+          items:
+            type: object
+          type: array
+        historyCumulative:
+          description: The number of deposits in the repository per date over time
+            (cumulative). This field is in beta and may change in the future
+          items:
+            type: object
+          type: array
+        id:
+          description: CORE repository ID
+          type: integer
+        lastSeen:
+          description: The time the repository was last harvested by CORE. This field
+            is in beta and may change in the future
+          format: date-time
+          type: string
+        name:
+          description: Repository name
+          type: string
+        openDoarId:
+          description: ID of the repository in Open DOAR
+          type: integer
+        repositoryLocation:
+          $ref: '#/components/schemas/RepositoryLocation'
+        repositoryStats:
+          $ref: '#/components/schemas/RepositoryStats'
+        uri:
+          description: Repository URI
+          type: string
+        urlHomepage:
+          description: Repository homepage
+          type: string
+        urlOaipmh:
+          description: Repository OAI-PMH endpoint
+          type: string
+      type: object
+    RepositoryDocument:
+      type: object
+    RepositoryLocation:
+      example:
+        country: country
+        countryCode: countryCode
+        latitude: 2
+        id: 3
+        repositoryName: repositoryName
+        longitude: 4
+      properties:
+        country:
+          description: Country name
+          type: string
+        countryCode:
+          description: Two letter country code
+          type: string
+        id:
+          description: CORE repository ID
+          type: integer
+        latitude:
+          type: integer
+        longitude:
+          type: integer
+        repositoryName:
+          description: Repository name
+          type: string
+      type: object
+    RepositoryResponse:
+      example:
+        data:
+          dataProviderSourceStats:
+          - "{}"
+          - "{}"
+          openDoarId: 9
+          repositoryLocation:
+            country: country
+            countryCode: countryCode
+            latitude: 2
+            id: 3
+            repositoryName: repositoryName
+            longitude: 4
+          lastSeen: 2000-01-23T04:56:07.000+00:00
+          urlOaipmh: urlOaipmh
+          name: name
+          urlHomepage: urlHomepage
+          history:
+          - "{}"
+          - "{}"
+          id: 7
+          historyCumulative:
+          - "{}"
+          - "{}"
+          repositoryStats:
+            countFulltext: 7
+            dateLastProcessed: dateLastProcessed
+            countMetadata: 1
+          uri: uri
+        status: OK
+      properties:
+        data:
+          $ref: '#/components/schemas/Repository'
+        status:
+          description: Operation status
+          enum:
+          - OK
+          - Not found
+          - Too many queries
+          - Missing parameter
+          - Invalid parameter
+          - Parameter out of bounds
+          type: string
+      required:
+      - status
+      type: object
+    RepositorySearchResponse:
+      example:
+        data:
+        - dataProviderSourceStats:
+          - "{}"
+          - "{}"
+          openDoarId: 9
+          repositoryLocation:
+            country: country
+            countryCode: countryCode
+            latitude: 2
+            id: 3
+            repositoryName: repositoryName
+            longitude: 4
+          lastSeen: 2000-01-23T04:56:07.000+00:00
+          urlOaipmh: urlOaipmh
+          name: name
+          urlHomepage: urlHomepage
+          history:
+          - "{}"
+          - "{}"
+          id: 7
+          historyCumulative:
+          - "{}"
+          - "{}"
+          repositoryStats:
+            countFulltext: 7
+            dateLastProcessed: dateLastProcessed
+            countMetadata: 1
+          uri: uri
+        - dataProviderSourceStats:
+          - "{}"
+          - "{}"
+          openDoarId: 9
+          repositoryLocation:
+            country: country
+            countryCode: countryCode
+            latitude: 2
+            id: 3
+            repositoryName: repositoryName
+            longitude: 4
+          lastSeen: 2000-01-23T04:56:07.000+00:00
+          urlOaipmh: urlOaipmh
+          name: name
+          urlHomepage: urlHomepage
+          history:
+          - "{}"
+          - "{}"
+          id: 7
+          historyCumulative:
+          - "{}"
+          - "{}"
+          repositoryStats:
+            countFulltext: 7
+            dateLastProcessed: dateLastProcessed
+            countMetadata: 1
+          uri: uri
+        totalHits: 0
+        status: OK
+      properties:
+        data:
+          description: Search results
+          items:
+            $ref: '#/components/schemas/Repository'
+          type: array
+        status:
+          description: Operation status
+          enum:
+          - OK
+          - Not found
+          - Too many queries
+          - Missing parameter
+          - Invalid parameter
+          - Parameter out of bounds
+          type: string
+        totalHits:
+          description: Total number of repositories matching the search criteria
+          type: integer
+      required:
+      - status
+      - totalHits
+      type: object
+    RepositoryStats:
+      example:
+        countFulltext: 7
+        dateLastProcessed: dateLastProcessed
+        countMetadata: 1
+      properties:
+        countFulltext:
+          description: Repository fulltext count
+          type: integer
+        countMetadata:
+          description: Repository metadata count
+          type: integer
+        dateLastProcessed:
+          description: Last repository processing date
+          type: string
+      type: object
+    Resource:
+      example:
+        id: id
+        type: journal
+      properties:
+        id:
+          description: Identifier of the resource
+          type: string
+        type:
+          description: Type of the resource
+          enum:
+          - journal
+          - article
+          - repository
+          type: string
+      required:
+      - id
+      - type
+      type: object
+    SearchAllResponse:
+      example:
+        data:
+        - id: id
+          type: journal
+        - id: id
+          type: journal
+        totalHits: 0
+        status: OK
+      properties:
+        data:
+          description: List of relevant resources
+          items:
+            $ref: '#/components/schemas/Resource'
+          type: array
+        status:
+          description: Operation status
+          enum:
+          - OK
+          - Not found
+          - Too many queries
+          - Missing parameter
+          - Invalid parameter
+          - Parameter out of bounds
+          type: string
+        totalHits:
+          description: Total number of items matching the search criteria
+          type: integer
+      required:
+      - data
+      - status
+      - totalHits
+      type: object
+    SearchRequest:
+      example:
+        query: query
+        pageSize: 64
+        page: 8
+      properties:
+        page:
+          description: "Which page of the search results should be retrieved. Can\
+            \ be any number from 1 to 100, default is 1 (first page)"
+          maximum: 100
+          minimum: 1
+          type: integer
+        pageSize:
+          description: "The number of results to return per page. Can be any number\
+            \ from 10 to 100, default is 10"
+          maximum: 100
+          minimum: 10
+          type: integer
+        query:
+          description: Search query
+          type: string
+      required:
+      - query
+      type: object
+    Similar:
+      example:
+        score: 1.4894159098541704
+        id: 1
+        title: title
+      properties:
+        id:
+          description: CORE ID of the similar article
+          type: integer
+        score:
+          description: Similarity score
+          format: double
+          type: number
+        title:
+          description: Title of the similar article
+          type: string
+      required:
+      - id
+      - score
+      type: object
+    SimilarRequest:
+      example:
+        text: text
+      properties:
+        text:
+          description: Find Similar articles based on this string
+          type: string
+      required:
+      - text
+      type: object
+  securitySchemes:
+    apiKey:
+      description: Your Api Key. Also accepts apiKey as a header
+      in: query
+      name: apiKey
+      type: apiKey
+x-original-swagger-version: "2.0"
+

@@ -1,0 +1,46 @@
+
+
+# GenerateDefaultLineItemRequest
+
+Request message for LineItemService.GenerateDefaultLineItem.
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**displayName** | **String** | Required. The display name of the line item. Must be UTF-8 encoded with a maximum size of 240 bytes. |  [optional] |
+|**insertionOrderId** | **String** | Required. The unique ID of the insertion order that the line item belongs to. |  [optional] |
+|**lineItemType** | [**LineItemTypeEnum**](#LineItemTypeEnum) | Required. The type of the line item. |  [optional] |
+|**mobileApp** | [**MobileApp**](MobileApp.md) |  |  [optional] |
+
+
+
+## Enum: LineItemTypeEnum
+
+| Name | Value |
+|---- | -----|
+| UNSPECIFIED | &quot;LINE_ITEM_TYPE_UNSPECIFIED&quot; |
+| DISPLAY_DEFAULT | &quot;LINE_ITEM_TYPE_DISPLAY_DEFAULT&quot; |
+| DISPLAY_MOBILE_APP_INSTALL | &quot;LINE_ITEM_TYPE_DISPLAY_MOBILE_APP_INSTALL&quot; |
+| VIDEO_DEFAULT | &quot;LINE_ITEM_TYPE_VIDEO_DEFAULT&quot; |
+| VIDEO_MOBILE_APP_INSTALL | &quot;LINE_ITEM_TYPE_VIDEO_MOBILE_APP_INSTALL&quot; |
+| DISPLAY_MOBILE_APP_INVENTORY | &quot;LINE_ITEM_TYPE_DISPLAY_MOBILE_APP_INVENTORY&quot; |
+| VIDEO_MOBILE_APP_INVENTORY | &quot;LINE_ITEM_TYPE_VIDEO_MOBILE_APP_INVENTORY&quot; |
+| AUDIO_DEFAULT | &quot;LINE_ITEM_TYPE_AUDIO_DEFAULT&quot; |
+| VIDEO_OVER_THE_TOP | &quot;LINE_ITEM_TYPE_VIDEO_OVER_THE_TOP&quot; |
+| YOUTUBE_AND_PARTNERS_ACTION | &quot;LINE_ITEM_TYPE_YOUTUBE_AND_PARTNERS_ACTION&quot; |
+| YOUTUBE_AND_PARTNERS_NON_SKIPPABLE | &quot;LINE_ITEM_TYPE_YOUTUBE_AND_PARTNERS_NON_SKIPPABLE&quot; |
+| YOUTUBE_AND_PARTNERS_VIDEO_SEQUENCE | &quot;LINE_ITEM_TYPE_YOUTUBE_AND_PARTNERS_VIDEO_SEQUENCE&quot; |
+| YOUTUBE_AND_PARTNERS_AUDIO | &quot;LINE_ITEM_TYPE_YOUTUBE_AND_PARTNERS_AUDIO&quot; |
+| YOUTUBE_AND_PARTNERS_REACH | &quot;LINE_ITEM_TYPE_YOUTUBE_AND_PARTNERS_REACH&quot; |
+| YOUTUBE_AND_PARTNERS_SIMPLE | &quot;LINE_ITEM_TYPE_YOUTUBE_AND_PARTNERS_SIMPLE&quot; |
+| YOUTUBE_AND_PARTNERS_NON_SKIPPABLE_OVER_THE_TOP | &quot;LINE_ITEM_TYPE_YOUTUBE_AND_PARTNERS_NON_SKIPPABLE_OVER_THE_TOP&quot; |
+| YOUTUBE_AND_PARTNERS_REACH_OVER_THE_TOP | &quot;LINE_ITEM_TYPE_YOUTUBE_AND_PARTNERS_REACH_OVER_THE_TOP&quot; |
+| YOUTUBE_AND_PARTNERS_SIMPLE_OVER_THE_TOP | &quot;LINE_ITEM_TYPE_YOUTUBE_AND_PARTNERS_SIMPLE_OVER_THE_TOP&quot; |
+| YOUTUBE_AND_PARTNERS_TARGET_FREQUENCY | &quot;LINE_ITEM_TYPE_YOUTUBE_AND_PARTNERS_TARGET_FREQUENCY&quot; |
+| YOUTUBE_AND_PARTNERS_VIEW | &quot;LINE_ITEM_TYPE_YOUTUBE_AND_PARTNERS_VIEW&quot; |
+| DISPLAY_OUT_OF_HOME | &quot;LINE_ITEM_TYPE_DISPLAY_OUT_OF_HOME&quot; |
+| VIDEO_OUT_OF_HOME | &quot;LINE_ITEM_TYPE_VIDEO_OUT_OF_HOME&quot; |
+
+
+

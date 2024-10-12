@@ -1,0 +1,53 @@
+# MerakiDashboardApi.CreateNetworkSwitchAccessPolicyRequest
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**accessPolicyType** | **String** | Access Type of the policy. Automatically &#39;Hybrid authentication&#39; when hostMode is &#39;Multi-Domain&#39;. | [optional] 
+**dot1x** | [**GetNetworkSwitchAccessPolicies200ResponseInnerDot1x**](GetNetworkSwitchAccessPolicies200ResponseInnerDot1x.md) |  | [optional] 
+**guestPortBouncing** | **Boolean** | If enabled, Meraki devices will periodically send access-request messages to these RADIUS servers | [optional] 
+**guestVlanId** | **Number** | ID for the guest VLAN allow unauthorized devices access to limited network resources | [optional] 
+**hostMode** | **String** | Choose the Host Mode for the access policy. | 
+**increaseAccessSpeed** | **Boolean** | Enabling this option will make switches execute 802.1X and MAC-bypass authentication simultaneously so that clients authenticate faster. Only required when accessPolicyType is &#39;Hybrid Authentication. | [optional] 
+**name** | **String** | Name of the access policy | 
+**radius** | [**GetNetworkSwitchAccessPolicies200ResponseInnerRadius**](GetNetworkSwitchAccessPolicies200ResponseInnerRadius.md) |  | [optional] 
+**radiusAccountingEnabled** | **Boolean** | Enable to send start, interim-update and stop messages to a configured RADIUS accounting server for tracking connected clients | 
+**radiusAccountingServers** | [**[CreateNetworkSwitchAccessPolicyRequestRadiusAccountingServersInner]**](CreateNetworkSwitchAccessPolicyRequestRadiusAccountingServersInner.md) | List of RADIUS accounting servers to require connecting devices to authenticate against before granting network access | [optional] 
+**radiusCoaSupportEnabled** | **Boolean** | Change of authentication for RADIUS re-authentication and disconnection | 
+**radiusGroupAttribute** | **String** | Acceptable values are &#x60;\&quot;\&quot;&#x60; for None, or &#x60;\&quot;11\&quot;&#x60; for Group Policies ACL | [optional] 
+**radiusServers** | [**[CreateNetworkSwitchAccessPolicyRequestRadiusServersInner]**](CreateNetworkSwitchAccessPolicyRequestRadiusServersInner.md) | List of RADIUS servers to require connecting devices to authenticate against before granting network access | 
+**radiusTestingEnabled** | **Boolean** | If enabled, Meraki devices will periodically send access-request messages to these RADIUS servers | 
+**urlRedirectWalledGardenEnabled** | **Boolean** | Enable to restrict access for clients to a specific set of IP addresses or hostnames prior to authentication | 
+**urlRedirectWalledGardenRanges** | **[String]** | IP address ranges, in CIDR notation, to restrict access for clients to a specific set of IP addresses or hostnames prior to authentication | [optional] 
+**voiceVlanClients** | **Boolean** | CDP/LLDP capable voice clients will be able to use this VLAN. Automatically true when hostMode is &#39;Multi-Domain&#39;. | [optional] 
+
+
+
+## Enum: AccessPolicyTypeEnum
+
+
+* `802.1x` (value: `"802.1x"`)
+
+* `Hybrid authentication` (value: `"Hybrid authentication"`)
+
+* `MAC authentication bypass` (value: `"MAC authentication bypass"`)
+
+
+
+
+
+## Enum: HostModeEnum
+
+
+* `Multi-Auth` (value: `"Multi-Auth"`)
+
+* `Multi-Domain` (value: `"Multi-Domain"`)
+
+* `Multi-Host` (value: `"Multi-Host"`)
+
+* `Single-Host` (value: `"Single-Host"`)
+
+
+
+

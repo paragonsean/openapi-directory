@@ -1,0 +1,14 @@
+
+
+# SerpData
+
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**query** | **String** |  |  |
+|**website** | **String** |  |  |
+
+
+

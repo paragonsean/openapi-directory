@@ -1,0 +1,9 @@
+# AppStoreConnectApi.BetaTesterInvitationCreateRequestDataRelationshipsBetaTester
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**data** | [**AppBetaTestersLinkagesRequestDataInner**](AppBetaTestersLinkagesRequestDataInner.md) |  | 
+
+

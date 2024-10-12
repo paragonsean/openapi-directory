@@ -1,0 +1,19 @@
+# coding: utf-8
+
+# import models into model package
+from openapi_server.models.ar_e_ventila_o import ArEVentilaO
+from openapi_server.models.create_update_address_requests import CreateUpdateAddressRequests
+from openapi_server.models.create_update_profile_requests import CreateUpdateProfileRequests
+from openapi_server.models.deprecated_document_request import DEPRECATEDDocumentRequest
+from openapi_server.models.department_visited_tag import DepartmentVisitedTag
+from openapi_server.models.document import Document
+from openapi_server.models.document_response import DocumentResponse
+from openapi_server.models.getversion import Getversion
+from openapi_server.models.listversion import Listversion
+from openapi_server.models.name import Name
+from openapi_server.models.properties import Properties
+from openapi_server.models.putindices_request import PutindicesRequest
+from openapi_server.models.saveschemabyname_request import SaveschemabynameRequest
+from openapi_server.models.scores import Scores
+from openapi_server.models.using_fields_all import UsingFieldsAll
+from openapi_server.models.validatedocumentbyclusters_request import ValidatedocumentbyclustersRequest

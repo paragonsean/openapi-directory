@@ -1,0 +1,81 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIControlChargerCharging_request.h \
+    $${PWD}/OAIGetCharger_200_response.h \
+    $${PWD}/OAIGetCharger_200_response_chargeState.h \
+    $${PWD}/OAIGetCharger_200_response_information.h \
+    $${PWD}/OAIGetHealthVendors_200_response_inner.h \
+    $${PWD}/OAIGetMe_200_response.h \
+    $${PWD}/OAIGetMe_200_response_linkedVendors_inner.h \
+    $${PWD}/OAIGetStatisticsCharging_200_response_inner.h \
+    $${PWD}/OAIGetStatisticsCharging_200_response_inner_kw.h \
+    $${PWD}/OAIGetStatisticsCharging_200_response_inner_price.h \
+    $${PWD}/OAIGetVehicleChargestate_200_response.h \
+    $${PWD}/OAIGetVehiclesVehicleidInformation_200_response.h \
+    $${PWD}/OAIGetVehiclesVehicleidLocation_200_response.h \
+    $${PWD}/OAIGetVehiclesVehicleidOdometer_200_response.h \
+    $${PWD}/OAIGetVehiclesVehicleid_200_response.h \
+    $${PWD}/OAIPostCharginglocations_request.h \
+    $${PWD}/OAIPostUsersUseridLink_200_response.h \
+    $${PWD}/OAIPostUsersUseridLink_request.h \
+    $${PWD}/OAIPostVehiclesVehicleidWatch_request.h \
+    $${PWD}/OAIPutVehiclesVehicleidSmartchargingpolicy_request.h \
+    $${PWD}/OAIPutWebhooksFirehose_request.h \
+# APIs
+    $${PWD}/OAIChargersApi.h \
+    $${PWD}/OAIChargingLocationsApi.h \
+    $${PWD}/OAIMeApi.h \
+    $${PWD}/OAIServiceHealthApi.h \
+    $${PWD}/OAIStatisticsApi.h \
+    $${PWD}/OAIUserManagementApi.h \
+    $${PWD}/OAIVehiclesApi.h \
+    $${PWD}/OAIWebhooksApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIControlChargerCharging_request.cpp \
+    $${PWD}/OAIGetCharger_200_response.cpp \
+    $${PWD}/OAIGetCharger_200_response_chargeState.cpp \
+    $${PWD}/OAIGetCharger_200_response_information.cpp \
+    $${PWD}/OAIGetHealthVendors_200_response_inner.cpp \
+    $${PWD}/OAIGetMe_200_response.cpp \
+    $${PWD}/OAIGetMe_200_response_linkedVendors_inner.cpp \
+    $${PWD}/OAIGetStatisticsCharging_200_response_inner.cpp \
+    $${PWD}/OAIGetStatisticsCharging_200_response_inner_kw.cpp \
+    $${PWD}/OAIGetStatisticsCharging_200_response_inner_price.cpp \
+    $${PWD}/OAIGetVehicleChargestate_200_response.cpp \
+    $${PWD}/OAIGetVehiclesVehicleidInformation_200_response.cpp \
+    $${PWD}/OAIGetVehiclesVehicleidLocation_200_response.cpp \
+    $${PWD}/OAIGetVehiclesVehicleidOdometer_200_response.cpp \
+    $${PWD}/OAIGetVehiclesVehicleid_200_response.cpp \
+    $${PWD}/OAIPostCharginglocations_request.cpp \
+    $${PWD}/OAIPostUsersUseridLink_200_response.cpp \
+    $${PWD}/OAIPostUsersUseridLink_request.cpp \
+    $${PWD}/OAIPostVehiclesVehicleidWatch_request.cpp \
+    $${PWD}/OAIPutVehiclesVehicleidSmartchargingpolicy_request.cpp \
+    $${PWD}/OAIPutWebhooksFirehose_request.cpp \
+# APIs
+    $${PWD}/OAIChargersApi.cpp \
+    $${PWD}/OAIChargingLocationsApi.cpp \
+    $${PWD}/OAIMeApi.cpp \
+    $${PWD}/OAIServiceHealthApi.cpp \
+    $${PWD}/OAIStatisticsApi.cpp \
+    $${PWD}/OAIUserManagementApi.cpp \
+    $${PWD}/OAIVehiclesApi.cpp \
+    $${PWD}/OAIWebhooksApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

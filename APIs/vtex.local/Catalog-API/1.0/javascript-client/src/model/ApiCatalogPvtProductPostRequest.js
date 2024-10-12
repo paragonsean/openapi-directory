@@ -1,0 +1,336 @@
+/**
+ * Catalog API
+ *   > Check the new [Catalog onboarding guide](https://developers.vtex.com/docs/guides/catalog-overview). We created this guide to improve the onboarding experience for developers at VTEX. It assembles all documentation on our Developer Portal about Catalog and is organized by focusing on the developer's journey.    Methods for collecting product/SKU catalog data, categories, brands and other information. All content that comes between `{{}}` keys must be replaced with the correct data before performing the request.      ## Index    - [Product](https://developers.vtex.com/docs/api-reference/catalog-api#get-/api/catalog_system/pvt/products/GetProductAndSkuIds) - Here you can consult, create, or update a Product. For more information, check [this article](https://help.vtex.com/tracks/catalog-101--5AF0XfnjfWeopIFBgs3LIQ/1wmX3QvQVxbKVmalhIE5Ru).  - [Product Specification](https://developers.vtex.com/docs/api-reference/catalog-api#get-/api/catalog_system/pvt/products/-productId-/specification) - You can consult, create, or update additional information of a Product.  For more information, check [this article](https://help.vtex.com/tracks/catalog-101--5AF0XfnjfWeopIFBgs3LIQ/2NQoBv8m4Yz3oQaLgDRagP#product-specification).  - [SKU](https://developers.vtex.com/docs/api-reference/catalog-api#get-/api/catalog_system/pvt/sku/stockkeepingunitids) - Here you can consult, create, or update an SKU. For more information, check [this article](https://help.vtex.com/tracks/catalog-101--5AF0XfnjfWeopIFBgs3LIQ/3mJbIqMlz6oKDmyZ2bKJoA).  - [SKU Complement](https://developers.vtex.com/docs/api-reference/catalog-api#get-/api/catalog/pvt/stockkeepingunit/-skuId-/complement) - You can consult, create, or update an SKU Complement. An SKU Complement is a new SKU that has a Parent SKU.  - [SKU EAN](https://developers.vtex.com/docs/api-reference/catalog-api#get-/api/catalog_system/pvt/sku/stockkeepingunitbyean/-ean-) -  Here you can consult, create, or update an SKU unique identification code (barcode).  - [SKU Attachment](https://developers.vtex.com/docs/api-reference/catalog-api#post-/api/catalog/pvt/skuattachment) - You can consult, create, or update an SKU Attachment. An attachment is used to add custom information about the item. For more information, check [this article](https://help.vtex.com/tutorial/what-is-an-attachment--aGICk0RVbqKg6GYmQcWUm?locale=en).  - [SKU File](https://developers.vtex.com/docs/api-reference/catalog-api#get-/api/catalog/pvt/stockkeepingunit/-skuId-/file) - Here you can consult, create, or update an SKU File. An SKU File is an image associated with an SKU.  - [SKU Kit](https://developers.vtex.com/docs/api-reference/catalog-api#get-/api/catalog/pvt/stockkeepingunitkit) - You can consult, create, or update an SKU Kit. A kit is an SKU composed of one or more SKUs. For more information, check [this article](https://help.vtex.com/tutorial/what-is-a-kit--5ov5s3eHM4AqAAgqWwoc28?locale=en).  - [SKU Seller](https://developers.vtex.com/docs/api-reference/catalog-api#get-/api/catalog_system/pvt/skuseller/-sellerId-/-sellerSkuId-) - Here you can consult and delete an SKU Seller. An SKU Seller is a seller associated with an SKU. For more information, check [this article](https://help.vtex.com/tutorial/what-is-a-seller--5FkLvhZ3Few4CWWIuYOK2w?locale=en).  - [SKU Service](https://developers.vtex.com/docs/api-reference/catalog-api#put-/api/catalog/pvt/skuservice/-skuServiceId-) - You can create, update, or delete an SKU Service. A service is an item that may come with a product, optionally, and with a cost. For more information, check [this article](https://help.vtex.com/tutorial/what-is-a-service--46Ha8CEEQoC6Y40i6akG0y?locale=en).  - [SKU Service Attachment](https://developers.vtex.com/docs/api-reference/catalog-api#post-/api/catalog/pvt/skuservicetypeattachment) - Here you can associate or disassociate an Attachment to an SKU Service.  - [SKU Service Type](https://developers.vtex.com/docs/api-reference/catalog-api#post-/api/catalog/pvt/skuservicetype) - You can create, update, or delete an SKU Service Type. A service type is the behavior configuration of a service.  - [SKU Service Value](https://developers.vtex.com/docs/api-reference/catalog-api#post-/api/catalog/pvt/skuservicevalue) - Here you can create, update, or delete an SKU Service Value. Service value is how much the customer will be charged for the service.  - [SKU Specification](https://developers.vtex.com/docs/api-reference/catalog-api#get-/api/catalog/pvt/stockkeepingunit/-skuId-/specification) - You can consult, create, or delete an SKU Specification. SKU Specification is used to create site browsing filters and to differentiate SKUs within the product page. For more information, check [this article](https://help.vtex.com/tracks/catalog-101--5AF0XfnjfWeopIFBgs3LIQ/2NQoBv8m4Yz3oQaLgDRagP?locale=en#sku-specifications).  - [Legacy Subcollection](https://developers.vtex.com/docs/api-reference/catalog-api#post-/api/catalog/pvt/subcollection/-subCollectionId-/stockkeepingunit) - Here you can can consult, create, or delete an SKU, Brand or Category from a Subcollection, as well as create, delete and update subcollections. A subcollection is a group type associated with a collection. For more information, check [this article](https://help.vtex.com/tracks/catalog-101--5AF0XfnjfWeopIFBgs3LIQ/3moFonW33dgOYDrU21Z1X0#group-types).  - [Category](https://developers.vtex.com/docs/api-reference/catalog-api#get-/api/catalog_system/pub/category/tree/-categoryLevels-) - You consult, create, or update a Category. A category is a hierarchical level of product classification. For more information, check [this article](https://help.vtex.com/tracks/catalog-101--5AF0XfnjfWeopIFBgs3LIQ/2gkZDjXRqfsq62TlAkj4uf).  - [Similar Category](https://developers.vtex.com/docs/api-reference/catalog-api#get-/api/catalog/pvt/product/-productId-/similarcategory/) - Here you can create and delete a Similar Category to a Product. This way the Product will be shown in both categories (main and similar).  - [Category Specification](https://developers.vtex.com/docs/api-reference/catalog-api#get-/api/catalog_system/pub/specification/field/listByCategoryId/-categoryId-) - You can consult all Specifications by Category. For more information about Specification, check [this article](https://help.vtex.com/tracks/catalog-101--5AF0XfnjfWeopIFBgs3LIQ/2NQoBv8m4Yz3oQaLgDRagP).  - [Brand](https://developers.vtex.com/docs/api-reference/catalog-api#get-/api/catalog_system/pvt/brand/list) - You can consult, create, update, or delete a Brand. A brand is a product property. For more information, check [this article](https://help.vtex.com/tracks/catalog-101--5AF0XfnjfWeopIFBgs3LIQ/7i3sB8fgkqUp5NoH5yJtfh).  - [Attachment](https://developers.vtex.com/docs/api-reference/catalog-api#get-/api/catalog/pvt/attachment/-attachmentid-) - You can consult, create, or update an Attachment. An attachment is used to add custom information about the item. For more information, check [this article](https://help.vtex.com/tutorial/what-is-an-attachment--aGICk0RVbqKg6GYmQcWUm?locale=en).  - [Collection Beta](https://developers.vtex.com/docs/api-reference/catalog-api#get-/api/catalog_system/pvt/collection/search) - The new [Beta Collections module](https://help.vtex.com/announcements/new-beta-collections-module-easily-create-and-manage-product-collections--6KvFxylC5SNsbVm8L8XZpZ#) launch allowed us to engineer new endpoints that create and manage Collections. For more information, check [this article](https://help.vtex.com/en/tutorial/creating-collections-beta--yJBHqNMViOAnnnq4fyOye?&utm_source=autocomplete#).  - [Legacy Collection](https://developers.vtex.com/docs/api-reference/catalog-api#get-/api/catalog/pvt/collection/-collectionId-) - Here you can consult, create, update, or delete a Collection. A collection is a group of items. For more information, check [this article](https://help.vtex.com/tracks/catalog-101--5AF0XfnjfWeopIFBgs3LIQ/4hN41yU8IPeb8HKmmaXoca?locale=en).  - [Specification](https://developers.vtex.com/docs/api-reference/catalog-api#get-/api/catalog/pvt/specification/-specificationId-) - Here you can consult, create, or delete a Specification. A specification is used to create site browsing filters and to differentiate SKUs and Products within the product page. For more information, check [this article](https://help.vtex.com/tracks/catalog-101--5AF0XfnjfWeopIFBgs3LIQ/2NQoBv8m4Yz3oQaLgDRagP?locale=en).  - [Specification Field](https://developers.vtex.com/docs/api-reference/catalog-api#get-/api/catalog_system/pub/specification/fieldGet/-fieldId-) - You can consult, create, or update a Specification Field. A specification field allows you to present more detailed items.   - [Specification Field Value](https://developers.vtex.com/docs/api-reference/catalog-api#get-/api/catalog_system/pvt/specification/fieldValue/-fieldValueId-) - Here you can consult, create, or update a Specification Field Value.   - [Specification Value](https://developers.vtex.com/docs/api-reference/catalog-api#get-/api/catalog/pvt/specificationvalue/-specificationValueId-) - You can consult, create, or update a Specification Value.  - [Specification Group](https://developers.vtex.com/docs/api-reference/catalog-api#get-/api/catalog_system/pvt/specification/groupbycategory/-categoryId-) - Here you can consult, create, or update a Specification Group.  - [Non Structured Specification](https://developers.vtex.com/docs/api-reference/catalog-api#get-/api/catalog/pvt/specification/nonstructured/-Id-) - You can consult or delete a Non Structured Specification.  - [Sales Channel](https://developers.vtex.com/docs/api-reference/catalog-api#get-/api/catalog_system/pvt/saleschannel/list) - Here you can consult Sales Channel.  - [Seller](https://developers.vtex.com/docs/api-reference/catalog-api#get-/api/catalog_system/pvt/seller/list) - You can consult, create, or update a Seller. A seller is the _product owner_. For more information, check [this article](https://help.vtex.com/tutorial/what-is-a-seller--5FkLvhZ3Few4CWWIuYOK2w?locale=en).  - [Supplier](https://developers.vtex.com/docs/api-reference/catalog-api#post-/api/catalog/pvt/supplier) - Here you can consult, create, or update a Supplier.  - [Trade Policy](https://developers.vtex.com/docs/api-reference/catalog-api#get-/api/catalog/pvt/product/-productId-/salespolicy) - You can create, update, or delete a Trade Policy. Trade policy is required when one of the above factors is different among the sale channel. For more information, check [this article](https://help.vtex.com/tutorial/what-is-a-sales-policy--563tbcL0TYKEKeOY4IAgAE?locale=en).  - [Product Indexing](https://developers.vtex.com/docs/api-reference/catalog-api#get-/api/catalog_system/pvt/products/GetIndexedInfo/-productId-) - Here you can consult Product Indexed information.  - [Commercial Conditions](https://developers.vtex.com/docs/api-reference/catalog-api#get-/api/catalog_system/pvt/commercialcondition/list) - Here you can consult commercial conditions registered in the store.      ## Common parameters    | Parameter name              | Description                                                                             |  |---------------------------|-----------------------------------------------------------------------------------------|  | `{{accountName}}`         | Store account name                                                                      |  | `{{environment}`          | The environment that will be called. Change for vtexcommercestable or vtexcommmercebeta |  | `{{X-VTEX-API-AppKey}}`   | Located in the headers of the requests, user authentication key                         |  | `{{X-VTEX-API-AppToken}}` | Located in the headers of the requests, authentication password                         |
+ *
+ * The version of the OpenAPI document: 1.0
+ * 
+ *
+ * NOTE: This class is auto generated by OpenAPI Generator (https://openapi-generator.tech).
+ * https://openapi-generator.tech
+ * Do not edit the class manually.
+ *
+ */
+
+import ApiClient from '../ApiClient';
+
+/**
+ * The ApiCatalogPvtProductPostRequest model module.
+ * @module model/ApiCatalogPvtProductPostRequest
+ * @version 1.0
+ */
+class ApiCatalogPvtProductPostRequest {
+    /**
+     * Constructs a new <code>ApiCatalogPvtProductPostRequest</code>.
+     * @alias module:model/ApiCatalogPvtProductPostRequest
+     * @param name {String} Product's name. Limited to 150 characters.
+     */
+    constructor(name) { 
+        
+        ApiCatalogPvtProductPostRequest.initialize(this, name);
+    }
+
+    /**
+     * Initializes the fields of this object.
+     * This method is used by the constructors of any subclasses, in order to implement multiple inheritance (mix-ins).
+     * Only for internal use.
+     */
+    static initialize(obj, name) { 
+        obj['Name'] = name;
+    }
+
+    /**
+     * Constructs a <code>ApiCatalogPvtProductPostRequest</code> from a plain JavaScript object, optionally creating a new instance.
+     * Copies all relevant properties from <code>data</code> to <code>obj</code> if supplied or a new instance if not.
+     * @param {Object} data The plain JavaScript object bearing properties of interest.
+     * @param {module:model/ApiCatalogPvtProductPostRequest} obj Optional instance to populate.
+     * @return {module:model/ApiCatalogPvtProductPostRequest} The populated <code>ApiCatalogPvtProductPostRequest</code> instance.
+     */
+    static constructFromObject(data, obj) {
+        if (data) {
+            obj = obj || new ApiCatalogPvtProductPostRequest();
+
+            if (data.hasOwnProperty('AdWordsRemarketingCode')) {
+                obj['AdWordsRemarketingCode'] = ApiClient.convertToType(data['AdWordsRemarketingCode'], 'String');
+            }
+            if (data.hasOwnProperty('BrandId')) {
+                obj['BrandId'] = ApiClient.convertToType(data['BrandId'], 'Number');
+            }
+            if (data.hasOwnProperty('BrandName')) {
+                obj['BrandName'] = ApiClient.convertToType(data['BrandName'], 'String');
+            }
+            if (data.hasOwnProperty('CategoryId')) {
+                obj['CategoryId'] = ApiClient.convertToType(data['CategoryId'], 'Number');
+            }
+            if (data.hasOwnProperty('CategoryPath')) {
+                obj['CategoryPath'] = ApiClient.convertToType(data['CategoryPath'], 'String');
+            }
+            if (data.hasOwnProperty('Description')) {
+                obj['Description'] = ApiClient.convertToType(data['Description'], 'String');
+            }
+            if (data.hasOwnProperty('DescriptionShort')) {
+                obj['DescriptionShort'] = ApiClient.convertToType(data['DescriptionShort'], 'String');
+            }
+            if (data.hasOwnProperty('Id')) {
+                obj['Id'] = ApiClient.convertToType(data['Id'], 'Number');
+            }
+            if (data.hasOwnProperty('IsActive')) {
+                obj['IsActive'] = ApiClient.convertToType(data['IsActive'], 'Boolean');
+            }
+            if (data.hasOwnProperty('IsVisible')) {
+                obj['IsVisible'] = ApiClient.convertToType(data['IsVisible'], 'Boolean');
+            }
+            if (data.hasOwnProperty('KeyWords')) {
+                obj['KeyWords'] = ApiClient.convertToType(data['KeyWords'], 'String');
+            }
+            if (data.hasOwnProperty('LinkId')) {
+                obj['LinkId'] = ApiClient.convertToType(data['LinkId'], 'String');
+            }
+            if (data.hasOwnProperty('LomadeeCampaignCode')) {
+                obj['LomadeeCampaignCode'] = ApiClient.convertToType(data['LomadeeCampaignCode'], 'String');
+            }
+            if (data.hasOwnProperty('MetaTagDescription')) {
+                obj['MetaTagDescription'] = ApiClient.convertToType(data['MetaTagDescription'], 'String');
+            }
+            if (data.hasOwnProperty('Name')) {
+                obj['Name'] = ApiClient.convertToType(data['Name'], 'String');
+            }
+            if (data.hasOwnProperty('RefId')) {
+                obj['RefId'] = ApiClient.convertToType(data['RefId'], 'String');
+            }
+            if (data.hasOwnProperty('ReleaseDate')) {
+                obj['ReleaseDate'] = ApiClient.convertToType(data['ReleaseDate'], 'String');
+            }
+            if (data.hasOwnProperty('Score')) {
+                obj['Score'] = ApiClient.convertToType(data['Score'], 'Number');
+            }
+            if (data.hasOwnProperty('ShowWithoutStock')) {
+                obj['ShowWithoutStock'] = ApiClient.convertToType(data['ShowWithoutStock'], 'Boolean');
+            }
+            if (data.hasOwnProperty('SupplierId')) {
+                obj['SupplierId'] = ApiClient.convertToType(data['SupplierId'], 'Number');
+            }
+            if (data.hasOwnProperty('TaxCode')) {
+                obj['TaxCode'] = ApiClient.convertToType(data['TaxCode'], 'String');
+            }
+            if (data.hasOwnProperty('Title')) {
+                obj['Title'] = ApiClient.convertToType(data['Title'], 'String');
+            }
+        }
+        return obj;
+    }
+
+    /**
+     * Validates the JSON data with respect to <code>ApiCatalogPvtProductPostRequest</code>.
+     * @param {Object} data The plain JavaScript object bearing properties of interest.
+     * @return {boolean} to indicate whether the JSON data is valid with respect to <code>ApiCatalogPvtProductPostRequest</code>.
+     */
+    static validateJSON(data) {
+        // check to make sure all required properties are present in the JSON string
+        for (const property of ApiCatalogPvtProductPostRequest.RequiredProperties) {
+            if (!data.hasOwnProperty(property)) {
+                throw new Error("The required field `" + property + "` is not found in the JSON data: " + JSON.stringify(data));
+            }
+        }
+        // ensure the json data is a string
+        if (data['AdWordsRemarketingCode'] && !(typeof data['AdWordsRemarketingCode'] === 'string' || data['AdWordsRemarketingCode'] instanceof String)) {
+            throw new Error("Expected the field `AdWordsRemarketingCode` to be a primitive type in the JSON string but got " + data['AdWordsRemarketingCode']);
+        }
+        // ensure the json data is a string
+        if (data['BrandName'] && !(typeof data['BrandName'] === 'string' || data['BrandName'] instanceof String)) {
+            throw new Error("Expected the field `BrandName` to be a primitive type in the JSON string but got " + data['BrandName']);
+        }
+        // ensure the json data is a string
+        if (data['CategoryPath'] && !(typeof data['CategoryPath'] === 'string' || data['CategoryPath'] instanceof String)) {
+            throw new Error("Expected the field `CategoryPath` to be a primitive type in the JSON string but got " + data['CategoryPath']);
+        }
+        // ensure the json data is a string
+        if (data['Description'] && !(typeof data['Description'] === 'string' || data['Description'] instanceof String)) {
+            throw new Error("Expected the field `Description` to be a primitive type in the JSON string but got " + data['Description']);
+        }
+        // ensure the json data is a string
+        if (data['DescriptionShort'] && !(typeof data['DescriptionShort'] === 'string' || data['DescriptionShort'] instanceof String)) {
+            throw new Error("Expected the field `DescriptionShort` to be a primitive type in the JSON string but got " + data['DescriptionShort']);
+        }
+        // ensure the json data is a string
+        if (data['KeyWords'] && !(typeof data['KeyWords'] === 'string' || data['KeyWords'] instanceof String)) {
+            throw new Error("Expected the field `KeyWords` to be a primitive type in the JSON string but got " + data['KeyWords']);
+        }
+        // ensure the json data is a string
+        if (data['LinkId'] && !(typeof data['LinkId'] === 'string' || data['LinkId'] instanceof String)) {
+            throw new Error("Expected the field `LinkId` to be a primitive type in the JSON string but got " + data['LinkId']);
+        }
+        // ensure the json data is a string
+        if (data['LomadeeCampaignCode'] && !(typeof data['LomadeeCampaignCode'] === 'string' || data['LomadeeCampaignCode'] instanceof String)) {
+            throw new Error("Expected the field `LomadeeCampaignCode` to be a primitive type in the JSON string but got " + data['LomadeeCampaignCode']);
+        }
+        // ensure the json data is a string
+        if (data['MetaTagDescription'] && !(typeof data['MetaTagDescription'] === 'string' || data['MetaTagDescription'] instanceof String)) {
+            throw new Error("Expected the field `MetaTagDescription` to be a primitive type in the JSON string but got " + data['MetaTagDescription']);
+        }
+        // ensure the json data is a string
+        if (data['Name'] && !(typeof data['Name'] === 'string' || data['Name'] instanceof String)) {
+            throw new Error("Expected the field `Name` to be a primitive type in the JSON string but got " + data['Name']);
+        }
+        // ensure the json data is a string
+        if (data['RefId'] && !(typeof data['RefId'] === 'string' || data['RefId'] instanceof String)) {
+            throw new Error("Expected the field `RefId` to be a primitive type in the JSON string but got " + data['RefId']);
+        }
+        // ensure the json data is a string
+        if (data['ReleaseDate'] && !(typeof data['ReleaseDate'] === 'string' || data['ReleaseDate'] instanceof String)) {
+            throw new Error("Expected the field `ReleaseDate` to be a primitive type in the JSON string but got " + data['ReleaseDate']);
+        }
+        // ensure the json data is a string
+        if (data['TaxCode'] && !(typeof data['TaxCode'] === 'string' || data['TaxCode'] instanceof String)) {
+            throw new Error("Expected the field `TaxCode` to be a primitive type in the JSON string but got " + data['TaxCode']);
+        }
+        // ensure the json data is a string
+        if (data['Title'] && !(typeof data['Title'] === 'string' || data['Title'] instanceof String)) {
+            throw new Error("Expected the field `Title` to be a primitive type in the JSON string but got " + data['Title']);
+        }
+
+        return true;
+    }
+
+
+}
+
+ApiCatalogPvtProductPostRequest.RequiredProperties = ["Name"];
+
+/**
+ * This is a legacy field. Do not take this information into consideration.
+ * @member {String} AdWordsRemarketingCode
+ */
+ApiCatalogPvtProductPostRequest.prototype['AdWordsRemarketingCode'] = undefined;
+
+/**
+ * ID of an existing Brand that will be associated with this product. It is mandatory to use either this field or the `BrandName` field.
+ * @member {Number} BrandId
+ */
+ApiCatalogPvtProductPostRequest.prototype['BrandId'] = undefined;
+
+/**
+ * Name of the brand that will be associated with this product. It is mandatory to use either this field or the `BrandId` field. If you wish to create a new brand, that is, in case the brand does not exist yet, use this field instead of `BrandId`.
+ * @member {String} BrandName
+ */
+ApiCatalogPvtProductPostRequest.prototype['BrandName'] = undefined;
+
+/**
+ * ID of an existing Category that will be associated with this product. It is mandatory to use either this field or the `CategoryPath` field.
+ * @member {Number} CategoryId
+ */
+ApiCatalogPvtProductPostRequest.prototype['CategoryId'] = undefined;
+
+/**
+ * Path of categories associated with this product, from the highest level of category to the lowest level, separated by `/`. It is mandatory to use either this field or the `CategoryId` field.
+ * @member {String} CategoryPath
+ */
+ApiCatalogPvtProductPostRequest.prototype['CategoryPath'] = undefined;
+
+/**
+ * Product description.
+ * @member {String} Description
+ */
+ApiCatalogPvtProductPostRequest.prototype['Description'] = undefined;
+
+/**
+ * Short product description. This information can be displayed on both the product page and the shelf, using the following controls:   Store Framework:  `$product.DescriptionShort`.   Legacy CMS Portal: `<vtex.cmc:productDescriptionShort/>`.  
+ * @member {String} DescriptionShort
+ */
+ApiCatalogPvtProductPostRequest.prototype['DescriptionShort'] = undefined;
+
+/**
+ * Product’s unique numerical identifier. If not informed, it will be automatically generated by VTEX.
+ * @member {Number} Id
+ */
+ApiCatalogPvtProductPostRequest.prototype['Id'] = undefined;
+
+/**
+ * Activate (`true`) or inactivate (`false`) product.
+ * @member {Boolean} IsActive
+ */
+ApiCatalogPvtProductPostRequest.prototype['IsActive'] = undefined;
+
+/**
+ * Shows (`true`) or hides (`false`) the product in search result and product pages, but the product can still be added to the shopping cart. Usually applicable for gifts.
+ * @member {Boolean} IsVisible
+ */
+ApiCatalogPvtProductPostRequest.prototype['IsVisible'] = undefined;
+
+/**
+ * Store Framework: Deprecated.   Legacy CMS Portal: Keywords or synonyms related to the product, separated by comma (`,`). \"Television\", for example, can have a substitute word like \"TV\". This field is important to make your searches more comprehensive.  
+ * @member {String} KeyWords
+ */
+ApiCatalogPvtProductPostRequest.prototype['KeyWords'] = undefined;
+
+/**
+ * Slug that will be used to build the product page URL. If it not informed, it will be generated according to the product's name replacing spaces and special characters by hyphens (`-`).
+ * @member {String} LinkId
+ */
+ApiCatalogPvtProductPostRequest.prototype['LinkId'] = undefined;
+
+/**
+ * This is a legacy field. Do not take this information into consideration.
+ * @member {String} LomadeeCampaignCode
+ */
+ApiCatalogPvtProductPostRequest.prototype['LomadeeCampaignCode'] = undefined;
+
+/**
+ * Brief description of the product for SEO. It is recommended not to exceed 150 characters.
+ * @member {String} MetaTagDescription
+ */
+ApiCatalogPvtProductPostRequest.prototype['MetaTagDescription'] = undefined;
+
+/**
+ * Product's name. Limited to 150 characters.
+ * @member {String} Name
+ */
+ApiCatalogPvtProductPostRequest.prototype['Name'] = undefined;
+
+/**
+ * Product Reference Code.
+ * @member {String} RefId
+ */
+ApiCatalogPvtProductPostRequest.prototype['RefId'] = undefined;
+
+/**
+ * Used to assist in the ordering of the search result of the site. Using the `O=OrderByReleaseDateDESC` query string, you can pull this value and show the display order by release date. This attribute is also used as a condition for dynamic collections.
+ * @member {String} ReleaseDate
+ */
+ApiCatalogPvtProductPostRequest.prototype['ReleaseDate'] = undefined;
+
+/**
+ * Value used to set the priority on the search result page.
+ * @member {Number} Score
+ */
+ApiCatalogPvtProductPostRequest.prototype['Score'] = undefined;
+
+/**
+ * If `true`, activates the [Notify Me](https://help.vtex.com/en/tutorial/setting-up-the-notify-me-option--2VqVifQuf6Co2KG048Yu6e) option when the product is out of stock.
+ * @member {Boolean} ShowWithoutStock
+ */
+ApiCatalogPvtProductPostRequest.prototype['ShowWithoutStock'] = undefined;
+
+/**
+ * @member {Number} SupplierId
+ */
+ApiCatalogPvtProductPostRequest.prototype['SupplierId'] = undefined;
+
+/**
+ * Product tax code, used for tax calculation.
+ * @member {String} TaxCode
+ */
+ApiCatalogPvtProductPostRequest.prototype['TaxCode'] = undefined;
+
+/**
+ * Product's Title tag. Limited to 150 characters. It is presented in the browser tab and corresponds to the title of the product page. This field is important for SEO.
+ * @member {String} Title
+ */
+ApiCatalogPvtProductPostRequest.prototype['Title'] = undefined;
+
+
+
+
+
+
+export default ApiCatalogPvtProductPostRequest;
+

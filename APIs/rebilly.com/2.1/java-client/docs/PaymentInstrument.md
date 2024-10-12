@@ -1,0 +1,24 @@
+
+
+# PaymentInstrument
+
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**method** | [**MethodEnum**](#MethodEnum) |  |  |
+|**paymentInstrumentId** | **Object** | The payment instrument ID. |  |
+|**receivedBy** | **String** | The receiver&#39;s name. |  [optional] |
+|**reference** | **String** | Reference data. |  [optional] |
+
+
+
+## Enum: MethodEnum
+
+| Name | Value |
+|---- | -----|
+| CASH | &quot;cash&quot; |
+
+
+

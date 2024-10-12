@@ -1,0 +1,4627 @@
+openapi: 3.0.1
+info:
+  description: "Allows sellers to: 1) Load products definitions to the BrandLovers\
+    \ marktplace. 2) Receive and update orders status. 3) Receive and update shipping\
+    \ information. 4) Receive and update customer tickets. All requests consume and\
+    \ return application/json content. All request must be authenticated and use HTTPS."
+  title: BrandLovers Marketplace API V1
+  version: 1.0.0
+  x-apisguru-categories:
+  - ecommerce
+  x-origin:
+  - format: swagger
+    url: https://raw.githubusercontent.com/brandlovers/marketplace-api-documentation/master/brandlovers-marketplace-api-v1.json
+    version: "2.0"
+  x-providerName: brandlovers.com
+servers:
+- url: https://api.brandlovers.com/marketplace/v1
+tags:
+- description: Bulk create or query seller products.
+  name: products
+- description: "Create, Modify or Read details of a single product"
+  name: product
+- description: Bulk create or query orders
+  name: orders
+- description: Modify or read details of a single order
+  name: order
+- description: Bulk create or query customer tickets
+  name: tickets
+- description: Modify or read details of a single ticket
+  name: ticket
+paths:
+  /order/{orderId}:
+    get:
+      description: "Returns all details of a single order, including last status,\
+        \ items shipped or not."
+      operationId: order_order_id_get
+      parameters:
+      - description: Authorization token. The Authorization token can be found in
+          your Admin console.
+        in: header
+        name: authorization
+        required: true
+        schema:
+          type: string
+      - description: Unique Id of this order.
+        in: path
+        name: orderId
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+          description: Success!
+        "400":
+          content: {}
+          description: Bad request.
+        "401":
+          content: {}
+          description: Access denied. You're not authenticated or token expired. Check
+            your request header the `authorization` field is required.
+        "403":
+          content: {}
+          description: Server refused to process your request. Please check the API
+            SLA and reduce number of requests per second.
+        "404":
+          content: {}
+          description: Object not found. Was not able to find orderId
+      summary: Returns all details of a order
+      tags:
+      - order
+      x-openapi-router-controller: openapi_server.controllers.order_controller
+  /order/{orderId}/shipment/cancel:
+    post:
+      description: Confirm shipment canceletion (when requested by the customer) or
+        failure to deliver one shipment
+      operationId: order_order_id_shipment_cancel_post
+      parameters:
+      - description: Authorization token. The Authorization token can be found in
+          your Admin console.
+        in: header
+        name: authorization
+        required: true
+        schema:
+          type: string
+      - description: Unique Order Id
+        in: path
+        name: orderId
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewTrackingRefund'
+        required: true
+        x-body-name: body
+      responses:
+        "200":
+          content: {}
+          description: success.
+        "400":
+          content: {}
+          description: Bad request.
+        "401":
+          content: {}
+          description: Access denied. You're not authenticated or token expired. Check
+            your request header the `authorization` field is required.
+        "404":
+          content: {}
+          description: Object not found. Was not able to find orderId
+      summary: Confirm shipment canceletion (when requested by the customer) or failure
+        to deliver
+      tags:
+      - order
+      x-codegen-request-body-name: body
+      x-openapi-router-controller: openapi_server.controllers.order_controller
+  /order/{orderId}/shipment/delivered:
+    post:
+      description: Confirms that a shipment was delivered. Must inform quantity of
+        successfully deliverd items even if items deliverd was less than the original
+        order
+      operationId: order_order_id_shipment_delivered_post
+      parameters:
+      - description: Authorization token. The Authorization token can be found in
+          your Admin console.
+        in: header
+        name: authorization
+        required: true
+        schema:
+          type: string
+      - description: Unique Order Id
+        in: path
+        name: orderId
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Newshipmentstatus'
+        required: true
+        x-body-name: body
+      responses:
+        "200":
+          content: {}
+          description: Sucess!
+        "400":
+          content: {}
+          description: Bad request.
+        "401":
+          content: {}
+          description: Access denied. You're not authenticated or token expired. Check
+            your request header the `authorization` field is required.
+        "404":
+          content: {}
+          description: Object not found. Was not able to find orderId
+      summary: Confirms that a shipment was delivered
+      tags:
+      - order
+      x-codegen-request-body-name: body
+      x-openapi-router-controller: openapi_server.controllers.order_controller
+  /order/{orderId}/shipment/exchange:
+    post:
+      description: This enpoint to confirm item exchange when failure to deliver or
+        requested by the customer. All customer requests are tracket via trouble tickets
+      operationId: order_order_id_shipment_exchange_post
+      parameters:
+      - description: Authorization token. The Authorization token can be found in
+          your Admin console.
+        in: header
+        name: authorization
+        required: true
+        schema:
+          type: string
+      - description: Unique Order Id
+        in: path
+        name: orderId
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewTrackingRefund'
+        required: true
+        x-body-name: body
+      responses:
+        "200":
+          content: {}
+          description: Sucess!
+        "400":
+          content: {}
+          description: Bad request.
+        "401":
+          content: {}
+          description: Access denied. You're not authenticated or token expired. Check
+            your request header the `authorization` field is required.
+        "404":
+          content: {}
+          description: Object not found. Was not able to find orderId
+      summary: Confirm item exchange
+      tags:
+      - order
+      x-codegen-request-body-name: body
+      x-openapi-router-controller: openapi_server.controllers.order_controller
+  /order/{orderId}/shipment/return:
+    post:
+      description: Use this endpoint to return and refund items froma a order. In
+        order to fully return an order list all items and applicate quantity.
+      operationId: order_order_id_shipment_return_post
+      parameters:
+      - description: Authorization token. The Authorization token can be found in
+          your Admin console.
+        in: header
+        name: authorization
+        required: true
+        schema:
+          type: string
+      - description: Order unique Id
+        in: path
+        name: orderId
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewTrackingRefund'
+        required: true
+        x-body-name: body
+      responses:
+        "200":
+          content: {}
+          description: Sucess!
+        "400":
+          content: {}
+          description: Bad request.
+        "401":
+          content: {}
+          description: Access denied. You're not authenticated or token expired. Check
+            your request header the `authorization` field is required.
+        "404":
+          content: {}
+          description: Object not found. Was not able to find orderId
+      summary: Confirm order item return and refund
+      tags:
+      - order
+      x-codegen-request-body-name: body
+      x-openapi-router-controller: openapi_server.controllers.order_controller
+  /order/{orderId}/shipment/sent:
+    post:
+      description: "Updates order to include shipment shiped information. This endpoint\
+        \ can be used to include a single or multiple shipments for any give order.\
+        \ In order to inform that all items of a order where shipped list all of them,\
+        \ including applicable quantities in the payload."
+      operationId: order_order_id_shipment_sent_post
+      parameters:
+      - description: Authorization token. The Authorization token can be found in
+          your Admin console.
+        in: header
+        name: authorization
+        required: true
+        schema:
+          type: string
+      - description: Unique Order Id
+        in: path
+        name: orderId
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Newshipmentstatus'
+        required: true
+        x-body-name: body
+      responses:
+        "200":
+          content: {}
+          description: Sucess!
+        "400":
+          content: {}
+          description: Bad request.
+        "401":
+          content: {}
+          description: Access denied. You're not authenticated or token expired. Check
+            your request header the `authorization` field is required.
+        "404":
+          content: {}
+          description: Object not found. Was not able to find orderId
+      summary: Update new order to include shipment information
+      tags:
+      - order
+      x-codegen-request-body-name: body
+      x-openapi-router-controller: openapi_server.controllers.order_controller
+  /orders:
+    get:
+      description: Retuns a list of orders associated with this seller. The list is
+        ordered by dateCreated.
+      operationId: orders_get
+      parameters:
+      - description: Authorization token. The Authorization token can be found in
+          your Admin console.
+        in: header
+        name: authorization
+        required: true
+        schema:
+          type: string
+      - description: Number or items to skip when executing query. List starts at
+          zero. If omitted will default to zero. Use this conjuction with `limit`
+          to paginate across the results.
+        in: query
+        name: offset
+        schema:
+          type: integer
+      - description: Number or items to return when executing query. Defaults to 10.
+          Use this conjuction with `offset` to paginate across the results.
+        in: query
+        name: limit
+        schema:
+          type: integer
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOrders'
+          description: Success!
+        "400":
+          content: {}
+          description: Bad request.
+        "401":
+          content: {}
+          description: Access denied. You're not authenticated or token expired. Check
+            your request header the `authorization` field is required.
+        "403":
+          content: {}
+          description: Server refused to process your request. Please check the API
+            SLA and reduce number of requests per second.
+      summary: Returns orders details
+      tags:
+      - orders
+      x-openapi-router-controller: openapi_server.controllers.orders_controller
+  /orders/shipments/delivered:
+    get:
+      description: "Returns list of shipments. By default this will return list of\
+        \ the last shipments ordered by dateCreated, folowed by last update date."
+      operationId: orders_shipments_delivered_get
+      parameters:
+      - description: Authorization token. The Authorization token can be found in
+          your Admin console.
+        in: header
+        name: authorization
+        required: true
+        schema:
+          type: string
+      - description: Query by shippment status.
+        in: query
+        name: status
+        schema:
+          type: string
+      - description: Number or items to skip when executing query. List starts at
+          zero. If omitted will default to zero. Use this conjuction with `limit`
+          to paginate across the results.
+        in: query
+        name: offset
+        schema:
+          type: integer
+      - description: Number or items to return when executing query. Defaults to 10.
+          Use this conjuction with `offset` to paginate across the results.
+        in: query
+        name: limit
+        schema:
+          type: integer
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOrdersShipments'
+          description: Success!
+        "400":
+          content: {}
+          description: Bad request.
+        "401":
+          content: {}
+          description: Access denied. You're not authenticated or token expired. Check
+            your request header the `authorization` field is required.
+        "403":
+          content: {}
+          description: Server refused to process your request. Please check the API
+            SLA and reduce number of requests per second.
+      summary: Returns list of shipments
+      tags:
+      - orders
+      x-openapi-router-controller: openapi_server.controllers.orders_controller
+    post:
+      description: Bulk update of order shipments status. This alows to inform multiple
+        shipments status
+      operationId: orders_shipments_delivered_post
+      parameters:
+      - description: Authorization token. The Authorization token can be found in
+          your Admin console.
+        in: header
+        name: authorization
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrdersShipments'
+        description: JSON body with list of shipments to be updated.
+        required: true
+        x-body-name: ordersshipments
+      responses:
+        "200":
+          content: {}
+          description: Success!
+        "400":
+          content: {}
+          description: Bad request.
+        "401":
+          content: {}
+          description: Access denied. You're not authenticated or token expired. Check
+            your request header the `authorization` field is required.
+        "403":
+          content: {}
+          description: Server refused to process your request. Please check the API
+            SLA and reduce number of requests per second.
+      summary: Bulk update of order shipments
+      tags:
+      - orders
+      x-codegen-request-body-name: ordersshipments
+      x-openapi-router-controller: openapi_server.controllers.orders_controller
+  /orders/shipments/shipped:
+    get:
+      description: Returns a list of shipments shipped. By Default returns items ordered
+        by dateCreated folowed by last update
+      operationId: orders_shipments_shipped_get
+      parameters:
+      - description: Authorization token. The Authorization token can be found in
+          your Admin console.
+        in: header
+        name: authorization
+        required: true
+        schema:
+          type: string
+      - description: Product status.
+        in: query
+        name: status
+        schema:
+          enum:
+          - NEW
+          - APPROVED
+          - DECLINED
+          - PENDING
+          type: string
+      - description: Number or items to skip when executing query. List starts at
+          zero. If omitted will default to zero. Use this conjuction with `limit`
+          to paginate across the results.
+        in: query
+        name: offset
+        schema:
+          type: integer
+      - description: Number or items to return when executing query. Defaults to 10.
+          Use this conjuction with `offset` to paginate across the results.
+        in: query
+        name: limit
+        schema:
+          type: integer
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOrdersShipments'
+          description: Success!
+        "400":
+          content: {}
+          description: Bad request.
+        "401":
+          content: {}
+          description: Access denied. You're not authenticated or token expired. Check
+            your request header the `authorization` field is required.
+        "403":
+          content: {}
+          description: Server refused to process your request. Please check the API
+            SLA and reduce number of requests per second.
+      summary: Returns a list of shipments shipped
+      tags:
+      - orders
+      x-openapi-router-controller: openapi_server.controllers.orders_controller
+    post:
+      description: Allows bulk updates of orders shippments.
+      operationId: orders_shipments_shipped_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrdersShipments'
+        description: JSON payload with list of shippments of orders.
+        required: true
+        x-body-name: ordersshipments
+      responses:
+        "200":
+          content: {}
+          description: Success!
+        "400":
+          content: {}
+          description: Bad request.
+        "401":
+          content: {}
+          description: Access denied. You're not authenticated or token expired. Check
+            your request header the `authorization` field is required.
+        "403":
+          content: {}
+          description: Server refused to process your request. Please check the API
+            SLA and reduce number of requests per second.
+      summary: Bulk update of order shipments
+      tags:
+      - orders
+      x-codegen-request-body-name: ordersshipments
+      x-openapi-router-controller: openapi_server.controllers.orders_controller
+  /orders/status/approved:
+    get:
+      description: Returns a list of approved orders. Orders in the `approved` state
+        must be fullfiled imediadetelly.
+      operationId: orders_status_approved_get
+      parameters:
+      - description: Authorization token. The Authorization token can be found in
+          your Admin console.
+        in: header
+        name: authorization
+        required: true
+        schema:
+          type: string
+      - description: Number or items to skip when executing query. List starts at
+          zero. If omitted will default to zero. Use this conjuction with `limit`
+          to paginate across the results.
+        in: query
+        name: offset
+        schema:
+          type: integer
+      - description: "Number or items to return when executing query. Defaults to\
+          \ 100, max 200. Use this in conjuction with `offset` to paginate across\
+          \ the results."
+        in: query
+        name: limit
+        schema:
+          type: integer
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOrders'
+          description: Success!
+        "400":
+          content: {}
+          description: Bad request.
+        "401":
+          content: {}
+          description: Access denied. You're not authenticated or token expired. Check
+            your request header the `authorization` field is required.
+        "403":
+          content: {}
+          description: Server refused to process your request. Please check the API
+            SLA and reduce number of requests per second.
+      summary: Return list of approved orders
+      tags:
+      - orders
+      x-openapi-router-controller: openapi_server.controllers.orders_controller
+  /orders/status/canceled:
+    get:
+      description: Returns a list with canceled orders. Canceled orders should not
+        be fullfiled.
+      operationId: orders_status_canceled_get
+      parameters:
+      - description: Authorization token. The Authorization token can be found in
+          your Admin console.
+        in: header
+        name: authorization
+        required: true
+        schema:
+          type: string
+      - description: Number or items to skip when executing query. List starts at
+          zero. If omitted will default to zero. Use this conjuction with `limit`
+          to paginate across the results.
+        in: query
+        name: offset
+        schema:
+          type: integer
+      - description: "Number or items to return when executing query. Default 100,\
+          \ max 250. Use this conjuction with `offset` to paginate across the results."
+        in: query
+        name: limit
+        schema:
+          default: 100
+          type: integer
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOrders'
+          description: Success!
+        "400":
+          content: {}
+          description: Bad request.
+        "401":
+          content: {}
+          description: Access denied. You're not authenticated or token expired. Check
+            your request header the `authorization` field is required.
+        "403":
+          content: {}
+          description: Server refused to process your request. Please check the API
+            SLA and reduce number of requests per second.
+      summary: Returns lists of canceled orders
+      tags:
+      - orders
+      x-openapi-router-controller: openapi_server.controllers.orders_controller
+  /orders/status/delivered:
+    get:
+      description: Returns a list of orders successfully delivered associated with
+        this seller.
+      operationId: orders_status_delivered_get
+      parameters:
+      - description: Authorization token. The Authorization token can be found in
+          your Admin console.
+        in: header
+        name: authorization
+        required: true
+        schema:
+          type: string
+      - description: Number or items to skip when executing query. List starts at
+          zero. If omitted will default to zero. Use this conjuction with `limit`
+          to paginate across the results.
+        in: query
+        name: offset
+        schema:
+          type: integer
+      - description: Number or items to return when executing query. Defaults to 10.
+          Use this conjuction with `offset` to paginate across the results.
+        in: query
+        name: limit
+        schema:
+          type: integer
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOrders'
+          description: Success!
+        "400":
+          content: {}
+          description: Bad request.
+        "401":
+          content: {}
+          description: Access denied. You're not authenticated or token expired. Check
+            your request header the `authorization` field is required.
+        "403":
+          content: {}
+          description: Server refused to process your request. Please check the API
+            SLA and reduce number of requests per second.
+      summary: Returns a list of orders successfully delivered associated with this
+        seller.
+      tags:
+      - orders
+      x-openapi-router-controller: openapi_server.controllers.orders_controller
+  /orders/status/new:
+    get:
+      description: Returns a list of orders flagged as new. New orders should not
+        be fullfiled until marketplace flags them as approved.
+      operationId: orders_status_new_get
+      parameters:
+      - description: Authorization token. The Authorization token can be found in
+          your Admin console.
+        in: header
+        name: authorization
+        required: true
+        schema:
+          type: string
+      - description: Number or items to skip when executing query. List starts at
+          zero. If omitted will default to zero. Use this conjuction with `limit`
+          to paginate across the results.
+        in: query
+        name: offset
+        schema:
+          type: integer
+      - description: Number or items to return when executing query. Defaults to 100.
+          Max 250. Use this conjuction with `offset` to paginate across the results.
+        in: query
+        name: limit
+        schema:
+          default: 100
+          type: integer
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOrders'
+          description: Success!
+        "400":
+          content: {}
+          description: Bad request.
+        "401":
+          content: {}
+          description: Access denied. You're not authenticated or token expired. Check
+            your request header the `authorization` field is required.
+        "403":
+          content: {}
+          description: Server refused to process your request. Please check the API
+            SLA and reduce number of requests per second.
+      summary: Returns a list of orders flagged as new.
+      tags:
+      - orders
+      x-openapi-router-controller: openapi_server.controllers.orders_controller
+  /orders/status/partiallyDelivered:
+    get:
+      description: Returns a list of partially deliverd orders. This is a list of
+        orders with items shipped but with not all items ackwlodged as deliverd
+      operationId: orders_status_partially_delivered_get
+      parameters:
+      - description: Authorization token. The Authorization token can be found in
+          your Admin console.
+        in: header
+        name: authorization
+        required: true
+        schema:
+          type: string
+      - description: Number or items to skip when executing query. List starts at
+          zero. If omitted will default to zero. Use this conjuction with `limit`
+          to paginate across the results.
+        in: query
+        name: offset
+        schema:
+          type: integer
+      - description: Number or items to return when executing query. Defaults to 100.
+          Max 250. Use this conjuction with `offset` to paginate across the results.
+        in: query
+        name: limit
+        schema:
+          default: 100
+          type: integer
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOrders'
+          description: Success!
+        "400":
+          content: {}
+          description: Bad request.
+        "401":
+          content: {}
+          description: Access denied. You're not authenticated or token expired. Check
+            your request header the `authorization` field is required.
+        "403":
+          content: {}
+          description: Server refused to process your request. Please check the API
+            SLA and reduce number of requests per second.
+      summary: Returns a list of partially deliverd orders
+      tags:
+      - orders
+      x-openapi-router-controller: openapi_server.controllers.orders_controller
+  /orders/status/partiallySent:
+    get:
+      description: Returns a list of orders that contain one (or more) items that
+        where not shipped. This will list the entire order as well the items with
+        peding shipment. Use this service to track orders that need to be fullfiled.
+      operationId: orders_status_partially_sent_get
+      parameters:
+      - description: Authorization token. The Authorization token can be found in
+          your Admin console.
+        in: header
+        name: authorization
+        required: true
+        schema:
+          type: string
+      - description: Number or items to skip when executing query. List starts at
+          zero. If omitted will default to zero. Use this conjuction with `limit`
+          to paginate across the results.
+        in: query
+        name: offset
+        schema:
+          type: integer
+      - description: Number or items to return when executing query. Defaults to 100.
+          Use this conjuction with `offset` to paginate across the results.
+        in: query
+        name: limit
+        schema:
+          type: integer
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOrders'
+          description: Success!
+        "400":
+          content: {}
+          description: Bad request.
+        "401":
+          content: {}
+          description: Access denied. You're not authenticated or token expired. Check
+            your request header the `authorization` field is required.
+        "403":
+          content: {}
+          description: Server refused to process your request. Please check the API
+            SLA and reduce number of requests per second.
+      summary: Returns a list of orders partially fullfiled
+      tags:
+      - orders
+      x-openapi-router-controller: openapi_server.controllers.orders_controller
+  /orders/status/sent:
+    get:
+      description: "Returns a list with orders completely fullfiled, this means orders\
+        \ with all items sent. Orders will ordered by dateCreated fowllowed by last\
+        \ update"
+      operationId: orders_status_sent_get
+      parameters:
+      - description: Authorization token. The Authorization token can be found in
+          your Admin console.
+        in: header
+        name: authorization
+        required: true
+        schema:
+          type: string
+      - description: Number or items to skip when executing query. List starts at
+          zero. If omitted will default to zero. Use this conjuction with `limit`
+          to paginate across the results.
+        in: query
+        name: offset
+        schema:
+          type: integer
+      - description: Number or items to return when executing query. Defaults to 10.
+          Use this conjuction with `offset` to paginate across the results.
+        in: query
+        name: limit
+        schema:
+          type: integer
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOrders'
+          description: Success!
+        "400":
+          content: {}
+          description: Bad request.
+        "401":
+          content: {}
+          description: Access denied. You're not authenticated or token expired. Check
+            your request header the `authorization` field is required.
+        "403":
+          content: {}
+          description: Server refused to process your request. Please check the API
+            SLA and reduce number of requests per second.
+      summary: Returns a list with orders fully sent
+      tags:
+      - orders
+      x-openapi-router-controller: openapi_server.controllers.orders_controller
+  /product:
+    post:
+      description: "Use this enpoint to create a single new product to the Marketplace.\
+        \ This enpoint expects a json document with one product. If you whant to upload\
+        \ multiple products in a single API call use POST /products method. The server\
+        \ will load each product as an individual item that can be manipulated using\
+        \ your own `skuSellerId`. This system is idenpontent, this means that once\
+        \ a `skuSellerId` is created it cannot be re-created using this tool. In order\
+        \ to update, edit a product use the PUT method with the correct reference\
+        \ to your `skuSellerId`"
+      operationId: product_post
+      parameters:
+      - description: Authorization token. The Authorization token can be found in
+          your Admin console.
+        in: header
+        name: authorization
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Product'
+        description: New Produt that will be create
+        required: true
+        x-body-name: product
+      responses:
+        "200":
+          content: {}
+          description: Sucess! Server received your request and will start background
+            processing.
+        "400":
+          content: {}
+          description: Bad Request.
+        "401":
+          content: {}
+          description: Access denied. You're not authenticated or token expired. Check
+            your request header the `authorization` field is required.
+      summary: Create a new product to the marketplace
+      tags:
+      - product
+      x-codegen-request-body-name: product
+      x-openapi-router-controller: openapi_server.controllers.product_controller
+  /product/{skuSellerId}:
+    get:
+      description: "Returns detailed information of a single product with the seller\
+        \ `skuSellerId`. This service will return a json document with product detail,\
+        \ status, price, invetory among other infomarion availble in the Brand Lovers\
+        \ marketplace"
+      operationId: product_sku_seller_id_get
+      parameters:
+      - description: Authorization token. The Authorization token can be found in
+          your Admin console.
+        in: header
+        name: authorization
+        required: true
+        schema:
+          type: string
+      - description: SKU ID do Lojista.
+        in: path
+        name: skuSellerId
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetProduct'
+          description: Success!
+        "401":
+          content: {}
+          description: Access denied. You're not authenticated or token expired. Check
+            your request header the `authorization` field is required.
+        "403":
+          content: {}
+          description: Server refused to process your request. Please check the API
+            SLA and reduce number of requests per second.
+        "404":
+          content: {}
+          description: Object not found. In general this means a invalid skuSellerId.
+      security:
+      - authorization: []
+      summary: Returns details of a single product using the seller `skuSellerId`
+      tags:
+      - product
+      x-openapi-router-controller: openapi_server.controllers.product_controller
+    put:
+      description: "Update a single product information such as name, brand, attribute,\
+        \ dimension, etc. Please note that data from your request will be merged with\
+        \ existing data. This allows you to easliy update only certain fields without\
+        \ the need to re-inform the other unchanged fields. For example in order to\
+        \ update just the field `title` simply send just this field with new information,\
+        \ remaining fields will not be changed. In order to erase an item the field\
+        \ must be informed as its default value, for example in order to erase the\
+        \ `videos` field must be sent as videos:[]. The `skuSellerId` field is always\
+        \ mandatory in the path and in the product json Object."
+      operationId: product_sku_seller_id_put
+      parameters:
+      - description: Authorization token. The Authorization token can be found in
+          your Admin console.
+        in: header
+        name: authorization
+        required: true
+        schema:
+          type: string
+      - description: Unique Product Id (SKU) in the seller system that will be updated.
+        in: path
+        name: skuSellerId
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductUpdate'
+        description: New product information.
+        required: true
+        x-body-name: body
+      responses:
+        "200":
+          content: {}
+          description: Success!
+        "400":
+          content: {}
+          description: Bad request.
+        "401":
+          content: {}
+          description: Access denied. You're not authenticated or token expired. Check
+            your request header the `authorization` field is required.
+        "403":
+          content: {}
+          description: Server refused to process your request. Please check the API
+            SLA and reduce number of requests per second.
+        "404":
+          content: {}
+          description: Object not found.
+      security:
+      - authorization: []
+      summary: Update product details
+      tags:
+      - products
+      x-codegen-request-body-name: body
+      x-openapi-router-controller: openapi_server.controllers.products_controller
+  /product/{skuSellerId}/prices:
+    put:
+      description: "Allows seller to set the SKU prices (MSRP and/or offer price).\
+        \ All prices must be informed in cents. No commas or periods are accepeted.\
+        \ For example one dollar should be informed as 100. Same as $1,2345.67 must\
+        \ be informed solely as 1234567"
+      operationId: product_sku_seller_id_prices_put
+      parameters:
+      - description: Authorization token. The Authorization token can be found in
+          your Admin console.
+        in: header
+        name: authorization
+        required: true
+        schema:
+          type: string
+      - description: Product SKU
+        in: path
+        name: skuSellerId
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductPrice'
+        description: JSON document with the SKU price
+        required: true
+        x-body-name: body
+      responses:
+        "200":
+          content: {}
+          description: Success!
+        "400":
+          content: {}
+          description: Bad request.
+        "401":
+          content: {}
+          description: Access denied. You're not authenticated or token expired. Check
+            your request header the `authorization` field is required.
+      summary: Allows seller to update prices of a single SKU
+      tags:
+      - product
+      x-codegen-request-body-name: body
+      x-openapi-router-controller: openapi_server.controllers.product_controller
+  /product/{skuSellerId}/status:
+    put:
+      description: "Update product status in the Marketplace. Set to `true` to enable,\
+        \ `false` to disable sale."
+      operationId: product_sku_seller_id_status_put
+      parameters:
+      - description: Authorization token. The Authorization token can be found in
+          your Admin console.
+        in: header
+        name: authorization
+        required: true
+        schema:
+          type: string
+      - description: Unique Product Id (SKU) in the seller system
+        in: path
+        name: skuSellerId
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SellerItemStatus'
+        description: Seller SKU that will be enabled or disabled
+        required: true
+        x-body-name: body
+      responses:
+        "200":
+          content: {}
+          description: Success!
+        "400":
+          content: {}
+          description: Bad request.
+        "401":
+          content: {}
+          description: Access denied. You're not authenticated or token expired. Check
+            your request header the `authorization` field is required.
+      summary: Enable/disable a single product in the Marketplace
+      tags:
+      - product
+      x-codegen-request-body-name: body
+      x-openapi-router-controller: openapi_server.controllers.product_controller
+  /product/{skuSellerId}/stock:
+    put:
+      description: Update a single product inventory information. Products with zero
+        stock will not be eligible for sale.
+      operationId: product_sku_seller_id_stock_put
+      parameters:
+      - description: Authorization token. The Authorization token can be found in
+          your Admin console.
+        in: header
+        name: authorization
+        required: true
+        schema:
+          type: string
+      - description: Unique Product Id (SKU) in the seller system that will be updated
+        in: path
+        name: skuSellerId
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Stock'
+        description: New product inventory information
+        required: true
+        x-body-name: body
+      responses:
+        "200":
+          content: {}
+          description: Success!
+        "400":
+          content: {}
+          description: Bad request.
+        "401":
+          content: {}
+          description: Access denied. You're not authenticated or token expired. Check
+            your request header the `authorization` field is required.
+      summary: Update a single product stock
+      tags:
+      - product
+      x-codegen-request-body-name: body
+      x-openapi-router-controller: openapi_server.controllers.product_controller
+  /products:
+    get:
+      description: "Get a list of my products loaded into the Marketplace. This dosen't\
+        \ means that products are eligible for sale, just that they are loaded in\
+        \ the database."
+      operationId: products_get
+      parameters:
+      - description: Authorization token. The Authorization token can be found in
+          your Admin console.
+        in: header
+        name: authorization
+        required: true
+        schema:
+          type: string
+      - description: Number or items to skip when executing query. List starts at
+          zero. If omitted will default to zero. Use this conjuction with `limit`
+          to paginate across the results.
+        in: query
+        name: offset
+        schema:
+          type: integer
+      - description: Number of items to retun. Defaults to 100. Max alowed is 200.
+          Use this conjuction with `offset` to paginate across the results.
+        in: query
+        name: limit
+        schema:
+          type: integer
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetProductsResponse'
+          description: Success!
+        "400":
+          content: {}
+          description: Bad request.
+        "401":
+          content: {}
+          description: Access denied. You're not authenticated or token expired. Check
+            your request header the `authorization` field is required.
+        "403":
+          content: {}
+          description: Server refused to process your request. Please check the API
+            SLA and reduce number of requests per second.
+      security:
+      - authorization: []
+      summary: Returns a list of products loaded into BrandLovers Marketplace
+      tags:
+      - products
+      x-openapi-router-controller: openapi_server.controllers.products_controller
+    post:
+      description: "This enpoint to creates new products in the Marketplace using\
+        \ `skuSellerId` as a primary key. This enpoint expects a json document with\
+        \ array of products. The server will load each product as an individual item\
+        \ that can be manipulated using your own `skuSellerId`. All requests to This\
+        \ endpoint are idenpontent with respect of the `skuSellerId`, this means that\
+        \ once a `skuSellerId` is created it cannot be re-created using this tool.\
+        \ In order to update use the PUT method with the correct `skuSellerId`. You\
+        \ can also use the POST /product to create a single product per request"
+      operationId: products_post
+      parameters:
+      - description: Authorization token. The Authorization token can be found in
+          your Admin console.
+        in: header
+        name: authorization
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              items:
+                $ref: '#/components/schemas/Product'
+              type: array
+        description: JSON with a list of new products to be updloaded to the platform
+        required: true
+        x-body-name: products
+      responses:
+        "200":
+          content: {}
+          description: Sucess! Server received your request and will start background
+            processing.
+        "400":
+          content: {}
+          description: Bad Request.
+        "401":
+          content: {}
+          description: Access denied. You're not authenticated or token expired. Check
+            your request header the `authorization` field is required.
+      summary: Allows new products from the seller to be loaded into the marketplace
+      tags:
+      - products
+      x-codegen-request-body-name: products
+      x-openapi-router-controller: openapi_server.controllers.products_controller
+  /products/prices:
+    put:
+      description: "Allows bulk update of product prices. This endpoint expects a\
+        \ json document with an array of products with the `skuSellerId` and the new\
+        \ price. Server will process each new product update individually and will\
+        \ ackwlodge as much updates as possible, even if a single product update fails.\
+        \ After this request you can query product final status with GET /product/status"
+      operationId: products_prices_put
+      parameters:
+      - description: Authorization token. The Authorization token can be found in
+          your Admin console.
+        in: header
+        name: authorization
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              items:
+                $ref: '#/components/schemas/SellerItemPrices'
+              type: array
+        description: Data for bulk product price update
+        required: true
+        x-body-name: body
+      responses:
+        "200":
+          content: {}
+          description: Success!
+        "400":
+          content: {}
+          description: Bad request.
+        "401":
+          content: {}
+          description: Access denied. You're not authenticated or token expired. Check
+            your request header the `authorization` field is required.
+      summary: Allows bulk update of product prices.
+      tags:
+      - products
+      x-codegen-request-body-name: body
+      x-openapi-router-controller: openapi_server.controllers.products_controller
+  /products/status:
+    get:
+      description: "Returns a list with seller products status. Please note that this\
+        \ endpoint will not return all details of each product, just the skuSellerId\
+        \ and status. Also please note that this endpoint will return 250 products\
+        \ per call. For full details of a given procuct use GET /product/{skuSellerId}"
+      operationId: products_status_get
+      parameters:
+      - description: Authorization token. The Authorization token can be found in
+          your Admin console.
+        in: header
+        name: authorization
+        required: true
+        schema:
+          type: string
+      - description: Number or items to skip when executing query. List starts at
+          zero. If omitted will default to zero. Use this conjuction with `limit`
+          to paginate across the results.
+        in: query
+        name: offset
+        schema:
+          type: integer
+      - description: Number of items to return in this query. Defaults to 250. Maximum
+          1000. Use this conjuction with `offset` to paginate across the results.
+        in: query
+        name: limit
+        schema:
+          type: integer
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetSellerProductsStatus'
+          description: Success fetching results.
+        "403":
+          content: {}
+          description: Server refused to process your request. Please check the API
+            SLA and reduce number of requests per second.
+      summary: Returns seller products status in the marketplace
+      tags:
+      - products
+      x-openapi-router-controller: openapi_server.controllers.products_controller
+    put:
+      description: Bulk enable/disable products in the marketplace. This endpoint
+        requires an array of objects with the seller SKU `skuSellerId` and boolean
+        value that defines if the product is enabled or not for sale. This endpoint
+        can be used to set a single product or many products.
+      operationId: products_status_put
+      parameters:
+      - description: Authorization token. The Authorization token can be found in
+          your Admin console.
+        in: header
+        name: authorization
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              items:
+                $ref: '#/components/schemas/ProductStatusUpdate'
+              type: array
+        description: List of seller products with new status information
+        required: true
+        x-body-name: body
+      responses:
+        "200":
+          content: {}
+          description: Success!
+        "400":
+          content: {}
+          description: Bad request.
+        "401":
+          content: {}
+          description: Access denied. You're not authenticated or token expired. Check
+            your request header the `authorization` field is required.
+      summary: Bulk enable/disable products in the marketplace
+      tags:
+      - products
+      x-codegen-request-body-name: body
+      x-openapi-router-controller: openapi_server.controllers.products_controller
+  /products/status/selling:
+    get:
+      description: Returns products that are successfully listed for sale.
+      operationId: products_status_selling_get
+      parameters:
+      - description: Authorization token. The Authorization token can be found in
+          your Admin console.
+        in: header
+        name: authorization
+        required: true
+        schema:
+          type: string
+      - description: Number or items to skip when executing query. List starts at
+          zero. If omitted will default to zero. Use this conjuction with `limit`
+          to paginate across the results.
+        in: query
+        name: offset
+        schema:
+          type: integer
+      - description: Number or items to return when executing query. Defaults to 10.
+          Use this conjuction with `offset` to paginate across the results.
+        in: query
+        name: limit
+        schema:
+          type: integer
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetProductsStatusSelling'
+          description: Success!
+        "400":
+          content: {}
+          description: Bad request.
+        "401":
+          content: {}
+          description: Access denied. You're not authenticated or token expired. Check
+            your request header the `authorization` field is required.
+        "403":
+          content: {}
+          description: Server refused to process your request. Please check the API
+            SLA and reduce number of requests per second.
+      summary: Returns products that are successfully listed for sale.
+      tags:
+      - products
+      x-openapi-router-controller: openapi_server.controllers.products_controller
+  /products/stocks:
+    put:
+      description: Bulk product stock update. This endpoint expect a array of products
+        `skuSellerId` with new inventory data
+      operationId: products_stocks_put
+      parameters:
+      - description: Authorization token. The Authorization token can be found in
+          your Admin console.
+        in: header
+        name: authorization
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              items:
+                $ref: '#/components/schemas/ProductStock'
+              type: array
+        description: Array of product SKUs.
+        required: true
+        x-body-name: body
+      responses:
+        "200":
+          content: {}
+          description: Success!
+        "400":
+          content: {}
+          description: Bad request.
+        "401":
+          content: {}
+          description: Access denied. You're not authenticated or token expired. Check
+            your request header the `authorization` field is required.
+      summary: Bulk product stock update
+      tags:
+      - products
+      x-codegen-request-body-name: body
+      x-openapi-router-controller: openapi_server.controllers.products_controller
+  /ticket:
+    post:
+      description: "Use this service to create a new trouble ticket. Use this to include\
+        \ relevant information about the order, comunicate with the customer or marketplace\
+        \ team. Whenever possible message will be pushed to Mobile first. This is\
+        \ the primary mean of comunicaiton with the customer regarding orders, shippments,\
+        \ shippments status. New tickets will be automatically be set to 'OPEN'. Trouble\
+        \ tickets need to be associated with a orderId or customer. New tickets can\
+        \ optionally include a new message."
+      operationId: ticket_post
+      parameters:
+      - description: Authorization token. The Authorization token can be found in
+          your Admin console.
+        in: header
+        name: authorization
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewTicket'
+        description: JSON object with new trouble ticket
+        required: true
+        x-body-name: newTicket
+      responses:
+        "200":
+          content: {}
+          description: Success!
+        "400":
+          content: {}
+          description: Bad request.
+      summary: Creates a new trouble ticket
+      tags:
+      - tickets
+      x-codegen-request-body-name: newTicket
+      x-openapi-router-controller: openapi_server.controllers.tickets_controller
+  /ticket/{ticketId}/message:
+    post:
+      description: Add a new message to this trouble ticket. Messages can be `CUSTOMER`
+        (customer will be able to see it) or `INTERNAL`.
+      operationId: ticket_ticket_id_message_post
+      parameters:
+      - description: Authorization token. The Authorization token can be found in
+          your Admin console.
+        in: header
+        name: authorization
+        required: true
+        schema:
+          type: string
+      - description: Trouble ticket ID.
+        in: path
+        name: ticketId
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewTicketMessage'
+        description: New message object to append to trouble ticket.
+        required: true
+        x-body-name: message
+      responses:
+        "200":
+          content: {}
+          description: Success!
+        "400":
+          content: {}
+          description: Bad request.
+        "404":
+          content: {}
+          description: Object not found.
+      summary: Add new message to trouble ticket
+      tags:
+      - tickets
+      x-codegen-request-body-name: message
+      x-openapi-router-controller: openapi_server.controllers.tickets_controller
+  /ticket/{ticketId}/messages:
+    get:
+      description: Returns trouble ticket history with all messages exchanged. Only
+        tickets related to your seller will be returned. Attempt to read other tickets
+        will return 403 (acess denied).
+      operationId: ticket_ticket_id_messages_get
+      parameters:
+      - description: Authorization token. The Authorization token can be found in
+          your Admin console.
+        in: header
+        name: authorization
+        required: true
+        schema:
+          type: string
+      - description: Trouble ticket ID.
+        in: path
+        name: ticketId
+        required: true
+        schema:
+          type: string
+      - description: Number or items to skip when executing query. List starts at
+          zero. If omitted will default to zero. Use this conjuction with `limit`
+          to paginate across the results.
+        in: query
+        name: offset
+        schema:
+          type: integer
+      - description: Number or items to return when executing query. Defaults to 10.
+          Use this conjuction with `offset` to paginate across the results.
+        in: query
+        name: limit
+        schema:
+          type: integer
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetTicketMessages'
+          description: Success!
+        "400":
+          content: {}
+          description: Bad request.
+        "401":
+          content: {}
+          description: Access denied. You're not authenticated or token expired. Check
+            your request header the `authorization` field is required.
+        "403":
+          content: {}
+          description: Access denied. You can only access your trouble tickets
+      summary: Get trouble ticket messages
+      tags:
+      - tickets
+      x-openapi-router-controller: openapi_server.controllers.tickets_controller
+  /ticket/{ticketId}/status:
+    put:
+      description: Alows the seller to update the status of a trouble ticket
+      operationId: ticket_ticket_id_status_put
+      parameters:
+      - description: Authorization token. The Authorization token can be found in
+          your Admin console.
+        in: header
+        name: authorization
+        required: true
+        schema:
+          type: string
+      - description: Trouble ticket unique identification
+        in: path
+        name: ticketId
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TicketStatus'
+        description: New trouble ticket status
+        required: true
+        x-body-name: body
+      responses:
+        "200":
+          content: {}
+          description: successfully received transaction
+        "400":
+          content: {}
+          description: Bad request.
+        "401":
+          content: {}
+          description: Access denied. You're not authenticated or token expired. Check
+            your request header the `authorization` field is required.
+        "403":
+          content: {}
+          description: Server refused to process your request. Please check the API
+            SLA and reduce number of requests per second.
+        "404":
+          content: {}
+          description: Object not found.
+      summary: Update trouble ticket status
+      tags:
+      - tickets
+      x-codegen-request-body-name: body
+      x-openapi-router-controller: openapi_server.controllers.tickets_controller
+  /tickets:
+    get:
+      description: "Allows seller to receive and status, queries, requests and complaints\
+        \ from customers. As well related messages"
+      operationId: tickets_get
+      parameters:
+      - description: Authorization token. The Authorization token can be found in
+          your Admin console.
+        in: header
+        name: authorization
+        required: true
+        schema:
+          type: string
+      - description: Query by trouble ticket status
+        in: query
+        name: status
+        schema:
+          enum:
+          - OPEN
+          - REOPENED
+          - CLOSED
+          type: string
+      - description: Number or items to skip when executing query. List starts at
+          zero. If omitted will default to zero. Use this conjuction with `limit`
+          to paginate across the results.
+        in: query
+        name: offset
+        schema:
+          type: integer
+      - description: Number or items to return when executing query. Defaults to 10.
+          Use this conjuction with `offset` to paginate across the results.
+        in: query
+        name: limit
+        schema:
+          type: integer
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetTickets'
+          description: Success!
+        "400":
+          content: {}
+          description: Bad request.
+      summary: Get customers trouble tickets
+      tags:
+      - tickets
+      x-openapi-router-controller: openapi_server.controllers.tickets_controller
+components:
+  schemas:
+    Address:
+      example:
+        reference: reference
+        number: number
+        zipCode: zipCode
+        address: address
+        city: city
+        neighbourhood: neighbourhood
+        recipientName: recipientName
+        state: state
+        complement: complement
+        countryId: countryId
+      properties:
+        address:
+          description: "Address first line (ave, street name, etc..)"
+          title: address
+          type: string
+        city:
+          description: City
+          title: city
+          type: string
+        complement:
+          description: "Complementary info (aptartament number, building name, suite)"
+          title: complement
+          type: string
+        countryId:
+          description: "Contry code using aplpha ISO-3166, Example: BR, US, AR, GB,\
+            \ CN"
+          title: countryId
+          type: string
+        neighbourhood:
+          description: Address neighbourhood
+          title: neighbourhood
+          type: string
+        number:
+          description: Address number
+          title: number
+          type: string
+        recipientName:
+          description: Recipient Name
+          title: recipientName
+          type: string
+        reference:
+          description: Pontos de referência
+          title: reference
+          type: string
+        state:
+          description: State
+          title: state
+          type: string
+        zipCode:
+          description: Zip Code
+          title: zipCode
+          type: string
+      required:
+      - address
+      - city
+      - complement
+      - countryId
+      - neighbourhood
+      - number
+      - state
+      - zipCode
+      title: Address
+      type: object
+    ControlledStock:
+      example:
+        quantity: 6
+        reserved: 1
+        crossDockingTime: 0
+      properties:
+        crossDockingTime:
+          description: "Time it will take to manufacture, prepare or setup this product.\
+            \ Time must be provided in seconds. For example 1 day should be informed\
+            \ as 86400. This time will be included in the ETA informed to the customer"
+          title: crossDockingTime
+          type: integer
+        quantity:
+          description: Quantity of product available for sale
+          title: quantity
+          type: integer
+        reserved:
+          description: Locked product invetory for orders that are not approved and
+            are not ready to fullfil.
+          title: reserved
+          type: integer
+      required:
+      - quantity
+      title: ControlledStock
+      type: object
+    Courier:
+      example:
+        taxID: taxID
+        name: name
+      properties:
+        name:
+          description: Courier name
+          title: name
+          type: string
+        taxID:
+          description: Courier taxId information. For example CNPJ
+          title: taxID
+          type: string
+      required:
+      - name
+      title: Courier
+      type: object
+    Customer:
+      example:
+        documentNumber: documentNumber
+        name: name
+        phones:
+        - number: number
+          type: type
+        - number: number
+          type: type
+        id: id
+        type: type
+        email: email
+      properties:
+        documentNumber:
+          description: Customer tax information
+          title: documentNumber
+          type: string
+        email:
+          description: "Customer Email (when available). Please note: Email is not\
+            \ a mandatory field"
+          title: email
+          type: string
+        id:
+          description: Customer unqiue Id
+          title: id
+          type: string
+        name:
+          description: Customer Name
+          title: name
+          type: string
+        phones:
+          description: Customer phone number
+          items:
+            $ref: '#/components/schemas/Phone'
+          title: phones
+          type: array
+        type:
+          description: "Customer type: Enterprise or Consumer"
+          title: type
+          type: string
+      required:
+      - documentNumber
+      - id
+      - name
+      - phones
+      - type
+      title: Customer
+      type: object
+    CustomerReference:
+      example:
+        phoneNumber: phoneNumber
+        name: name
+      properties:
+        name:
+          description: Customer name
+          title: name
+          type: string
+        phoneNumber:
+          description: Customer phone mumber
+          title: phoneNumber
+          type: string
+      title: CustomerReference
+      type: object
+    Dimensions:
+      example:
+        length: 6
+        width: 5
+        weight: 1
+        height: 0
+      properties:
+        height:
+          description: Product height in millimeters. No commas or periods are accepeted.
+            For example one meter produc must be informed as 1000. Another example
+            1 meter and 23 centimeters should be informed solely as 1230
+          title: height
+          type: integer
+        length:
+          description: Product length in millimeters. No commas or periods are accepeted.
+            For example one meter produc must be informed as 1000. Another example
+            1 meter and 23 centimeters should be informed solely as 1230
+          title: length
+          type: integer
+        weight:
+          description: Product weight in Grams. No commas or periods are accepeted.
+            For example one killo must be informed as 1000. Another example 1 Kilo
+            and 234 grams should be informed solely as 1234
+          title: weight
+          type: integer
+        width:
+          description: Product width in millimeters. No commas or periods are accepeted.
+            For example one meter produc must be informed as 1000. Another example
+            1 meter and 23 centimeters should be informed solely as 1230
+          title: width
+          type: integer
+      required:
+      - height
+      - length
+      - weight
+      - width
+      title: Dimensions
+      type: object
+    Error:
+      example:
+        message: message
+        type: type
+        skuSellerId: skuSellerId
+      properties:
+        message:
+          description: Friendly message describing the error
+          title: message
+          type: string
+        skuSellerId:
+          description: When applicabe will include `skuSellerId` related to this error
+          title: skuSellerId
+          type: string
+        type:
+          description: Error type
+          title: type
+          type: string
+      required:
+      - message
+      - type
+      title: Error
+      type: object
+    Freight:
+      example:
+        ETA: 2000-01-23T04:56:07.000+00:00
+        scheduledPeriod: scheduledPeriod
+        defaultAmount: 1
+        additionalInfo: additionalInfo
+        chargedAmount: 0
+        crossDockingTime: 6
+        transitTime: 5
+        type: type
+      properties:
+        ETA:
+          description: Estimated time of arrival
+          format: date-time
+          title: ETA
+          type: string
+        additionalInfo:
+          description: Aditional information for the courier
+          title: additionalInfo
+          type: string
+        chargedAmount:
+          description: "Shipment cost. Must be informed in cents. No commas or periods\
+            \ are accepeted. For example one dollar should be informed as 100. Same\
+            \ as $1,2345.67 must be informed solely as 1234567"
+          title: chargedAmount
+          type: integer
+        crossDockingTime:
+          description: "Time it will take to manufacture, prepare or setup this product.\
+            \ Time must be provided in seconds. For example 1 day should be informed\
+            \ as 86400. This time will be included in the product ETA informed to\
+            \ the customer"
+          title: crossDockingTime
+          type: integer
+        defaultAmount:
+          description: Default value of this shippment.
+          title: defaultAmount
+          type: integer
+        scheduledPeriod:
+          description: Scheduled period
+          title: scheduledPeriod
+          type: string
+        transitTime:
+          description: Deliver time in seconds. Time must be provided in seconds.
+            For example 1 day should be informed as 86400. This time will be included
+            in the product ETA informed to the customer
+          title: transitTime
+          type: integer
+        type:
+          description: Freight type
+          title: type
+          type: string
+      required:
+      - additionalInfo
+      - chargedAmount
+      - crossDockingTime
+      - defaultAmount
+      - transitTime
+      title: Freight
+      type: object
+    GetOrders:
+      example:
+        metadata:
+        - value: value
+          key: key
+        - value: value
+          key: key
+        orders:
+        - seller:
+            name: name
+            id: id
+          orderId: orderId
+          totalDiscountAmount: 2
+          freight:
+            ETA: 2000-01-23T04:56:07.000+00:00
+            scheduledPeriod: scheduledPeriod
+            defaultAmount: 1
+            additionalInfo: additionalInfo
+            chargedAmount: 0
+            crossDockingTime: 6
+            transitTime: 5
+            type: type
+          totalItemsAmount: 4
+          approvedAt: 2000-01-23T04:56:07.000+00:00
+          shipments:
+          - number: number
+            occurredAt: 2000-01-23T04:56:07.000+00:00
+            courier:
+              taxID: taxID
+              name: name
+            cte: cte
+            trackingUrl: trackingUrl
+            sellerShipmentId: sellerShipmentId
+            description: description
+            id: id
+            invoice:
+              linkXml: linkXml
+              number: number
+              accessKey: accessKey
+              serie: serie
+              cnpj: cnpj
+              issuedAt: 2000-01-23T04:56:07.000+00:00
+              linkDanfe: linkDanfe
+            items:
+            - quantity: 9
+              skuSellerId: skuSellerId
+            - quantity: 9
+              skuSellerId: skuSellerId
+            status: status
+          - number: number
+            occurredAt: 2000-01-23T04:56:07.000+00:00
+            courier:
+              taxID: taxID
+              name: name
+            cte: cte
+            trackingUrl: trackingUrl
+            sellerShipmentId: sellerShipmentId
+            description: description
+            id: id
+            invoice:
+              linkXml: linkXml
+              number: number
+              accessKey: accessKey
+              serie: serie
+              cnpj: cnpj
+              issuedAt: 2000-01-23T04:56:07.000+00:00
+              linkDanfe: linkDanfe
+            items:
+            - quantity: 9
+              skuSellerId: skuSellerId
+            - quantity: 9
+              skuSellerId: skuSellerId
+            status: status
+          totalShippingAmount: 7
+          createdAt: 2000-01-23T04:56:07.000+00:00
+          totalAmount: 3
+          orderMarketplaceId: orderMarketplaceId
+          shippingAddress:
+            reference: reference
+            number: number
+            zipCode: zipCode
+            address: address
+            city: city
+            neighbourhood: neighbourhood
+            recipientName: recipientName
+            state: state
+            complement: complement
+            countryId: countryId
+          billingAddress:
+            reference: reference
+            number: number
+            zipCode: zipCode
+            address: address
+            city: city
+            neighbourhood: neighbourhood
+            recipientName: recipientName
+            state: state
+            complement: complement
+            countryId: countryId
+          items:
+          - promotions:
+            - amount: 2
+              name: name
+              id: id
+              type: type
+            - amount: 2
+              name: name
+              id: id
+              type: type
+            salePrice: 7
+            freight:
+              ETA: 2000-01-23T04:56:07.000+00:00
+              scheduledPeriod: scheduledPeriod
+              defaultAmount: 1
+              additionalInfo: additionalInfo
+              chargedAmount: 0
+              crossDockingTime: 6
+              transitTime: 5
+              type: type
+            name: name
+            giftWrap:
+              messageSupport: true
+              available: true
+              giftCard:
+                from: from
+                to: to
+                message: message
+              value: 5
+            id: id
+            sent: true
+            skuSellerId: skuSellerId
+          - promotions:
+            - amount: 2
+              name: name
+              id: id
+              type: type
+            - amount: 2
+              name: name
+              id: id
+              type: type
+            salePrice: 7
+            freight:
+              ETA: 2000-01-23T04:56:07.000+00:00
+              scheduledPeriod: scheduledPeriod
+              defaultAmount: 1
+              additionalInfo: additionalInfo
+              chargedAmount: 0
+              crossDockingTime: 6
+              transitTime: 5
+              type: type
+            name: name
+            giftWrap:
+              messageSupport: true
+              available: true
+              giftCard:
+                from: from
+                to: to
+                message: message
+              value: 5
+            id: id
+            sent: true
+            skuSellerId: skuSellerId
+          customer:
+            documentNumber: documentNumber
+            name: name
+            phones:
+            - number: number
+              type: type
+            - number: number
+              type: type
+            id: id
+            type: type
+            email: email
+          status: status
+          updatedAt: 2000-01-23T04:56:07.000+00:00
+        - seller:
+            name: name
+            id: id
+          orderId: orderId
+          totalDiscountAmount: 2
+          freight:
+            ETA: 2000-01-23T04:56:07.000+00:00
+            scheduledPeriod: scheduledPeriod
+            defaultAmount: 1
+            additionalInfo: additionalInfo
+            chargedAmount: 0
+            crossDockingTime: 6
+            transitTime: 5
+            type: type
+          totalItemsAmount: 4
+          approvedAt: 2000-01-23T04:56:07.000+00:00
+          shipments:
+          - number: number
+            occurredAt: 2000-01-23T04:56:07.000+00:00
+            courier:
+              taxID: taxID
+              name: name
+            cte: cte
+            trackingUrl: trackingUrl
+            sellerShipmentId: sellerShipmentId
+            description: description
+            id: id
+            invoice:
+              linkXml: linkXml
+              number: number
+              accessKey: accessKey
+              serie: serie
+              cnpj: cnpj
+              issuedAt: 2000-01-23T04:56:07.000+00:00
+              linkDanfe: linkDanfe
+            items:
+            - quantity: 9
+              skuSellerId: skuSellerId
+            - quantity: 9
+              skuSellerId: skuSellerId
+            status: status
+          - number: number
+            occurredAt: 2000-01-23T04:56:07.000+00:00
+            courier:
+              taxID: taxID
+              name: name
+            cte: cte
+            trackingUrl: trackingUrl
+            sellerShipmentId: sellerShipmentId
+            description: description
+            id: id
+            invoice:
+              linkXml: linkXml
+              number: number
+              accessKey: accessKey
+              serie: serie
+              cnpj: cnpj
+              issuedAt: 2000-01-23T04:56:07.000+00:00
+              linkDanfe: linkDanfe
+            items:
+            - quantity: 9
+              skuSellerId: skuSellerId
+            - quantity: 9
+              skuSellerId: skuSellerId
+            status: status
+          totalShippingAmount: 7
+          createdAt: 2000-01-23T04:56:07.000+00:00
+          totalAmount: 3
+          orderMarketplaceId: orderMarketplaceId
+          shippingAddress:
+            reference: reference
+            number: number
+            zipCode: zipCode
+            address: address
+            city: city
+            neighbourhood: neighbourhood
+            recipientName: recipientName
+            state: state
+            complement: complement
+            countryId: countryId
+          billingAddress:
+            reference: reference
+            number: number
+            zipCode: zipCode
+            address: address
+            city: city
+            neighbourhood: neighbourhood
+            recipientName: recipientName
+            state: state
+            complement: complement
+            countryId: countryId
+          items:
+          - promotions:
+            - amount: 2
+              name: name
+              id: id
+              type: type
+            - amount: 2
+              name: name
+              id: id
+              type: type
+            salePrice: 7
+            freight:
+              ETA: 2000-01-23T04:56:07.000+00:00
+              scheduledPeriod: scheduledPeriod
+              defaultAmount: 1
+              additionalInfo: additionalInfo
+              chargedAmount: 0
+              crossDockingTime: 6
+              transitTime: 5
+              type: type
+            name: name
+            giftWrap:
+              messageSupport: true
+              available: true
+              giftCard:
+                from: from
+                to: to
+                message: message
+              value: 5
+            id: id
+            sent: true
+            skuSellerId: skuSellerId
+          - promotions:
+            - amount: 2
+              name: name
+              id: id
+              type: type
+            - amount: 2
+              name: name
+              id: id
+              type: type
+            salePrice: 7
+            freight:
+              ETA: 2000-01-23T04:56:07.000+00:00
+              scheduledPeriod: scheduledPeriod
+              defaultAmount: 1
+              additionalInfo: additionalInfo
+              chargedAmount: 0
+              crossDockingTime: 6
+              transitTime: 5
+              type: type
+            name: name
+            giftWrap:
+              messageSupport: true
+              available: true
+              giftCard:
+                from: from
+                to: to
+                message: message
+              value: 5
+            id: id
+            sent: true
+            skuSellerId: skuSellerId
+          customer:
+            documentNumber: documentNumber
+            name: name
+            phones:
+            - number: number
+              type: type
+            - number: number
+              type: type
+            id: id
+            type: type
+            email: email
+          status: status
+          updatedAt: 2000-01-23T04:56:07.000+00:00
+      properties:
+        metadata:
+          items:
+            $ref: '#/components/schemas/Metadata'
+          title: metadata
+          type: array
+        orders:
+          items:
+            $ref: '#/components/schemas/Order'
+          title: orders
+          type: array
+      required:
+      - metadata
+      - orders
+      title: GetOrders
+      type: object
+    GetOrdersShipments:
+      example:
+        metadata:
+        - value: value
+          key: key
+        - value: value
+          key: key
+        shipments:
+        - trackingUrl: trackingUrl
+          shipmentId: shipmentId
+          items:
+          - quantity: 9
+            skuSellerId: skuSellerId
+          - quantity: 9
+            skuSellerId: skuSellerId
+          errors:
+          - message: message
+            type: type
+            skuSellerId: skuSellerId
+          - message: message
+            type: type
+            skuSellerId: skuSellerId
+          status: status
+        - trackingUrl: trackingUrl
+          shipmentId: shipmentId
+          items:
+          - quantity: 9
+            skuSellerId: skuSellerId
+          - quantity: 9
+            skuSellerId: skuSellerId
+          errors:
+          - message: message
+            type: type
+            skuSellerId: skuSellerId
+          - message: message
+            type: type
+            skuSellerId: skuSellerId
+          status: status
+      properties:
+        metadata:
+          description: Response payload
+          items:
+            $ref: '#/components/schemas/Metadata'
+          title: metadata
+          type: array
+        shipments:
+          description: Order Shippment Status
+          items:
+            $ref: '#/components/schemas/OrderShippmentStatus'
+          title: shipments
+          type: array
+      title: GetOrdersShipments
+      type: object
+    GetProduct:
+      example:
+        gtin:
+        - gtin
+        - gtin
+        images:
+        - images
+        - images
+        productGroupId: productGroupId
+        description: description
+        videos:
+        - videos
+        - videos
+        title: title
+        skuSellerId: skuSellerId
+        price:
+          offer: 7
+          default: 2
+        attributes:
+        - name: name
+          value: value
+        - name: name
+          value: value
+        categories:
+        - categories
+        - categories
+        giftWrap:
+          messageSupport: true
+          available: true
+          value: 5
+        stock: 0
+        brand: brand
+        errors:
+        - message: message
+          type: type
+          skuSellerId: skuSellerId
+        - message: message
+          type: type
+          skuSellerId: skuSellerId
+        dimensions:
+          length: 6
+          width: 5
+          weight: 1
+          height: 0
+        status: status
+      properties:
+        attributes:
+          items:
+            $ref: '#/components/schemas/ProductAttribute'
+          title: attributes
+          type: array
+        brand:
+          description: Brand name
+          title: brand
+          type: string
+        categories:
+          description: Array of categories associated with this product
+          items:
+            type: string
+          title: categories
+          type: array
+        description:
+          description: Product text description.
+          title: description
+          type: string
+        dimensions:
+          $ref: '#/components/schemas/Dimensions'
+        errors:
+          items:
+            $ref: '#/components/schemas/Error'
+          title: errors
+          type: array
+        giftWrap:
+          $ref: '#/components/schemas/GiftWrap'
+        gtin:
+          description: Array of product EAN and/or ISBN and/or ASIN codes
+          items:
+            type: string
+          title: gtin
+          type: array
+        images:
+          description: List of valid Product image URLs. HTTP or HTTPS are valid.
+            HTTPS is prefered.
+          items:
+            type: string
+          title: images
+          type: array
+        price:
+          $ref: '#/components/schemas/ProductPrice'
+        productGroupId:
+          description: "Unique Product Group ID. Products with the same `productGroupId`\
+            \ will be grouped and displayed as a unique entry. Use `productGroupId`\
+            \ to group diferent SKUs that represent diferent colors, sizes, capacities,\
+            \ etc.."
+          title: productGroupId
+          type: string
+        skuSellerId:
+          description: Unique Product Id (SKU) in the seller system
+          title: skuSellerId
+          type: string
+        status:
+          description: Product status
+          title: status
+          type: string
+        stock:
+          description: Number of products availble for sale from the seller. Each
+            new successfull order will automatically reduce the number of products
+            available.
+          title: stock
+          type: integer
+        title:
+          description: Product name as advertised by manufacturer. This how the product
+            will be displayed in the Marketplace
+          title: title
+          type: string
+        videos:
+          description: List of videos de URLs associated with this product. HTTP or
+            HTTPS are valid. HTTPS is prefered.
+          items:
+            type: string
+          title: videos
+          type: array
+      required:
+      - attributes
+      - brand
+      - categories
+      - description
+      - images
+      - price
+      - skuSellerId
+      - status
+      - stock
+      - title
+      title: GetProduct
+      type: object
+    GetProductsResponse:
+      example:
+        metadata:
+        - value: value
+          key: key
+        - value: value
+          key: key
+        skus:
+        - gtin:
+          - gtin
+          - gtin
+          images:
+          - images
+          - images
+          productGroupId: productGroupId
+          description: description
+          videos:
+          - videos
+          - videos
+          title: title
+          skuSellerId: skuSellerId
+          price:
+            offer: 7
+            default: 2
+          attributes:
+          - name: name
+            value: value
+          - name: name
+            value: value
+          categories:
+          - categories
+          - categories
+          giftWrap:
+            messageSupport: true
+            available: true
+            value: 5
+          stock: 0
+          brand: brand
+          errors:
+          - message: message
+            type: type
+            skuSellerId: skuSellerId
+          - message: message
+            type: type
+            skuSellerId: skuSellerId
+          dimensions:
+            length: 6
+            width: 5
+            weight: 1
+            height: 0
+          status: status
+        - gtin:
+          - gtin
+          - gtin
+          images:
+          - images
+          - images
+          productGroupId: productGroupId
+          description: description
+          videos:
+          - videos
+          - videos
+          title: title
+          skuSellerId: skuSellerId
+          price:
+            offer: 7
+            default: 2
+          attributes:
+          - name: name
+            value: value
+          - name: name
+            value: value
+          categories:
+          - categories
+          - categories
+          giftWrap:
+            messageSupport: true
+            available: true
+            value: 5
+          stock: 0
+          brand: brand
+          errors:
+          - message: message
+            type: type
+            skuSellerId: skuSellerId
+          - message: message
+            type: type
+            skuSellerId: skuSellerId
+          dimensions:
+            length: 6
+            width: 5
+            weight: 1
+            height: 0
+          status: status
+      properties:
+        metadata:
+          description: Payload with response
+          items:
+            $ref: '#/components/schemas/Metadata'
+          title: metadata
+          type: array
+        skus:
+          items:
+            $ref: '#/components/schemas/GetProduct'
+          title: skus
+          type: array
+      title: GetProductsResponse
+      type: object
+    GetProductsStatusSelling:
+      example:
+        metadata:
+        - value: value
+          key: key
+        - value: value
+          key: key
+        sellerItems:
+        - gtin:
+          - gtin
+          - gtin
+          images:
+          - main: true
+            type: type
+            url: url
+          - main: true
+            type: type
+            url: url
+          product:
+            href: href
+            id: id
+          title: title
+          skuSellerId: skuSellerId
+          stocks:
+          - quantity: 6
+            reserved: 1
+            crossDockingTime: 0
+          - quantity: 6
+            reserved: 1
+            crossDockingTime: 0
+          urls:
+          - skuSellerId: skuSellerId
+            url: url
+          - skuSellerId: skuSellerId
+            url: url
+          attributes:
+          - name: name
+            value: value
+          - name: name
+            value: value
+          giftWrap:
+            messageSupport: true
+            available: true
+            value: 5
+          prices:
+          - offer: 7
+            default: 2
+          - offer: 7
+            default: 2
+          brand: brand
+          dimensions:
+            length: 6
+            width: 5
+            weight: 1
+            height: 0
+          status:
+          - active: true
+          - active: true
+        - gtin:
+          - gtin
+          - gtin
+          images:
+          - main: true
+            type: type
+            url: url
+          - main: true
+            type: type
+            url: url
+          product:
+            href: href
+            id: id
+          title: title
+          skuSellerId: skuSellerId
+          stocks:
+          - quantity: 6
+            reserved: 1
+            crossDockingTime: 0
+          - quantity: 6
+            reserved: 1
+            crossDockingTime: 0
+          urls:
+          - skuSellerId: skuSellerId
+            url: url
+          - skuSellerId: skuSellerId
+            url: url
+          attributes:
+          - name: name
+            value: value
+          - name: name
+            value: value
+          giftWrap:
+            messageSupport: true
+            available: true
+            value: 5
+          prices:
+          - offer: 7
+            default: 2
+          - offer: 7
+            default: 2
+          brand: brand
+          dimensions:
+            length: 6
+            width: 5
+            weight: 1
+            height: 0
+          status:
+          - active: true
+          - active: true
+      properties:
+        metadata:
+          items:
+            $ref: '#/components/schemas/Metadata'
+          title: metadata
+          type: array
+        sellerItems:
+          items:
+            $ref: '#/components/schemas/SellerItem'
+          title: sellerItems
+          type: array
+      required:
+      - metadata
+      - sellerItems
+      title: GetProductsStatusSelling
+      type: object
+    GetSellerProductStatus:
+      example:
+        price:
+          offer: 7
+          default: 2
+        stock: 0
+        errors:
+        - message: message
+          type: type
+          skuSellerId: skuSellerId
+        - message: message
+          type: type
+          skuSellerId: skuSellerId
+        skuSellerId: skuSellerId
+        status: status
+      properties:
+        errors:
+          items:
+            $ref: '#/components/schemas/Error'
+          title: errors
+          type: array
+        price:
+          $ref: '#/components/schemas/ProductPrice'
+        skuSellerId:
+          description: Unique Product Id (SKU) in the seller system.
+          title: skuSellerId
+          type: string
+        status:
+          description: Product status in the marketplace
+          title: status
+          type: string
+        stock:
+          description: Number of products availble for sale from the seller. Each
+            new successfull order will automatically reduce the number of products
+            available.
+          title: stock
+          type: integer
+      required:
+      - price
+      - skuSellerId
+      - status
+      - stock
+      title: GetSellerProductStatus
+      type: object
+    GetSellerProductsStatus:
+      example:
+        metadata:
+        - value: value
+          key: key
+        - value: value
+          key: key
+        skus:
+        - price:
+            offer: 7
+            default: 2
+          stock: 0
+          errors:
+          - message: message
+            type: type
+            skuSellerId: skuSellerId
+          - message: message
+            type: type
+            skuSellerId: skuSellerId
+          skuSellerId: skuSellerId
+          status: status
+        - price:
+            offer: 7
+            default: 2
+          stock: 0
+          errors:
+          - message: message
+            type: type
+            skuSellerId: skuSellerId
+          - message: message
+            type: type
+            skuSellerId: skuSellerId
+          skuSellerId: skuSellerId
+          status: status
+      properties:
+        metadata:
+          description: Response payload
+          items:
+            $ref: '#/components/schemas/Metadata'
+          title: metadata
+          type: array
+        skus:
+          description: Status of the products from the seller
+          items:
+            $ref: '#/components/schemas/GetSellerProductStatus'
+          title: skus
+          type: array
+      title: GetSellerProductsStatus
+      type: object
+    GetTicketMessages:
+      example:
+        metadata:
+        - value: value
+          key: key
+        - value: value
+          key: key
+        messages:
+        - createdAt: 2000-01-23T04:56:07.000+00:00
+          visibility: visibility
+          id: id
+          body: body
+        - createdAt: 2000-01-23T04:56:07.000+00:00
+          visibility: visibility
+          id: id
+          body: body
+      properties:
+        messages:
+          items:
+            $ref: '#/components/schemas/TicketMessage'
+          title: messages
+          type: array
+        metadata:
+          items:
+            $ref: '#/components/schemas/Metadata'
+          title: metadata
+          type: array
+      required:
+      - metadata
+      title: GetTicketMessages
+      type: object
+    GetTickets:
+      example:
+        metadata:
+        - value: value
+          key: key
+        - value: value
+          key: key
+        tickets:
+        - createdAt: 2000-01-23T04:56:07.000+00:00
+          metadata:
+          - value: value
+            key: key
+          - value: value
+            key: key
+          subject: subject
+          description: description
+          sla: 2000-01-23T04:56:07.000+00:00
+          closedAt: 2000-01-23T04:56:07.000+00:00
+          priority: priority
+          type: type
+          ticketId: ticketId
+          customer:
+            phoneNumber: phoneNumber
+            name: name
+          status: status
+          updatedAt: 2000-01-23T04:56:07.000+00:00
+        - createdAt: 2000-01-23T04:56:07.000+00:00
+          metadata:
+          - value: value
+            key: key
+          - value: value
+            key: key
+          subject: subject
+          description: description
+          sla: 2000-01-23T04:56:07.000+00:00
+          closedAt: 2000-01-23T04:56:07.000+00:00
+          priority: priority
+          type: type
+          ticketId: ticketId
+          customer:
+            phoneNumber: phoneNumber
+            name: name
+          status: status
+          updatedAt: 2000-01-23T04:56:07.000+00:00
+      properties:
+        metadata:
+          items:
+            $ref: '#/components/schemas/Metadata'
+          title: metadata
+          type: array
+        tickets:
+          items:
+            $ref: '#/components/schemas/Ticket'
+          title: tickets
+          type: array
+      title: GetTickets
+      type: object
+    GiftCard:
+      example:
+        from: from
+        to: to
+        message: message
+      properties:
+        from:
+          description: Giftcard `from` field
+          title: from
+          type: string
+        message:
+          description: Giftcard `body` message
+          title: message
+          type: string
+        to:
+          description: Giftcard `to` field
+          title: to
+          type: string
+      required:
+      - from
+      - message
+      - to
+      title: GiftCard
+      type: object
+    GiftWrap:
+      example:
+        messageSupport: true
+        available: true
+        value: 5
+      properties:
+        available:
+          description: Flag that defines if this product is eligible for giftwrapping
+          title: available
+          type: boolean
+        messageSupport:
+          description: Flag that defines if seller supports giftwrapp with a message
+          title: messageSupport
+          type: boolean
+        value:
+          description: "Amount charged for gift wrap. All prices must be provided\
+            \ in cents. No commas or periods are accepeted. For example one dollar\
+            \ should be informed as 100. $1,2345.67 should be informed solely as 1234567"
+          title: value
+          type: integer
+      required:
+      - available
+      - value
+      title: GiftWrap
+      type: object
+    Image:
+      example:
+        main: true
+        type: type
+        url: url
+      properties:
+        main:
+          description: Sets as main image
+          title: main
+          type: boolean
+        type:
+          description: Image format
+          title: type
+          type: string
+        url:
+          description: Image URL
+          title: url
+          type: string
+      required:
+      - main
+      - type
+      - url
+      title: Image
+      type: object
+    Invoice:
+      example:
+        linkXml: linkXml
+        number: number
+        accessKey: accessKey
+        serie: serie
+        cnpj: cnpj
+        issuedAt: 2000-01-23T04:56:07.000+00:00
+        linkDanfe: linkDanfe
+      properties:
+        accessKey:
+          description: Número da chave de acesso à nota fiscal. A chave possui 44
+            dígitos e contém todas as informações da DANFE
+          title: accessKey
+          type: string
+        cnpj:
+          description: CNPJ responsável pelo envio dos produtos. Pode ser diferente
+            caso a empresa possua diversos Centros de Distribuição (CDs)
+          title: cnpj
+          type: string
+        issuedAt:
+          description: Data de emissão da Nota Fiscal
+          format: date-time
+          title: issuedAt
+          type: string
+        linkDanfe:
+          description: Url para consulta da DANFE
+          title: linkDanfe
+          type: string
+        linkXml:
+          description: Url para consulta da NFE
+          title: linkXml
+          type: string
+        number:
+          description: Número da Nota Fiscal
+          title: number
+          type: string
+        serie:
+          description: Número de serie da Nota Fiscal
+          title: serie
+          type: string
+      required:
+      - accessKey
+      - number
+      - serie
+      title: Invoice
+      type: object
+    Metadata:
+      example:
+        value: value
+        key: key
+      properties:
+        key:
+          description: JSON attribute key
+          title: key
+          type: string
+        value:
+          description: JSON object value
+          title: value
+          type: string
+      required:
+      - key
+      - value
+      title: Metadata
+      type: object
+    NewTicket:
+      example:
+        orderId: orderId
+        description: description
+        from: from
+        body: body
+        message:
+          visibility: visibility
+          body: body
+        type: type
+        customer:
+          phoneNumber: phoneNumber
+          name: name
+      properties:
+        body:
+          description: Message to the customer
+          title: body
+          type: string
+        customer:
+          $ref: '#/components/schemas/CustomerReference'
+        description:
+          description: Trouble ticked brief description
+          title: description
+          type: string
+        from:
+          description: "Friendly name of the person sending this message, if not provided\
+            \ the seller `name` will be used"
+          title: from
+          type: string
+        message:
+          $ref: '#/components/schemas/NewTicketMessage'
+        orderId:
+          description: Unique order Id that this trouble ticket belongs to
+          title: orderId
+          type: string
+        type:
+          description: Trouble ticket type.
+          title: type
+          type: string
+      required:
+      - body
+      - from
+      - orderId
+      - type
+      title: NewTicket
+      type: object
+    NewTicketMessage:
+      example:
+        visibility: visibility
+        body: body
+      properties:
+        body:
+          description: Message text
+          title: body
+          type: string
+        visibility:
+          description: Defines if this message is `CUSTOMER` (customer will receive
+            a copy) or `INTERNAL`
+          title: visibility
+          type: string
+      required:
+      - body
+      - visibility
+      title: NewTicketMessage
+      type: object
+    NewTrackingRefund:
+      example:
+        number: number
+        occurredAt: 2000-01-23T04:56:07.000+00:00
+        courier:
+          taxID: taxID
+          name: name
+        cte: cte
+        sellerShipmentId: sellerShipmentId
+        tranckingUrl: tranckingUrl
+        items:
+        - quantity: 9
+          skuSellerId: skuSellerId
+        - quantity: 9
+          skuSellerId: skuSellerId
+        info: info
+      properties:
+        courier:
+          $ref: '#/components/schemas/Courier'
+        cte:
+          description: Conhecimento do Transporte Eletrônico
+          title: cte
+          type: string
+        info:
+          description: Aditional information about this shippment
+          title: info
+          type: string
+        items:
+          items:
+            $ref: '#/components/schemas/OrderItemReference'
+          title: items
+          type: array
+        number:
+          description: Tracking Id in the courier
+          title: number
+          type: string
+        occurredAt:
+          description: Date time that this was created
+          format: date-time
+          title: occurredAt
+          type: string
+        sellerShipmentId:
+          description: Unique Seller shipment Id. This must be unique across all orders
+            and shipments
+          title: sellerShipmentId
+          type: string
+        tranckingUrl:
+          description: Courier tracking URL
+          title: tranckingUrl
+          type: string
+      required:
+      - info
+      - items
+      title: NewTrackingRefund
+      type: object
+    Newshipmentstatus:
+      example:
+        number: number
+        occurredAt: 2000-01-23T04:56:07.000+00:00
+        courier:
+          taxID: taxID
+          name: name
+        cte: cte
+        trackingUrl: trackingUrl
+        sellerShipmentId: sellerShipmentId
+        invoice:
+          linkXml: linkXml
+          number: number
+          accessKey: accessKey
+          serie: serie
+          cnpj: cnpj
+          issuedAt: 2000-01-23T04:56:07.000+00:00
+          linkDanfe: linkDanfe
+        items:
+        - items
+        - items
+      properties:
+        courier:
+          $ref: '#/components/schemas/Courier'
+        cte:
+          description: Conhecimento do Transporte Eletrônico
+          title: cte
+          type: string
+        invoice:
+          $ref: '#/components/schemas/Invoice'
+        items:
+          description: List of Order IDs of this items from this order that will be
+            updated in this shipment
+          items:
+            type: string
+          title: items
+          type: array
+        number:
+          description: Unique id shipment Id in the courier system
+          title: number
+          type: string
+        occurredAt:
+          description: Data da ocorrência
+          format: date-time
+          title: occurredAt
+          type: string
+        sellerShipmentId:
+          description: Unique Seller shipment Id. This must be unique across all orders
+            and shipmnents
+          title: sellerShipmentId
+          type: string
+        trackingUrl:
+          description: Courier tracking URL
+          title: trackingUrl
+          type: string
+      required:
+      - courier
+      - invoice
+      - items
+      - occurredAt
+      - sellerShipmentId
+      title: Newshipmentstatus
+      type: object
+    Order:
+      example:
+        seller:
+          name: name
+          id: id
+        orderId: orderId
+        totalDiscountAmount: 2
+        freight:
+          ETA: 2000-01-23T04:56:07.000+00:00
+          scheduledPeriod: scheduledPeriod
+          defaultAmount: 1
+          additionalInfo: additionalInfo
+          chargedAmount: 0
+          crossDockingTime: 6
+          transitTime: 5
+          type: type
+        totalItemsAmount: 4
+        approvedAt: 2000-01-23T04:56:07.000+00:00
+        shipments:
+        - number: number
+          occurredAt: 2000-01-23T04:56:07.000+00:00
+          courier:
+            taxID: taxID
+            name: name
+          cte: cte
+          trackingUrl: trackingUrl
+          sellerShipmentId: sellerShipmentId
+          description: description
+          id: id
+          invoice:
+            linkXml: linkXml
+            number: number
+            accessKey: accessKey
+            serie: serie
+            cnpj: cnpj
+            issuedAt: 2000-01-23T04:56:07.000+00:00
+            linkDanfe: linkDanfe
+          items:
+          - quantity: 9
+            skuSellerId: skuSellerId
+          - quantity: 9
+            skuSellerId: skuSellerId
+          status: status
+        - number: number
+          occurredAt: 2000-01-23T04:56:07.000+00:00
+          courier:
+            taxID: taxID
+            name: name
+          cte: cte
+          trackingUrl: trackingUrl
+          sellerShipmentId: sellerShipmentId
+          description: description
+          id: id
+          invoice:
+            linkXml: linkXml
+            number: number
+            accessKey: accessKey
+            serie: serie
+            cnpj: cnpj
+            issuedAt: 2000-01-23T04:56:07.000+00:00
+            linkDanfe: linkDanfe
+          items:
+          - quantity: 9
+            skuSellerId: skuSellerId
+          - quantity: 9
+            skuSellerId: skuSellerId
+          status: status
+        totalShippingAmount: 7
+        createdAt: 2000-01-23T04:56:07.000+00:00
+        totalAmount: 3
+        orderMarketplaceId: orderMarketplaceId
+        shippingAddress:
+          reference: reference
+          number: number
+          zipCode: zipCode
+          address: address
+          city: city
+          neighbourhood: neighbourhood
+          recipientName: recipientName
+          state: state
+          complement: complement
+          countryId: countryId
+        billingAddress:
+          reference: reference
+          number: number
+          zipCode: zipCode
+          address: address
+          city: city
+          neighbourhood: neighbourhood
+          recipientName: recipientName
+          state: state
+          complement: complement
+          countryId: countryId
+        items:
+        - promotions:
+          - amount: 2
+            name: name
+            id: id
+            type: type
+          - amount: 2
+            name: name
+            id: id
+            type: type
+          salePrice: 7
+          freight:
+            ETA: 2000-01-23T04:56:07.000+00:00
+            scheduledPeriod: scheduledPeriod
+            defaultAmount: 1
+            additionalInfo: additionalInfo
+            chargedAmount: 0
+            crossDockingTime: 6
+            transitTime: 5
+            type: type
+          name: name
+          giftWrap:
+            messageSupport: true
+            available: true
+            giftCard:
+              from: from
+              to: to
+              message: message
+            value: 5
+          id: id
+          sent: true
+          skuSellerId: skuSellerId
+        - promotions:
+          - amount: 2
+            name: name
+            id: id
+            type: type
+          - amount: 2
+            name: name
+            id: id
+            type: type
+          salePrice: 7
+          freight:
+            ETA: 2000-01-23T04:56:07.000+00:00
+            scheduledPeriod: scheduledPeriod
+            defaultAmount: 1
+            additionalInfo: additionalInfo
+            chargedAmount: 0
+            crossDockingTime: 6
+            transitTime: 5
+            type: type
+          name: name
+          giftWrap:
+            messageSupport: true
+            available: true
+            giftCard:
+              from: from
+              to: to
+              message: message
+            value: 5
+          id: id
+          sent: true
+          skuSellerId: skuSellerId
+        customer:
+          documentNumber: documentNumber
+          name: name
+          phones:
+          - number: number
+            type: type
+          - number: number
+            type: type
+          id: id
+          type: type
+          email: email
+        status: status
+        updatedAt: 2000-01-23T04:56:07.000+00:00
+      properties:
+        approvedAt:
+          description: Date that this order was approved for fullfilment
+          format: date-time
+          title: approvedAt
+          type: string
+        billingAddress:
+          $ref: '#/components/schemas/Address'
+        createdAt:
+          description: Date that this order was created
+          format: date-time
+          title: createdAt
+          type: string
+        customer:
+          $ref: '#/components/schemas/Customer'
+        freight:
+          $ref: '#/components/schemas/Freight'
+        items:
+          items:
+            $ref: '#/components/schemas/OrderItem'
+          title: items
+          type: array
+        orderId:
+          description: Unique order Id (related to this seller)
+          title: orderId
+          type: string
+        orderMarketplaceId:
+          description: Unique Order Id that will be displayed to the customer. This
+            Id is not the same as `orderId`
+          title: orderMarketplaceId
+          type: string
+        seller:
+          $ref: '#/components/schemas/Seller'
+        shipments:
+          items:
+            $ref: '#/components/schemas/Shippment'
+          title: shipments
+          type: array
+        shippingAddress:
+          $ref: '#/components/schemas/Address'
+        status:
+          description: Order status
+          title: status
+          type: string
+        totalAmount:
+          description: "Order total in cents, this is what the customer will be charged\
+            \ for. No commas or periods are accepeted. For example one dollar should\
+            \ be informed as 100. $1,2345.67 should be informed solely as 1234567"
+          title: totalAmount
+          type: integer
+        totalDiscountAmount:
+          description: "Total order discounts in cents. No commas or periods are accepeted.\
+            \ For example one dollar should be informed as 100. $1,2345.67 should\
+            \ be informed solely as 1234567"
+          title: totalDiscountAmount
+          type: integer
+        totalItemsAmount:
+          description: "Order items total amount in cents. No commas or periods are\
+            \ accepeted. For example one dollar should be informed as 100. $1,2345.67\
+            \ should be informed solely as 1234567"
+          title: totalItemsAmount
+          type: integer
+        totalShippingAmount:
+          description: "Total shipments amount items. No commas or periods are accepeted.\
+            \ For example one dollar should be informed as 100. $1,2345.67 should\
+            \ be informed solely as 1234567"
+          title: totalShippingAmount
+          type: integer
+        updatedAt:
+          description: Last update data of this order
+          format: date-time
+          title: updatedAt
+          type: string
+      required:
+      - billingAddress
+      - createdAt
+      - customer
+      - freight
+      - items
+      - orderId
+      - orderMarketplaceId
+      - shipments
+      - shippingAddress
+      - status
+      - totalAmount
+      - totalDiscountAmount
+      - totalItemsAmount
+      - totalShippingAmount
+      - updatedAt
+      title: Order
+      type: object
+    OrderGiftWrap:
+      example:
+        messageSupport: true
+        available: true
+        giftCard:
+          from: from
+          to: to
+          message: message
+        value: 5
+      properties:
+        available:
+          description: Defines if giftwrpping is available for this product.
+          title: available
+          type: boolean
+        giftCard:
+          $ref: '#/components/schemas/GiftCard'
+        messageSupport:
+          description: Defines if giftwrpping is available for this product.
+          title: messageSupport
+          type: boolean
+        value:
+          description: "Amount charged for gift wrap. All prices must be provided\
+            \ in cents. No commas or periods are accepeted. For example one dollar\
+            \ should be informed as 100. $1,2345.67 should be informed solely as 1234567"
+          title: value
+          type: integer
+      required:
+      - available
+      - value
+      title: OrderGiftWrap
+      type: object
+    OrderItem:
+      example:
+        promotions:
+        - amount: 2
+          name: name
+          id: id
+          type: type
+        - amount: 2
+          name: name
+          id: id
+          type: type
+        salePrice: 7
+        freight:
+          ETA: 2000-01-23T04:56:07.000+00:00
+          scheduledPeriod: scheduledPeriod
+          defaultAmount: 1
+          additionalInfo: additionalInfo
+          chargedAmount: 0
+          crossDockingTime: 6
+          transitTime: 5
+          type: type
+        name: name
+        giftWrap:
+          messageSupport: true
+          available: true
+          giftCard:
+            from: from
+            to: to
+            message: message
+          value: 5
+        id: id
+        sent: true
+        skuSellerId: skuSellerId
+      properties:
+        freight:
+          $ref: '#/components/schemas/Freight'
+        giftWrap:
+          $ref: '#/components/schemas/OrderGiftWrap'
+        id:
+          description: Unique Id representing this item
+          title: id
+          type: string
+        name:
+          description: Product name
+          title: name
+          type: string
+        promotions:
+          description: Promotions array
+          items:
+            $ref: '#/components/schemas/Promotion'
+          title: promotions
+          type: array
+        salePrice:
+          description: Product unit price
+          title: salePrice
+          type: integer
+        sent:
+          description: Flag if product was already shipped
+          title: sent
+          type: boolean
+        skuSellerId:
+          description: Unique Product Id (SKU) in the seller system
+          title: skuSellerId
+          type: string
+      required:
+      - freight
+      - id
+      - name
+      - salePrice
+      - sent
+      - skuSellerId
+      title: OrderItem
+      type: object
+    OrderItemReference:
+      example:
+        quantity: 9
+        skuSellerId: skuSellerId
+      properties:
+        quantity:
+          description: Quantity of items
+          title: quantity
+          type: integer
+        skuSellerId:
+          description: Unique Product Id (SKU) in the seller system. This is the key
+            that defines witch product will be updated
+          title: skuSellerId
+          type: string
+      required:
+      - quantity
+      - skuSellerId
+      title: OrderItemReference
+      type: object
+    OrderShippment:
+      example:
+        number: number
+        occurredAt: 2000-01-23T04:56:07.000+00:00
+        courier:
+          taxID: taxID
+          name: name
+        cte: cte
+        trackingUrl: trackingUrl
+        sellerShipmentId: sellerShipmentId
+        invoice:
+          linkXml: linkXml
+          number: number
+          accessKey: accessKey
+          serie: serie
+          cnpj: cnpj
+          issuedAt: 2000-01-23T04:56:07.000+00:00
+          linkDanfe: linkDanfe
+        items:
+        - quantity: 9
+          skuSellerId: skuSellerId
+        - quantity: 9
+          skuSellerId: skuSellerId
+        order: order
+        status: status
+      properties:
+        courier:
+          $ref: '#/components/schemas/Courier'
+        cte:
+          description: Conhecimento de Transporte Eletôniconico
+          title: cte
+          type: string
+        invoice:
+          $ref: '#/components/schemas/Invoice'
+        items:
+          items:
+            $ref: '#/components/schemas/OrderItemReference'
+          title: items
+          type: array
+        number:
+          description: Courier unique trackign Id associated with this shipment
+          title: number
+          type: string
+        occurredAt:
+          description: Date that this shippment was shiped
+          format: date-time
+          title: occurredAt
+          type: string
+        order:
+          description: Order unique Id
+          title: order
+          type: string
+        sellerShipmentId:
+          description: Unique Seller shipment Id. This must be unique across all orders
+            and shipments
+          title: sellerShipmentId
+          type: string
+        status:
+          description: Shipment status.
+          title: status
+          type: string
+        trackingUrl:
+          description: Courier tracking URL
+          title: trackingUrl
+          type: string
+      title: OrderShippment
+      type: object
+    OrderShippmentStatus:
+      example:
+        trackingUrl: trackingUrl
+        shipmentId: shipmentId
+        items:
+        - quantity: 9
+          skuSellerId: skuSellerId
+        - quantity: 9
+          skuSellerId: skuSellerId
+        errors:
+        - message: message
+          type: type
+          skuSellerId: skuSellerId
+        - message: message
+          type: type
+          skuSellerId: skuSellerId
+        status: status
+      properties:
+        errors:
+          items:
+            $ref: '#/components/schemas/Error'
+          title: errors
+          type: array
+        items:
+          items:
+            $ref: '#/components/schemas/OrderItemReference'
+          title: items
+          type: array
+        shipmentId:
+          description: Shippment unique Id
+          title: shipmentId
+          type: string
+        status:
+          description: Shipment status
+          title: status
+          type: string
+        trackingUrl:
+          description: Courier tracking URL
+          title: trackingUrl
+          type: string
+      title: OrderShippmentStatus
+      type: object
+    OrdersShipments:
+      example:
+        shipments:
+        - number: number
+          occurredAt: 2000-01-23T04:56:07.000+00:00
+          courier:
+            taxID: taxID
+            name: name
+          cte: cte
+          trackingUrl: trackingUrl
+          sellerShipmentId: sellerShipmentId
+          invoice:
+            linkXml: linkXml
+            number: number
+            accessKey: accessKey
+            serie: serie
+            cnpj: cnpj
+            issuedAt: 2000-01-23T04:56:07.000+00:00
+            linkDanfe: linkDanfe
+          items:
+          - quantity: 9
+            skuSellerId: skuSellerId
+          - quantity: 9
+            skuSellerId: skuSellerId
+          order: order
+          status: status
+        - number: number
+          occurredAt: 2000-01-23T04:56:07.000+00:00
+          courier:
+            taxID: taxID
+            name: name
+          cte: cte
+          trackingUrl: trackingUrl
+          sellerShipmentId: sellerShipmentId
+          invoice:
+            linkXml: linkXml
+            number: number
+            accessKey: accessKey
+            serie: serie
+            cnpj: cnpj
+            issuedAt: 2000-01-23T04:56:07.000+00:00
+            linkDanfe: linkDanfe
+          items:
+          - quantity: 9
+            skuSellerId: skuSellerId
+          - quantity: 9
+            skuSellerId: skuSellerId
+          order: order
+          status: status
+      properties:
+        shipments:
+          items:
+            $ref: '#/components/schemas/OrderShippment'
+          title: shipments
+          type: array
+      title: OrdersShipments
+      type: object
+    Phone:
+      example:
+        number: number
+        type: type
+      properties:
+        number:
+          description: Phone number
+          title: number
+          type: string
+        type:
+          description: "Phone number type, home, office, mobile, etc"
+          title: type
+          type: string
+      required:
+      - number
+      - type
+      title: Phone
+      type: object
+    Product:
+      example:
+        gtin:
+        - gtin
+        - gtin
+        images:
+        - images
+        - images
+        productId: productId
+        productGroupId: productGroupId
+        description: description
+        videos:
+        - videos
+        - videos
+        title: title
+        skuSellerId: skuSellerId
+        price:
+          offer: 7
+          default: 2
+        attributes:
+        - name: name
+          value: value
+        - name: name
+          value: value
+        categories:
+        - categories
+        - categories
+        giftWrap:
+          messageSupport: true
+          available: true
+          value: 5
+        stock: 9
+        brand: brand
+        dimensions:
+          length: 6
+          width: 5
+          weight: 1
+          height: 0
+      properties:
+        attributes:
+          description: List of `key` `value` attributes of this product. This is very
+            important for search and SEO optmization. Include all relevant information
+          items:
+            $ref: '#/components/schemas/ProductAttribute'
+          title: attributes
+          type: array
+        brand:
+          description: Brand name
+          title: brand
+          type: string
+        categories:
+          description: Array of categories associated with this product
+          items:
+            type: string
+          title: categories
+          type: array
+        description:
+          description: Product description.
+          title: description
+          type: string
+        dimensions:
+          $ref: '#/components/schemas/Dimensions'
+        giftWrap:
+          $ref: '#/components/schemas/GiftWrap'
+        gtin:
+          description: Array of product EAN and/or ISBN and/or ASIN codes
+          items:
+            type: string
+          title: gtin
+          type: array
+        images:
+          description: List of valid Product image URLs. HTTP or HTTPS are valid.
+            HTTPS is prefered.
+          items:
+            type: string
+          title: images
+          type: array
+        price:
+          $ref: '#/components/schemas/ProductPrice'
+        productGroupId:
+          description: "Unique Product Group ID. Products with the same `productGroupId`\
+            \ will be grouped and displayed as a unique entry. Use `productGroupId`\
+            \ to group diferent SKUs that represent diferent colors, sizes, capacities,\
+            \ etc.."
+          title: productGroupId
+          type: string
+        productId:
+          description: Brand Lovers Product ID. Use this to suggest a product association.
+            This field is optional.
+          title: productId
+          type: string
+        skuSellerId:
+          description: Unique Product Id (SKU) in the seller system
+          title: skuSellerId
+          type: string
+        stock:
+          description: Number of products availble for sale from the seller. Each
+            new successfull order will automatically reduce the number of products
+            available.
+          title: stock
+          type: integer
+        title:
+          description: Product name as advertised by manufacturer. This how the product
+            will be displayed in the Marketplace
+          title: title
+          type: string
+        videos:
+          description: List of videos de URLs associated with this product. HTTP or
+            HTTPS are valid. HTTPS is prefered.
+          items:
+            type: string
+          title: videos
+          type: array
+      required:
+      - attributes
+      - brand
+      - categories
+      - description
+      - images
+      - price
+      - skuSellerId
+      - stock
+      - title
+      title: Product
+      type: object
+    ProductAttribute:
+      example:
+        name: name
+        value: value
+      properties:
+        name:
+          description: Attribute name
+          title: name
+          type: string
+        value:
+          description: Attribute value
+          title: value
+          type: string
+      required:
+      - name
+      - value
+      title: ProductAttribute
+      type: object
+    ProductPrice:
+      example:
+        offer: 7
+        default: 2
+      properties:
+        default:
+          description: "List price, also known as MSRP (Manufacturer Suggest Retail\
+            \ Price) or the recommended retail price (RRP). All prices must be provided\
+            \ in cents. No commas or periods are accepeted. For example one dollar\
+            \ should be informed as 100. $1,2345.67 should be informed solely as 1234567"
+          title: default
+          type: integer
+        offer:
+          description: "Product price. This is what will be offered to the customer.\
+            \ All prices must be provided in cents. No commas or periods are accepeted.\
+            \ For example one dollar should be informed as 100. $1,2345.67 should\
+            \ be informed solely as 1234567"
+          title: offer
+          type: integer
+      required:
+      - default
+      - offer
+      title: ProductPrice
+      type: object
+    ProductReference:
+      example:
+        href: href
+        id: id
+      properties:
+        href:
+          description: Link para acesso ao recurso
+          title: href
+          type: string
+        id:
+          description: ID do recurso
+          title: id
+          type: string
+      required:
+      - href
+      - id
+      title: ProductReference
+      type: object
+    ProductSiteReference:
+      example:
+        skuSellerId: skuSellerId
+        url: url
+      properties:
+        skuSellerId:
+          description: Seller unique product Id
+          title: skuSellerId
+          type: string
+        url:
+          description: Link do produto no site
+          title: url
+          type: string
+      required:
+      - skuSellerId
+      - url
+      title: ProductSiteReference
+      type: object
+    ProductStatusUpdate:
+      example:
+        active: true
+        skuSellerId: skuSellerId
+      properties:
+        active:
+          description: "Defines if this product is ready for sale. Active `true`,\
+            \ disabled `false`"
+          title: active
+          type: boolean
+        skuSellerId:
+          description: Seller product unique Id that will be updated
+          title: skuSellerId
+          type: string
+      required:
+      - active
+      - skuSellerId
+      title: ProductStatusUpdate
+      type: object
+    ProductStock:
+      example:
+        skuSellerId: skuSellerId
+        stocks:
+        - quantity: 6
+          crossDockingTime: 0
+        - quantity: 6
+          crossDockingTime: 0
+      properties:
+        skuSellerId:
+          description: Unique Product Id (SKU) in the seller system
+          title: skuSellerId
+          type: string
+        stocks:
+          description: Invetory information
+          items:
+            $ref: '#/components/schemas/Stock'
+          title: stocks
+          type: array
+      required:
+      - skuSellerId
+      - stocks
+      title: ProductStock
+      type: object
+    ProductUpdate:
+      example:
+        gtin:
+        - gtin
+        - gtin
+        images:
+        - images
+        - images
+        productId: productId
+        productGroupId: productGroupId
+        description: description
+        videos:
+        - videos
+        - videos
+        title: title
+        skuSellerId: skuSellerId
+        price:
+          offer: 7
+          default: 2
+        attributes:
+        - name: name
+          value: value
+        - name: name
+          value: value
+        categories:
+        - categories
+        - categories
+        giftWrap:
+          messageSupport: true
+          available: true
+          value: 5
+        stock: 0
+        brand: brand
+        dimensions:
+          length: 6
+          width: 5
+          weight: 1
+          height: 0
+      properties:
+        attributes:
+          description: List of `key` `value` attributes of this product. This is very
+            important for search and SEO optmization. Include all relevant information
+          items:
+            $ref: '#/components/schemas/ProductAttribute'
+          title: attributes
+          type: array
+        brand:
+          description: Brand name
+          title: brand
+          type: string
+        categories:
+          description: Array of categories associated with this product
+          items:
+            type: string
+          title: categories
+          type: array
+        description:
+          description: Product text description.
+          title: description
+          type: string
+        dimensions:
+          $ref: '#/components/schemas/Dimensions'
+        giftWrap:
+          $ref: '#/components/schemas/GiftWrap'
+        gtin:
+          description: Array of product EAN and/or ISBN and/or ASIN codes
+          items:
+            type: string
+          title: gtin
+          type: array
+        images:
+          description: List of valid Product image URLs. HTTP or HTTPS are valid.
+            HTTPS is prefered.
+          items:
+            type: string
+          title: images
+          type: array
+        price:
+          $ref: '#/components/schemas/ProductPrice'
+        productGroupId:
+          description: "Unique Product Group ID. Products with the same `productGroupId`\
+            \ will be grouped and displayed as a unique entry. Use `productGroupId`\
+            \ to group diferent SKUs that represent diferent colors, sizes, capacities,\
+            \ etc.."
+          title: productGroupId
+          type: string
+        productId:
+          description: Brand Lovers Product Id. Use this to recommend a product association
+          title: productId
+          type: string
+        skuSellerId:
+          description: Unique Product Id (SKU) in the seller system
+          title: skuSellerId
+          type: string
+        stock:
+          description: Number of products availble for sale from the seller. Each
+            new successfull order will automatically reduce the number of products
+            available.
+          title: stock
+          type: integer
+        title:
+          description: Product name as advertised by manufacturer. This how the product
+            will be displayed in the Marketplace
+          title: title
+          type: string
+        videos:
+          description: List of videos de URLs associated with this product. HTTP or
+            HTTPS are valid. HTTPS is prefered.
+          items:
+            type: string
+          title: videos
+          type: array
+      required:
+      - skuSellerId
+      title: ProductUpdate
+      type: object
+    Promotion:
+      example:
+        amount: 2
+        name: name
+        id: id
+        type: type
+      properties:
+        amount:
+          description: "Total discount in cents. No commas or periods are accepeted.\
+            \ For example one dollar should be informed as 100. $1,2345.67 should\
+            \ be informed solely as 1234567"
+          title: amount
+          type: integer
+        id:
+          description: Promotion unique idenfitcation number
+          title: id
+          type: string
+        name:
+          description: Promotion name
+          title: name
+          type: string
+        type:
+          description: Promotion type
+          title: type
+          type: string
+      required:
+      - id
+      title: Promotion
+      type: object
+    Seller:
+      example:
+        name: name
+        id: id
+      properties:
+        id:
+          description: Seller unique Id in the Brand Lovers Marketplace
+          title: id
+          type: string
+        name:
+          description: Seller name in the Brand Lovers Marketplace
+          title: name
+          type: string
+      title: Seller
+      type: object
+    SellerItem:
+      example:
+        gtin:
+        - gtin
+        - gtin
+        images:
+        - main: true
+          type: type
+          url: url
+        - main: true
+          type: type
+          url: url
+        product:
+          href: href
+          id: id
+        title: title
+        skuSellerId: skuSellerId
+        stocks:
+        - quantity: 6
+          reserved: 1
+          crossDockingTime: 0
+        - quantity: 6
+          reserved: 1
+          crossDockingTime: 0
+        urls:
+        - skuSellerId: skuSellerId
+          url: url
+        - skuSellerId: skuSellerId
+          url: url
+        attributes:
+        - name: name
+          value: value
+        - name: name
+          value: value
+        giftWrap:
+          messageSupport: true
+          available: true
+          value: 5
+        prices:
+        - offer: 7
+          default: 2
+        - offer: 7
+          default: 2
+        brand: brand
+        dimensions:
+          length: 6
+          width: 5
+          weight: 1
+          height: 0
+        status:
+        - active: true
+        - active: true
+      properties:
+        attributes:
+          items:
+            $ref: '#/components/schemas/ProductAttribute'
+          title: attributes
+          type: array
+        brand:
+          description: Brand name
+          title: brand
+          type: string
+        dimensions:
+          $ref: '#/components/schemas/Dimensions'
+        giftWrap:
+          $ref: '#/components/schemas/GiftWrap'
+        gtin:
+          description: Array of product EAN and/or ISBN and/or ASIN codes
+          items:
+            type: string
+          title: gtin
+          type: array
+        images:
+          description: List of valid Product image URLs.
+          items:
+            $ref: '#/components/schemas/Image'
+          title: images
+          type: array
+        prices:
+          description: Price information for each marketplace that this product is
+            listed
+          items:
+            $ref: '#/components/schemas/ProductPrice'
+          title: prices
+          type: array
+        product:
+          $ref: '#/components/schemas/ProductReference'
+        skuSellerId:
+          description: Unique Product Id (SKU) in the seller system
+          title: skuSellerId
+          type: string
+        status:
+          description: Product status for each marketplace that this product is listed
+          items:
+            $ref: '#/components/schemas/SellerItemStatus'
+          title: status
+          type: array
+        stocks:
+          description: Invetory information for each marketplace that this product
+            is listed
+          items:
+            $ref: '#/components/schemas/ControlledStock'
+          title: stocks
+          type: array
+        title:
+          description: Product name as advertised by manufacturer. This how the product
+            will be displayed in the Marketplace
+          title: title
+          type: string
+        urls:
+          description: List of URLs where the product is listed for sale
+          items:
+            $ref: '#/components/schemas/ProductSiteReference'
+          title: urls
+          type: array
+      required:
+      - attributes
+      - brand
+      - dimensions
+      - images
+      - prices
+      - product
+      - skuSellerId
+      - status
+      - stocks
+      - title
+      title: SellerItem
+      type: object
+    SellerItemPrices:
+      example:
+        price:
+          offer: 7
+          default: 2
+        skuSellerId: skuSellerId
+      properties:
+        price:
+          $ref: '#/components/schemas/ProductPrice'
+        skuSellerId:
+          description: Unique product Id from seller that will be updated
+          title: skuSellerId
+          type: string
+      required:
+      - price
+      - skuSellerId
+      title: SellerItemPrices
+      type: object
+    SellerItemStatus:
+      example:
+        active: true
+      properties:
+        active:
+          description: "Defines if this product is ready for sale. Active `true`,\
+            \ disabled `false` "
+          title: active
+          type: boolean
+      required:
+      - active
+      title: SellerItemStatus
+      type: object
+    Shippment:
+      example:
+        number: number
+        occurredAt: 2000-01-23T04:56:07.000+00:00
+        courier:
+          taxID: taxID
+          name: name
+        cte: cte
+        trackingUrl: trackingUrl
+        sellerShipmentId: sellerShipmentId
+        description: description
+        id: id
+        invoice:
+          linkXml: linkXml
+          number: number
+          accessKey: accessKey
+          serie: serie
+          cnpj: cnpj
+          issuedAt: 2000-01-23T04:56:07.000+00:00
+          linkDanfe: linkDanfe
+        items:
+        - quantity: 9
+          skuSellerId: skuSellerId
+        - quantity: 9
+          skuSellerId: skuSellerId
+        status: status
+      properties:
+        courier:
+          $ref: '#/components/schemas/Courier'
+        cte:
+          description: Conhecimento de Transporte Eletrônico
+          title: cte
+          type: string
+        description:
+          description: Additinal shipment tracking information
+          title: description
+          type: string
+        id:
+          description: Shipment Id associated with this shippment used to group diferent
+            item or items from a single order
+          title: id
+          type: string
+        invoice:
+          $ref: '#/components/schemas/Invoice'
+        items:
+          description: List of items of this shippment
+          items:
+            $ref: '#/components/schemas/OrderItemReference'
+          title: items
+          type: array
+        number:
+          description: Courier unique trackign Id associated with this shipment
+          title: number
+          type: string
+        occurredAt:
+          description: Date time when this shippment happened
+          format: date-time
+          title: occurredAt
+          type: string
+        sellerShipmentId:
+          description: Unique Seller shipment Id. This must be unique across all orders
+            and shipments
+          title: sellerShipmentId
+          type: string
+        status:
+          description: Shipment status
+          title: status
+          type: string
+        trackingUrl:
+          description: Courier tracking URL
+          title: trackingUrl
+          type: string
+      required:
+      - courier
+      - invoice
+      - items
+      - occurredAt
+      - sellerShipmentId
+      - status
+      title: Shippment
+      type: object
+    Stock:
+      example:
+        quantity: 6
+        crossDockingTime: 0
+      properties:
+        crossDockingTime:
+          description: "Time it will take to manufacture, prepare or setup this product.\
+            \ Time must be provided in seconds. For example 1 day should be informed\
+            \ as 86400. This time will be included in the product ETA informed to\
+            \ the customer"
+          title: crossDockingTime
+          type: integer
+        quantity:
+          description: Stock available
+          title: quantity
+          type: integer
+      required:
+      - quantity
+      title: Stock
+      type: object
+    Ticket:
+      example:
+        createdAt: 2000-01-23T04:56:07.000+00:00
+        metadata:
+        - value: value
+          key: key
+        - value: value
+          key: key
+        subject: subject
+        description: description
+        sla: 2000-01-23T04:56:07.000+00:00
+        closedAt: 2000-01-23T04:56:07.000+00:00
+        priority: priority
+        type: type
+        ticketId: ticketId
+        customer:
+          phoneNumber: phoneNumber
+          name: name
+        status: status
+        updatedAt: 2000-01-23T04:56:07.000+00:00
+      properties:
+        closedAt:
+          description: Date-time when ticket was closed
+          format: date-time
+          title: closedAt
+          type: string
+        createdAt:
+          description: Date time that ticket was created
+          format: date-time
+          title: createdAt
+          type: string
+        customer:
+          $ref: '#/components/schemas/CustomerReference'
+        description:
+          description: Trouble ticked brief description
+          title: description
+          type: string
+        metadata:
+          items:
+            $ref: '#/components/schemas/Metadata'
+          title: metadata
+          type: array
+        priority:
+          description: Trouble ticket priority
+          title: priority
+          type: string
+        sla:
+          description: Date-time with a promisse for the customer when this ticket
+            will be resolved
+          format: date-time
+          title: sla
+          type: string
+        status:
+          description: "Trouble Ticket status. 'OPEN','CLOSED','REOPENED'"
+          title: status
+          type: string
+        subject:
+          description: Short one line title describing ticket.
+          title: subject
+          type: string
+        ticketId:
+          description: Trouble Ticket unique identification Id
+          title: ticketId
+          type: string
+        type:
+          description: Trouble ticket type.
+          title: type
+          type: string
+        updatedAt:
+          description: Date-time with last update of this ticket
+          format: date-time
+          title: updatedAt
+          type: string
+      title: Ticket
+      type: object
+    TicketMessage:
+      example:
+        createdAt: 2000-01-23T04:56:07.000+00:00
+        visibility: visibility
+        id: id
+        body: body
+      properties:
+        body:
+          description: Message text
+          title: body
+          type: string
+        createdAt:
+          description: Date created
+          format: date-time
+          title: createdAt
+          type: string
+        id:
+          description: Trouble Ticket Id.
+          title: id
+          type: string
+        visibility:
+          description: Defines if this message is `CUSTOMER` (customer will receive
+            a copy) or `INTERNAL`
+          title: visibility
+          type: string
+      required:
+      - body
+      - createdAt
+      - id
+      - visibility
+      title: TicketMessage
+      type: object
+    TicketStatus:
+      example:
+        ticketStatus: ticketStatus
+      properties:
+        ticketStatus:
+          description: "New trouble ticket status. Valid options are `REOPENED`, `CLOSED`"
+          title: ticketStatus
+          type: string
+      required:
+      - ticketStatus
+      title: TicketStatus
+      type: object
+  securitySchemes:
+    authorization:
+      description: Authorization token. The Authorization token can be found in your
+        Admin console.
+      in: header
+      name: authorization
+      type: apiKey
+      x-apikeyInfoFunc: openapi_server.controllers.security_controller.info_from_authorization
+x-original-swagger-version: "2.0"

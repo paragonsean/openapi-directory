@@ -1,0 +1,765 @@
+openapi: 3.0.0
+info:
+  description: This is the API for the COVID-19 Contact Tracing QRCode Signin Server
+  title: API for the COVID-19 Tracking QR Code Signin Server.
+  version: "1.1"
+  x-apisguru-categories:
+  - open_data
+  x-origin:
+  - format: openapi
+    url: https://raw.githubusercontent.com/aijaz/qrCodeSigninServer/main/openapi.yaml
+    version: "3.0"
+  x-providerName: c19qrserver.local
+servers:
+- url: http://c19qrserver.local
+- description: SwaggerHub API Auto Mocking
+  url: https://virtserver.swaggerhub.com/aijaz/QRCodeSigninServer/1.1
+security:
+- TokenHeader: []
+tags:
+- description: Authentication-related endpoints
+  name: Authentication
+- description: Endpoints related to attendees signing in on the premises
+  name: Attendees signins
+- description: Endpoints related to changing and resetting passwords
+  name: Passwords
+- description: Endpoints related to team member user accounts
+  name: Team Members
+paths:
+  /changePassword:
+    post:
+      description: Pass in your old password and your new password
+      operationId: change_password_post
+      requestBody:
+        $ref: '#/components/requestBodies/changePasswordPayload'
+        x-body-name: body
+      responses:
+        "200":
+          description: Success
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/invalidToken'
+          description: Unauthorized
+      summary: Used for changing your password
+      tags:
+      - Passwords
+      x-openapi-router-controller: openapi_server.controllers.passwords_controller
+      x-codegen-request-body-name: body
+  /login:
+    post:
+      description: Submit your email and password to get an API token
+      operationId: login_post
+      requestBody:
+        $ref: '#/components/requestBodies/loginPayload'
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/loginResponse'
+          description: Success
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/invalidToken'
+          description: Unauthorized
+      security: []
+      summary: Log in to get an API token
+      tags:
+      - Authentication
+      x-openapi-router-controller: openapi_server.controllers.authentication_controller
+      x-codegen-request-body-name: body
+  /logout:
+    post:
+      description: Log out by deleting your token off the server.
+      operationId: logout_post
+      responses:
+        "200":
+          description: Success
+      summary: Log out
+      tags:
+      - Authentication
+      x-openapi-router-controller: openapi_server.controllers.authentication_controller
+  /requestPasswordReset:
+    post:
+      description: |
+        The admin should run this on behalf of a user who forgot their password.  The API will generate a password reset code which the admin should then provide to the user. The user can use their client to reset their password. Normally the password reset code is mailed to the user, but I didn't want to do this in this case because I didn't want to  introduce the complicated dependency of having an SMTP server just for this purpose. Doing it this way makes it easy for people to adopt this  API.
+      operationId: request_password_reset_post
+      requestBody:
+        $ref: '#/components/requestBodies/requestPasswordResetPayload'
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/requestPasswordResetResponse'
+          description: Success
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/invalidToken'
+          description: Unauthorized
+      summary: Used for requesting a password reset code
+      tags:
+      - Passwords
+      x-openapi-router-controller: openapi_server.controllers.passwords_controller
+      x-codegen-request-body-name: body
+  /signin:
+    post:
+      description: Create a new signin record
+      operationId: signin_post
+      requestBody:
+        $ref: '#/components/requestBodies/signinPayload'
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/signinResponse'
+          description: Success
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/invalidToken'
+          description: Unauthorized
+        "503":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/keyFailure'
+          description: Key Failure
+      tags:
+      - Attendees signins
+      x-openapi-router-controller: openapi_server.controllers.attendees_signins_controller
+      x-codegen-request-body-name: body
+  /signin/{signinId}:
+    delete:
+      description: "Delete a signin record      \n"
+      operationId: signin_signin_id_delete
+      parameters:
+      - description: The ID of the signin record to be deleted.
+        explode: false
+        in: path
+        name: signinId
+        required: true
+        schema:
+          example: 1
+          type: integer
+        style: simple
+      responses:
+        "200":
+          description: Success
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/invalidToken'
+          description: Unauthorized
+      summary: Delete a signin record
+      tags:
+      - Attendees signins
+      x-openapi-router-controller: openapi_server.controllers.attendees_signins_controller
+    get:
+      description: |
+        Retrieve the information associated with a signin record
+      operationId: signin_signin_id_get
+      parameters:
+      - description: The ID of the signin record to be retrieved.
+        explode: false
+        in: path
+        name: signinId
+        required: true
+        schema:
+          example: 1
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/signin'
+          description: Success
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/invalidToken'
+          description: Unauthorized
+      summary: Retrieve the information associated with a signin record
+      tags:
+      - Attendees signins
+      x-openapi-router-controller: openapi_server.controllers.attendees_signins_controller
+    put:
+      description: |
+        Update a signin record
+      operationId: signin_signin_id_put
+      parameters:
+      - description: The ID of the signin record to be retrieved.
+        explode: false
+        in: path
+        name: signinId
+        required: true
+        schema:
+          example: 1
+          type: integer
+        style: simple
+      requestBody:
+        $ref: '#/components/requestBodies/signinPayload'
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/userRecord'
+          description: Success
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/invalidToken'
+          description: Unauthorized
+      summary: Update a signin record
+      tags:
+      - Attendees signins
+      x-openapi-router-controller: openapi_server.controllers.attendees_signins_controller
+      x-codegen-request-body-name: body
+  /signins:
+    get:
+      description: Returns a list of signin objects sorted by signin ID descending.
+      operationId: signins_get
+      parameters:
+      - description: Return signins with IDs less than this value.
+        explode: true
+        in: query
+        name: less_than
+        required: false
+        schema:
+          type: integer
+        style: form
+      - description: Return this many objects
+        explode: true
+        in: query
+        name: return_count
+        required: false
+        schema:
+          default: 100
+          maximum: 100
+          minimum: 1
+          type: integer
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/signin'
+                type: array
+          description: Successful response
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/invalidToken'
+          description: Unauthorized
+        "503":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/keyFailure'
+          description: Key Failure
+      summary: Get signin info
+      tags:
+      - Attendees signins
+      x-openapi-router-controller: openapi_server.controllers.attendees_signins_controller
+  /user:
+    post:
+      description: Use this endpoint to create a team member (user) record
+      operationId: user_post
+      requestBody:
+        $ref: '#/components/requestBodies/createUserPayload'
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/createUserResponse'
+          description: Success
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/invalidToken'
+          description: Unauthorized
+      summary: Create a user
+      tags:
+      - Team Members
+      x-openapi-router-controller: openapi_server.controllers.team_members_controller
+      x-codegen-request-body-name: body
+  /user/{userId}:
+    delete:
+      description: "To preserve referential integrity in the database, the user account\
+        \  will not be deleted from the database. Rather, the password will be set\
+        \ to the empty string, effectively preventing that user from logging in. Furthermore,\
+        \ all active sessions for that user will be deleted, as will any password\
+        \ reset tokens. \n"
+      operationId: user_user_id_delete
+      parameters:
+      - description: The ID of the user record to be deleted.
+        explode: false
+        in: path
+        name: userId
+        required: true
+        schema:
+          example: 1
+          type: integer
+        style: simple
+      responses:
+        "200":
+          description: Success
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/invalidToken'
+          description: Unauthorized
+      summary: Delete a team member's user record
+      tags:
+      - Team Members
+      x-openapi-router-controller: openapi_server.controllers.team_members_controller
+    get:
+      description: |
+        Retrieve the information associated with a user's account
+      operationId: user_user_id_get
+      parameters:
+      - description: The ID of the user record to be retrieved.
+        explode: false
+        in: path
+        name: userId
+        required: true
+        schema:
+          example: 1
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/userRecord'
+          description: Success
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/invalidToken'
+          description: Unauthorized
+      summary: Retrieve the information associated with a team member's user record
+      tags:
+      - Team Members
+      x-openapi-router-controller: openapi_server.controllers.team_members_controller
+  /users:
+    get:
+      description: |
+        Retrieve the information associated with all team members' user records
+      operationId: users_get
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/userRecord'
+                type: array
+          description: Success
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/invalidToken'
+          description: Unauthorized
+      summary: Retrieve the information associated with all team members' user records
+      tags:
+      - Team Members
+      x-openapi-router-controller: openapi_server.controllers.team_members_controller
+  /verifyPasswordChange:
+    post:
+      description: |
+        Another endpoint will generate a password reset code for you. You should  use the client app to submit the reset code along with the new password to change your password.
+      operationId: verify_password_change_post
+      requestBody:
+        $ref: '#/components/requestBodies/passwordResetPayload'
+        x-body-name: body
+      responses:
+        "200":
+          description: Success
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/invalidToken'
+          description: Unauthorized
+      summary: Used for resetting your password when you forgot it
+      tags:
+      - Passwords
+      x-openapi-router-controller: openapi_server.controllers.passwords_controller
+      x-codegen-request-body-name: body
+components:
+  parameters:
+    signinId:
+      description: Signin ID
+      explode: true
+      in: query
+      name: id
+      required: false
+      schema:
+        type: integer
+      style: form
+  requestBodies:
+    changePasswordPayload:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Sample'
+      description: Change Password Payload
+      required: true
+    createUserPayload:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Sample_3'
+      description: Create User Payload
+      required: true
+    loginPayload:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Sample_1'
+      description: The login payload
+      required: true
+    passwordResetPayload:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Sample_4'
+      description: Password Reset Payload
+      required: true
+    requestPasswordResetPayload:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Sample_2'
+      description: Request Password Reset Payload
+      required: true
+    signinPayload:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/signin'
+  responses:
+    KeyFailure:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/keyFailure'
+      description: Key Failure
+    SigninResponse:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/signinResponse'
+      description: The response that's sent when you successfully create a signin
+    Unauthorized:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/invalidToken'
+      description: Unauthorized
+  schemas:
+    createUserResponse:
+      description: The object that's returned when a user record is created.
+      example:
+        guid: d5e53b3a-ffc1-4436-b085-04aaed5ec861
+        email: user@example.com
+      properties:
+        email:
+          description: The user's email address
+          example: user@example.com
+          title: email
+          type: string
+        guid:
+          description: The user's password reset code
+          example: d5e53b3a-ffc1-4436-b085-04aaed5ec861
+          title: guid
+          type: string
+      title: The object that's returned when a user record is created.
+      type: object
+    invalidToken:
+      description: Invalid token
+      example:
+        message: Login Failed
+      properties:
+        message:
+          example: Login Failed
+          title: message
+          type: string
+      title: Invalid Token
+      type: object
+    keyFailure:
+      description: Key Failure
+      example:
+        message: Key Failures
+      properties:
+        message:
+          example: Key Failures
+          title: message
+          type: string
+      title: Key Failure
+      type: object
+    loginResponse:
+      description: Payload of successful login
+      example:
+        login_id: 1
+        read_only: false
+        name: Firstname Lastname
+        admin: false
+        token: dc19b0b2-c0e3-821b-821a-d49e8c428479
+      properties:
+        admin:
+          description: True if this user is an admin. False otherwise
+          example: false
+          title: admin
+          type: boolean
+        login_id:
+          description: The login id for this user
+          example: 1
+          title: login_id
+          type: integer
+        name:
+          description: This user's name
+          example: Firstname Lastname
+          title: name
+          type: string
+        read_only:
+          description: True if this user has permissions to write to the database.
+            False otherwise
+          example: false
+          title: read_only
+          type: boolean
+        token:
+          description: The API key that will be used to authenticate the user.
+          example: dc19b0b2-c0e3-821b-821a-d49e8c428479
+          title: token
+          type: string
+      title: Login Response
+      type: object
+    requestPasswordResetResponse:
+      description: This object contains the password reset code for the user
+      example:
+        guid: d5e53b3a-ffc1-4436-b085-04aaed5ec861
+        email: user@example.com
+      properties:
+        email:
+          description: The user's email address
+          example: user@example.com
+          title: email
+          type: string
+        guid:
+          description: The password reset code
+          example: d5e53b3a-ffc1-4436-b085-04aaed5ec861
+          title: guid
+          type: string
+      title: Request Password Reset Response
+      type: object
+    signin:
+      description: Payload of signin object
+      example:
+        dt: 1593409124.23
+        phone: (111)222-3333
+        name: John Q. Public
+        id: 125
+        email: jqp@example.com
+      properties:
+        dt:
+          description: The original scan time in number of seconds since 1/1/1970
+            (GMT)
+          example: 1593409124.23
+          title: dt
+          type: number
+        email:
+          description: The person's email
+          example: jqp@example.com
+          title: email
+          type: string
+        id:
+          description: The record id
+          example: 125
+          title: id
+          type: integer
+        name:
+          description: The person's name
+          example: John Q. Public
+          title: name
+          type: string
+        phone:
+          description: The person's phone number
+          example: (111)222-3333
+          title: phone
+          type: string
+      required:
+      - name
+      - phone
+      title: Signin Object
+      type: object
+    signinResponse:
+      description: Response when you successfully create a signin record
+      example:
+        result: 1
+      properties:
+        result:
+          example: 1
+          maximum: 1
+          minimum: 1
+          title: result
+          type: integer
+      title: Signin Response
+      type: object
+    userRecord:
+      description: A team member user record
+      example:
+        read_only: false
+        name: John Doe
+        admin: true
+        id: 1
+        email: user@example.com
+      properties:
+        admin:
+          description: |
+            If the user has admin privileges then the user will be able to create password reset requests on behalf of other users, and will also be able to view and edit  the data of other users.
+          example: true
+          title: admin
+          type: boolean
+        email:
+          description: The user's email address
+          example: user@example.com
+          title: email
+          type: string
+        id:
+          description: The id of the user's record
+          example: 1
+          title: id
+          type: integer
+        name:
+          description: The user's name
+          example: John Doe
+          title: name
+          type: string
+        read_only:
+          description: Not used in this version of the API. For future use.
+          example: false
+          title: read_only
+          type: boolean
+      title: A team member user record
+      type: object
+    Sample:
+      example:
+        old_password: hunter3
+        password: hunter4
+      properties:
+        old_password:
+          description: The old (current) password
+          example: hunter3
+          title: old_password
+          type: string
+        password:
+          description: The new password
+          example: hunter4
+          title: password
+          type: string
+      title: Sample
+      type: object
+    Sample_1:
+      properties:
+        email:
+          example: aijaz@example.org
+          title: email
+          type: string
+        password:
+          example: hunter2
+          title: password
+          type: string
+        source:
+          enum:
+          - iOS
+          - android
+          - web
+          title: source
+          type: string
+      title: Sample
+      type: object
+    Sample_2:
+      properties:
+        email:
+          description: The user whose password you want to reset
+          example: user@example.com
+          title: email
+          type: string
+      title: Sample
+      type: object
+    Sample_3:
+      properties:
+        admin:
+          description: |
+            If the user has admin privileges then the user will be able to create password reset requests on behalf of other users, and will also be able to view and edit  the data of other users.
+          example: true
+          title: admin
+          type: boolean
+        email:
+          description: The email address of the user record you want to create
+          example: user@example.com
+          title: email
+          type: string
+        name:
+          description: The name of the user record you want to create
+          example: Jane Doe
+          title: name
+          type: string
+        read_only:
+          description: Not used in this version of the API. For future use.
+          example: false
+          title: read_only
+          type: boolean
+      title: Sample
+      type: object
+    Sample_4:
+      properties:
+        guid:
+          description: The password reset code
+          example: d5e53b3a-ffc1-4436-b085-04aaed5ec861
+          title: guid
+          type: string
+        password:
+          description: The new password
+          example: hunter3
+          title: password
+          type: string
+      title: Sample
+      type: object
+  securitySchemes:
+    TokenHeader:
+      description: Token to authorize requests.
+      in: header
+      name: token
+      type: apiKey
+      x-apikeyInfoFunc: openapi_server.controllers.security_controller.info_from_TokenHeader

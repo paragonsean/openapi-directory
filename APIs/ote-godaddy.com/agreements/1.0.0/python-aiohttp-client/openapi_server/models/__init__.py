@@ -1,0 +1,7 @@
+# coding: utf-8
+
+# import models into model package
+from openapi_server.models.error import Error
+from openapi_server.models.error_field import ErrorField
+from openapi_server.models.error_limit import ErrorLimit
+from openapi_server.models.legal_agreement import LegalAgreement

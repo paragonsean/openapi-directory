@@ -1,0 +1,16 @@
+
+
+# RoutingEndpoints
+
+The properties related to the custom endpoints to which your IoT hub routes messages based on the routing rules. A maximum of 10 custom endpoints are allowed across all endpoint types for paid hubs and only 1 custom endpoint is allowed across all endpoint types for free hubs.
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**eventHubs** | [**List&lt;RoutingEventHubProperties&gt;**](RoutingEventHubProperties.md) | The list of Event Hubs endpoints that IoT hub routes messages to, based on the routing rules. This list does not include the built-in Event Hubs endpoint. |  [optional] |
+|**serviceBusQueues** | [**List&lt;RoutingServiceBusQueueEndpointProperties&gt;**](RoutingServiceBusQueueEndpointProperties.md) | The list of Service Bus queue endpoints that IoT hub routes the messages to, based on the routing rules. |  [optional] |
+|**serviceBusTopics** | [**List&lt;RoutingServiceBusTopicEndpointProperties&gt;**](RoutingServiceBusTopicEndpointProperties.md) | The list of Service Bus topic endpoints that the IoT hub routes the messages to, based on the routing rules. |  [optional] |
+
+
+

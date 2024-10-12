@@ -1,0 +1,13 @@
+# BrowseApi.RemoteShopcartResponse
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**cartItems** | [**[CartItem]**](CartItem.md) | An array of the items in the member&#39;s eBay cart. | [optional] 
+**cartSubtotal** | [**Amount**](Amount.md) |  | [optional] 
+**cartWebUrl** | **String** | The URL of the member&#39;s eBay cart. | [optional] 
+**unavailableCartItems** | [**[CartItem]**](CartItem.md) | An array of items in the cart that are unavailable. This can be for a variety of reasons such as, when the listing has ended or the item is out of stock. Because a cart never expires, these items will remain in the cart until they are removed. | [optional] 
+**warnings** | [**[Error]**](Error.md) | An array of warning messages. These type of errors do not prevent the call from executing but should be checked. | [optional] 
+
+

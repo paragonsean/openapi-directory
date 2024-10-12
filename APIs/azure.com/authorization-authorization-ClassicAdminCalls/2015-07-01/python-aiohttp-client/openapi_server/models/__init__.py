@@ -1,6 +1,0 @@
-# coding: utf-8
-
-# import models into model package
-from openapi_server.models.classic_administrator import ClassicAdministrator
-from openapi_server.models.classic_administrator_list_result import ClassicAdministratorListResult
-from openapi_server.models.classic_administrator_properties import ClassicAdministratorProperties

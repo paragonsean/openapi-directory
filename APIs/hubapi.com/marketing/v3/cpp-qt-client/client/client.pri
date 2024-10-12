@@ -1,0 +1,87 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIBatchInputMarketingEventCreateRequestParams.h \
+    $${PWD}/OAIBatchInputMarketingEventEmailSubscriber.h \
+    $${PWD}/OAIBatchInputMarketingEventExternalUniqueIdentifier.h \
+    $${PWD}/OAIBatchInputMarketingEventSubscriber.h \
+    $${PWD}/OAIBatchResponseMarketingEventPublicDefaultResponse.h \
+    $${PWD}/OAIBatchResponseSubscriberEmailResponse.h \
+    $${PWD}/OAIBatchResponseSubscriberVidResponse.h \
+    $${PWD}/OAICollectionResponseMarketingEventExternalUniqueIdentifierNoPaging.h \
+    $${PWD}/OAIError.h \
+    $${PWD}/OAIErrorDetail.h \
+    $${PWD}/OAIEventDetailSettings.h \
+    $${PWD}/OAIEventDetailSettingsUrl.h \
+    $${PWD}/OAIMarketingEventCompleteRequestParams.h \
+    $${PWD}/OAIMarketingEventCreateRequestParams.h \
+    $${PWD}/OAIMarketingEventDefaultResponse.h \
+    $${PWD}/OAIMarketingEventEmailSubscriber.h \
+    $${PWD}/OAIMarketingEventExternalUniqueIdentifier.h \
+    $${PWD}/OAIMarketingEventPublicDefaultResponse.h \
+    $${PWD}/OAIMarketingEventPublicReadResponse.h \
+    $${PWD}/OAIMarketingEventSubscriber.h \
+    $${PWD}/OAIMarketingEventUpdateRequestParams.h \
+    $${PWD}/OAIPropertyValue.h \
+    $${PWD}/OAIStandardError.h \
+    $${PWD}/OAISubscriberEmailResponse.h \
+    $${PWD}/OAISubscriberVidResponse.h \
+# APIs
+    $${PWD}/OAIAttendanceSubscriberStateChangesApi.h \
+    $${PWD}/OAIBasicApi.h \
+    $${PWD}/OAIBatchApi.h \
+    $${PWD}/OAIMarketingEventsExternalApi.h \
+    $${PWD}/OAISearchApi.h \
+    $${PWD}/OAISettingsApi.h \
+    $${PWD}/OAISubscriberStateChangesApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIBatchInputMarketingEventCreateRequestParams.cpp \
+    $${PWD}/OAIBatchInputMarketingEventEmailSubscriber.cpp \
+    $${PWD}/OAIBatchInputMarketingEventExternalUniqueIdentifier.cpp \
+    $${PWD}/OAIBatchInputMarketingEventSubscriber.cpp \
+    $${PWD}/OAIBatchResponseMarketingEventPublicDefaultResponse.cpp \
+    $${PWD}/OAIBatchResponseSubscriberEmailResponse.cpp \
+    $${PWD}/OAIBatchResponseSubscriberVidResponse.cpp \
+    $${PWD}/OAICollectionResponseMarketingEventExternalUniqueIdentifierNoPaging.cpp \
+    $${PWD}/OAIError.cpp \
+    $${PWD}/OAIErrorDetail.cpp \
+    $${PWD}/OAIEventDetailSettings.cpp \
+    $${PWD}/OAIEventDetailSettingsUrl.cpp \
+    $${PWD}/OAIMarketingEventCompleteRequestParams.cpp \
+    $${PWD}/OAIMarketingEventCreateRequestParams.cpp \
+    $${PWD}/OAIMarketingEventDefaultResponse.cpp \
+    $${PWD}/OAIMarketingEventEmailSubscriber.cpp \
+    $${PWD}/OAIMarketingEventExternalUniqueIdentifier.cpp \
+    $${PWD}/OAIMarketingEventPublicDefaultResponse.cpp \
+    $${PWD}/OAIMarketingEventPublicReadResponse.cpp \
+    $${PWD}/OAIMarketingEventSubscriber.cpp \
+    $${PWD}/OAIMarketingEventUpdateRequestParams.cpp \
+    $${PWD}/OAIPropertyValue.cpp \
+    $${PWD}/OAIStandardError.cpp \
+    $${PWD}/OAISubscriberEmailResponse.cpp \
+    $${PWD}/OAISubscriberVidResponse.cpp \
+# APIs
+    $${PWD}/OAIAttendanceSubscriberStateChangesApi.cpp \
+    $${PWD}/OAIBasicApi.cpp \
+    $${PWD}/OAIBatchApi.cpp \
+    $${PWD}/OAIMarketingEventsExternalApi.cpp \
+    $${PWD}/OAISearchApi.cpp \
+    $${PWD}/OAISettingsApi.cpp \
+    $${PWD}/OAISubscriberStateChangesApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

@@ -1,0 +1,3841 @@
+openapi: 3.0.0
+info:
+  description: |
+    Docker Hub is a service provided by Docker for finding and sharing container
+    images with your team.
+
+    It is the world's largest library and community for container images.
+
+    In addition to the [Docker Hub UI](https://docs.docker.com/docker-hub/) and [Docker Hub CLI tool](https://github.com/docker/hub-tool#readme) (currently experimental),
+
+    Docker provides an API that allows you to interact with Docker Hub.
+
+    Browse through the Docker Hub API documentation to explore the supported endpoints.
+  title: Docker HUB API
+  version: beta
+  x-apisguru-categories:
+  - developer_tools
+  x-logo:
+    href: /reference
+    url: https://docs.docker.com/assets/images/logo-docker-main.png
+  x-origin:
+  - format: openapi
+    url: https://raw.githubusercontent.com/docker/docs/main/docker-hub/api/latest.yaml
+    version: "3.0"
+  x-providerName: docker.com
+  x-serviceName: hub
+servers:
+- url: https://hub.docker.com/
+- url: "https://docker.com/{version}"
+  variables:
+    version:
+      default: "1.33"
+tags:
+- description: |
+    The following resources are available to interact with the documented API:
+
+    - <a href="https://github.com/docker/hub-tool#readme" target="_blank">Docker Hub CLI tool</a> (currently experimental)
+    - <a href="https://www.postman.com/dockerdev/workspace/docker-hub/collection/17990590-9574e087-2a50-4ecf-88b3-55f12a29d99e" target="_blank">Postman Collection</a>
+  name: resources
+  x-displayName: Resources
+- description: "The Docker Hub API is limited on the amount of requests you can perform\
+    \ per minute against it.\n\nIf you haven't hit the limit, each request to the\
+    \ API will return the\n\nfollowing headers in the response.\n\n- `X-RateLimit-Limit`\
+    \ - The limit of requests per minute.\n- `X-RateLimit-Remaining` - The remaining\
+    \ amount of calls within the limit period.\n- `X-RateLimit-Reset` - The unix timestamp\
+    \ of when the remaining resets.\n\nIf you have hit the limit, you will receive\
+    \ a response status of `429` and the `X-Retry-After` \nheader in the response.\n\
+    \nThe `X-Retry-After` header is a unix timestamp of when you can call the API\
+    \ again.\n\n*Note: These rate limits are separate from anti-abuse and Docker Hub\n\
+    \ndownload, or pull rate limiting. To learn more about Docker Hub pull rate\n\n\
+    limiting, see [Docker Hub download rate limit](https://docs.docker.com/docker-hub/download-rate-limit/).*\n"
+  name: rate-limiting
+  x-displayName: Rate Limiting
+- description: "Most Docker Hub API endpoints require you to authenticate using your\n\
+    Docker credentials before using them.\n\nAdditionally, similar to the Docker Hub\
+    \ UI features, API endpoint responses may vary depending \non your plan (Free,\
+    \ Pro, or Team) and your account's permissions.\n\nTo learn more about the features\
+    \ available in each plan and to upgrade your existing plan, see [Docker Pricing](https://www.docker.com/pricing).\n"
+  name: authentication
+  x-displayName: Authentication
+- description: "The Personal Access Token endpoints lets you manage personal access\
+    \ tokens. For more \ninformation, see [Access Tokens](https://docs.docker.com/docker-hub/access-tokens/).\n\
+    \nYou can use a personal access token instead of a password in the [Docker CLI](https://docs.docker.com/engine/reference/commandline/cli/)\
+    \ \nor in the [Create an authentication token](#operation/PostUsersLogin) route\
+    \ to obtain a bearer \ntoken.\n\n### Scopes\n\nFor each scope grouping (in this\
+    \ case \"repo\"), you only need to define 1 scope as any lower \nscopes are assumed.\
+    \ For example: If you define `repo:write`, the API assumes the scope of both \n\
+    `repo:read` *and* `repo:public_read` as well. If you were to define both `repo:write`\
+    \ *and* \n`repo:read`, then `repo:read` is assumed by `repo:write` and ignored.\n\
+    \n***Treat your personal access token like your password and keep it secret. You\
+    \ cannot retrieve \nyour token after it is generated.***\n"
+  name: access-tokens
+  x-displayName: Personal Access Tokens
+- description: |
+    The Advanced Image Management API endpoints allow you to manage Docker
+    images across all repositories.
+
+    For more information, see [Advanced Image Management dashboard](https://docs.docker.com/docker-hub/image-management/).
+  name: images
+  x-displayName: Advanced Image Management
+- description: |
+    The Audit Logs API endpoints allow you to query audit log events across a
+    namespace.
+
+    For more information, see [Audit Log](https://docs.docker.com/docker-hub/audit-log/)
+  name: audit-logs
+  x-displayName: Audit Logs
+- description: |
+    The Org Settings API endpoints allow you to manage your organization's
+    settings.
+  name: org-settings
+  x-displayName: Org Settings
+- description: |
+    The repository endpoints allow you to manage your repository's
+    configuration like description.
+  name: repositories
+  x-displayName: Repositories
+- description: |
+    SCIM is a provisioning system that lets you manage users within your identity provider (IdP).
+    For more information, see [System for Cross-domain Identity management](https://docs.docker.com/docker-hub/scim/).
+  name: scim
+  x-displayName: SCIM
+paths:
+  /v2/access-tokens:
+    get:
+      description: Returns a paginated list of personal access tokens.
+      operationId: v2_access_tokens_get
+      parameters:
+      - explode: true
+        in: query
+        name: page
+        required: false
+        schema:
+          default: 1
+          type: number
+        style: form
+      - explode: true
+        in: query
+        name: page_size
+        required: false
+        schema:
+          default: 10
+          type: number
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/getAccessTokensResponse'
+          description: OK
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValueError'
+          description: Bad Request
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Unauthorized
+      summary: Get a list of personal access tokens
+      tags:
+      - access-tokens
+      x-openapi-router-controller: openapi_server.controllers.access_tokens_controller
+    post:
+      description: Creates and returns a personal access token.
+      operationId: v2_access_tokens_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/createAccessTokenRequest'
+        required: true
+        x-body-name: body
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/createAccessTokensResponse'
+          description: Created
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValueError'
+          description: Bad Request
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Unauthorized
+      summary: Create a personal access token
+      tags:
+      - access-tokens
+      x-openapi-router-controller: openapi_server.controllers.access_tokens_controller
+      x-codegen-request-body-name: body
+  /v2/access-tokens/{uuid}:
+    delete:
+      description: |
+        Deletes a personal access token permanently. This cannot be undone.
+      operationId: v2_access_tokens_uuid_delete
+      parameters:
+      - explode: false
+        in: path
+        name: uuid
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "204":
+          description: A successful response.
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Unauthorized
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Found
+      summary: Delete a personal access token
+      tags:
+      - access-tokens
+      x-openapi-router-controller: openapi_server.controllers.access_tokens_controller
+    get:
+      description: Returns a personal access token by UUID.
+      operationId: v2_access_tokens_uuid_get
+      parameters:
+      - explode: false
+        in: path
+        name: uuid
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/_v2_access_tokens__uuid__get_200_response'
+          description: OK
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Unauthorized
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Found
+      summary: Get a personal access token
+      tags:
+      - access-tokens
+      x-openapi-router-controller: openapi_server.controllers.access_tokens_controller
+    patch:
+      description: |
+        Updates a personal access token partially. You can either update the
+        token's label or enable/disable it.
+      operationId: v2_access_tokens_uuid_patch
+      parameters:
+      - explode: false
+        in: path
+        name: uuid
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/patchAccessTokenRequest'
+        required: true
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/patchAccessTokenResponse'
+          description: OK
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValueError'
+          description: Bad Request
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Unauthorized
+      summary: Update a personal access token
+      tags:
+      - access-tokens
+      x-openapi-router-controller: openapi_server.controllers.access_tokens_controller
+      x-codegen-request-body-name: body
+  /v2/auditlogs/{account}:
+    get:
+      description: Get audit log events for a given namespace.
+      operationId: audit_logs_get_audit_logs
+      parameters:
+      - description: Namespace to query audit logs for.
+        explode: false
+        in: path
+        name: account
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: "action name one of [\"repo.tag.push\", ...]. Optional parameter\
+          \ to filter specific audit log actions."
+        explode: true
+        in: query
+        name: action
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: "name. Optional parameter to filter audit log events to a specific\
+          \ name. For repository events, this is the name of the repository. For organization\
+          \ events, this is the name of the organization. For team member events,\
+          \ this is the username of the team member."
+        explode: true
+        in: query
+        name: name
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: actor name. Optional parameter to filter audit log events to
+          the specific user who triggered the event.
+        explode: true
+        in: query
+        name: actor
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Start of the time window you wish to query audit events for.
+        explode: true
+        in: query
+        name: from
+        required: false
+        schema:
+          format: date-time
+          type: string
+        style: form
+      - description: End of the time window you wish to query audit events for.
+        explode: true
+        in: query
+        name: to
+        required: false
+        schema:
+          format: date-time
+          type: string
+        style: form
+      - description: page - specify page number. Page number to get.
+        explode: true
+        in: query
+        name: page
+        required: false
+        schema:
+          default: 1
+          format: int32
+          type: integer
+        style: form
+      - description: page_size - specify page size. Number of events to return per
+          page.
+        explode: true
+        in: query
+        name: page_size
+        required: false
+        schema:
+          default: 25
+          format: int32
+          type: integer
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              examples:
+                response:
+                  value:
+                    logs:
+                    - account: docker
+                      action: repo.tag.push
+                      action_description: pushed the tag latest with the digest sha256:c1ae9c435032a
+                        to the repository docker/example
+                      actor: docker
+                      data:
+                        digest: sha256:c1ae9c435032a276f80220c7d9b40f76266bbe79243d34f9cda30b76fe114dfa
+                        tag: latest
+                      name: docker/example
+                      timestamp: 2021-02-19T01:34:35Z
+              schema:
+                $ref: '#/components/schemas/GetAuditLogsResponse'
+          description: A successful response.
+        "429":
+          content:
+            application/json:
+              examples:
+                response:
+                  value:
+                    detail: Rate limit exceeded
+                    error: false
+              schema: {}
+          description: ""
+        "500":
+          content:
+            application/json:
+              schema: {}
+          description: ""
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/rpcStatus'
+          description: An unexpected error response.
+      summary: Returns list of audit log  events.
+      tags:
+      - audit-logs
+      x-openapi-router-controller: openapi_server.controllers.audit_logs_controller
+  /v2/auditlogs/{account}/actions:
+    get:
+      description: Get audit log actions for a namespace to be used as a filter for
+        querying audit events.
+      operationId: audit_logs_get_audit_actions
+      parameters:
+      - description: Namespace to query audit log actions for.
+        explode: false
+        in: path
+        name: account
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              examples:
+                response:
+                  value:
+                    actions:
+                      org:
+                        actions:
+                        - description: contains team create events
+                          label: Team Created
+                          name: team.create
+                        - description: contains team delete events
+                          label: Team Deleted
+                          name: team.delete
+                        - description: contains team member add events
+                          label: Team Member Added
+                          name: team.member.add
+                        - description: contains team member remove events
+                          label: Team Member Removed
+                          name: team.member.remove
+                        - description: contains team member invite events
+                          label: Team Member Invited
+                          name: team.member.invite
+                        - description: contains org member remove events
+                          label: Organization Member Removed
+                          name: member.removed
+                        - description: contains organization create events
+                          label: Organization Created
+                          name: create
+                        label: Organization
+                      repo:
+                        actions:
+                        - description: contains repository create events
+                          label: Repository Created
+                          name: create
+                        - description: contains repository delete events
+                          label: Repository Deleted
+                          name: delete
+                        - description: contains repository privacy change events
+                          label: Privacy Changed
+                          name: change_privacy
+                        - description: contains image tag push events
+                          label: Tag Pushed
+                          name: tag.push
+                        - description: contains image tag delete events
+                          label: Tag Deleted
+                          name: tag.delete
+                        label: Repository
+              schema:
+                $ref: '#/components/schemas/GetAuditActionsResponse'
+          description: A successful response.
+        "429":
+          content:
+            application/json:
+              examples:
+                response:
+                  value:
+                    detail: Rate limit exceeded
+                    error: false
+              schema: {}
+          description: ""
+        "500":
+          content:
+            application/json:
+              schema: {}
+          description: ""
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/rpcStatus'
+          description: An unexpected error response.
+      summary: Returns list of audit log actions.
+      tags:
+      - audit-logs
+      x-openapi-router-controller: openapi_server.controllers.audit_logs_controller
+  /v2/namespaces/{namespace}/delete-images:
+    post:
+      description: "Deletes one or more images within a namespace. This is currently\
+        \ limited to a single \nrepository.\n\nIf you attempt to delete images that\
+        \ are marked as active or are currently tagged, the deletion does not happen\
+        \ and it displays the warnings.\nTo continue with the deletion, you must ignore\
+        \ these warnings by putting them in the `ignore_warnings` property.\n\nDeleting\
+        \ a currently tagged image deletes the tag from the repository.\n\nYou cannot\
+        \ ignore errors. It is not possible to directly delete children of multi-arch\
+        \ images.\n"
+      operationId: post_namespaces_delete_images
+      parameters:
+      - description: Namespace of the repository.
+        explode: false
+        in: path
+        name: namespace
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostNamespacesDeleteImagesRequest'
+        description: Delete request.
+        required: true
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostNamespacesDeleteImagesResponseSuccess'
+          description: Deletion completed
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostNamespacesDeleteImagesResponseError'
+          description: Deletion not possible
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Forbidden - this API is only available to users on Pro or Team
+            plans
+      summary: Delete images
+      tags:
+      - images
+      x-openapi-router-controller: openapi_server.controllers.images_controller
+      x-codegen-request-body-name: body
+  /v2/namespaces/{namespace}/repositories/{repository}/images:
+    get:
+      description: Gets details on the images in a repository.
+      operationId: get_namespaces_repositories_images
+      parameters:
+      - description: Namespace of the repository.
+        explode: false
+        in: path
+        name: namespace
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: Name of the repository.
+        explode: false
+        in: path
+        name: repository
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: Filters to only show images of this status.
+        explode: true
+        in: query
+        name: status
+        required: false
+        schema:
+          enum:
+          - active
+          - inactive
+          type: string
+        style: form
+      - description: |
+          Filters to only show images with:
+          - `true`: at least 1 current tag.
+          - `false`: no current tags.
+        explode: true
+        in: query
+        name: currently_tagged
+        required: false
+        schema:
+          type: boolean
+        style: form
+      - description: |
+          Orders the results by this property.
+
+          Prefixing with `-` sorts by descending order.
+        explode: true
+        in: query
+        name: ordering
+        required: false
+        schema:
+          enum:
+          - last_activity
+          - -last_activity
+          - digest
+          - -digest
+          type: string
+        style: form
+      - description: |
+          Sets the time from which an image must have been pushed or pulled to
+          be counted as active.
+
+          Defaults to 1 month before the current time.
+        explode: true
+        in: query
+        name: active_from
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Page number to get. Defaults to 1.
+        explode: true
+        in: query
+        name: page
+        required: false
+        schema:
+          type: integer
+        style: form
+      - description: Number of images to get per page. Defaults to 10. Max of 100.
+        explode: true
+        in: query
+        name: page_size
+        required: false
+        schema:
+          type: integer
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetNamespaceRepositoryImagesResponse'
+          description: Success
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized - user does not have read access to the namespace.
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Forbidden - this API is only available to users on Pro or Team
+            plans.
+      summary: Get details of repository's images
+      tags:
+      - images
+      x-openapi-router-controller: openapi_server.controllers.images_controller
+  /v2/namespaces/{namespace}/repositories/{repository}/images-summary:
+    get:
+      description: |
+        Gets the number of images in a repository and the number of images
+        counted as active and inactive.
+      operationId: get_namespaces_repositories_images_summary
+      parameters:
+      - description: Namespace of the repository.
+        explode: false
+        in: path
+        name: namespace
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: Name of the repository.
+        explode: false
+        in: path
+        name: repository
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: |
+          Sets the time from which an image must have been pushed or pulled to
+          be counted as active.
+
+          Defaults to 1 month before the current time.
+        explode: true
+        in: query
+        name: active_from
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetNamespaceRepositoryImagesSummaryResponse'
+          description: Success
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized - user does not have read access to the namespace
+      summary: Get summary of repository's images
+      tags:
+      - images
+      x-openapi-router-controller: openapi_server.controllers.images_controller
+  /v2/namespaces/{namespace}/repositories/{repository}/images/{digest}/tags:
+    get:
+      description: Gets current and historical tags for an image.
+      operationId: get_namespaces_repositories_images_tags
+      parameters:
+      - description: Namespace of the repository.
+        explode: false
+        in: path
+        name: namespace
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: Name of the repository.
+        explode: false
+        in: path
+        name: repository
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: Digest of the image.
+        explode: false
+        in: path
+        name: digest
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: Page number to get. Defaults to 1.
+        explode: true
+        in: query
+        name: page
+        required: false
+        schema:
+          type: integer
+        style: form
+      - description: Number of images to get per page. Defaults to 10. Max of 100.
+        explode: true
+        in: query
+        name: page_size
+        required: false
+        schema:
+          type: integer
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetNamespaceRepositoryImagesTagsResponse'
+          description: Success
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized - user does not have read access to the namespace
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Forbidden - this API is only available to users on Pro or Team
+            plans
+      summary: Get image's tags
+      tags:
+      - images
+      x-openapi-router-controller: openapi_server.controllers.images_controller
+  /v2/namespaces/{namespace}/repositories/{repository}/tags:
+    get:
+      operationId: v2_namespaces_namespace_repositories_repository_tags_get
+      parameters:
+      - explode: false
+        in: path
+        name: namespace
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: repository
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: Page number to get. Defaults to 1.
+        explode: true
+        in: query
+        name: page
+        required: false
+        schema:
+          type: integer
+        style: form
+      - description: Number of items to get per page. Defaults to 10. Max of 100.
+        explode: true
+        in: query
+        name: page_size
+        required: false
+        schema:
+          type: integer
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/paginated_tags'
+          description: list repository tags
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Forbidden
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Found
+      summary: List repository tags
+      tags:
+      - repositories
+      x-openapi-router-controller: openapi_server.controllers.repositories_controller
+    head:
+      operationId: v2_namespaces_namespace_repositories_repository_tags_head
+      parameters:
+      - explode: false
+        in: path
+        name: namespace
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: repository
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          description: Repository contains tags
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Forbidden
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Found
+      summary: Check repository tags
+      tags:
+      - repositories
+      x-openapi-router-controller: openapi_server.controllers.repositories_controller
+  /v2/namespaces/{namespace}/repositories/{repository}/tags/{tag}:
+    get:
+      operationId: v2_namespaces_namespace_repositories_repository_tags_tag_get
+      parameters:
+      - explode: false
+        in: path
+        name: namespace
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: repository
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: tag
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tag'
+          description: repository tag
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Forbidden
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Found
+      summary: Read repository tag
+      tags:
+      - repositories
+      x-openapi-router-controller: openapi_server.controllers.repositories_controller
+    head:
+      operationId: v2_namespaces_namespace_repositories_repository_tags_tag_head
+      parameters:
+      - explode: false
+        in: path
+        name: namespace
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: repository
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: tag
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          description: Repository tag exists
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Forbidden
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Found
+      summary: Check repository tag
+      tags:
+      - repositories
+      x-openapi-router-controller: openapi_server.controllers.repositories_controller
+  /v2/orgs/{name}/settings:
+    get:
+      description: |
+        Returns organization settings by name.
+      operationId: v2_orgs_name_settings_get
+      parameters:
+      - description: Name of the organization.
+        explode: false
+        in: path
+        name: name
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/orgSettings'
+          description: OK
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Unauthorized
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Forbidden
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Found
+      summary: Get organization settings
+      tags:
+      - org-settings
+      x-openapi-router-controller: openapi_server.controllers.org_settings_controller
+    put:
+      description: |
+        Updates an organization's settings. Some settings are only used when the
+        organization is on a business plan.
+
+        ***Only users in the "owners" group of the organization can use this endpoint.***
+
+        The following settings are only used on a business plan:
+        - `restricted_images`
+      operationId: v2_orgs_name_settings_put
+      parameters:
+      - description: Name of the organization.
+        explode: false
+        in: path
+        name: name
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/_v2_orgs__name__settings_put_request'
+        required: true
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/orgSettings'
+          description: OK
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Unauthorized
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Forbidden
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Found
+      summary: Update organization settings
+      tags:
+      - org-settings
+      x-openapi-router-controller: openapi_server.controllers.org_settings_controller
+      x-codegen-request-body-name: body
+  /v2/scim/2.0/ResourceTypes:
+    get:
+      description: |
+        Returns all resource types supported for the SCIM configuration.
+      operationId: v2_scim20_resource_types_get
+      responses:
+        "200":
+          content:
+            application/scim+json:
+              schema:
+                $ref: '#/components/schemas/_v2_scim_2_0_ResourceTypes_get_200_response'
+          description: ""
+        "401":
+          content:
+            application/scim+json:
+              schema:
+                $ref: '#/components/schemas/_v2_scim_2_0_ResourceTypes_get_401_response'
+          description: Unauthorized
+        "500":
+          content:
+            application/scim+json:
+              schema:
+                $ref: '#/components/schemas/_v2_scim_2_0_ResourceTypes_get_500_response'
+          description: Internal Error
+      security:
+      - {}
+      summary: List resource types
+      tags:
+      - scim
+      x-openapi-router-controller: openapi_server.controllers.scim_controller
+  /v2/scim/2.0/ResourceTypes/{name}:
+    get:
+      description: |
+        Returns a resource type by name.
+      operationId: v2_scim20_resource_types_name_get
+      parameters:
+      - example: User
+        explode: false
+        in: path
+        name: name
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/scim+json:
+              schema:
+                $ref: '#/components/schemas/scim_resource_type'
+          description: ""
+        "401":
+          content:
+            application/scim+json:
+              schema:
+                $ref: '#/components/schemas/_v2_scim_2_0_ResourceTypes_get_401_response'
+          description: Unauthorized
+        "404":
+          content:
+            application/scim+json:
+              schema:
+                $ref: '#/components/schemas/_v2_scim_2_0_ResourceTypes__name__get_404_response'
+          description: Not Found
+        "500":
+          content:
+            application/scim+json:
+              schema:
+                $ref: '#/components/schemas/_v2_scim_2_0_ResourceTypes_get_500_response'
+          description: Internal Error
+      security:
+      - {}
+      summary: Get a resource type
+      tags:
+      - scim
+      x-openapi-router-controller: openapi_server.controllers.scim_controller
+  /v2/scim/2.0/Schemas:
+    get:
+      description: |
+        Returns all schemas supported for the SCIM configuration.
+      operationId: v2_scim20_schemas_get
+      responses:
+        "200":
+          content:
+            application/scim+json:
+              schema:
+                $ref: '#/components/schemas/_v2_scim_2_0_Schemas_get_200_response'
+          description: ""
+        "401":
+          content:
+            application/scim+json:
+              schema:
+                $ref: '#/components/schemas/_v2_scim_2_0_ResourceTypes_get_401_response'
+          description: Unauthorized
+        "500":
+          content:
+            application/scim+json:
+              schema:
+                $ref: '#/components/schemas/_v2_scim_2_0_ResourceTypes_get_500_response'
+          description: Internal Error
+      security:
+      - {}
+      summary: List schemas
+      tags:
+      - scim
+      x-openapi-router-controller: openapi_server.controllers.scim_controller
+  /v2/scim/2.0/Schemas/{id}:
+    get:
+      description: |
+        Returns a schema by ID.
+      operationId: v2_scim20_schemas_id_get
+      parameters:
+      - example: urn:ietf:params:scim:schemas:core:2.0:User
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/scim+json:
+              schema:
+                $ref: '#/components/schemas/scim_schema'
+          description: ""
+        "401":
+          content:
+            application/scim+json:
+              schema:
+                $ref: '#/components/schemas/_v2_scim_2_0_ResourceTypes_get_401_response'
+          description: Unauthorized
+        "404":
+          content:
+            application/scim+json:
+              schema:
+                $ref: '#/components/schemas/_v2_scim_2_0_ResourceTypes__name__get_404_response'
+          description: Not Found
+        "500":
+          content:
+            application/scim+json:
+              schema:
+                $ref: '#/components/schemas/_v2_scim_2_0_ResourceTypes_get_500_response'
+          description: Internal Error
+      security:
+      - {}
+      summary: Get a schema
+      tags:
+      - scim
+      x-openapi-router-controller: openapi_server.controllers.scim_controller
+  /v2/scim/2.0/ServiceProviderConfig:
+    get:
+      description: |
+        Returns a service provider config for Docker's configuration.
+      operationId: v2_scim20_service_provider_config_get
+      responses:
+        "200":
+          content:
+            application/scim+json:
+              schema:
+                $ref: '#/components/schemas/scim_service_provider_config'
+          description: ""
+        "401":
+          content:
+            application/scim+json:
+              schema:
+                $ref: '#/components/schemas/_v2_scim_2_0_ResourceTypes_get_401_response'
+          description: Unauthorized
+        "500":
+          content:
+            application/scim+json:
+              schema:
+                $ref: '#/components/schemas/_v2_scim_2_0_ResourceTypes_get_500_response'
+          description: Internal Error
+      security:
+      - {}
+      summary: Get service provider config
+      tags:
+      - scim
+      x-openapi-router-controller: openapi_server.controllers.scim_controller
+  /v2/scim/2.0/Users:
+    get:
+      description: |
+        List users, returns paginated users for an organization. Use `startIndex`
+        and `count` query parameters to receive paginated results.
+
+        **Sorting:**<br>
+        Sorting lets you to specify the order of returned resources by specifying
+        a combination of `sortBy` and `sortOrder` query parameters.
+
+        The `sortBy` parameter specifies the attribute whose value will be used
+        to order the returned responses. The `sortOrder` parameter defines the
+        order in which the `sortBy` parameter is applied. Allowed values are
+        "ascending" and "descending".
+
+        **Filtering:**<br>
+        You can request a subset of resources by specifying the `filter` query
+        parameter containing a filter expression. Attribute names and attribute
+        operators used in filters are case insensitive. The filter parameter
+        must contain at least one valid expression. Each expression must contain
+        an attribute name followed by an attribute operator and an optional
+        value.
+
+        Supported operators are listed below.
+
+        - `eq` equal
+        - `ne` not equal
+        - `co` contains
+        - `sw` starts with
+        - `and` Logical "and"
+        - `or` Logical "or"
+        - `not` "Not" function
+        - `()` Precedence grouping
+      operationId: v2_scim20_users_get
+      parameters:
+      - description: ""
+        example: 1
+        explode: true
+        in: query
+        name: startIndex
+        required: false
+        schema:
+          minimum: 1
+          type: integer
+        style: form
+      - description: ""
+        example: 10
+        explode: true
+        in: query
+        name: count
+        required: false
+        schema:
+          maximum: 200
+          minimum: 1
+          type: integer
+        style: form
+      - description: ""
+        example: userName eq "jon.snow@docker.com"
+        explode: true
+        in: query
+        name: filter
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Comma delimited list of attributes to limit to in the response.
+        example: "userName,displayName"
+        explode: true
+        in: query
+        name: attributes
+        required: false
+        schema:
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: sortOrder
+        required: false
+        schema:
+          enum:
+          - ascending
+          - descending
+          type: string
+        style: form
+      - description: User attribute to sort by.
+        example: userName
+        explode: true
+        in: query
+        name: sortBy
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/scim+json:
+              schema:
+                $ref: '#/components/schemas/_v2_scim_2_0_Users_get_200_response'
+          description: ""
+        "400":
+          content:
+            application/scim+json:
+              schema:
+                $ref: '#/components/schemas/_v2_scim_2_0_Users_get_400_response'
+          description: Bad Request
+        "401":
+          content:
+            application/scim+json:
+              schema:
+                $ref: '#/components/schemas/_v2_scim_2_0_ResourceTypes_get_401_response'
+          description: Unauthorized
+        "403":
+          content:
+            application/scim+json:
+              schema:
+                $ref: '#/components/schemas/_v2_scim_2_0_Users_get_403_response'
+          description: Forbidden
+        "404":
+          content:
+            application/scim+json:
+              schema:
+                $ref: '#/components/schemas/_v2_scim_2_0_ResourceTypes__name__get_404_response'
+          description: Not Found
+        "500":
+          content:
+            application/scim+json:
+              schema:
+                $ref: '#/components/schemas/_v2_scim_2_0_ResourceTypes_get_500_response'
+          description: Internal Error
+      security:
+      - {}
+      summary: List users
+      tags:
+      - scim
+      x-openapi-router-controller: openapi_server.controllers.scim_controller
+    post:
+      description: |
+        Creates a user. If the user already exists by email, they are assigned
+        to the organization on the "company" team.
+      operationId: v2_scim20_users_post
+      requestBody:
+        $ref: '#/components/requestBodies/scim_create_user_request'
+        x-body-name: body
+      responses:
+        "201":
+          content:
+            application/scim+json:
+              schema:
+                $ref: '#/components/schemas/scim_user'
+          description: ""
+        "400":
+          content:
+            application/scim+json:
+              schema:
+                $ref: '#/components/schemas/_v2_scim_2_0_Users_get_400_response'
+          description: Bad Request
+        "401":
+          content:
+            application/scim+json:
+              schema:
+                $ref: '#/components/schemas/_v2_scim_2_0_ResourceTypes_get_401_response'
+          description: Unauthorized
+        "403":
+          content:
+            application/scim+json:
+              schema:
+                $ref: '#/components/schemas/_v2_scim_2_0_Users_get_403_response'
+          description: Forbidden
+        "404":
+          content:
+            application/scim+json:
+              schema:
+                $ref: '#/components/schemas/_v2_scim_2_0_ResourceTypes__name__get_404_response'
+          description: Not Found
+        "409":
+          content:
+            application/scim+json:
+              schema:
+                $ref: '#/components/schemas/_v2_scim_2_0_Users_post_409_response'
+          description: Conflict
+        "500":
+          content:
+            application/scim+json:
+              schema:
+                $ref: '#/components/schemas/_v2_scim_2_0_ResourceTypes_get_500_response'
+          description: Internal Error
+      security:
+      - {}
+      summary: Create user
+      tags:
+      - scim
+      x-openapi-router-controller: openapi_server.controllers.scim_controller
+      x-codegen-request-body-name: body
+  /v2/scim/2.0/Users/{id}:
+    get:
+      description: |
+        Returns a user by ID.
+      operationId: v2_scim20_users_id_get
+      parameters:
+      - description: The user ID.
+        example: d80f7c79-7730-49d8-9a41-7c42fb622d9c
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/scim+json:
+              schema:
+                $ref: '#/components/schemas/scim_user'
+          description: ""
+        "400":
+          content:
+            application/scim+json:
+              schema:
+                $ref: '#/components/schemas/_v2_scim_2_0_Users_get_400_response'
+          description: Bad Request
+        "401":
+          content:
+            application/scim+json:
+              schema:
+                $ref: '#/components/schemas/_v2_scim_2_0_ResourceTypes_get_401_response'
+          description: Unauthorized
+        "403":
+          content:
+            application/scim+json:
+              schema:
+                $ref: '#/components/schemas/_v2_scim_2_0_Users_get_403_response'
+          description: Forbidden
+        "404":
+          content:
+            application/scim+json:
+              schema:
+                $ref: '#/components/schemas/_v2_scim_2_0_ResourceTypes__name__get_404_response'
+          description: Not Found
+        "500":
+          content:
+            application/scim+json:
+              schema:
+                $ref: '#/components/schemas/_v2_scim_2_0_ResourceTypes_get_500_response'
+          description: Internal Error
+      security:
+      - {}
+      summary: Get a user
+      tags:
+      - scim
+      x-openapi-router-controller: openapi_server.controllers.scim_controller
+    put:
+      description: |
+        Updates a user. Use this route to change the user's name, activate,
+        and deactivate the user.
+      operationId: v2_scim20_users_id_put
+      parameters:
+      - description: The user ID.
+        example: d80f7c79-7730-49d8-9a41-7c42fb622d9c
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        $ref: '#/components/requestBodies/scim_update_user_request'
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            application/scim+json:
+              schema:
+                $ref: '#/components/schemas/scim_user'
+          description: ""
+        "400":
+          content:
+            application/scim+json:
+              schema:
+                $ref: '#/components/schemas/_v2_scim_2_0_Users_get_400_response'
+          description: Bad Request
+        "401":
+          content:
+            application/scim+json:
+              schema:
+                $ref: '#/components/schemas/_v2_scim_2_0_ResourceTypes_get_401_response'
+          description: Unauthorized
+        "403":
+          content:
+            application/scim+json:
+              schema:
+                $ref: '#/components/schemas/_v2_scim_2_0_Users_get_403_response'
+          description: Forbidden
+        "404":
+          content:
+            application/scim+json:
+              schema:
+                $ref: '#/components/schemas/_v2_scim_2_0_ResourceTypes__name__get_404_response'
+          description: Not Found
+        "409":
+          content:
+            application/scim+json:
+              schema:
+                $ref: '#/components/schemas/_v2_scim_2_0_Users_post_409_response'
+          description: Conflict
+        "500":
+          content:
+            application/scim+json:
+              schema:
+                $ref: '#/components/schemas/_v2_scim_2_0_ResourceTypes_get_500_response'
+          description: Internal Error
+      security:
+      - {}
+      summary: Update a user
+      tags:
+      - scim
+      x-openapi-router-controller: openapi_server.controllers.scim_controller
+      x-codegen-request-body-name: body
+  /v2/users/2fa-login:
+    post:
+      description: |
+        When user has 2FA enabled, this is the second call to perform after
+        `/v2/users/login` call.
+
+        Creates and returns a bearer token in JWT format that you can use to authenticate with Docker Hub APIs.
+
+        The returned token is used in the HTTP Authorization header like `Authorization: Bearer {TOKEN}`.
+
+        Most Docker Hub APIs require this token either to consume or to get detailed information. For example, to list images in a private repository.
+      operationId: post_users2_fa_login
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Users2FALoginRequest'
+        description: Login details.
+        required: true
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostUsersLoginSuccessResponse'
+          description: Authentication successful
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostUsers2FALoginErrorResponse'
+          description: Authentication failed or second factor required
+      summary: Second factor authentication.
+      tags:
+      - authentication
+      x-openapi-router-controller: openapi_server.controllers.authentication_controller
+      x-codegen-request-body-name: body
+  /v2/users/login:
+    post:
+      description: |
+        Creates and returns a bearer token in JWT format that you can use to
+        authenticate with Docker Hub APIs.
+
+        The returned token is used in the HTTP Authorization header like `Authorization: Bearer {TOKEN}`.
+
+        Most Docker Hub APIs require this token either to consume or to get detailed information. For example, to list images in a private repository.
+      operationId: post_users_login
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UsersLoginRequest'
+        description: Login details.
+        required: true
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostUsersLoginSuccessResponse'
+          description: Authentication successful
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostUsersLoginErrorResponse'
+          description: Authentication failed or second factor required
+      summary: Create an authentication token
+      tags:
+      - authentication
+      x-openapi-router-controller: openapi_server.controllers.authentication_controller
+      x-codegen-request-body-name: body
+components:
+  parameters:
+    namespace:
+      explode: false
+      in: path
+      name: namespace
+      required: true
+      schema:
+        type: string
+      style: simple
+    page:
+      description: Page number to get. Defaults to 1.
+      explode: true
+      in: query
+      name: page
+      required: false
+      schema:
+        type: integer
+      style: form
+    page_size:
+      description: Number of items to get per page. Defaults to 10. Max of 100.
+      explode: true
+      in: query
+      name: page_size
+      required: false
+      schema:
+        type: integer
+      style: form
+    repository:
+      explode: false
+      in: path
+      name: repository
+      required: true
+      schema:
+        type: string
+      style: simple
+    scim_attributes:
+      description: Comma delimited list of attributes to limit to in the response.
+      example: "userName,displayName"
+      explode: true
+      in: query
+      name: attributes
+      required: false
+      schema:
+        type: string
+      style: form
+    scim_user_id:
+      description: The user ID.
+      example: d80f7c79-7730-49d8-9a41-7c42fb622d9c
+      explode: false
+      in: path
+      name: id
+      required: true
+      schema:
+        type: string
+      style: simple
+    tag:
+      explode: false
+      in: path
+      name: tag
+      required: true
+      schema:
+        type: string
+      style: simple
+  requestBodies:
+    scim_create_user_request:
+      content:
+        application/scim+json:
+          schema:
+            $ref: '#/components/schemas/_v2_scim_2_0_Users_post_request'
+      required: true
+    scim_update_user_request:
+      content:
+        application/scim+json:
+          schema:
+            $ref: '#/components/schemas/_v2_scim_2_0_Users__id__put_request'
+      required: true
+  responses:
+    BadRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ValueError'
+      description: Bad Request
+    Forbidden:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+      description: Forbidden
+    NotFound:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+      description: Not Found
+    Unauthorized:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+      description: Unauthorized
+    get_tag:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/tag'
+      description: repository tag
+    list_tags:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/paginated_tags'
+      description: list repository tags
+    scim_bad_request:
+      content:
+        application/scim+json:
+          schema:
+            $ref: '#/components/schemas/_v2_scim_2_0_Users_get_400_response'
+      description: Bad Request
+    scim_conflict:
+      content:
+        application/scim+json:
+          schema:
+            $ref: '#/components/schemas/_v2_scim_2_0_Users_post_409_response'
+      description: Conflict
+    scim_create_user_resp:
+      content:
+        application/scim+json:
+          schema:
+            $ref: '#/components/schemas/scim_user'
+      description: ""
+    scim_error:
+      content:
+        application/scim+json:
+          schema:
+            $ref: '#/components/schemas/_v2_scim_2_0_ResourceTypes_get_500_response'
+      description: Internal Error
+    scim_forbidden:
+      content:
+        application/scim+json:
+          schema:
+            $ref: '#/components/schemas/_v2_scim_2_0_Users_get_403_response'
+      description: Forbidden
+    scim_get_resource_type_resp:
+      content:
+        application/scim+json:
+          schema:
+            $ref: '#/components/schemas/scim_resource_type'
+      description: ""
+    scim_get_resource_types_resp:
+      content:
+        application/scim+json:
+          schema:
+            $ref: '#/components/schemas/_v2_scim_2_0_ResourceTypes_get_200_response'
+      description: ""
+    scim_get_schema_resp:
+      content:
+        application/scim+json:
+          schema:
+            $ref: '#/components/schemas/scim_schema'
+      description: ""
+    scim_get_schemas_resp:
+      content:
+        application/scim+json:
+          schema:
+            $ref: '#/components/schemas/_v2_scim_2_0_Schemas_get_200_response'
+      description: ""
+    scim_get_service_provider_config_resp:
+      content:
+        application/scim+json:
+          schema:
+            $ref: '#/components/schemas/scim_service_provider_config'
+      description: ""
+    scim_get_user_resp:
+      content:
+        application/scim+json:
+          schema:
+            $ref: '#/components/schemas/scim_user'
+      description: ""
+    scim_get_users_resp:
+      content:
+        application/scim+json:
+          schema:
+            $ref: '#/components/schemas/_v2_scim_2_0_Users_get_200_response'
+      description: ""
+    scim_not_found:
+      content:
+        application/scim+json:
+          schema:
+            $ref: '#/components/schemas/_v2_scim_2_0_ResourceTypes__name__get_404_response'
+      description: Not Found
+    scim_unauthorized:
+      content:
+        application/scim+json:
+          schema:
+            $ref: '#/components/schemas/_v2_scim_2_0_ResourceTypes_get_401_response'
+      description: Unauthorized
+    scim_update_user_resp:
+      content:
+        application/scim+json:
+          schema:
+            $ref: '#/components/schemas/scim_user'
+      description: ""
+  schemas:
+    AuditLog:
+      description: Audit log event.
+      example:
+        actor: actor
+        action_description: action_description
+        data:
+          key: data
+        name: name
+        action: action
+        account: account
+        timestamp: 2000-01-23T04:56:07.000+00:00
+      properties:
+        account:
+          title: account
+          type: string
+        action:
+          title: action
+          type: string
+        action_description:
+          title: action_description
+          type: string
+        actor:
+          title: actor
+          type: string
+        data:
+          additionalProperties:
+            type: string
+          title: data
+          type: object
+        name:
+          title: name
+          type: string
+        timestamp:
+          format: date-time
+          title: timestamp
+          type: string
+      title: AuditLog
+      type: object
+    AuditLogAction:
+      description: Audit Log action
+      example:
+        name: name
+        description: description
+        label: label
+      properties:
+        description:
+          description: Description of audit log action.
+          title: description
+          type: string
+        label:
+          description: Label for audit log action.
+          title: label
+          type: string
+        name:
+          description: Name of audit log action.
+          title: name
+          type: string
+      title: AuditLogAction
+      type: object
+    AuditLogActions:
+      example:
+        label: label
+        actions:
+        - name: name
+          description: description
+          label: label
+        - name: name
+          description: description
+          label: label
+      properties:
+        actions:
+          description: List of audit log actions.
+          items:
+            $ref: '#/components/schemas/AuditLogAction'
+          title: actions
+          type: array
+        label:
+          description: Grouping label for a particular set of audit log actions.
+          title: label
+          type: string
+      title: AuditLogActions
+      type: object
+    Error:
+      example:
+        detail: detail
+        message: message
+      properties:
+        detail:
+          title: detail
+          type: string
+        message:
+          title: message
+          type: string
+      title: Error
+      type: object
+    ErrorDetail:
+      description: Error with a detail field.
+      properties:
+        detail:
+          description: The error message.
+          type: string
+      type: object
+    ErrorInfo:
+      description: Context information for an error used for diagnostics.
+      example:
+        api_call_start: api_call_start
+        api_call_name: api_call_name
+        api_call_txnid: api_call_txnid
+        api_call_docker_id: api_call_docker_id
+      properties:
+        api_call_docker_id:
+          description: ID of docker user.
+          title: api_call_docker_id
+          type: string
+        api_call_name:
+          description: Name of the API operation called.
+          title: api_call_name
+          type: string
+        api_call_start:
+          description: Date/time of call start.
+          title: api_call_start
+          type: string
+        api_call_txnid:
+          description: Unique ID for this call.
+          title: api_call_txnid
+          type: string
+      title: ErrorInfo
+      type: object
+    ErrorResponse:
+      description: Represents an error.
+      example:
+        errinfo:
+          api_call_start: api_call_start
+          api_call_name: api_call_name
+          api_call_txnid: api_call_txnid
+          api_call_docker_id: api_call_docker_id
+        message: message
+        txnid: txnid
+      properties:
+        errinfo:
+          $ref: '#/components/schemas/ErrorInfo'
+        message:
+          description: The error message.
+          title: message
+          type: string
+        txnid:
+          description: Unique ID for this call.
+          title: txnid
+          type: string
+      title: ErrorResponse
+      type: object
+    GetAuditActionsResponse:
+      description: GetAuditActions response.
+      example:
+        actions:
+          key:
+            label: label
+            actions:
+            - name: name
+              description: description
+              label: label
+            - name: name
+              description: description
+              label: label
+      properties:
+        actions:
+          additionalProperties:
+            $ref: '#/components/schemas/AuditLogActions'
+          description: Map of audit log actions.
+          title: actions
+          type: object
+      title: GetAuditActionsResponse
+      type: object
+    GetAuditLogsResponse:
+      description: GetAuditLogs response.
+      example:
+        logs:
+        - actor: actor
+          action_description: action_description
+          data:
+            key: data
+          name: name
+          action: action
+          account: account
+          timestamp: 2000-01-23T04:56:07.000+00:00
+        - actor: actor
+          action_description: action_description
+          data:
+            key: data
+          name: name
+          action: action
+          account: account
+          timestamp: 2000-01-23T04:56:07.000+00:00
+      properties:
+        logs:
+          description: List of audit log events.
+          items:
+            $ref: '#/components/schemas/AuditLog'
+          title: logs
+          type: array
+      title: GetAuditLogsResponse
+      type: object
+    GetNamespaceRepositoryImagesResponse:
+      description: Paginated list of images in a repository.
+      example:
+        next: https://hub.docker.com/v2/namespaces/mynamespace/repositories/myrepo/images?&page=4&page_size=20
+        previous: https://hub.docker.com/v2/namespaces/mynamespace/repositories/myrepo/images?&page=2&page_size=20
+        count: 100
+        results:
+        - digest: sha256:1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefghijklmnopqr
+          last_pushed: 2021-02-24T22:05:27.526308Z
+          namespace: mynamespace
+          last_pulled: 2021-02-24T23:16:10.200008Z
+          repository: myrepo
+          status: active
+          tags:
+          - tag: latest
+            is_current: true
+          - tag: latest
+            is_current: true
+        - digest: sha256:1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefghijklmnopqr
+          last_pushed: 2021-02-24T22:05:27.526308Z
+          namespace: mynamespace
+          last_pulled: 2021-02-24T23:16:10.200008Z
+          repository: myrepo
+          status: active
+          tags:
+          - tag: latest
+            is_current: true
+          - tag: latest
+            is_current: true
+      properties:
+        count:
+          description: Total count of images in the repository.
+          example: 100
+          title: count
+          type: integer
+        next:
+          description: Link to the next page with the same query parameters if there
+            are more images.
+          example: https://hub.docker.com/v2/namespaces/mynamespace/repositories/myrepo/images?&page=4&page_size=20
+          nullable: true
+          title: next
+          type: string
+        previous:
+          description: Link to the previous page with the same query parameters if
+            not on first page.
+          example: https://hub.docker.com/v2/namespaces/mynamespace/repositories/myrepo/images?&page=2&page_size=20
+          nullable: true
+          title: previous
+          type: string
+        results:
+          description: Image details.
+          items:
+            $ref: '#/components/schemas/GetNamespaceRepositoryImagesResponse_results_inner'
+          title: results
+          type: array
+      title: GetNamespaceRepositoryImagesResponse
+      type: object
+    GetNamespaceRepositoryImagesSummaryResponse:
+      description: Summary information for images in a repository.
+      example:
+        active_from: 2021-01-25T14:25:37.076343059Z
+        statistics:
+          total: 3
+          inactive: 1
+          active: 2
+      properties:
+        active_from:
+          description: Time from which an image must have been pushed or pulled to
+            be counted as active.
+          example: 2021-01-25T14:25:37.076343059Z
+          title: active_from
+          type: string
+        statistics:
+          $ref: '#/components/schemas/GetNamespaceRepositoryImagesSummaryResponse_statistics'
+      title: GetNamespaceRepositoryImagesSummaryResponse
+      type: object
+    GetNamespaceRepositoryImagesTagsResponse:
+      description: Paginated list of tags for this repository.
+      example:
+        next: https://hub.docker.com/v2/namespaces/mynamespace/repositories/myrepo/images/sha256:mydigest/tags?&page=4&page_size=20
+        previous: https://hub.docker.com/v2/namespaces/mynamespace/repositories/myrepo/images/sha256:mydigest/tags?&page=2&page_size=20
+        count: 100
+        results:
+        - tag: latest
+          is_current: true
+        - tag: latest
+          is_current: true
+      properties:
+        count:
+          description: Total count of tags for this image.
+          example: 100
+          title: count
+          type: integer
+        next:
+          description: Link to the next page if there are more tags.
+          example: https://hub.docker.com/v2/namespaces/mynamespace/repositories/myrepo/images/sha256:mydigest/tags?&page=4&page_size=20
+          nullable: true
+          title: next
+          type: string
+        previous:
+          description: Link to the previous page if not on first page.
+          example: https://hub.docker.com/v2/namespaces/mynamespace/repositories/myrepo/images/sha256:mydigest/tags?&page=2&page_size=20
+          nullable: true
+          title: previous
+          type: string
+        results:
+          description: The current and historical tags for this image.
+          items:
+            $ref: '#/components/schemas/GetNamespaceRepositoryImagesResponse_results_inner_tags_inner'
+          title: results
+          type: array
+      title: GetNamespaceRepositoryImagesTagsResponse
+      type: object
+    PostNamespacesDeleteImagesRequest:
+      description: Delete images request.
+      example:
+        ignore_warnings:
+        - digest: sha256:1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefghijklmnopqr
+          warning: current_tag
+          repository: myrepo
+          tags:
+          - latest
+          - latest
+        - digest: sha256:1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefghijklmnopqr
+          warning: current_tag
+          repository: myrepo
+          tags:
+          - latest
+          - latest
+        manifests:
+        - digest: sha256:1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefghijklmnopqr
+          repository: myrepo
+        - digest: sha256:1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefghijklmnopqr
+          repository: myrepo
+        dry_run: false
+        active_from: 2020-12-01T12:00:00Z
+      properties:
+        active_from:
+          description: |
+            Sets the time from which an image must have been pushed or pulled to
+            be counted as active.
+
+            Defaults to 1 month before the current time.
+          example: 2020-12-01T12:00:00Z
+          title: active_from
+          type: string
+        dry_run:
+          description: If `true` then will check and return errors and unignored warnings
+            for the deletion request but will not delete any images.
+          example: false
+          title: dry_run
+          type: boolean
+        ignore_warnings:
+          description: "Warnings to ignore. If a warning is not ignored then no deletions\
+            \ will happen and the \nwarning is returned in the response.\n\nThese\
+            \ warnings include:\n\n- is_active: warning when attempting to delete\
+            \ an image that is marked as active.\n- current_tag: warning when attempting\
+            \ to delete an image that has one or more current \ntags in the repository.\n\
+            \nWarnings can be copied from the response to the request.\n"
+          items:
+            $ref: '#/components/schemas/PostNamespacesDeleteImagesRequest_ignore_warnings_inner'
+          title: ignore_warnings
+          type: array
+        manifests:
+          description: Image manifests to delete.
+          items:
+            $ref: '#/components/schemas/PostNamespacesDeleteImagesRequest_manifests_inner'
+          title: manifests
+          type: array
+      title: PostNamespacesDeleteImagesRequest
+      type: object
+    PostNamespacesDeleteImagesResponseError:
+      description: Deletion not possible.
+      example:
+        errinfo:
+          api_call_start: api_call_start
+          api_call_name: api_call_name
+          api_call_txnid: api_call_txnid
+          details:
+            warnings:
+            - digest: sha256:1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefghijklmnopqr
+              warning: current_tag
+              repository: myrepo
+              tags:
+              - latest
+              - latest
+            - digest: sha256:1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefghijklmnopqr
+              warning: current_tag
+              repository: myrepo
+              tags:
+              - latest
+              - latest
+            errors:
+            - digest: sha256:1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefghijklmnopqr
+              error: not_found
+              repository: myrepo
+            - digest: sha256:1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefghijklmnopqr
+              error: not_found
+              repository: myrepo
+          api_call_docker_id: api_call_docker_id
+          type: validation
+        message: message
+        txnid: txnid
+      properties:
+        errinfo:
+          $ref: '#/components/schemas/PostNamespacesDeleteImagesResponseError_errinfo'
+        message:
+          description: The error message.
+          title: message
+          type: string
+        txnid:
+          description: Unique ID for this call.
+          title: txnid
+          type: string
+      title: PostNamespacesDeleteImagesResponseError
+      type: object
+    PostNamespacesDeleteImagesResponseSuccess:
+      description: Successful delete images response.
+      example:
+        dry_run: false
+        metrics:
+          tag_errors: 0
+          tag_deletes: 1
+          manifest_errors: 0
+          manifest_deletes: 3
+      properties:
+        dry_run:
+          description: Whether the request was a dry run or not.
+          example: false
+          title: dry_run
+          type: boolean
+        metrics:
+          $ref: '#/components/schemas/PostNamespacesDeleteImagesResponseSuccess_metrics'
+      title: PostNamespacesDeleteImagesResponseSuccess
+      type: object
+    PostUsers2FALoginErrorResponse:
+      description: failed second factor login response.
+      example:
+        detail: Incorrect authentication credentials
+      properties:
+        detail:
+          description: Description of the error.
+          example: Incorrect authentication credentials
+          nullable: false
+          title: detail
+          type: string
+      title: PostUsers2FALoginErrorResponse
+      type: object
+    PostUsersLoginErrorResponse:
+      description: failed user login response or second factor required
+      example:
+        detail: Incorrect authentication credentials
+        login_2fa_token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
+      properties:
+        detail:
+          description: Description of the error.
+          example: Incorrect authentication credentials
+          nullable: false
+          title: detail
+          type: string
+        login_2fa_token:
+          description: Short time lived token to be used on `/v2/users/2fa-login`
+            to complete the authentication. This field is present only if 2FA is enabled.
+          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
+          nullable: true
+          title: login_2fa_token
+          type: string
+      required:
+      - detail
+      title: PostUsersLoginErrorResponse
+      type: object
+    PostUsersLoginSuccessResponse:
+      description: successful user login response
+      example:
+        token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
+      properties:
+        token:
+          description: |
+            Created authentication token.
+
+            This token can be used in the HTTP Authorization header as a JWT to authenticate with the Docker Hub APIs.
+          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
+          nullable: false
+          title: token
+          type: string
+      title: PostUsersLoginSuccessResponse
+      type: object
+    Users2FALoginRequest:
+      description: Second factor user login details
+      example:
+        code: "123456"
+        login_2fa_token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
+      properties:
+        code:
+          description: The Time-based One-Time Password of the Docker Hub account
+            to authenticate with.
+          example: "123456"
+          title: code
+          type: string
+        login_2fa_token:
+          description: The intermediate 2FA token returned from `/v2/users/login`
+            API.
+          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
+          title: login_2fa_token
+          type: string
+      required:
+      - code
+      - login_2fa_token
+      title: Users2FALoginRequest
+      type: object
+    UsersLoginRequest:
+      description: User login details
+      example:
+        password: hunter2
+        username: myusername
+      properties:
+        password:
+          description: The password or personal access token (PAT) of the Docker Hub
+            account to authenticate with.
+          example: hunter2
+          title: password
+          type: string
+        username:
+          description: The username of the Docker Hub account to authenticate with.
+          example: myusername
+          title: username
+          type: string
+      required:
+      - password
+      - username
+      title: UsersLoginRequest
+      type: object
+    ValueError:
+      description: Used to error if input validation fails.
+      example:
+        text: text
+        fields:
+        - fields
+        - fields
+      properties:
+        fields:
+          items:
+            type: string
+          title: fields
+          type: array
+        text:
+          title: text
+          type: string
+      title: ValueError
+      type: object
+    accessToken:
+      example:
+        generated_by: manual
+        is_active: true
+        last_used: last_used
+        created_at: 2021-07-20T12:00:00.000000Z
+        creator_ua: some user agent
+        scopes:
+        - repo:read
+        creator_ip: 127.0.0.1
+        token_label: My read only token
+        uuid: b30bbf97-506c-4ecd-aabc-842f3cb484fb
+        client_id: HUB
+        token: a7a5ef25-8889-43a0-8cc7-f2a94268e861
+      properties:
+        client_id:
+          example: HUB
+          title: client_id
+          type: string
+        created_at:
+          example: 2021-07-20T12:00:00.000000Z
+          title: created_at
+          type: string
+        creator_ip:
+          example: 127.0.0.1
+          title: creator_ip
+          type: string
+        creator_ua:
+          example: some user agent
+          title: creator_ua
+          type: string
+        generated_by:
+          example: manual
+          title: generated_by
+          type: string
+        is_active:
+          example: true
+          title: is_active
+          type: boolean
+        last_used:
+          nullable: true
+          title: last_used
+          type: string
+          example: null
+        scopes:
+          example:
+          - repo:read
+          items:
+            type: string
+          title: scopes
+          type: array
+        token:
+          example: a7a5ef25-8889-43a0-8cc7-f2a94268e861
+          title: token
+          type: string
+        token_label:
+          example: My read only token
+          title: token_label
+          type: string
+        uuid:
+          example: b30bbf97-506c-4ecd-aabc-842f3cb484fb
+          title: uuid
+          type: string
+      title: accessToken
+      type: object
+    createAccessTokenRequest:
+      properties:
+        scopes:
+          description: |
+            Valid scopes: "repo:admin", "repo:write", "repo:read", "repo:public_read"
+          example:
+          - repo:read
+          items:
+            type: string
+          title: scopes
+          type: array
+        token_label:
+          description: Friendly name for you to identify the token.
+          example: My read only token
+          title: token_label
+          type: string
+      required:
+      - scopes
+      - token_label
+      title: createAccessTokenRequest
+      type: object
+    createAccessTokensResponse:
+      $ref: '#/components/schemas/accessToken'
+    getAccessTokensResponse:
+      example:
+        next: next
+        previous: previous
+        count: 1
+        active_count: 1
+        results:
+        - generated_by: manual
+          is_active: true
+          last_used: last_used
+          created_at: 2021-07-20T12:00:00.000000Z
+          creator_ua: some user agent
+          scopes:
+          - repo:read
+          creator_ip: 127.0.0.1
+          token_label: My read only token
+          uuid: b30bbf97-506c-4ecd-aabc-842f3cb484fb
+          client_id: HUB
+          token: ""
+        - generated_by: manual
+          is_active: true
+          last_used: last_used
+          created_at: 2021-07-20T12:00:00.000000Z
+          creator_ua: some user agent
+          scopes:
+          - repo:read
+          creator_ip: 127.0.0.1
+          token_label: My read only token
+          uuid: b30bbf97-506c-4ecd-aabc-842f3cb484fb
+          client_id: HUB
+          token: ""
+      properties:
+        active_count:
+          example: 1
+          title: active_count
+          type: number
+        count:
+          example: 1
+          title: count
+          type: number
+        next:
+          title: next
+          type: string
+          example: null
+        previous:
+          title: previous
+          type: string
+          example: null
+        results:
+          items:
+            $ref: '#/components/schemas/_v2_access_tokens__uuid__get_200_response'
+          title: results
+          type: array
+      title: getAccessTokensResponse
+      type: object
+    image:
+      example:
+        features: features
+        os_features: os_features
+        os: os
+        size: 2
+        os_version: os_version
+        digest: digest
+        last_pushed: 2021-01-05T21:06:53.506400Z
+        layers:
+        - size: 5
+          instruction: instruction
+          digest: digest
+        - size: 5
+          instruction: instruction
+          digest: digest
+        variant: variant
+        last_pulled: 2021-01-05T21:06:53.506400Z
+        architecture: architecture
+        status: active
+      properties:
+        architecture:
+          description: CPU architecture
+          title: architecture
+          type: string
+        digest:
+          description: image digest
+          nullable: true
+          title: digest
+          type: string
+        features:
+          description: CPU features
+          title: features
+          type: string
+        last_pulled:
+          description: datetime of last pull
+          example: 2021-01-05T21:06:53.506400Z
+          nullable: true
+          title: last_pulled
+          type: string
+        last_pushed:
+          description: datetime of last push
+          example: 2021-01-05T21:06:53.506400Z
+          nullable: true
+          title: last_pushed
+          type: string
+        layers:
+          items:
+            $ref: '#/components/schemas/layer'
+          title: layers
+          type: array
+        os:
+          description: operating system
+          title: os
+          type: string
+        os_features:
+          description: OS features
+          title: os_features
+          type: string
+        os_version:
+          description: OS version
+          title: os_version
+          type: string
+        size:
+          description: size of the image
+          title: size
+          type: integer
+        status:
+          description: Status of the image
+          enum:
+          - active
+          - inactive
+          title: status
+          type: string
+        variant:
+          description: CPU variant
+          title: variant
+          type: string
+      title: image
+      type: object
+    layer:
+      example:
+        size: 5
+        instruction: instruction
+        digest: digest
+      properties:
+        digest:
+          description: image layer digest
+          nullable: true
+          title: digest
+          type: string
+        instruction:
+          description: Dockerfile instruction
+          title: instruction
+          type: string
+        size:
+          description: size of the layer
+          title: size
+          type: integer
+      title: layer
+      type: object
+    orgSettings:
+      example:
+        restricted_images:
+          allow_verified_publishers: true
+          allow_official_images: true
+          enabled: true
+      properties:
+        restricted_images:
+          $ref: '#/components/schemas/restricted_images'
+      title: orgSettings
+      type: object
+    page:
+      properties:
+        count:
+          description: total number of results available across all pages
+          title: count
+          type: integer
+        next:
+          description: link to next page of results if any
+          nullable: true
+          title: next
+          type: string
+        previous:
+          description: link to previous page of results  if any
+          nullable: true
+          title: previous
+          type: string
+      title: page
+      type: object
+    paginated_tags:
+      allOf:
+      - $ref: '#/components/schemas/page'
+      - properties:
+          results:
+            items:
+              $ref: '#/components/schemas/tag'
+            type: array
+        type: object
+      example:
+        next: next
+        previous: previous
+        count: 0
+        results:
+        - last_updater_username: last_updater_username
+          creator: 6
+          images:
+            features: features
+            os_features: os_features
+            os: os
+            size: 2
+            os_version: os_version
+            digest: digest
+            last_pushed: 2021-01-05T21:06:53.506400Z
+            layers:
+            - size: 5
+              instruction: instruction
+              digest: digest
+            - size: 5
+              instruction: instruction
+              digest: digest
+            variant: variant
+            last_pulled: 2021-01-05T21:06:53.506400Z
+            architecture: architecture
+            status: active
+          last_updated: 2021-01-05T21:06:53.506400Z
+          tag_last_pulled: 2021-01-05T21:06:53.506400Z
+          repository: 9
+          last_updater: 7
+          name: name
+          tag_last_pushed: 2021-01-05T21:06:53.506400Z
+          full_size: 1
+          id: 5
+          v2: v2
+          status: active
+        - last_updater_username: last_updater_username
+          creator: 6
+          images:
+            features: features
+            os_features: os_features
+            os: os
+            size: 2
+            os_version: os_version
+            digest: digest
+            last_pushed: 2021-01-05T21:06:53.506400Z
+            layers:
+            - size: 5
+              instruction: instruction
+              digest: digest
+            - size: 5
+              instruction: instruction
+              digest: digest
+            variant: variant
+            last_pulled: 2021-01-05T21:06:53.506400Z
+            architecture: architecture
+            status: active
+          last_updated: 2021-01-05T21:06:53.506400Z
+          tag_last_pulled: 2021-01-05T21:06:53.506400Z
+          repository: 9
+          last_updater: 7
+          name: name
+          tag_last_pushed: 2021-01-05T21:06:53.506400Z
+          full_size: 1
+          id: 5
+          v2: v2
+          status: active
+      title: paginated_tags
+    patchAccessTokenRequest:
+      properties:
+        is_active:
+          example: false
+          title: is_active
+          type: boolean
+        token_label:
+          example: My read only token
+          title: token_label
+          type: string
+      title: patchAccessTokenRequest
+      type: object
+    patchAccessTokenResponse:
+      $ref: '#/components/schemas/accessToken'
+    protobufAny:
+      example:
+        value: value
+        type_url: type_url
+      properties:
+        type_url:
+          title: type_url
+          type: string
+        value:
+          format: byte
+          title: value
+          type: string
+      title: protobufAny
+      type: object
+    restricted_images:
+      example:
+        allow_verified_publishers: true
+        allow_official_images: true
+        enabled: true
+      properties:
+        allow_official_images:
+          description: Allow usage of official images if "enabled" is `true`.
+          example: true
+          title: allow_official_images
+          type: boolean
+        allow_verified_publishers:
+          description: Allow usage of verified publisher images if "enabled" is `true`.
+          example: true
+          title: allow_verified_publishers
+          type: boolean
+        enabled:
+          description: Whether or not to restrict image usage for users in the organization.
+          example: true
+          title: enabled
+          type: boolean
+      title: restricted_images
+      type: object
+    rpcStatus:
+      example:
+        code: 0
+        details:
+        - value: value
+          type_url: type_url
+        - value: value
+          type_url: type_url
+        message: message
+      properties:
+        code:
+          format: int32
+          title: code
+          type: integer
+        details:
+          items:
+            $ref: '#/components/schemas/protobufAny'
+          title: details
+          type: array
+        message:
+          title: message
+          type: string
+      title: rpcStatus
+      type: object
+    scim_email:
+      properties:
+        display:
+          example: jon.snow@docker.com
+          title: display
+          type: string
+        primary:
+          example: true
+          title: primary
+          type: boolean
+        value:
+          example: jon.snow@docker.com
+          title: value
+          type: string
+      title: scim_email
+      type: object
+    scim_error:
+      properties:
+        detail:
+          description: Details about why the request failed.
+          title: detail
+          type: string
+        schemas:
+          items:
+            default: urn:ietf:params:scim:api:messages:2.0:Error
+            type: string
+          title: schemas
+          type: array
+        status:
+          description: The status code for the response in string format.
+          title: status
+          type: string
+      title: scim_error
+      type: object
+    scim_group:
+      properties:
+        display:
+          example: nightswatch
+          title: display
+          type: string
+        value:
+          example: nightswatch
+          title: value
+          type: string
+      title: scim_group
+      type: object
+    scim_resource_type:
+      properties:
+        description:
+          example: User
+          title: description
+          type: string
+        endpoint:
+          example: /Users
+          title: endpoint
+          type: string
+        id:
+          example: User
+          title: id
+          type: string
+        name:
+          example: User
+          title: name
+          type: string
+        schema:
+          example: urn:ietf:params:scim:schemas:core:2.0:User
+          title: schema
+          type: string
+        schemas:
+          example: urn:ietf:params:scim:schemas:core:2.0:ResourceType
+          items:
+            type: string
+          title: schemas
+          type: array
+      title: scim_resource_type
+      type: object
+    scim_schema:
+      properties:
+        attributes:
+          example: []
+          items:
+            $ref: '#/components/schemas/scim_schema_parent_attribute'
+          title: attributes
+          type: array
+        description:
+          example: User Account
+          title: description
+          type: string
+        id:
+          example: urn:ietf:params:scim:schemas:core:2.0:User
+          title: id
+          type: string
+        name:
+          example: User
+          title: name
+          type: string
+        schemas:
+          example:
+          - urn:ietf:params:scim:schemas:core:2.0:Schema
+          items:
+            type: string
+          title: schemas
+          type: array
+      title: scim_schema
+      type: object
+    scim_schema_attribute:
+      properties:
+        caseExact:
+          example: false
+          title: caseExact
+          type: boolean
+        description:
+          example: "Unique identifier for the User, typically used by the user to\
+            \ directly authenticate to the service provider. Each User MUST include\
+            \ a non-empty userName value. This identifier MUST be unique across the\
+            \ service provider's entire set of Users."
+          title: description
+          type: string
+        multiValued:
+          example: false
+          title: multiValued
+          type: boolean
+        mutability:
+          example: readWrite
+          title: mutability
+          type: string
+        name:
+          example: userName
+          title: name
+          type: string
+        required:
+          example: true
+          title: required
+          type: boolean
+        returned:
+          example: default
+          title: returned
+          type: string
+        type:
+          enum:
+          - string
+          - boolean
+          - complex
+          example: string
+          title: type
+          type: string
+        uniqueness:
+          example: server
+          title: uniqueness
+          type: string
+      title: scim_schema_attribute
+      type: object
+    scim_schema_parent_attribute:
+      allOf:
+      - $ref: '#/components/schemas/scim_schema_attribute'
+      - properties:
+          subAttributes:
+            items:
+              $ref: '#/components/schemas/scim_schema_attribute'
+            type: array
+        type: object
+      title: scim_schema_parent_attribute
+    scim_service_provider_config:
+      properties:
+        authenticationSchemes:
+          $ref: '#/components/schemas/scim_service_provider_config_authenticationSchemes'
+        bulk:
+          $ref: '#/components/schemas/scim_service_provider_config_bulk'
+        changePassword:
+          $ref: '#/components/schemas/scim_service_provider_config_changePassword'
+        documentationUri:
+          example: ""
+          title: documentationUri
+          type: string
+        etag:
+          $ref: '#/components/schemas/scim_service_provider_config_changePassword'
+        filter:
+          $ref: '#/components/schemas/scim_service_provider_config_filter'
+        patch:
+          $ref: '#/components/schemas/scim_service_provider_config_patch'
+        schemas:
+          example:
+          - urn:ietf:params:scim:schemas:core:2.0:ServiceProviderConfig
+          items:
+            type: string
+          title: schemas
+          type: array
+        sort:
+          $ref: '#/components/schemas/scim_service_provider_config_sort'
+      title: scim_service_provider_config
+      type: object
+    scim_user:
+      properties:
+        active:
+          example: true
+          title: active
+          type: boolean
+        displayName:
+          description: The username in Docker. Also known as the "Docker ID".
+          example: jonsnow
+          title: displayName
+          type: string
+        emails:
+          items:
+            $ref: '#/components/schemas/scim_email'
+          title: emails
+          type: array
+        groups:
+          items:
+            $ref: '#/components/schemas/scim_group'
+          title: groups
+          type: array
+        id:
+          description: The unique identifier for the user. A v4 UUID.
+          example: d80f7c79-7730-49d8-9a41-7c42fb622d9c
+          title: id
+          type: string
+        meta:
+          $ref: '#/components/schemas/scim_user_meta'
+        name:
+          $ref: '#/components/schemas/scim_user_name'
+        schemas:
+          items:
+            example: urn:ietf:params:scim:schemas:core:2.0:User
+            minItems: 1
+            type: string
+          title: schemas
+          type: array
+        userName:
+          description: The user's email address. This must be reachable via email.
+          example: jon.snow@docker.com
+          title: userName
+          type: string
+      title: scim_user
+      type: object
+    scim_user_display_name:
+      description: The username in Docker. Also known as the "Docker ID".
+      example: jonsnow
+      title: displayName
+      type: string
+    scim_user_id:
+      description: The unique identifier for the user. A v4 UUID.
+      example: d80f7c79-7730-49d8-9a41-7c42fb622d9c
+      title: id
+      type: string
+    scim_user_name:
+      properties:
+        familyName:
+          example: Snow
+          title: familyName
+          type: string
+        givenName:
+          example: Jon
+          title: givenName
+          type: string
+      title: scim_user_name
+      type: object
+    scim_user_schemas:
+      items:
+        example: urn:ietf:params:scim:schemas:core:2.0:User
+        minItems: 1
+        type: string
+      title: schemas
+      type: array
+    scim_user_username:
+      description: The user's email address. This must be reachable via email.
+      example: jon.snow@docker.com
+      title: userName
+      type: string
+    tag:
+      example:
+        last_updater_username: last_updater_username
+        creator: 6
+        images:
+          features: features
+          os_features: os_features
+          os: os
+          size: 2
+          os_version: os_version
+          digest: digest
+          last_pushed: 2021-01-05T21:06:53.506400Z
+          layers:
+          - size: 5
+            instruction: instruction
+            digest: digest
+          - size: 5
+            instruction: instruction
+            digest: digest
+          variant: variant
+          last_pulled: 2021-01-05T21:06:53.506400Z
+          architecture: architecture
+          status: active
+        last_updated: 2021-01-05T21:06:53.506400Z
+        tag_last_pulled: 2021-01-05T21:06:53.506400Z
+        repository: 9
+        last_updater: 7
+        name: name
+        tag_last_pushed: 2021-01-05T21:06:53.506400Z
+        full_size: 1
+        id: 5
+        v2: v2
+        status: active
+      properties:
+        creator:
+          description: ID of the user that pushed the tag
+          title: creator
+          type: integer
+        full_size:
+          description: compressed size (sum of all layers) of the tagged image
+          title: full_size
+          type: integer
+        id:
+          description: tag ID
+          title: id
+          type: integer
+        images:
+          $ref: '#/components/schemas/image'
+        last_updated:
+          description: datetime of last update
+          example: 2021-01-05T21:06:53.506400Z
+          nullable: true
+          title: last_updated
+          type: string
+        last_updater:
+          description: ID of the last user that updated the tag
+          title: last_updater
+          type: integer
+        last_updater_username:
+          description: Hub username of the user that updated the tag
+          title: last_updater_username
+          type: string
+        name:
+          description: name of the tag
+          title: name
+          type: string
+        repository:
+          description: repository ID
+          title: repository
+          type: integer
+        status:
+          description: whether a tag has been pushed to or pulled in the past month
+          enum:
+          - active
+          - inactive
+          title: status
+          type: string
+        tag_last_pulled:
+          description: datetime of last pull
+          example: 2021-01-05T21:06:53.506400Z
+          nullable: true
+          title: tag_last_pulled
+          type: string
+        tag_last_pushed:
+          description: datetime of last push
+          example: 2021-01-05T21:06:53.506400Z
+          nullable: true
+          title: tag_last_pushed
+          type: string
+        v2:
+          description: repository API version
+          title: v2
+          type: string
+      title: tag
+      type: object
+    _v2_access_tokens__uuid__get_200_response:
+      allOf:
+      - $ref: '#/components/schemas/accessToken'
+      - properties:
+          token:
+            example: ""
+            type: string
+        type: object
+      example:
+        generated_by: manual
+        is_active: true
+        last_used: last_used
+        created_at: 2021-07-20T12:00:00.000000Z
+        creator_ua: some user agent
+        scopes:
+        - repo:read
+        creator_ip: 127.0.0.1
+        token_label: My read only token
+        uuid: b30bbf97-506c-4ecd-aabc-842f3cb484fb
+        client_id: HUB
+        token: ""
+      title: _v2_access_tokens__uuid__get_200_response
+    _v2_orgs__name__settings_put_request_restricted_images:
+      allOf:
+      - $ref: '#/components/schemas/restricted_images'
+      - required:
+        - allow_official_images
+        - allow_verified_publishers
+        - enabled
+        type: object
+      title: _v2_orgs__name__settings_put_request_restricted_images
+    _v2_orgs__name__settings_put_request:
+      properties:
+        restricted_images:
+          $ref: '#/components/schemas/_v2_orgs__name__settings_put_request_restricted_images'
+      required:
+      - restricted_images
+      title: _v2_orgs__name__settings_put_request
+    _v2_scim_2_0_ResourceTypes_get_200_response:
+      properties:
+        resources:
+          items:
+            $ref: '#/components/schemas/scim_resource_type'
+          title: resources
+          type: array
+        schemas:
+          example:
+          - urn:ietf:params:scim:api:messages:2.0:ListResponse
+          items:
+            type: string
+          title: schemas
+          type: array
+        totalResults:
+          example: 1
+          title: totalResults
+          type: integer
+      title: _v2_scim_2_0_ResourceTypes_get_200_response
+      type: object
+    _v2_scim_2_0_ResourceTypes_get_401_response:
+      allOf:
+      - $ref: '#/components/schemas/scim_error'
+      - properties:
+          status:
+            example: "401"
+      title: _v2_scim_2_0_ResourceTypes_get_401_response
+    _v2_scim_2_0_ResourceTypes_get_500_response:
+      allOf:
+      - $ref: '#/components/schemas/scim_error'
+      - properties:
+          status:
+            example: "500"
+      title: _v2_scim_2_0_ResourceTypes_get_500_response
+    _v2_scim_2_0_ResourceTypes__name__get_404_response:
+      allOf:
+      - $ref: '#/components/schemas/scim_error'
+      - properties:
+          status:
+            example: "404"
+      title: _v2_scim_2_0_ResourceTypes__name__get_404_response
+    _v2_scim_2_0_Schemas_get_200_response:
+      properties:
+        resources:
+          items:
+            $ref: '#/components/schemas/scim_schema'
+          title: resources
+          type: array
+        schemas:
+          example:
+          - urn:ietf:params:scim:api:messages:2.0:ListResponse
+          items:
+            type: string
+          title: schemas
+          type: array
+        totalResults:
+          example: 1
+          title: totalResults
+          type: integer
+      title: _v2_scim_2_0_Schemas_get_200_response
+      type: object
+    _v2_scim_2_0_Users_get_200_response:
+      properties:
+        itemsPerPage:
+          example: 10
+          title: itemsPerPage
+          type: integer
+        resources:
+          items:
+            $ref: '#/components/schemas/scim_user'
+          title: resources
+          type: array
+        schemas:
+          example:
+          - urn:ietf:params:scim:api:messages:2.0:ListResponse
+          items:
+            type: string
+          title: schemas
+          type: array
+        startIndex:
+          example: 1
+          title: startIndex
+          type: integer
+        totalResults:
+          example: 1
+          title: totalResults
+          type: integer
+      title: _v2_scim_2_0_Users_get_200_response
+      type: object
+    _v2_scim_2_0_Users_get_400_response:
+      allOf:
+      - $ref: '#/components/schemas/scim_error'
+      - properties:
+          scimType:
+            description: Some types of errors will return this per the specification.
+            type: string
+          status:
+            example: "400"
+      title: _v2_scim_2_0_Users_get_400_response
+    _v2_scim_2_0_Users_get_403_response:
+      allOf:
+      - $ref: '#/components/schemas/scim_error'
+      - properties:
+          status:
+            example: "403"
+      title: _v2_scim_2_0_Users_get_403_response
+    _v2_scim_2_0_Users_post_request:
+      properties:
+        name:
+          $ref: '#/components/schemas/scim_user_name'
+        schemas:
+          items:
+            example: urn:ietf:params:scim:schemas:core:2.0:User
+            minItems: 1
+            type: string
+          title: schemas
+          type: array
+        userName:
+          description: The user's email address. This must be reachable via email.
+          example: jon.snow@docker.com
+          title: userName
+          type: string
+      required:
+      - schemas
+      - userName
+      title: _v2_scim_2_0_Users_post_request
+      type: object
+    _v2_scim_2_0_Users_post_409_response:
+      allOf:
+      - $ref: '#/components/schemas/scim_error'
+      - properties:
+          status:
+            example: "409"
+      title: _v2_scim_2_0_Users_post_409_response
+    _v2_scim_2_0_Users__id__put_request_name:
+      allOf:
+      - $ref: '#/components/schemas/scim_user_name'
+      - description: "If this is omitted from the request, the update will skip the\
+          \ update on it. We will only ever change the name, but not clear it."
+      title: _v2_scim_2_0_Users__id__put_request_name
+    _v2_scim_2_0_Users__id__put_request:
+      properties:
+        enabled:
+          default: false
+          description: "If this is omitted from the request, it will default to false\
+            \ resulting in a deactivated user."
+          title: enabled
+          type: boolean
+        name:
+          $ref: '#/components/schemas/_v2_scim_2_0_Users__id__put_request_name'
+        schemas:
+          items:
+            example: urn:ietf:params:scim:schemas:core:2.0:User
+            minItems: 1
+            type: string
+          title: schemas
+          type: array
+      required:
+      - schemas
+      title: _v2_scim_2_0_Users__id__put_request
+      type: object
+    GetNamespaceRepositoryImagesResponse_results_inner_tags_inner:
+      example:
+        tag: latest
+        is_current: true
+      properties:
+        is_current:
+          description: |
+            `true` if the tag currently points to this image.
+
+            `false` if it has been overwritten to point at a different image.
+          example: true
+          title: is_current
+          type: boolean
+        tag:
+          description: The tag.
+          example: latest
+          title: tag
+          type: string
+      title: GetNamespaceRepositoryImagesResponse_results_inner_tags_inner
+      type: object
+    GetNamespaceRepositoryImagesResponse_results_inner:
+      example:
+        digest: sha256:1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefghijklmnopqr
+        last_pushed: 2021-02-24T22:05:27.526308Z
+        namespace: mynamespace
+        last_pulled: 2021-02-24T23:16:10.200008Z
+        repository: myrepo
+        status: active
+        tags:
+        - tag: latest
+          is_current: true
+        - tag: latest
+          is_current: true
+      properties:
+        digest:
+          description: The image's digest.
+          example: sha256:1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefghijklmnopqr
+          title: digest
+          type: string
+        last_pulled:
+          description: Time when this image was last pulled. Note this is updated
+            at most once per hour.
+          example: 2021-02-24T23:16:10.200008Z
+          nullable: true
+          title: last_pulled
+          type: string
+        last_pushed:
+          description: Time when this image was last pushed.
+          example: 2021-02-24T22:05:27.526308Z
+          nullable: true
+          title: last_pushed
+          type: string
+        namespace:
+          description: The repository namespace.
+          example: mynamespace
+          title: namespace
+          type: string
+        repository:
+          description: The repository name.
+          example: myrepo
+          title: repository
+          type: string
+        status:
+          description: The status of the image based on its last activity against
+            the `active_from` time.
+          enum:
+          - active
+          - inactive
+          example: active
+          title: status
+          type: string
+        tags:
+          description: The current and historical tags for this image.
+          items:
+            $ref: '#/components/schemas/GetNamespaceRepositoryImagesResponse_results_inner_tags_inner'
+          title: tags
+          type: array
+      title: GetNamespaceRepositoryImagesResponse_results_inner
+      type: object
+    GetNamespaceRepositoryImagesSummaryResponse_statistics:
+      example:
+        total: 3
+        inactive: 1
+        active: 2
+      properties:
+        active:
+          description: Number of images counted as active in this repository.
+          example: 2
+          title: active
+          type: integer
+        inactive:
+          description: Number of images counted as inactive in this repository.
+          example: 1
+          title: inactive
+          type: integer
+        total:
+          description: Number of images in this repository.
+          example: 3
+          title: total
+          type: integer
+      title: GetNamespaceRepositoryImagesSummaryResponse_statistics
+      type: object
+    PostNamespacesDeleteImagesRequest_ignore_warnings_inner:
+      example:
+        digest: sha256:1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefghijklmnopqr
+        warning: current_tag
+        repository: myrepo
+        tags:
+        - latest
+        - latest
+      properties:
+        digest:
+          description: Digest of the image to ignore the warning for.
+          example: sha256:1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefghijklmnopqr
+          title: digest
+          type: string
+        repository:
+          description: Name of the repository of the image to ignore the warning for.
+          example: myrepo
+          title: repository
+          type: string
+        tags:
+          description: Current tags to ignore.
+          items:
+            example: latest
+            type: string
+          title: tags
+          type: array
+        warning:
+          description: Warning to ignore.
+          enum:
+          - is_active
+          - current_tag
+          example: current_tag
+          title: warning
+          type: string
+      required:
+      - digest
+      - repository
+      - warning
+      title: PostNamespacesDeleteImagesRequest_ignore_warnings_inner
+      type: object
+    PostNamespacesDeleteImagesRequest_manifests_inner:
+      example:
+        digest: sha256:1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefghijklmnopqr
+        repository: myrepo
+      properties:
+        digest:
+          description: Digest of the image to delete.
+          example: sha256:1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefghijklmnopqr
+          title: digest
+          type: string
+        repository:
+          description: Name of the repository to delete the image from.
+          example: myrepo
+          title: repository
+          type: string
+      required:
+      - digest
+      - repository
+      title: PostNamespacesDeleteImagesRequest_manifests_inner
+      type: object
+    PostNamespacesDeleteImagesResponseError_errinfo_allOf_details_errors_inner:
+      example:
+        digest: sha256:1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefghijklmnopqr
+        error: not_found
+        repository: myrepo
+      properties:
+        digest:
+          description: Digest of the image that caused the error.
+          example: sha256:1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefghijklmnopqr
+          title: digest
+          type: string
+        error:
+          description: Error type.
+          enum:
+          - not_found
+          - unauthorized
+          - child_manifest
+          example: not_found
+          title: error
+          type: string
+        repository:
+          description: Name of the repository of the image that caused the error.
+          example: myrepo
+          title: repository
+          type: string
+      title: PostNamespacesDeleteImagesResponseError_errinfo_allOf_details_errors_inner
+      type: object
+    PostNamespacesDeleteImagesResponseError_errinfo_allOf_details_warnings_inner:
+      example:
+        digest: sha256:1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefghijklmnopqr
+        warning: current_tag
+        repository: myrepo
+        tags:
+        - latest
+        - latest
+      properties:
+        digest:
+          description: Digest of the image that caused the warning.
+          example: sha256:1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefghijklmnopqr
+          title: digest
+          type: string
+        repository:
+          description: Name of the repository of the image that caused the warning.
+          example: myrepo
+          title: repository
+          type: string
+        tags:
+          description: Current tags if warning is `current_tag`.
+          items:
+            example: latest
+            type: string
+          title: tags
+          type: array
+        warning:
+          description: Warning type.
+          enum:
+          - is_active
+          - current_tag
+          example: current_tag
+          title: warning
+          type: string
+      title: PostNamespacesDeleteImagesResponseError_errinfo_allOf_details_warnings_inner
+      type: object
+    PostNamespacesDeleteImagesResponseError_errinfo_allOf_details:
+      example:
+        warnings:
+        - digest: sha256:1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefghijklmnopqr
+          warning: current_tag
+          repository: myrepo
+          tags:
+          - latest
+          - latest
+        - digest: sha256:1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefghijklmnopqr
+          warning: current_tag
+          repository: myrepo
+          tags:
+          - latest
+          - latest
+        errors:
+        - digest: sha256:1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefghijklmnopqr
+          error: not_found
+          repository: myrepo
+        - digest: sha256:1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefghijklmnopqr
+          error: not_found
+          repository: myrepo
+      properties:
+        errors:
+          description: Errors from validating delete request. These cannot be ignored.
+          items:
+            $ref: '#/components/schemas/PostNamespacesDeleteImagesResponseError_errinfo_allOf_details_errors_inner'
+          title: errors
+          type: array
+        warnings:
+          description: "Warnings that can be ignored.\n\nThese warnings include:\n\
+            \n- is_active: warning when attempting to delete an image that is marked\
+            \ as \nactive.\n- current_tag: warning when attempting to delete an image\
+            \ that has one or \nmore current tags in the repository.\n\nWarnings can\
+            \ be copied from the response to the request.\n"
+          items:
+            $ref: '#/components/schemas/PostNamespacesDeleteImagesResponseError_errinfo_allOf_details_warnings_inner'
+          title: warnings
+          type: array
+      title: PostNamespacesDeleteImagesResponseError_errinfo_allOf_details
+      type: object
+    PostNamespacesDeleteImagesResponseError_errinfo:
+      allOf:
+      - $ref: '#/components/schemas/ErrorInfo'
+      - properties:
+          details:
+            $ref: '#/components/schemas/PostNamespacesDeleteImagesResponseError_errinfo_allOf_details'
+          type:
+            description: Type of error.
+            example: validation
+            type: string
+        type: object
+      example:
+        api_call_start: api_call_start
+        api_call_name: api_call_name
+        api_call_txnid: api_call_txnid
+        details:
+          warnings:
+          - digest: sha256:1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefghijklmnopqr
+            warning: current_tag
+            repository: myrepo
+            tags:
+            - latest
+            - latest
+          - digest: sha256:1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefghijklmnopqr
+            warning: current_tag
+            repository: myrepo
+            tags:
+            - latest
+            - latest
+          errors:
+          - digest: sha256:1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefghijklmnopqr
+            error: not_found
+            repository: myrepo
+          - digest: sha256:1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefghijklmnopqr
+            error: not_found
+            repository: myrepo
+        api_call_docker_id: api_call_docker_id
+        type: validation
+      title: PostNamespacesDeleteImagesResponseError_errinfo
+    PostNamespacesDeleteImagesResponseSuccess_metrics:
+      example:
+        tag_errors: 0
+        tag_deletes: 1
+        manifest_errors: 0
+        manifest_deletes: 3
+      properties:
+        manifest_deletes:
+          description: Number of manifests deleted.
+          example: 3
+          title: manifest_deletes
+          type: integer
+        manifest_errors:
+          description: Number of manifests that failed to delete.
+          example: 0
+          title: manifest_errors
+          type: integer
+        tag_deletes:
+          description: Number of tags deleted.
+          example: 1
+          title: tag_deletes
+          type: integer
+        tag_errors:
+          description: Number of tags that failed to delete.
+          example: 0
+          title: tag_errors
+          type: integer
+      title: PostNamespacesDeleteImagesResponseSuccess_metrics
+      type: object
+    scim_service_provider_config_authenticationSchemes:
+      properties:
+        description:
+          example: "The OAuth 2.0 Bearer Token Authentication scheme. OAuth enables\
+            \ clients to access protected resources by obtaining an access token,\
+            \ which is defined in RFC 6750 as \"a string representing an access authorization\
+            \ issued to the client\", rather than using the resource owner's credentials\
+            \ directly."
+          title: description
+          type: string
+        name:
+          example: OAuth 2.0 Bearer Token
+          title: name
+          type: string
+        specUri:
+          example: http://tools.ietf.org/html/rfc6750
+          title: specUri
+          type: string
+        type:
+          example: oauthbearertoken
+          title: type
+          type: string
+      title: scim_service_provider_config_authenticationSchemes
+      type: object
+    scim_service_provider_config_bulk:
+      properties:
+        maxOperations:
+          title: maxOperations
+          type: integer
+        maxPayloadSize:
+          title: maxPayloadSize
+          type: integer
+        supported:
+          example: false
+          title: supported
+          type: boolean
+      title: scim_service_provider_config_bulk
+      type: object
+    scim_service_provider_config_changePassword:
+      properties:
+        supported:
+          example: false
+          title: supported
+          type: boolean
+      title: scim_service_provider_config_changePassword
+      type: object
+    scim_service_provider_config_filter:
+      properties:
+        maxResults:
+          example: 99999
+          title: maxResults
+          type: integer
+        supported:
+          example: true
+          title: supported
+          type: boolean
+      title: scim_service_provider_config_filter
+      type: object
+    scim_service_provider_config_patch:
+      properties:
+        supported:
+          example: false
+          title: supported
+          type: boolean
+      title: scim_service_provider_config_patch
+    scim_service_provider_config_sort:
+      properties:
+        supported:
+          example: true
+          title: supported
+          type: boolean
+      title: scim_service_provider_config_sort
+      type: object
+    scim_user_meta:
+      properties:
+        created:
+          description: The creation date for the user as a RFC3339 formatted string.
+          example: 2022-05-20T00:54:18Z
+          title: created
+          type: string
+        lastModified:
+          description: The date the user was last modified as a RFC3339 formatted
+            string.
+          example: 2022-05-20T00:54:18Z
+          title: lastModified
+          type: string
+        location:
+          example: https://hub.docker.com/v2/scim/2.0/Users/d80f7c79-7730-49d8-9a41-7c42fb622d9c
+          title: location
+          type: string
+        resourceType:
+          example: User
+          title: resourceType
+          type: string
+      title: scim_user_meta
+      type: object
+x-tagGroups:
+- name: General
+  tags:
+  - resources
+  - rate-limiting
+- name: API
+  tags:
+  - authentication
+  - access-tokens
+  - images
+  - audit-logs
+  - org-settings
+  - repositories
+  - scim

@@ -1,5 +1,0 @@
-# coding: utf-8
-
-# import models into model package
-from openapi_server.models.application_insights_component_proactive_detection_configuration import ApplicationInsightsComponentProactiveDetectionConfiguration
-from openapi_server.models.application_insights_component_proactive_detection_configuration_rule_definitions import ApplicationInsightsComponentProactiveDetectionConfigurationRuleDefinitions

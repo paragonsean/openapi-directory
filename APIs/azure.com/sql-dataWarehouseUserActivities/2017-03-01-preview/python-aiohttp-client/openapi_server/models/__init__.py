@@ -1,5 +1,0 @@
-# coding: utf-8
-
-# import models into model package
-from openapi_server.models.data_warehouse_user_activities import DataWarehouseUserActivities
-from openapi_server.models.data_warehouse_user_activities_properties import DataWarehouseUserActivitiesProperties

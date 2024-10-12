@@ -1,0 +1,4616 @@
+openapi: 3.0.1
+info:
+  description: Provides operations for working with resources and resource groups.
+  title: ResourceManagementClient
+  version: 2018-02-01
+  x-apisguru-categories:
+  - cloud
+  x-logo:
+    url: https://assets.onestore.ms/cdnfiles/onestorerolling-1606-01000/shell/v3/images/logo/microsoft.png
+  x-origin:
+  - format: swagger
+    url: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/resources/resource-manager/Microsoft.Resources/stable/2018-02-01/resources.json
+    version: "2.0"
+  x-preferred: false
+  x-providerName: azure.com
+  x-serviceName: resources
+  x-tags:
+  - Azure
+  - Microsoft
+servers:
+- url: https://management.azure.com/
+security:
+- azure_auth:
+  - user_impersonation
+paths:
+  /providers/Microsoft.Resources/calculateTemplateHash:
+    post:
+      description: Calculate the hash of the given template.
+      operationId: deployments_calculate_template_hash
+      parameters:
+      - description: The API version to use for this operation.
+        in: query
+        name: api-version
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+        description: The template provided to calculate hash.
+        required: true
+        x-body-name: template
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemplateHashResult'
+          description: OK - Returns the hash.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CloudError'
+          description: Error response describing why the operation failed.
+      tags:
+      - Deployments
+      x-ms-examples:
+        Calculate template hash:
+          parameters:
+            api-version: 2018-02-01
+            template:
+              $schema: http://schemas.management.azure.com/deploymentTemplate?api-version=2014-04-01-preview
+              contentVersion: 1.0.0.0
+              outputs:
+                string:
+                  type: string
+                  value: myvalue
+              parameters:
+                string:
+                  type: string
+              resources: []
+              variables:
+                array:
+                - 1
+                - 2
+                - 3
+                - 4
+                bool: true
+                int: 42
+                object:
+                  object:
+                    location: West US
+                    vmSize: Large
+                string: string
+          responses:
+            "200":
+              body:
+                minifiedTemplate: "{\"$SCHEMA\":\"HTTP://SCHEMAS.MANAGEMENT.AZURE.COM/DEPLOYMENTTEMPLATE?API-VERSION=2014-04-01-PREVIEW\"\
+                  ,\"CONTENTVERSION\":\"1.0.0.0\",\"PARAMETERS\":{\"STRING\":{\"TYPE\"\
+                  :\"STRING\"}},\"VARIABLES\":{\"STRING\":\"STRING\",\"INT\":42,\"\
+                  BOOL\":TRUE,\"ARRAY\":[1,2,3,4],\"OBJECT\":{\"OBJECT\":{\"VMSIZE\"\
+                  :\"LARGE\",\"LOCATION\":\"WEST US\"}}},\"RESOURCES\":[],\"OUTPUTS\"\
+                  :{\"STRING\":{\"TYPE\":\"STRING\",\"VALUE\":\"MYVALUE\"}}}"
+                templateHash: "695440707931307747"
+      x-codegen-request-body-name: template
+      x-openapi-router-controller: openapi_server.controllers.deployments_controller
+  /subscriptions/{subscriptionId}/providers:
+    get:
+      description: Gets all resource providers for a subscription.
+      operationId: providers_list
+      parameters:
+      - description: The number of results to return. If null is passed returns all
+          deployments.
+        in: query
+        name: $top
+        schema:
+          format: int32
+          type: integer
+      - description: "The properties to include in the results. For example, use &$expand=metadata\
+          \ in the query string to retrieve resource provider metadata. To include\
+          \ property aliases in response, use $expand=resourceTypes/aliases."
+        in: query
+        name: $expand
+        schema:
+          type: string
+      - description: The API version to use for this operation.
+        in: query
+        name: api_version
+        required: true
+        schema:
+          type: string
+      - description: The ID of the target subscription.
+        in: path
+        name: subscriptionId
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProviderListResult'
+          description: OK - Returns an array of resource providers.
+      tags:
+      - Providers
+      x-ms-pageable:
+        nextLinkName: nextLink
+      x-openapi-router-controller: openapi_server.controllers.providers_controller
+  /subscriptions/{subscriptionId}/providers/{resourceProviderNamespace}:
+    get:
+      description: Gets the specified resource provider.
+      operationId: providers_get
+      parameters:
+      - description: "The $expand query parameter. For example, to include property\
+          \ aliases in response, use $expand=resourceTypes/aliases."
+        in: query
+        name: $expand
+        schema:
+          type: string
+      - description: The namespace of the resource provider.
+        in: path
+        name: resourceProviderNamespace
+        required: true
+        schema:
+          type: string
+      - description: The API version to use for this operation.
+        in: query
+        name: api_version
+        required: true
+        schema:
+          type: string
+      - description: The ID of the target subscription.
+        in: path
+        name: subscription_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Provider'
+          description: OK - Returns information about the resource provider.
+      tags:
+      - Providers
+      x-openapi-router-controller: openapi_server.controllers.providers_controller
+  /subscriptions/{subscriptionId}/providers/{resourceProviderNamespace}/register:
+    post:
+      description: Registers a subscription with a resource provider.
+      operationId: providers_register
+      parameters:
+      - description: The namespace of the resource provider to register.
+        in: path
+        name: resourceProviderNamespace
+        required: true
+        schema:
+          type: string
+      - description: The API version to use for this operation.
+        in: query
+        name: api_version
+        required: true
+        schema:
+          type: string
+      - description: The ID of the target subscription.
+        in: path
+        name: subscription_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Provider'
+          description: OK - Returns information about the resource provider.
+      tags:
+      - Providers
+      x-openapi-router-controller: openapi_server.controllers.providers_controller
+  /subscriptions/{subscriptionId}/providers/{resourceProviderNamespace}/unregister:
+    post:
+      description: Unregisters a subscription from a resource provider.
+      operationId: providers_unregister
+      parameters:
+      - description: The namespace of the resource provider to unregister.
+        in: path
+        name: resourceProviderNamespace
+        required: true
+        schema:
+          type: string
+      - description: The API version to use for this operation.
+        in: query
+        name: api_version
+        required: true
+        schema:
+          type: string
+      - description: The ID of the target subscription.
+        in: path
+        name: subscription_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Provider'
+          description: OK - Returns information about the resource provider.
+      tags:
+      - Providers
+      x-openapi-router-controller: openapi_server.controllers.providers_controller
+  /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/resources:
+    get:
+      description: Get all the resources for a resource group.
+      operationId: resources_list_by_resource_group
+      parameters:
+      - description: The resource group with the resources to get.
+        in: path
+        name: resourceGroupName
+        required: true
+        schema:
+          maxLength: 90
+          minLength: 1
+          pattern: "^[-\\w\\._\\(\\)]+$"
+          type: string
+      - description: The filter to apply on the operation.
+        in: query
+        name: $filter
+        schema:
+          type: string
+      - description: The $expand query parameter
+        in: query
+        name: $expand
+        schema:
+          type: string
+      - description: "The number of results to return. If null is passed, returns\
+          \ all resources."
+        in: query
+        name: $top
+        schema:
+          format: int32
+          type: integer
+      - description: The API version to use for this operation.
+        in: query
+        name: api_version
+        required: true
+        schema:
+          type: string
+      - description: The ID of the target subscription.
+        in: path
+        name: subscription_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceListResult'
+          description: OK - Returns an array of resources
+      tags:
+      - ResourceGroups
+      x-ms-odata: '#/definitions/GenericResourceFilter'
+      x-ms-pageable:
+        nextLinkName: nextLink
+      x-openapi-router-controller: openapi_server.controllers.resource_groups_controller
+  /subscriptions/{subscriptionId}/resourceGroups/{sourceResourceGroupName}/moveResources:
+    post:
+      description: "The resources to move must be in the same source resource group.\
+        \ The target resource group may be in a different subscription. When moving\
+        \ resources, both the source group and the target group are locked for the\
+        \ duration of the operation. Write and delete operations are blocked on the\
+        \ groups until the move completes. "
+      operationId: resources_move_resources
+      parameters:
+      - description: The name of the resource group containing the resources to move.
+        in: path
+        name: sourceResourceGroupName
+        required: true
+        schema:
+          maxLength: 90
+          minLength: 1
+          pattern: "^[-\\w\\._\\(\\)]+$"
+          type: string
+      - description: The API version to use for this operation.
+        in: query
+        name: api_version
+        required: true
+        schema:
+          type: string
+      - description: The ID of the target subscription.
+        in: path
+        name: subscription_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ResourcesMoveInfo'
+        description: Parameters for moving resources.
+        required: true
+        x-body-name: parameters
+      responses:
+        "202":
+          content: {}
+          description: Accepted
+        "204":
+          content: {}
+          description: No Content
+      summary: Moves resources from one resource group to another resource group.
+      tags:
+      - Resources
+      x-ms-long-running-operation: true
+      x-codegen-request-body-name: parameters
+      x-openapi-router-controller: openapi_server.controllers.resources_controller
+  /subscriptions/{subscriptionId}/resourceGroups/{sourceResourceGroupName}/validateMoveResources:
+    post:
+      description: "This operation checks whether the specified resources can be moved\
+        \ to the target. The resources to move must be in the same source resource\
+        \ group. The target resource group may be in a different subscription. If\
+        \ validation succeeds, it returns HTTP response code 204 (no content). If\
+        \ validation fails, it returns HTTP response code 409 (Conflict) with an error\
+        \ message. Retrieve the URL in the Location header value to check the result\
+        \ of the long-running operation."
+      operationId: resources_validate_move_resources
+      parameters:
+      - description: The name of the resource group containing the resources to validate
+          for move.
+        in: path
+        name: sourceResourceGroupName
+        required: true
+        schema:
+          maxLength: 90
+          minLength: 1
+          pattern: "^[-\\w\\._\\(\\)]+$"
+          type: string
+      - description: The API version to use for this operation.
+        in: query
+        name: api_version
+        required: true
+        schema:
+          type: string
+      - description: The ID of the target subscription.
+        in: path
+        name: subscription_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ResourcesMoveInfo'
+        description: Parameters for moving resources.
+        required: true
+        x-body-name: parameters
+      responses:
+        "202":
+          content: {}
+          description: Accepted
+        "204":
+          content: {}
+          description: No Content
+        "409":
+          content: {}
+          description: Conflict
+      summary: Validates whether resources can be moved from one resource group to
+        another resource group.
+      tags:
+      - Resources
+      x-ms-long-running-operation: true
+      x-codegen-request-body-name: parameters
+      x-openapi-router-controller: openapi_server.controllers.resources_controller
+  /subscriptions/{subscriptionId}/resourcegroups:
+    get:
+      description: Gets all the resource groups for a subscription.
+      operationId: resource_groups_list
+      parameters:
+      - description: The filter to apply on the operation.
+        in: query
+        name: $filter
+        schema:
+          type: string
+      - description: "The number of results to return. If null is passed, returns\
+          \ all resource groups."
+        in: query
+        name: $top
+        schema:
+          format: int32
+          type: integer
+      - description: The API version to use for this operation.
+        in: query
+        name: api_version
+        required: true
+        schema:
+          type: string
+      - description: The ID of the target subscription.
+        in: path
+        name: subscription_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceGroupListResult'
+          description: OK - Returns an array of resource groups.
+      tags:
+      - ResourceGroups
+      x-ms-odata: '#/definitions/ResourceGroupFilter'
+      x-ms-pageable:
+        nextLinkName: nextLink
+      x-openapi-router-controller: openapi_server.controllers.resource_groups_controller
+  /subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}:
+    delete:
+      description: "When you delete a resource group, all of its resources are also\
+        \ deleted. Deleting a resource group deletes all of its template deployments\
+        \ and currently stored operations."
+      operationId: resource_groups_delete
+      parameters:
+      - description: The name of the resource group to delete. The name is case insensitive.
+        in: path
+        name: resourceGroupName
+        required: true
+        schema:
+          maxLength: 90
+          minLength: 1
+          pattern: "^[-\\w\\._\\(\\)]+$"
+          type: string
+      - description: The API version to use for this operation.
+        in: query
+        name: api_version
+        required: true
+        schema:
+          type: string
+      - description: The ID of the target subscription.
+        in: path
+        name: subscription_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content: {}
+          description: OK
+        "202":
+          content: {}
+          description: Accepted
+      summary: Deletes a resource group.
+      tags:
+      - ResourceGroups
+      x-ms-long-running-operation: true
+      x-openapi-router-controller: openapi_server.controllers.resource_groups_controller
+    get:
+      description: Gets a resource group.
+      operationId: resource_groups_get
+      parameters:
+      - description: The name of the resource group to get. The name is case insensitive.
+        in: path
+        name: resourceGroupName
+        required: true
+        schema:
+          maxLength: 90
+          minLength: 1
+          pattern: "^[-\\w\\._\\(\\)]+$"
+          type: string
+      - description: The API version to use for this operation.
+        in: query
+        name: api_version
+        required: true
+        schema:
+          type: string
+      - description: The ID of the target subscription.
+        in: path
+        name: subscription_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceGroup'
+          description: OK - Returns information about the resource group.
+      tags:
+      - ResourceGroups
+      x-openapi-router-controller: openapi_server.controllers.resource_groups_controller
+    head:
+      description: Checks whether a resource group exists.
+      operationId: resource_groups_check_existence
+      parameters:
+      - description: The name of the resource group to check. The name is case insensitive.
+        in: path
+        name: resourceGroupName
+        required: true
+        schema:
+          maxLength: 90
+          minLength: 1
+          pattern: "^[-\\w\\._\\(\\)]+$"
+          type: string
+      - description: The API version to use for this operation.
+        in: query
+        name: api_version
+        required: true
+        schema:
+          type: string
+      - description: The ID of the target subscription.
+        in: path
+        name: subscription_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "204":
+          content: {}
+          description: No Content
+        "404":
+          content: {}
+          description: Not Found
+      tags:
+      - ResourceGroups
+      x-openapi-router-controller: openapi_server.controllers.resource_groups_controller
+    patch:
+      description: "Resource groups can be updated through a simple PATCH operation\
+        \ to a group address. The format of the request is the same as that for creating\
+        \ a resource group. If a field is unspecified, the current value is retained."
+      operationId: resource_groups_update
+      parameters:
+      - description: The name of the resource group to update. The name is case insensitive.
+        in: path
+        name: resourceGroupName
+        required: true
+        schema:
+          maxLength: 90
+          minLength: 1
+          pattern: "^[-\\w\\._\\(\\)]+$"
+          type: string
+      - description: The API version to use for this operation.
+        in: query
+        name: api_version
+        required: true
+        schema:
+          type: string
+      - description: The ID of the target subscription.
+        in: path
+        name: subscription_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ResourceGroupPatchable'
+        description: Parameters supplied to update a resource group.
+        required: true
+        x-body-name: parameters
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceGroup'
+          description: OK - Returns information about the resource group.
+      summary: Updates a resource group.
+      tags:
+      - ResourceGroups
+      x-codegen-request-body-name: parameters
+      x-openapi-router-controller: openapi_server.controllers.resource_groups_controller
+    put:
+      description: Creates or updates a resource group.
+      operationId: resource_groups_create_or_update
+      parameters:
+      - description: The name of the resource group to create or update.
+        in: path
+        name: resourceGroupName
+        required: true
+        schema:
+          maxLength: 90
+          minLength: 1
+          pattern: "^[-\\w\\._\\(\\)]+$"
+          type: string
+      - description: The API version to use for this operation.
+        in: query
+        name: api_version
+        required: true
+        schema:
+          type: string
+      - description: The ID of the target subscription.
+        in: path
+        name: subscription_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ResourceGroup'
+        description: Parameters supplied to the create or update a resource group.
+        required: true
+        x-body-name: parameters
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceGroup'
+          description: OK - Returns information about the new resource group.
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceGroup'
+          description: Created - Returns information about the new resource group.
+      tags:
+      - ResourceGroups
+      x-codegen-request-body-name: parameters
+      x-openapi-router-controller: openapi_server.controllers.resource_groups_controller
+  /subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/deployments/{deploymentName}/operations:
+    get:
+      description: Gets all deployments operations for a deployment.
+      operationId: deployment_operations_list
+      parameters:
+      - description: The name of the resource group. The name is case insensitive.
+        in: path
+        name: resourceGroupName
+        required: true
+        schema:
+          maxLength: 90
+          minLength: 1
+          pattern: "^[-\\w\\._\\(\\)]+$"
+          type: string
+      - description: The name of the deployment with the operation to get.
+        in: path
+        name: deploymentName
+        required: true
+        schema:
+          maxLength: 64
+          minLength: 1
+          pattern: "^[-\\w\\._\\(\\)]+$"
+          type: string
+      - description: The number of results to return.
+        in: query
+        name: $top
+        schema:
+          format: int32
+          type: integer
+      - description: The API version to use for this operation.
+        in: query
+        name: api_version
+        required: true
+        schema:
+          type: string
+      - description: The ID of the target subscription.
+        in: path
+        name: subscription_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeploymentOperationsListResult'
+          description: OK - Return an array of deployment operations.
+      tags:
+      - DeploymentOperations
+      x-ms-pageable:
+        nextLinkName: nextLink
+      x-openapi-router-controller: openapi_server.controllers.deployment_operations_controller
+  /subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/deployments/{deploymentName}/operations/{operationId}:
+    get:
+      description: Gets a deployments operation.
+      operationId: deployment_operations_get
+      parameters:
+      - description: The name of the resource group. The name is case insensitive.
+        in: path
+        name: resourceGroupName
+        required: true
+        schema:
+          maxLength: 90
+          minLength: 1
+          pattern: "^[-\\w\\._\\(\\)]+$"
+          type: string
+      - description: The name of the deployment.
+        in: path
+        name: deploymentName
+        required: true
+        schema:
+          maxLength: 64
+          minLength: 1
+          pattern: "^[-\\w\\._\\(\\)]+$"
+          type: string
+      - description: The ID of the operation to get.
+        in: path
+        name: operationId
+        required: true
+        schema:
+          type: string
+      - description: The API version to use for this operation.
+        in: query
+        name: api_version
+        required: true
+        schema:
+          type: string
+      - description: The ID of the target subscription.
+        in: path
+        name: subscription_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeploymentOperation'
+          description: OK - Returns information about the deployment operation.
+      tags:
+      - DeploymentOperations
+      x-openapi-router-controller: openapi_server.controllers.deployment_operations_controller
+  /subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/exportTemplate:
+    post:
+      description: Captures the specified resource group as a template.
+      operationId: resource_groups_export_template
+      parameters:
+      - description: The name of the resource group to export as a template.
+        in: path
+        name: resourceGroupName
+        required: true
+        schema:
+          maxLength: 90
+          minLength: 1
+          pattern: "^[-\\w\\._\\(\\)]+$"
+          type: string
+      - description: The API version to use for this operation.
+        in: query
+        name: api_version
+        required: true
+        schema:
+          type: string
+      - description: The ID of the target subscription.
+        in: path
+        name: subscription_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ExportTemplateRequest'
+        description: Parameters for exporting the template.
+        required: true
+        x-body-name: parameters
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceGroupExportResult'
+          description: OK - Returns the result of the export.
+      tags:
+      - ResourceGroups
+      x-codegen-request-body-name: parameters
+      x-openapi-router-controller: openapi_server.controllers.resource_groups_controller
+  /subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Resources/deployments/:
+    get:
+      description: Get all the deployments for a resource group.
+      operationId: deployments_list_by_resource_group
+      parameters:
+      - description: The name of the resource group with the deployments to get. The
+          name is case insensitive.
+        in: path
+        name: resourceGroupName
+        required: true
+        schema:
+          maxLength: 90
+          minLength: 1
+          pattern: "^[-\\w\\._\\(\\)]+$"
+          type: string
+      - description: "The filter to apply on the operation. For example, you can use\
+          \ $filter=provisioningState eq '{state}'."
+        in: query
+        name: $filter
+        schema:
+          type: string
+      - description: "The number of results to get. If null is passed, returns all\
+          \ deployments."
+        in: query
+        name: $top
+        schema:
+          format: int32
+          type: integer
+      - description: The API version to use for this operation.
+        in: query
+        name: api_version
+        required: true
+        schema:
+          type: string
+      - description: The ID of the target subscription.
+        in: path
+        name: subscription_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeploymentListResult'
+          description: OK - Returns an array of deployments.
+      tags:
+      - Deployments
+      x-ms-odata: '#/definitions/DeploymentExtendedFilter'
+      x-ms-pageable:
+        nextLinkName: nextLink
+      x-openapi-router-controller: openapi_server.controllers.deployments_controller
+  /subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Resources/deployments/{deploymentName}:
+    delete:
+      description: "A template deployment that is currently running cannot be deleted.\
+        \ Deleting a template deployment removes the associated deployment operations.\
+        \ Deleting a template deployment does not affect the state of the resource\
+        \ group. This is an asynchronous operation that returns a status of 202 until\
+        \ the template deployment is successfully deleted. The Location response header\
+        \ contains the URI that is used to obtain the status of the process. While\
+        \ the process is running, a call to the URI in the Location header returns\
+        \ a status of 202. When the process finishes, the URI in the Location header\
+        \ returns a status of 204 on success. If the asynchronous request failed,\
+        \ the URI in the Location header returns an error-level status code."
+      operationId: deployments_delete
+      parameters:
+      - description: The name of the resource group with the deployment to delete.
+          The name is case insensitive.
+        in: path
+        name: resourceGroupName
+        required: true
+        schema:
+          maxLength: 90
+          minLength: 1
+          pattern: "^[-\\w\\._\\(\\)]+$"
+          type: string
+      - description: The name of the deployment to delete.
+        in: path
+        name: deploymentName
+        required: true
+        schema:
+          maxLength: 64
+          minLength: 1
+          pattern: "^[-\\w\\._\\(\\)]+$"
+          type: string
+      - description: The API version to use for this operation.
+        in: query
+        name: api_version
+        required: true
+        schema:
+          type: string
+      - description: The ID of the target subscription.
+        in: path
+        name: subscription_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "202":
+          content: {}
+          description: Accepted - Returns this status until the asynchronous operation
+            has completed.
+        "204":
+          content: {}
+          description: No Content
+      summary: Deletes a deployment from the deployment history.
+      tags:
+      - Deployments
+      x-ms-long-running-operation: true
+      x-openapi-router-controller: openapi_server.controllers.deployments_controller
+    get:
+      description: Gets a deployment.
+      operationId: deployments_get
+      parameters:
+      - description: The name of the resource group. The name is case insensitive.
+        in: path
+        name: resourceGroupName
+        required: true
+        schema:
+          maxLength: 90
+          minLength: 1
+          pattern: "^[-\\w\\._\\(\\)]+$"
+          type: string
+      - description: The name of the deployment to get.
+        in: path
+        name: deploymentName
+        required: true
+        schema:
+          maxLength: 64
+          minLength: 1
+          pattern: "^[-\\w\\._\\(\\)]+$"
+          type: string
+      - description: The API version to use for this operation.
+        in: query
+        name: api_version
+        required: true
+        schema:
+          type: string
+      - description: The ID of the target subscription.
+        in: path
+        name: subscription_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeploymentExtended'
+          description: "OK - Returns information about the deployment, including provisioning\
+            \ status."
+      tags:
+      - Deployments
+      x-openapi-router-controller: openapi_server.controllers.deployments_controller
+    head:
+      description: Checks whether the deployment exists.
+      operationId: deployments_check_existence
+      parameters:
+      - description: The name of the resource group with the deployment to check.
+          The name is case insensitive.
+        in: path
+        name: resourceGroupName
+        required: true
+        schema:
+          maxLength: 90
+          minLength: 1
+          pattern: "^[-\\w\\._\\(\\)]+$"
+          type: string
+      - description: The name of the deployment to check.
+        in: path
+        name: deploymentName
+        required: true
+        schema:
+          maxLength: 64
+          minLength: 1
+          pattern: "^[-\\w\\._\\(\\)]+$"
+          type: string
+      - description: The API version to use for this operation.
+        in: query
+        name: api_version
+        required: true
+        schema:
+          type: string
+      - description: The ID of the target subscription.
+        in: path
+        name: subscription_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "204":
+          content: {}
+          description: No Content
+        "404":
+          content: {}
+          description: Not Found
+      tags:
+      - Deployments
+      x-openapi-router-controller: openapi_server.controllers.deployments_controller
+    put:
+      description: You can provide the template and parameters directly in the request
+        or link to JSON files.
+      operationId: deployments_create_or_update
+      parameters:
+      - description: The name of the resource group to deploy the resources to. The
+          name is case insensitive. The resource group must already exist.
+        in: path
+        name: resourceGroupName
+        required: true
+        schema:
+          maxLength: 90
+          minLength: 1
+          pattern: "^[-\\w\\._\\(\\)]+$"
+          type: string
+      - description: The name of the deployment.
+        in: path
+        name: deploymentName
+        required: true
+        schema:
+          maxLength: 64
+          minLength: 1
+          pattern: "^[-\\w\\._\\(\\)]+$"
+          type: string
+      - description: The API version to use for this operation.
+        in: query
+        name: api_version
+        required: true
+        schema:
+          type: string
+      - description: The ID of the target subscription.
+        in: path
+        name: subscription_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Deployment'
+        description: Additional parameters supplied to the operation.
+        required: true
+        x-body-name: parameters
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeploymentExtended'
+          description: "OK - Returns information about the deployment, including provisioning\
+            \ status."
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeploymentExtended'
+          description: "Created - Returns information about the deployment, including\
+            \ provisioning status."
+      summary: Deploys resources to a resource group.
+      tags:
+      - Deployments
+      x-ms-examples:
+        Create a deployment that will redeploy another deployment on failure:
+          parameters:
+            api-version: 2018-02-01
+            deploymentName: exampleDeploymentName
+            parameters:
+              properties:
+                mode: Complete
+                onErrorDeployment:
+                  deploymentName: "{nameOfDeploymentToUse}"
+                  type: SpecificDeployment
+                parameters: {}
+                templateLink: "{templateUri}"
+            resourceGroupName: myResourceGroup
+            subscriptionId: "{subscriptionId}"
+          responses:
+            "200":
+              body:
+                id: "/subscriptions/{subscriptionId}/resourcegroups/myResourceGroup/providers/Microsoft.Resources/deployments/exampleDeploymentName"
+                name: exampleDeploymentName
+                properties:
+                  correlationId: "{correlationId}"
+                  mode: Complete
+                  onErrorDeployment:
+                    deploymentName: "{nameOfDeploymentToUse}"
+                    type: SpecificDeployment
+                  provisioningState: Accepted
+                  timestamp: 2018-02-01T00:00:00.0000000Z
+            "201":
+              body:
+                id: "/subscriptions/{subscriptionId}/resourcegroups/myResourceGroup/providers/Microsoft.Resources/deployments/exampleDeploymentName"
+                name: exampleDeploymentName
+                properties:
+                  correlationId: "{correlationId}"
+                  mode: Complete
+                  onErrorDeployment:
+                    deploymentName: "{nameOfDeploymentToUse}"
+                    type: SpecificDeployment
+                  provisioningState: Accepted
+                  timestamp: 2018-02-01T00:00:00.0000000Z
+        Create a deployment that will redeploy the last successful deployment on failure:
+          parameters:
+            api-version: 2018-02-01
+            deploymentName: exampleDeploymentName
+            parameters:
+              properties:
+                mode: Complete
+                onErrorDeployment:
+                  type: LastSuccessful
+                parameters: {}
+                templateLink: "{templateUri}"
+            resourceGroupName: myResourceGroup
+            subscriptionId: "{subscriptionId}"
+          responses:
+            "200":
+              body:
+                id: "/subscriptions/{subscriptionId}/resourcegroups/myResourceGroup/providers/Microsoft.Resources/deployments/exampleDeploymentName"
+                name: exampleDeploymentName
+                properties:
+                  correlationId: "{correlationId}"
+                  mode: Complete
+                  onErrorDeployment:
+                    deploymentName: "{nameOfLastSuccesfulDeployment}"
+                    type: LastSuccessful
+                  provisioningState: Accepted
+                  timestamp: 2018-02-01T00:00:00.0000000Z
+            "201":
+              body:
+                id: "/subscriptions/{subscriptionId}/resourcegroups/myResourceGroup/providers/Microsoft.Resources/deployments/exampleDeploymentName"
+                name: exampleDeploymentName
+                properties:
+                  correlationId: "{correlationId}"
+                  mode: Complete
+                  onErrorDeployment:
+                    deploymentName: "{nameOfLastSuccesfulDeployment}"
+                    type: LastSuccessful
+                  provisioningState: Accepted
+                  timestamp: 2018-02-01T00:00:00.0000000Z
+      x-ms-long-running-operation: true
+      x-codegen-request-body-name: parameters
+      x-openapi-router-controller: openapi_server.controllers.deployments_controller
+  ? /subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Resources/deployments/{deploymentName}/cancel
+  : post:
+      description: "You can cancel a deployment only if the provisioningState is Accepted\
+        \ or Running. After the deployment is canceled, the provisioningState is set\
+        \ to Canceled. Canceling a template deployment stops the currently running\
+        \ template deployment and leaves the resource group partially deployed."
+      operationId: deployments_cancel
+      parameters:
+      - description: The name of the resource group. The name is case insensitive.
+        in: path
+        name: resourceGroupName
+        required: true
+        schema:
+          maxLength: 90
+          minLength: 1
+          pattern: "^[-\\w\\._\\(\\)]+$"
+          type: string
+      - description: The name of the deployment to cancel.
+        in: path
+        name: deploymentName
+        required: true
+        schema:
+          maxLength: 64
+          minLength: 1
+          pattern: "^[-\\w\\._\\(\\)]+$"
+          type: string
+      - description: The API version to use for this operation.
+        in: query
+        name: api_version
+        required: true
+        schema:
+          type: string
+      - description: The ID of the target subscription.
+        in: path
+        name: subscription_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "204":
+          content: {}
+          description: No Content
+      summary: Cancels a currently running template deployment.
+      tags:
+      - Deployments
+      x-openapi-router-controller: openapi_server.controllers.deployments_controller
+  ? /subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Resources/deployments/{deploymentName}/exportTemplate
+  : post:
+      description: Exports the template used for specified deployment.
+      operationId: deployments_export_template
+      parameters:
+      - description: The name of the resource group. The name is case insensitive.
+        in: path
+        name: resourceGroupName
+        required: true
+        schema:
+          maxLength: 90
+          minLength: 1
+          pattern: "^[-\\w\\._\\(\\)]+$"
+          type: string
+      - description: The name of the deployment from which to get the template.
+        in: path
+        name: deploymentName
+        required: true
+        schema:
+          maxLength: 64
+          minLength: 1
+          pattern: "^[-\\w\\._\\(\\)]+$"
+          type: string
+      - description: The API version to use for this operation.
+        in: query
+        name: api_version
+        required: true
+        schema:
+          type: string
+      - description: The ID of the target subscription.
+        in: path
+        name: subscription_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeploymentExportResult'
+          description: OK - Returns the template.
+      tags:
+      - Deployments
+      x-openapi-router-controller: openapi_server.controllers.deployments_controller
+  ? /subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Resources/deployments/{deploymentName}/validate
+  : post:
+      description: Validates whether the specified template is syntactically correct
+        and will be accepted by Azure Resource Manager..
+      operationId: deployments_validate
+      parameters:
+      - description: The name of the resource group the template will be deployed
+          to. The name is case insensitive.
+        in: path
+        name: resourceGroupName
+        required: true
+        schema:
+          maxLength: 90
+          minLength: 1
+          pattern: "^[-\\w\\._\\(\\)]+$"
+          type: string
+      - description: The name of the deployment.
+        in: path
+        name: deploymentName
+        required: true
+        schema:
+          maxLength: 64
+          minLength: 1
+          pattern: "^[-\\w\\._\\(\\)]+$"
+          type: string
+      - description: The API version to use for this operation.
+        in: query
+        name: api_version
+        required: true
+        schema:
+          type: string
+      - description: The ID of the target subscription.
+        in: path
+        name: subscription_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Deployment'
+        description: Parameters to validate.
+        required: true
+        x-body-name: parameters
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeploymentValidateResult'
+          description: OK - Returns the validation result.
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeploymentValidateResult'
+          description: Returns the validation result.
+      tags:
+      - Deployments
+      x-codegen-request-body-name: parameters
+      x-openapi-router-controller: openapi_server.controllers.deployments_controller
+  ? /subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{parentResourcePath}/{resourceType}/{resourceName}
+  : delete:
+      description: Deletes a resource.
+      operationId: resources_delete
+      parameters:
+      - description: The name of the resource group that contains the resource to
+          delete. The name is case insensitive.
+        in: path
+        name: resourceGroupName
+        required: true
+        schema:
+          maxLength: 90
+          minLength: 1
+          pattern: "^[-\\w\\._\\(\\)]+$"
+          type: string
+      - description: The namespace of the resource provider.
+        in: path
+        name: resourceProviderNamespace
+        required: true
+        schema:
+          type: string
+      - description: The parent resource identity.
+        in: path
+        name: parentResourcePath
+        required: true
+        schema:
+          type: string
+          x-ms-skip-url-encoding: true
+        x-ms-skip-url-encoding: true
+      - description: The resource type.
+        in: path
+        name: resourceType
+        required: true
+        schema:
+          type: string
+          x-ms-skip-url-encoding: true
+        x-ms-skip-url-encoding: true
+      - description: The name of the resource to delete.
+        in: path
+        name: resourceName
+        required: true
+        schema:
+          type: string
+      - description: The API version to use for the operation.
+        in: query
+        name: api-version
+        required: true
+        schema:
+          type: string
+      - description: The ID of the target subscription.
+        in: path
+        name: subscription_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content: {}
+          description: OK
+        "202":
+          content: {}
+          description: Accepted
+        "204":
+          content: {}
+          description: No Content
+      tags:
+      - Resources
+      x-ms-long-running-operation: true
+      x-openapi-router-controller: openapi_server.controllers.resources_controller
+    get:
+      description: Gets a resource.
+      operationId: resources_get
+      parameters:
+      - description: The name of the resource group containing the resource to get.
+          The name is case insensitive.
+        in: path
+        name: resourceGroupName
+        required: true
+        schema:
+          maxLength: 90
+          minLength: 1
+          pattern: "^[-\\w\\._\\(\\)]+$"
+          type: string
+      - description: The namespace of the resource provider.
+        in: path
+        name: resourceProviderNamespace
+        required: true
+        schema:
+          type: string
+      - description: The parent resource identity.
+        in: path
+        name: parentResourcePath
+        required: true
+        schema:
+          type: string
+          x-ms-skip-url-encoding: true
+        x-ms-skip-url-encoding: true
+      - description: The resource type of the resource.
+        in: path
+        name: resourceType
+        required: true
+        schema:
+          type: string
+          x-ms-skip-url-encoding: true
+        x-ms-skip-url-encoding: true
+      - description: The name of the resource to get.
+        in: path
+        name: resourceName
+        required: true
+        schema:
+          type: string
+      - description: The API version to use for the operation.
+        in: query
+        name: api-version
+        required: true
+        schema:
+          type: string
+      - description: The ID of the target subscription.
+        in: path
+        name: subscription_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericResource'
+          description: OK - Returns information about the resource.
+      tags:
+      - Resources
+      x-openapi-router-controller: openapi_server.controllers.resources_controller
+    head:
+      description: Checks whether a resource exists.
+      operationId: resources_check_existence
+      parameters:
+      - description: The name of the resource group containing the resource to check.
+          The name is case insensitive.
+        in: path
+        name: resourceGroupName
+        required: true
+        schema:
+          maxLength: 90
+          minLength: 1
+          pattern: "^[-\\w\\._\\(\\)]+$"
+          type: string
+      - description: The resource provider of the resource to check.
+        in: path
+        name: resourceProviderNamespace
+        required: true
+        schema:
+          type: string
+      - description: The parent resource identity.
+        in: path
+        name: parentResourcePath
+        required: true
+        schema:
+          type: string
+          x-ms-skip-url-encoding: true
+        x-ms-skip-url-encoding: true
+      - description: The resource type.
+        in: path
+        name: resourceType
+        required: true
+        schema:
+          type: string
+          x-ms-skip-url-encoding: true
+        x-ms-skip-url-encoding: true
+      - description: The name of the resource to check whether it exists.
+        in: path
+        name: resourceName
+        required: true
+        schema:
+          type: string
+      - description: The API version to use for the operation.
+        in: query
+        name: api-version
+        required: true
+        schema:
+          type: string
+      - description: The ID of the target subscription.
+        in: path
+        name: subscription_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "204":
+          content: {}
+          description: No Content
+        "404":
+          content: {}
+          description: Not Found
+      tags:
+      - Resources
+      x-openapi-router-controller: openapi_server.controllers.resources_controller
+    patch:
+      description: Updates a resource.
+      operationId: resources_update
+      parameters:
+      - description: The name of the resource group for the resource. The name is
+          case insensitive.
+        in: path
+        name: resourceGroupName
+        required: true
+        schema:
+          maxLength: 90
+          minLength: 1
+          pattern: "^[-\\w\\._\\(\\)]+$"
+          type: string
+      - description: The namespace of the resource provider.
+        in: path
+        name: resourceProviderNamespace
+        required: true
+        schema:
+          type: string
+      - description: The parent resource identity.
+        in: path
+        name: parentResourcePath
+        required: true
+        schema:
+          type: string
+          x-ms-skip-url-encoding: true
+        x-ms-skip-url-encoding: true
+      - description: The resource type of the resource to update.
+        in: path
+        name: resourceType
+        required: true
+        schema:
+          type: string
+          x-ms-skip-url-encoding: true
+        x-ms-skip-url-encoding: true
+      - description: The name of the resource to update.
+        in: path
+        name: resourceName
+        required: true
+        schema:
+          type: string
+      - description: The API version to use for the operation.
+        in: query
+        name: api-version
+        required: true
+        schema:
+          type: string
+      - description: The ID of the target subscription.
+        in: path
+        name: subscription_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GenericResource'
+        description: Parameters for updating the resource.
+        required: true
+        x-body-name: parameters
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericResource'
+          description: OK - Returns information about the resource.
+        "202":
+          content: {}
+          description: Accepted
+      tags:
+      - Resources
+      x-ms-long-running-operation: true
+      x-codegen-request-body-name: parameters
+      x-openapi-router-controller: openapi_server.controllers.resources_controller
+    put:
+      description: Creates a resource.
+      operationId: resources_create_or_update
+      parameters:
+      - description: The name of the resource group for the resource. The name is
+          case insensitive.
+        in: path
+        name: resourceGroupName
+        required: true
+        schema:
+          maxLength: 90
+          minLength: 1
+          pattern: "^[-\\w\\._\\(\\)]+$"
+          type: string
+      - description: The namespace of the resource provider.
+        in: path
+        name: resourceProviderNamespace
+        required: true
+        schema:
+          type: string
+      - description: The parent resource identity.
+        in: path
+        name: parentResourcePath
+        required: true
+        schema:
+          type: string
+          x-ms-skip-url-encoding: true
+        x-ms-skip-url-encoding: true
+      - description: The resource type of the resource to create.
+        in: path
+        name: resourceType
+        required: true
+        schema:
+          type: string
+          x-ms-skip-url-encoding: true
+        x-ms-skip-url-encoding: true
+      - description: The name of the resource to create.
+        in: path
+        name: resourceName
+        required: true
+        schema:
+          type: string
+      - description: The API version to use for the operation.
+        in: query
+        name: api-version
+        required: true
+        schema:
+          type: string
+      - description: The ID of the target subscription.
+        in: path
+        name: subscription_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GenericResource'
+        description: Parameters for creating or updating the resource.
+        required: true
+        x-body-name: parameters
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericResource'
+          description: OK - Returns information about the resource.
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericResource'
+          description: Created - Returns information about the resource.
+        "202":
+          content: {}
+          description: Accepted
+      tags:
+      - Resources
+      x-ms-long-running-operation: true
+      x-codegen-request-body-name: parameters
+      x-openapi-router-controller: openapi_server.controllers.resources_controller
+  /subscriptions/{subscriptionId}/resources:
+    get:
+      description: Get all the resources in a subscription.
+      operationId: resources_list
+      parameters:
+      - description: The filter to apply on the operation.
+        in: query
+        name: $filter
+        schema:
+          type: string
+      - description: The $expand query parameter.
+        in: query
+        name: $expand
+        schema:
+          type: string
+      - description: "The number of results to return. If null is passed, returns\
+          \ all resource groups."
+        in: query
+        name: $top
+        schema:
+          format: int32
+          type: integer
+      - description: The API version to use for this operation.
+        in: query
+        name: api_version
+        required: true
+        schema:
+          type: string
+      - description: The ID of the target subscription.
+        in: path
+        name: subscription_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceListResult'
+          description: OK - Returns an array of resources.
+      tags:
+      - Resources
+      x-ms-odata: '#/definitions/GenericResourceFilter'
+      x-ms-pageable:
+        nextLinkName: nextLink
+      x-openapi-router-controller: openapi_server.controllers.resources_controller
+  /subscriptions/{subscriptionId}/tagNames:
+    get:
+      description: Gets the names and values of all resource tags that are defined
+        in a subscription.
+      operationId: tags_list
+      parameters:
+      - description: The API version to use for this operation.
+        in: query
+        name: api_version
+        required: true
+        schema:
+          type: string
+      - description: The ID of the target subscription.
+        in: path
+        name: subscription_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TagsListResult'
+          description: OK - Returns an array of tag names and values.
+      tags:
+      - Tags
+      x-ms-pageable:
+        nextLinkName: nextLink
+      x-openapi-router-controller: openapi_server.controllers.tags_controller
+  /subscriptions/{subscriptionId}/tagNames/{tagName}:
+    delete:
+      description: You must remove all values from a resource tag before you can delete
+        it.
+      operationId: tags_delete
+      parameters:
+      - description: The name of the tag.
+        in: path
+        name: tagName
+        required: true
+        schema:
+          type: string
+      - description: The API version to use for this operation.
+        in: query
+        name: api_version
+        required: true
+        schema:
+          type: string
+      - description: The ID of the target subscription.
+        in: path
+        name: subscription_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content: {}
+          description: OK
+        "204":
+          content: {}
+          description: No Content
+      summary: Deletes a tag from the subscription.
+      tags:
+      - Tags
+      x-openapi-router-controller: openapi_server.controllers.tags_controller
+    put:
+      description: "The tag name can have a maximum of 512 characters and is case\
+        \ insensitive. Tag names created by Azure have prefixes of microsoft, azure,\
+        \ or windows. You cannot create tags with one of these prefixes."
+      operationId: tags_create_or_update
+      parameters:
+      - description: The name of the tag to create.
+        in: path
+        name: tagName
+        required: true
+        schema:
+          type: string
+      - description: The API version to use for this operation.
+        in: query
+        name: api_version
+        required: true
+        schema:
+          type: string
+      - description: The ID of the target subscription.
+        in: path
+        name: subscription_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TagDetails'
+          description: OK - Returns information about the tag.
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TagDetails'
+          description: Created - Returns information about the tag.
+      summary: Creates a tag in the subscription.
+      tags:
+      - Tags
+      x-openapi-router-controller: openapi_server.controllers.tags_controller
+  /subscriptions/{subscriptionId}/tagNames/{tagName}/tagValues/{tagValue}:
+    delete:
+      description: Deletes a tag value.
+      operationId: tags_delete_value
+      parameters:
+      - description: The name of the tag.
+        in: path
+        name: tagName
+        required: true
+        schema:
+          type: string
+      - description: The value of the tag to delete.
+        in: path
+        name: tagValue
+        required: true
+        schema:
+          type: string
+      - description: The API version to use for this operation.
+        in: query
+        name: api_version
+        required: true
+        schema:
+          type: string
+      - description: The ID of the target subscription.
+        in: path
+        name: subscription_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content: {}
+          description: OK
+        "204":
+          content: {}
+          description: No Content
+      tags:
+      - Tags
+      x-openapi-router-controller: openapi_server.controllers.tags_controller
+    put:
+      description: Creates a tag value. The name of the tag must already exist.
+      operationId: tags_create_or_update_value
+      parameters:
+      - description: The name of the tag.
+        in: path
+        name: tagName
+        required: true
+        schema:
+          type: string
+      - description: The value of the tag to create.
+        in: path
+        name: tagValue
+        required: true
+        schema:
+          type: string
+      - description: The API version to use for this operation.
+        in: query
+        name: api_version
+        required: true
+        schema:
+          type: string
+      - description: The ID of the target subscription.
+        in: path
+        name: subscription_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TagValue'
+          description: OK - Returns information about the tag value.
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TagValue'
+          description: Created - Returns information about the tag value.
+      tags:
+      - Tags
+      x-openapi-router-controller: openapi_server.controllers.tags_controller
+  /{resourceId}:
+    delete:
+      description: Deletes a resource by ID.
+      operationId: resources_delete_by_id
+      parameters:
+      - description: "The fully qualified ID of the resource, including the resource\
+          \ name and resource type. Use the format, /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}"
+        in: path
+        name: resourceId
+        required: true
+        schema:
+          type: string
+          x-ms-skip-url-encoding: true
+        x-ms-skip-url-encoding: true
+      - description: The API version to use for the operation.
+        in: query
+        name: api-version
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content: {}
+          description: OK
+        "202":
+          content: {}
+          description: Accepted
+        "204":
+          content: {}
+          description: No Content
+      tags:
+      - Resources
+      x-ms-long-running-operation: true
+      x-openapi-router-controller: openapi_server.controllers.resources_controller
+    get:
+      description: Gets a resource by ID.
+      operationId: resources_get_by_id
+      parameters:
+      - description: "The fully qualified ID of the resource, including the resource\
+          \ name and resource type. Use the format, /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}"
+        in: path
+        name: resourceId
+        required: true
+        schema:
+          type: string
+          x-ms-skip-url-encoding: true
+        x-ms-skip-url-encoding: true
+      - description: The API version to use for the operation.
+        in: query
+        name: api-version
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericResource'
+          description: OK - Returns information about the resource.
+      tags:
+      - Resources
+      x-openapi-router-controller: openapi_server.controllers.resources_controller
+    head:
+      description: Checks by ID whether a resource exists.
+      operationId: resources_check_existence_by_id
+      parameters:
+      - description: "The fully qualified ID of the resource, including the resource\
+          \ name and resource type. Use the format, /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}"
+        in: path
+        name: resourceId
+        required: true
+        schema:
+          type: string
+          x-ms-skip-url-encoding: true
+        x-ms-skip-url-encoding: true
+      - description: The API version to use for the operation.
+        in: query
+        name: api-version
+        required: true
+        schema:
+          type: string
+      responses:
+        "204":
+          content: {}
+          description: No Content
+        "404":
+          content: {}
+          description: Not Found
+      tags:
+      - Resources
+      x-openapi-router-controller: openapi_server.controllers.resources_controller
+    patch:
+      description: Updates a resource by ID.
+      operationId: resources_update_by_id
+      parameters:
+      - description: "The fully qualified ID of the resource, including the resource\
+          \ name and resource type. Use the format, /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}"
+        in: path
+        name: resourceId
+        required: true
+        schema:
+          type: string
+          x-ms-skip-url-encoding: true
+        x-ms-skip-url-encoding: true
+      - description: The API version to use for the operation.
+        in: query
+        name: api-version
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GenericResource'
+        description: Update resource parameters.
+        required: true
+        x-body-name: parameters
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericResource'
+          description: OK - Returns information about the resource.
+        "202":
+          content: {}
+          description: Accepted
+      tags:
+      - Resources
+      x-ms-long-running-operation: true
+      x-codegen-request-body-name: parameters
+      x-openapi-router-controller: openapi_server.controllers.resources_controller
+    put:
+      description: Create a resource by ID.
+      operationId: resources_create_or_update_by_id
+      parameters:
+      - description: "The fully qualified ID of the resource, including the resource\
+          \ name and resource type. Use the format, /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}"
+        in: path
+        name: resourceId
+        required: true
+        schema:
+          type: string
+          x-ms-skip-url-encoding: true
+        x-ms-skip-url-encoding: true
+      - description: The API version to use for the operation.
+        in: query
+        name: api-version
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GenericResource'
+        description: Create or update resource parameters.
+        required: true
+        x-body-name: parameters
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericResource'
+          description: OK - Returns information about the resource.
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericResource'
+          description: Created - Returns information about the resource.
+        "202":
+          content: {}
+          description: Accepted
+      tags:
+      - Resources
+      x-ms-long-running-operation: true
+      x-codegen-request-body-name: parameters
+      x-openapi-router-controller: openapi_server.controllers.resources_controller
+components:
+  parameters:
+    ApiVersionParameter:
+      description: The API version to use for this operation.
+      in: query
+      name: api-version
+      required: true
+      schema:
+        type: string
+    SubscriptionIdParameter:
+      description: The ID of the target subscription.
+      in: path
+      name: subscriptionId
+      required: true
+      schema:
+        type: string
+  schemas:
+    AliasPathType:
+      description: 'The type of the paths for alias. '
+      example:
+        path: path
+        apiVersions:
+        - apiVersions
+        - apiVersions
+      properties:
+        apiVersions:
+          description: The API versions.
+          items:
+            type: string
+          title: apiVersions
+          type: array
+        path:
+          description: The path of an alias.
+          title: path
+          type: string
+      title: AliasPathType
+      type: object
+    AliasType:
+      description: 'The alias type. '
+      example:
+        paths:
+        - path: path
+          apiVersions:
+          - apiVersions
+          - apiVersions
+        - path: path
+          apiVersions:
+          - apiVersions
+          - apiVersions
+        name: name
+      properties:
+        name:
+          description: The alias name.
+          title: name
+          type: string
+        paths:
+          description: The paths for an alias.
+          items:
+            $ref: '#/components/schemas/AliasPathType'
+          title: paths
+          type: array
+      title: AliasType
+      type: object
+    BasicDependency:
+      description: Deployment dependency information.
+      example:
+        resourceName: resourceName
+        id: id
+        resourceType: resourceType
+      properties:
+        id:
+          description: The ID of the dependency.
+          title: id
+          type: string
+        resourceName:
+          description: The dependency resource name.
+          title: resourceName
+          type: string
+        resourceType:
+          description: The dependency resource type.
+          title: resourceType
+          type: string
+      title: BasicDependency
+      type: object
+    CloudError:
+      description: An error response for a resource management request.
+      example:
+        error:
+          code: code
+          additionalInfo:
+          - type: type
+            info: "{}"
+          - type: type
+            info: "{}"
+          details:
+          - null
+          - null
+          message: message
+          target: target
+      properties:
+        error:
+          $ref: '#/components/schemas/CloudError_error'
+      title: CloudError
+      type: object
+      x-ms-external: true
+    DebugSetting:
+      example:
+        detailLevel: detailLevel
+      properties:
+        detailLevel:
+          description: "Specifies the type of information to log for debugging. The\
+            \ permitted values are none, requestContent, responseContent, or both\
+            \ requestContent and responseContent separated by a comma. The default\
+            \ is none. When setting this value, carefully consider the type of information\
+            \ you are passing in during deployment. By logging information about the\
+            \ request or response, you could potentially expose sensitive data that\
+            \ is retrieved through the deployment operations."
+          title: detailLevel
+          type: string
+      title: DebugSetting
+      type: object
+    Dependency:
+      description: Deployment dependency information.
+      example:
+        dependsOn:
+        - resourceName: resourceName
+          id: id
+          resourceType: resourceType
+        - resourceName: resourceName
+          id: id
+          resourceType: resourceType
+        resourceName: resourceName
+        id: id
+        resourceType: resourceType
+      properties:
+        dependsOn:
+          description: The list of dependencies.
+          items:
+            $ref: '#/components/schemas/BasicDependency'
+          title: dependsOn
+          type: array
+        id:
+          description: The ID of the dependency.
+          title: id
+          type: string
+        resourceName:
+          description: The dependency resource name.
+          title: resourceName
+          type: string
+        resourceType:
+          description: The dependency resource type.
+          title: resourceType
+          type: string
+      title: Dependency
+      type: object
+    Deployment:
+      description: Deployment operation parameters.
+      example:
+        properties:
+          mode: Incremental
+          parametersLink:
+            contentVersion: contentVersion
+            uri: uri
+          template: "{}"
+          onErrorDeployment:
+            deploymentName: deploymentName
+            type: LastSuccessful
+          templateLink:
+            contentVersion: contentVersion
+            uri: uri
+          parameters: "{}"
+          debugSetting:
+            detailLevel: detailLevel
+      properties:
+        properties:
+          $ref: '#/components/schemas/DeploymentProperties'
+      required:
+      - properties
+      title: Deployment
+      type: object
+    DeploymentExportResult:
+      description: 'The deployment export result. '
+      example:
+        template: "{}"
+      properties:
+        template:
+          description: The template content.
+          properties: {}
+          title: template
+          type: object
+      title: DeploymentExportResult
+      type: object
+    DeploymentExtended:
+      description: Deployment information.
+      example:
+        name: name
+        id: id
+        properties:
+          outputs: "{}"
+          template: "{}"
+          templateLink:
+            contentVersion: contentVersion
+            uri: uri
+          provisioningState: provisioningState
+          debugSetting:
+            detailLevel: detailLevel
+          dependencies:
+          - dependsOn:
+            - resourceName: resourceName
+              id: id
+              resourceType: resourceType
+            - resourceName: resourceName
+              id: id
+              resourceType: resourceType
+            resourceName: resourceName
+            id: id
+            resourceType: resourceType
+          - dependsOn:
+            - resourceName: resourceName
+              id: id
+              resourceType: resourceType
+            - resourceName: resourceName
+              id: id
+              resourceType: resourceType
+            resourceName: resourceName
+            id: id
+            resourceType: resourceType
+          mode: Incremental
+          parametersLink:
+            contentVersion: contentVersion
+            uri: uri
+          onErrorDeployment:
+            deploymentName: deploymentName
+            provisioningState: provisioningState
+            type: LastSuccessful
+          correlationId: correlationId
+          parameters: "{}"
+          providers:
+          - resourceTypes:
+            - aliases:
+              - paths:
+                - path: path
+                  apiVersions:
+                  - apiVersions
+                  - apiVersions
+                - path: path
+                  apiVersions:
+                  - apiVersions
+                  - apiVersions
+                name: name
+              - paths:
+                - path: path
+                  apiVersions:
+                  - apiVersions
+                  - apiVersions
+                - path: path
+                  apiVersions:
+                  - apiVersions
+                  - apiVersions
+                name: name
+              apiVersions:
+              - apiVersions
+              - apiVersions
+              locations:
+              - locations
+              - locations
+              properties:
+                key: properties
+              resourceType: resourceType
+            - aliases:
+              - paths:
+                - path: path
+                  apiVersions:
+                  - apiVersions
+                  - apiVersions
+                - path: path
+                  apiVersions:
+                  - apiVersions
+                  - apiVersions
+                name: name
+              - paths:
+                - path: path
+                  apiVersions:
+                  - apiVersions
+                  - apiVersions
+                - path: path
+                  apiVersions:
+                  - apiVersions
+                  - apiVersions
+                name: name
+              apiVersions:
+              - apiVersions
+              - apiVersions
+              locations:
+              - locations
+              - locations
+              properties:
+                key: properties
+              resourceType: resourceType
+            namespace: namespace
+            id: id
+            registrationState: registrationState
+          - resourceTypes:
+            - aliases:
+              - paths:
+                - path: path
+                  apiVersions:
+                  - apiVersions
+                  - apiVersions
+                - path: path
+                  apiVersions:
+                  - apiVersions
+                  - apiVersions
+                name: name
+              - paths:
+                - path: path
+                  apiVersions:
+                  - apiVersions
+                  - apiVersions
+                - path: path
+                  apiVersions:
+                  - apiVersions
+                  - apiVersions
+                name: name
+              apiVersions:
+              - apiVersions
+              - apiVersions
+              locations:
+              - locations
+              - locations
+              properties:
+                key: properties
+              resourceType: resourceType
+            - aliases:
+              - paths:
+                - path: path
+                  apiVersions:
+                  - apiVersions
+                  - apiVersions
+                - path: path
+                  apiVersions:
+                  - apiVersions
+                  - apiVersions
+                name: name
+              - paths:
+                - path: path
+                  apiVersions:
+                  - apiVersions
+                  - apiVersions
+                - path: path
+                  apiVersions:
+                  - apiVersions
+                  - apiVersions
+                name: name
+              apiVersions:
+              - apiVersions
+              - apiVersions
+              locations:
+              - locations
+              - locations
+              properties:
+                key: properties
+              resourceType: resourceType
+            namespace: namespace
+            id: id
+            registrationState: registrationState
+          timestamp: 2000-01-23T04:56:07.000+00:00
+      properties:
+        id:
+          description: The ID of the deployment.
+          readOnly: true
+          title: id
+          type: string
+        name:
+          description: The name of the deployment.
+          title: name
+          type: string
+        properties:
+          $ref: '#/components/schemas/DeploymentPropertiesExtended'
+      required:
+      - name
+      title: DeploymentExtended
+      type: object
+      x-ms-azure-resource: true
+    DeploymentExtendedFilter:
+      description: Deployment filter.
+      properties:
+        provisioningState:
+          description: The provisioning state.
+          type: string
+      type: object
+    DeploymentListResult:
+      description: List of deployments.
+      example:
+        value:
+        - name: name
+          id: id
+          properties:
+            outputs: "{}"
+            template: "{}"
+            templateLink:
+              contentVersion: contentVersion
+              uri: uri
+            provisioningState: provisioningState
+            debugSetting:
+              detailLevel: detailLevel
+            dependencies:
+            - dependsOn:
+              - resourceName: resourceName
+                id: id
+                resourceType: resourceType
+              - resourceName: resourceName
+                id: id
+                resourceType: resourceType
+              resourceName: resourceName
+              id: id
+              resourceType: resourceType
+            - dependsOn:
+              - resourceName: resourceName
+                id: id
+                resourceType: resourceType
+              - resourceName: resourceName
+                id: id
+                resourceType: resourceType
+              resourceName: resourceName
+              id: id
+              resourceType: resourceType
+            mode: Incremental
+            parametersLink:
+              contentVersion: contentVersion
+              uri: uri
+            onErrorDeployment:
+              deploymentName: deploymentName
+              provisioningState: provisioningState
+              type: LastSuccessful
+            correlationId: correlationId
+            parameters: "{}"
+            providers:
+            - resourceTypes:
+              - aliases:
+                - paths:
+                  - path: path
+                    apiVersions:
+                    - apiVersions
+                    - apiVersions
+                  - path: path
+                    apiVersions:
+                    - apiVersions
+                    - apiVersions
+                  name: name
+                - paths:
+                  - path: path
+                    apiVersions:
+                    - apiVersions
+                    - apiVersions
+                  - path: path
+                    apiVersions:
+                    - apiVersions
+                    - apiVersions
+                  name: name
+                apiVersions:
+                - apiVersions
+                - apiVersions
+                locations:
+                - locations
+                - locations
+                properties:
+                  key: properties
+                resourceType: resourceType
+              - aliases:
+                - paths:
+                  - path: path
+                    apiVersions:
+                    - apiVersions
+                    - apiVersions
+                  - path: path
+                    apiVersions:
+                    - apiVersions
+                    - apiVersions
+                  name: name
+                - paths:
+                  - path: path
+                    apiVersions:
+                    - apiVersions
+                    - apiVersions
+                  - path: path
+                    apiVersions:
+                    - apiVersions
+                    - apiVersions
+                  name: name
+                apiVersions:
+                - apiVersions
+                - apiVersions
+                locations:
+                - locations
+                - locations
+                properties:
+                  key: properties
+                resourceType: resourceType
+              namespace: namespace
+              id: id
+              registrationState: registrationState
+            - resourceTypes:
+              - aliases:
+                - paths:
+                  - path: path
+                    apiVersions:
+                    - apiVersions
+                    - apiVersions
+                  - path: path
+                    apiVersions:
+                    - apiVersions
+                    - apiVersions
+                  name: name
+                - paths:
+                  - path: path
+                    apiVersions:
+                    - apiVersions
+                    - apiVersions
+                  - path: path
+                    apiVersions:
+                    - apiVersions
+                    - apiVersions
+                  name: name
+                apiVersions:
+                - apiVersions
+                - apiVersions
+                locations:
+                - locations
+                - locations
+                properties:
+                  key: properties
+                resourceType: resourceType
+              - aliases:
+                - paths:
+                  - path: path
+                    apiVersions:
+                    - apiVersions
+                    - apiVersions
+                  - path: path
+                    apiVersions:
+                    - apiVersions
+                    - apiVersions
+                  name: name
+                - paths:
+                  - path: path
+                    apiVersions:
+                    - apiVersions
+                    - apiVersions
+                  - path: path
+                    apiVersions:
+                    - apiVersions
+                    - apiVersions
+                  name: name
+                apiVersions:
+                - apiVersions
+                - apiVersions
+                locations:
+                - locations
+                - locations
+                properties:
+                  key: properties
+                resourceType: resourceType
+              namespace: namespace
+              id: id
+              registrationState: registrationState
+            timestamp: 2000-01-23T04:56:07.000+00:00
+        - name: name
+          id: id
+          properties:
+            outputs: "{}"
+            template: "{}"
+            templateLink:
+              contentVersion: contentVersion
+              uri: uri
+            provisioningState: provisioningState
+            debugSetting:
+              detailLevel: detailLevel
+            dependencies:
+            - dependsOn:
+              - resourceName: resourceName
+                id: id
+                resourceType: resourceType
+              - resourceName: resourceName
+                id: id
+                resourceType: resourceType
+              resourceName: resourceName
+              id: id
+              resourceType: resourceType
+            - dependsOn:
+              - resourceName: resourceName
+                id: id
+                resourceType: resourceType
+              - resourceName: resourceName
+                id: id
+                resourceType: resourceType
+              resourceName: resourceName
+              id: id
+              resourceType: resourceType
+            mode: Incremental
+            parametersLink:
+              contentVersion: contentVersion
+              uri: uri
+            onErrorDeployment:
+              deploymentName: deploymentName
+              provisioningState: provisioningState
+              type: LastSuccessful
+            correlationId: correlationId
+            parameters: "{}"
+            providers:
+            - resourceTypes:
+              - aliases:
+                - paths:
+                  - path: path
+                    apiVersions:
+                    - apiVersions
+                    - apiVersions
+                  - path: path
+                    apiVersions:
+                    - apiVersions
+                    - apiVersions
+                  name: name
+                - paths:
+                  - path: path
+                    apiVersions:
+                    - apiVersions
+                    - apiVersions
+                  - path: path
+                    apiVersions:
+                    - apiVersions
+                    - apiVersions
+                  name: name
+                apiVersions:
+                - apiVersions
+                - apiVersions
+                locations:
+                - locations
+                - locations
+                properties:
+                  key: properties
+                resourceType: resourceType
+              - aliases:
+                - paths:
+                  - path: path
+                    apiVersions:
+                    - apiVersions
+                    - apiVersions
+                  - path: path
+                    apiVersions:
+                    - apiVersions
+                    - apiVersions
+                  name: name
+                - paths:
+                  - path: path
+                    apiVersions:
+                    - apiVersions
+                    - apiVersions
+                  - path: path
+                    apiVersions:
+                    - apiVersions
+                    - apiVersions
+                  name: name
+                apiVersions:
+                - apiVersions
+                - apiVersions
+                locations:
+                - locations
+                - locations
+                properties:
+                  key: properties
+                resourceType: resourceType
+              namespace: namespace
+              id: id
+              registrationState: registrationState
+            - resourceTypes:
+              - aliases:
+                - paths:
+                  - path: path
+                    apiVersions:
+                    - apiVersions
+                    - apiVersions
+                  - path: path
+                    apiVersions:
+                    - apiVersions
+                    - apiVersions
+                  name: name
+                - paths:
+                  - path: path
+                    apiVersions:
+                    - apiVersions
+                    - apiVersions
+                  - path: path
+                    apiVersions:
+                    - apiVersions
+                    - apiVersions
+                  name: name
+                apiVersions:
+                - apiVersions
+                - apiVersions
+                locations:
+                - locations
+                - locations
+                properties:
+                  key: properties
+                resourceType: resourceType
+              - aliases:
+                - paths:
+                  - path: path
+                    apiVersions:
+                    - apiVersions
+                    - apiVersions
+                  - path: path
+                    apiVersions:
+                    - apiVersions
+                    - apiVersions
+                  name: name
+                - paths:
+                  - path: path
+                    apiVersions:
+                    - apiVersions
+                    - apiVersions
+                  - path: path
+                    apiVersions:
+                    - apiVersions
+                    - apiVersions
+                  name: name
+                apiVersions:
+                - apiVersions
+                - apiVersions
+                locations:
+                - locations
+                - locations
+                properties:
+                  key: properties
+                resourceType: resourceType
+              namespace: namespace
+              id: id
+              registrationState: registrationState
+            timestamp: 2000-01-23T04:56:07.000+00:00
+        nextLink: nextLink
+      properties:
+        nextLink:
+          description: The URL to use for getting the next set of results.
+          readOnly: true
+          title: nextLink
+          type: string
+        value:
+          description: An array of deployments.
+          items:
+            $ref: '#/components/schemas/DeploymentExtended'
+          title: value
+          type: array
+      title: DeploymentListResult
+      type: object
+    DeploymentOperation:
+      description: Deployment operation information.
+      example:
+        operationId: operationId
+        id: id
+        properties:
+          request:
+            content: "{}"
+          serviceRequestId: serviceRequestId
+          response:
+            content: "{}"
+          targetResource:
+            resourceName: resourceName
+            id: id
+            resourceType: resourceType
+          provisioningState: provisioningState
+          statusMessage: "{}"
+          statusCode: statusCode
+          timestamp: 2000-01-23T04:56:07.000+00:00
+      properties:
+        id:
+          description: Full deployment operation ID.
+          readOnly: true
+          title: id
+          type: string
+        operationId:
+          description: Deployment operation ID.
+          readOnly: true
+          title: operationId
+          type: string
+        properties:
+          $ref: '#/components/schemas/DeploymentOperationProperties'
+      title: DeploymentOperation
+      type: object
+    DeploymentOperationProperties:
+      description: Deployment operation properties.
+      example:
+        request:
+          content: "{}"
+        serviceRequestId: serviceRequestId
+        response:
+          content: "{}"
+        targetResource:
+          resourceName: resourceName
+          id: id
+          resourceType: resourceType
+        provisioningState: provisioningState
+        statusMessage: "{}"
+        statusCode: statusCode
+        timestamp: 2000-01-23T04:56:07.000+00:00
+      properties:
+        provisioningState:
+          description: The state of the provisioning.
+          readOnly: true
+          title: provisioningState
+          type: string
+        request:
+          $ref: '#/components/schemas/HttpMessage'
+        response:
+          $ref: '#/components/schemas/HttpMessage'
+        serviceRequestId:
+          description: Deployment operation service request id.
+          readOnly: true
+          title: serviceRequestId
+          type: string
+        statusCode:
+          description: Operation status code.
+          readOnly: true
+          title: statusCode
+          type: string
+        statusMessage:
+          description: Operation status message.
+          properties: {}
+          readOnly: true
+          title: statusMessage
+          type: object
+        targetResource:
+          $ref: '#/components/schemas/TargetResource'
+        timestamp:
+          description: The date and time of the operation.
+          format: date-time
+          readOnly: true
+          title: timestamp
+          type: string
+      title: DeploymentOperationProperties
+      type: object
+    DeploymentOperationsListResult:
+      description: List of deployment operations.
+      example:
+        value:
+        - operationId: operationId
+          id: id
+          properties:
+            request:
+              content: "{}"
+            serviceRequestId: serviceRequestId
+            response:
+              content: "{}"
+            targetResource:
+              resourceName: resourceName
+              id: id
+              resourceType: resourceType
+            provisioningState: provisioningState
+            statusMessage: "{}"
+            statusCode: statusCode
+            timestamp: 2000-01-23T04:56:07.000+00:00
+        - operationId: operationId
+          id: id
+          properties:
+            request:
+              content: "{}"
+            serviceRequestId: serviceRequestId
+            response:
+              content: "{}"
+            targetResource:
+              resourceName: resourceName
+              id: id
+              resourceType: resourceType
+            provisioningState: provisioningState
+            statusMessage: "{}"
+            statusCode: statusCode
+            timestamp: 2000-01-23T04:56:07.000+00:00
+        nextLink: nextLink
+      properties:
+        nextLink:
+          description: The URL to use for getting the next set of results.
+          readOnly: true
+          title: nextLink
+          type: string
+        value:
+          description: An array of deployment operations.
+          items:
+            $ref: '#/components/schemas/DeploymentOperation'
+          title: value
+          type: array
+      title: DeploymentOperationsListResult
+      type: object
+    DeploymentProperties:
+      description: Deployment properties.
+      example:
+        mode: Incremental
+        parametersLink:
+          contentVersion: contentVersion
+          uri: uri
+        template: "{}"
+        onErrorDeployment:
+          deploymentName: deploymentName
+          type: LastSuccessful
+        templateLink:
+          contentVersion: contentVersion
+          uri: uri
+        parameters: "{}"
+        debugSetting:
+          detailLevel: detailLevel
+      properties:
+        debugSetting:
+          $ref: '#/components/schemas/DebugSetting'
+        mode:
+          description: "The mode that is used to deploy resources. This value can\
+            \ be either Incremental or Complete. In Incremental mode, resources are\
+            \ deployed without deleting existing resources that are not included in\
+            \ the template. In Complete mode, resources are deployed and existing\
+            \ resources in the resource group that are not included in the template\
+            \ are deleted. Be careful when using Complete mode as you may unintentionally\
+            \ delete resources."
+          enum:
+          - Incremental
+          - Complete
+          title: mode
+          type: string
+          x-ms-enum:
+            modelAsString: false
+            name: DeploymentMode
+        onErrorDeployment:
+          $ref: '#/components/schemas/OnErrorDeployment'
+        parameters:
+          description: "Name and value pairs that define the deployment parameters\
+            \ for the template. You use this element when you want to provide the\
+            \ parameter values directly in the request rather than link to an existing\
+            \ parameter file. Use either the parametersLink property or the parameters\
+            \ property, but not both. It can be a JObject or a well formed JSON string."
+          properties: {}
+          title: parameters
+          type: object
+        parametersLink:
+          $ref: '#/components/schemas/ParametersLink'
+        template:
+          description: "The template content. You use this element when you want to\
+            \ pass the template syntax directly in the request rather than link to\
+            \ an existing template. It can be a JObject or well-formed JSON string.\
+            \ Use either the templateLink property or the template property, but not\
+            \ both."
+          properties: {}
+          title: template
+          type: object
+        templateLink:
+          $ref: '#/components/schemas/TemplateLink'
+      required:
+      - mode
+      title: DeploymentProperties
+      type: object
+    DeploymentPropertiesExtended:
+      description: Deployment properties with additional details.
+      example:
+        outputs: "{}"
+        template: "{}"
+        templateLink:
+          contentVersion: contentVersion
+          uri: uri
+        provisioningState: provisioningState
+        debugSetting:
+          detailLevel: detailLevel
+        dependencies:
+        - dependsOn:
+          - resourceName: resourceName
+            id: id
+            resourceType: resourceType
+          - resourceName: resourceName
+            id: id
+            resourceType: resourceType
+          resourceName: resourceName
+          id: id
+          resourceType: resourceType
+        - dependsOn:
+          - resourceName: resourceName
+            id: id
+            resourceType: resourceType
+          - resourceName: resourceName
+            id: id
+            resourceType: resourceType
+          resourceName: resourceName
+          id: id
+          resourceType: resourceType
+        mode: Incremental
+        parametersLink:
+          contentVersion: contentVersion
+          uri: uri
+        onErrorDeployment:
+          deploymentName: deploymentName
+          provisioningState: provisioningState
+          type: LastSuccessful
+        correlationId: correlationId
+        parameters: "{}"
+        providers:
+        - resourceTypes:
+          - aliases:
+            - paths:
+              - path: path
+                apiVersions:
+                - apiVersions
+                - apiVersions
+              - path: path
+                apiVersions:
+                - apiVersions
+                - apiVersions
+              name: name
+            - paths:
+              - path: path
+                apiVersions:
+                - apiVersions
+                - apiVersions
+              - path: path
+                apiVersions:
+                - apiVersions
+                - apiVersions
+              name: name
+            apiVersions:
+            - apiVersions
+            - apiVersions
+            locations:
+            - locations
+            - locations
+            properties:
+              key: properties
+            resourceType: resourceType
+          - aliases:
+            - paths:
+              - path: path
+                apiVersions:
+                - apiVersions
+                - apiVersions
+              - path: path
+                apiVersions:
+                - apiVersions
+                - apiVersions
+              name: name
+            - paths:
+              - path: path
+                apiVersions:
+                - apiVersions
+                - apiVersions
+              - path: path
+                apiVersions:
+                - apiVersions
+                - apiVersions
+              name: name
+            apiVersions:
+            - apiVersions
+            - apiVersions
+            locations:
+            - locations
+            - locations
+            properties:
+              key: properties
+            resourceType: resourceType
+          namespace: namespace
+          id: id
+          registrationState: registrationState
+        - resourceTypes:
+          - aliases:
+            - paths:
+              - path: path
+                apiVersions:
+                - apiVersions
+                - apiVersions
+              - path: path
+                apiVersions:
+                - apiVersions
+                - apiVersions
+              name: name
+            - paths:
+              - path: path
+                apiVersions:
+                - apiVersions
+                - apiVersions
+              - path: path
+                apiVersions:
+                - apiVersions
+                - apiVersions
+              name: name
+            apiVersions:
+            - apiVersions
+            - apiVersions
+            locations:
+            - locations
+            - locations
+            properties:
+              key: properties
+            resourceType: resourceType
+          - aliases:
+            - paths:
+              - path: path
+                apiVersions:
+                - apiVersions
+                - apiVersions
+              - path: path
+                apiVersions:
+                - apiVersions
+                - apiVersions
+              name: name
+            - paths:
+              - path: path
+                apiVersions:
+                - apiVersions
+                - apiVersions
+              - path: path
+                apiVersions:
+                - apiVersions
+                - apiVersions
+              name: name
+            apiVersions:
+            - apiVersions
+            - apiVersions
+            locations:
+            - locations
+            - locations
+            properties:
+              key: properties
+            resourceType: resourceType
+          namespace: namespace
+          id: id
+          registrationState: registrationState
+        timestamp: 2000-01-23T04:56:07.000+00:00
+      properties:
+        correlationId:
+          description: The correlation ID of the deployment.
+          readOnly: true
+          title: correlationId
+          type: string
+        debugSetting:
+          $ref: '#/components/schemas/DebugSetting'
+        dependencies:
+          description: The list of deployment dependencies.
+          items:
+            $ref: '#/components/schemas/Dependency'
+          title: dependencies
+          type: array
+        mode:
+          description: The deployment mode. Possible values are Incremental and Complete.
+          enum:
+          - Incremental
+          - Complete
+          title: mode
+          type: string
+          x-ms-enum:
+            modelAsString: false
+            name: DeploymentMode
+        onErrorDeployment:
+          $ref: '#/components/schemas/OnErrorDeploymentExtended'
+        outputs:
+          description: Key/value pairs that represent deployment output.
+          properties: {}
+          title: outputs
+          type: object
+        parameters:
+          description: Deployment parameters. Use only one of Parameters or ParametersLink.
+          properties: {}
+          title: parameters
+          type: object
+        parametersLink:
+          $ref: '#/components/schemas/ParametersLink'
+        providers:
+          description: The list of resource providers needed for the deployment.
+          items:
+            $ref: '#/components/schemas/Provider'
+          title: providers
+          type: array
+        provisioningState:
+          description: The state of the provisioning.
+          readOnly: true
+          title: provisioningState
+          type: string
+        template:
+          description: The template content. Use only one of Template or TemplateLink.
+          properties: {}
+          title: template
+          type: object
+        templateLink:
+          $ref: '#/components/schemas/TemplateLink'
+        timestamp:
+          description: The timestamp of the template deployment.
+          format: date-time
+          readOnly: true
+          title: timestamp
+          type: string
+      title: DeploymentPropertiesExtended
+      type: object
+    DeploymentValidateResult:
+      description: Information from validate template deployment response.
+      example:
+        error:
+          code: code
+          details:
+          - null
+          - null
+          message: message
+          target: target
+        properties:
+          outputs: "{}"
+          template: "{}"
+          templateLink:
+            contentVersion: contentVersion
+            uri: uri
+          provisioningState: provisioningState
+          debugSetting:
+            detailLevel: detailLevel
+          dependencies:
+          - dependsOn:
+            - resourceName: resourceName
+              id: id
+              resourceType: resourceType
+            - resourceName: resourceName
+              id: id
+              resourceType: resourceType
+            resourceName: resourceName
+            id: id
+            resourceType: resourceType
+          - dependsOn:
+            - resourceName: resourceName
+              id: id
+              resourceType: resourceType
+            - resourceName: resourceName
+              id: id
+              resourceType: resourceType
+            resourceName: resourceName
+            id: id
+            resourceType: resourceType
+          mode: Incremental
+          parametersLink:
+            contentVersion: contentVersion
+            uri: uri
+          onErrorDeployment:
+            deploymentName: deploymentName
+            provisioningState: provisioningState
+            type: LastSuccessful
+          correlationId: correlationId
+          parameters: "{}"
+          providers:
+          - resourceTypes:
+            - aliases:
+              - paths:
+                - path: path
+                  apiVersions:
+                  - apiVersions
+                  - apiVersions
+                - path: path
+                  apiVersions:
+                  - apiVersions
+                  - apiVersions
+                name: name
+              - paths:
+                - path: path
+                  apiVersions:
+                  - apiVersions
+                  - apiVersions
+                - path: path
+                  apiVersions:
+                  - apiVersions
+                  - apiVersions
+                name: name
+              apiVersions:
+              - apiVersions
+              - apiVersions
+              locations:
+              - locations
+              - locations
+              properties:
+                key: properties
+              resourceType: resourceType
+            - aliases:
+              - paths:
+                - path: path
+                  apiVersions:
+                  - apiVersions
+                  - apiVersions
+                - path: path
+                  apiVersions:
+                  - apiVersions
+                  - apiVersions
+                name: name
+              - paths:
+                - path: path
+                  apiVersions:
+                  - apiVersions
+                  - apiVersions
+                - path: path
+                  apiVersions:
+                  - apiVersions
+                  - apiVersions
+                name: name
+              apiVersions:
+              - apiVersions
+              - apiVersions
+              locations:
+              - locations
+              - locations
+              properties:
+                key: properties
+              resourceType: resourceType
+            namespace: namespace
+            id: id
+            registrationState: registrationState
+          - resourceTypes:
+            - aliases:
+              - paths:
+                - path: path
+                  apiVersions:
+                  - apiVersions
+                  - apiVersions
+                - path: path
+                  apiVersions:
+                  - apiVersions
+                  - apiVersions
+                name: name
+              - paths:
+                - path: path
+                  apiVersions:
+                  - apiVersions
+                  - apiVersions
+                - path: path
+                  apiVersions:
+                  - apiVersions
+                  - apiVersions
+                name: name
+              apiVersions:
+              - apiVersions
+              - apiVersions
+              locations:
+              - locations
+              - locations
+              properties:
+                key: properties
+              resourceType: resourceType
+            - aliases:
+              - paths:
+                - path: path
+                  apiVersions:
+                  - apiVersions
+                  - apiVersions
+                - path: path
+                  apiVersions:
+                  - apiVersions
+                  - apiVersions
+                name: name
+              - paths:
+                - path: path
+                  apiVersions:
+                  - apiVersions
+                  - apiVersions
+                - path: path
+                  apiVersions:
+                  - apiVersions
+                  - apiVersions
+                name: name
+              apiVersions:
+              - apiVersions
+              - apiVersions
+              locations:
+              - locations
+              - locations
+              properties:
+                key: properties
+              resourceType: resourceType
+            namespace: namespace
+            id: id
+            registrationState: registrationState
+          timestamp: 2000-01-23T04:56:07.000+00:00
+      properties:
+        error:
+          $ref: '#/components/schemas/ResourceManagementErrorWithDetails'
+        properties:
+          $ref: '#/components/schemas/DeploymentPropertiesExtended'
+      title: DeploymentValidateResult
+      type: object
+    ErrorResponse:
+      title: ErrorResponse
+      type: object
+    ExportTemplateRequest:
+      description: Export resource group template request parameters.
+      example:
+        options: options
+        resources:
+        - resources
+        - resources
+      properties:
+        options:
+          description: "The export template options. A CSV-formatted list containing\
+            \ zero or more of the following: 'IncludeParameterDefaultValue', 'IncludeComments',\
+            \ 'SkipResourceNameParameterization', 'SkipAllParameterization'"
+          title: options
+          type: string
+        resources:
+          description: "The IDs of the resources to filter the export by. To export\
+            \ all resources, supply an array with single entry '*'."
+          items:
+            type: string
+          title: resources
+          type: array
+      title: ExportTemplateRequest
+      type: object
+    GenericResource:
+      allOf:
+      - $ref: '#/components/schemas/Resource'
+      description: Resource information.
+      example:
+        managedBy: managedBy
+        identity:
+          tenantId: tenantId
+          principalId: principalId
+          type: SystemAssigned
+        kind: kind
+        sku:
+          size: size
+          tier: tier
+          name: name
+          model: model
+          family: family
+          capacity: 0
+        plan:
+          product: product
+          name: name
+          promotionCode: promotionCode
+          publisher: publisher
+          version: version
+        properties: "{}"
+      properties:
+        identity:
+          $ref: '#/components/schemas/Identity'
+        kind:
+          description: The kind of the resource.
+          pattern: "^[-\\w\\._,\\(\\)]+$"
+          title: kind
+          type: string
+        managedBy:
+          description: ID of the resource that manages this resource.
+          title: managedBy
+          type: string
+        plan:
+          $ref: '#/components/schemas/Plan'
+        properties:
+          description: The resource properties.
+          properties: {}
+          title: properties
+          type: object
+        sku:
+          $ref: '#/components/schemas/Sku'
+      title: GenericResource
+    GenericResourceFilter:
+      description: Resource filter.
+      properties:
+        resourceType:
+          description: The resource type.
+          type: string
+        tagname:
+          description: The tag name.
+          type: string
+        tagvalue:
+          description: The tag value.
+          type: string
+      type: object
+    HttpMessage:
+      description: HTTP message.
+      example:
+        content: "{}"
+      properties:
+        content:
+          description: HTTP message content.
+          properties: {}
+          title: content
+          type: object
+      title: HttpMessage
+      type: object
+    Identity:
+      description: Identity for the resource.
+      example:
+        tenantId: tenantId
+        principalId: principalId
+        type: SystemAssigned
+      properties:
+        principalId:
+          description: The principal ID of resource identity.
+          readOnly: true
+          title: principalId
+          type: string
+        tenantId:
+          description: The tenant ID of resource.
+          readOnly: true
+          title: tenantId
+          type: string
+        type:
+          description: The identity type.
+          enum:
+          - SystemAssigned
+          - UserAssigned
+          - "SystemAssigned, UserAssigned"
+          - None
+          title: type
+          type: string
+          x-ms-enum:
+            modelAsString: false
+            name: ResourceIdentityType
+      title: Identity
+      type: object
+    OnErrorDeployment:
+      description: Deployment on error behavior.
+      example:
+        deploymentName: deploymentName
+        type: LastSuccessful
+      properties:
+        deploymentName:
+          description: The deployment to be used on error case.
+          title: deploymentName
+          type: string
+        type:
+          description: The deployment on error behavior type. Possible values are
+            LastSuccessful and SpecificDeployment.
+          enum:
+          - LastSuccessful
+          - SpecificDeployment
+          title: type
+          type: string
+          x-ms-enum:
+            modelAsString: false
+            name: OnErrorDeploymentType
+      title: OnErrorDeployment
+      type: object
+    OnErrorDeploymentExtended:
+      description: Deployment on error behavior with additional details.
+      example:
+        deploymentName: deploymentName
+        provisioningState: provisioningState
+        type: LastSuccessful
+      properties:
+        deploymentName:
+          description: The deployment to be used on error case.
+          title: deploymentName
+          type: string
+        provisioningState:
+          description: The state of the provisioning for the on error deployment.
+          readOnly: true
+          title: provisioningState
+          type: string
+        type:
+          description: The deployment on error behavior type. Possible values are
+            LastSuccessful and SpecificDeployment.
+          enum:
+          - LastSuccessful
+          - SpecificDeployment
+          title: type
+          type: string
+          x-ms-enum:
+            modelAsString: false
+            name: OnErrorDeploymentType
+      title: OnErrorDeploymentExtended
+      type: object
+    ParametersLink:
+      description: Entity representing the reference to the deployment parameters.
+      example:
+        contentVersion: contentVersion
+        uri: uri
+      properties:
+        contentVersion:
+          description: "If included, must match the ContentVersion in the template."
+          title: contentVersion
+          type: string
+        uri:
+          description: The URI of the parameters file.
+          title: uri
+          type: string
+      required:
+      - uri
+      title: ParametersLink
+      type: object
+    Plan:
+      description: Plan for the resource.
+      example:
+        product: product
+        name: name
+        promotionCode: promotionCode
+        publisher: publisher
+        version: version
+      properties:
+        name:
+          description: The plan ID.
+          title: name
+          type: string
+        product:
+          description: The offer ID.
+          title: product
+          type: string
+        promotionCode:
+          description: The promotion code.
+          title: promotionCode
+          type: string
+        publisher:
+          description: The publisher ID.
+          title: publisher
+          type: string
+        version:
+          description: The plan's version.
+          title: version
+          type: string
+      title: Plan
+      type: object
+    Provider:
+      description: Resource provider information.
+      example:
+        resourceTypes:
+        - aliases:
+          - paths:
+            - path: path
+              apiVersions:
+              - apiVersions
+              - apiVersions
+            - path: path
+              apiVersions:
+              - apiVersions
+              - apiVersions
+            name: name
+          - paths:
+            - path: path
+              apiVersions:
+              - apiVersions
+              - apiVersions
+            - path: path
+              apiVersions:
+              - apiVersions
+              - apiVersions
+            name: name
+          apiVersions:
+          - apiVersions
+          - apiVersions
+          locations:
+          - locations
+          - locations
+          properties:
+            key: properties
+          resourceType: resourceType
+        - aliases:
+          - paths:
+            - path: path
+              apiVersions:
+              - apiVersions
+              - apiVersions
+            - path: path
+              apiVersions:
+              - apiVersions
+              - apiVersions
+            name: name
+          - paths:
+            - path: path
+              apiVersions:
+              - apiVersions
+              - apiVersions
+            - path: path
+              apiVersions:
+              - apiVersions
+              - apiVersions
+            name: name
+          apiVersions:
+          - apiVersions
+          - apiVersions
+          locations:
+          - locations
+          - locations
+          properties:
+            key: properties
+          resourceType: resourceType
+        namespace: namespace
+        id: id
+        registrationState: registrationState
+      properties:
+        id:
+          description: The provider ID.
+          readOnly: true
+          title: id
+          type: string
+        namespace:
+          description: The namespace of the resource provider.
+          title: namespace
+          type: string
+        registrationState:
+          description: The registration state of the provider.
+          readOnly: true
+          title: registrationState
+          type: string
+        resourceTypes:
+          description: The collection of provider resource types.
+          items:
+            $ref: '#/components/schemas/ProviderResourceType'
+          readOnly: true
+          title: resourceTypes
+          type: array
+      title: Provider
+      type: object
+    ProviderListResult:
+      description: List of resource providers.
+      example:
+        value:
+        - resourceTypes:
+          - aliases:
+            - paths:
+              - path: path
+                apiVersions:
+                - apiVersions
+                - apiVersions
+              - path: path
+                apiVersions:
+                - apiVersions
+                - apiVersions
+              name: name
+            - paths:
+              - path: path
+                apiVersions:
+                - apiVersions
+                - apiVersions
+              - path: path
+                apiVersions:
+                - apiVersions
+                - apiVersions
+              name: name
+            apiVersions:
+            - apiVersions
+            - apiVersions
+            locations:
+            - locations
+            - locations
+            properties:
+              key: properties
+            resourceType: resourceType
+          - aliases:
+            - paths:
+              - path: path
+                apiVersions:
+                - apiVersions
+                - apiVersions
+              - path: path
+                apiVersions:
+                - apiVersions
+                - apiVersions
+              name: name
+            - paths:
+              - path: path
+                apiVersions:
+                - apiVersions
+                - apiVersions
+              - path: path
+                apiVersions:
+                - apiVersions
+                - apiVersions
+              name: name
+            apiVersions:
+            - apiVersions
+            - apiVersions
+            locations:
+            - locations
+            - locations
+            properties:
+              key: properties
+            resourceType: resourceType
+          namespace: namespace
+          id: id
+          registrationState: registrationState
+        - resourceTypes:
+          - aliases:
+            - paths:
+              - path: path
+                apiVersions:
+                - apiVersions
+                - apiVersions
+              - path: path
+                apiVersions:
+                - apiVersions
+                - apiVersions
+              name: name
+            - paths:
+              - path: path
+                apiVersions:
+                - apiVersions
+                - apiVersions
+              - path: path
+                apiVersions:
+                - apiVersions
+                - apiVersions
+              name: name
+            apiVersions:
+            - apiVersions
+            - apiVersions
+            locations:
+            - locations
+            - locations
+            properties:
+              key: properties
+            resourceType: resourceType
+          - aliases:
+            - paths:
+              - path: path
+                apiVersions:
+                - apiVersions
+                - apiVersions
+              - path: path
+                apiVersions:
+                - apiVersions
+                - apiVersions
+              name: name
+            - paths:
+              - path: path
+                apiVersions:
+                - apiVersions
+                - apiVersions
+              - path: path
+                apiVersions:
+                - apiVersions
+                - apiVersions
+              name: name
+            apiVersions:
+            - apiVersions
+            - apiVersions
+            locations:
+            - locations
+            - locations
+            properties:
+              key: properties
+            resourceType: resourceType
+          namespace: namespace
+          id: id
+          registrationState: registrationState
+        nextLink: nextLink
+      properties:
+        nextLink:
+          description: The URL to use for getting the next set of results.
+          readOnly: true
+          title: nextLink
+          type: string
+        value:
+          description: An array of resource providers.
+          items:
+            $ref: '#/components/schemas/Provider'
+          title: value
+          type: array
+      title: ProviderListResult
+      type: object
+    ProviderResourceType:
+      description: Resource type managed by the resource provider.
+      example:
+        aliases:
+        - paths:
+          - path: path
+            apiVersions:
+            - apiVersions
+            - apiVersions
+          - path: path
+            apiVersions:
+            - apiVersions
+            - apiVersions
+          name: name
+        - paths:
+          - path: path
+            apiVersions:
+            - apiVersions
+            - apiVersions
+          - path: path
+            apiVersions:
+            - apiVersions
+            - apiVersions
+          name: name
+        apiVersions:
+        - apiVersions
+        - apiVersions
+        locations:
+        - locations
+        - locations
+        properties:
+          key: properties
+        resourceType: resourceType
+      properties:
+        aliases:
+          description: The aliases that are supported by this resource type.
+          items:
+            $ref: '#/components/schemas/AliasType'
+          title: aliases
+          type: array
+        apiVersions:
+          description: The API version.
+          items:
+            type: string
+          title: apiVersions
+          type: array
+        locations:
+          description: The collection of locations where this resource type can be
+            created.
+          items:
+            type: string
+          title: locations
+          type: array
+        properties:
+          additionalProperties:
+            description: 'The additional properties. '
+            type: string
+          description: The properties.
+          title: properties
+          type: object
+        resourceType:
+          description: The resource type.
+          title: resourceType
+          type: string
+      title: ProviderResourceType
+      type: object
+    Resource:
+      description: Resource.
+      properties:
+        id:
+          description: Resource ID
+          readOnly: true
+          title: id
+          type: string
+        location:
+          description: Resource location
+          title: location
+          type: string
+        name:
+          description: Resource name
+          readOnly: true
+          title: name
+          type: string
+        tags:
+          additionalProperties:
+            type: string
+          description: Resource tags
+          title: tags
+          type: object
+        type:
+          description: Resource type
+          readOnly: true
+          title: type
+          type: string
+      title: Resource
+      type: object
+      x-ms-azure-resource: true
+    ResourceGroup:
+      description: Resource group information.
+      example:
+        managedBy: managedBy
+        name: name
+        location: location
+        id: id
+        properties:
+          provisioningState: provisioningState
+        tags:
+          key: tags
+      properties:
+        id:
+          description: The ID of the resource group.
+          readOnly: true
+          title: id
+          type: string
+        location:
+          description: The location of the resource group. It cannot be changed after
+            the resource group has been created. It must be one of the supported Azure
+            locations.
+          title: location
+          type: string
+        managedBy:
+          description: The ID of the resource that manages this resource group.
+          title: managedBy
+          type: string
+        name:
+          description: The name of the resource group.
+          title: name
+          type: string
+        properties:
+          $ref: '#/components/schemas/ResourceGroupProperties'
+        tags:
+          additionalProperties:
+            description: 'The additional properties. '
+            type: string
+          description: The tags attached to the resource group.
+          title: tags
+          type: object
+      required:
+      - location
+      title: ResourceGroup
+      type: object
+      x-ms-azure-resource: true
+    ResourceGroupExportResult:
+      description: Resource group export result.
+      example:
+        template: "{}"
+        error:
+          code: code
+          details:
+          - null
+          - null
+          message: message
+          target: target
+      properties:
+        error:
+          $ref: '#/components/schemas/ResourceManagementErrorWithDetails'
+        template:
+          description: The template content.
+          properties: {}
+          title: template
+          type: object
+      title: ResourceGroupExportResult
+      type: object
+    ResourceGroupFilter:
+      description: Resource group filter.
+      properties:
+        tagName:
+          description: The tag name.
+          type: string
+        tagValue:
+          description: The tag value.
+          type: string
+      type: object
+    ResourceGroupListResult:
+      description: List of resource groups.
+      example:
+        value:
+        - managedBy: managedBy
+          name: name
+          location: location
+          id: id
+          properties:
+            provisioningState: provisioningState
+          tags:
+            key: tags
+        - managedBy: managedBy
+          name: name
+          location: location
+          id: id
+          properties:
+            provisioningState: provisioningState
+          tags:
+            key: tags
+        nextLink: nextLink
+      properties:
+        nextLink:
+          description: The URL to use for getting the next set of results.
+          readOnly: true
+          title: nextLink
+          type: string
+        value:
+          description: An array of resource groups.
+          items:
+            $ref: '#/components/schemas/ResourceGroup'
+          title: value
+          type: array
+      title: ResourceGroupListResult
+      type: object
+    ResourceGroupPatchable:
+      description: Resource group information.
+      example:
+        managedBy: managedBy
+        name: name
+        properties:
+          provisioningState: provisioningState
+        tags:
+          key: tags
+      properties:
+        managedBy:
+          description: The ID of the resource that manages this resource group.
+          title: managedBy
+          type: string
+        name:
+          description: The name of the resource group.
+          title: name
+          type: string
+        properties:
+          $ref: '#/components/schemas/ResourceGroupProperties'
+        tags:
+          additionalProperties:
+            description: 'The additional properties. '
+            type: string
+          description: The tags attached to the resource group.
+          title: tags
+          type: object
+      title: ResourceGroupPatchable
+      type: object
+    ResourceGroupProperties:
+      description: The resource group properties.
+      example:
+        provisioningState: provisioningState
+      properties:
+        provisioningState:
+          description: 'The provisioning state. '
+          readOnly: true
+          title: provisioningState
+          type: string
+      title: ResourceGroupProperties
+      type: object
+    ResourceListResult:
+      description: List of resource groups.
+      example:
+        value:
+        - managedBy: managedBy
+          identity:
+            tenantId: tenantId
+            principalId: principalId
+            type: SystemAssigned
+          kind: kind
+          sku:
+            size: size
+            tier: tier
+            name: name
+            model: model
+            family: family
+            capacity: 0
+          plan:
+            product: product
+            name: name
+            promotionCode: promotionCode
+            publisher: publisher
+            version: version
+          properties: "{}"
+        - managedBy: managedBy
+          identity:
+            tenantId: tenantId
+            principalId: principalId
+            type: SystemAssigned
+          kind: kind
+          sku:
+            size: size
+            tier: tier
+            name: name
+            model: model
+            family: family
+            capacity: 0
+          plan:
+            product: product
+            name: name
+            promotionCode: promotionCode
+            publisher: publisher
+            version: version
+          properties: "{}"
+        nextLink: nextLink
+      properties:
+        nextLink:
+          description: The URL to use for getting the next set of results.
+          readOnly: true
+          title: nextLink
+          type: string
+        value:
+          description: An array of resources.
+          items:
+            $ref: '#/components/schemas/GenericResource'
+          title: value
+          type: array
+      title: ResourceListResult
+      type: object
+    ResourceManagementErrorWithDetails:
+      description: The detailed error message of resource management.
+      example:
+        code: code
+        details:
+        - null
+        - null
+        message: message
+        target: target
+      properties:
+        code:
+          description: The error code returned when exporting the template.
+          readOnly: true
+          title: code
+          type: string
+        details:
+          description: Validation error.
+          items:
+            $ref: '#/components/schemas/ResourceManagementErrorWithDetails'
+          readOnly: true
+          title: details
+          type: array
+        message:
+          description: The error message describing the export error.
+          readOnly: true
+          title: message
+          type: string
+        target:
+          description: The target of the error.
+          readOnly: true
+          title: target
+          type: string
+      title: ResourceManagementErrorWithDetails
+      type: object
+    ResourceProviderOperationDisplayProperties:
+      description: Resource provider operation's display properties.
+      properties:
+        description:
+          description: Operation description.
+          type: string
+        operation:
+          description: Operation.
+          type: string
+        provider:
+          description: Operation provider.
+          type: string
+        publisher:
+          description: Operation description.
+          type: string
+        resource:
+          description: Operation resource.
+          type: string
+      type: object
+    ResourcesMoveInfo:
+      description: Parameters of move resources.
+      example:
+        targetResourceGroup: targetResourceGroup
+        resources:
+        - resources
+        - resources
+      properties:
+        resources:
+          description: The IDs of the resources.
+          items:
+            type: string
+          title: resources
+          type: array
+        targetResourceGroup:
+          description: The target resource group.
+          title: targetResourceGroup
+          type: string
+      title: ResourcesMoveInfo
+      type: object
+    Sku:
+      description: SKU for the resource.
+      example:
+        size: size
+        tier: tier
+        name: name
+        model: model
+        family: family
+        capacity: 0
+      properties:
+        capacity:
+          description: The SKU capacity.
+          format: int32
+          title: capacity
+          type: integer
+        family:
+          description: The SKU family.
+          title: family
+          type: string
+        model:
+          description: The SKU model.
+          title: model
+          type: string
+        name:
+          description: The SKU name.
+          title: name
+          type: string
+        size:
+          description: The SKU size.
+          title: size
+          type: string
+        tier:
+          description: The SKU tier.
+          title: tier
+          type: string
+      title: Sku
+      type: object
+    SubResource:
+      description: Sub-resource.
+      properties:
+        id:
+          description: Resource ID
+          type: string
+      type: object
+      x-ms-azure-resource: true
+    TagCount:
+      description: Tag count.
+      example:
+        type: type
+        value: 0
+      properties:
+        type:
+          description: Type of count.
+          title: type
+          type: string
+        value:
+          description: Value of count.
+          title: value
+          type: integer
+      title: TagCount
+      type: object
+    TagDetails:
+      description: Tag details.
+      example:
+        values:
+        - tagValue: tagValue
+          count:
+            type: type
+            value: 0
+          id: id
+        - tagValue: tagValue
+          count:
+            type: type
+            value: 0
+          id: id
+        count:
+          type: type
+          value: 0
+        id: id
+        tagName: tagName
+      properties:
+        count:
+          $ref: '#/components/schemas/TagCount'
+        id:
+          description: The tag ID.
+          readOnly: true
+          title: id
+          type: string
+        tagName:
+          description: The tag name.
+          title: tagName
+          type: string
+        values:
+          description: The list of tag values.
+          items:
+            $ref: '#/components/schemas/TagValue'
+          title: values
+          type: array
+      title: TagDetails
+      type: object
+    TagValue:
+      description: Tag information.
+      example:
+        tagValue: tagValue
+        count:
+          type: type
+          value: 0
+        id: id
+      properties:
+        count:
+          $ref: '#/components/schemas/TagCount'
+        id:
+          description: The tag ID.
+          readOnly: true
+          title: id
+          type: string
+        tagValue:
+          description: The tag value.
+          title: tagValue
+          type: string
+      title: TagValue
+      type: object
+      x-ms-azure-resource: true
+    TagsListResult:
+      description: List of subscription tags.
+      example:
+        value:
+        - values:
+          - tagValue: tagValue
+            count:
+              type: type
+              value: 0
+            id: id
+          - tagValue: tagValue
+            count:
+              type: type
+              value: 0
+            id: id
+          count:
+            type: type
+            value: 0
+          id: id
+          tagName: tagName
+        - values:
+          - tagValue: tagValue
+            count:
+              type: type
+              value: 0
+            id: id
+          - tagValue: tagValue
+            count:
+              type: type
+              value: 0
+            id: id
+          count:
+            type: type
+            value: 0
+          id: id
+          tagName: tagName
+        nextLink: nextLink
+      properties:
+        nextLink:
+          description: The URL to use for getting the next set of results.
+          readOnly: true
+          title: nextLink
+          type: string
+        value:
+          description: An array of tags.
+          items:
+            $ref: '#/components/schemas/TagDetails'
+          title: value
+          type: array
+      title: TagsListResult
+      type: object
+    TargetResource:
+      description: Target resource.
+      example:
+        resourceName: resourceName
+        id: id
+        resourceType: resourceType
+      properties:
+        id:
+          description: The ID of the resource.
+          title: id
+          type: string
+        resourceName:
+          description: The name of the resource.
+          title: resourceName
+          type: string
+        resourceType:
+          description: The type of the resource.
+          title: resourceType
+          type: string
+      title: TargetResource
+      type: object
+    TemplateHashResult:
+      description: Result of the request to calculate template hash. It contains a
+        string of minified template and its hash.
+      example:
+        minifiedTemplate: minifiedTemplate
+        templateHash: templateHash
+      properties:
+        minifiedTemplate:
+          description: The minified template string.
+          title: minifiedTemplate
+          type: string
+        templateHash:
+          description: The template hash.
+          title: templateHash
+          type: string
+      title: TemplateHashResult
+      type: object
+    TemplateLink:
+      description: Entity representing the reference to the template.
+      example:
+        contentVersion: contentVersion
+        uri: uri
+      properties:
+        contentVersion:
+          description: "If included, must match the ContentVersion in the template."
+          title: contentVersion
+          type: string
+        uri:
+          description: The URI of the template to deploy.
+          title: uri
+          type: string
+      required:
+      - uri
+      title: TemplateLink
+      type: object
+    CloudError_error_additionalInfo_inner:
+      description: The resource management error additional info.
+      example:
+        type: type
+        info: "{}"
+      properties:
+        info:
+          description: The additional info.
+          properties: {}
+          readOnly: true
+          title: info
+          type: object
+        type:
+          description: The additional info type.
+          readOnly: true
+          title: type
+          type: string
+      title: CloudError_error_additionalInfo_inner
+      type: object
+    CloudError_error:
+      description: The resource management error response.
+      example:
+        code: code
+        additionalInfo:
+        - type: type
+          info: "{}"
+        - type: type
+          info: "{}"
+        details:
+        - null
+        - null
+        message: message
+        target: target
+      properties:
+        additionalInfo:
+          description: The error additional info.
+          items:
+            $ref: '#/components/schemas/CloudError_error_additionalInfo_inner'
+          readOnly: true
+          title: additionalInfo
+          type: array
+        code:
+          description: The error code.
+          readOnly: true
+          title: code
+          type: string
+        details:
+          description: The error details.
+          items:
+            $ref: '#/components/schemas/ErrorResponse'
+          readOnly: true
+          title: details
+          type: array
+        message:
+          description: The error message.
+          readOnly: true
+          title: message
+          type: string
+        target:
+          description: The error target.
+          readOnly: true
+          title: target
+          type: string
+      title: CloudError_error
+      type: object
+  securitySchemes:
+    azure_auth:
+      description: Azure Active Directory OAuth2 Flow
+      flows:
+        implicit:
+          authorizationUrl: https://login.microsoftonline.com/common/oauth2/authorize
+          scopes:
+            user_impersonation: impersonate your user account
+      type: oauth2
+      x-tokenInfoFunc: openapi_server.controllers.security_controller.info_from_azure_auth
+      x-scopeValidateFunc: openapi_server.controllers.security_controller.validate_scope_azure_auth
+x-original-swagger-version: "2.0"

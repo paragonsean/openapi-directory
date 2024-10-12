@@ -1,0 +1,14 @@
+# ExternalAccountsApi.UpdateMessengerAccount200Response
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**accessToken** | **String** | The provider access token | 
+**apiKey** | **String** | The external api key for this account | 
+**applications** | **[String]** | The array of associated application ids | [optional] 
+**externalId** | **String** | The external identifier for this account. In this case it is the Facebook Page ID. | 
+**name** | **String** | The account name | [optional] 
+**provider** | **String** | The provider (will be &#x60;messenger&#x60;). | 
+
+

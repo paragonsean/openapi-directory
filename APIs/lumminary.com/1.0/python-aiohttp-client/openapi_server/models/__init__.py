@@ -1,0 +1,21 @@
+# coding: utf-8
+
+# import models into model package
+from openapi_server.models.access_scope import AccessScope
+from openapi_server.models.authorization import Authorization
+from openapi_server.models.client_gene import ClientGene
+from openapi_server.models.client_snp import ClientSNP
+from openapi_server.models.customer_address import CustomerAddress
+from openapi_server.models.customer_name import CustomerName
+from openapi_server.models.file_location import FileLocation
+from openapi_server.models.javascript_web_token import JavascriptWebToken
+from openapi_server.models.molecular_location import MolecularLocation
+from openapi_server.models.product import Product
+from openapi_server.models.public_gene import PublicGene
+from openapi_server.models.public_snp import PublicSNP
+from openapi_server.models.reference_chromosome_overview import ReferenceChromosomeOverview
+from openapi_server.models.reference_genome_overview import ReferenceGenomeOverview
+from openapi_server.models.reference_sequence import ReferenceSequence
+from openapi_server.models.report_credentials import ReportCredentials
+from openapi_server.models.report_file import ReportFile
+from openapi_server.models.snps_min_required import SnpsMinRequired

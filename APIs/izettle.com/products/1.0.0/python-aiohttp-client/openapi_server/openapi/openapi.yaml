@@ -1,0 +1,4046 @@
+openapi: 3.0.1
+info:
+  description: The Product Library API is used for managing merchant's product information
+    and product images.
+  title: Product Library API
+  version: 1.0.0
+  x-apisguru-categories:
+  - ecommerce
+  x-logo:
+    url: https://cdn.izettle.com/favicons/favicon-32x32.png
+  x-origin:
+  - format: openapi
+    url: https://products.izettle.com/openapi.json
+    version: "3.0"
+  x-providerName: izettle.com
+  x-serviceName: products
+servers:
+- description: Production
+  url: https://products.izettle.com
+paths:
+  /organizations/{organizationUuid}/categories/v2:
+    get:
+      operationId: get_product_types
+      parameters:
+      - explode: false
+        in: path
+        name: organizationUuid
+        required: true
+        schema:
+          format: uuid
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CategoryResponse'
+          description: List of all categories
+      security:
+      - ZettleOauth:
+        - READ:PRODUCT
+      summary: Retrieve all categories
+      tags:
+      - categories
+      x-openapi-router-controller: openapi_server.controllers.categories_controller
+    post:
+      operationId: create_categories
+      parameters:
+      - explode: false
+        in: path
+        name: organizationUuid
+        required: true
+        schema:
+          format: uuid
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateCategoriesRequest'
+        required: true
+        x-body-name: body
+      responses:
+        "201":
+          description: Category created
+        "400":
+          description: Category already exists
+        "404":
+          description: Organization not found
+      security:
+      - ZettleOauth:
+        - WRITE:PRODUCT
+      summary: Create a new category
+      tags:
+      - categories
+      x-openapi-router-controller: openapi_server.controllers.categories_controller
+      x-codegen-request-body-name: body
+  /organizations/{organizationUuid}/categories/v2/{categoryUuid}:
+    delete:
+      operationId: delete_category
+      parameters:
+      - explode: false
+        in: path
+        name: organizationUuid
+        required: true
+        schema:
+          format: uuid
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: categoryUuid
+        required: true
+        schema:
+          format: uuid
+          type: string
+        style: simple
+      responses:
+        "204":
+          description: Category deleted
+        "404":
+          description: Organization not found
+      security:
+      - ZettleOauth:
+        - WRITE:PRODUCT
+      summary: Delete a category
+      tags:
+      - categories
+      x-openapi-router-controller: openapi_server.controllers.categories_controller
+    patch:
+      operationId: rename_category
+      parameters:
+      - explode: false
+        in: path
+        name: organizationUuid
+        required: true
+        schema:
+          format: uuid
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: categoryUuid
+        required: true
+        schema:
+          format: uuid
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RenameCategoryRequest'
+        required: true
+        x-body-name: body
+      responses:
+        "204":
+          description: Category renamed
+        "400":
+          description: Category already exists
+        "404":
+          description: Organization not found
+      security:
+      - ZettleOauth:
+        - WRITE:PRODUCT
+      summary: Rename a category
+      tags:
+      - categories
+      x-openapi-router-controller: openapi_server.controllers.categories_controller
+      x-codegen-request-body-name: body
+  /organizations/{organizationUuid}/discounts:
+    get:
+      operationId: get_all_discounts
+      parameters:
+      - explode: false
+        in: path
+        name: organizationUuid
+        required: true
+        schema:
+          format: uuid
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/DiscountResponse'
+                type: array
+          description: List of all discounts
+      security:
+      - ZettleOauth:
+        - READ:PRODUCT
+      summary: Retrieve all discounts
+      tags:
+      - discounts
+      x-openapi-router-controller: openapi_server.controllers.discounts_controller
+    post:
+      description: Creates a single discount entity. The location of the newly created
+        discount will be available in the successful response as a HttpHeaders.LOCATION
+        header
+      operationId: create_discount
+      parameters:
+      - explode: false
+        in: path
+        name: organizationUuid
+        required: true
+        schema:
+          format: uuid
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DiscountRequest'
+        x-body-name: body
+      responses:
+        "201":
+          description: Discount created
+          headers:
+            ETag:
+              description: ETag value
+              explode: false
+              schema:
+                type: string
+              style: simple
+            Location:
+              description: Location of newly created Discount
+              explode: false
+              schema:
+                type: string
+              style: simple
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Invalid request body
+      security:
+      - ZettleOauth:
+        - WRITE:PRODUCT
+      summary: Create a discount
+      tags:
+      - discounts
+      x-openapi-router-controller: openapi_server.controllers.discounts_controller
+      x-codegen-request-body-name: body
+  /organizations/{organizationUuid}/discounts/{discountUuid}:
+    delete:
+      operationId: delete_discount
+      parameters:
+      - explode: false
+        in: path
+        name: organizationUuid
+        required: true
+        schema:
+          format: uuid
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: discountUuid
+        required: true
+        schema:
+          format: uuid
+          type: string
+        style: simple
+      responses:
+        "204":
+          description: Discount deleted
+        "404":
+          description: Organization or Discount not found
+      security:
+      - ZettleOauth:
+        - WRITE:PRODUCT
+      summary: 'Delete a single discount '
+      tags:
+      - discounts
+      x-openapi-router-controller: openapi_server.controllers.discounts_controller
+    get:
+      description: "Get the full discount with the provided UUID. The method supports\
+        \ conditional GET through providing a HttpHeaders.IF_NONE_MATCH header. If\
+        \ the conditional prerequisite is fullfilled, the full discount is returned:\
+        \ otherwise a 304 not modified will be returned with an empty body."
+      operationId: get_discount
+      parameters:
+      - explode: false
+        in: header
+        name: If-None-Match
+        required: false
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: organizationUuid
+        required: true
+        schema:
+          format: uuid
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: discountUuid
+        required: true
+        schema:
+          format: uuid
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DiscountResponse'
+          description: Discount
+          headers:
+            ETag:
+              description: ETag value
+              explode: false
+              schema:
+                type: string
+              style: simple
+        "304":
+          description: Not modified
+        "404":
+          description: Organization or Discount not found
+      security:
+      - ZettleOauth:
+        - READ:PRODUCT
+      summary: Retrieve a single discount
+      tags:
+      - discounts
+      x-openapi-router-controller: openapi_server.controllers.discounts_controller
+    put:
+      description: "Updates a discount entity using JSON merge patch (https://tools.ietf.org/html/rfc7386).\
+        \ This means that only included fields will be changed: null values removes\
+        \ the field on the target entity, and other values updates the field. Conditional\
+        \ updates are supported through the HttpHeaders.IF_MATCH header. If the conditional\
+        \ prerequisite is fullfilled, the discount is updated: otherwise a 412 precondition\
+        \ failed will be returned with an empty body."
+      operationId: update_discount
+      parameters:
+      - explode: false
+        in: header
+        name: If-Match
+        required: false
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: organizationUuid
+        required: true
+        schema:
+          format: uuid
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: discountUuid
+        required: true
+        schema:
+          format: uuid
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DiscountRequest'
+        required: true
+        x-body-name: body
+      responses:
+        "204":
+          description: Discount updated
+          headers:
+            ETag:
+              description: ETag value
+              explode: false
+              schema:
+                type: string
+              style: simple
+            Location:
+              description: Location of updated Discount
+              explode: false
+              schema:
+                type: string
+              style: simple
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Invalid request body
+        "412":
+          description: "Precondition failed: ETag did not match the expected value"
+      security:
+      - ZettleOauth:
+        - WRITE:PRODUCT
+      summary: Update a single discount
+      tags:
+      - discounts
+      x-openapi-router-controller: openapi_server.controllers.discounts_controller
+      x-codegen-request-body-name: body
+  /organizations/{organizationUuid}/images:
+    get:
+      description: "Retrieves all library items images used by the organization, sorted\
+        \ by updated date"
+      operationId: get_all_image_urls
+      parameters:
+      - explode: false
+        in: path
+        name: organizationUuid
+        required: true
+        schema:
+          format: uuid
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LibraryImagesResponse'
+          description: List of all image urls
+      security:
+      - ZettleOauth:
+        - READ:PRODUCT
+      summary: Retrieve all library item images
+      tags:
+      - images
+      x-openapi-router-controller: openapi_server.controllers.images_controller
+  /organizations/{organizationUuid}/import/status:
+    get:
+      operationId: get_latest_import_status
+      parameters:
+      - explode: false
+        in: path
+        name: organizationUuid
+        required: true
+        schema:
+          format: uuid
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ImportResponse'
+          description: Import status
+        "404":
+          description: Organization or import not found
+      security:
+      - ZettleOauth:
+        - READ:PRODUCT
+      summary: Get status for latest import
+      tags:
+      - import
+      x-openapi-router-controller: openapi_server.controllers.import_controller
+  /organizations/{organizationUuid}/import/status/{importUuid}:
+    get:
+      operationId: get_status_by_uuid
+      parameters:
+      - explode: false
+        in: path
+        name: organizationUuid
+        required: true
+        schema:
+          format: uuid
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: importUuid
+        required: true
+        schema:
+          format: uuid
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ImportResponse'
+          description: Import status
+        "404":
+          description: Organization or import not found
+      security:
+      - ZettleOauth:
+        - READ:PRODUCT
+      summary: Get status for an import
+      tags:
+      - import
+      x-openapi-router-controller: openapi_server.controllers.import_controller
+  /organizations/{organizationUuid}/import/v2:
+    post:
+      operationId: import_library_v2
+      parameters:
+      - explode: false
+        in: path
+        name: organizationUuid
+        required: true
+        schema:
+          format: uuid
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BulkImportRequest'
+        required: true
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ImportResponse'
+          description: Import status
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Invalid request body
+      security:
+      - ZettleOauth:
+        - WRITE:PRODUCT
+      summary: Import library items
+      tags:
+      - import
+      x-openapi-router-controller: openapi_server.controllers.import_controller
+      x-codegen-request-body-name: body
+  /organizations/{organizationUuid}/library:
+    get:
+      description: |
+        Will return the entire library for the authenticated user. If size of the library exceeds server preferences (normally 500) or the value of the optional limit parameter, the result will be paginated. Paginated responses return a Link header, indicating the next URI to fetch. The resulting header value will look something like:
+
+        <https://products.izettle.com/organizations/self/library?limit=X&offset=Y>; rel="next"
+
+        where limit is number of items in response, and offset is the current position in pagination. The rel-part in the header is the links relation to the data previously recieved. The idea is that as long as this header is present there are still items remaining to be fetched. When either the header is not present or it's value doesn't contain any "next" value, all items have been sent to the client.
+
+        Note: The client should NOT try to extract query parameters from the URI, but rather use it as-is for the next request. Also, clients should be perpared that one Link header might contain multiple other IRIs that are not "next" (there will never be more than one "next" though). See more at:
+
+            IETF: https://tools.ietf.org/html/rfc5988
+            GitHub: https://developer.github.com/guides/traversing-with-pagination/
+
+        If eventLogUuid is provided, the response will only include events affecting the library since that event. Such responses are normally quite small and would be a preferred method for most fat clients after retrieving the initial full library.
+      operationId: get_library
+      parameters:
+      - explode: false
+        in: path
+        name: organizationUuid
+        required: true
+        schema:
+          format: uuid
+          type: string
+        style: simple
+      - explode: true
+        in: query
+        name: eventLogUuid
+        required: false
+        schema:
+          format: uuid
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: limit
+        required: false
+        schema:
+          default: 500
+          format: int32
+          maximum: 500
+          minimum: 1
+          type: integer
+        style: form
+      - explode: true
+        in: query
+        name: offset
+        required: false
+        schema:
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: all
+        required: false
+        schema:
+          type: boolean
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LibraryResponse'
+          description: List of library items
+          headers:
+            Link:
+              description: "If the response is paginated this header will contain\
+                \ the URI for the next page. See more at: https://tools.ietf.org/html/rfc5988"
+              explode: false
+              schema:
+                type: string
+              style: simple
+        "412":
+          description: "Invalid event log uuid. If the eventLogUuid query parameter\
+            \ was provided a 412 response indicates that the number of changes in\
+            \ the product exceeds the limit since that particular event (currently\
+            \ 500 changes). \nWhen this happens, the client should remove the eventLogUuid\
+            \ query parameters and try again."
+      security:
+      - ZettleOauth:
+        - READ:PRODUCT
+      summary: Retrieve the entire library
+      tags:
+      - library
+      x-openapi-router-controller: openapi_server.controllers.library_controller
+  /organizations/{organizationUuid}/products:
+    delete:
+      operationId: delete_products
+      parameters:
+      - explode: false
+        in: path
+        name: organizationUuid
+        required: true
+        schema:
+          format: uuid
+          type: string
+        style: simple
+      - description: List of product UUIDs to be deleted
+        explode: true
+        in: query
+        name: uuid
+        required: true
+        schema:
+          items:
+            format: uuid
+            type: string
+          type: array
+        style: form
+      responses:
+        "204":
+          description: Products deleted
+      security:
+      - ZettleOauth:
+        - WRITE:PRODUCT
+      summary: Delete a list of products
+      tags:
+      - products
+      x-openapi-router-controller: openapi_server.controllers.products_controller
+    get:
+      operationId: get_all_products_in_pos
+      parameters:
+      - explode: false
+        in: path
+        name: organizationUuid
+        required: true
+        schema:
+          format: uuid
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/ProductResponse'
+                type: array
+          description: A list of products
+      security:
+      - ZettleOauth:
+        - READ:PRODUCT
+      summary: Retrieve all products visible in POS
+      tags:
+      - products
+      x-openapi-router-controller: openapi_server.controllers.products_controller
+    post:
+      operationId: create_product
+      parameters:
+      - explode: false
+        in: path
+        name: organizationUuid
+        required: true
+        schema:
+          format: uuid
+          type: string
+        style: simple
+      - explode: true
+        in: query
+        name: returnEntity
+        required: false
+        schema:
+          default: false
+          type: boolean
+        style: form
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductCreateRequest'
+        required: true
+        x-body-name: body
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductResponse'
+          description: Product created. It will include the Product in the response
+            only if 'returnEntity' is true
+          headers:
+            ETag:
+              description: ETag value
+              explode: false
+              schema:
+                type: string
+              style: simple
+            Location:
+              description: Location of newly created Product
+              explode: false
+              schema:
+                type: string
+              style: simple
+      security:
+      - ZettleOauth:
+        - WRITE:PRODUCT
+      summary: Create a new product
+      tags:
+      - products
+      x-openapi-router-controller: openapi_server.controllers.products_controller
+      x-codegen-request-body-name: body
+  /organizations/{organizationUuid}/products/online/slug:
+    post:
+      description: Creates a unique slug (identifier) for a product. The slug is used
+        to create a product URL
+      operationId: create_product_slug
+      parameters:
+      - explode: false
+        in: path
+        name: organizationUuid
+        required: true
+        schema:
+          format: uuid
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateSlugRequest'
+        required: true
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SlugResponse'
+          description: Product slug
+      security:
+      - ZettleOauth:
+        - READ:PRODUCT
+      summary: Create a product identifier
+      tags:
+      - products/online
+      x-openapi-router-controller: openapi_server.controllers.products_online_controller
+      x-codegen-request-body-name: body
+  /organizations/{organizationUuid}/products/options:
+    get:
+      operationId: get_all_options
+      parameters:
+      - explode: false
+        in: path
+        name: organizationUuid
+        required: true
+        schema:
+          format: uuid
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/VariantOptionsResponse'
+                type: array
+          description: List of Options
+      security:
+      - ZettleOauth:
+        - READ:PRODUCT
+      summary: Retrieve an aggregate of active Options in the library
+      tags:
+      - products
+      x-openapi-router-controller: openapi_server.controllers.products_controller
+  /organizations/{organizationUuid}/products/v2:
+    get:
+      operationId: get_all_products_v2
+      parameters:
+      - explode: false
+        in: path
+        name: organizationUuid
+        required: true
+        schema:
+          format: uuid
+          type: string
+        style: simple
+      - description: "If true, sorts response by created date"
+        explode: true
+        in: query
+        name: sort
+        required: false
+        schema:
+          type: boolean
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/ProductResponse'
+                type: array
+          description: A list of products
+      security:
+      - ZettleOauth:
+        - READ:PRODUCT
+      summary: Retrieve all products visible in POS – v2
+      tags:
+      - products
+      x-openapi-router-controller: openapi_server.controllers.products_controller
+  /organizations/{organizationUuid}/products/v2/count:
+    get:
+      operationId: count_all_products
+      parameters:
+      - explode: false
+        in: path
+        name: organizationUuid
+        required: true
+        schema:
+          format: uuid
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/ProductCountResponse'
+                type: array
+          description: Count of existing products
+      security:
+      - ZettleOauth:
+        - READ:PRODUCT
+      summary: Retrieve the count of existing products
+      tags:
+      - products
+      x-openapi-router-controller: openapi_server.controllers.products_controller
+  /organizations/{organizationUuid}/products/v2/{productUuid}:
+    put:
+      description: "Updates a product entity using JSON merge patch (https://tools.ietf.org/html/rfc7386).\
+        \ This means that only included fields will be changed: null values removes\
+        \ the field on the target entity, and other values updates the field. Conditional\
+        \ updates are supported through the HttpHeaders.IF_MATCH header. If the conditional\
+        \ prerequisite is fullfilled, the product is updated: otherwise a 412 (precondition\
+        \ failed) will be returned with an empty body."
+      operationId: update_product
+      parameters:
+      - explode: false
+        in: header
+        name: If-Match
+        required: false
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: organizationUuid
+        required: true
+        schema:
+          format: uuid
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: productUuid
+        required: true
+        schema:
+          format: uuid
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FullProductUpdateRequest'
+        required: true
+        x-body-name: body
+      responses:
+        "204":
+          description: Product updated
+          headers:
+            ETag:
+              description: ETag value
+              explode: false
+              schema:
+                type: string
+              style: simple
+            Location:
+              description: Location of updated product
+              explode: false
+              schema:
+                type: string
+              style: simple
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Invalid request body
+        "412":
+          description: "Precondition failed: ETag did not match the expected value"
+      security:
+      - ZettleOauth:
+        - WRITE:PRODUCT
+      summary: Update a single product
+      tags:
+      - products
+      x-openapi-router-controller: openapi_server.controllers.products_controller
+      x-codegen-request-body-name: body
+  /organizations/{organizationUuid}/products/{productUuid}:
+    delete:
+      operationId: delete_product
+      parameters:
+      - explode: false
+        in: path
+        name: organizationUuid
+        required: true
+        schema:
+          format: uuid
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: productUuid
+        required: true
+        schema:
+          format: uuid
+          type: string
+        style: simple
+      responses:
+        "204":
+          description: Product deleted
+        "404":
+          description: Organization or Product not found
+      security:
+      - ZettleOauth:
+        - WRITE:PRODUCT
+      summary: Delete a single product
+      tags:
+      - products
+      x-openapi-router-controller: openapi_server.controllers.products_controller
+    get:
+      description: "Get the full product with the provided UUID. The method supports\
+        \ conditional GET through providing a HttpHeaders.IF_NONE_MATCH header. If\
+        \ the conditional prerequisite is fullfilled, the full product is returned,\
+        \ otherwise a 304 not modified will be returned with an empty body."
+      operationId: get_product
+      parameters:
+      - explode: false
+        in: header
+        name: If-None-Match
+        required: false
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: organizationUuid
+        required: true
+        schema:
+          format: uuid
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: productUuid
+        required: true
+        schema:
+          format: uuid
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductResponse'
+          description: Product
+          headers:
+            ETag:
+              description: ETag value
+              explode: false
+              schema:
+                type: string
+              style: simple
+        "304":
+          description: Not modified
+        "400":
+          description: Malformed ETag
+        "404":
+          description: Organization or Product not found
+      security:
+      - ZettleOauth:
+        - READ:PRODUCT
+      summary: Retrieve a single product
+      tags:
+      - products
+      x-openapi-router-controller: openapi_server.controllers.products_controller
+  /v1/taxes:
+    get:
+      operationId: get_tax_rates
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/TaxRatesResponse'
+                type: array
+          description: List of tax rates
+        "403":
+          description: Not a sales tax user
+      security:
+      - ZettleOauth:
+        - READ:PRODUCT
+      summary: Get all available tax rates
+      tags:
+      - taxes
+      x-openapi-router-controller: openapi_server.controllers.taxes_controller
+    post:
+      operationId: create_tax_rates
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TaxRatesCreateRequest'
+        required: true
+        x-body-name: body
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaxRatesResponse'
+          description: Tax rates created
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Invalid request body
+        "403":
+          description: Not a sales tax user
+      security:
+      - ZettleOauth:
+        - WRITE:PRODUCT
+      summary: Create new tax rates
+      tags:
+      - taxes
+      x-openapi-router-controller: openapi_server.controllers.taxes_controller
+      x-codegen-request-body-name: body
+  /v1/taxes/count:
+    get:
+      operationId: get_product_count_for_all_taxes
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaxRateProductCountResponse'
+          description: Count of products for each tax rate
+        "403":
+          description: Not a sales tax user
+      security:
+      - ZettleOauth:
+        - READ:PRODUCT
+      summary: Get all tax rates and a count of products associated with each
+      tags:
+      - taxes
+      x-openapi-router-controller: openapi_server.controllers.taxes_controller
+  /v1/taxes/settings:
+    get:
+      operationId: get_tax_settings
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaxSettingsResponse'
+          description: Tax settings
+        "403":
+          description: Not a sales tax user
+      security:
+      - ZettleOauth:
+        - READ:PRODUCT
+      summary: 'Get the organization tax settings '
+      tags:
+      - taxes
+      x-openapi-router-controller: openapi_server.controllers.taxes_controller
+    put:
+      operationId: set_taxation_mode
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TaxSettingsUpdateRequest'
+        required: true
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaxSettingsResponse'
+          description: Updated tax settings
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Invalid request body
+        "403":
+          description: Not a sales tax user
+      security:
+      - ZettleOauth:
+        - WRITE:PRODUCT
+      summary: Update the organization tax settings
+      tags:
+      - taxes
+      x-openapi-router-controller: openapi_server.controllers.taxes_controller
+      x-codegen-request-body-name: body
+  /v1/taxes/{taxRateUuid}:
+    delete:
+      operationId: delete_tax_rate
+      parameters:
+      - explode: false
+        in: path
+        name: taxRateUuid
+        required: true
+        schema:
+          format: uuid
+          type: string
+        style: simple
+      responses:
+        "204":
+          description: Tax rate deleted
+        "403":
+          description: Not a sales tax user
+        "404":
+          description: Tax rate not found
+      security:
+      - ZettleOauth:
+        - WRITE:PRODUCT
+      summary: Delete a single tax rate
+      tags:
+      - taxes
+      x-openapi-router-controller: openapi_server.controllers.taxes_controller
+    get:
+      operationId: get_tax_rate
+      parameters:
+      - explode: false
+        in: path
+        name: taxRateUuid
+        required: true
+        schema:
+          format: uuid
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaxRate'
+          description: Single tax rate
+        "403":
+          description: Not a sales tax user
+        "404":
+          description: Tax rate not found
+      security:
+      - ZettleOauth:
+        - READ:PRODUCT
+      summary: Get a single tax rate
+      tags:
+      - taxes
+      x-openapi-router-controller: openapi_server.controllers.taxes_controller
+    put:
+      operationId: update_tax_rate
+      parameters:
+      - explode: false
+        in: path
+        name: taxRateUuid
+        required: true
+        schema:
+          format: uuid
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TaxRateUpdateRequest'
+        required: true
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaxRate'
+          description: Updated tax rate
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Invalid request body
+        "403":
+          description: Not a sales tax user
+        "404":
+          description: Tax rate not found
+      security:
+      - ZettleOauth:
+        - WRITE:PRODUCT
+      summary: Update a single tax rate
+      tags:
+      - taxes
+      x-openapi-router-controller: openapi_server.controllers.taxes_controller
+      x-codegen-request-body-name: body
+components:
+  schemas:
+    BulkImportRequest:
+      example:
+        products:
+        - metadata:
+            inPos: true
+            source:
+              external: true
+              name: name
+          taxExempt: true
+          unitName: unitName
+          description: description
+          variants:
+          - presentation:
+              backgroundColor: backgroundColor
+              imageUrl: imageUrl
+              textColor: textColor
+            price:
+              amount: 0
+              currencyId: AED
+            vatPercentage: 14.658129805029452
+            costPrice:
+              amount: 0
+              currencyId: AED
+            name: name
+            options:
+            - name: name
+              value: value
+            - name: name
+              value: value
+            - name: name
+              value: value
+            - name: name
+              value: value
+            - name: name
+              value: value
+            description: description
+            sku: sku
+            barcode: barcode
+            uuid: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          - presentation:
+              backgroundColor: backgroundColor
+              imageUrl: imageUrl
+              textColor: textColor
+            price:
+              amount: 0
+              currencyId: AED
+            vatPercentage: 14.658129805029452
+            costPrice:
+              amount: 0
+              currencyId: AED
+            name: name
+            options:
+            - name: name
+              value: value
+            - name: name
+              value: value
+            - name: name
+              value: value
+            - name: name
+              value: value
+            - name: name
+              value: value
+            description: description
+            sku: sku
+            barcode: barcode
+            uuid: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          taxCode: taxCode
+          uuid: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          externalReference: externalReference
+          presentation:
+            backgroundColor: backgroundColor
+            imageUrl: imageUrl
+            textColor: textColor
+          taxRates:
+          - 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          - 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          vatPercentage: 59.621339166831824
+          name: name
+          online:
+            presentation:
+              displayImageUrl: http://example.com/aeiou
+              additionalImageUrls:
+              - http://example.com/aeiou
+              - http://example.com/aeiou
+              - http://example.com/aeiou
+              - http://example.com/aeiou
+              - http://example.com/aeiou
+              mediaUrls:
+              - http://example.com/aeiou
+              - http://example.com/aeiou
+              - http://example.com/aeiou
+              - http://example.com/aeiou
+              - http://example.com/aeiou
+            shipping:
+              shippingPricingModel: FREE
+              weightInGrams: 1294386358
+              weight:
+                unit: kg
+                weight: 0.08008281904610115
+            description: description
+            seo:
+              title: title
+              metaDescription: metaDescription
+              slug: slug
+            title: title
+            status: ACTIVE
+          categories:
+          - categories
+          imageLookupKeys:
+          - imageLookupKeys
+          - imageLookupKeys
+          category:
+            name: name
+            uuid: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          variantOptionDefinitions:
+            definitions:
+            - name: name
+              properties:
+              - imageUrl: imageUrl
+                value: value
+              - imageUrl: imageUrl
+                value: value
+              - imageUrl: imageUrl
+                value: value
+              - imageUrl: imageUrl
+                value: value
+              - imageUrl: imageUrl
+                value: value
+            - name: name
+              properties:
+              - imageUrl: imageUrl
+                value: value
+              - imageUrl: imageUrl
+                value: value
+              - imageUrl: imageUrl
+                value: value
+              - imageUrl: imageUrl
+                value: value
+              - imageUrl: imageUrl
+                value: value
+            - name: name
+              properties:
+              - imageUrl: imageUrl
+                value: value
+              - imageUrl: imageUrl
+                value: value
+              - imageUrl: imageUrl
+                value: value
+              - imageUrl: imageUrl
+                value: value
+              - imageUrl: imageUrl
+                value: value
+        - metadata:
+            inPos: true
+            source:
+              external: true
+              name: name
+          taxExempt: true
+          unitName: unitName
+          description: description
+          variants:
+          - presentation:
+              backgroundColor: backgroundColor
+              imageUrl: imageUrl
+              textColor: textColor
+            price:
+              amount: 0
+              currencyId: AED
+            vatPercentage: 14.658129805029452
+            costPrice:
+              amount: 0
+              currencyId: AED
+            name: name
+            options:
+            - name: name
+              value: value
+            - name: name
+              value: value
+            - name: name
+              value: value
+            - name: name
+              value: value
+            - name: name
+              value: value
+            description: description
+            sku: sku
+            barcode: barcode
+            uuid: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          - presentation:
+              backgroundColor: backgroundColor
+              imageUrl: imageUrl
+              textColor: textColor
+            price:
+              amount: 0
+              currencyId: AED
+            vatPercentage: 14.658129805029452
+            costPrice:
+              amount: 0
+              currencyId: AED
+            name: name
+            options:
+            - name: name
+              value: value
+            - name: name
+              value: value
+            - name: name
+              value: value
+            - name: name
+              value: value
+            - name: name
+              value: value
+            description: description
+            sku: sku
+            barcode: barcode
+            uuid: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          taxCode: taxCode
+          uuid: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          externalReference: externalReference
+          presentation:
+            backgroundColor: backgroundColor
+            imageUrl: imageUrl
+            textColor: textColor
+          taxRates:
+          - 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          - 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          vatPercentage: 59.621339166831824
+          name: name
+          online:
+            presentation:
+              displayImageUrl: http://example.com/aeiou
+              additionalImageUrls:
+              - http://example.com/aeiou
+              - http://example.com/aeiou
+              - http://example.com/aeiou
+              - http://example.com/aeiou
+              - http://example.com/aeiou
+              mediaUrls:
+              - http://example.com/aeiou
+              - http://example.com/aeiou
+              - http://example.com/aeiou
+              - http://example.com/aeiou
+              - http://example.com/aeiou
+            shipping:
+              shippingPricingModel: FREE
+              weightInGrams: 1294386358
+              weight:
+                unit: kg
+                weight: 0.08008281904610115
+            description: description
+            seo:
+              title: title
+              metaDescription: metaDescription
+              slug: slug
+            title: title
+            status: ACTIVE
+          categories:
+          - categories
+          imageLookupKeys:
+          - imageLookupKeys
+          - imageLookupKeys
+          category:
+            name: name
+            uuid: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          variantOptionDefinitions:
+            definitions:
+            - name: name
+              properties:
+              - imageUrl: imageUrl
+                value: value
+              - imageUrl: imageUrl
+                value: value
+              - imageUrl: imageUrl
+                value: value
+              - imageUrl: imageUrl
+                value: value
+              - imageUrl: imageUrl
+                value: value
+            - name: name
+              properties:
+              - imageUrl: imageUrl
+                value: value
+              - imageUrl: imageUrl
+                value: value
+              - imageUrl: imageUrl
+                value: value
+              - imageUrl: imageUrl
+                value: value
+              - imageUrl: imageUrl
+                value: value
+            - name: name
+              properties:
+              - imageUrl: imageUrl
+                value: value
+              - imageUrl: imageUrl
+                value: value
+              - imageUrl: imageUrl
+                value: value
+              - imageUrl: imageUrl
+                value: value
+              - imageUrl: imageUrl
+                value: value
+      properties:
+        products:
+          items:
+            $ref: '#/components/schemas/FullProductUpdateRequest'
+          title: products
+          type: array
+      required:
+      - products
+      title: BulkImportRequest
+      type: object
+    CategoryDTO:
+      example:
+        name: name
+        uuid: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+      properties:
+        name:
+          maxLength: 100
+          minLength: 0
+          title: name
+          type: string
+        uuid:
+          format: uuid
+          title: uuid
+          type: string
+      required:
+      - name
+      - uuid
+      title: CategoryDTO
+      type: object
+    CategoryResponse:
+      example:
+        categories:
+        - name: name
+          uuid: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        - name: name
+          uuid: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+      properties:
+        categories:
+          items:
+            $ref: '#/components/schemas/CategoryDTO'
+          title: categories
+          type: array
+      required:
+      - categories
+      title: CategoryResponse
+      type: object
+    ConstraintViolation:
+      example:
+        constraintType: MUST_BE_FALSE
+        developerMessage: developerMessage
+        propertyName: propertyName
+        expected: expected
+        value: value
+      properties:
+        constraintType:
+          enum:
+          - MUST_BE_FALSE
+          - MUST_BE_TRUE
+          - MUST_BE_LESS_THAN
+          - MUST_BE_GREATER_THAN
+          - DIGIT_OUT_OF_BOUNDS
+          - DATE_MUST_BE_IN_THE_FUTURE
+          - MUST_BE_LESS_OR_EQUAL_THAN
+          - MUST_BE_GREATER_OR_EQUAL_TO
+          - MUST_NOT_BE_NULL
+          - MUST_BE_NULL
+          - DATE_MUST_BE_IN_THE_PAST
+          - MUST_MATCH_PATTERN
+          - INVALID_SIZE
+          - INVALID_EMAIL
+          - MUST_NOT_BE_EMPTY
+          - INVALID_RANGE
+          - UNKNOWN
+          title: constraintType
+          type: string
+        developerMessage:
+          title: developerMessage
+          type: string
+        expected:
+          title: expected
+          type: string
+        propertyName:
+          title: propertyName
+          type: string
+        value:
+          title: value
+          type: string
+      title: ConstraintViolation
+      type: object
+    CreateCategoriesRequest:
+      example:
+        categories:
+        - name: name
+          uuid: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        - name: name
+          uuid: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+      properties:
+        categories:
+          items:
+            $ref: '#/components/schemas/CategoryDTO'
+          title: categories
+          type: array
+      required:
+      - categories
+      title: CreateCategoriesRequest
+      type: object
+    CreateSlugRequest:
+      example:
+        productName: productName
+      properties:
+        productName:
+          maxLength: 256
+          minLength: 1
+          title: productName
+          type: string
+      required:
+      - productName
+      title: CreateSlugRequest
+      type: object
+    DiscountRequest:
+      example:
+        externalReference: externalReference
+        amount:
+          amount: 0
+          currencyId: AED
+        percentage: 8.008281904610115
+        name: name
+        description: description
+        imageLookupKeys:
+        - imageLookupKeys
+        - imageLookupKeys
+        uuid: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+      properties:
+        amount:
+          $ref: '#/components/schemas/Price'
+        description:
+          maxLength: 128
+          minLength: 0
+          title: description
+          type: string
+        externalReference:
+          maxLength: 128
+          minLength: 0
+          title: externalReference
+          type: string
+        imageLookupKeys:
+          items:
+            type: string
+          title: imageLookupKeys
+          type: array
+          uniqueItems: true
+        name:
+          maxLength: 64
+          minLength: 0
+          title: name
+          type: string
+        percentage:
+          maximum: 100
+          minimum: 0
+          title: percentage
+          type: number
+        uuid:
+          format: uuid
+          title: uuid
+          type: string
+      required:
+      - uuid
+      title: DiscountRequest
+      type: object
+    DiscountResponse:
+      example:
+        externalReference: externalReference
+        amount:
+          amount: 0
+          currencyId: AED
+        updatedBy: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        created: 2000-01-23T04:56:07.000+00:00
+        percentage: 6.027456183070403
+        name: name
+        description: description
+        etag: etag
+        imageLookupKeys:
+        - imageLookupKeys
+        - imageLookupKeys
+        updated: 2000-01-23T04:56:07.000+00:00
+        uuid: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+      properties:
+        amount:
+          $ref: '#/components/schemas/Price'
+        created:
+          format: date-time
+          title: created
+          type: string
+        description:
+          title: description
+          type: string
+        etag:
+          title: etag
+          type: string
+        externalReference:
+          title: externalReference
+          type: string
+        imageLookupKeys:
+          items:
+            type: string
+          title: imageLookupKeys
+          type: array
+          uniqueItems: true
+        name:
+          title: name
+          type: string
+        percentage:
+          title: percentage
+          type: number
+        updated:
+          format: date-time
+          title: updated
+          type: string
+        updatedBy:
+          format: uuid
+          title: updatedBy
+          type: string
+        uuid:
+          format: uuid
+          title: uuid
+          type: string
+      required:
+      - created
+      - etag
+      - name
+      - updated
+      - uuid
+      title: DiscountResponse
+      type: object
+    ErrorResponse:
+      example:
+        developerMessage: developerMessage
+        errorType: errorType
+        violations:
+        - constraintType: MUST_BE_FALSE
+          developerMessage: developerMessage
+          propertyName: propertyName
+          expected: expected
+          value: value
+        - constraintType: MUST_BE_FALSE
+          developerMessage: developerMessage
+          propertyName: propertyName
+          expected: expected
+          value: value
+      properties:
+        developerMessage:
+          title: developerMessage
+          type: string
+        errorType:
+          title: errorType
+          type: string
+        violations:
+          items:
+            $ref: '#/components/schemas/ConstraintViolation'
+          title: violations
+          type: array
+          uniqueItems: true
+      title: ErrorResponse
+      type: object
+    FullProductUpdateRequest:
+      example:
+        metadata:
+          inPos: true
+          source:
+            external: true
+            name: name
+        taxExempt: true
+        unitName: unitName
+        description: description
+        variants:
+        - presentation:
+            backgroundColor: backgroundColor
+            imageUrl: imageUrl
+            textColor: textColor
+          price:
+            amount: 0
+            currencyId: AED
+          vatPercentage: 14.658129805029452
+          costPrice:
+            amount: 0
+            currencyId: AED
+          name: name
+          options:
+          - name: name
+            value: value
+          - name: name
+            value: value
+          - name: name
+            value: value
+          - name: name
+            value: value
+          - name: name
+            value: value
+          description: description
+          sku: sku
+          barcode: barcode
+          uuid: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        - presentation:
+            backgroundColor: backgroundColor
+            imageUrl: imageUrl
+            textColor: textColor
+          price:
+            amount: 0
+            currencyId: AED
+          vatPercentage: 14.658129805029452
+          costPrice:
+            amount: 0
+            currencyId: AED
+          name: name
+          options:
+          - name: name
+            value: value
+          - name: name
+            value: value
+          - name: name
+            value: value
+          - name: name
+            value: value
+          - name: name
+            value: value
+          description: description
+          sku: sku
+          barcode: barcode
+          uuid: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        taxCode: taxCode
+        uuid: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        externalReference: externalReference
+        presentation:
+          backgroundColor: backgroundColor
+          imageUrl: imageUrl
+          textColor: textColor
+        taxRates:
+        - 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        - 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        vatPercentage: 59.621339166831824
+        name: name
+        online:
+          presentation:
+            displayImageUrl: http://example.com/aeiou
+            additionalImageUrls:
+            - http://example.com/aeiou
+            - http://example.com/aeiou
+            - http://example.com/aeiou
+            - http://example.com/aeiou
+            - http://example.com/aeiou
+            mediaUrls:
+            - http://example.com/aeiou
+            - http://example.com/aeiou
+            - http://example.com/aeiou
+            - http://example.com/aeiou
+            - http://example.com/aeiou
+          shipping:
+            shippingPricingModel: FREE
+            weightInGrams: 1294386358
+            weight:
+              unit: kg
+              weight: 0.08008281904610115
+          description: description
+          seo:
+            title: title
+            metaDescription: metaDescription
+            slug: slug
+          title: title
+          status: ACTIVE
+        categories:
+        - categories
+        imageLookupKeys:
+        - imageLookupKeys
+        - imageLookupKeys
+        category:
+          name: name
+          uuid: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        variantOptionDefinitions:
+          definitions:
+          - name: name
+            properties:
+            - imageUrl: imageUrl
+              value: value
+            - imageUrl: imageUrl
+              value: value
+            - imageUrl: imageUrl
+              value: value
+            - imageUrl: imageUrl
+              value: value
+            - imageUrl: imageUrl
+              value: value
+          - name: name
+            properties:
+            - imageUrl: imageUrl
+              value: value
+            - imageUrl: imageUrl
+              value: value
+            - imageUrl: imageUrl
+              value: value
+            - imageUrl: imageUrl
+              value: value
+            - imageUrl: imageUrl
+              value: value
+          - name: name
+            properties:
+            - imageUrl: imageUrl
+              value: value
+            - imageUrl: imageUrl
+              value: value
+            - imageUrl: imageUrl
+              value: value
+            - imageUrl: imageUrl
+              value: value
+            - imageUrl: imageUrl
+              value: value
+      properties:
+        categories:
+          items:
+            type: string
+          maxItems: 1
+          minItems: 0
+          title: categories
+          type: array
+          uniqueItems: true
+        category:
+          $ref: '#/components/schemas/CategoryDTO'
+        description:
+          maxLength: 1024
+          minLength: 0
+          title: description
+          type: string
+        externalReference:
+          title: externalReference
+          type: string
+        imageLookupKeys:
+          items:
+            type: string
+          title: imageLookupKeys
+          type: array
+          uniqueItems: true
+        metadata:
+          $ref: '#/components/schemas/MetadataDTO'
+        name:
+          maxLength: 256
+          minLength: 1
+          title: name
+          type: string
+        online:
+          $ref: '#/components/schemas/OnlineProperties'
+        presentation:
+          $ref: '#/components/schemas/PresentationDTO'
+        taxCode:
+          title: taxCode
+          type: string
+        taxExempt:
+          title: taxExempt
+          type: boolean
+        taxRates:
+          items:
+            format: uuid
+            type: string
+          title: taxRates
+          type: array
+          uniqueItems: true
+        unitName:
+          title: unitName
+          type: string
+        uuid:
+          format: uuid
+          title: uuid
+          type: string
+        variantOptionDefinitions:
+          $ref: '#/components/schemas/VariantOptionDefinitions'
+        variants:
+          items:
+            $ref: '#/components/schemas/VariantDTO'
+          title: variants
+          type: array
+        vatPercentage:
+          maximum: 100
+          minimum: 0
+          title: vatPercentage
+          type: number
+      required:
+      - name
+      - uuid
+      title: FullProductUpdateRequest
+      type: object
+    ImportResponse:
+      example:
+        created: 2000-01-23T04:56:07.000+00:00
+        errorMessage: errorMessage
+        finished: 2000-01-23T04:56:07.000+00:00
+        state: IMPORTING
+        items: 0
+        uuid: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+      properties:
+        created:
+          format: date-time
+          title: created
+          type: string
+        errorMessage:
+          title: errorMessage
+          type: string
+        finished:
+          format: date-time
+          title: finished
+          type: string
+        items:
+          format: int64
+          title: items
+          type: integer
+        state:
+          enum:
+          - IMPORTING
+          - FINISHED_SUCCESS
+          - FINISHED_FAILED
+          title: state
+          type: string
+        uuid:
+          format: uuid
+          title: uuid
+          type: string
+      title: ImportResponse
+      type: object
+    LibraryImagesResponse:
+      example:
+        imageUrls:
+        - imageUrls
+        - imageUrls
+      properties:
+        imageUrls:
+          items:
+            type: string
+          title: imageUrls
+          type: array
+      title: LibraryImagesResponse
+      type: object
+    LibraryResponse:
+      example:
+        deletedProducts:
+        - 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        - 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        discounts:
+        - externalReference: externalReference
+          amount:
+            amount: 0
+            currencyId: AED
+          updatedBy: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          created: 2000-01-23T04:56:07.000+00:00
+          percentage: 6.027456183070403
+          name: name
+          description: description
+          etag: etag
+          imageLookupKeys:
+          - imageLookupKeys
+          - imageLookupKeys
+          updated: 2000-01-23T04:56:07.000+00:00
+          uuid: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        - externalReference: externalReference
+          amount:
+            amount: 0
+            currencyId: AED
+          updatedBy: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          created: 2000-01-23T04:56:07.000+00:00
+          percentage: 6.027456183070403
+          name: name
+          description: description
+          etag: etag
+          imageLookupKeys:
+          - imageLookupKeys
+          - imageLookupKeys
+          updated: 2000-01-23T04:56:07.000+00:00
+          uuid: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        untilEventLogUuid: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        deletedDiscounts:
+        - 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        - 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        fromEventLogUuid: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        products:
+        - metadata:
+            inPos: true
+            source:
+              external: true
+              name: name
+          taxExempt: true
+          updatedBy: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          unitName: unitName
+          created: 2000-01-23T04:56:07.000+00:00
+          description: description
+          variants:
+          - presentation:
+              backgroundColor: backgroundColor
+              imageUrl: imageUrl
+              textColor: textColor
+            price:
+              amount: 0
+              currencyId: AED
+            vatPercentage: 14.658129805029452
+            costPrice:
+              amount: 0
+              currencyId: AED
+            name: name
+            options:
+            - name: name
+              value: value
+            - name: name
+              value: value
+            - name: name
+              value: value
+            - name: name
+              value: value
+            - name: name
+              value: value
+            description: description
+            sku: sku
+            barcode: barcode
+            uuid: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          - presentation:
+              backgroundColor: backgroundColor
+              imageUrl: imageUrl
+              textColor: textColor
+            price:
+              amount: 0
+              currencyId: AED
+            vatPercentage: 14.658129805029452
+            costPrice:
+              amount: 0
+              currencyId: AED
+            name: name
+            options:
+            - name: name
+              value: value
+            - name: name
+              value: value
+            - name: name
+              value: value
+            - name: name
+              value: value
+            - name: name
+              value: value
+            description: description
+            sku: sku
+            barcode: barcode
+            uuid: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          - presentation:
+              backgroundColor: backgroundColor
+              imageUrl: imageUrl
+              textColor: textColor
+            price:
+              amount: 0
+              currencyId: AED
+            vatPercentage: 14.658129805029452
+            costPrice:
+              amount: 0
+              currencyId: AED
+            name: name
+            options:
+            - name: name
+              value: value
+            - name: name
+              value: value
+            - name: name
+              value: value
+            - name: name
+              value: value
+            - name: name
+              value: value
+            description: description
+            sku: sku
+            barcode: barcode
+            uuid: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          - presentation:
+              backgroundColor: backgroundColor
+              imageUrl: imageUrl
+              textColor: textColor
+            price:
+              amount: 0
+              currencyId: AED
+            vatPercentage: 14.658129805029452
+            costPrice:
+              amount: 0
+              currencyId: AED
+            name: name
+            options:
+            - name: name
+              value: value
+            - name: name
+              value: value
+            - name: name
+              value: value
+            - name: name
+              value: value
+            - name: name
+              value: value
+            description: description
+            sku: sku
+            barcode: barcode
+            uuid: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          - presentation:
+              backgroundColor: backgroundColor
+              imageUrl: imageUrl
+              textColor: textColor
+            price:
+              amount: 0
+              currencyId: AED
+            vatPercentage: 14.658129805029452
+            costPrice:
+              amount: 0
+              currencyId: AED
+            name: name
+            options:
+            - name: name
+              value: value
+            - name: name
+              value: value
+            - name: name
+              value: value
+            - name: name
+              value: value
+            - name: name
+              value: value
+            description: description
+            sku: sku
+            barcode: barcode
+            uuid: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          taxCode: taxCode
+          uuid: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          externalReference: externalReference
+          presentation:
+            backgroundColor: backgroundColor
+            imageUrl: imageUrl
+            textColor: textColor
+          taxRates:
+          - 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          - 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          vatPercentage: 0.8008281904610115
+          name: name
+          online:
+            presentation:
+              displayImageUrl: http://example.com/aeiou
+              additionalImageUrls:
+              - http://example.com/aeiou
+              - http://example.com/aeiou
+              - http://example.com/aeiou
+              - http://example.com/aeiou
+              - http://example.com/aeiou
+              mediaUrls:
+              - http://example.com/aeiou
+              - http://example.com/aeiou
+              - http://example.com/aeiou
+              - http://example.com/aeiou
+              - http://example.com/aeiou
+            shipping:
+              shippingPricingModel: FREE
+              weightInGrams: 1294386358
+              weight:
+                unit: kg
+                weight: 0.08008281904610115
+            description: description
+            seo:
+              title: title
+              metaDescription: metaDescription
+              slug: slug
+            title: title
+            status: ACTIVE
+          etag: etag
+          categories:
+          - categories
+          imageLookupKeys:
+          - imageLookupKeys
+          - imageLookupKeys
+          category:
+            name: name
+            uuid: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          updated: 2000-01-23T04:56:07.000+00:00
+          variantOptionDefinitions:
+            definitions:
+            - name: name
+              properties:
+              - imageUrl: imageUrl
+                value: value
+              - imageUrl: imageUrl
+                value: value
+              - imageUrl: imageUrl
+                value: value
+              - imageUrl: imageUrl
+                value: value
+              - imageUrl: imageUrl
+                value: value
+            - name: name
+              properties:
+              - imageUrl: imageUrl
+                value: value
+              - imageUrl: imageUrl
+                value: value
+              - imageUrl: imageUrl
+                value: value
+              - imageUrl: imageUrl
+                value: value
+              - imageUrl: imageUrl
+                value: value
+            - name: name
+              properties:
+              - imageUrl: imageUrl
+                value: value
+              - imageUrl: imageUrl
+                value: value
+              - imageUrl: imageUrl
+                value: value
+              - imageUrl: imageUrl
+                value: value
+              - imageUrl: imageUrl
+                value: value
+        - metadata:
+            inPos: true
+            source:
+              external: true
+              name: name
+          taxExempt: true
+          updatedBy: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          unitName: unitName
+          created: 2000-01-23T04:56:07.000+00:00
+          description: description
+          variants:
+          - presentation:
+              backgroundColor: backgroundColor
+              imageUrl: imageUrl
+              textColor: textColor
+            price:
+              amount: 0
+              currencyId: AED
+            vatPercentage: 14.658129805029452
+            costPrice:
+              amount: 0
+              currencyId: AED
+            name: name
+            options:
+            - name: name
+              value: value
+            - name: name
+              value: value
+            - name: name
+              value: value
+            - name: name
+              value: value
+            - name: name
+              value: value
+            description: description
+            sku: sku
+            barcode: barcode
+            uuid: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          - presentation:
+              backgroundColor: backgroundColor
+              imageUrl: imageUrl
+              textColor: textColor
+            price:
+              amount: 0
+              currencyId: AED
+            vatPercentage: 14.658129805029452
+            costPrice:
+              amount: 0
+              currencyId: AED
+            name: name
+            options:
+            - name: name
+              value: value
+            - name: name
+              value: value
+            - name: name
+              value: value
+            - name: name
+              value: value
+            - name: name
+              value: value
+            description: description
+            sku: sku
+            barcode: barcode
+            uuid: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          - presentation:
+              backgroundColor: backgroundColor
+              imageUrl: imageUrl
+              textColor: textColor
+            price:
+              amount: 0
+              currencyId: AED
+            vatPercentage: 14.658129805029452
+            costPrice:
+              amount: 0
+              currencyId: AED
+            name: name
+            options:
+            - name: name
+              value: value
+            - name: name
+              value: value
+            - name: name
+              value: value
+            - name: name
+              value: value
+            - name: name
+              value: value
+            description: description
+            sku: sku
+            barcode: barcode
+            uuid: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          - presentation:
+              backgroundColor: backgroundColor
+              imageUrl: imageUrl
+              textColor: textColor
+            price:
+              amount: 0
+              currencyId: AED
+            vatPercentage: 14.658129805029452
+            costPrice:
+              amount: 0
+              currencyId: AED
+            name: name
+            options:
+            - name: name
+              value: value
+            - name: name
+              value: value
+            - name: name
+              value: value
+            - name: name
+              value: value
+            - name: name
+              value: value
+            description: description
+            sku: sku
+            barcode: barcode
+            uuid: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          - presentation:
+              backgroundColor: backgroundColor
+              imageUrl: imageUrl
+              textColor: textColor
+            price:
+              amount: 0
+              currencyId: AED
+            vatPercentage: 14.658129805029452
+            costPrice:
+              amount: 0
+              currencyId: AED
+            name: name
+            options:
+            - name: name
+              value: value
+            - name: name
+              value: value
+            - name: name
+              value: value
+            - name: name
+              value: value
+            - name: name
+              value: value
+            description: description
+            sku: sku
+            barcode: barcode
+            uuid: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          taxCode: taxCode
+          uuid: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          externalReference: externalReference
+          presentation:
+            backgroundColor: backgroundColor
+            imageUrl: imageUrl
+            textColor: textColor
+          taxRates:
+          - 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          - 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          vatPercentage: 0.8008281904610115
+          name: name
+          online:
+            presentation:
+              displayImageUrl: http://example.com/aeiou
+              additionalImageUrls:
+              - http://example.com/aeiou
+              - http://example.com/aeiou
+              - http://example.com/aeiou
+              - http://example.com/aeiou
+              - http://example.com/aeiou
+              mediaUrls:
+              - http://example.com/aeiou
+              - http://example.com/aeiou
+              - http://example.com/aeiou
+              - http://example.com/aeiou
+              - http://example.com/aeiou
+            shipping:
+              shippingPricingModel: FREE
+              weightInGrams: 1294386358
+              weight:
+                unit: kg
+                weight: 0.08008281904610115
+            description: description
+            seo:
+              title: title
+              metaDescription: metaDescription
+              slug: slug
+            title: title
+            status: ACTIVE
+          etag: etag
+          categories:
+          - categories
+          imageLookupKeys:
+          - imageLookupKeys
+          - imageLookupKeys
+          category:
+            name: name
+            uuid: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          updated: 2000-01-23T04:56:07.000+00:00
+          variantOptionDefinitions:
+            definitions:
+            - name: name
+              properties:
+              - imageUrl: imageUrl
+                value: value
+              - imageUrl: imageUrl
+                value: value
+              - imageUrl: imageUrl
+                value: value
+              - imageUrl: imageUrl
+                value: value
+              - imageUrl: imageUrl
+                value: value
+            - name: name
+              properties:
+              - imageUrl: imageUrl
+                value: value
+              - imageUrl: imageUrl
+                value: value
+              - imageUrl: imageUrl
+                value: value
+              - imageUrl: imageUrl
+                value: value
+              - imageUrl: imageUrl
+                value: value
+            - name: name
+              properties:
+              - imageUrl: imageUrl
+                value: value
+              - imageUrl: imageUrl
+                value: value
+              - imageUrl: imageUrl
+                value: value
+              - imageUrl: imageUrl
+                value: value
+              - imageUrl: imageUrl
+                value: value
+      properties:
+        deletedDiscounts:
+          items:
+            format: uuid
+            type: string
+          title: deletedDiscounts
+          type: array
+          uniqueItems: true
+        deletedProducts:
+          items:
+            format: uuid
+            type: string
+          title: deletedProducts
+          type: array
+          uniqueItems: true
+        discounts:
+          items:
+            $ref: '#/components/schemas/DiscountResponse'
+          title: discounts
+          type: array
+          uniqueItems: true
+        fromEventLogUuid:
+          format: uuid
+          title: fromEventLogUuid
+          type: string
+        products:
+          items:
+            $ref: '#/components/schemas/ProductResponse'
+          title: products
+          type: array
+          uniqueItems: true
+        untilEventLogUuid:
+          format: uuid
+          title: untilEventLogUuid
+          type: string
+      title: LibraryResponse
+      type: object
+    MetadataDTO:
+      example:
+        inPos: true
+        source:
+          external: true
+          name: name
+      properties:
+        inPos:
+          title: inPos
+          type: boolean
+        source:
+          $ref: '#/components/schemas/SourceDTO'
+      required:
+      - inPos
+      title: MetadataDTO
+      type: object
+    OnlineProperties:
+      example:
+        presentation:
+          displayImageUrl: http://example.com/aeiou
+          additionalImageUrls:
+          - http://example.com/aeiou
+          - http://example.com/aeiou
+          - http://example.com/aeiou
+          - http://example.com/aeiou
+          - http://example.com/aeiou
+          mediaUrls:
+          - http://example.com/aeiou
+          - http://example.com/aeiou
+          - http://example.com/aeiou
+          - http://example.com/aeiou
+          - http://example.com/aeiou
+        shipping:
+          shippingPricingModel: FREE
+          weightInGrams: 1294386358
+          weight:
+            unit: kg
+            weight: 0.08008281904610115
+        description: description
+        seo:
+          title: title
+          metaDescription: metaDescription
+          slug: slug
+        title: title
+        status: ACTIVE
+      properties:
+        description:
+          maxLength: 3500
+          minLength: 0
+          title: description
+          type: string
+        presentation:
+          $ref: '#/components/schemas/Presentation'
+        seo:
+          $ref: '#/components/schemas/SearchEngineOptimization'
+        shipping:
+          $ref: '#/components/schemas/Shipping'
+        status:
+          enum:
+          - ACTIVE
+          - HIDDEN
+          title: status
+          type: string
+        title:
+          maxLength: 256
+          minLength: 0
+          title: title
+          type: string
+      required:
+      - status
+      title: OnlineProperties
+      type: object
+    Option:
+      example:
+        values:
+        - values
+        - values
+        name: name
+      properties:
+        name:
+          title: name
+          type: string
+        values:
+          items:
+            type: string
+          title: values
+          type: array
+      title: Option
+      type: object
+    Presentation:
+      example:
+        displayImageUrl: http://example.com/aeiou
+        additionalImageUrls:
+        - http://example.com/aeiou
+        - http://example.com/aeiou
+        - http://example.com/aeiou
+        - http://example.com/aeiou
+        - http://example.com/aeiou
+        mediaUrls:
+        - http://example.com/aeiou
+        - http://example.com/aeiou
+        - http://example.com/aeiou
+        - http://example.com/aeiou
+        - http://example.com/aeiou
+      properties:
+        additionalImageUrls:
+          items:
+            format: url
+            type: string
+          maxItems: 25
+          minItems: 0
+          title: additionalImageUrls
+          type: array
+        displayImageUrl:
+          format: url
+          title: displayImageUrl
+          type: string
+        mediaUrls:
+          items:
+            format: url
+            type: string
+          maxItems: 8
+          minItems: 0
+          title: mediaUrls
+          type: array
+      title: Presentation
+      type: object
+    PresentationDTO:
+      example:
+        backgroundColor: backgroundColor
+        imageUrl: imageUrl
+        textColor: textColor
+      properties:
+        backgroundColor:
+          title: backgroundColor
+          type: string
+        imageUrl:
+          title: imageUrl
+          type: string
+        textColor:
+          title: textColor
+          type: string
+      title: PresentationDTO
+      type: object
+    Price:
+      example:
+        amount: 0
+        currencyId: AED
+      properties:
+        amount:
+          format: int64
+          minimum: 0
+          title: amount
+          type: integer
+        currencyId:
+          enum:
+          - AED
+          - AFA
+          - AFN
+          - ALL
+          - AMD
+          - ANG
+          - AOA
+          - ARS
+          - AUD
+          - AWG
+          - AZM
+          - AZN
+          - BAM
+          - BBD
+          - BDT
+          - BGN
+          - BHD
+          - BIF
+          - BMD
+          - BND
+          - BOB
+          - BRL
+          - BSD
+          - BTN
+          - BWP
+          - BYR
+          - BZD
+          - CAD
+          - CDF
+          - CHF
+          - CLP
+          - CNY
+          - COP
+          - CRC
+          - CSD
+          - CUC
+          - CUP
+          - CVE
+          - CYP
+          - CZK
+          - DJF
+          - DKK
+          - DOP
+          - DZD
+          - EEK
+          - EGP
+          - ERN
+          - ETB
+          - EUR
+          - FJD
+          - FKP
+          - GBP
+          - GEL
+          - GGP
+          - GHC
+          - GHS
+          - GIP
+          - GMD
+          - GNF
+          - GTQ
+          - GYD
+          - HKD
+          - HNL
+          - HRK
+          - HTG
+          - HUF
+          - IDR
+          - ILS
+          - IMP
+          - INR
+          - IQD
+          - IRR
+          - ISK
+          - JEP
+          - JMD
+          - JOD
+          - JPY
+          - KES
+          - KGS
+          - KHR
+          - KMF
+          - KPW
+          - KRW
+          - KWD
+          - KYD
+          - KZT
+          - LAK
+          - LBP
+          - LKR
+          - LRD
+          - LSL
+          - LTL
+          - LVL
+          - LYD
+          - MAD
+          - MDL
+          - MGA
+          - MKD
+          - MMK
+          - MNT
+          - MOP
+          - MRO
+          - MTL
+          - MUR
+          - MVR
+          - MWK
+          - MXN
+          - MYR
+          - MZM
+          - MZN
+          - NAD
+          - NGN
+          - NIO
+          - NOK
+          - NPR
+          - NZD
+          - OMR
+          - PAB
+          - PEN
+          - PGK
+          - PHP
+          - PKR
+          - PLN
+          - PYG
+          - QAR
+          - RON
+          - RSD
+          - RUB
+          - RWF
+          - SAR
+          - SBD
+          - SCR
+          - SDD
+          - SDG
+          - SEK
+          - SGD
+          - SHP
+          - SIT
+          - SKK
+          - SLL
+          - SOS
+          - SPL
+          - SRD
+          - SSP
+          - STD
+          - SVC
+          - SYP
+          - SZL
+          - THB
+          - TJS
+          - TMM
+          - TMT
+          - TND
+          - TOP
+          - TRL
+          - TRY
+          - TTD
+          - TVD
+          - TWD
+          - TZS
+          - UAH
+          - UGX
+          - USD
+          - UYU
+          - UZS
+          - VEB
+          - VEF
+          - VND
+          - VUV
+          - WST
+          - XAF
+          - XAG
+          - XAU
+          - XCD
+          - XDR
+          - XOF
+          - XPD
+          - XPF
+          - XPT
+          - YER
+          - ZAR
+          - ZMK
+          - ZMW
+          - ZWD
+          - ZWL
+          title: currencyId
+          type: string
+      required:
+      - amount
+      - currencyId
+      title: Price
+      type: object
+    ProductCountResponse:
+      example:
+        productCount: 0
+      properties:
+        productCount:
+          format: int32
+          title: productCount
+          type: integer
+      required:
+      - productCount
+      title: ProductCountResponse
+      type: object
+    ProductCreateRequest:
+      example:
+        metadata:
+          inPos: true
+          source:
+            external: true
+            name: name
+        taxExempt: true
+        unitName: unitName
+        description: description
+        variants:
+        - presentation:
+            backgroundColor: backgroundColor
+            imageUrl: imageUrl
+            textColor: textColor
+          price:
+            amount: 0
+            currencyId: AED
+          vatPercentage: 14.658129805029452
+          costPrice:
+            amount: 0
+            currencyId: AED
+          name: name
+          options:
+          - name: name
+            value: value
+          - name: name
+            value: value
+          - name: name
+            value: value
+          - name: name
+            value: value
+          - name: name
+            value: value
+          description: description
+          sku: sku
+          barcode: barcode
+          uuid: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        - presentation:
+            backgroundColor: backgroundColor
+            imageUrl: imageUrl
+            textColor: textColor
+          price:
+            amount: 0
+            currencyId: AED
+          vatPercentage: 14.658129805029452
+          costPrice:
+            amount: 0
+            currencyId: AED
+          name: name
+          options:
+          - name: name
+            value: value
+          - name: name
+            value: value
+          - name: name
+            value: value
+          - name: name
+            value: value
+          - name: name
+            value: value
+          description: description
+          sku: sku
+          barcode: barcode
+          uuid: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        taxCode: taxCode
+        uuid: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        externalReference: externalReference
+        presentation:
+          backgroundColor: backgroundColor
+          imageUrl: imageUrl
+          textColor: textColor
+        taxRates:
+        - 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        - 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        vatPercentage: 8.008281904610115
+        createWithDefaultTax: true
+        name: name
+        online:
+          presentation:
+            displayImageUrl: http://example.com/aeiou
+            additionalImageUrls:
+            - http://example.com/aeiou
+            - http://example.com/aeiou
+            - http://example.com/aeiou
+            - http://example.com/aeiou
+            - http://example.com/aeiou
+            mediaUrls:
+            - http://example.com/aeiou
+            - http://example.com/aeiou
+            - http://example.com/aeiou
+            - http://example.com/aeiou
+            - http://example.com/aeiou
+          shipping:
+            shippingPricingModel: FREE
+            weightInGrams: 1294386358
+            weight:
+              unit: kg
+              weight: 0.08008281904610115
+          description: description
+          seo:
+            title: title
+            metaDescription: metaDescription
+            slug: slug
+          title: title
+          status: ACTIVE
+        categories:
+        - categories
+        - categories
+        imageLookupKeys:
+        - imageLookupKeys
+        - imageLookupKeys
+        category:
+          name: name
+          uuid: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        variantOptionDefinitions:
+          definitions:
+          - name: name
+            properties:
+            - imageUrl: imageUrl
+              value: value
+            - imageUrl: imageUrl
+              value: value
+            - imageUrl: imageUrl
+              value: value
+            - imageUrl: imageUrl
+              value: value
+            - imageUrl: imageUrl
+              value: value
+          - name: name
+            properties:
+            - imageUrl: imageUrl
+              value: value
+            - imageUrl: imageUrl
+              value: value
+            - imageUrl: imageUrl
+              value: value
+            - imageUrl: imageUrl
+              value: value
+            - imageUrl: imageUrl
+              value: value
+          - name: name
+            properties:
+            - imageUrl: imageUrl
+              value: value
+            - imageUrl: imageUrl
+              value: value
+            - imageUrl: imageUrl
+              value: value
+            - imageUrl: imageUrl
+              value: value
+            - imageUrl: imageUrl
+              value: value
+      properties:
+        categories:
+          items:
+            type: string
+          title: categories
+          type: array
+          uniqueItems: true
+        category:
+          $ref: '#/components/schemas/CategoryDTO'
+        createWithDefaultTax:
+          title: createWithDefaultTax
+          type: boolean
+        description:
+          maxLength: 1024
+          minLength: 0
+          title: description
+          type: string
+        externalReference:
+          maxLength: 128
+          minLength: 0
+          title: externalReference
+          type: string
+        imageLookupKeys:
+          items:
+            type: string
+          title: imageLookupKeys
+          type: array
+          uniqueItems: true
+        metadata:
+          $ref: '#/components/schemas/MetadataDTO'
+        name:
+          maxLength: 256
+          minLength: 1
+          title: name
+          type: string
+        online:
+          $ref: '#/components/schemas/OnlineProperties'
+        presentation:
+          $ref: '#/components/schemas/PresentationDTO'
+        taxCode:
+          title: taxCode
+          type: string
+        taxExempt:
+          title: taxExempt
+          type: boolean
+        taxRates:
+          items:
+            format: uuid
+            type: string
+          title: taxRates
+          type: array
+          uniqueItems: true
+        unitName:
+          maxLength: 32
+          minLength: 0
+          title: unitName
+          type: string
+        uuid:
+          format: uuid
+          title: uuid
+          type: string
+        variantOptionDefinitions:
+          $ref: '#/components/schemas/VariantOptionDefinitions'
+        variants:
+          items:
+            $ref: '#/components/schemas/VariantDTO'
+          title: variants
+          type: array
+        vatPercentage:
+          maximum: 100
+          minimum: 0
+          title: vatPercentage
+          type: number
+      required:
+      - name
+      - uuid
+      title: ProductCreateRequest
+      type: object
+    ProductResponse:
+      example:
+        metadata:
+          inPos: true
+          source:
+            external: true
+            name: name
+        taxExempt: true
+        updatedBy: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        unitName: unitName
+        created: 2000-01-23T04:56:07.000+00:00
+        description: description
+        variants:
+        - presentation:
+            backgroundColor: backgroundColor
+            imageUrl: imageUrl
+            textColor: textColor
+          price:
+            amount: 0
+            currencyId: AED
+          vatPercentage: 14.658129805029452
+          costPrice:
+            amount: 0
+            currencyId: AED
+          name: name
+          options:
+          - name: name
+            value: value
+          - name: name
+            value: value
+          - name: name
+            value: value
+          - name: name
+            value: value
+          - name: name
+            value: value
+          description: description
+          sku: sku
+          barcode: barcode
+          uuid: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        - presentation:
+            backgroundColor: backgroundColor
+            imageUrl: imageUrl
+            textColor: textColor
+          price:
+            amount: 0
+            currencyId: AED
+          vatPercentage: 14.658129805029452
+          costPrice:
+            amount: 0
+            currencyId: AED
+          name: name
+          options:
+          - name: name
+            value: value
+          - name: name
+            value: value
+          - name: name
+            value: value
+          - name: name
+            value: value
+          - name: name
+            value: value
+          description: description
+          sku: sku
+          barcode: barcode
+          uuid: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        - presentation:
+            backgroundColor: backgroundColor
+            imageUrl: imageUrl
+            textColor: textColor
+          price:
+            amount: 0
+            currencyId: AED
+          vatPercentage: 14.658129805029452
+          costPrice:
+            amount: 0
+            currencyId: AED
+          name: name
+          options:
+          - name: name
+            value: value
+          - name: name
+            value: value
+          - name: name
+            value: value
+          - name: name
+            value: value
+          - name: name
+            value: value
+          description: description
+          sku: sku
+          barcode: barcode
+          uuid: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        - presentation:
+            backgroundColor: backgroundColor
+            imageUrl: imageUrl
+            textColor: textColor
+          price:
+            amount: 0
+            currencyId: AED
+          vatPercentage: 14.658129805029452
+          costPrice:
+            amount: 0
+            currencyId: AED
+          name: name
+          options:
+          - name: name
+            value: value
+          - name: name
+            value: value
+          - name: name
+            value: value
+          - name: name
+            value: value
+          - name: name
+            value: value
+          description: description
+          sku: sku
+          barcode: barcode
+          uuid: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        - presentation:
+            backgroundColor: backgroundColor
+            imageUrl: imageUrl
+            textColor: textColor
+          price:
+            amount: 0
+            currencyId: AED
+          vatPercentage: 14.658129805029452
+          costPrice:
+            amount: 0
+            currencyId: AED
+          name: name
+          options:
+          - name: name
+            value: value
+          - name: name
+            value: value
+          - name: name
+            value: value
+          - name: name
+            value: value
+          - name: name
+            value: value
+          description: description
+          sku: sku
+          barcode: barcode
+          uuid: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        taxCode: taxCode
+        uuid: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        externalReference: externalReference
+        presentation:
+          backgroundColor: backgroundColor
+          imageUrl: imageUrl
+          textColor: textColor
+        taxRates:
+        - 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        - 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        vatPercentage: 0.8008281904610115
+        name: name
+        online:
+          presentation:
+            displayImageUrl: http://example.com/aeiou
+            additionalImageUrls:
+            - http://example.com/aeiou
+            - http://example.com/aeiou
+            - http://example.com/aeiou
+            - http://example.com/aeiou
+            - http://example.com/aeiou
+            mediaUrls:
+            - http://example.com/aeiou
+            - http://example.com/aeiou
+            - http://example.com/aeiou
+            - http://example.com/aeiou
+            - http://example.com/aeiou
+          shipping:
+            shippingPricingModel: FREE
+            weightInGrams: 1294386358
+            weight:
+              unit: kg
+              weight: 0.08008281904610115
+          description: description
+          seo:
+            title: title
+            metaDescription: metaDescription
+            slug: slug
+          title: title
+          status: ACTIVE
+        etag: etag
+        categories:
+        - categories
+        imageLookupKeys:
+        - imageLookupKeys
+        - imageLookupKeys
+        category:
+          name: name
+          uuid: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        updated: 2000-01-23T04:56:07.000+00:00
+        variantOptionDefinitions:
+          definitions:
+          - name: name
+            properties:
+            - imageUrl: imageUrl
+              value: value
+            - imageUrl: imageUrl
+              value: value
+            - imageUrl: imageUrl
+              value: value
+            - imageUrl: imageUrl
+              value: value
+            - imageUrl: imageUrl
+              value: value
+          - name: name
+            properties:
+            - imageUrl: imageUrl
+              value: value
+            - imageUrl: imageUrl
+              value: value
+            - imageUrl: imageUrl
+              value: value
+            - imageUrl: imageUrl
+              value: value
+            - imageUrl: imageUrl
+              value: value
+          - name: name
+            properties:
+            - imageUrl: imageUrl
+              value: value
+            - imageUrl: imageUrl
+              value: value
+            - imageUrl: imageUrl
+              value: value
+            - imageUrl: imageUrl
+              value: value
+            - imageUrl: imageUrl
+              value: value
+      properties:
+        categories:
+          items:
+            type: string
+          maxItems: 1
+          minItems: 0
+          title: categories
+          type: array
+          uniqueItems: true
+        category:
+          $ref: '#/components/schemas/CategoryDTO'
+        created:
+          format: date-time
+          title: created
+          type: string
+        description:
+          title: description
+          type: string
+        etag:
+          title: etag
+          type: string
+        externalReference:
+          title: externalReference
+          type: string
+        imageLookupKeys:
+          items:
+            type: string
+          title: imageLookupKeys
+          type: array
+          uniqueItems: true
+        metadata:
+          $ref: '#/components/schemas/MetadataDTO'
+        name:
+          title: name
+          type: string
+        online:
+          $ref: '#/components/schemas/OnlineProperties'
+        presentation:
+          $ref: '#/components/schemas/PresentationDTO'
+        taxCode:
+          title: taxCode
+          type: string
+        taxExempt:
+          title: taxExempt
+          type: boolean
+        taxRates:
+          items:
+            format: uuid
+            type: string
+          title: taxRates
+          type: array
+          uniqueItems: true
+        unitName:
+          title: unitName
+          type: string
+        updated:
+          format: date-time
+          title: updated
+          type: string
+        updatedBy:
+          format: uuid
+          title: updatedBy
+          type: string
+        uuid:
+          format: uuid
+          title: uuid
+          type: string
+        variantOptionDefinitions:
+          $ref: '#/components/schemas/VariantOptionDefinitions'
+        variants:
+          items:
+            $ref: '#/components/schemas/VariantDTO'
+          maxItems: 99
+          minItems: 1
+          title: variants
+          type: array
+        vatPercentage:
+          title: vatPercentage
+          type: number
+      required:
+      - created
+      - etag
+      - name
+      - updated
+      - uuid
+      - variants
+      title: ProductResponse
+      type: object
+    RenameCategoryRequest:
+      example:
+        name: name
+      properties:
+        name:
+          maxLength: 100
+          minLength: 1
+          pattern: \S|\S.*\S
+          title: name
+          type: string
+      required:
+      - name
+      title: RenameCategoryRequest
+      type: object
+    SearchEngineOptimization:
+      example:
+        title: title
+        metaDescription: metaDescription
+        slug: slug
+      properties:
+        metaDescription:
+          maxLength: 320
+          minLength: 0
+          title: metaDescription
+          type: string
+        slug:
+          maxLength: 256
+          minLength: 1
+          title: slug
+          type: string
+        title:
+          maxLength: 256
+          minLength: 0
+          title: title
+          type: string
+      title: SearchEngineOptimization
+      type: object
+    Shipping:
+      example:
+        shippingPricingModel: FREE
+        weightInGrams: 1294386358
+        weight:
+          unit: kg
+          weight: 0.08008281904610115
+      properties:
+        shippingPricingModel:
+          enum:
+          - FREE
+          - STANDARD
+          title: shippingPricingModel
+          type: string
+        weight:
+          $ref: '#/components/schemas/Weight'
+        weightInGrams:
+          format: int64
+          maximum: 2147483647
+          minimum: 0
+          title: weightInGrams
+          type: integer
+      title: Shipping
+      type: object
+    SlugResponse:
+      example:
+        productName: productName
+        slug: slug
+      properties:
+        productName:
+          title: productName
+          type: string
+        slug:
+          title: slug
+          type: string
+      title: SlugResponse
+      type: object
+    SourceDTO:
+      example:
+        external: true
+        name: name
+      properties:
+        external:
+          title: external
+          type: boolean
+        name:
+          title: name
+          type: string
+      title: SourceDTO
+      type: object
+    TaxRate:
+      example:
+        default: true
+        percentage: 8.008281904610115
+        label: label
+        uuid: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+      properties:
+        default:
+          title: default
+          type: boolean
+        label:
+          maxLength: 512
+          minLength: 0
+          title: label
+          type: string
+        percentage:
+          maximum: 100
+          title: percentage
+          type: number
+        uuid:
+          format: uuid
+          title: uuid
+          type: string
+      required:
+      - label
+      - uuid
+      title: TaxRate
+      type: object
+    TaxRateProductCount:
+      example:
+        count: 0
+        taxRateUuid: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+      properties:
+        count:
+          format: int32
+          title: count
+          type: integer
+        taxRateUuid:
+          format: uuid
+          title: taxRateUuid
+          type: string
+      title: TaxRateProductCount
+      type: object
+    TaxRateProductCountResponse:
+      example:
+        counts:
+        - count: 0
+          taxRateUuid: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        - count: 0
+          taxRateUuid: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+      properties:
+        counts:
+          items:
+            $ref: '#/components/schemas/TaxRateProductCount'
+          title: counts
+          type: array
+      title: TaxRateProductCountResponse
+      type: object
+    TaxRateUpdateRequest:
+      example:
+        default: true
+        percentage: 8.008281904610115
+        label: label
+      properties:
+        default:
+          title: default
+          type: boolean
+        label:
+          maxLength: 512
+          minLength: 0
+          title: label
+          type: string
+        percentage:
+          maximum: 100
+          title: percentage
+          type: number
+      title: TaxRateUpdateRequest
+      type: object
+    TaxRatesCreateRequest:
+      example:
+        taxRates:
+        - default: true
+          percentage: 8.008281904610115
+          label: label
+          uuid: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        - default: true
+          percentage: 8.008281904610115
+          label: label
+          uuid: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        - default: true
+          percentage: 8.008281904610115
+          label: label
+          uuid: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        - default: true
+          percentage: 8.008281904610115
+          label: label
+          uuid: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        - default: true
+          percentage: 8.008281904610115
+          label: label
+          uuid: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+      properties:
+        taxRates:
+          items:
+            $ref: '#/components/schemas/TaxRate'
+          maxItems: 15
+          minItems: 0
+          title: taxRates
+          type: array
+      required:
+      - taxRates
+      title: TaxRatesCreateRequest
+      type: object
+    TaxRatesResponse:
+      example:
+        taxRates:
+        - default: true
+          percentage: 8.008281904610115
+          label: label
+          uuid: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        - default: true
+          percentage: 8.008281904610115
+          label: label
+          uuid: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+      properties:
+        taxRates:
+          items:
+            $ref: '#/components/schemas/TaxRate'
+          title: taxRates
+          type: array
+      title: TaxRatesResponse
+      type: object
+    TaxSettingsResponse:
+      example:
+        organizationUuid: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        taxationMode: EXCLUSIVE
+        taxationType: NONE
+      properties:
+        organizationUuid:
+          format: uuid
+          title: organizationUuid
+          type: string
+        taxationMode:
+          enum:
+          - EXCLUSIVE
+          - INCLUSIVE
+          title: taxationMode
+          type: string
+        taxationType:
+          enum:
+          - NONE
+          - SALES_TAX
+          - VAT
+          title: taxationType
+          type: string
+      title: TaxSettingsResponse
+      type: object
+    TaxSettingsUpdateRequest:
+      example:
+        taxationMode: EXCLUSIVE
+      properties:
+        taxationMode:
+          enum:
+          - EXCLUSIVE
+          - INCLUSIVE
+          title: taxationMode
+          type: string
+      required:
+      - taxationMode
+      title: TaxSettingsUpdateRequest
+      type: object
+    VariantDTO:
+      example:
+        presentation:
+          backgroundColor: backgroundColor
+          imageUrl: imageUrl
+          textColor: textColor
+        price:
+          amount: 0
+          currencyId: AED
+        vatPercentage: 14.658129805029452
+        costPrice:
+          amount: 0
+          currencyId: AED
+        name: name
+        options:
+        - name: name
+          value: value
+        - name: name
+          value: value
+        - name: name
+          value: value
+        - name: name
+          value: value
+        - name: name
+          value: value
+        description: description
+        sku: sku
+        barcode: barcode
+        uuid: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+      properties:
+        barcode:
+          maxLength: 128
+          minLength: 0
+          title: barcode
+          type: string
+        costPrice:
+          $ref: '#/components/schemas/Price'
+        description:
+          maxLength: 1024
+          minLength: 0
+          title: description
+          type: string
+        name:
+          maxLength: 256
+          minLength: 0
+          title: name
+          type: string
+        options:
+          items:
+            $ref: '#/components/schemas/VariantOption'
+          maxItems: 99
+          minItems: 1
+          title: options
+          type: array
+        presentation:
+          $ref: '#/components/schemas/PresentationDTO'
+        price:
+          $ref: '#/components/schemas/Price'
+        sku:
+          maxLength: 64
+          minLength: 0
+          title: sku
+          type: string
+        uuid:
+          format: uuid
+          title: uuid
+          type: string
+        vatPercentage:
+          deprecated: true
+          maximum: 100
+          minimum: 0
+          title: vatPercentage
+          type: number
+      required:
+      - uuid
+      title: VariantDTO
+      type: object
+    VariantOption:
+      example:
+        name: name
+        value: value
+      properties:
+        name:
+          maxLength: 30
+          minLength: 1
+          title: name
+          type: string
+        value:
+          maxLength: 256
+          minLength: 1
+          title: value
+          type: string
+      required:
+      - name
+      - value
+      title: VariantOption
+      type: object
+    VariantOptionDefinition:
+      example:
+        name: name
+        properties:
+        - imageUrl: imageUrl
+          value: value
+        - imageUrl: imageUrl
+          value: value
+        - imageUrl: imageUrl
+          value: value
+        - imageUrl: imageUrl
+          value: value
+        - imageUrl: imageUrl
+          value: value
+      properties:
+        name:
+          maxLength: 30
+          minLength: 1
+          title: name
+          type: string
+        properties:
+          items:
+            $ref: '#/components/schemas/VariantOptionProperties'
+          maxItems: 99
+          minItems: 1
+          title: properties
+          type: array
+      required:
+      - name
+      - properties
+      title: VariantOptionDefinition
+      type: object
+    VariantOptionDefinitions:
+      example:
+        definitions:
+        - name: name
+          properties:
+          - imageUrl: imageUrl
+            value: value
+          - imageUrl: imageUrl
+            value: value
+          - imageUrl: imageUrl
+            value: value
+          - imageUrl: imageUrl
+            value: value
+          - imageUrl: imageUrl
+            value: value
+        - name: name
+          properties:
+          - imageUrl: imageUrl
+            value: value
+          - imageUrl: imageUrl
+            value: value
+          - imageUrl: imageUrl
+            value: value
+          - imageUrl: imageUrl
+            value: value
+          - imageUrl: imageUrl
+            value: value
+        - name: name
+          properties:
+          - imageUrl: imageUrl
+            value: value
+          - imageUrl: imageUrl
+            value: value
+          - imageUrl: imageUrl
+            value: value
+          - imageUrl: imageUrl
+            value: value
+          - imageUrl: imageUrl
+            value: value
+      properties:
+        definitions:
+          items:
+            $ref: '#/components/schemas/VariantOptionDefinition'
+          maxItems: 3
+          minItems: 1
+          title: definitions
+          type: array
+      required:
+      - definitions
+      title: VariantOptionDefinitions
+      type: object
+    VariantOptionProperties:
+      example:
+        imageUrl: imageUrl
+        value: value
+      properties:
+        imageUrl:
+          maxLength: 256
+          minLength: 1
+          title: imageUrl
+          type: string
+        value:
+          maxLength: 256
+          minLength: 1
+          title: value
+          type: string
+      required:
+      - value
+      title: VariantOptionProperties
+      type: object
+    VariantOptionsResponse:
+      example:
+        options:
+        - values:
+          - values
+          - values
+          name: name
+        - values:
+          - values
+          - values
+          name: name
+      properties:
+        options:
+          items:
+            $ref: '#/components/schemas/Option'
+          title: options
+          type: array
+      title: VariantOptionsResponse
+      type: object
+    Weight:
+      example:
+        unit: kg
+        weight: 0.08008281904610115
+      properties:
+        unit:
+          enum:
+          - kg
+          - g
+          - oz
+          - lb
+          title: unit
+          type: string
+        weight:
+          exclusiveMinimum: false
+          minimum: 0
+          title: weight
+          type: number
+      required:
+      - unit
+      - weight
+      title: Weight
+      type: object
+  securitySchemes:
+    ZettleOauth:
+      description: "For more information about authorization API visit: https://developer.zettle.com/docs/api/oauth/overview"
+      flows:
+        authorizationCode:
+          authorizationUrl: https://oauth.zettle.com/authorize
+          scopes:
+            READ:PRODUCT: Access to read product library data
+            WRITE:PRODUCT: Access to write product library data
+          tokenUrl: https://oauth.zettle.com/token
+      type: oauth2
+      x-tokenInfoFunc: openapi_server.controllers.security_controller.info_from_ZettleOauth
+      x-scopeValidateFunc: openapi_server.controllers.security_controller.validate_scope_ZettleOauth

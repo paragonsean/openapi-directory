@@ -1,0 +1,15 @@
+# coding: utf-8
+
+# import models into model package
+from openapi_server.models.article import Article
+from openapi_server.models.content_pro_company import ContentProCompany
+from openapi_server.models.content_pro_snippets import ContentProSnippets
+from openapi_server.models.contentpro_search_get200_response import ContentproSearchGet200Response
+from openapi_server.models.contentpro_search_get200_response_data_inner import ContentproSearchGet200ResponseDataInner
+from openapi_server.models.contentpro_similar_text_post_request import ContentproSimilarTextPostRequest
+from openapi_server.models.input_company import InputCompany
+from openapi_server.models.search_get200_response import SearchGet200Response
+from openapi_server.models.similar_company import SimilarCompany
+from openapi_server.models.similar_company_search import SimilarCompanySearch
+from openapi_server.models.similar_get200_response import SimilarGet200Response
+from openapi_server.models.snippet import Snippet

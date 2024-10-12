@@ -1,0 +1,36 @@
+# coding: utf-8
+
+# import models into model package
+from openapi_server.models.applied_reservation_list import AppliedReservationList
+from openapi_server.models.applied_reservations import AppliedReservations
+from openapi_server.models.applied_reservations_properties import AppliedReservationsProperties
+from openapi_server.models.applied_scope_type import AppliedScopeType
+from openapi_server.models.catalog import Catalog
+from openapi_server.models.error import Error
+from openapi_server.models.error_response_code import ErrorResponseCode
+from openapi_server.models.extended_error_info import ExtendedErrorInfo
+from openapi_server.models.extended_status_info import ExtendedStatusInfo
+from openapi_server.models.instance_flexibility import InstanceFlexibility
+from openapi_server.models.merge_properties import MergeProperties
+from openapi_server.models.merge_request import MergeRequest
+from openapi_server.models.operation_display import OperationDisplay
+from openapi_server.models.operation_list import OperationList
+from openapi_server.models.operation_response import OperationResponse
+from openapi_server.models.patch import Patch
+from openapi_server.models.patch_properties import PatchProperties
+from openapi_server.models.reservation_list import ReservationList
+from openapi_server.models.reservation_merge_properties import ReservationMergeProperties
+from openapi_server.models.reservation_order_list import ReservationOrderList
+from openapi_server.models.reservation_order_properties import ReservationOrderProperties
+from openapi_server.models.reservation_order_response import ReservationOrderResponse
+from openapi_server.models.reservation_properties import ReservationProperties
+from openapi_server.models.reservation_response import ReservationResponse
+from openapi_server.models.reservation_split_properties import ReservationSplitProperties
+from openapi_server.models.reservation_status_code import ReservationStatusCode
+from openapi_server.models.reservation_term import ReservationTerm
+from openapi_server.models.reserved_resource_type import ReservedResourceType
+from openapi_server.models.sku_name import SkuName
+from openapi_server.models.sku_property import SkuProperty
+from openapi_server.models.sku_restriction import SkuRestriction
+from openapi_server.models.split_properties import SplitProperties
+from openapi_server.models.split_request import SplitRequest

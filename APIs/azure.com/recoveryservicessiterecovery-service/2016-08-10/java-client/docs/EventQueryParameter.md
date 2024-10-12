@@ -1,0 +1,20 @@
+
+
+# EventQueryParameter
+
+Implements the event query parameter.
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**affectedObjectFriendlyName** | **String** | The affected object name of the events to be queried. |  [optional] |
+|**endTime** | **OffsetDateTime** | The end time of the time range within which the events are to be queried. |  [optional] |
+|**eventCode** | **String** | The source id of the events to be queried. |  [optional] |
+|**eventType** | **String** | The type of the events to be queried. |  [optional] |
+|**fabricName** | **String** | The affected object server id of the events to be queried. |  [optional] |
+|**severity** | **String** | The severity of the events to be queried. |  [optional] |
+|**startTime** | **OffsetDateTime** | The start time of the time range within which the events are to be queried. |  [optional] |
+
+
+

@@ -1,0 +1,35 @@
+# SquareConnectApi.V1Payment
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**additiveTax** | [**[V1PaymentTax]**](V1PaymentTax.md) | All of the additive taxes associated with the payment. | [optional] 
+**additiveTaxMoney** | [**V1Money**](V1Money.md) |  | [optional] 
+**createdAt** | **String** | The time when the payment was created, in ISO 8601 format. Reflects the time of the first payment if the object represents an incomplete partial payment, and the time of the last or complete payment otherwise. | [optional] 
+**creatorId** | **String** | The unique identifier of the Square account that took the payment. | [optional] 
+**device** | [**Device**](Device.md) |  | [optional] 
+**discountMoney** | [**V1Money**](V1Money.md) |  | [optional] 
+**grossSalesMoney** | [**V1Money**](V1Money.md) |  | [optional] 
+**id** | **String** | The payment&#39;s unique identifier. | [optional] 
+**inclusiveTax** | [**[V1PaymentTax]**](V1PaymentTax.md) | All of the inclusive taxes associated with the payment. | [optional] 
+**inclusiveTaxMoney** | [**V1Money**](V1Money.md) |  | [optional] 
+**isPartial** | **Boolean** | Indicates whether or not the payment is only partially paid for. If true, this payment will have the tenders collected so far, but the itemizations will be empty until the payment is completed. | [optional] 
+**itemizations** | [**[V1PaymentItemization]**](V1PaymentItemization.md) | The items purchased in the payment. | [optional] 
+**merchantId** | **String** | The unique identifier of the merchant that took the payment. | [optional] 
+**netSalesMoney** | [**V1Money**](V1Money.md) |  | [optional] 
+**netTotalMoney** | [**V1Money**](V1Money.md) |  | [optional] 
+**paymentUrl** | **String** | The URL of the payment&#39;s detail page in the merchant dashboard. The merchant must be signed in to the merchant dashboard to view this page. | [optional] 
+**processingFeeMoney** | [**V1Money**](V1Money.md) |  | [optional] 
+**receiptUrl** | **String** | The URL of the receipt for the payment. Note that for split tender payments, this URL corresponds to the receipt for the first tender listed in the payment&#39;s tender field. Each Tender object has its own receipt_url field you can use to get the other receipts associated with a split tender payment. | [optional] 
+**refundedMoney** | [**V1Money**](V1Money.md) |  | [optional] 
+**refunds** | [**[V1Refund]**](V1Refund.md) | All of the refunds applied to the payment. Note that the value of all refunds on a payment can exceed the value of all tenders if a merchant chooses to refund money to a tender after previously accepting returned goods as part of an exchange. | [optional] 
+**surchargeMoney** | [**V1Money**](V1Money.md) |  | [optional] 
+**surcharges** | [**[V1PaymentSurcharge]**](V1PaymentSurcharge.md) | A list of all surcharges associated with the payment. | [optional] 
+**swedishRoundingMoney** | [**V1Money**](V1Money.md) |  | [optional] 
+**taxMoney** | [**V1Money**](V1Money.md) |  | [optional] 
+**tender** | [**[V1Tender]**](V1Tender.md) | All of the tenders associated with the payment. | [optional] 
+**tipMoney** | [**V1Money**](V1Money.md) |  | [optional] 
+**totalCollectedMoney** | [**V1Money**](V1Money.md) |  | [optional] 
+
+

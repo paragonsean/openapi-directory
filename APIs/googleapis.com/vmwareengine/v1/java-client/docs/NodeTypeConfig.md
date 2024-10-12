@@ -1,0 +1,15 @@
+
+
+# NodeTypeConfig
+
+Information about the type and number of nodes associated with the cluster.
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**customCoreCount** | **Integer** | Optional. Customized number of cores available to each node of the type. This number must always be one of &#x60;nodeType.availableCustomCoreCounts&#x60;. If zero is provided max value from &#x60;nodeType.availableCustomCoreCounts&#x60; will be used. |  [optional] |
+|**nodeCount** | **Integer** | Required. The number of nodes of this type in the cluster |  [optional] |
+
+
+

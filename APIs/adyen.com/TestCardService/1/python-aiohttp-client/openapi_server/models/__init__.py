@@ -1,0 +1,9 @@
+# coding: utf-8
+
+# import models into model package
+from openapi_server.models.avs_address import AvsAddress
+from openapi_server.models.create_test_card_ranges_request import CreateTestCardRangesRequest
+from openapi_server.models.create_test_card_ranges_result import CreateTestCardRangesResult
+from openapi_server.models.service_error import ServiceError
+from openapi_server.models.test_card_range import TestCardRange
+from openapi_server.models.test_card_range_creation_result import TestCardRangeCreationResult

@@ -1,0 +1,314 @@
+openapi: 3.0.1
+info:
+  contact: {}
+  title: Deep Art Effects
+  version: 2017-02-10T16:24:46Z
+  x-apisguru-categories:
+  - media
+  x-logo:
+    url: https://twitter.com/deeparteffects/profile_image?size=original
+  x-origin:
+  - format: swagger
+    url: http://docs.deeparteffects.com/swagger.json
+    version: "2.0"
+  x-providerName: deeparteffects.com
+servers:
+- url: https://api.deeparteffects.com/v1
+paths:
+  /noauth/result:
+    get:
+      operationId: noauth_result_get
+      parameters:
+      - in: query
+        name: submissionId
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Result'
+          description: 200 response
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 400 response
+      security:
+      - api_key: []
+      x-amazon-apigateway-integration:
+        httpMethod: GET
+        passthroughBehavior: when_no_match
+        requestParameters:
+          integration.request.querystring.apiKey: context.identity.apiKey
+          integration.request.querystring.identifier: method.request.querystring.submissionId
+        responses:
+          "200":
+            responseParameters:
+              method.response.header.Access-Control-Allow-Origin: '''*'''
+            responseTemplates:
+              application/json: |-
+                #set($inputRoot = $input.path('$').data)
+                {
+                  "status" : "$inputRoot.status",
+                  "url" : "$inputRoot.filepath"
+                }
+            statusCode: "200"
+          "400":
+            responseTemplates:
+              application/json: |-
+                #set($inputRoot = $input.path('$'))
+                {
+                  "message" : "Invalid request"
+                }
+            statusCode: "400"
+        type: http
+        uri: https://www.deeparteffects.com/service/getsubmissionresultv3
+      x-openapi-router-controller: openapi_server.controllers.default_controller
+  /noauth/styles:
+    get:
+      operationId: noauth_styles_get
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Styles'
+          description: 200 response
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+      security:
+      - api_key: []
+      x-amazon-apigateway-integration:
+        httpMethod: GET
+        passthroughBehavior: when_no_match
+        requestParameters:
+          integration.request.querystring.apiKey: context.identity.apiKey
+        responses:
+          "200":
+            responseParameters:
+              method.response.header.Access-Control-Allow-Origin: '''*'''
+            responseTemplates:
+              application/json: "#set($inputRoot = $input.path('$'))\n{\n  \"styles\"\
+                : [\n#foreach($style in $inputRoot.data)\n    {\n      \"id\" : \"\
+                $style.identifier\",\n      \"title\" : \"$style.title\",\n      \"\
+                url\" : \"$style.url\",\n      \"description\" : \"$style.description\"\
+                \n    }#if($foreach.hasNext),#end\n\t\t\n#end\n  ]\n}"
+            statusCode: "200"
+        type: http
+        uri: https://www.deeparteffects.com/service/liststyles?e=1
+      x-openapi-router-controller: openapi_server.controllers.default_controller
+  /noauth/upload:
+    post:
+      operationId: noauth_upload_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UploadRequest'
+        required: true
+        x-body-name: UploadRequest
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UploadResponse'
+          description: 200 response
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 400 response
+      security:
+      - api_key: []
+      x-amazon-apigateway-integration:
+        httpMethod: POST
+        passthroughBehavior: when_no_templates
+        requestTemplates:
+          application/json: |-
+            #set($inputRoot = $input.path('$'))
+            {
+              "apiKey" : "$context.identity.apiKey",
+              #if("$!inputRoot.imageSize"!="")
+              "imageSize" : $inputRoot.imageSize,
+              #end
+              #if("$!inputRoot.partnerId"!="")
+              "partnerId" : "$inputRoot.partnerId",
+              #end
+              #if("$!inputRoot.optimizeForPrint"!="")
+              "optimizeForPrint" : $inputRoot.optimizeForPrint,
+              #end
+              #if("$!inputRoot.useOriginalColors"!="")
+              "useOriginalColors" : $inputRoot.useOriginalColors,
+              #end
+              "styleId" : "$inputRoot.styleId",
+              "imageBase64Encoded" : "$inputRoot.imageBase64Encoded"
+            }
+        responses:
+          "200":
+            responseParameters:
+              method.response.header.Access-Control-Allow-Origin: '''*'''
+            responseTemplates:
+              application/json: |-
+                #set($inputRoot = $input.path('$').data)
+                {
+                  "submissionId" : "$inputRoot.identifier"
+                }
+            statusCode: "200"
+          "4\\d{2}":
+            responseTemplates:
+              application/json: |-
+                #set($inputRoot = $input.path('$'))
+                {
+                  "message" : "Invalid request"
+                }
+            statusCode: "400"
+        type: http
+        uri: https://www.deeparteffects.com/service/uploadv3
+      x-codegen-request-body-name: UploadRequest
+      x-openapi-router-controller: openapi_server.controllers.default_controller
+components:
+  schemas:
+    Empty:
+      title: Empty Schema
+      type: object
+    Error:
+      example:
+        message: message
+      properties:
+        message:
+          title: message
+          type: string
+      title: Error Schema
+      type: object
+    Result:
+      example:
+        url: url
+        status: status
+      properties:
+        status:
+          description: "Submissiond status. Can be 'new', 'error', 'processing', 'finished'"
+          title: status
+          type: string
+        url:
+          description: Result url for the artwork
+          title: url
+          type: string
+      title: GetResult Schema
+      type: object
+    Style:
+      example:
+        description: description
+        id: id
+        title: title
+        url: url
+      properties:
+        description:
+          description: Style description
+          title: description
+          type: string
+        id:
+          description: The unique identifier for a style
+          title: id
+          type: string
+        title:
+          description: Style title
+          title: title
+          type: string
+        url:
+          description: Style URL
+          title: url
+          type: string
+      title: Style Schema
+      type: object
+    Styles:
+      example:
+        styles:
+        - description: description
+          id: id
+          title: title
+          url: url
+        - description: description
+          id: id
+          title: title
+          url: url
+      properties:
+        styles:
+          items:
+            $ref: '#/components/schemas/Style'
+          title: styles
+          type: array
+      title: List Styles Schema
+      type: object
+    UploadRequest:
+      example:
+        styleId: styleId
+        optimizeForPrint: true
+        useOriginalColors: true
+        imageSize: 0
+        partnerId: partnerId
+        imageBase64Encoded: imageBase64Encoded
+      properties:
+        imageBase64Encoded:
+          description: Base64 decoded image
+          title: imageBase64Encoded
+          type: string
+        imageSize:
+          description: Image size in px. Picture will be resized for processing.
+          title: imageSize
+          type: integer
+        optimizeForPrint:
+          description: Use this flag to get an artwork optimized for print.
+          title: optimizeForPrint
+          type: boolean
+        partnerId:
+          description: The unique identifier for a partner with dedicated api access.
+          title: partnerId
+          type: string
+        styleId:
+          description: The unique identifier for a style
+          title: styleId
+          type: string
+        useOriginalColors:
+          description: Use this flag to use the original color from your photo for
+            the artwork.
+          title: useOriginalColors
+          type: boolean
+      title: Request schema for a submission
+      type: object
+    UploadResponse:
+      example:
+        submissionId: submissionId
+      properties:
+        submissionId:
+          title: submissionId
+          type: string
+      title: Response Schema for upload request
+      type: object
+  securitySchemes:
+    api_key:
+      in: header
+      name: x-api-key
+      type: apiKey
+      x-apikeyInfoFunc: openapi_server.controllers.security_controller.info_from_api_key
+    sigv4:
+      in: header
+      name: Authorization
+      type: apiKey
+      x-amazon-apigateway-authtype: awsSigv4
+      x-apikeyInfoFunc: openapi_server.controllers.security_controller.info_from_sigv4
+x-original-swagger-version: "2.0"

@@ -1,0 +1,21 @@
+# AlerterSystemApi.TransportMobytJsonldGet
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**context** | [**AlertLogJsonldGetContext**](AlertLogJsonldGetContext.md) |  | [optional] 
+**id** | **String** |  | [optional] [readonly] 
+**type** | **String** |  | [optional] [readonly] 
+**createdAt** | **Date** | When the resource instance was created. This date-time is in the UTC timezone. | [optional] 
+**dataSegmentCode** | **String** | User-provided string on which to segment and filter data. Max 50 characters. | [optional] 
+**id** | **String** | The unique identifier of the resource instance. | [optional] [readonly] 
+**mobytAccessToken** | **String** | The access token for the Mobyt service. Stored in encrypted format. | 
+**mobytFrom** | **String** | The sender for the Mobyt service. | 
+**mobytTypeQuality** | **String** | The quality of your message: &#39;N&#39; for high, &#39;L&#39; for medium, &#39;LL&#39; for low, for the Mobyt service. | 
+**mobytUserKey** | **String** | The user key for the Mobyt service. | 
+**partition** | **String** | The partition that contains this resource instance. The resource cannot be moved to another partition. | 
+**resourceOwner** | **String** | The name of the person who owns this resource. | [optional] 
+**transportName** | **String** | The name of the transport. | 
+
+

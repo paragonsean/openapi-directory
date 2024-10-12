@@ -1,0 +1,85 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAICreateInventoryTaskRequest.h \
+    $${PWD}/OAICreateOrderTaskRequest.h \
+    $${PWD}/OAICreateServiceMetricsTaskRequest.h \
+    $${PWD}/OAICreateTaskRequest.h \
+    $${PWD}/OAICreateUserScheduleRequest.h \
+    $${PWD}/OAICustomerServiceMetricTaskCollection.h \
+    $${PWD}/OAICustomerServiceMetricsFilterCriteria.h \
+    $${PWD}/OAIDateRange.h \
+    $${PWD}/OAIError.h \
+    $${PWD}/OAIErrorParameter.h \
+    $${PWD}/OAIInventoryFilterCriteria.h \
+    $${PWD}/OAIInventoryTask.h \
+    $${PWD}/OAIInventoryTaskCollection.h \
+    $${PWD}/OAIOrderFilterCriteria.h \
+    $${PWD}/OAIOrderTask.h \
+    $${PWD}/OAIOrderTaskCollection.h \
+    $${PWD}/OAIScheduleTemplateCollection.h \
+    $${PWD}/OAIScheduleTemplateResponse.h \
+    $${PWD}/OAIServiceMetricsTask.h \
+    $${PWD}/OAISupportedConfiguration.h \
+    $${PWD}/OAITask.h \
+    $${PWD}/OAITaskCollection.h \
+    $${PWD}/OAIUpdateUserScheduleRequest.h \
+    $${PWD}/OAIUploadSummary.h \
+    $${PWD}/OAIUserScheduleCollection.h \
+    $${PWD}/OAIUserScheduleResponse.h \
+# APIs
+    $${PWD}/OAICustomerServiceMetricTaskApi.h \
+    $${PWD}/OAIInventoryTaskApi.h \
+    $${PWD}/OAIOrderTaskApi.h \
+    $${PWD}/OAIScheduleApi.h \
+    $${PWD}/OAITaskApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAICreateInventoryTaskRequest.cpp \
+    $${PWD}/OAICreateOrderTaskRequest.cpp \
+    $${PWD}/OAICreateServiceMetricsTaskRequest.cpp \
+    $${PWD}/OAICreateTaskRequest.cpp \
+    $${PWD}/OAICreateUserScheduleRequest.cpp \
+    $${PWD}/OAICustomerServiceMetricTaskCollection.cpp \
+    $${PWD}/OAICustomerServiceMetricsFilterCriteria.cpp \
+    $${PWD}/OAIDateRange.cpp \
+    $${PWD}/OAIError.cpp \
+    $${PWD}/OAIErrorParameter.cpp \
+    $${PWD}/OAIInventoryFilterCriteria.cpp \
+    $${PWD}/OAIInventoryTask.cpp \
+    $${PWD}/OAIInventoryTaskCollection.cpp \
+    $${PWD}/OAIOrderFilterCriteria.cpp \
+    $${PWD}/OAIOrderTask.cpp \
+    $${PWD}/OAIOrderTaskCollection.cpp \
+    $${PWD}/OAIScheduleTemplateCollection.cpp \
+    $${PWD}/OAIScheduleTemplateResponse.cpp \
+    $${PWD}/OAIServiceMetricsTask.cpp \
+    $${PWD}/OAISupportedConfiguration.cpp \
+    $${PWD}/OAITask.cpp \
+    $${PWD}/OAITaskCollection.cpp \
+    $${PWD}/OAIUpdateUserScheduleRequest.cpp \
+    $${PWD}/OAIUploadSummary.cpp \
+    $${PWD}/OAIUserScheduleCollection.cpp \
+    $${PWD}/OAIUserScheduleResponse.cpp \
+# APIs
+    $${PWD}/OAICustomerServiceMetricTaskApi.cpp \
+    $${PWD}/OAIInventoryTaskApi.cpp \
+    $${PWD}/OAIOrderTaskApi.cpp \
+    $${PWD}/OAIScheduleApi.cpp \
+    $${PWD}/OAITaskApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

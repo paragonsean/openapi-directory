@@ -1,0 +1,14 @@
+# coding: utf-8
+
+# import models into model package
+from openapi_server.models.capability_status import CapabilityStatus
+from openapi_server.models.edition_capability import EditionCapability
+from openapi_server.models.elastic_pool_dtu_capability import ElasticPoolDtuCapability
+from openapi_server.models.elastic_pool_edition_capability import ElasticPoolEditionCapability
+from openapi_server.models.elastic_pool_per_database_max_dtu_capability import ElasticPoolPerDatabaseMaxDtuCapability
+from openapi_server.models.elastic_pool_per_database_min_dtu_capability import ElasticPoolPerDatabaseMinDtuCapability
+from openapi_server.models.location_capabilities import LocationCapabilities
+from openapi_server.models.max_size_capability import MaxSizeCapability
+from openapi_server.models.performance_level import PerformanceLevel
+from openapi_server.models.server_version_capability import ServerVersionCapability
+from openapi_server.models.service_objective_capability import ServiceObjectiveCapability

@@ -1,0 +1,8 @@
+# coding: utf-8
+
+# import models into model package
+from openapi_server.models.data_masking_policy import DataMaskingPolicy
+from openapi_server.models.data_masking_policy_properties import DataMaskingPolicyProperties
+from openapi_server.models.data_masking_rule import DataMaskingRule
+from openapi_server.models.data_masking_rule_list_result import DataMaskingRuleListResult
+from openapi_server.models.data_masking_rule_properties import DataMaskingRuleProperties

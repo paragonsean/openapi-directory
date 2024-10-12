@@ -1,0 +1,45 @@
+# EinsteinVisionAndEinsteinLanguage.TrainResponse
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**algorithm** | **String** | Algorithm used to create the model. Returned only when the modelType is image-detection. | [optional] 
+**createdAt** | **Date** | Date and time that the model was created. | [optional] 
+**datasetId** | **Number** | ID of the dataset trained to create the model. | 
+**datasetVersionId** | **Number** | Not available yet | 
+**epochs** | **Number** | Number of epochs used during training. | [optional] 
+**failureMsg** | **String** | Reason the dataset training failed. Returned only if the training status is FAILED. | [optional] 
+**language** | **String** | Model language inherited from the dataset language. For image datasets, default is N/A. For text datasets, default is en_US. | 
+**learningRate** | **Number** | Learning rate used during training. | [optional] 
+**modelId** | **String** | ID of the model. Contains letters and numbers. | 
+**modelType** | **String** | Type of data from which the model was created. | [optional] 
+**name** | **String** | Name of the model. | 
+**object** | **String** | Object returned; in this case, training. | [optional] 
+**progress** | **Number** | How far the dataset training has progressed. Values are between 0�1. | 
+**queuePosition** | **Number** | Where the training job is in the queue. This field appears in the response only if the status is QUEUED. | [optional] 
+**status** | **String** | Status of the model. | 
+**trainParams** | **String** | Training parameters passed into the request. | [optional] 
+**trainStats** | **String** | Returns null when you train a dataset. Training statistics are returned when the status is SUCCEEDED or FAILED. | [optional] 
+**updatedAt** | **Date** | Date and time that the model was last updated. | [optional] 
+
+
+
+## Enum: StatusEnum
+
+
+* `QUEUED` (value: `"QUEUED"`)
+
+* `RUNNING` (value: `"RUNNING"`)
+
+* `SUCCEEDED` (value: `"SUCCEEDED"`)
+
+* `FAILED` (value: `"FAILED"`)
+
+* `KILLED` (value: `"KILLED"`)
+
+* `FAILED_WITH_RETRIES` (value: `"FAILED_WITH_RETRIES"`)
+
+
+
+

@@ -1,0 +1,540 @@
+from typing import List, Dict
+from aiohttp import web
+
+from openapi_server.models.addon import Addon
+from openapi_server.models.citation_detail import CitationDetail
+from openapi_server.models.comment import Comment
+from openapi_server.models.contributor import Contributor
+from openapi_server.models.draft_registration import DraftRegistration
+from openapi_server.models.file import File
+from openapi_server.models.identifier import Identifier
+from openapi_server.models.institution import Institution
+from openapi_server.models.log import Log
+from openapi_server.models.node import Node
+from openapi_server.models.node_addon import NodeAddon
+from openapi_server.models.preprint import Preprint
+from openapi_server.models.registration import Registration
+from openapi_server.models.styled_citation import StyledCitation
+from openapi_server.models.view_only_links import ViewOnlyLinks
+from openapi_server.models.wiki import Wiki
+from openapi_server import util
+
+
+async def nodes_addon_read(request: web.Request, node_id, provider) -> web.Response:
+    """Retrieve an addon
+
+    Retrieve details of an individual addon connected to this node. #### Permissions NodeSettings that are attached to public nodes will give read-only access to everyone. Private nodes require explicit read permission. Write and admin access are the same for public and private nodes. Administrators on a parent node have implicit read permissions for all child nodes. Any users with write or admin access to the node are able to deauthorize an enabled addon, but only the addon authorizer is able to change the configuration (i.e. selected folder) of an already-configured NodeSettings entity. #### Returns Returns a JSON object with a &#x60;data&#x60; key containing the details of the requested addon, if the request is successful.  If the request is unsuccessful, an &#x60;errors&#x60; key containing information about the failure will be returned. Refer to the [list of error codes](#tag/Errors-and-Error-Codes) to understand why this request may have failed.
+
+    :param node_id: The unique identifier of the node.
+    :type node_id: str
+    :param provider: The unique identifier of the addon.
+    :type provider: str
+
+    """
+    return web.Response(status=200)
+
+
+async def nodes_addons_folders_list(request: web.Request, node_id, provider) -> web.Response:
+    """List all addon folders
+
+     A paginated list of folders retrieved from the associated third-party (provider) service. #### Permissions Folders are visible only to the user that authorized the addon. #### Returns Returns a JSON object containing &#x60;data&#x60; and &#x60;links&#x60; keys.  The &#x60;data&#x60; key contains an array of addon folder objects. Each resource in the array is a separate addon folder object and contains the full representation of the addon folder, meaning additional requests to a addon folder&#39;s detail view are not necessary.  The &#x60;links&#x60; key contains a dictionary of links that can be used for [pagination](#tag/Pagination).
+
+    :param node_id: The unique identifier of the node.
+    :type node_id: str
+    :param provider: The unique identifier of the provider
+    :type provider: str
+
+    """
+    return web.Response(status=200)
+
+
+async def nodes_addons_list(request: web.Request, node_id) -> web.Response:
+    """List all addons
+
+     A paginated list of addons connected to the given node or project. #### Returns Returns a JSON object containing &#x60;data&#x60; and &#x60;links&#x60; keys.  The &#x60;data&#x60; key contains an array of at most 10 addon objects. Each resource in the array is a separate addon object and contains the full representation of the addon, meaning additional requests to a addon&#39;s detail view are not necessary.  The &#x60;links&#x60; key contains a dictionary of links that can be used for [pagination](#tag/Pagination).
+
+    :param node_id: The unique identifier of the node.
+    :type node_id: str
+
+    """
+    return web.Response(status=200)
+
+
+async def nodes_children_create(request: web.Request, node_id, body) -> web.Response:
+    """Create a child node
+
+    Creates a new child node.  Note: Creating a child node via this endpoint will function the same as creating a node via the node list endpoint, but the child node will have the given node set as its parent. #### Permissions Only write contributors may create children nodes. #### Required Required fields for creating a node include:  &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp&#x60;title&#x60;  &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp&#x60;category&#x60;  Note: nodes default to **private** unless the &#x60;public&#x60; field is explicitly set to **true** in the request payload. #### Returns Returns a JSON object with a &#x60;data&#x60; key containing the representation of the created node, if the request is successful.  If the request is unsuccessful, an &#x60;errors&#x60; key containing information about the failure will be returned. Refer to the [list of error codes](#tag/Errors-and-Error-Codes) to understand why this request may have failed.
+
+    :param node_id: The unique identifier of the node.
+    :type node_id: str
+    :param body: 
+    :type body: dict | bytes
+
+    """
+    body = Node.from_dict(body)
+    return web.Response(status=200)
+
+
+async def nodes_children_list(request: web.Request, node_id) -> web.Response:
+    """List all child nodes
+
+     A paginated list of the next level child nodes for the given node. The returned nodes are sorted by their &#x60;date_modified&#x60;, with the most recently updated child nodes appearing first.  The list will include child nodes that are public, as well as child nodes that are private, if the authenticated user has permission to view them. #### Returns Returns a JSON object containing &#x60;data&#x60; and &#x60;links&#x60; keys.  The &#x60;data&#x60; key contains an array of up to 10 child nodes. If the given node has zero child nodes, the &#x60;data&#x60; key will contain an empty array. Each resource in the array is a separate node object and contains the full representation of the child node, meaning additional requests to the child node&#39;s detail view are not necessary.  The &#x60;links&#x60; key contains a dictionary of links that can be used for [pagination](#tag/Pagination).  This request should never return an error. #### Filtering You can optionally request that the response only include nodes that match your filters by utilizing the &#x60;filter&#x60; query parameter, e.g. https://api.osf.io/v2/nodes/ezcuj/children/?filter[title]&#x3D;reproducibility.  Nodes may be filtered by their &#x60;id&#x60;, &#x60;title&#x60;, &#x60;category&#x60;, &#x60;description&#x60;, &#x60;public&#x60;, &#x60;tags&#x60;, &#x60;date_created&#x60;, &#x60;date_modified&#x60;, &#x60;root&#x60;, &#x60;parent&#x60;, &#x60;preprint&#x60;, and &#x60;contributors&#x60;.  Most fields are string fields and will be filtered using simple substring matching. Public and preprint are boolean fields, and can be filtered using truthy values, such as **true**, **false**, **0** or **1**. Note that quoting true or false in the query will cause the match to fail.
+
+    :param node_id: The unique identifier of the node.
+    :type node_id: str
+
+    """
+    return web.Response(status=200)
+
+
+async def nodes_citation_list(request: web.Request, node_id) -> web.Response:
+    """Retrieve citation details
+
+    The citation details for a node, in CSL format. #### Returns Returns a JSON object with a &#x60;data&#x60; key that contains the representation of the details necessary for the node citation.
+
+    :param node_id: The unique identifier of the node.
+    :type node_id: str
+
+    """
+    return web.Response(status=200)
+
+
+async def nodes_citation_read(request: web.Request, style_id, node_id) -> web.Response:
+    """Retrieve a styled citation
+
+    The citation for a node in a specific style. #### Returns Returns a JSON object with a &#x60;data&#x60; key that contains the representation of the node citation, in the requested style.
+
+    :param style_id: The unique identifier of the citation style.
+    :type style_id: str
+    :param node_id: The unique identifier of the node.
+    :type node_id: str
+
+    """
+    return web.Response(status=200)
+
+
+async def nodes_comment_create(request: web.Request, node_id, body) -> web.Response:
+    """Create a comment
+
+    Create a comment on a given node overview page or a reply to a comment on that node.  To create a comment on the node overview page, the target &#x60;type&#x60; would be \&quot;nodes\&quot; and the target &#x60;id&#x60; would be the node &#x60;id&#x60;.  To reply to a comment on this node, the target &#x60;type&#x60; would be \&quot;comments\&quot; and the target &#x60;id&#x60; would be the &#x60;id&#x60; of the comment to reply to. #### Required A relationship object with a &#x60;data&#x60; key, containing the target (&#x60;comments&#x60; or &#x60;nodes&#x60;) type and a target &#x60;id&#x60; is required. In addition, the &#x60;content&#x60; attribute describing the relationship between the node and the comment is required. #### Returns Returns a JSON object with a data key containing the representation of the new comment, if the request is successful.  If the request is unsuccessful, an &#x60;errors&#x60; key containing information about the failure will be returned. Refer to the [list of error codes](#tag/Errors-and-Error-Codes) to understand why this request may have failed.
+
+    :param node_id: The unique identifier of the node you want to comment on.
+    :type node_id: str
+    :param body: 
+    :type body: dict | bytes
+
+    """
+    body = Comment.from_dict(body)
+    return web.Response(status=200)
+
+
+async def nodes_comments_list(request: web.Request, node_id) -> web.Response:
+    """List all comments
+
+     A paginated list of comments related to a given node.  The returned comments are sorted by their creation date, with the most recent comments appearing first. #### Permissions Comments on public nodes are given read-only access to everyone.  If the node comment-level is &#x60;private&#x60;, only contributors have permission to comment.  If the comment-level is &#x60;public&#x60;, any logged-in OSF user can comment.  Comments on private nodes are only visible to contributors and administrators on the parent node. #### Returns Returns a JSON object containing &#x60;data&#x60; and &#x60;links&#x60; keys.  The &#x60;data&#x60; key contains an array of comment objects. Each resource in the array is a separate comment object.  The &#x60;links&#x60; key contains a dictionary of links that can be used for [pagination](#tag/Pagination). #### Filtering You can optionally request that the response only include comments that match your filters by utilizing the &#x60;filter&#x60; query parameter, e.g. https://api.osf.io/v2/nodes/ezcuj/comments/?filter[target_id]&#x3D;jg7sezmdnt93  Nodes may be filtered by their &#x60;deleted&#x60;, &#x60;target_id&#x60;, &#x60;date_created&#x60;, &#x60;date_modified&#x60;.  Most fields are string fields and will be filtered using simple substring matching. Public and preprint are boolean fields, and can be filtered using truthy values, such as **true**, **false**, **0** or **1**. Note that quoting &#x60;true&#x60; or &#x60;false&#x60; in the query will cause the match to fail.
+
+    :param node_id: The unique identifier of the node.
+    :type node_id: str
+
+    """
+    return web.Response(status=200)
+
+
+async def nodes_contributors_create(request: web.Request, node_id, body) -> web.Response:
+    """Create a contributor
+
+    Adds a contributor to a node, effectively creating a relationship between the node and a user.  Contributors are users who can make changes to the node or, in the case of private nodes, have read access to the node.  Contributors are categorized as either \&quot;bibliographic\&quot; or \&quot;non-bibliographic\&quot; contributors. From a permissions standpoint, both are the same, but bibliographic contributors are included in citations and are listed on the project overview page on the OSF, while non-bibliographic contributors are not. #### Permissions Only project administrators can add contributors to a node. #### Required A relationship object with a &#x60;data&#x60; key, containing the &#x60;users&#x60; type and valid user ID is required.  All attributes describing the relationship between the node and the user are optional. #### Returns Returns a JSON object with a &#x60;data&#x60; key containing the representation of the new contributor, if the request is successful.  If the request is unsuccessful, an &#x60;errors&#x60; key containing information about the failure will be returned. Refer to the [list of error codes](#tag/Errors-and-Error-Codes) to understand why this request may have failed.
+
+    :param node_id: The unique identifier of the node.
+    :type node_id: str
+    :param body: 
+    :type body: dict | bytes
+
+    """
+    body = Contributor.from_dict(body)
+    return web.Response(status=200)
+
+
+async def nodes_contributors_delete(request: web.Request, node_id, user_id) -> web.Response:
+    """Delete a contributor
+
+    Removes a contributor from a node. This request only removes the relationship between the node and the user, it does not delete the user itself.  A node must always have at least one admin, and attempting to remove the only admin from a node will result in a **400 Bad Request** response. #### Permissions A user can remove themselves as a node contributor. Otherwise, only project administrators can remove contributors. #### Returns If the request is successful, no content is returned.  If the request is unsuccessful, a JSON object with an &#x60;errors&#x60; key containing information about the failure will be returned. Refer to the [list of error codes](#tag/Errors-and-Error-Codes) to understand why this request may have failed.
+
+    :param node_id: The unique identifier of the node.
+    :type node_id: str
+    :param user_id: The unique identifier of the user.
+    :type user_id: str
+
+    """
+    return web.Response(status=200)
+
+
+async def nodes_contributors_list(request: web.Request, node_id) -> web.Response:
+    """List all contributors
+
+    A paginated list of the node&#39;s contributors, sorted by their index.  Contributors are users who can make changes to the node or, in the case of private nodes, have read access to the node.  Contributors are categorized as either \&quot;bibliographic\&quot; or \&quot;non-bibliographic\&quot;. From a permissions standpoint, both are the same, but bibliographic contributors are included in citations and are listed on the project overview page on the OSF, while non-bibliographic contributors are not.  Note that if an anonymous view_only key is being used to view the list of contributors, the user relationship will not be exposed and the contributor ID will be an empty string.  #### Returns Returns a JSON object containing &#x60;data&#x60; and &#x60;links&#x60; keys.  The &#x60;data&#x60; key contains an array of 10 contributors. Each resource in the array contains the full representation of the contributor, meaning additional requests to a contributor&#39;s detail view are not necessary. Additionally, the full representation of the user this contributor represents is automatically embedded within the &#x60;data&#x60; key of the response.  The &#x60;links&#x60; key contains a dictionary of links that can be used for [pagination](#tag/Pagination). #### Filtering You can optionally request that the response only include contributors that match your filters by utilizing the &#x60;filter&#x60; query parameter, e.g. https://api.osf.io/v2/nodes/y9jdt/contributors/?filter[bibliographic]&#x3D;true.  Contributors may be filtered by their &#x60;bibliographic&#x60; and &#x60;permission&#x60; attributes.
+
+    :param node_id: The unique identifier of the node.
+    :type node_id: str
+
+    """
+    return web.Response(status=200)
+
+
+async def nodes_contributors_partial_update(request: web.Request, node_id, user_id, body) -> web.Response:
+    """Update a contributor
+
+    Updates a contributor by setting the values of the attributes specified in the request body. Any unspecified attributes will be left unchanged.  Contributors can be updated with either a **PUT** or **PATCH** request. Since this endpoint has no mandatory attributes, PUT and PATCH are functionally the same. #### Permissions Only project administrators can update the contributors on a node. #### Returns Returns a JSON object with a &#x60;data&#x60; key containing the new representation of the updated contributor, if the request is successful.  If the request is unsuccessful, an &#x60;errors&#x60; key containing information about the failure will be returned. Refer to the [list of error codes](#tag/Errors-and-Error-Codes) to understand why this request may have failed.  If the given user is not already in the contributor list, a 404 Not Found error will be returned. A node must always have at least one admin, and any attempt to downgrade the permissions of a sole admin will result in a 400 Bad Request error.
+
+    :param node_id: The unique identifier of the node.
+    :type node_id: str
+    :param user_id: The unique identifier of the user.
+    :type user_id: str
+    :param body: 
+    :type body: dict | bytes
+
+    """
+    body = Contributor.from_dict(body)
+    return web.Response(status=200)
+
+
+async def nodes_contributors_read(request: web.Request, node_id, user_id) -> web.Response:
+    """Retrieve a contributor
+
+    Retrieves the details of a given contributor.  Contributors are users who can make changes to the node or, in the case of private nodes, have read access to the node.  Contributors are categorized as either \&quot;bibliographic\&quot; or \&quot;non-bibliographic\&quot;. From a permissions standpoint, both are the same, but bibliographic contributors are included in citations and are listed on the project overview page on the OSF, while non-bibliographic contributors are not. #### Returns Returns a JSON object with a &#x60;data&#x60; key containing the representation of the requested contributor, if the request is successful.  If the request is unsuccessful, an &#x60;errors&#x60; key containing information about the failure will be returned. Refer to the [list of error codes](#tag/Errors-and-Error-Codes) to understand why this request may have failed.
+
+    :param node_id: The unique identifier of the node.
+    :type node_id: str
+    :param user_id: The unique identifier of the user.
+    :type user_id: str
+
+    """
+    return web.Response(status=200)
+
+
+async def nodes_create(request: web.Request, body) -> web.Response:
+    """Create a node
+
+    Creates a new node.  On the OSF, nodes are considered **projects** or **components**. The difference between a project and a component is that a project is a top-level node, and a component is a child of a project.  Additionally, nodes have a &#x60;category&#x60; field that includes **project** as an option. The categorization determines what icon is displayed with the node on the OSF, and helps with search organization. Projects (top-level nodes) may have a category other than project, and components (children) may have a category of **project**. #### Required Required fields for creating a node include:  &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp&#x60;title&#x60;  &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp&#x60;category&#x60;  Note: Nodes default to **private** unless the &#x60;public&#x60; field is explicitly set to **true** in the request payload. #### Returns Returns a JSON object with a &#x60;data&#x60; key containing the representation of the created node, if the request is successful.  If the request is unsuccessful, an &#x60;errors&#x60; key containing information about the failure will be returned. Refer to the [list of error codes](#tag/Errors-and-Error-Codes) to understand why this request may have failed.
+
+    :param body: 
+    :type body: dict | bytes
+
+    """
+    body = Node.from_dict(body)
+    return web.Response(status=200)
+
+
+async def nodes_delete(request: web.Request, node_id) -> web.Response:
+    """Delete a node
+
+     Permanently deletes a node. This action cannot be undone. #### Permissions Only project administrators may delete a node. Attempting to delete a node for which you are not an administrator will result in a **403 Forbidden** response. #### Returns If the request is successful, no content is returned.  If the request is unsuccessful, a JSON object with an &#x60;errors&#x60; key containing information about the failure will be returned. Refer to the [list of error codes](#tag/Errors-and-Error-Codes) to understand why this request may have failed.
+
+    :param node_id: The unique identifier of the node.
+    :type node_id: str
+
+    """
+    return web.Response(status=200)
+
+
+async def nodes_draft_registrations_create(request: web.Request, node_id, body) -> web.Response:
+    """Create a draft registration based on your current project Node.
+
+    Initiate a draft registration of the current node. Draft Registrations contain Registration questions that will become part of the Registration. A Registration is a frozen version of the project that can never be deleted, but can be withdrawn and have it&#39;s metadata edited.  Your original project remains editable but will now have the draft registration linked to it. #### Permissions Only project administrators may view create registrations. #### Required Required fields for creating a draft registration include:  &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&#x60;schema_id&#x60; #### Returns Returns a JSON object with a &#x60;data&#x60; key containing the representation of the created draft registration, if the request is successful.  If the request is unsuccessful, an &#x60;errors&#x60; key containing information about the failure will be returned. Refer to the [list of error codes](#tag/Errors-and-Error-Codes) to understand why this request may have failed.
+
+    :param node_id: The unique identifier of the node.
+    :type node_id: str
+    :param body: 
+    :type body: dict | bytes
+
+    """
+    body = DraftRegistration.from_dict(body)
+    return web.Response(status=200)
+
+
+async def nodes_draft_registrations_delete(request: web.Request, node_id, draft_id) -> web.Response:
+    """Delete a draft registration
+
+    Permanently deletes a draft registration. A draft that has already been registered cannot be deleted. #### Permissions Only project administrators may delete draft registrations. #### Returns If the request is successful, no content is returned.  If the request is unsuccessful, a JSON object with an &#x60;errors&#x60; key containing information about the failure will be returned. Refer to the [list of error codes]() to understand why this request may have failed.
+
+    :param node_id: The unique identifier of the node.
+    :type node_id: str
+    :param draft_id: The unique identifier of the draft registration.
+    :type draft_id: str
+
+    """
+    return web.Response(status=200)
+
+
+async def nodes_draft_registrations_list(request: web.Request, node_id) -> web.Response:
+    """List all draft registrations
+
+    A paginated list of all of the draft registrations of a given node.  Draft Registrations contain Registration questions that will become part of the Registration. A Registration is a frozen version of the project that can never be deleted, but can be withdrawn and have it&#39;s metadata edited.  Your original project remains editable but will now have the draft registration linked to it. #### Permissions Only project administrators may view draft registrations. #### Returns Returns a JSON object containing &#x60;data&#x60; and &#x60;links&#x60; keys.  The &#x60;data&#x60; key contains an array of 10 draft registrations. Each resource in the array is a separate draft registration object and contains the full representation of the draft registration, meaning additional requests to a draft registration&#39;s detail view are not necessary.  The &#x60;links&#x60; key contains a dictionary of links that can be used for [pagination](#tag/Pagination).
+
+    :param node_id: The unique identifier of the node.
+    :type node_id: str
+
+    """
+    return web.Response(status=200)
+
+
+async def nodes_draft_registrations_partial_update(request: web.Request, node_id, draft_id, body) -> web.Response:
+    """Update a draft registration
+
+    Updates a draft registration by setting the values of the attributes specified in the request body. Any unspecified attributes will be left unchanged.  Draft Registrations contain Registration questions that will become part of the Registration. Answer the questions in the draft registration supplement by sending update requests until you are ready to submit the draft.  The registration supplement of a draft registration cannot be updated after the draft has been created.  When updating a draft registration, &#x60;registration_metadata&#x60; is required. It must be a dictionary with keys as question ids in the registration form, and values as nested dictionaries matching the specific format in the [registration schema](TODO: link me pls).  If a question is multiple-choice, the question response must exactly match one of the possible choices. #### Permissions Only project administrators may update draft registrations. #### Returns Returns a JSON object with a &#x60;data&#x60; key containing the new representation of the updated draft registration, if the request is successful.  If the request is unsuccessful, an &#x60;errors&#x60; key containing information about the failure will be returned. Refer to the [list of error codes](#tag/Errors-and-Error-Codes) to understand why this request may have failed.
+
+    :param node_id: The unique identifier of the node.
+    :type node_id: str
+    :param draft_id: The unique identifier of the draft registration.
+    :type draft_id: str
+    :param body: 
+    :type body: dict | bytes
+
+    """
+    body = DraftRegistration.from_dict(body)
+    return web.Response(status=200)
+
+
+async def nodes_files_list(request: web.Request, node_id, provider) -> web.Response:
+    """List all node files
+
+    List of all the files/folders that are attached to your project for a given storage provider. #### Returns Returns a JSON object containing &#x60;data&#x60; and &#x60;links&#x60; keys.  The &#x60;data&#x60; key contains an array of files. Each resource in the array is a separate file object and contains the full representation of the file.  The &#x60;links&#x60; key contains a dictionary of links that can be used for [pagination](#tag/Pagination).  #### Filtering  You can optionally request that the response only include files that match your filters by utilizing the &#x60;filter&#x60; query parameter, e.g. https://api.osf.io/v2/nodes/ezcuj/files/osfstorage/?filter[kind]&#x3D;file  Node files may be filtered by &#x60;id&#x60;, &#x60;name&#x60;, &#x60;node&#x60;, &#x60;kind&#x60;, &#x60;path&#x60;, &#x60;provider&#x60;, &#x60;size&#x60;, and &#x60;last_touched&#x60;.  ### Waterbutler API actions  Files can be modified through the Waterbutler API routes found in &#x60;links&#x60; (&#x60;new_folder&#x60;, &#x60;move&#x60;, &#x60;upload&#x60;, &#x60;download&#x60;, and &#x60;delete&#x60;).  #### Download (files)  To download a file, issue a GET request against the download link. The response will have the Content-Disposition header set, which will will trigger a download in a browser.  #### Create Subfolder (folders)  You can create a subfolder of an existing folder by issuing a PUT request against the new_folder link. The ?kind&#x3D;folder portion of the query parameter is already included in the new_folder link. The name of the new subfolder should be provided in the name query parameter. The response will contain a WaterButler folder entity. If a folder with that name already exists in the parent directory, the server will return a 409 Conflict error response.  #### Upload New File (folders)  To upload a file to a folder, issue a PUT request to the folder&#39;s upload link with the raw file data in the request body, and the kind and name query parameters set to &#39;file&#39; and the desired name of the file. The response will contain a WaterButler file entity that describes the new file. If a file with the same name already exists in the folder, the server will return a 409 Conflict error response.  #### Update Existing File (file)  To update an existing file, issue a PUT request to the file&#39;s upload link with the raw file data in the request body and the kind query parameter set to \&quot;file\&quot;. The update action will create a new version of the file. The response will contain a WaterButler file entity that describes the updated file.  #### Rename (files, folders)  To rename a file or folder, issue a POST request to the move link with the action body parameter set to \&quot;rename\&quot; and the rename body parameter set to the desired name. The response will contain either a folder entity or file entity with the new name.  #### Move &amp; Copy (files, folders)  Move and copy actions both use the same request structure, a POST to the move url, but with different values for the action body parameters. The path parameter is also required and should be the OSF path attribute of the folder being written to. The rename and conflict parameters are optional. If you wish to change the name of the file or folder at its destination, set the rename parameter to the new name. The conflict param governs how name clashes are resolved. Possible values are replace and keep. replace is the default and will overwrite the file that already exists in the target folder. keep will attempt to keep both by adding a suffix to the new file&#39;s name until it no longer conflicts. The suffix will be &#39; (x)&#39; where x is a increasing integer starting from 1. This behavior is intended to mimic that of the OS X Finder. The response will contain either a folder entity or file entity with the new name. Files and folders can also be moved between nodes and providers. The resource parameter is the id of the node under which the file/folder should be moved. It must agree with the path parameter, that is the path must identify a valid folder under the node identified by resource. Likewise, the provider parameter may be used to move the file/folder to another storage provider, but both the resource and path parameters must belong to a node and folder already extant on that provider. Both resource and provider default to the current node and providers. If a moved/copied file is overwriting an existing file, a 200 OK response will be returned. Otherwise, a 201 Created will be returned.  #### Delete (file, folders)  To delete a file or folder send a DELETE request to the delete link. Nothing will be returned in the response body.
+
+    :param node_id: The unique identifier of the node.
+    :type node_id: str
+    :param provider: The unique identifier of the storage provider.
+    :type provider: str
+
+    """
+    return web.Response(status=200)
+
+
+async def nodes_files_read(request: web.Request, node_id, provider, path) -> web.Response:
+    """Retrieve a file
+
+    Retrieves the details of a file attached to given node (project or component) for the given storage provider. #### Returns Returns a JSON object with a &#x60;data&#x60; key containing the representation of the requested file object, if the request is successful.  If the request is unsuccessful, an &#x60;errors&#x60; key containing information about the failure will be returned. Refer to the [list of error codes](#tag/Errors-and-Error-Codes) to understand why this request may have failed.
+
+    :param node_id: The unique identifier of the node.
+    :type node_id: str
+    :param provider: The unique identifier of the storage provider.
+    :type provider: str
+    :param path: The unique identifier of the file path.
+    :type path: str
+
+    """
+    return web.Response(status=200)
+
+
+async def nodes_forks_create(request: web.Request, node_id, body) -> web.Response:
+    """Create a fork of this node
+
+    Creates a fork of the given node.  Forking a project creates a copy of an existing node and all of its contents. The fork always points back to the original node, forming a network of nodes.  You might use a fork to copy another&#39;s work to build on and extend. For example, a professor may create an OSF project of materials for individual student use. Each student forks the project to have his or her own copy of the materials to start his/her own work.  When creating a fork, your fork will only contain public components of the current node and components for which you are a contributor. Private components that you do not have access to will not be forked. #### Required There are no required attributes when creating a fork, as all of the forked node&#39;s attributes will be copied from the current node.  The &#x60;title&#x60; field is optional, with the default title being \&quot;Fork of \&quot; prepended to the current node&#39;s title. #### Returns Returns a JSON object with a &#x60;data&#x60; key containing the complete srepresentation of the forked node, if the request is successful. If the request is unsuccessful, an &#x60;errors&#x60; key containing information about the failure will be returned. Refer to the [list of error codes](#tag/Errors-and-Error-Codes) to understand why this request may have failed.
+
+    :param node_id: The unique identifier of the node.
+    :type node_id: str
+    :param body: 
+    :type body: dict | bytes
+
+    """
+    body = Node.from_dict(body)
+    return web.Response(status=200)
+
+
+async def nodes_forks_list(request: web.Request, node_id) -> web.Response:
+    """List all forks of this node
+
+     A paginated list of the current node&#39;s forks. The returned fork nodes are sorted by their &#x60;forked_date&#x60;, with the most recently forked nodes appearing first.  Forking a project creates a copy of an existing node and all of its contents. The fork always points back to the original node, forming a network of nodes. #### Returns Returns a JSON object containing &#x60;data&#x60; and &#x60;links&#x60; keys.  The &#x60;data&#x60; key contains an array of up to 10 forked nodes. If the current node has zero forked nodes, the &#x60;data&#x60; key will contain an empty array. Each resource in the array is a separate node object and contains the full representation of the forked node, meaning additional requests to the forked node&#39;s detail view are not necessary.  The &#x60;links&#x60; key contains a dictionary of links that can be used for [pagination](#tag/Pagination).  This request should never return an error.
+
+    :param node_id: The unique identifier of the node.
+    :type node_id: str
+
+    """
+    return web.Response(status=200)
+
+
+async def nodes_identifiers_list(request: web.Request, node_id) -> web.Response:
+    """List all identifiers
+
+    List all identifiers associated with a given node. #### Returns Returns a JSON object containing &#x60;data&#x60; and &#x60;links&#x60; keys.  The &#x60;data&#x60; key contains an array of identifiers. Each resource in the array is a separate identifier object.  The &#x60;links&#x60; key contains a dictionary of links that can be used for [pagination](#tag/Pagination). #### Filtering  You can optionally request that the response only include nodes that match your filters by utilizing the &#x60;filter&#x60; query parameter, e.g. https://api.osf.io/v2/nodes/ezcuj/identifiers/?filter[category]&#x3D;ark  Identifiers may be filtered by their &#x60;category&#x60; e.g &#x60;ark&#x60; or &#x60;doi&#x60;.
+
+    :param node_id: The unique identifier of the node.
+    :type node_id: str
+
+    """
+    return web.Response(status=200)
+
+
+async def nodes_institutions_list(request: web.Request, node_id) -> web.Response:
+    """List all institutions
+
+    List of all institutions affiliated with this node. #### Returns Returns a JSON object containing &#x60;data&#x60; and &#x60;links&#x60; keys.  The &#x60;data&#x60; key contains an array of up to 10 affilited institutions. Each resource in the array is a separate institution object.  The &#x60;links&#x60; key contains a dictionary of links that can be used for [pagination](#tag/Pagination).
+
+    :param node_id: The unique identifier of the node.
+    :type node_id: str
+
+    """
+    return web.Response(status=200)
+
+
+async def nodes_linked_nodes_list(request: web.Request, node_id) -> web.Response:
+    """List all linked nodes
+
+    List of all nodes linked to the given node. #### Returns Returns a JSON object containing &#x60;data&#x60; and &#x60;links&#x60; keys.  The &#x60;data&#x60; key contains an array of up to 10 nodes. Each resource in the array is a separate node object.  The &#x60;links&#x60; key contains a dictionary of links that can be used for [pagination](#tag/Pagination). #### Filtering You can optionally request that the response only include nodes that match your filters by utilizing the &#x60;filter&#x60; query parameter, e.g. https://api.osf.io/v2/nodes/?filter[title]&#x3D;reproducibility.  Nodes may be filtered by their &#x60;title&#x60;, &#x60;category&#x60;, &#x60;description&#x60;, &#x60;public&#x60;, &#x60;registration&#x60;, or &#x60;tags&#x60;. &#x60;title&#x60;, &#x60;description&#x60;, and &#x60;category&#x60; are string fields and will be filteres using simple substring matching. &#x60;public&#x60;, &#x60;registration&#x60; are boolean and can be filtered using truthy values, such as &#x60;true&#x60;, &#x60;false&#x60;, &#x60;0&#x60;, &#x60;1&#x60;. &#x60;tags&#x60; is an array of simple strings.
+
+    :param node_id: The unique identifier of the node.
+    :type node_id: str
+
+    """
+    return web.Response(status=200)
+
+
+async def nodes_list(request: web.Request, ) -> web.Response:
+    """List all nodes
+
+     A paginated list of nodes, representing projects and components, on the OSF.  The returned nodes are those which are public or which the user has access to view.  The returned nodes are sorted by their &#x60;date_modified&#x60;, with the most recently updated nodes appearing first.  Registrations cannot be accessed through this endpoint (use the [registrations](#tag/Registrations) endpoints instead). #### Returns Returns a JSON object containing &#x60;data&#x60; and &#x60;links&#x60; keys.  The &#x60;data&#x60; key contains an array of 10 nodes. Each resource in the array is a separate node object and contains the full representation of the node, meaning additional requests to a node&#39;s detail view are not necessary.  The &#x60;links&#x60; key contains a dictionary of links that can be used for [pagination](#tag/Pagination).  This request should never return an error. #### Filtering You can optionally request that the response only include nodes that match your filters by utilizing the &#x60;filter&#x60; query parameter, e.g. https://api.osf.io/v2/nodes/?filter[title]&#x3D;reproducibility.  Nodes may be filtered by their &#x60;id&#x60;, &#x60;title&#x60;, &#x60;category&#x60;, &#x60;description&#x60;, &#x60;public&#x60;, &#x60;tags&#x60;, &#x60;date_created&#x60;, &#x60;date_modified&#x60;, &#x60;root&#x60;, &#x60;parent&#x60;, &#x60;preprint&#x60;, and &#x60;contributors&#x60;.  Most fields are string fields and will be filtered using simple substring matching. Public and preprint are boolean fields, and can be filtered using truthy values, such as **true**, **false**, **0** or **1**. Note that quoting true or false in the query will cause the match to fail.
+
+
+    """
+    return web.Response(status=200)
+
+
+async def nodes_logs_list(request: web.Request, node_id) -> web.Response:
+    """List all logs
+
+    A paginated list of all logs associated with a given node.  The returned logs are sorted by their &#x60;date&#x60;, with the most recents logs appearing first.  This list includes the logs of the specified node as well as the logs of that node&#39;s children to which the current user has read-only access.  #### Returns Returns a JSON object containing &#x60;data&#x60; and &#x60;links&#x60; keys.  The &#x60;data&#x60; key contains an array of up to 10 logs. Each resource in the array is a separate logs object.  The &#x60;links&#x60; key contains a dictionary of links that can be used for [pagination](#tag/Pagination). #### Filtering You can optionally request that the response only include logs that match your filters by utilizing the &#x60;filter&#x60; query parameter, e.g. https://api.osf.io/v2/nodes/ezcuj/logs/?filter[action]&#x3D;made_private.  Nodes may be filtered by their &#x60;action&#x60;, and &#x60;date&#x60;.
+
+    :param node_id: The unique identifier of the node.
+    :type node_id: str
+
+    """
+    return web.Response(status=200)
+
+
+async def nodes_node_addon_update(request: web.Request, node_id, provider, body) -> web.Response:
+    """Update an addon
+
+    Updates a node addon by setting the values of the attributes specified in the request body. Any unspecified attributes will be left unchanged.  Node addon can be updated with either a **PUT** or **PATCH** request. The &#x60;external_account_id&#x60;, &#x60;enabled&#x60;, and &#x60;folder_id&#x60; fields are mandatory in a **PUT**, and optional in **PATCH**. Non-string values will be accepted and stringified, however we make no promises about the stringification output.  To delete or deauthorize a node addon, issue a **PUT** with all fields set to &#x60;null&#x60; or &#x60;False&#x60;, or a **PATCH** with enabled set &#x60;False&#x60;. #### Permissions NodeSettings that are attached to public nodes will give read-only access to everyone. Private nodes require explicit read permission. Write and admin access are the same for public and private nodes. Administrators on a parent node have implicit read permissions for all child nodes. Any users with write or admin access to the node are able to deauthorize an enabled addon, but only the addon authorizer is able to change the configuration (i.e. selected folder) of an already-configured NodeSettings entity.  #### Returns Returns a JSON object with a &#x60;data&#x60; key containing the new representation of the updated node addon, if the request is successful.  If the request is unsuccessful, an &#x60;errors&#x60; key containing information about the failure will be returned. Refer to the [list of error codes](#tag/Errors-and-Error-Codes) to understand why this request may have failed.
+
+    :param node_id: The unique identifier of the node.
+    :type node_id: str
+    :param provider: The unique identifier of the addon.
+    :type provider: str
+    :param body: 
+    :type body: 
+
+    """
+    return web.Response(status=200)
+
+
+async def nodes_partial_update(request: web.Request, node_id, body) -> web.Response:
+    """Update a node
+
+    Updates a node by setting the values of the attributes specified in the request body. Any unspecified attributes will be left unchanged.  Nodes can be updated with either a **PUT** or **PATCH** request. The &#x60;title&#x60; and &#x60;category&#x60; fields are mandatory in a **PUT** request, and optional in a **PATCH**. #### Permissions Only write contributors may update a node. Attempting to update a node for which you do not have write access will result in a **403 Forbidden** response. #### Returns Returns a JSON object with a &#x60;data&#x60; key containing the new representation of the updated node, if the request is successful.  If the request is unsuccessful, an &#x60;errors&#x60; key containing information about the failure will be returned. Refer to the [list of error codes](#tag/Errors-and-Error-Codes) to understand why this request may have failed.
+
+    :param node_id: The unique identifier of the node.
+    :type node_id: str
+    :param body: 
+    :type body: 
+
+    """
+    return web.Response(status=200)
+
+
+async def nodes_preprints_list(request: web.Request, node_id) -> web.Response:
+    """List all preprints
+
+    A paginated list of preprints related to a given node. The returned preprints are sorted by their creation date, with the most recent preprints appearing first.  **Note: This API endpoint is under active development, and is subject to change in the future.** #### Returns Returns a JSON object containing &#x60;data&#x60; and &#x60;links&#x60; keys.  The &#x60;data&#x60; key contains an array of up to 10 preprints. Each resource in the array is a separate preprint object.  The &#x60;links&#x60; key contains a dictionary of links that can be used for [pagination](#tag/Pagination).
+
+    :param node_id: The unique identifier of the node.
+    :type node_id: str
+
+    """
+    return web.Response(status=200)
+
+
+async def nodes_providers_list(request: web.Request, node_id) -> web.Response:
+    """List all storage providers
+
+    List of all storage providers that are configured for this node  Users of the OSF may access their data on a [number of cloud-storage services](https://api.osf.io/v2/#storage-providers) that have integrations with the OSF. We call these **providers**. By default, every node has access to the OSF-provided storage but may use as many of the supported providers as desired.   #### Returns Returns a JSON object containing &#x60;data&#x60; and &#x60;links&#x60; keys.  The &#x60;data&#x60; key contains an array of files. Each resource in the array is a separate file object.  The &#x60;links&#x60; key contains a dictionary of links that can be used for [pagination](#tag/Pagination).  Note: In the OSF filesystem model, providers are treated as folders, but with special properties that distinguish them from regular folders. Every provider folder is considered a root folder, and may not be deleted through the regular file API.
+
+    :param node_id: The unique identifier of the node.
+    :type node_id: str
+
+    """
+    return web.Response(status=200)
+
+
+async def nodes_providers_read(request: web.Request, node_id, provider) -> web.Response:
+    """Retrieve a storage provider
+
+    Retrieves the details of a storage provider enabled on this node. #### Returns Returns a JSON object with a &#x60;data&#x60; key containing the representation of the requested file object, if the request is successful.  If the request is unsuccessful, an &#x60;errors&#x60; key containing information about the failure will be returned. Refer to the [list of error codes](#tag/Errors-and-Error-Codes) to understand why this request may have failed.
+
+    :param node_id: The unique identifier of the node.
+    :type node_id: str
+    :param provider: The unique identifier of the storage provider.
+    :type provider: str
+
+    """
+    return web.Response(status=200)
+
+
+async def nodes_read(request: web.Request, node_id) -> web.Response:
+    """Retrieve a node
+
+    Retrieves the details of a given node (project or component). #### Permissions Only project contributors may retrieve the details of a private node. Attempting to retreive a private node for which you are not a contributor will result in a **403 Forbidden** response.  Authentication is not required to view the details of a public node, as public nodes give read-only access to everyone. #### Returns Returns a JSON object with a &#x60;data&#x60; key containing the representation of the requested node, if the request is successful.  If the request is unsuccessful, an &#x60;errors&#x60; key containing information about the failure will be returned. Refer to the [list of error codes](#tag/Errors-and-Error-Codes) to understand why this request may have failed.
+
+    :param node_id: The unique identifier of the node.
+    :type node_id: str
+
+    """
+    return web.Response(status=200)
+
+
+async def nodes_registrations_list(request: web.Request, node_id) -> web.Response:
+    """List all registrations
+
+    List of all registrations of the given node. #### Returns  Returns a JSON object containing &#x60;data&#x60; and &#x60;links&#x60; keys.  The &#x60;data&#x60; key contains an array of up to 10 registrations. Each resource in the array is a separate registrations object.  The &#x60;links&#x60; key contains a dictionary of links that can be used for [pagination](#tag/Pagination). #### Filtering  You can optionally request that the response only include registrations that match your filters by utilizing the filter query parameter, e.g. https://api.osf.io/v2/registrations/?filter[title]&#x3D;open.  Registrations may be filtered by their &#x60;id&#x60;, &#x60;title&#x60;, &#x60;category&#x60;, &#x60;description&#x60;, &#x60;public&#x60;, &#x60;tags&#x60;, &#x60;date_created&#x60;, &#x60;date_modified&#x60;, &#x60;root&#x60;, &#x60;parent&#x60;, and &#x60;contributors&#x60;.
+
+    :param node_id: The unique identifier of the node.
+    :type node_id: str
+
+    """
+    return web.Response(status=200)
+
+
+async def nodes_view_only_links_list(request: web.Request, node_id) -> web.Response:
+    """List all view only links
+
+    List of view only links on a node. #### Returns Returns a JSON object containing &#x60;data&#x60; and &#x60;links&#x60; keys.  The &#x60;data&#x60; key contains an array of up to 10 view only links. Each resource in the array is a view only link object.  The &#x60;links&#x60; key contains a dictionary of links that can be used for [pagination](#tag/Pagination).  #### Permissions  View only links on a node, public or private, are readable and writeable only by users that are administrators on the node.  #### Filtering  You can optionally request that the response only include view only links that match your filters by utilizing the &#x60;filter&#x60; query parameter, e.g. https://api.osf.io/v2/nodes/ezcuj/view_only_links/?filter[anonymous]&#x3D;true.  View Only Links may be filtered based on their &#x60;name&#x60;, &#x60;anonymous&#x60; and &#x60;date_created&#x60; fields. Possible comparison operators include &#39;gt&#39; (greater than), &#39;gte&#39;(greater than or equal to), &#39;lt&#39; (less than) and &#39;lte&#39; (less than or equal to). The date must be in the format YYYY-MM-DD and the time is optional.
+
+    :param node_id: The unique identifier of the node.
+    :type node_id: str
+
+    """
+    return web.Response(status=200)
+
+
+async def nodes_view_only_links_read(request: web.Request, node_id, link_id) -> web.Response:
+    """Retrieve a view only link
+
+    Retrieves the details of a view only link on a node. #### Returns Returns a JSON object with a &#x60;data&#x60; key containing the representation of the requested view only link, if the request is successful.  If the request is unsuccessful, an &#x60;errors&#x60; key containing information about the failure will be returned. Refer to the [list of error codes](#tag/Errors-and-Error-Codes) to understand why this request may have failed. #### Permissions  View only links on a node, public or private, are readable and writeable only by users that are administrators on the node.
+
+    :param node_id: The unique identifier of the node.
+    :type node_id: str
+    :param link_id: The unique identifier of the view only link.
+    :type link_id: str
+
+    """
+    return web.Response(status=200)
+
+
+async def nodes_wikis_list(request: web.Request, node_id) -> web.Response:
+    """List all wikis
+
+    List of wiki pages on a node. #### Returns Paginated list of the node&#39;s current wiki page versions ordered by their date_modified. Each resource contains the full representation of the wiki, meaning additional requests to an individual wiki&#39;s detail view are not necessary.  Note that if an anonymous view_only key is being used, the user relationship will not be exposed.  If the request is unsuccessful, a JSON object with an &#x60;errors&#x60; key containing information about the failure will be returned. Refer to the [list of error codes](#tag/Errors-and-Error-Codes) to understand why this request may have failed. #### Filtering Wiki pages can be filtered based on their &#x60;name&#x60; and &#x60;date_modified&#x60; fields. + &#x60;filter[name]&#x3D;&lt;Str&gt;&#x60; -- filter wiki pages by name + &#x60;filter[date_modified][comparison_operator]&#x3D;YYYY-MM-DDTH:M:S&#x60; -- filter wiki pages based on date modified.  Possible comparison operators include &#39;gt&#39; (greater than), &#39;gte&#39;(greater than or equal to), &#39;lt&#39; (less than) and &#39;lte&#39; (less than or equal to). The date must be in the format YYYY-MM-DD and the time is optional.
+
+    :param node_id: The unique identifier of the node.
+    :type node_id: str
+
+    """
+    return web.Response(status=200)

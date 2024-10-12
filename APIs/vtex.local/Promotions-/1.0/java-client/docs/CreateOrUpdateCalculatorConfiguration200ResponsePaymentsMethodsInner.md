@@ -1,0 +1,15 @@
+
+
+# CreateOrUpdateCalculatorConfiguration200ResponsePaymentsMethodsInner
+
+Object with information of the Payment Method.
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**id** | **String** | Payment Method ID. |  [optional] |
+|**name** | **String** | Payment Method Name. |  [optional] |
+
+
+

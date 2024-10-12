@@ -1,0 +1,115 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIActor.h \
+    $${PWD}/OAIActorPost.h \
+    $${PWD}/OAIAlbumArt.h \
+    $${PWD}/OAIAlbumTracks.h \
+    $${PWD}/OAIAliases.h \
+    $${PWD}/OAIArtistArt.h \
+    $${PWD}/OAIBandAlbums.h \
+    $${PWD}/OAIBandInfo.h \
+    $${PWD}/OAIBandInfoExtended.h \
+    $${PWD}/OAICDCoverArt.h \
+    $${PWD}/OAICountry.h \
+    $${PWD}/OAICrew.h \
+    $${PWD}/OAIEpisode.h \
+    $${PWD}/OAIExternalIDs.h \
+    $${PWD}/OAIImdbID.h \
+    $${PWD}/OAIImdbImages.h \
+    $${PWD}/OAILastAvailableSeason.h \
+    $${PWD}/OAILyric.h \
+    $${PWD}/OAIMagnets.h \
+    $${PWD}/OAIMovieInformation.h \
+    $${PWD}/OAIMusicVideo.h \
+    $${PWD}/OAINetworks.h \
+    $${PWD}/OAIPostResult.h \
+    $${PWD}/OAIRatingItem.h \
+    $${PWD}/OAISchedule.h \
+    $${PWD}/OAIShowSeasons.h \
+    $${PWD}/OAITVInformation.h \
+    $${PWD}/OAITVInformationPost.h \
+    $${PWD}/OAITVShowActor.h \
+    $${PWD}/OAITVShowSeasons.h \
+    $${PWD}/OAITrailer.h \
+    $${PWD}/OAITrailerCount.h \
+    $${PWD}/OAI_Awards.h \
+    $${PWD}/OAI_ShowStatus.h \
+# APIs
+    $${PWD}/OAIAliasesMovieTelevisionShowAliasesApi.h \
+    $${PWD}/OAIAwardsTelevisionMoviesApi.h \
+    $${PWD}/OAICalendarTelevisionShowSchedulesApi.h \
+    $${PWD}/OAICastCrewCastCrewInMoviesTelevisionShowsApi.h \
+    $${PWD}/OAIImagesMovieTelevisionShowImagesApi.h \
+    $${PWD}/OAIMagnetsMagnetHashesOfMoviesTelevisionShowsApi.h \
+    $${PWD}/OAIMiscellaneousConversionOtherUtilitiesApi.h \
+    $${PWD}/OAIMoviesMoviesDocumentariesMadeForTelevisionMoviesApi.h \
+    $${PWD}/OAIMusicArtistsBandsTracksAlbumArtCoverArtVideosApi.h \
+    $${PWD}/OAIRatingsMovieTelevisionShowRatingsApi.h \
+    $${PWD}/OAITelevisionShowsEpisodesStatusesApi.h \
+    $${PWD}/OAITrailersMovieTelevisionShowTrailersApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIActor.cpp \
+    $${PWD}/OAIActorPost.cpp \
+    $${PWD}/OAIAlbumArt.cpp \
+    $${PWD}/OAIAlbumTracks.cpp \
+    $${PWD}/OAIAliases.cpp \
+    $${PWD}/OAIArtistArt.cpp \
+    $${PWD}/OAIBandAlbums.cpp \
+    $${PWD}/OAIBandInfo.cpp \
+    $${PWD}/OAIBandInfoExtended.cpp \
+    $${PWD}/OAICDCoverArt.cpp \
+    $${PWD}/OAICountry.cpp \
+    $${PWD}/OAICrew.cpp \
+    $${PWD}/OAIEpisode.cpp \
+    $${PWD}/OAIExternalIDs.cpp \
+    $${PWD}/OAIImdbID.cpp \
+    $${PWD}/OAIImdbImages.cpp \
+    $${PWD}/OAILastAvailableSeason.cpp \
+    $${PWD}/OAILyric.cpp \
+    $${PWD}/OAIMagnets.cpp \
+    $${PWD}/OAIMovieInformation.cpp \
+    $${PWD}/OAIMusicVideo.cpp \
+    $${PWD}/OAINetworks.cpp \
+    $${PWD}/OAIPostResult.cpp \
+    $${PWD}/OAIRatingItem.cpp \
+    $${PWD}/OAISchedule.cpp \
+    $${PWD}/OAIShowSeasons.cpp \
+    $${PWD}/OAITVInformation.cpp \
+    $${PWD}/OAITVInformationPost.cpp \
+    $${PWD}/OAITVShowActor.cpp \
+    $${PWD}/OAITVShowSeasons.cpp \
+    $${PWD}/OAITrailer.cpp \
+    $${PWD}/OAITrailerCount.cpp \
+    $${PWD}/OAI_Awards.cpp \
+    $${PWD}/OAI_ShowStatus.cpp \
+# APIs
+    $${PWD}/OAIAliasesMovieTelevisionShowAliasesApi.cpp \
+    $${PWD}/OAIAwardsTelevisionMoviesApi.cpp \
+    $${PWD}/OAICalendarTelevisionShowSchedulesApi.cpp \
+    $${PWD}/OAICastCrewCastCrewInMoviesTelevisionShowsApi.cpp \
+    $${PWD}/OAIImagesMovieTelevisionShowImagesApi.cpp \
+    $${PWD}/OAIMagnetsMagnetHashesOfMoviesTelevisionShowsApi.cpp \
+    $${PWD}/OAIMiscellaneousConversionOtherUtilitiesApi.cpp \
+    $${PWD}/OAIMoviesMoviesDocumentariesMadeForTelevisionMoviesApi.cpp \
+    $${PWD}/OAIMusicArtistsBandsTracksAlbumArtCoverArtVideosApi.cpp \
+    $${PWD}/OAIRatingsMovieTelevisionShowRatingsApi.cpp \
+    $${PWD}/OAITelevisionShowsEpisodesStatusesApi.cpp \
+    $${PWD}/OAITrailersMovieTelevisionShowTrailersApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

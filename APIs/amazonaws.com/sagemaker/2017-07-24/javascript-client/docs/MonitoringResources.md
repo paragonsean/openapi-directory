@@ -1,9 +1,0 @@
-# AmazonSageMakerService.MonitoringResources
-
-## Properties
-
-Name | Type | Description | Notes
------------- | ------------- | ------------- | -------------
-**clusterConfig** | [**MonitoringResourcesClusterConfig**](MonitoringResourcesClusterConfig.md) |  | 
-
-

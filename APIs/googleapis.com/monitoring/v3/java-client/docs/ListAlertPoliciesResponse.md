@@ -1,0 +1,16 @@
+
+
+# ListAlertPoliciesResponse
+
+The protocol for the ListAlertPolicies response.
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**alertPolicies** | [**List&lt;AlertPolicy&gt;**](AlertPolicy.md) | The returned alert policies. |  [optional] |
+|**nextPageToken** | **String** | If there might be more results than were returned, then this field is set to a non-empty value. To see the additional results, use that value as page_token in the next call to this method. |  [optional] |
+|**totalSize** | **Integer** | The total number of alert policies in all pages. This number is only an estimate, and may change in subsequent pages. https://aip.dev/158 |  [optional] |
+
+
+

@@ -1,0 +1,54 @@
+# AzureReservation.CatalogApi
+
+All URIs are relative to *https://management.azure.com*
+
+Method | HTTP request | Description
+------------- | ------------- | -------------
+[**getCatalog**](CatalogApi.md#getCatalog) | **GET** /subscriptions/{subscriptionId}/providers/Microsoft.Capacity/catalogs | Get the regions and skus that are available for RI purchase for the specified Azure subscription.
+
+
+
+## getCatalog
+
+> [Catalog] getCatalog(apiVersion, subscriptionId)
+
+Get the regions and skus that are available for RI purchase for the specified Azure subscription.
+
+### Example
+
+```javascript
+import AzureReservation from 'azure_reservation';
+
+let apiInstance = new AzureReservation.CatalogApi();
+let apiVersion = "apiVersion_example"; // String | Supported version.
+let subscriptionId = "subscriptionId_example"; // String | Id of the subscription
+apiInstance.getCatalog(apiVersion, subscriptionId, (error, data, response) => {
+  if (error) {
+    console.error(error);
+  } else {
+    console.log('API called successfully. Returned data: ' + data);
+  }
+});
+```
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **apiVersion** | **String**| Supported version. | 
+ **subscriptionId** | **String**| Id of the subscription | 
+
+### Return type
+
+[**[Catalog]**](Catalog.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+

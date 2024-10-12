@@ -1,0 +1,103 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIAcademicCertificateSchema.h \
+    $${PWD}/OAIAcademicCertificateSchema_CertificateData.h \
+    $${PWD}/OAIAcademicCertificateSchema_CertificateData_Examination.h \
+    $${PWD}/OAIAcademicCertificateSchema_CertificateData_Performance.h \
+    $${PWD}/OAIAcademicCertificateSchema_CertificateData_Performance_Subjects_inner.h \
+    $${PWD}/OAIAcademicCertificateSchema_CertificateData_School.h \
+    $${PWD}/OAIAcademicCertificateSchema_IssuedBy.h \
+    $${PWD}/OAIAcademicCertificateSchema_IssuedBy_Organization.h \
+    $${PWD}/OAIAcademicCertificateSchema_IssuedBy_Organization_Address.h \
+    $${PWD}/OAIAcademicCertificateSchema_IssuedTo.h \
+    $${PWD}/OAIAcademicCertificateSchema_IssuedTo_Person.h \
+    $${PWD}/OAIAcademicCertificateSchema_IssuedTo_Person_Address.h \
+    $${PWD}/OAIAcademicCertificateSchema_IssuedTo_Person_Photo.h \
+    $${PWD}/OAIBtcer_400_response.h \
+    $${PWD}/OAIBtcer_401_response.h \
+    $${PWD}/OAIBtcer_404_response.h \
+    $${PWD}/OAIBtcer_500_response.h \
+    $${PWD}/OAIBtcer_502_response.h \
+    $${PWD}/OAIBtcer_503_response.h \
+    $${PWD}/OAIBtcer_504_response.h \
+    $${PWD}/OAIBtcer_request.h \
+    $${PWD}/OAIBtcer_request_certificateParameters.h \
+    $${PWD}/OAIConsentArtifactSchema.h \
+    $${PWD}/OAIConsentArtifactSchema_consent.h \
+    $${PWD}/OAIConsentArtifactSchema_consent_data.h \
+    $${PWD}/OAIConsentArtifactSchema_consent_permission.h \
+    $${PWD}/OAIConsentArtifactSchema_consent_permission_dateRange.h \
+    $${PWD}/OAIConsentArtifactSchema_consent_permission_frequency.h \
+    $${PWD}/OAIConsentArtifactSchema_consent_purpose.h \
+    $${PWD}/OAIConsentArtifactSchema_consent_user.h \
+    $${PWD}/OAIConsentArtifactSchema_signature.h \
+    $${PWD}/OAIEwcer_request.h \
+    $${PWD}/OAIEwcer_request_certificateParameters.h \
+    $${PWD}/OAIObcer_request.h \
+    $${PWD}/OAIObcer_request_certificateParameters.h \
+    $${PWD}/OAIRscer_request.h \
+    $${PWD}/OAIRscer_request_certificateParameters.h \
+    $${PWD}/OAIShcer_request.h \
+    $${PWD}/OAIShcer_request_certificateParameters.h \
+# APIs
+    $${PWD}/OAIAPIsApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIAcademicCertificateSchema.cpp \
+    $${PWD}/OAIAcademicCertificateSchema_CertificateData.cpp \
+    $${PWD}/OAIAcademicCertificateSchema_CertificateData_Examination.cpp \
+    $${PWD}/OAIAcademicCertificateSchema_CertificateData_Performance.cpp \
+    $${PWD}/OAIAcademicCertificateSchema_CertificateData_Performance_Subjects_inner.cpp \
+    $${PWD}/OAIAcademicCertificateSchema_CertificateData_School.cpp \
+    $${PWD}/OAIAcademicCertificateSchema_IssuedBy.cpp \
+    $${PWD}/OAIAcademicCertificateSchema_IssuedBy_Organization.cpp \
+    $${PWD}/OAIAcademicCertificateSchema_IssuedBy_Organization_Address.cpp \
+    $${PWD}/OAIAcademicCertificateSchema_IssuedTo.cpp \
+    $${PWD}/OAIAcademicCertificateSchema_IssuedTo_Person.cpp \
+    $${PWD}/OAIAcademicCertificateSchema_IssuedTo_Person_Address.cpp \
+    $${PWD}/OAIAcademicCertificateSchema_IssuedTo_Person_Photo.cpp \
+    $${PWD}/OAIBtcer_400_response.cpp \
+    $${PWD}/OAIBtcer_401_response.cpp \
+    $${PWD}/OAIBtcer_404_response.cpp \
+    $${PWD}/OAIBtcer_500_response.cpp \
+    $${PWD}/OAIBtcer_502_response.cpp \
+    $${PWD}/OAIBtcer_503_response.cpp \
+    $${PWD}/OAIBtcer_504_response.cpp \
+    $${PWD}/OAIBtcer_request.cpp \
+    $${PWD}/OAIBtcer_request_certificateParameters.cpp \
+    $${PWD}/OAIConsentArtifactSchema.cpp \
+    $${PWD}/OAIConsentArtifactSchema_consent.cpp \
+    $${PWD}/OAIConsentArtifactSchema_consent_data.cpp \
+    $${PWD}/OAIConsentArtifactSchema_consent_permission.cpp \
+    $${PWD}/OAIConsentArtifactSchema_consent_permission_dateRange.cpp \
+    $${PWD}/OAIConsentArtifactSchema_consent_permission_frequency.cpp \
+    $${PWD}/OAIConsentArtifactSchema_consent_purpose.cpp \
+    $${PWD}/OAIConsentArtifactSchema_consent_user.cpp \
+    $${PWD}/OAIConsentArtifactSchema_signature.cpp \
+    $${PWD}/OAIEwcer_request.cpp \
+    $${PWD}/OAIEwcer_request_certificateParameters.cpp \
+    $${PWD}/OAIObcer_request.cpp \
+    $${PWD}/OAIObcer_request_certificateParameters.cpp \
+    $${PWD}/OAIRscer_request.cpp \
+    $${PWD}/OAIRscer_request_certificateParameters.cpp \
+    $${PWD}/OAIShcer_request.cpp \
+    $${PWD}/OAIShcer_request_certificateParameters.cpp \
+# APIs
+    $${PWD}/OAIAPIsApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

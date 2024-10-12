@@ -1,0 +1,20 @@
+# Healthcare.QuestionPage
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**categories** | **[String]** |  | [optional] 
+**content** | **String** |  | [optional] 
+**date** | **String** |  | [optional] 
+**excerpt** | **String** |  | [optional] 
+**id** | **String** |  | [optional] 
+**lang** | **String** |  | [optional] 
+**path** | **String** |  | [optional] 
+**published** | **Boolean** |  | [optional] 
+**sort** | **Number** |  | [optional] 
+**tags** | **[String]** |  | [optional] 
+**title** | **String** |  | [optional] 
+**url** | **String** |  | [optional] 
+
+

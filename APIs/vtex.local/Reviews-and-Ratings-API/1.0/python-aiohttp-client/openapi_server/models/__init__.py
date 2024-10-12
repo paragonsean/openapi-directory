@@ -1,0 +1,12 @@
+# coding: utf-8
+
+# import models into model package
+from openapi_server.models.edit_review_request import EditReviewRequest
+from openapi_server.models.get_product_rating200_response import GetProductRating200Response
+from openapi_server.models.get_reviewby_review_id200_response import GetReviewbyReviewId200Response
+from openapi_server.models.getalistof_reviews200_response import GetalistofReviews200Response
+from openapi_server.models.getalistof_reviews200_response_data_inner import GetalistofReviews200ResponseDataInner
+from openapi_server.models.getalistof_reviews200_response_range import GetalistofReviews200ResponseRange
+from openapi_server.models.save_multiple_reviews_request import SaveMultipleReviewsRequest
+from openapi_server.models.save_review200_response import SaveReview200Response
+from openapi_server.models.save_review_request import SaveReviewRequest

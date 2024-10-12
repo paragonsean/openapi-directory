@@ -1,0 +1,9 @@
+# coding: utf-8
+
+# import models into model package
+from openapi_server.models.api_response import ApiResponse
+from openapi_server.models.findings_inner import FindingsInner
+from openapi_server.models.findings_inner_meta_risk import FindingsInnerMetaRisk
+from openapi_server.models.findings_inner_meta_vuln_refs import FindingsInnerMetaVulnRefs
+from openapi_server.models.scan_definition import ScanDefinition
+from openapi_server.models.scan_definition_assets_inner import ScanDefinitionAssetsInner

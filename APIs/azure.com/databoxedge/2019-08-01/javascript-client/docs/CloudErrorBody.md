@@ -1,0 +1,11 @@
+# DataBoxEdgeManagementClient.CloudErrorBody
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**code** | **String** | An identifier for the error. Codes are invariant and are intended to be consumed programmatically. | [optional] 
+**details** | [**[CloudErrorBody]**](CloudErrorBody.md) | A list of additional details about the error. | [optional] 
+**message** | **String** | A message describing the error, intended to be suitable for display in a user interface. | [optional] 
+
+

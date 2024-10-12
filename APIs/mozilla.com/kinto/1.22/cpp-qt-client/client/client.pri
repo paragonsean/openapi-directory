@@ -1,0 +1,85 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIBatchPayloadSchema.h \
+    $${PWD}/OAIBatchResponseBodySchema.h \
+    $${PWD}/OAIData.h \
+    $${PWD}/OAIData_1.h \
+    $${PWD}/OAIData_2.h \
+    $${PWD}/OAIData_3.h \
+    $${PWD}/OAIDefaults.h \
+    $${PWD}/OAIErrorSchema.h \
+    $${PWD}/OAIObjectSchema.h \
+    $${PWD}/OAIObjectSchema_1.h \
+    $${PWD}/OAIObjectSchema_2.h \
+    $${PWD}/OAIObjectSchema_3.h \
+    $${PWD}/OAIPermissions.h \
+    $${PWD}/OAIPermissions_1.h \
+    $${PWD}/OAIPermissions_2.h \
+    $${PWD}/OAIRequests_inner.h \
+    $${PWD}/OAIResponses_inner.h \
+    $${PWD}/OAISchema.h \
+    $${PWD}/OAISchema_1.h \
+    $${PWD}/OAISchema_2.h \
+    $${PWD}/OAISchema_3.h \
+    $${PWD}/OAISchema_4.h \
+# APIs
+    $${PWD}/OAIAttachmentApi.h \
+    $${PWD}/OAIBatchApi.h \
+    $${PWD}/OAIBucketsApi.h \
+    $${PWD}/OAIChangessApi.h \
+    $${PWD}/OAICollectionChangesetApi.h \
+    $${PWD}/OAICollectionsApi.h \
+    $${PWD}/OAIGroupsApi.h \
+    $${PWD}/OAIRecordsApi.h \
+    $${PWD}/OAIUtilitiesApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIBatchPayloadSchema.cpp \
+    $${PWD}/OAIBatchResponseBodySchema.cpp \
+    $${PWD}/OAIData.cpp \
+    $${PWD}/OAIData_1.cpp \
+    $${PWD}/OAIData_2.cpp \
+    $${PWD}/OAIData_3.cpp \
+    $${PWD}/OAIDefaults.cpp \
+    $${PWD}/OAIErrorSchema.cpp \
+    $${PWD}/OAIObjectSchema.cpp \
+    $${PWD}/OAIObjectSchema_1.cpp \
+    $${PWD}/OAIObjectSchema_2.cpp \
+    $${PWD}/OAIObjectSchema_3.cpp \
+    $${PWD}/OAIPermissions.cpp \
+    $${PWD}/OAIPermissions_1.cpp \
+    $${PWD}/OAIPermissions_2.cpp \
+    $${PWD}/OAIRequests_inner.cpp \
+    $${PWD}/OAIResponses_inner.cpp \
+    $${PWD}/OAISchema.cpp \
+    $${PWD}/OAISchema_1.cpp \
+    $${PWD}/OAISchema_2.cpp \
+    $${PWD}/OAISchema_3.cpp \
+    $${PWD}/OAISchema_4.cpp \
+# APIs
+    $${PWD}/OAIAttachmentApi.cpp \
+    $${PWD}/OAIBatchApi.cpp \
+    $${PWD}/OAIBucketsApi.cpp \
+    $${PWD}/OAIChangessApi.cpp \
+    $${PWD}/OAICollectionChangesetApi.cpp \
+    $${PWD}/OAICollectionsApi.cpp \
+    $${PWD}/OAIGroupsApi.cpp \
+    $${PWD}/OAIRecordsApi.cpp \
+    $${PWD}/OAIUtilitiesApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

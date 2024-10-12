@@ -1,8 +1,0 @@
-# coding: utf-8
-
-# import models into model package
-from openapi_server.models.resource import Resource
-from openapi_server.models.restorable_dropped_managed_database import RestorableDroppedManagedDatabase
-from openapi_server.models.restorable_dropped_managed_database_list_result import RestorableDroppedManagedDatabaseListResult
-from openapi_server.models.restorable_dropped_managed_database_properties import RestorableDroppedManagedDatabaseProperties
-from openapi_server.models.tracked_resource import TrackedResource

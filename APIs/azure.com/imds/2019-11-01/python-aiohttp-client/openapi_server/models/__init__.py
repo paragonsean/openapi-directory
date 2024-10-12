@@ -1,0 +1,28 @@
+# coding: utf-8
+
+# import models into model package
+from openapi_server.models.attested_data import AttestedData
+from openapi_server.models.compute import Compute
+from openapi_server.models.data_disk import DataDisk
+from openapi_server.models.diff_disk_settings import DiffDiskSettings
+from openapi_server.models.disk_image import DiskImage
+from openapi_server.models.encryption_settings import EncryptionSettings
+from openapi_server.models.error_response import ErrorResponse
+from openapi_server.models.identity_error_response import IdentityErrorResponse
+from openapi_server.models.identity_info_response import IdentityInfoResponse
+from openapi_server.models.identity_token_response import IdentityTokenResponse
+from openapi_server.models.image_reference import ImageReference
+from openapi_server.models.instance import Instance
+from openapi_server.models.ipv4_properties import Ipv4Properties
+from openapi_server.models.ipv6_properties import Ipv6Properties
+from openapi_server.models.managed_disk import ManagedDisk
+from openapi_server.models.network import Network
+from openapi_server.models.network_interface import NetworkInterface
+from openapi_server.models.network_interface_ipv4 import NetworkInterfaceIpv4
+from openapi_server.models.network_interface_ipv6 import NetworkInterfaceIpv6
+from openapi_server.models.os_disk import OsDisk
+from openapi_server.models.plan_properties import PlanProperties
+from openapi_server.models.public_keys_properties import PublicKeysProperties
+from openapi_server.models.storage_profile import StorageProfile
+from openapi_server.models.subnet_properties import SubnetProperties
+from openapi_server.models.virtual_hard_disk import VirtualHardDisk

@@ -1,0 +1,23 @@
+# coding: utf-8
+
+# import models into model package
+from openapi_server.models.ancestor_reference import AncestorReference
+from openapi_server.models.aspect import Aspect
+from openapi_server.models.aspect_constraint import AspectConstraint
+from openapi_server.models.aspect_metadata import AspectMetadata
+from openapi_server.models.aspect_value import AspectValue
+from openapi_server.models.base_category_tree import BaseCategoryTree
+from openapi_server.models.category import Category
+from openapi_server.models.category_aspect import CategoryAspect
+from openapi_server.models.category_subtree import CategorySubtree
+from openapi_server.models.category_suggestion import CategorySuggestion
+from openapi_server.models.category_suggestion_response import CategorySuggestionResponse
+from openapi_server.models.category_tree import CategoryTree
+from openapi_server.models.category_tree_node import CategoryTreeNode
+from openapi_server.models.compatibility_property import CompatibilityProperty
+from openapi_server.models.compatibility_property_value import CompatibilityPropertyValue
+from openapi_server.models.get_categories_aspect_response import GetCategoriesAspectResponse
+from openapi_server.models.get_compatibility_metadata_response import GetCompatibilityMetadataResponse
+from openapi_server.models.get_compatibility_property_values_response import GetCompatibilityPropertyValuesResponse
+from openapi_server.models.relevance_indicator import RelevanceIndicator
+from openapi_server.models.value_constraint import ValueConstraint

@@ -1,9 +1,0 @@
-# coding: utf-8
-
-# import models into model package
-from openapi_server.models.google_iam_v1_binding import GoogleIamV1Binding
-from openapi_server.models.google_iam_v1_policy import GoogleIamV1Policy
-from openapi_server.models.google_iam_v1_set_iam_policy_request import GoogleIamV1SetIamPolicyRequest
-from openapi_server.models.google_iam_v1_test_iam_permissions_request import GoogleIamV1TestIamPermissionsRequest
-from openapi_server.models.google_iam_v1_test_iam_permissions_response import GoogleIamV1TestIamPermissionsResponse
-from openapi_server.models.google_type_expr import GoogleTypeExpr

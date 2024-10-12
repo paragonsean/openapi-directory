@@ -1,0 +1,16 @@
+# coding: utf-8
+
+# import models into model package
+from openapi_server.models.aspect_recommendations import AspectRecommendations
+from openapi_server.models.compliance_detail import ComplianceDetail
+from openapi_server.models.compliance_summary import ComplianceSummary
+from openapi_server.models.compliance_summary_info import ComplianceSummaryInfo
+from openapi_server.models.compliance_violation import ComplianceViolation
+from openapi_server.models.corrective_recommendations import CorrectiveRecommendations
+from openapi_server.models.error import Error
+from openapi_server.models.error_parameter import ErrorParameter
+from openapi_server.models.name_value_list import NameValueList
+from openapi_server.models.paged_compliance_violation_collection import PagedComplianceViolationCollection
+from openapi_server.models.product_recommendation import ProductRecommendation
+from openapi_server.models.suppress_violation_request import SuppressViolationRequest
+from openapi_server.models.variation_details import VariationDetails

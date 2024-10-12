@@ -1,0 +1,109 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIApplicationStaffModel.h \
+    $${PWD}/OAIApplicationStaffModelResults.h \
+    $${PWD}/OAIAreaModel.h \
+    $${PWD}/OAIAreaModelResults.h \
+    $${PWD}/OAIBranchModel.h \
+    $${PWD}/OAIBranchModelResults.h \
+    $${PWD}/OAICompanyModel.h \
+    $${PWD}/OAICountyModel.h \
+    $${PWD}/OAICountyModelResults.h \
+    $${PWD}/OAIDiaryAllocationModel.h \
+    $${PWD}/OAIDiaryAllocationModelResults.h \
+    $${PWD}/OAIDiaryAppointmentModel.h \
+    $${PWD}/OAIDiaryAppointmentModelResults.h \
+    $${PWD}/OAIDiaryAppointmentTypeModel.h \
+    $${PWD}/OAIDiaryAppointmentTypeModelResults.h \
+    $${PWD}/OAIPhotoModel.h \
+    $${PWD}/OAIPhotoModelResults.h \
+    $${PWD}/OAIPropertyFacilityModel.h \
+    $${PWD}/OAIPropertyFacilityModelResults.h \
+    $${PWD}/OAIPropertyModel.h \
+    $${PWD}/OAIPropertyModelResults.h \
+    $${PWD}/OAIPropertyRoomModel.h \
+    $${PWD}/OAIPropertyRoomModelResults.h \
+    $${PWD}/OAISalesFeatureModel.h \
+    $${PWD}/OAISalesFeatureModelResults.h \
+    $${PWD}/OAISalesFeatureTypeModel.h \
+    $${PWD}/OAISalesFeatureTypeModelResults.h \
+    $${PWD}/OAISalesInstructionModel.h \
+    $${PWD}/OAISalesInstructionModelResults.h \
+    $${PWD}/OAITenancyModel.h \
+    $${PWD}/OAITenancyModelResults.h \
+    $${PWD}/OAIViewingBookingModel.h \
+# APIs
+    $${PWD}/OAIAreaControllerApi.h \
+    $${PWD}/OAIBranchControllerApi.h \
+    $${PWD}/OAICompanyControllerApi.h \
+    $${PWD}/OAICountyControllerApi.h \
+    $${PWD}/OAIDiaryControllerApi.h \
+    $${PWD}/OAILettingsControllerApi.h \
+    $${PWD}/OAIPhotoControllerApi.h \
+    $${PWD}/OAIPropertyControllerApi.h \
+    $${PWD}/OAISalesControllerApi.h \
+    $${PWD}/OAIStaffControllerApi.h \
+    $${PWD}/OAIViewingControllerApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIApplicationStaffModel.cpp \
+    $${PWD}/OAIApplicationStaffModelResults.cpp \
+    $${PWD}/OAIAreaModel.cpp \
+    $${PWD}/OAIAreaModelResults.cpp \
+    $${PWD}/OAIBranchModel.cpp \
+    $${PWD}/OAIBranchModelResults.cpp \
+    $${PWD}/OAICompanyModel.cpp \
+    $${PWD}/OAICountyModel.cpp \
+    $${PWD}/OAICountyModelResults.cpp \
+    $${PWD}/OAIDiaryAllocationModel.cpp \
+    $${PWD}/OAIDiaryAllocationModelResults.cpp \
+    $${PWD}/OAIDiaryAppointmentModel.cpp \
+    $${PWD}/OAIDiaryAppointmentModelResults.cpp \
+    $${PWD}/OAIDiaryAppointmentTypeModel.cpp \
+    $${PWD}/OAIDiaryAppointmentTypeModelResults.cpp \
+    $${PWD}/OAIPhotoModel.cpp \
+    $${PWD}/OAIPhotoModelResults.cpp \
+    $${PWD}/OAIPropertyFacilityModel.cpp \
+    $${PWD}/OAIPropertyFacilityModelResults.cpp \
+    $${PWD}/OAIPropertyModel.cpp \
+    $${PWD}/OAIPropertyModelResults.cpp \
+    $${PWD}/OAIPropertyRoomModel.cpp \
+    $${PWD}/OAIPropertyRoomModelResults.cpp \
+    $${PWD}/OAISalesFeatureModel.cpp \
+    $${PWD}/OAISalesFeatureModelResults.cpp \
+    $${PWD}/OAISalesFeatureTypeModel.cpp \
+    $${PWD}/OAISalesFeatureTypeModelResults.cpp \
+    $${PWD}/OAISalesInstructionModel.cpp \
+    $${PWD}/OAISalesInstructionModelResults.cpp \
+    $${PWD}/OAITenancyModel.cpp \
+    $${PWD}/OAITenancyModelResults.cpp \
+    $${PWD}/OAIViewingBookingModel.cpp \
+# APIs
+    $${PWD}/OAIAreaControllerApi.cpp \
+    $${PWD}/OAIBranchControllerApi.cpp \
+    $${PWD}/OAICompanyControllerApi.cpp \
+    $${PWD}/OAICountyControllerApi.cpp \
+    $${PWD}/OAIDiaryControllerApi.cpp \
+    $${PWD}/OAILettingsControllerApi.cpp \
+    $${PWD}/OAIPhotoControllerApi.cpp \
+    $${PWD}/OAIPropertyControllerApi.cpp \
+    $${PWD}/OAISalesControllerApi.cpp \
+    $${PWD}/OAIStaffControllerApi.cpp \
+    $${PWD}/OAIViewingControllerApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

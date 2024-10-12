@@ -1,0 +1,10 @@
+# SmartMe.MBusData
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**date** | **Date** | The Date of the M-BUS Telegram Readout (in UTC). If this is null the Server Time is used. | [optional] 
+**telegram** | **String** | The M-BUS Telegram as Hex string.               Example: 68 1F 1F 68 08 02 72 78 56 34 12 24 40 01 07 55 00 00 00 03 13 15 31 00 DA 02 3B 13 01 8B 60 04 37 18 02 18 16 | [optional] 
+
+

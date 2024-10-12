@@ -1,0 +1,20 @@
+# coding: utf-8
+
+# import models into model package
+from openapi_server.models.autoscale_notification import AutoscaleNotification
+from openapi_server.models.autoscale_profile import AutoscaleProfile
+from openapi_server.models.autoscale_setting import AutoscaleSetting
+from openapi_server.models.autoscale_setting_resource import AutoscaleSettingResource
+from openapi_server.models.autoscale_setting_resource_collection import AutoscaleSettingResourceCollection
+from openapi_server.models.autoscale_setting_resource_patch import AutoscaleSettingResourcePatch
+from openapi_server.models.email_notification import EmailNotification
+from openapi_server.models.error_response import ErrorResponse
+from openapi_server.models.metric_trigger import MetricTrigger
+from openapi_server.models.recurrence import Recurrence
+from openapi_server.models.recurrent_schedule import RecurrentSchedule
+from openapi_server.models.resource import Resource
+from openapi_server.models.scale_action import ScaleAction
+from openapi_server.models.scale_capacity import ScaleCapacity
+from openapi_server.models.scale_rule import ScaleRule
+from openapi_server.models.time_window import TimeWindow
+from openapi_server.models.webhook_notification import WebhookNotification

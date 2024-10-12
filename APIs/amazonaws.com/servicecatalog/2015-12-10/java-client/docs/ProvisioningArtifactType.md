@@ -1,0 +1,17 @@
+
+
+# ProvisioningArtifactType
+
+## Enum
+
+
+* `CLOUD_FORMATION_TEMPLATE` (value: `"CLOUD_FORMATION_TEMPLATE"`)
+
+* `MARKETPLACE_AMI` (value: `"MARKETPLACE_AMI"`)
+
+* `MARKETPLACE_CAR` (value: `"MARKETPLACE_CAR"`)
+
+* `TERRAFORM_OPEN_SOURCE` (value: `"TERRAFORM_OPEN_SOURCE"`)
+
+
+

@@ -1,0 +1,87 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIAcademicCertificateSchema.h \
+    $${PWD}/OAIAcademicCertificateSchema_CertificateData.h \
+    $${PWD}/OAIAcademicCertificateSchema_CertificateData_Examination.h \
+    $${PWD}/OAIAcademicCertificateSchema_CertificateData_Performance.h \
+    $${PWD}/OAIAcademicCertificateSchema_CertificateData_Performance_Subjects_inner.h \
+    $${PWD}/OAIAcademicCertificateSchema_CertificateData_School.h \
+    $${PWD}/OAIAcademicCertificateSchema_IssuedBy.h \
+    $${PWD}/OAIAcademicCertificateSchema_IssuedBy_Organization.h \
+    $${PWD}/OAIAcademicCertificateSchema_IssuedBy_Organization_Address.h \
+    $${PWD}/OAIAcademicCertificateSchema_IssuedTo.h \
+    $${PWD}/OAIAcademicCertificateSchema_IssuedTo_Person.h \
+    $${PWD}/OAIAcademicCertificateSchema_IssuedTo_Person_Address.h \
+    $${PWD}/OAIAcademicCertificateSchema_IssuedTo_Person_Photo.h \
+    $${PWD}/OAIConsentArtifactSchema.h \
+    $${PWD}/OAIConsentArtifactSchema_consent.h \
+    $${PWD}/OAIConsentArtifactSchema_consent_data.h \
+    $${PWD}/OAIConsentArtifactSchema_consent_permission.h \
+    $${PWD}/OAIConsentArtifactSchema_consent_permission_dateRange.h \
+    $${PWD}/OAIConsentArtifactSchema_consent_permission_frequency.h \
+    $${PWD}/OAIConsentArtifactSchema_consent_purpose.h \
+    $${PWD}/OAIConsentArtifactSchema_consent_user.h \
+    $${PWD}/OAIConsentArtifactSchema_signature.h \
+    $${PWD}/OAITdcer_400_response.h \
+    $${PWD}/OAITdcer_401_response.h \
+    $${PWD}/OAITdcer_404_response.h \
+    $${PWD}/OAITdcer_500_response.h \
+    $${PWD}/OAITdcer_502_response.h \
+    $${PWD}/OAITdcer_503_response.h \
+    $${PWD}/OAITdcer_504_response.h \
+    $${PWD}/OAITdcer_request.h \
+    $${PWD}/OAITdcer_request_certificateParameters.h \
+# APIs
+    $${PWD}/OAIAPIsApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIAcademicCertificateSchema.cpp \
+    $${PWD}/OAIAcademicCertificateSchema_CertificateData.cpp \
+    $${PWD}/OAIAcademicCertificateSchema_CertificateData_Examination.cpp \
+    $${PWD}/OAIAcademicCertificateSchema_CertificateData_Performance.cpp \
+    $${PWD}/OAIAcademicCertificateSchema_CertificateData_Performance_Subjects_inner.cpp \
+    $${PWD}/OAIAcademicCertificateSchema_CertificateData_School.cpp \
+    $${PWD}/OAIAcademicCertificateSchema_IssuedBy.cpp \
+    $${PWD}/OAIAcademicCertificateSchema_IssuedBy_Organization.cpp \
+    $${PWD}/OAIAcademicCertificateSchema_IssuedBy_Organization_Address.cpp \
+    $${PWD}/OAIAcademicCertificateSchema_IssuedTo.cpp \
+    $${PWD}/OAIAcademicCertificateSchema_IssuedTo_Person.cpp \
+    $${PWD}/OAIAcademicCertificateSchema_IssuedTo_Person_Address.cpp \
+    $${PWD}/OAIAcademicCertificateSchema_IssuedTo_Person_Photo.cpp \
+    $${PWD}/OAIConsentArtifactSchema.cpp \
+    $${PWD}/OAIConsentArtifactSchema_consent.cpp \
+    $${PWD}/OAIConsentArtifactSchema_consent_data.cpp \
+    $${PWD}/OAIConsentArtifactSchema_consent_permission.cpp \
+    $${PWD}/OAIConsentArtifactSchema_consent_permission_dateRange.cpp \
+    $${PWD}/OAIConsentArtifactSchema_consent_permission_frequency.cpp \
+    $${PWD}/OAIConsentArtifactSchema_consent_purpose.cpp \
+    $${PWD}/OAIConsentArtifactSchema_consent_user.cpp \
+    $${PWD}/OAIConsentArtifactSchema_signature.cpp \
+    $${PWD}/OAITdcer_400_response.cpp \
+    $${PWD}/OAITdcer_401_response.cpp \
+    $${PWD}/OAITdcer_404_response.cpp \
+    $${PWD}/OAITdcer_500_response.cpp \
+    $${PWD}/OAITdcer_502_response.cpp \
+    $${PWD}/OAITdcer_503_response.cpp \
+    $${PWD}/OAITdcer_504_response.cpp \
+    $${PWD}/OAITdcer_request.cpp \
+    $${PWD}/OAITdcer_request_certificateParameters.cpp \
+# APIs
+    $${PWD}/OAIAPIsApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

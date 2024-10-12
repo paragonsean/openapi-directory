@@ -1,0 +1,58 @@
+
+
+# NeoVIN
+
+Describes the NeoVIN specification
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**availableOptionsDetails** | **Object** | Listing of all options and packages with detailed equipment identified that could have been installed on the vehicle |  [optional] |
+|**bodySubtype** | **String** | Body subtype (cab) of the vehicle |  [optional] |
+|**bodyType** | **String** | Body type of the vehicle |  [optional] |
+|**cityMpg** | **Double** | City miles per gallon |  [optional] |
+|**combinedMsrp** | **Double** | Calculated combination of base MSRP with the delivery charges and the installed options MSRP |  [optional] |
+|**createdAt** | **Integer** | vin first decoded at timestamp |  [optional] |
+|**createdAtDate** | **String** | vin first decoded at date |  [optional] |
+|**decodeVersion** | **Integer** | This will represent if previous vin decode values are updated |  [optional] |
+|**deliveryCharges** | **Double** | Manufacturer defined delivery charges |  [optional] |
+|**doors** | **Integer** | Number of doors on the vehicle |  [optional] |
+|**drivetrain** | **String** | Identified drivetrain of the vehicle |  [optional] |
+|**engine** | **String** | Base identification of the number of cylinders and configuration of the installed engine on the vehicle |  [optional] |
+|**exteriorColor** | **Object** | The manufacturer defined option code and name for the exterior color of the vehicle |  [optional] |
+|**features** | **Object** | Normalized feature set of equipment identified that have been identified as installed on the vehicle, including whether that item was standard to the version of the vehicle or was added as an installed option |  [optional] |
+|**fuelType** | **String** | Identified Fuel type of the vehicle |  [optional] |
+|**height** | **Double** | Overall height of the vehicle (in) |  [optional] |
+|**highwayMpg** | **Double** | Highway miles per gallon |  [optional] |
+|**installedEquipment** | **Object** | Detailed equipment identified as installed on the vehicle, including whether that item was standard to the version of the vehicle or was added as an installed option |  [optional] |
+|**installedOptionsDetails** | **Object** | Listing of all options and packages with detailed equipment identified that have been identified as installed on the vehicle |  [optional] |
+|**installedOptionsMsrp** | **Double** | Calculated combination of the MSRP for the installed options and packages |  [optional] |
+|**interiorColor** | **Object** | The manufacturer defined option code and name for the interior color of the vehicle |  [optional] |
+|**length** | **Double** | Overall length of the vehicle (in) |  [optional] |
+|**listingConfidence** | **String** | Identification of primary source data used for trim and installed colors and options |  [optional] |
+|**make** | **String** | Make of the vehicle |  [optional] |
+|**manufacturerCode** | **String** | Manufacturer code of the vehicle |  [optional] |
+|**model** | **String** | Model of the vehicle |  [optional] |
+|**msrp** | **Double** | Base MSRP as defined for the defined version of that vehicle with no options installed |  [optional] |
+|**optionsPackages** | **String** | Option and package codes installed on the vehicle |  [optional] |
+|**packageCode** | **String** | Extracted manufacturer package code related to selection of the vehicle version (where available / applicable) |  [optional] |
+|**packageDescription** | **String** | Extracted manufacturer package code description (where available / applicable) |  [optional] |
+|**seatingCapacity** | **Double** | Identified seating capacity of the vehicle |  [optional] |
+|**squishVin** | **String** | Vin prefix identification used in the decoding of the vehicle |  [optional] |
+|**transmission** | **String** | Identified installed Transmission of the vehicle |  [optional] |
+|**transmissionConfidence** | **String** | Identification of confidence related to the selection of the installed transmission |  [optional] |
+|**transmissionDescription** | **String** | The description of the installed transmission |  [optional] |
+|**trim** | **String** | Trim of the vehicle |  [optional] |
+|**trimConfidence** | **String** | Identification of confidence related to the selection of the trim |  [optional] |
+|**updatedAt** | **Integer** | vin last decoded at timestamp |  [optional] |
+|**updatedAtDate** | **String** | vin last decoded at date |  [optional] |
+|**version** | **String** | Version Name of the vehicle |  [optional] |
+|**versionConfidence** | **String** | Identification of confidence related to the selection of the vehicle version |  [optional] |
+|**vin** | **String** | 17 char long VIN of the vehicle |  [optional] |
+|**weight** | **Double** | Gross vehicle weight (lbs) |  [optional] |
+|**width** | **Double** | Overall width of the vehicle (in) |  [optional] |
+|**year** | **Integer** | Model Year of the vehicle |  [optional] |
+
+
+

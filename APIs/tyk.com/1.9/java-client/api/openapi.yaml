@@ -1,0 +1,2420 @@
+openapi: 3.0.1
+info:
+  contact: {}
+  title: Gateway REST API
+  version: "1.9"
+  x-apisguru-categories:
+  - enterprise
+  x-logo:
+    url: https://twitter.com/tyk_io/profile_image?size=original
+  x-origin:
+  - format: swagger
+    url: https://raw.githubusercontent.com/TykTechnologies/tyk-swagger-definitions/master/tyk_gateway_api.yml
+    version: "2.0"
+  x-providerName: tyk.com
+servers:
+- url: //tyk.local/
+paths:
+  /tyk/apis/:
+    get:
+      description: "Gets a list of *API Definition* objects that are currently live\
+        \ on the gateway \n"
+      parameters:
+      - description: tyk gateway shared secret
+        in: header
+        name: x-tyk-authorization
+        required: true
+        schema:
+          format: string
+          type: string
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/APIDefinitionList'
+          description: Succesful list response
+      x-accepts:
+      - '*/*'
+    post:
+      description: |
+        Create an *API Definition* object
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/APIDefinition'
+        required: false
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/_tyk_apis__post_200_response'
+          description: Succesful API Deletion
+      x-codegen-request-body-name: api_definition
+      x-content-type: '*/*'
+      x-accepts:
+      - '*/*'
+  /tyk/apis/{apiID}:
+    delete:
+      description: |
+        Deletes an *API Definition* object, if it exists
+      parameters:
+      - description: tyk gateway shared secret
+        in: header
+        name: x-tyk-authorization
+        required: true
+        schema:
+          format: string
+          type: string
+      - description: API ID
+        in: path
+        name: apiID
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/_tyk_apis__apiID__delete_200_response'
+          description: Succesful API Deletion
+      x-accepts:
+      - '*/*'
+    get:
+      description: |
+        Gets an *API Definition* object, if it exists
+      parameters:
+      - description: tyk gateway shared secret
+        in: header
+        name: x-tyk-authorization
+        required: true
+        schema:
+          format: string
+          type: string
+      - description: API ID
+        in: path
+        name: apiID
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/APIDefinition'
+          description: Succesful API response
+      x-accepts:
+      - '*/*'
+    put:
+      description: |
+        Updates an *API Definition* object, if it exists
+      parameters:
+      - description: tyk gateway shared secret
+        in: header
+        name: x-tyk-authorization
+        required: true
+        schema:
+          format: string
+          type: string
+      - description: API ID
+        in: path
+        name: apiID
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/APIDefinition'
+        required: false
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/_tyk_apis__post_200_response'
+          description: Succesful API Deletion
+      x-codegen-request-body-name: api_definition
+      x-content-type: '*/*'
+      x-accepts:
+      - '*/*'
+  /tyk/health/:
+    get:
+      description: |
+        Gets the health check values for an API if it is being recorded
+      parameters:
+      - description: tyk gateway shared secret
+        in: header
+        name: x-tyk-authorization
+        required: true
+        schema:
+          format: string
+          type: string
+      - description: API ID to query
+        in: query
+        name: api_id
+        required: true
+        schema:
+          format: string
+          type: string
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/_tyk_health__get_200_response'
+          description: Succesful healthcheck response
+      x-accepts:
+      - '*/*'
+  /tyk/keys/:
+    get:
+      description: |
+        Gets a list of *key* IDs (will only work with non-hashed installations)
+      parameters:
+      - description: Back-end to target
+        in: query
+        name: api_id
+        required: true
+        schema:
+          format: string
+          type: string
+      - description: tyk gateway shared secret
+        in: header
+        name: x-tyk-authorization
+        required: true
+        schema:
+          format: string
+          type: string
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/_tyk_keys__get_200_response'
+          description: Successful response
+      x-accepts:
+      - '*/*'
+  /tyk/keys/create:
+    post:
+      description: |
+        Create a new *API token* with the *session object* defined in the body
+      parameters:
+      - description: tyk gateway shared secret
+        in: header
+        name: x-tyk-authorization
+        required: true
+        schema:
+          format: string
+          type: string
+      - description: "Adding the `suppress_reset` parameter and setting it to `1`,\
+          \ will cause Tyk to not reset the quota limit that is in the current live\
+          \ quota manager. By default Tyk will reset the quota in the live quota manager\
+          \ (initialising it) when ADDing a key. Adding the `suppress_reset` flag\
+          \ to the URL parameters will avoid this behaviour."
+        in: query
+        name: suppress_reset
+        schema:
+          format: integer
+          type: number
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/SessionObject'
+        required: false
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/_tyk_keys_create_post_200_response'
+          description: Key Created Response
+      x-codegen-request-body-name: session_object
+      x-content-type: '*/*'
+      x-accepts:
+      - '*/*'
+  /tyk/keys/{keyId}:
+    delete:
+      description: |
+        Remove this *API token* from the gateway, this will completely destroy the token and metadata associated with the token and instantly stop access from being granted
+      parameters:
+      - description: tyk gateway shared secret
+        in: header
+        name: x-tyk-authorization
+        required: true
+        schema:
+          format: string
+          type: string
+      - description: Access Token
+        in: path
+        name: keyId
+        required: true
+        schema:
+          type: string
+      - description: Back-end to target
+        in: query
+        name: api_id
+        required: true
+        schema:
+          format: string
+          type: string
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/_tyk_apis__apiID__delete_200_response'
+          description: Key Deleted Response
+      x-accepts:
+      - '*/*'
+    post:
+      description: |
+        Add a pre-specified *API token* with the *session object* defined in the body, this operatin creates a custom token that dsoes not use the gateway naming convention for tokens
+      parameters:
+      - description: tyk gateway shared secret
+        in: header
+        name: x-tyk-authorization
+        required: true
+        schema:
+          format: string
+          type: string
+      - description: Access Token
+        in: path
+        name: keyId
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/SessionObject'
+        required: false
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/_tyk_keys__keyId__post_200_response'
+          description: Key Added Response
+      x-codegen-request-body-name: session_object
+      x-content-type: '*/*'
+      x-accepts:
+      - '*/*'
+    put:
+      description: |
+        Update an *API token* with the *session object* defined in the body, this operatin overwrites the existing object
+      parameters:
+      - description: tyk gateway shared secret
+        in: header
+        name: x-tyk-authorization
+        required: true
+        schema:
+          format: string
+          type: string
+      - description: Access Token
+        in: path
+        name: keyId
+        required: true
+        schema:
+          type: string
+      - description: "Adding the `suppress_reset` parameter and setting it to `1`,\
+          \ will cause Tyk to not reset the quota limit that is in the current live\
+          \ quota manager. By default Tyk will reset the quota in the live quota manager\
+          \ (initialising it) when ADDing a key. Adding the `suppress_reset` flag\
+          \ to the URL parameters will avoid this behaviour."
+        in: query
+        name: suppress_reset
+        schema:
+          format: integer
+          type: number
+      - description: Back-end to target
+        in: query
+        name: api_id
+        required: true
+        schema:
+          format: string
+          type: string
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/SessionObject'
+        required: false
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/_tyk_keys__keyId__put_200_response'
+          description: Key Updated Response
+      x-codegen-request-body-name: session_object
+      x-content-type: '*/*'
+      x-accepts:
+      - '*/*'
+  /tyk/oauth/authorize-client/:
+    post:
+      description: |
+        The final request from an authorising party for a redirect URI during the Tyk OAuth flow
+      parameters:
+      - description: tyk gateway shared secret
+        in: header
+        name: x-tyk-authorization
+        required: true
+        schema:
+          format: string
+          type: string
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/_tyk_oauth_authorize_client__post_request'
+        required: true
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/_tyk_oauth_authorize_client__post_200_response'
+          description: Succesful token response
+      x-content-type: multipart/form-data
+      x-accepts:
+      - '*/*'
+  /tyk/oauth/clients/create:
+    post:
+      description: |
+        Create a new OAuth client
+      parameters:
+      - description: tyk gateway shared secret
+        in: header
+        name: x-tyk-authorization
+        required: true
+        schema:
+          format: string
+          type: string
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/_tyk_oauth_clients_create_post_request'
+        required: false
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/OAuthClient'
+          description: Succesful create response
+      x-codegen-request-body-name: oauth_client
+      x-content-type: '*/*'
+      x-accepts:
+      - '*/*'
+  /tyk/oauth/clients/{apiId}:
+    get:
+      description: "Get a list of OAuth clients bound to this back end \n"
+      parameters:
+      - description: tyk gateway shared secret
+        in: header
+        name: x-tyk-authorization
+        required: true
+        schema:
+          format: string
+          type: string
+      - description: API ID that owns this client (back end)
+        in: path
+        name: apiId
+        required: true
+        schema:
+          format: string
+          type: string
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/OAuthClients'
+          description: Succesful listy response
+      x-accepts:
+      - '*/*'
+  /tyk/oauth/clients/{apiId}/{clientId}:
+    delete:
+      description: |
+        Delete the OAuth client
+      parameters:
+      - description: tyk gateway shared secret
+        in: header
+        name: x-tyk-authorization
+        required: true
+        schema:
+          format: string
+          type: string
+      - description: API ID that owns this client (back end)
+        in: path
+        name: apiId
+        required: true
+        schema:
+          format: string
+          type: string
+      - description: OAuth Client ID to delete
+        in: path
+        name: clientId
+        required: true
+        schema:
+          format: string
+          type: string
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/_tyk_apis__apiID__delete_200_response'
+          description: Succesful OAuth client deletion
+      x-accepts:
+      - '*/*'
+  /tyk/oauth/refresh/{keyId}:
+    delete:
+      description: |
+        Invalidate a refresh token
+      parameters:
+      - description: tyk gateway shared secret
+        in: header
+        name: x-tyk-authorization
+        required: true
+        schema:
+          format: string
+          type: string
+      - description: Access Token
+        in: path
+        name: keyId
+        required: true
+        schema:
+          type: string
+      - description: API ID
+        in: query
+        name: apiID
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/_tyk_apis__apiID__delete_200_response'
+          description: Succesful token revoked
+      x-accepts:
+      - '*/*'
+  /tyk/reload/:
+    get:
+      description: |
+        Will reload the targetted gateway
+      parameters:
+      - description: tyk gateway shared secret
+        in: header
+        name: x-tyk-authorization
+        required: true
+        schema:
+          format: string
+          type: string
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/_tyk_reload__get_200_response'
+          description: Succesful reload response
+      x-accepts:
+      - '*/*'
+  /tyk/reload/group:
+    get:
+      description: |
+        Will reload the cluster via the targeted gateway
+      parameters:
+      - description: tyk gateway shared secret
+        in: header
+        name: x-tyk-authorization
+        required: true
+        schema:
+          format: string
+          type: string
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/_tyk_reload__get_200_response'
+          description: Succesful reload response
+      x-accepts:
+      - '*/*'
+components:
+  schemas:
+    APIDefinition:
+      example:
+        api_id: api_id
+        use_keyless: true
+        auth:
+          auth_header_name: auth_header_name
+          use_param: true
+          use_cookie: true
+        jwt_policy_field_name: jwt_policy_field_name
+        jwt_signing_method: jwt_signing_method
+        oauth_meta:
+          allowed_authorize_types:
+          - allowed_authorize_types
+          - allowed_authorize_types
+          auth_login_redirect: auth_login_redirect
+          allowed_access_types:
+          - allowed_access_types
+          - allowed_access_types
+        version_data:
+          versions:
+            key:
+              extended_paths:
+                circuit_breakers:
+                - path: path
+                  threshold_percent: 7.386281948385884
+                  method: method
+                  return_to_service_after: 2.027123023002322
+                  samples: 4.145608029883936
+                - path: path
+                  threshold_percent: 7.386281948385884
+                  method: method
+                  return_to_service_after: 2.027123023002322
+                  samples: 4.145608029883936
+                ignored:
+                - path: path
+                  method_actions:
+                    key:
+                      headers: "{}"
+                      code: 3.616076749251911
+                      data: data
+                      action: action
+                - path: path
+                  method_actions:
+                    key:
+                      headers: "{}"
+                      code: 3.616076749251911
+                      data: data
+                      action: action
+                cache:
+                - cache
+                - cache
+                virtual:
+                - path: path
+                  method: method
+                  response_function_name: response_function_name
+                  function_source_uri: function_source_uri
+                  use_session: true
+                  function_source_type: function_source_type
+                - path: path
+                  method: method
+                  response_function_name: response_function_name
+                  function_source_uri: function_source_uri
+                  use_session: true
+                  function_source_type: function_source_type
+                black_list:
+                - path: path
+                  method_actions:
+                    key:
+                      headers: "{}"
+                      code: 3.616076749251911
+                      data: data
+                      action: action
+                - path: path
+                  method_actions:
+                    key:
+                      headers: "{}"
+                      code: 3.616076749251911
+                      data: data
+                      action: action
+                transform_headers:
+                - path: path
+                  add_headers: "{}"
+                  method: method
+                  delete_headers:
+                  - delete_headers
+                  - delete_headers
+                - path: path
+                  add_headers: "{}"
+                  method: method
+                  delete_headers:
+                  - delete_headers
+                  - delete_headers
+                transform_response_headers:
+                - path: path
+                  add_headers: "{}"
+                  method: method
+                  delete_headers:
+                  - delete_headers
+                  - delete_headers
+                - path: path
+                  add_headers: "{}"
+                  method: method
+                  delete_headers:
+                  - delete_headers
+                  - delete_headers
+                white_list:
+                - path: path
+                  method_actions:
+                    key:
+                      headers: "{}"
+                      code: 3.616076749251911
+                      data: data
+                      action: action
+                - path: path
+                  method_actions:
+                    key:
+                      headers: "{}"
+                      code: 3.616076749251911
+                      data: data
+                      action: action
+                transform:
+                - path: path
+                  template_data:
+                    input_type: input_type
+                    template_mode: template_mode
+                    enable_session: true
+                  method: method
+                - path: path
+                  template_data:
+                    input_type: input_type
+                    template_mode: template_mode
+                    enable_session: true
+                  method: method
+                size_limits:
+                - path: path
+                  method: method
+                  size_limit: 1.0246457001441578
+                - path: path
+                  method: method
+                  size_limit: 1.0246457001441578
+                transform_response:
+                - path: path
+                  template_data:
+                    input_type: input_type
+                    template_mode: template_mode
+                    enable_session: true
+                  method: method
+                - path: path
+                  template_data:
+                    input_type: input_type
+                    template_mode: template_mode
+                    enable_session: true
+                  method: method
+                hard_timeouts:
+                - path: path
+                  method: method
+                  timeout: 1.2315135367772556
+                - path: path
+                  method: method
+                  timeout: 1.2315135367772556
+                url_rewrites:
+                - match_pattern: match_pattern
+                  path: path
+                  method: method
+                  rewrite_to: rewrite_to
+                - match_pattern: match_pattern
+                  path: path
+                  method: method
+                  rewrite_to: rewrite_to
+              expires: expires
+              global_headers: "{}"
+              override_target: override_target
+              name: name
+              global_headers_remove:
+              - global_headers_remove
+              - global_headers_remove
+              global_size_limit: 1.4894159098541704
+              use_extended_paths: true
+          not_versioned: true
+        uptime_tests:
+          check_list:
+          - headers:
+            - "{}"
+            - "{}"
+            method: method
+            body: body
+            url: url
+          - headers:
+            - "{}"
+            - "{}"
+            method: method
+            body: body
+            url: url
+          event_handlers: "{}"
+          session_lifetime: 9.301444243932576
+          allowed_ips:
+          - allowed_ips
+          - allowed_ips
+          enable_batch_request_support: true
+          response_processors:
+          - name: name
+            options: "{}"
+          - name: name
+            options: "{}"
+          active: true
+          custom_middleware:
+            pre:
+            - path: path
+              require_session: true
+              name: name
+            - path: path
+              require_session: true
+              name: name
+            post:
+            - path: path
+              require_session: true
+              name: name
+            - path: path
+              require_session: true
+              name: name
+            response:
+            - path: path
+              require_session: true
+              name: name
+            - path: path
+              require_session: true
+              name: name
+          do_not_track: do_not_track
+          tags:
+          - tags
+          - tags
+          proxy:
+            check_host_against_uptime_tests: true
+            enable_load_balancing: true
+            target_list:
+            - target_list
+            - target_list
+            preserve_host_header: true
+            listen_path: listen_path
+            target_url: target_url
+            service_discovery:
+              parent_data_path: parent_data_path
+              query_endpoint: query_endpoint
+              use_nested_query: true
+              cache_timeout: 2.3021358869347655
+              use_discovery_service: use_discovery_service
+              port_data_path: port_data_path
+              use_target_list: true
+              endpoint_returns_list: true
+              data_path: data_path
+            strip_listen_path: true
+          CORS:
+            max_age: 6.027456183070403
+            allowed_methods:
+            - allowed_methods
+            - allowed_methods
+            allowed_headers:
+            - allowed_headers
+            - allowed_headers
+            debug: true
+            enable: true
+            options_passthrough: true
+            allow_credentials: true
+            exposed_headers:
+            - exposed_headers
+            - exposed_headers
+            allowed_origins:
+            - allowed_origins
+            - allowed_origins
+          domain: domain
+          cache_options:
+            cache_all_safe_requests: true
+            enable_upstream_cache_control: true
+            enable_cache: true
+            cache_timeout: 1.4658129805029452
+          enable_ip_whitelisting: true
+          config:
+            expire_utime_after: 5.962133916683182
+            service_discovery:
+              parent_data_path: parent_data_path
+              query_endpoint: query_endpoint
+              use_nested_query: true
+              cache_timeout: 2.3021358869347655
+              use_discovery_service: use_discovery_service
+              port_data_path: port_data_path
+              use_target_list: true
+              endpoint_returns_list: true
+              data_path: data_path
+            recheck_wait: 5.637376656633329
+          expire_analytics_after: 7.061401241503109
+          dont_set_quota_on_create: true
+        jwt_source: jwt_source
+        hmac_allowed_clock_skew: 0.8008281904610115
+        enable_signature_checking: true
+        enable_jwt: true
+        org_id: org_id
+        use_basic_auth: true
+        name: name
+        jwt_identity_base_field: jwt_identity_base_field
+        definition:
+          location: location
+          key: key
+        id: id
+        notifications:
+          oauth_on_keychange_url: oauth_on_keychange_url
+          shared_secret: shared_secret
+        slug: slug
+        use_oauth2: true
+      properties:
+        api_id:
+          type: string
+        auth:
+          $ref: '#/components/schemas/APIDefinition_auth'
+        definition:
+          $ref: '#/components/schemas/APIDefinition_definition'
+        enable_jwt:
+          type: boolean
+        enable_signature_checking:
+          type: boolean
+        hmac_allowed_clock_skew:
+          type: number
+        id:
+          type: string
+        jwt_identity_base_field:
+          type: string
+        jwt_policy_field_name:
+          type: string
+        jwt_signing_method:
+          type: string
+        jwt_source:
+          type: string
+        name:
+          type: string
+        notifications:
+          $ref: '#/components/schemas/APIDefinition_notifications'
+        oauth_meta:
+          $ref: '#/components/schemas/APIDefinition_oauth_meta'
+        org_id:
+          type: string
+        slug:
+          type: string
+        uptime_tests:
+          $ref: '#/components/schemas/APIDefinition_uptime_tests'
+        use_basic_auth:
+          type: boolean
+        use_keyless:
+          type: boolean
+        use_oauth2:
+          type: boolean
+        version_data:
+          $ref: '#/components/schemas/APIDefinition_version_data'
+      type: object
+    APIDefinitionList:
+      items:
+        $ref: '#/components/schemas/APIDefinition'
+      type: array
+    AccessRights:
+      example:
+        api_id: api_id
+        versions:
+        - versions
+        - versions
+        api_name: api_name
+      properties:
+        api_id:
+          type: string
+        api_name:
+          type: string
+        versions:
+          items:
+            type: string
+          type: array
+      type: object
+    EndPointMeta:
+      example:
+        path: path
+        method_actions:
+          key:
+            headers: "{}"
+            code: 3.616076749251911
+            data: data
+            action: action
+      properties:
+        method_actions:
+          additionalProperties:
+            $ref: '#/components/schemas/EndpointMethodMeta'
+          type: object
+        path:
+          type: string
+      type: object
+    EndpointMethodMeta:
+      example:
+        headers: "{}"
+        code: 3.616076749251911
+        data: data
+        action: action
+      properties:
+        action:
+          type: string
+        code:
+          type: number
+        data:
+          type: string
+        headers:
+          properties: {}
+          type: object
+      type: object
+    HeaderInjectionMeta:
+      example:
+        path: path
+        add_headers: "{}"
+        method: method
+        delete_headers:
+        - delete_headers
+        - delete_headers
+      properties:
+        add_headers:
+          properties: {}
+          type: object
+        delete_headers:
+          items:
+            type: string
+          type: array
+        method:
+          type: string
+        path:
+          type: string
+      type: object
+    MiddlewareDefinition:
+      example:
+        path: path
+        require_session: true
+        name: name
+      properties:
+        name:
+          type: string
+        path:
+          type: string
+        require_session:
+          type: boolean
+      type: object
+    OAuthClient:
+      example:
+        redirect_uri: redirect_uri
+        secret: secret
+        client_id: client_id
+      properties:
+        client_id:
+          type: string
+        redirect_uri:
+          type: string
+        secret:
+          type: string
+      type: object
+    OAuthClients:
+      items:
+        $ref: '#/components/schemas/OAuthClient'
+      type: array
+    ServiceDiscoverConfiguration:
+      example:
+        parent_data_path: parent_data_path
+        query_endpoint: query_endpoint
+        use_nested_query: true
+        cache_timeout: 2.3021358869347655
+        use_discovery_service: use_discovery_service
+        port_data_path: port_data_path
+        use_target_list: true
+        endpoint_returns_list: true
+        data_path: data_path
+      properties:
+        cache_timeout:
+          type: number
+        data_path:
+          type: string
+        endpoint_returns_list:
+          type: boolean
+        parent_data_path:
+          type: string
+        port_data_path:
+          type: string
+        query_endpoint:
+          type: string
+        use_discovery_service:
+          type: string
+        use_nested_query:
+          type: boolean
+        use_target_list:
+          type: boolean
+      type: object
+    SessionObject:
+      example:
+        apply_policy_id: apply_policy_id
+        expires: 6.027456183070403
+        is_inactive: true
+        quota_remaining: 5.637376656633329
+        access_rights:
+          key:
+            api_id: api_id
+            versions:
+            - versions
+            - versions
+            api_name: api_name
+        allowance: 0.8008281904610115
+        monitor:
+          trigger_limits:
+          - trigger_limits
+          - trigger_limits
+        quota_renewal_rate: quota_renewal_rate
+        basic_auth_data:
+          password: password
+          hash_type: ""
+        tags:
+        - tags
+        - tags
+        quota_max: 5.962133916683182
+        rate: 7.061401241503109
+        org_id: org_id
+        meta_data: "{}"
+        quota_renews: 2.3021358869347655
+        hmac_enabled: true
+        hmac_string: hmac_string
+        per: 1.4658129805029452
+        jwt_data:
+          secret: secret
+        oauth_client_id: oauth_client_id
+      properties:
+        access_rights:
+          additionalProperties:
+            $ref: '#/components/schemas/AccessRights'
+          type: object
+        allowance:
+          type: number
+        apply_policy_id:
+          type: string
+        basic_auth_data:
+          $ref: '#/components/schemas/SessionObject_basic_auth_data'
+        expires:
+          type: number
+        hmac_enabled:
+          type: boolean
+        hmac_string:
+          type: string
+        is_inactive:
+          type: boolean
+        jwt_data:
+          $ref: '#/components/schemas/SessionObject_jwt_data'
+        meta_data:
+          properties: {}
+          type: object
+        monitor:
+          $ref: '#/components/schemas/SessionObject_monitor'
+        oauth_client_id:
+          type: string
+        org_id:
+          type: string
+        per:
+          type: number
+        quota_max:
+          type: number
+        quota_remaining:
+          type: number
+        quota_renewal_rate:
+          type: string
+        quota_renews:
+          type: number
+        rate:
+          type: number
+        tags:
+          items:
+            type: string
+          type: array
+      type: object
+    TemplateMeta:
+      example:
+        path: path
+        template_data:
+          input_type: input_type
+          template_mode: template_mode
+          enable_session: true
+        method: method
+      properties:
+        method:
+          type: string
+        path:
+          type: string
+        template_data:
+          $ref: '#/components/schemas/TemplateMeta_template_data'
+      type: object
+    VersionDefinition:
+      example:
+        extended_paths:
+          circuit_breakers:
+          - path: path
+            threshold_percent: 7.386281948385884
+            method: method
+            return_to_service_after: 2.027123023002322
+            samples: 4.145608029883936
+          - path: path
+            threshold_percent: 7.386281948385884
+            method: method
+            return_to_service_after: 2.027123023002322
+            samples: 4.145608029883936
+          ignored:
+          - path: path
+            method_actions:
+              key:
+                headers: "{}"
+                code: 3.616076749251911
+                data: data
+                action: action
+          - path: path
+            method_actions:
+              key:
+                headers: "{}"
+                code: 3.616076749251911
+                data: data
+                action: action
+          cache:
+          - cache
+          - cache
+          virtual:
+          - path: path
+            method: method
+            response_function_name: response_function_name
+            function_source_uri: function_source_uri
+            use_session: true
+            function_source_type: function_source_type
+          - path: path
+            method: method
+            response_function_name: response_function_name
+            function_source_uri: function_source_uri
+            use_session: true
+            function_source_type: function_source_type
+          black_list:
+          - path: path
+            method_actions:
+              key:
+                headers: "{}"
+                code: 3.616076749251911
+                data: data
+                action: action
+          - path: path
+            method_actions:
+              key:
+                headers: "{}"
+                code: 3.616076749251911
+                data: data
+                action: action
+          transform_headers:
+          - path: path
+            add_headers: "{}"
+            method: method
+            delete_headers:
+            - delete_headers
+            - delete_headers
+          - path: path
+            add_headers: "{}"
+            method: method
+            delete_headers:
+            - delete_headers
+            - delete_headers
+          transform_response_headers:
+          - path: path
+            add_headers: "{}"
+            method: method
+            delete_headers:
+            - delete_headers
+            - delete_headers
+          - path: path
+            add_headers: "{}"
+            method: method
+            delete_headers:
+            - delete_headers
+            - delete_headers
+          white_list:
+          - path: path
+            method_actions:
+              key:
+                headers: "{}"
+                code: 3.616076749251911
+                data: data
+                action: action
+          - path: path
+            method_actions:
+              key:
+                headers: "{}"
+                code: 3.616076749251911
+                data: data
+                action: action
+          transform:
+          - path: path
+            template_data:
+              input_type: input_type
+              template_mode: template_mode
+              enable_session: true
+            method: method
+          - path: path
+            template_data:
+              input_type: input_type
+              template_mode: template_mode
+              enable_session: true
+            method: method
+          size_limits:
+          - path: path
+            method: method
+            size_limit: 1.0246457001441578
+          - path: path
+            method: method
+            size_limit: 1.0246457001441578
+          transform_response:
+          - path: path
+            template_data:
+              input_type: input_type
+              template_mode: template_mode
+              enable_session: true
+            method: method
+          - path: path
+            template_data:
+              input_type: input_type
+              template_mode: template_mode
+              enable_session: true
+            method: method
+          hard_timeouts:
+          - path: path
+            method: method
+            timeout: 1.2315135367772556
+          - path: path
+            method: method
+            timeout: 1.2315135367772556
+          url_rewrites:
+          - match_pattern: match_pattern
+            path: path
+            method: method
+            rewrite_to: rewrite_to
+          - match_pattern: match_pattern
+            path: path
+            method: method
+            rewrite_to: rewrite_to
+        expires: expires
+        global_headers: "{}"
+        override_target: override_target
+        name: name
+        global_headers_remove:
+        - global_headers_remove
+        - global_headers_remove
+        global_size_limit: 1.4894159098541704
+        use_extended_paths: true
+      properties:
+        expires:
+          type: string
+        extended_paths:
+          $ref: '#/components/schemas/VersionDefinition_extended_paths'
+        global_headers:
+          properties: {}
+          type: object
+        global_headers_remove:
+          items:
+            type: string
+          type: array
+        global_size_limit:
+          type: number
+        name:
+          type: string
+        override_target:
+          type: string
+        use_extended_paths:
+          type: boolean
+      type: object
+    _tyk_apis__post_200_response:
+      example:
+        action: updated
+        key: key
+        status: ok
+      properties:
+        action:
+          enum:
+          - updated
+          type: string
+        key:
+          type: string
+        status:
+          enum:
+          - ok
+          - error
+          type: string
+      type: object
+    _tyk_apis__apiID__delete_200_response:
+      example:
+        action: deleted
+        key: key
+        status: ok
+      properties:
+        action:
+          enum:
+          - deleted
+          type: string
+        key:
+          type: string
+        status:
+          enum:
+          - ok
+          - error
+          type: string
+      type: object
+    _tyk_health__get_200_response:
+      example:
+        quota_violations_per_second: 5.962133916683182
+        average_upstream_latency: 6.027456183070403
+        average_requests_per_second: 0.8008281904610115
+        throttle_requests_per_second: 5.637376656633329
+        key_failures_per_second: 1.4658129805029452
+      properties:
+        average_requests_per_second:
+          type: number
+        average_upstream_latency:
+          type: number
+        key_failures_per_second:
+          type: number
+        quota_violations_per_second:
+          type: number
+        throttle_requests_per_second:
+          type: number
+      type: object
+    _tyk_keys__get_200_response:
+      example:
+        keys:
+        - keys
+        - keys
+      properties:
+        keys:
+          items:
+            type: string
+          type: array
+      type: object
+    _tyk_keys_create_post_200_response:
+      example:
+        action: create
+        key: key
+        status: ok
+      properties:
+        action:
+          enum:
+          - create
+          type: string
+        key:
+          type: string
+        status:
+          enum:
+          - ok
+          - error
+          type: string
+      type: object
+    _tyk_keys__keyId__put_200_response:
+      example:
+        action: modified
+        key: key
+        status: ok
+      properties:
+        action:
+          enum:
+          - modified
+          type: string
+        key:
+          type: string
+        status:
+          enum:
+          - ok
+          - error
+          type: string
+      type: object
+    _tyk_keys__keyId__post_200_response:
+      example:
+        action: added
+        key: key
+        status: ok
+      properties:
+        action:
+          enum:
+          - added
+          type: string
+        key:
+          type: string
+        status:
+          enum:
+          - ok
+          - error
+          type: string
+      type: object
+    _tyk_oauth_authorize_client__post_request:
+      properties:
+        response_type:
+          description: "Should be provided by requesting client as part of authorisation\
+            \ request, this should be either `code` or `token` depending on the methods\
+            \ you have specified for the API"
+          format: string
+          type: string
+        client_id:
+          description: Should be provided by requesting client as part of authorisation
+            request. The Client ID that is making the request
+          format: string
+          type: string
+        redirect_uri:
+          description: Should be provided by requesting client as part of authorisation
+            request. Must match with the record stored with Tyk
+          format: string
+          type: string
+        key_rules:
+          description: A string representation of a *Session Object (form-encoded)*.
+            This should be provided by your application in order to apply any quotas
+            or rules to the key
+          format: string
+          type: string
+      required:
+      - client_id
+      - key_rules
+      - redirect_uri
+      - response_type
+      type: object
+    _tyk_oauth_authorize_client__post_200_response:
+      example:
+        access_token: access_token
+        code: code
+        token_type: token_type
+        expires_in: 0.8008281904610115
+        redirect_to: redirect_to
+      properties:
+        access_token:
+          type: string
+        code:
+          type: string
+        expires_in:
+          type: number
+        redirect_to:
+          type: string
+        token_type:
+          type: string
+      type: object
+    _tyk_oauth_clients_create_post_request:
+      properties:
+        api_id:
+          type: string
+        redirect_uri:
+          type: string
+      type: object
+    _tyk_reload__get_200_response:
+      example:
+        error: error
+        status: status
+      properties:
+        error:
+          type: string
+        status:
+          type: string
+      type: object
+    APIDefinition_auth:
+      example:
+        auth_header_name: auth_header_name
+        use_param: true
+        use_cookie: true
+      properties:
+        auth_header_name:
+          type: string
+        use_cookie:
+          type: boolean
+        use_param:
+          type: boolean
+      type: object
+    APIDefinition_definition:
+      example:
+        location: location
+        key: key
+      properties:
+        key:
+          type: string
+        location:
+          type: string
+      type: object
+    APIDefinition_notifications:
+      example:
+        oauth_on_keychange_url: oauth_on_keychange_url
+        shared_secret: shared_secret
+      properties:
+        oauth_on_keychange_url:
+          type: string
+        shared_secret:
+          type: string
+      type: object
+    APIDefinition_oauth_meta:
+      example:
+        allowed_authorize_types:
+        - allowed_authorize_types
+        - allowed_authorize_types
+        auth_login_redirect: auth_login_redirect
+        allowed_access_types:
+        - allowed_access_types
+        - allowed_access_types
+      properties:
+        allowed_access_types:
+          items:
+            type: string
+          type: array
+        allowed_authorize_types:
+          items:
+            type: string
+          type: array
+        auth_login_redirect:
+          type: string
+      type: object
+    APIDefinition_uptime_tests_CORS:
+      example:
+        max_age: 6.027456183070403
+        allowed_methods:
+        - allowed_methods
+        - allowed_methods
+        allowed_headers:
+        - allowed_headers
+        - allowed_headers
+        debug: true
+        enable: true
+        options_passthrough: true
+        allow_credentials: true
+        exposed_headers:
+        - exposed_headers
+        - exposed_headers
+        allowed_origins:
+        - allowed_origins
+        - allowed_origins
+      properties:
+        allow_credentials:
+          type: boolean
+        allowed_headers:
+          items:
+            type: string
+          type: array
+        allowed_methods:
+          items:
+            type: string
+          type: array
+        allowed_origins:
+          items:
+            type: string
+          type: array
+        debug:
+          type: boolean
+        enable:
+          type: boolean
+        exposed_headers:
+          items:
+            type: string
+          type: array
+        max_age:
+          type: number
+        options_passthrough:
+          type: boolean
+      type: object
+    APIDefinition_uptime_tests_cache_options:
+      example:
+        cache_all_safe_requests: true
+        enable_upstream_cache_control: true
+        enable_cache: true
+        cache_timeout: 1.4658129805029452
+      properties:
+        cache_all_safe_requests:
+          type: boolean
+        cache_timeout:
+          type: number
+        enable_cache:
+          type: boolean
+        enable_upstream_cache_control:
+          type: boolean
+      type: object
+    APIDefinition_uptime_tests_check_list_inner:
+      example:
+        headers:
+        - "{}"
+        - "{}"
+        method: method
+        body: body
+        url: url
+      properties:
+        body:
+          type: string
+        headers:
+          items:
+            properties: {}
+            type: object
+          type: array
+        method:
+          type: string
+        url:
+          type: string
+      type: object
+    APIDefinition_uptime_tests_config:
+      example:
+        expire_utime_after: 5.962133916683182
+        service_discovery:
+          parent_data_path: parent_data_path
+          query_endpoint: query_endpoint
+          use_nested_query: true
+          cache_timeout: 2.3021358869347655
+          use_discovery_service: use_discovery_service
+          port_data_path: port_data_path
+          use_target_list: true
+          endpoint_returns_list: true
+          data_path: data_path
+        recheck_wait: 5.637376656633329
+      properties:
+        expire_utime_after:
+          type: number
+        recheck_wait:
+          type: number
+        service_discovery:
+          $ref: '#/components/schemas/ServiceDiscoverConfiguration'
+      type: object
+    APIDefinition_uptime_tests_custom_middleware:
+      example:
+        pre:
+        - path: path
+          require_session: true
+          name: name
+        - path: path
+          require_session: true
+          name: name
+        post:
+        - path: path
+          require_session: true
+          name: name
+        - path: path
+          require_session: true
+          name: name
+        response:
+        - path: path
+          require_session: true
+          name: name
+        - path: path
+          require_session: true
+          name: name
+      properties:
+        post:
+          items:
+            $ref: '#/components/schemas/MiddlewareDefinition'
+          type: array
+        pre:
+          items:
+            $ref: '#/components/schemas/MiddlewareDefinition'
+          type: array
+        response:
+          items:
+            $ref: '#/components/schemas/MiddlewareDefinition'
+          type: array
+      type: object
+    APIDefinition_uptime_tests_proxy:
+      example:
+        check_host_against_uptime_tests: true
+        enable_load_balancing: true
+        target_list:
+        - target_list
+        - target_list
+        preserve_host_header: true
+        listen_path: listen_path
+        target_url: target_url
+        service_discovery:
+          parent_data_path: parent_data_path
+          query_endpoint: query_endpoint
+          use_nested_query: true
+          cache_timeout: 2.3021358869347655
+          use_discovery_service: use_discovery_service
+          port_data_path: port_data_path
+          use_target_list: true
+          endpoint_returns_list: true
+          data_path: data_path
+        strip_listen_path: true
+      properties:
+        check_host_against_uptime_tests:
+          type: boolean
+        enable_load_balancing:
+          type: boolean
+        listen_path:
+          type: string
+        preserve_host_header:
+          type: boolean
+        service_discovery:
+          $ref: '#/components/schemas/ServiceDiscoverConfiguration'
+        strip_listen_path:
+          type: boolean
+        target_list:
+          items:
+            type: string
+          type: array
+        target_url:
+          type: string
+      type: object
+    APIDefinition_uptime_tests_response_processors_inner:
+      example:
+        name: name
+        options: "{}"
+      properties:
+        name:
+          type: string
+        options:
+          properties: {}
+          type: object
+      type: object
+    APIDefinition_uptime_tests:
+      example:
+        check_list:
+        - headers:
+          - "{}"
+          - "{}"
+          method: method
+          body: body
+          url: url
+        - headers:
+          - "{}"
+          - "{}"
+          method: method
+          body: body
+          url: url
+        event_handlers: "{}"
+        session_lifetime: 9.301444243932576
+        allowed_ips:
+        - allowed_ips
+        - allowed_ips
+        enable_batch_request_support: true
+        response_processors:
+        - name: name
+          options: "{}"
+        - name: name
+          options: "{}"
+        active: true
+        custom_middleware:
+          pre:
+          - path: path
+            require_session: true
+            name: name
+          - path: path
+            require_session: true
+            name: name
+          post:
+          - path: path
+            require_session: true
+            name: name
+          - path: path
+            require_session: true
+            name: name
+          response:
+          - path: path
+            require_session: true
+            name: name
+          - path: path
+            require_session: true
+            name: name
+        do_not_track: do_not_track
+        tags:
+        - tags
+        - tags
+        proxy:
+          check_host_against_uptime_tests: true
+          enable_load_balancing: true
+          target_list:
+          - target_list
+          - target_list
+          preserve_host_header: true
+          listen_path: listen_path
+          target_url: target_url
+          service_discovery:
+            parent_data_path: parent_data_path
+            query_endpoint: query_endpoint
+            use_nested_query: true
+            cache_timeout: 2.3021358869347655
+            use_discovery_service: use_discovery_service
+            port_data_path: port_data_path
+            use_target_list: true
+            endpoint_returns_list: true
+            data_path: data_path
+          strip_listen_path: true
+        CORS:
+          max_age: 6.027456183070403
+          allowed_methods:
+          - allowed_methods
+          - allowed_methods
+          allowed_headers:
+          - allowed_headers
+          - allowed_headers
+          debug: true
+          enable: true
+          options_passthrough: true
+          allow_credentials: true
+          exposed_headers:
+          - exposed_headers
+          - exposed_headers
+          allowed_origins:
+          - allowed_origins
+          - allowed_origins
+        domain: domain
+        cache_options:
+          cache_all_safe_requests: true
+          enable_upstream_cache_control: true
+          enable_cache: true
+          cache_timeout: 1.4658129805029452
+        enable_ip_whitelisting: true
+        config:
+          expire_utime_after: 5.962133916683182
+          service_discovery:
+            parent_data_path: parent_data_path
+            query_endpoint: query_endpoint
+            use_nested_query: true
+            cache_timeout: 2.3021358869347655
+            use_discovery_service: use_discovery_service
+            port_data_path: port_data_path
+            use_target_list: true
+            endpoint_returns_list: true
+            data_path: data_path
+          recheck_wait: 5.637376656633329
+        expire_analytics_after: 7.061401241503109
+        dont_set_quota_on_create: true
+      properties:
+        CORS:
+          $ref: '#/components/schemas/APIDefinition_uptime_tests_CORS'
+        active:
+          type: boolean
+        allowed_ips:
+          items:
+            type: string
+          type: array
+        cache_options:
+          $ref: '#/components/schemas/APIDefinition_uptime_tests_cache_options'
+        check_list:
+          items:
+            $ref: '#/components/schemas/APIDefinition_uptime_tests_check_list_inner'
+          type: array
+        config:
+          $ref: '#/components/schemas/APIDefinition_uptime_tests_config'
+        custom_middleware:
+          $ref: '#/components/schemas/APIDefinition_uptime_tests_custom_middleware'
+        do_not_track:
+          type: string
+        domain:
+          type: string
+        dont_set_quota_on_create:
+          type: boolean
+        enable_batch_request_support:
+          type: boolean
+        enable_ip_whitelisting:
+          type: boolean
+        event_handlers:
+          properties: {}
+          type: object
+        expire_analytics_after:
+          type: number
+        proxy:
+          $ref: '#/components/schemas/APIDefinition_uptime_tests_proxy'
+        response_processors:
+          items:
+            $ref: '#/components/schemas/APIDefinition_uptime_tests_response_processors_inner'
+          type: array
+        session_lifetime:
+          type: number
+        tags:
+          items:
+            type: string
+          type: array
+      type: object
+    APIDefinition_version_data:
+      example:
+        versions:
+          key:
+            extended_paths:
+              circuit_breakers:
+              - path: path
+                threshold_percent: 7.386281948385884
+                method: method
+                return_to_service_after: 2.027123023002322
+                samples: 4.145608029883936
+              - path: path
+                threshold_percent: 7.386281948385884
+                method: method
+                return_to_service_after: 2.027123023002322
+                samples: 4.145608029883936
+              ignored:
+              - path: path
+                method_actions:
+                  key:
+                    headers: "{}"
+                    code: 3.616076749251911
+                    data: data
+                    action: action
+              - path: path
+                method_actions:
+                  key:
+                    headers: "{}"
+                    code: 3.616076749251911
+                    data: data
+                    action: action
+              cache:
+              - cache
+              - cache
+              virtual:
+              - path: path
+                method: method
+                response_function_name: response_function_name
+                function_source_uri: function_source_uri
+                use_session: true
+                function_source_type: function_source_type
+              - path: path
+                method: method
+                response_function_name: response_function_name
+                function_source_uri: function_source_uri
+                use_session: true
+                function_source_type: function_source_type
+              black_list:
+              - path: path
+                method_actions:
+                  key:
+                    headers: "{}"
+                    code: 3.616076749251911
+                    data: data
+                    action: action
+              - path: path
+                method_actions:
+                  key:
+                    headers: "{}"
+                    code: 3.616076749251911
+                    data: data
+                    action: action
+              transform_headers:
+              - path: path
+                add_headers: "{}"
+                method: method
+                delete_headers:
+                - delete_headers
+                - delete_headers
+              - path: path
+                add_headers: "{}"
+                method: method
+                delete_headers:
+                - delete_headers
+                - delete_headers
+              transform_response_headers:
+              - path: path
+                add_headers: "{}"
+                method: method
+                delete_headers:
+                - delete_headers
+                - delete_headers
+              - path: path
+                add_headers: "{}"
+                method: method
+                delete_headers:
+                - delete_headers
+                - delete_headers
+              white_list:
+              - path: path
+                method_actions:
+                  key:
+                    headers: "{}"
+                    code: 3.616076749251911
+                    data: data
+                    action: action
+              - path: path
+                method_actions:
+                  key:
+                    headers: "{}"
+                    code: 3.616076749251911
+                    data: data
+                    action: action
+              transform:
+              - path: path
+                template_data:
+                  input_type: input_type
+                  template_mode: template_mode
+                  enable_session: true
+                method: method
+              - path: path
+                template_data:
+                  input_type: input_type
+                  template_mode: template_mode
+                  enable_session: true
+                method: method
+              size_limits:
+              - path: path
+                method: method
+                size_limit: 1.0246457001441578
+              - path: path
+                method: method
+                size_limit: 1.0246457001441578
+              transform_response:
+              - path: path
+                template_data:
+                  input_type: input_type
+                  template_mode: template_mode
+                  enable_session: true
+                method: method
+              - path: path
+                template_data:
+                  input_type: input_type
+                  template_mode: template_mode
+                  enable_session: true
+                method: method
+              hard_timeouts:
+              - path: path
+                method: method
+                timeout: 1.2315135367772556
+              - path: path
+                method: method
+                timeout: 1.2315135367772556
+              url_rewrites:
+              - match_pattern: match_pattern
+                path: path
+                method: method
+                rewrite_to: rewrite_to
+              - match_pattern: match_pattern
+                path: path
+                method: method
+                rewrite_to: rewrite_to
+            expires: expires
+            global_headers: "{}"
+            override_target: override_target
+            name: name
+            global_headers_remove:
+            - global_headers_remove
+            - global_headers_remove
+            global_size_limit: 1.4894159098541704
+            use_extended_paths: true
+        not_versioned: true
+      properties:
+        not_versioned:
+          type: boolean
+        versions:
+          additionalProperties:
+            $ref: '#/components/schemas/VersionDefinition'
+          type: object
+      type: object
+    SessionObject_basic_auth_data:
+      example:
+        password: password
+        hash_type: ""
+      properties:
+        hash_type:
+          enum:
+          - ""
+          - bcrypt
+          type: string
+        password:
+          type: string
+      type: object
+    SessionObject_jwt_data:
+      example:
+        secret: secret
+      properties:
+        secret:
+          type: string
+      type: object
+    SessionObject_monitor:
+      example:
+        trigger_limits:
+        - trigger_limits
+        - trigger_limits
+      properties:
+        trigger_limits:
+          items:
+            type: string
+          type: array
+      type: object
+    TemplateMeta_template_data:
+      example:
+        input_type: input_type
+        template_mode: template_mode
+        enable_session: true
+      properties:
+        enable_session:
+          type: boolean
+        input_type:
+          type: string
+        template_mode:
+          type: string
+      type: object
+    VersionDefinition_extended_paths_circuit_breakers_inner:
+      example:
+        path: path
+        threshold_percent: 7.386281948385884
+        method: method
+        return_to_service_after: 2.027123023002322
+        samples: 4.145608029883936
+      properties:
+        method:
+          type: string
+        path:
+          type: string
+        return_to_service_after:
+          type: number
+        samples:
+          type: number
+        threshold_percent:
+          type: number
+      type: object
+    VersionDefinition_extended_paths_hard_timeouts_inner:
+      example:
+        path: path
+        method: method
+        timeout: 1.2315135367772556
+      properties:
+        method:
+          type: string
+        path:
+          type: string
+        timeout:
+          type: number
+      type: object
+    VersionDefinition_extended_paths_size_limits_inner:
+      example:
+        path: path
+        method: method
+        size_limit: 1.0246457001441578
+      properties:
+        method:
+          type: string
+        path:
+          type: string
+        size_limit:
+          type: number
+      type: object
+    VersionDefinition_extended_paths_url_rewrites_inner:
+      example:
+        match_pattern: match_pattern
+        path: path
+        method: method
+        rewrite_to: rewrite_to
+      properties:
+        match_pattern:
+          type: string
+        method:
+          type: string
+        path:
+          type: string
+        rewrite_to:
+          type: string
+      type: object
+    VersionDefinition_extended_paths_virtual_inner:
+      example:
+        path: path
+        method: method
+        response_function_name: response_function_name
+        function_source_uri: function_source_uri
+        use_session: true
+        function_source_type: function_source_type
+      properties:
+        function_source_type:
+          type: string
+        function_source_uri:
+          type: string
+        method:
+          type: string
+        path:
+          type: string
+        response_function_name:
+          type: string
+        use_session:
+          type: boolean
+      type: object
+    VersionDefinition_extended_paths:
+      example:
+        circuit_breakers:
+        - path: path
+          threshold_percent: 7.386281948385884
+          method: method
+          return_to_service_after: 2.027123023002322
+          samples: 4.145608029883936
+        - path: path
+          threshold_percent: 7.386281948385884
+          method: method
+          return_to_service_after: 2.027123023002322
+          samples: 4.145608029883936
+        ignored:
+        - path: path
+          method_actions:
+            key:
+              headers: "{}"
+              code: 3.616076749251911
+              data: data
+              action: action
+        - path: path
+          method_actions:
+            key:
+              headers: "{}"
+              code: 3.616076749251911
+              data: data
+              action: action
+        cache:
+        - cache
+        - cache
+        virtual:
+        - path: path
+          method: method
+          response_function_name: response_function_name
+          function_source_uri: function_source_uri
+          use_session: true
+          function_source_type: function_source_type
+        - path: path
+          method: method
+          response_function_name: response_function_name
+          function_source_uri: function_source_uri
+          use_session: true
+          function_source_type: function_source_type
+        black_list:
+        - path: path
+          method_actions:
+            key:
+              headers: "{}"
+              code: 3.616076749251911
+              data: data
+              action: action
+        - path: path
+          method_actions:
+            key:
+              headers: "{}"
+              code: 3.616076749251911
+              data: data
+              action: action
+        transform_headers:
+        - path: path
+          add_headers: "{}"
+          method: method
+          delete_headers:
+          - delete_headers
+          - delete_headers
+        - path: path
+          add_headers: "{}"
+          method: method
+          delete_headers:
+          - delete_headers
+          - delete_headers
+        transform_response_headers:
+        - path: path
+          add_headers: "{}"
+          method: method
+          delete_headers:
+          - delete_headers
+          - delete_headers
+        - path: path
+          add_headers: "{}"
+          method: method
+          delete_headers:
+          - delete_headers
+          - delete_headers
+        white_list:
+        - path: path
+          method_actions:
+            key:
+              headers: "{}"
+              code: 3.616076749251911
+              data: data
+              action: action
+        - path: path
+          method_actions:
+            key:
+              headers: "{}"
+              code: 3.616076749251911
+              data: data
+              action: action
+        transform:
+        - path: path
+          template_data:
+            input_type: input_type
+            template_mode: template_mode
+            enable_session: true
+          method: method
+        - path: path
+          template_data:
+            input_type: input_type
+            template_mode: template_mode
+            enable_session: true
+          method: method
+        size_limits:
+        - path: path
+          method: method
+          size_limit: 1.0246457001441578
+        - path: path
+          method: method
+          size_limit: 1.0246457001441578
+        transform_response:
+        - path: path
+          template_data:
+            input_type: input_type
+            template_mode: template_mode
+            enable_session: true
+          method: method
+        - path: path
+          template_data:
+            input_type: input_type
+            template_mode: template_mode
+            enable_session: true
+          method: method
+        hard_timeouts:
+        - path: path
+          method: method
+          timeout: 1.2315135367772556
+        - path: path
+          method: method
+          timeout: 1.2315135367772556
+        url_rewrites:
+        - match_pattern: match_pattern
+          path: path
+          method: method
+          rewrite_to: rewrite_to
+        - match_pattern: match_pattern
+          path: path
+          method: method
+          rewrite_to: rewrite_to
+      properties:
+        black_list:
+          items:
+            $ref: '#/components/schemas/EndPointMeta'
+          type: array
+        cache:
+          items:
+            type: string
+          type: array
+        circuit_breakers:
+          items:
+            $ref: '#/components/schemas/VersionDefinition_extended_paths_circuit_breakers_inner'
+          type: array
+        hard_timeouts:
+          items:
+            $ref: '#/components/schemas/VersionDefinition_extended_paths_hard_timeouts_inner'
+          type: array
+        ignored:
+          items:
+            $ref: '#/components/schemas/EndPointMeta'
+          type: array
+        size_limits:
+          items:
+            $ref: '#/components/schemas/VersionDefinition_extended_paths_size_limits_inner'
+          type: array
+        transform:
+          items:
+            $ref: '#/components/schemas/TemplateMeta'
+          type: array
+        transform_headers:
+          items:
+            $ref: '#/components/schemas/HeaderInjectionMeta'
+          type: array
+        transform_response:
+          items:
+            $ref: '#/components/schemas/TemplateMeta'
+          type: array
+        transform_response_headers:
+          items:
+            $ref: '#/components/schemas/HeaderInjectionMeta'
+          type: array
+        url_rewrites:
+          items:
+            $ref: '#/components/schemas/VersionDefinition_extended_paths_url_rewrites_inner'
+          type: array
+        virtual:
+          items:
+            $ref: '#/components/schemas/VersionDefinition_extended_paths_virtual_inner'
+          type: array
+        white_list:
+          items:
+            $ref: '#/components/schemas/EndPointMeta'
+          type: array
+      type: object
+x-original-swagger-version: "2.0"
+

@@ -1,0 +1,764 @@
+openapi: 3.0.0
+info:
+  description: "Widget API to calculate Geo Coordinates, Geo Fences and Sun, Moon,\
+    \ Sky, Eclipse information.  See https://wyjyt.com"
+  title: Wyjyt - Geo Calculate
+  version: 1.0.0
+  x-apisguru-categories:
+  - location
+  x-logo:
+    url: https://wyjyt.com/wp-content/uploads/2023/05/widget-300x300.png
+  x-origin:
+  - format: swagger
+    url: https://wyjyt-geo-calculate.azurewebsites.net/api/swagger.json
+    version: "2.0"
+  x-providerName: wyjyt-geo-calculate.azurewebsites.net
+servers:
+- url: https://wyjyt-geo-calculate.azurewebsites.net/api
+paths:
+  /Convert:
+    post:
+      description: Convert the list of geo coordinates to a standard format - (latlon
+        | utm | mgrs | ecef | epsg3857 | georef | cartesian)
+      operationId: convert
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/geoConvertRequest'
+        required: true
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/geoConvertResponse'
+          description: Success
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/wyjytErrorResponse'
+          description: Bad request
+        "500":
+          content:
+            application/json:
+              schema:
+                type: string
+          description: Error
+      summary: Convert the list of geo coordinates to a standard format - (latlon
+        | utm | mgrs | ecef | epsg3857 | georef | cartesian)
+      tags:
+      - Geo Calculate
+      x-openapi-router-controller: openapi_server.controllers.geo_calculate_controller
+      x-codegen-request-body-name: body
+  /Distance:
+    post:
+      description: Calculate the distance between two geo coordinates.
+      operationId: distance
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/geoDistanceRequest'
+        required: true
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/geoDistanceResponse'
+          description: Success
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/wyjytErrorResponse'
+          description: Bad request
+        "500":
+          content:
+            application/json:
+              schema:
+                type: string
+          description: Error
+      summary: Calculate the distance between two geo coordinates.
+      tags:
+      - Geo Calculate
+      x-openapi-router-controller: openapi_server.controllers.geo_calculate_controller
+      x-codegen-request-body-name: body
+  /Fence:
+    post:
+      description: Check if a list of coordinates are inside of a fence of coordinates.
+      operationId: fence
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/geoFenceRequest'
+        required: true
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/geoFenceResponse'
+          description: Success
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/wyjytErrorResponse'
+          description: Bad request
+        "500":
+          content:
+            application/json:
+              schema:
+                type: string
+          description: Error
+      summary: Check if a list of coordinates are inside of a fence of coordinates.
+      tags:
+      - Geo Calculate
+      x-openapi-router-controller: openapi_server.controllers.geo_calculate_controller
+      x-codegen-request-body-name: body
+  /Sky:
+    post:
+      description: "Calculate sun, moon, eclipse and sky information for the date\
+        \ and location."
+      operationId: sky
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/geoSkyRequest'
+        required: true
+        x-body-name: body
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/geoSkyResponse'
+          description: Success
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/wyjytErrorResponse'
+          description: Bad request
+        "500":
+          content:
+            application/json:
+              schema:
+                type: string
+          description: Error
+      summary: "Calculate sun, moon, eclipse and sky information for the date and\
+        \ location."
+      tags:
+      - Geo Calculate
+      x-openapi-router-controller: openapi_server.controllers.geo_calculate_controller
+      x-codegen-request-body-name: body
+components:
+  schemas:
+    geoConvertRequest:
+      example: "{\"coordinates\":\"39.801769 -86.157769\",\"system\":\"latlon\",\"\
+        format\":\"seconds\"}"
+      properties:
+        coordinates:
+          description: Comma-separated list of Geo Coordinates to convert. See accepted
+            Systems below.
+          type: string
+        format:
+          description: "Output format:\r\n(decimal, degree, minutes, seconds.)\r\n\
+            Default is decimal."
+          type: string
+        system:
+          description: "Output standard coordinate system:\r\n(latlon | utm | mgrs\
+            \ | ecef | epsg3857 | georef | cartesian).  \r\nDefault is latlon."
+          type: string
+      title: geoConvertRequest
+      type: object
+    geoConvertResponse:
+      example:
+        coordinates: coordinates
+      properties:
+        coordinates:
+          description: Comma-separated list of formatted Geo Coordinates.
+          title: coordinates
+          type: string
+      title: geoConvertResponse
+      type: object
+    geoDistanceRequest:
+      example: "{\"coordinate1\":\"39.801769 -86.157769\",\"coordinate2\":\"38.801769\
+        \ -85.157769\",\"useEllipse\":false}"
+      properties:
+        coordinate1:
+          description: "Geo Coordinate 1 to calculate from.\r\n  Standards are (latlon\
+            \ | utm | mgrs | ecef | epsg3857 | georef | cartesian)"
+          type: string
+        coordinate2:
+          description: "Geo Coordinate 2 to calculate to.\r\n  Standards are (latlon\
+            \ | utm | mgrs | ecef | epsg3857 | georef | cartesian)"
+          type: string
+        useEllipse:
+          description: "Flag to use ellipsoid calculation.\r\n  Default is false,\
+            \ spherical."
+          type: boolean
+      title: geoDistanceRequest
+      type: object
+    geoDistanceResponse:
+      example:
+        bearing: 0.8008281904610115
+        meters: 6.027456183070403
+      properties:
+        bearing:
+          description: Bearing direction between the two coordinates in degrees.
+          format: double
+          title: bearing
+          type: number
+        meters:
+          description: Distance between the two coordinates in meters.
+          format: double
+          title: meters
+          type: number
+      title: geoDistanceResponse
+      type: object
+    geoEventDto:
+      description: Celestial event information.
+      example:
+        lastApogee: 2000-01-23T04:56:07.000+00:00
+        spring: 2000-01-23T04:56:07.000+00:00
+        fall: 2000-01-23T04:56:07.000+00:00
+        nextPerigee: 2000-01-23T04:56:07.000+00:00
+        winter: 2000-01-23T04:56:07.000+00:00
+        zodiacSign: zodiacSign
+        lastPerigee: 2000-01-23T04:56:07.000+00:00
+        nextApogee: 2000-01-23T04:56:07.000+00:00
+        summer: 2000-01-23T04:56:07.000+00:00
+      properties:
+        fall:
+          format: date-time
+          title: fall
+          type: string
+        lastApogee:
+          format: date-time
+          title: lastApogee
+          type: string
+        lastPerigee:
+          format: date-time
+          title: lastPerigee
+          type: string
+        nextApogee:
+          format: date-time
+          title: nextApogee
+          type: string
+        nextPerigee:
+          format: date-time
+          title: nextPerigee
+          type: string
+        spring:
+          format: date-time
+          title: spring
+          type: string
+        summer:
+          format: date-time
+          title: summer
+          type: string
+        winter:
+          format: date-time
+          title: winter
+          type: string
+        zodiacSign:
+          title: zodiacSign
+          type: string
+      title: geoEventDto
+      type: object
+    geoFenceRequest:
+      example: "{\"fenceCoordinates\":[\"39.801769 -86.157769\",\"40.801769 -86.157769\"\
+        ,\"40.801769 -87.157769\",\"39.801769 -87.157769\",\"39.801769 -86.157769\"\
+        ],\"checkCoordinates\":[\"40 -87\"]}"
+      properties:
+        checkCoordinates:
+          description: "Array of coordinates to check if in the fence.\r\n  Accepted\
+            \ standards: (latlon | utm | mgrs | ecef | epsg3857 | georef | cartesian)"
+          items:
+            type: string
+          type: array
+        fenceCoordinates:
+          description: "Array of coordinates that define the fence.  First and last\
+            \ should be the same for polygons.\r\n  Accepted standards: (latlon |\
+            \ utm | mgrs | ecef | epsg3857 | georef | cartesian)"
+          items:
+            type: string
+          type: array
+      title: geoFenceRequest
+      type: object
+    geoFenceResponse:
+      example:
+        distances:
+        - 0.8008281904610115
+        - 0.8008281904610115
+        insides:
+        - true
+        - true
+      properties:
+        distances:
+          description: List of distances from the fence.
+          items:
+            format: double
+            type: number
+          title: distances
+          type: array
+        insides:
+          description: List of flags indicating inside or outside of the fence.
+          items:
+            type: boolean
+          title: insides
+          type: array
+      title: geoFenceResponse
+      type: object
+    geoMoonDto:
+      description: Lunar information.
+      example:
+        altitude: 0.8008281904610115
+        set: 2000-01-23T04:56:07.000+00:00
+        distance: 5.637376656633329
+        illumination:
+          phase: 9.301444243932576
+          angle: 2.3021358869347655
+          phaseNameEnum: 3
+          phaseName: phaseName
+          fraction: 7.061401241503109
+        bearing: 1.4658129805029452
+        lastEclipse:
+          date: 2000-01-23T04:56:07.000+00:00
+          midEclipse: 2000-01-23T04:56:07.000+00:00
+          partialEclispeBegin: 2000-01-23T04:56:07.000+00:00
+          penumbralEclispeEnd: 2000-01-23T04:56:07.000+00:00
+          partialEclispeEnd: 2000-01-23T04:56:07.000+00:00
+          totalEclipseBegin: 2000-01-23T04:56:07.000+00:00
+          totalEclipseEnd: 2000-01-23T04:56:07.000+00:00
+          penumbralEclipseBegin: 2000-01-23T04:56:07.000+00:00
+          type: 2
+          hasEclipseData: true
+        sign: sign
+        azimuth: 6.027456183070403
+        rightAscension: 4.145608029883936
+        nextEclipse:
+          date: 2000-01-23T04:56:07.000+00:00
+          midEclipse: 2000-01-23T04:56:07.000+00:00
+          partialEclispeBegin: 2000-01-23T04:56:07.000+00:00
+          penumbralEclispeEnd: 2000-01-23T04:56:07.000+00:00
+          partialEclispeEnd: 2000-01-23T04:56:07.000+00:00
+          totalEclipseBegin: 2000-01-23T04:56:07.000+00:00
+          totalEclipseEnd: 2000-01-23T04:56:07.000+00:00
+          penumbralEclipseBegin: 2000-01-23T04:56:07.000+00:00
+          type: 2
+          hasEclipseData: true
+        declination: 5.962133916683182
+        isUp: true
+        name: name
+        rise: 2000-01-23T04:56:07.000+00:00
+      properties:
+        altitude:
+          format: double
+          title: altitude
+          type: number
+        azimuth:
+          format: double
+          title: azimuth
+          type: number
+        bearing:
+          format: double
+          title: bearing
+          type: number
+        declination:
+          format: double
+          title: declination
+          type: number
+        distance:
+          format: double
+          title: distance
+          type: number
+        illumination:
+          $ref: '#/components/schemas/moonIllum'
+        isUp:
+          title: isUp
+          type: boolean
+        lastEclipse:
+          $ref: '#/components/schemas/lunarEclipseDetails'
+        name:
+          title: name
+          type: string
+        nextEclipse:
+          $ref: '#/components/schemas/lunarEclipseDetails'
+        rightAscension:
+          format: double
+          title: rightAscension
+          type: number
+        rise:
+          format: date-time
+          title: rise
+          type: string
+        set:
+          format: date-time
+          title: set
+          type: string
+        sign:
+          title: sign
+          type: string
+      title: geoMoonDto
+      type: object
+    geoSkyRequest:
+      example: "{\"date\":\"2023-10-15T22:02:39.509098Z\",\"coordinate\":\"39.801769\
+        \ -86.157769\"}"
+      properties:
+        coordinate:
+          description: Location coordinate of sky data.
+          type: string
+        date:
+          description: Date on which to fetch sky data.
+          format: date-time
+          type: string
+      title: geoSkyRequest
+      type: object
+    geoSkyResponse:
+      example:
+        moon:
+          altitude: 0.8008281904610115
+          set: 2000-01-23T04:56:07.000+00:00
+          distance: 5.637376656633329
+          illumination:
+            phase: 9.301444243932576
+            angle: 2.3021358869347655
+            phaseNameEnum: 3
+            phaseName: phaseName
+            fraction: 7.061401241503109
+          bearing: 1.4658129805029452
+          lastEclipse:
+            date: 2000-01-23T04:56:07.000+00:00
+            midEclipse: 2000-01-23T04:56:07.000+00:00
+            partialEclispeBegin: 2000-01-23T04:56:07.000+00:00
+            penumbralEclispeEnd: 2000-01-23T04:56:07.000+00:00
+            partialEclispeEnd: 2000-01-23T04:56:07.000+00:00
+            totalEclipseBegin: 2000-01-23T04:56:07.000+00:00
+            totalEclipseEnd: 2000-01-23T04:56:07.000+00:00
+            penumbralEclipseBegin: 2000-01-23T04:56:07.000+00:00
+            type: 2
+            hasEclipseData: true
+          sign: sign
+          azimuth: 6.027456183070403
+          rightAscension: 4.145608029883936
+          nextEclipse:
+            date: 2000-01-23T04:56:07.000+00:00
+            midEclipse: 2000-01-23T04:56:07.000+00:00
+            partialEclispeBegin: 2000-01-23T04:56:07.000+00:00
+            penumbralEclispeEnd: 2000-01-23T04:56:07.000+00:00
+            partialEclispeEnd: 2000-01-23T04:56:07.000+00:00
+            totalEclipseBegin: 2000-01-23T04:56:07.000+00:00
+            totalEclipseEnd: 2000-01-23T04:56:07.000+00:00
+            penumbralEclipseBegin: 2000-01-23T04:56:07.000+00:00
+            type: 2
+            hasEclipseData: true
+          declination: 5.962133916683182
+          isUp: true
+          name: name
+          rise: 2000-01-23T04:56:07.000+00:00
+        event:
+          lastApogee: 2000-01-23T04:56:07.000+00:00
+          spring: 2000-01-23T04:56:07.000+00:00
+          fall: 2000-01-23T04:56:07.000+00:00
+          nextPerigee: 2000-01-23T04:56:07.000+00:00
+          winter: 2000-01-23T04:56:07.000+00:00
+          zodiacSign: zodiacSign
+          lastPerigee: 2000-01-23T04:56:07.000+00:00
+          nextApogee: 2000-01-23T04:56:07.000+00:00
+          summer: 2000-01-23T04:56:07.000+00:00
+        sun:
+          altitude: 7.386281948385884
+          declination: 1.0246457001441578
+          noon: 2000-01-23T04:56:07.000+00:00
+          set: 2000-01-23T04:56:07.000+00:00
+          isUp: true
+          dusk: 2000-01-23T04:56:07.000+00:00
+          lastEclipse:
+            date: 2000-01-23T04:56:07.000+00:00
+            maximumEclipse: 2000-01-23T04:56:07.000+00:00
+            aorTDuration: aorTDuration
+            partialEclispeBegin: 2000-01-23T04:56:07.000+00:00
+            aorTEclipseEnd: 2000-01-23T04:56:07.000+00:00
+            partialEclispeEnd: 2000-01-23T04:56:07.000+00:00
+            aorTEclipseBegin: 2000-01-23T04:56:07.000+00:00
+            type: 1
+            hasEclipseData: true
+          azimuth: 1.2315135367772556
+          dawn: 2000-01-23T04:56:07.000+00:00
+          rightAscension: 6.84685269835264
+          rise: 2000-01-23T04:56:07.000+00:00
+          nextEclipse:
+            date: 2000-01-23T04:56:07.000+00:00
+            maximumEclipse: 2000-01-23T04:56:07.000+00:00
+            aorTDuration: aorTDuration
+            partialEclispeBegin: 2000-01-23T04:56:07.000+00:00
+            aorTEclipseEnd: 2000-01-23T04:56:07.000+00:00
+            partialEclispeEnd: 2000-01-23T04:56:07.000+00:00
+            aorTEclipseBegin: 2000-01-23T04:56:07.000+00:00
+            type: 1
+            hasEclipseData: true
+      properties:
+        event:
+          $ref: '#/components/schemas/geoEventDto'
+        moon:
+          $ref: '#/components/schemas/geoMoonDto'
+        sun:
+          $ref: '#/components/schemas/geoSunDto'
+      title: geoSkyResponse
+      type: object
+    geoSunDto:
+      description: Solar information.
+      example:
+        altitude: 7.386281948385884
+        declination: 1.0246457001441578
+        noon: 2000-01-23T04:56:07.000+00:00
+        set: 2000-01-23T04:56:07.000+00:00
+        isUp: true
+        dusk: 2000-01-23T04:56:07.000+00:00
+        lastEclipse:
+          date: 2000-01-23T04:56:07.000+00:00
+          maximumEclipse: 2000-01-23T04:56:07.000+00:00
+          aorTDuration: aorTDuration
+          partialEclispeBegin: 2000-01-23T04:56:07.000+00:00
+          aorTEclipseEnd: 2000-01-23T04:56:07.000+00:00
+          partialEclispeEnd: 2000-01-23T04:56:07.000+00:00
+          aorTEclipseBegin: 2000-01-23T04:56:07.000+00:00
+          type: 1
+          hasEclipseData: true
+        azimuth: 1.2315135367772556
+        dawn: 2000-01-23T04:56:07.000+00:00
+        rightAscension: 6.84685269835264
+        rise: 2000-01-23T04:56:07.000+00:00
+        nextEclipse:
+          date: 2000-01-23T04:56:07.000+00:00
+          maximumEclipse: 2000-01-23T04:56:07.000+00:00
+          aorTDuration: aorTDuration
+          partialEclispeBegin: 2000-01-23T04:56:07.000+00:00
+          aorTEclipseEnd: 2000-01-23T04:56:07.000+00:00
+          partialEclispeEnd: 2000-01-23T04:56:07.000+00:00
+          aorTEclipseBegin: 2000-01-23T04:56:07.000+00:00
+          type: 1
+          hasEclipseData: true
+      properties:
+        altitude:
+          format: double
+          title: altitude
+          type: number
+        azimuth:
+          format: double
+          title: azimuth
+          type: number
+        dawn:
+          format: date-time
+          title: dawn
+          type: string
+        declination:
+          format: double
+          title: declination
+          type: number
+        dusk:
+          format: date-time
+          title: dusk
+          type: string
+        isUp:
+          title: isUp
+          type: boolean
+        lastEclipse:
+          $ref: '#/components/schemas/solarEclipseDetails'
+        nextEclipse:
+          $ref: '#/components/schemas/solarEclipseDetails'
+        noon:
+          format: date-time
+          title: noon
+          type: string
+        rightAscension:
+          format: double
+          title: rightAscension
+          type: number
+        rise:
+          format: date-time
+          title: rise
+          type: string
+        set:
+          format: date-time
+          title: set
+          type: string
+      title: geoSunDto
+      type: object
+    lunarEclipseDetails:
+      example:
+        date: 2000-01-23T04:56:07.000+00:00
+        midEclipse: 2000-01-23T04:56:07.000+00:00
+        partialEclispeBegin: 2000-01-23T04:56:07.000+00:00
+        penumbralEclispeEnd: 2000-01-23T04:56:07.000+00:00
+        partialEclispeEnd: 2000-01-23T04:56:07.000+00:00
+        totalEclipseBegin: 2000-01-23T04:56:07.000+00:00
+        totalEclipseEnd: 2000-01-23T04:56:07.000+00:00
+        penumbralEclipseBegin: 2000-01-23T04:56:07.000+00:00
+        type: 2
+        hasEclipseData: true
+      properties:
+        date:
+          format: date-time
+          title: date
+          type: string
+        hasEclipseData:
+          title: hasEclipseData
+          type: boolean
+        midEclipse:
+          format: date-time
+          title: midEclipse
+          type: string
+        partialEclispeBegin:
+          format: date-time
+          title: partialEclispeBegin
+          type: string
+        partialEclispeEnd:
+          format: date-time
+          title: partialEclispeEnd
+          type: string
+        penumbralEclipseBegin:
+          format: date-time
+          title: penumbralEclipseBegin
+          type: string
+        penumbralEclispeEnd:
+          format: date-time
+          title: penumbralEclispeEnd
+          type: string
+        totalEclipseBegin:
+          format: date-time
+          title: totalEclipseBegin
+          type: string
+        totalEclipseEnd:
+          format: date-time
+          title: totalEclipseEnd
+          type: string
+        type:
+          default: 0
+          enum:
+          - 0
+          - 1
+          - 2
+          format: int32
+          title: type
+          type: integer
+      title: lunarEclipseDetails
+      type: object
+    moonIllum:
+      example:
+        phase: 9.301444243932576
+        angle: 2.3021358869347655
+        phaseNameEnum: 3
+        phaseName: phaseName
+        fraction: 7.061401241503109
+      properties:
+        angle:
+          format: double
+          title: angle
+          type: number
+        fraction:
+          format: double
+          title: fraction
+          type: number
+        phase:
+          format: double
+          title: phase
+          type: number
+        phaseName:
+          title: phaseName
+          type: string
+        phaseNameEnum:
+          default: 0
+          enum:
+          - 0
+          - 1
+          - 2
+          - 3
+          - 4
+          - 5
+          - 6
+          - 7
+          format: int32
+          title: phaseNameEnum
+          type: integer
+      title: moonIllum
+      type: object
+    solarEclipseDetails:
+      example:
+        date: 2000-01-23T04:56:07.000+00:00
+        maximumEclipse: 2000-01-23T04:56:07.000+00:00
+        aorTDuration: aorTDuration
+        partialEclispeBegin: 2000-01-23T04:56:07.000+00:00
+        aorTEclipseEnd: 2000-01-23T04:56:07.000+00:00
+        partialEclispeEnd: 2000-01-23T04:56:07.000+00:00
+        aorTEclipseBegin: 2000-01-23T04:56:07.000+00:00
+        type: 1
+        hasEclipseData: true
+      properties:
+        aorTDuration:
+          format: timespan
+          title: aorTDuration
+          type: string
+        aorTEclipseBegin:
+          format: date-time
+          title: aorTEclipseBegin
+          type: string
+        aorTEclipseEnd:
+          format: date-time
+          title: aorTEclipseEnd
+          type: string
+        date:
+          format: date-time
+          title: date
+          type: string
+        hasEclipseData:
+          title: hasEclipseData
+          type: boolean
+        maximumEclipse:
+          format: date-time
+          title: maximumEclipse
+          type: string
+        partialEclispeBegin:
+          format: date-time
+          title: partialEclispeBegin
+          type: string
+        partialEclispeEnd:
+          format: date-time
+          title: partialEclispeEnd
+          type: string
+        type:
+          default: 0
+          enum:
+          - 0
+          - 1
+          - 2
+          format: int32
+          title: type
+          type: integer
+      title: solarEclipseDetails
+      type: object
+    wyjytErrorResponse:
+      example:
+        reason: reason
+        success: true
+      properties:
+        reason:
+          description: Error message.
+          title: reason
+          type: string
+        success:
+          description: Success or fail.
+          title: success
+          type: boolean
+      title: wyjytErrorResponse
+      type: object

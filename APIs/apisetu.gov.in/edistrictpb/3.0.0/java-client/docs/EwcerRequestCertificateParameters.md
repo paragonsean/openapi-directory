@@ -1,0 +1,14 @@
+
+
+# EwcerRequestCertificateParameters
+
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**DOB** | **String** | Date of birth in DD-MM-YYYY format |  |
+|**DSN** | **String** | DSN Number |  |
+
+
+

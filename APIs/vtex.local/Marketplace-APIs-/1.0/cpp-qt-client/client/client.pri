@@ -1,0 +1,79 @@
+QT += network
+
+HEADERS += \
+# Models
+    $${PWD}/OAIGetaccountconfig_200_response.h \
+    $${PWD}/OAIGetautoApprovevaluefromconfig_200_response.h \
+    $${PWD}/OAIImage.h \
+    $${PWD}/OAIImages.h \
+    $${PWD}/OAIMatchMultiple.h \
+    $${PWD}/OAIMatchRequest.h \
+    $${PWD}/OAIMatcher.h \
+    $${PWD}/OAIProduct.h \
+    $${PWD}/OAIProductSpecification.h \
+    $${PWD}/OAIPutselleraccountconfigRequest.h \
+    $${PWD}/OAISaveSuggestionRequest.h \
+    $${PWD}/OAISaveSuggestionRequest_Pricing.h \
+    $${PWD}/OAISaveaccountconfigRequest.h \
+    $${PWD}/OAISaveaccountconfig_200_response.h \
+    $${PWD}/OAISaveaccountconfig_200_response_Rules.h \
+    $${PWD}/OAISaveaccountconfig_200_response_Score.h \
+    $${PWD}/OAISaveautoapproveforaccountRequest.h \
+    $${PWD}/OAISaveautoapproveforaccount_200_response.h \
+    $${PWD}/OAISaveautoapproveforaccountsellerRequest.h \
+    $${PWD}/OAIScore.h \
+    $${PWD}/OAISku.h \
+    $${PWD}/OAISkuSpecification.h \
+    $${PWD}/OAISpecifications.h \
+# APIs
+    $${PWD}/OAIGetSuggestionsApi.h \
+    $${PWD}/OAIGetVersionsApi.h \
+    $${PWD}/OAIManageSuggestionsApi.h \
+    $${PWD}/OAIMatchReceivedSKUsApi.h \
+    $${PWD}/OAISKUApprovalSettingsApi.h \
+# Others
+    $${PWD}/OAIHelpers.h \
+    $${PWD}/OAIHttpRequest.h \
+    $${PWD}/OAIObject.h \
+    $${PWD}/OAIEnum.h \
+    $${PWD}/OAIHttpFileElement.h \
+    $${PWD}/OAIServerConfiguration.h \
+    $${PWD}/OAIServerVariable.h \
+    $${PWD}/OAIOauth.h
+
+SOURCES += \
+# Models
+    $${PWD}/OAIGetaccountconfig_200_response.cpp \
+    $${PWD}/OAIGetautoApprovevaluefromconfig_200_response.cpp \
+    $${PWD}/OAIImage.cpp \
+    $${PWD}/OAIImages.cpp \
+    $${PWD}/OAIMatchMultiple.cpp \
+    $${PWD}/OAIMatchRequest.cpp \
+    $${PWD}/OAIMatcher.cpp \
+    $${PWD}/OAIProduct.cpp \
+    $${PWD}/OAIProductSpecification.cpp \
+    $${PWD}/OAIPutselleraccountconfigRequest.cpp \
+    $${PWD}/OAISaveSuggestionRequest.cpp \
+    $${PWD}/OAISaveSuggestionRequest_Pricing.cpp \
+    $${PWD}/OAISaveaccountconfigRequest.cpp \
+    $${PWD}/OAISaveaccountconfig_200_response.cpp \
+    $${PWD}/OAISaveaccountconfig_200_response_Rules.cpp \
+    $${PWD}/OAISaveaccountconfig_200_response_Score.cpp \
+    $${PWD}/OAISaveautoapproveforaccountRequest.cpp \
+    $${PWD}/OAISaveautoapproveforaccount_200_response.cpp \
+    $${PWD}/OAISaveautoapproveforaccountsellerRequest.cpp \
+    $${PWD}/OAIScore.cpp \
+    $${PWD}/OAISku.cpp \
+    $${PWD}/OAISkuSpecification.cpp \
+    $${PWD}/OAISpecifications.cpp \
+# APIs
+    $${PWD}/OAIGetSuggestionsApi.cpp \
+    $${PWD}/OAIGetVersionsApi.cpp \
+    $${PWD}/OAIManageSuggestionsApi.cpp \
+    $${PWD}/OAIMatchReceivedSKUsApi.cpp \
+    $${PWD}/OAISKUApprovalSettingsApi.cpp \
+# Others
+    $${PWD}/OAIHelpers.cpp \
+    $${PWD}/OAIHttpRequest.cpp \
+    $${PWD}/OAIHttpFileElement.cpp \
+    $${PWD}/OAIOauth.cpp

@@ -1,0 +1,17 @@
+
+
+# GenericRecoveryPoint
+
+Generic backup copy.
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**friendlyName** | **String** | Friendly name of the backup copy. |  [optional] |
+|**recoveryPointAdditionalInfo** | **String** | Additional information associated with this backup copy. |  [optional] |
+|**recoveryPointTime** | **OffsetDateTime** | The time when this backup copy was created. |  [optional] |
+|**recoveryPointType** | **String** | Type of the backup copy. |  [optional] |
+
+
+

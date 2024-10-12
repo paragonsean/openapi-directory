@@ -1,0 +1,219 @@
+/**
+ * Rebilly REST API
+ * # Introduction The Rebilly API is built on HTTP.  Our API is RESTful.  It has predictable resource URLs.  It returns HTTP response codes to indicate errors.  It also accepts and returns JSON in the HTTP body.  You can use your favorite HTTP/REST library for your programming language to use Rebilly's API, or you can use one of our SDKs (currently available in [PHP](https://github.com/Rebilly/rebilly-php) and [Javascript](https://github.com/Rebilly/rebilly-js-sdk)).  We have other APIs that are also available.  Every action from our [app](https://app.rebilly.com) is supported by an API which is documented and available for use so that you may automate any workflows necessary.  This document contains the most commonly integrated resources.  # Authentication  When you sign up for an account, you are given your first secret API key. You can generate additional API keys, and delete API keys (as you may need to rotate your keys in the future). You authenticate to the Rebilly API by providing your secret key in the request header.  Rebilly offers three forms of authentication:  secret key, publishable key, JSON Web Tokens, and public signature key. - [Secret API key](#section/Authentication/SecretApiKey): used for requests made   from the server side. Never share these keys. Keep them guarded and secure. - [Publishable API key](#section/Authentication/PublishableApiKey): used for    requests from the client side. For now can only be used to create    a [Payment Token](#operation/PostToken) and    a [File token](#operation/PostFile). - [JWT](#section/Authentication/JWT): short lifetime tokens that can be assigned a specific expiration time.  Never share your secret keys. Keep them guarded and secure.  &lt;!-- ReDoc-Inject: &lt;security-definitions&gt; --&gt;  # Errors Rebilly follow's the error response format proposed in [RFC 7807](https://tools.ietf.org/html/rfc7807) also known as Problem Details for HTTP APIs.  As with our normal API responses, your client must be prepared to gracefully handle additional members of the response.  ## Forbidden &lt;RedocResponse pointer={\"#/components/responses/Forbidden\"} /&gt;  ## Conflict &lt;RedocResponse pointer={\"#/components/responses/Conflict\"} /&gt;  ## NotFound &lt;RedocResponse pointer={\"#/components/responses/NotFound\"} /&gt;  ## Unauthorized &lt;RedocResponse pointer={\"#/components/responses/Unauthorized\"} /&gt;  ## ValidationError &lt;RedocResponse pointer={\"#/components/responses/ValidationError\"} /&gt;  # SDKs  Rebilly offers a Javascript SDK and a PHP SDK to help interact with the API.  However, no SDK is required to use the API.  Rebilly also offers [FramePay](https://docs.rebilly.com/docs/developer-docs/framepay/),  a client-side iFrame-based solution to help create payment tokens while minimizing PCI DSS compliance burdens and maximizing the customizability. [FramePay](https://docs.rebilly.com/docs/developer-docs/framepay/) is interacting with the [payment tokens creation operation](#operation/PostToken).  ## Javascript SDK  Installation and usage instructions can be found [here](https://docs.rebilly.com/docs/developer-docs/sdks). SDK code examples are included in these docs.  ## PHP SDK For all PHP SDK examples provided in these docs you will need to configure the `$client`. You may do it like this:  ```php $client = new Rebilly\\Client([     'apiKey' =&gt; 'YourApiKeyHere',     'baseUrl' =&gt; 'https://api.rebilly.com', ]); ```  # Using filter with collections Rebilly provides collections filtering. You can use `?filter` param on collections to define which records should be shown in the response.  Here is filter format description:  - Fields and values in filter are separated with `:`: `?filter=firstName:John`.  - Sub-fields are separated with `.`: `?filter=billingAddress.country:US`.  - Multiple filters are separated with `;`: `?filter=firstName:John;lastName:Doe`. They will be joined with `AND` logic. In this example: `firstName:John` AND `lastName:Doe`.  - You can use multiple values using `,` as values separator: `?filter=firstName:John,Bob`. Multiple values specified for a field will be joined with `OR` logic. In this example: `firstName:John` OR `firstName:Bob`.  - To negate the filter use `!`: `?filter=firstName:!John`. Note that you can negate multiple values like this: `?filter=firstName:!John,!Bob`. This filter rule will exclude all Johns and Bobs from the response.  - You can use range filters like this: `?filter=amount:1..10`.  - You can use gte (greater than or equals) filter like this: `?filter=amount:1..`, or lte (less than or equals) than filter like this: `?filter=amount:..10`. This also works for datetime-based fields.  - You can create some [predefined values lists](https://user-api-docs.rebilly.com/#tag/Lists) and use them in filter: `?filter=firstName:@yourListName`. You can also exclude list values: `?filter=firstName:!@yourListName`.  - Datetime-based fields accept values formatted using RFC 3339 like this: `?filter=createdTime:2021-02-14T13:30:00Z`.   # Expand to include embedded objects Rebilly provides the ability to pre-load additional  objects with a request.   You can use `?expand` param on most requests to expand and include embedded objects within the `_embedded` property of the response.  The `_embedded` property contains an array of  objects keyed by the expand parameter value(s).  You may expand multiple objects by passing them as comma-separated to the expand value like so:  ``` ?expand=recentInvoice,customer ```  And in the response, you would see:  ``` \"_embedded\": [     \"recentInvoice\": {...},     \"customer\": {...} ] ``` Expand may be utilitized not only on `GET` requests but also on `PATCH`, `POST`, `PUT` requests too.   # Getting started guide  Rebilly's API has over 300 operations.  That's more than you'll  need to implement your use cases.  If you have a use  case you would like to implement, please consult us for feedback on the best API operations for the task.  Our getting started guide will demonstrate a basic order form use case.  It will allow us to highlight core resources in Rebilly that will be helpful for many other use cases too.  Within 25 minutes, you'll have sent API requests (via our console) to create a subscription order. 
+ *
+ * The version of the OpenAPI document: 2.1
+ * Contact: integrations@rebilly.com
+ *
+ * NOTE: This class is auto generated by OpenAPI Generator (https://openapi-generator.tech).
+ * https://openapi-generator.tech
+ * Do not edit the class manually.
+ *
+ */
+
+import ApiClient from '../ApiClient';
+import A1Gateway3dsServers from './A1Gateway3dsServers';
+import EMerchantPay3dsServers from './EMerchantPay3dsServers';
+import GET3dsServers from './GET3dsServers';
+import NMI3dsServers from './NMI3dsServers';
+import Payvision3dsServers from './Payvision3dsServers';
+import ThreeDSecureServerName from './ThreeDSecureServerName';
+import VantivLitle3dsServers from './VantivLitle3dsServers';
+import Walpay3dsServers from './Walpay3dsServers';
+import Worldpay3dsServers from './Worldpay3dsServers';
+
+/**
+ * The Paay3dsServer model module.
+ * @module model/Paay3dsServer
+ * @version 2.1
+ */
+class Paay3dsServer {
+    /**
+     * Constructs a new <code>Paay3dsServer</code>.
+     * Paay.
+     * @alias module:model/Paay3dsServer
+     * @extends module:model/A1Gateway3dsServers
+     * @implements module:model/A1Gateway3dsServers
+     * @implements module:model/EMerchantPay3dsServers
+     * @implements module:model/GET3dsServers
+     * @implements module:model/NMI3dsServers
+     * @implements module:model/Payvision3dsServers
+     * @implements module:model/VantivLitle3dsServers
+     * @implements module:model/Walpay3dsServers
+     * @implements module:model/Worldpay3dsServers
+     * @param name {module:model/ThreeDSecureServerName} 
+     * @param apiKey {String} Paay ApiKey.
+     * @param mpiUrl {String} Paay 3DS Server url.
+     * @param sandboxMpiUrl {String} Paay sandbox 3DS Server url.
+     * @param secret {String} Paay secret.
+     */
+    constructor(name, apiKey, mpiUrl, sandboxMpiUrl, secret) { 
+        A1Gateway3dsServers.initialize(this, name);EMerchantPay3dsServers.initialize(this, name);GET3dsServers.initialize(this, name);NMI3dsServers.initialize(this, name);Payvision3dsServers.initialize(this, name);VantivLitle3dsServers.initialize(this, name);Walpay3dsServers.initialize(this, name);Worldpay3dsServers.initialize(this, name);
+        Paay3dsServer.initialize(this, name, apiKey, mpiUrl, sandboxMpiUrl, secret);
+    }
+
+    /**
+     * Initializes the fields of this object.
+     * This method is used by the constructors of any subclasses, in order to implement multiple inheritance (mix-ins).
+     * Only for internal use.
+     */
+    static initialize(obj, name, apiKey, mpiUrl, sandboxMpiUrl, secret) { 
+        obj['name'] = name;
+        obj['apiKey'] = apiKey;
+        obj['mpiUrl'] = mpiUrl;
+        obj['sandboxMpiUrl'] = sandboxMpiUrl;
+        obj['secret'] = secret;
+    }
+
+    /**
+     * Constructs a <code>Paay3dsServer</code> from a plain JavaScript object, optionally creating a new instance.
+     * Copies all relevant properties from <code>data</code> to <code>obj</code> if supplied or a new instance if not.
+     * @param {Object} data The plain JavaScript object bearing properties of interest.
+     * @param {module:model/Paay3dsServer} obj Optional instance to populate.
+     * @return {module:model/Paay3dsServer} The populated <code>Paay3dsServer</code> instance.
+     */
+    static constructFromObject(data, obj) {
+        if (data) {
+            obj = obj || new Paay3dsServer();
+            A1Gateway3dsServers.constructFromObject(data, obj);
+            A1Gateway3dsServers.constructFromObject(data, obj);
+            EMerchantPay3dsServers.constructFromObject(data, obj);
+            GET3dsServers.constructFromObject(data, obj);
+            NMI3dsServers.constructFromObject(data, obj);
+            Payvision3dsServers.constructFromObject(data, obj);
+            VantivLitle3dsServers.constructFromObject(data, obj);
+            Walpay3dsServers.constructFromObject(data, obj);
+            Worldpay3dsServers.constructFromObject(data, obj);
+
+            if (data.hasOwnProperty('name')) {
+                obj['name'] = ApiClient.convertToType(data['name'], ThreeDSecureServerName);
+            }
+            if (data.hasOwnProperty('apiKey')) {
+                obj['apiKey'] = ApiClient.convertToType(data['apiKey'], 'String');
+            }
+            if (data.hasOwnProperty('mpiUrl')) {
+                obj['mpiUrl'] = ApiClient.convertToType(data['mpiUrl'], 'String');
+            }
+            if (data.hasOwnProperty('sandboxMpiUrl')) {
+                obj['sandboxMpiUrl'] = ApiClient.convertToType(data['sandboxMpiUrl'], 'String');
+            }
+            if (data.hasOwnProperty('secret')) {
+                obj['secret'] = ApiClient.convertToType(data['secret'], 'String');
+            }
+        }
+        return obj;
+    }
+
+    /**
+     * Validates the JSON data with respect to <code>Paay3dsServer</code>.
+     * @param {Object} data The plain JavaScript object bearing properties of interest.
+     * @return {boolean} to indicate whether the JSON data is valid with respect to <code>Paay3dsServer</code>.
+     */
+    static validateJSON(data) {
+        // check to make sure all required properties are present in the JSON string
+        for (const property of Paay3dsServer.RequiredProperties) {
+            if (!data.hasOwnProperty(property)) {
+                throw new Error("The required field `" + property + "` is not found in the JSON data: " + JSON.stringify(data));
+            }
+        }
+        // ensure the json data is a string
+        if (data['apiKey'] && !(typeof data['apiKey'] === 'string' || data['apiKey'] instanceof String)) {
+            throw new Error("Expected the field `apiKey` to be a primitive type in the JSON string but got " + data['apiKey']);
+        }
+        // ensure the json data is a string
+        if (data['mpiUrl'] && !(typeof data['mpiUrl'] === 'string' || data['mpiUrl'] instanceof String)) {
+            throw new Error("Expected the field `mpiUrl` to be a primitive type in the JSON string but got " + data['mpiUrl']);
+        }
+        // ensure the json data is a string
+        if (data['sandboxMpiUrl'] && !(typeof data['sandboxMpiUrl'] === 'string' || data['sandboxMpiUrl'] instanceof String)) {
+            throw new Error("Expected the field `sandboxMpiUrl` to be a primitive type in the JSON string but got " + data['sandboxMpiUrl']);
+        }
+        // ensure the json data is a string
+        if (data['secret'] && !(typeof data['secret'] === 'string' || data['secret'] instanceof String)) {
+            throw new Error("Expected the field `secret` to be a primitive type in the JSON string but got " + data['secret']);
+        }
+
+        return true;
+    }
+
+
+}
+
+Paay3dsServer.RequiredProperties = ["name", "apiKey", "mpiUrl", "sandboxMpiUrl", "secret"];
+
+/**
+ * @member {module:model/ThreeDSecureServerName} name
+ */
+Paay3dsServer.prototype['name'] = undefined;
+
+/**
+ * Paay ApiKey.
+ * @member {String} apiKey
+ */
+Paay3dsServer.prototype['apiKey'] = undefined;
+
+/**
+ * Paay 3DS Server url.
+ * @member {String} mpiUrl
+ */
+Paay3dsServer.prototype['mpiUrl'] = undefined;
+
+/**
+ * Paay sandbox 3DS Server url.
+ * @member {String} sandboxMpiUrl
+ */
+Paay3dsServer.prototype['sandboxMpiUrl'] = undefined;
+
+/**
+ * Paay secret.
+ * @member {String} secret
+ */
+Paay3dsServer.prototype['secret'] = undefined;
+
+
+// Implement A1Gateway3dsServers interface:
+/**
+ * @member {module:model/ThreeDSecureServerName} name
+ */
+A1Gateway3dsServers.prototype['name'] = undefined;
+// Implement EMerchantPay3dsServers interface:
+/**
+ * @member {module:model/ThreeDSecureServerName} name
+ */
+EMerchantPay3dsServers.prototype['name'] = undefined;
+// Implement GET3dsServers interface:
+/**
+ * @member {module:model/ThreeDSecureServerName} name
+ */
+GET3dsServers.prototype['name'] = undefined;
+// Implement NMI3dsServers interface:
+/**
+ * @member {module:model/ThreeDSecureServerName} name
+ */
+NMI3dsServers.prototype['name'] = undefined;
+// Implement Payvision3dsServers interface:
+/**
+ * @member {module:model/ThreeDSecureServerName} name
+ */
+Payvision3dsServers.prototype['name'] = undefined;
+// Implement VantivLitle3dsServers interface:
+/**
+ * @member {module:model/ThreeDSecureServerName} name
+ */
+VantivLitle3dsServers.prototype['name'] = undefined;
+// Implement Walpay3dsServers interface:
+/**
+ * @member {module:model/ThreeDSecureServerName} name
+ */
+Walpay3dsServers.prototype['name'] = undefined;
+// Implement Worldpay3dsServers interface:
+/**
+ * @member {module:model/ThreeDSecureServerName} name
+ */
+Worldpay3dsServers.prototype['name'] = undefined;
+
+
+
+
+export default Paay3dsServer;
+

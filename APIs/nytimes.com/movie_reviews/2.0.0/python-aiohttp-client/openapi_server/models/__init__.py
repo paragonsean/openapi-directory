@@ -1,0 +1,12 @@
+# coding: utf-8
+
+# import models into model package
+from openapi_server.models.critic import Critic
+from openapi_server.models.critic_multimedia import CriticMultimedia
+from openapi_server.models.critic_multimedia_resource import CriticMultimediaResource
+from openapi_server.models.critics_resource_type_json_get200_response import CriticsResourceTypeJsonGet200Response
+from openapi_server.models.movie import Movie
+from openapi_server.models.movie_link import MovieLink
+from openapi_server.models.movie_multimedia import MovieMultimedia
+from openapi_server.models.movie_multimedia_resource import MovieMultimediaResource
+from openapi_server.models.reviews_search_json_get200_response import ReviewsSearchJsonGet200Response

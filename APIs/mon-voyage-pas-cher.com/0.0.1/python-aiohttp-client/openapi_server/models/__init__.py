@@ -1,0 +1,20 @@
+# coding: utf-8
+
+# import models into model package
+from openapi_server.models.airports_search_response import AirportsSearchResponse
+from openapi_server.models.cities_data import CitiesData
+from openapi_server.models.cities_response import CitiesResponse
+from openapi_server.models.continent_data import ContinentData
+from openapi_server.models.continents_response import ContinentsResponse
+from openapi_server.models.countries_data import CountriesData
+from openapi_server.models.countries_response import CountriesResponse
+from openapi_server.models.data_airports_search import DataAirportsSearch
+from openapi_server.models.distance_response import DistanceResponse
+from openapi_server.models.elevation_data import ElevationData
+from openapi_server.models.elevation_response import ElevationResponse
+from openapi_server.models.error_response import ErrorResponse
+from openapi_server.models.pong_response import PongResponse
+from openapi_server.models.sun_position_data import SunPositionData
+from openapi_server.models.sun_position_response import SunPositionResponse
+from openapi_server.models.timezone_response import TimezoneResponse
+from openapi_server.models.timezone_response_data import TimezoneResponseData
