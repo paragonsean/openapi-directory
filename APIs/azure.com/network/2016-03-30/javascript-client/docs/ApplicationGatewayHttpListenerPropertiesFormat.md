@@ -1,0 +1,26 @@
+# NetworkManagementClient.ApplicationGatewayHttpListenerPropertiesFormat
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**frontendIPConfiguration** | [**SubResource**](SubResource.md) |  | [optional] 
+**frontendPort** | [**SubResource**](SubResource.md) |  | [optional] 
+**hostName** | **String** | Gets or sets the host name of http listener  | [optional] 
+**protocol** | **String** | Gets or sets the protocol | [optional] 
+**provisioningState** | **String** | Gets or sets Provisioning state of the http listener resource Updating/Deleting/Failed | [optional] 
+**requireServerNameIndication** | **Boolean** | Gets or sets the requireServerNameIndication of http listener  | [optional] 
+**sslCertificate** | [**SubResource**](SubResource.md) |  | [optional] 
+
+
+
+## Enum: ProtocolEnum
+
+
+* `Http` (value: `"Http"`)
+
+* `Https` (value: `"Https"`)
+
+
+
+

@@ -1,0 +1,12 @@
+# NetworkManagementClient.OutboundNatRulePropertiesFormat
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**allocatedOutboundPorts** | **Number** | Gets or sets the number of outbound ports to be used for SNAT | [optional] 
+**backendAddressPool** | [**SubResource**](SubResource.md) |  | 
+**frontendIPConfigurations** | [**[SubResource]**](SubResource.md) | Gets or sets Frontend IP addresses of the load balancer | [optional] 
+**provisioningState** | **String** | Gets provisioning state of the PublicIP resource Updating/Deleting/Failed | [optional] 
+
+

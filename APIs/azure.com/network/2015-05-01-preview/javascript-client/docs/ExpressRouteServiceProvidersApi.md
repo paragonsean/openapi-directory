@@ -1,0 +1,60 @@
+# NetworkResourceProviderClient.ExpressRouteServiceProvidersApi
+
+All URIs are relative to *https://management.azure.com*
+
+Method | HTTP request | Description
+------------- | ------------- | -------------
+[**expressRouteServiceProvidersList**](ExpressRouteServiceProvidersApi.md#expressRouteServiceProvidersList) | **GET** /subscriptions/{subscriptionId}/providers/Microsoft.Network/expressRouteServiceProviders | 
+
+
+
+## expressRouteServiceProvidersList
+
+> ExpressRouteServiceProviderListResult expressRouteServiceProvidersList(apiVersion, subscriptionId)
+
+
+
+The List ExpressRouteServiceProvider operation retrieves all the available ExpressRouteServiceProviders.
+
+### Example
+
+```javascript
+import NetworkResourceProviderClient from 'network_resource_provider_client';
+let defaultClient = NetworkResourceProviderClient.ApiClient.instance;
+// Configure OAuth2 access token for authorization: azure_auth
+let azure_auth = defaultClient.authentications['azure_auth'];
+azure_auth.accessToken = 'YOUR ACCESS TOKEN';
+
+let apiInstance = new NetworkResourceProviderClient.ExpressRouteServiceProvidersApi();
+let apiVersion = "apiVersion_example"; // String | Client Api Version.
+let subscriptionId = "subscriptionId_example"; // String | Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of the URI for every service call.
+apiInstance.expressRouteServiceProvidersList(apiVersion, subscriptionId, (error, data, response) => {
+  if (error) {
+    console.error(error);
+  } else {
+    console.log('API called successfully. Returned data: ' + data);
+  }
+});
+```
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **apiVersion** | **String**| Client Api Version. | 
+ **subscriptionId** | **String**| Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of the URI for every service call. | 
+
+### Return type
+
+[**ExpressRouteServiceProviderListResult**](ExpressRouteServiceProviderListResult.md)
+
+### Authorization
+
+[azure_auth](../README.md#azure_auth)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json, text/json
+

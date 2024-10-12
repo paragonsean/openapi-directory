@@ -1,0 +1,15 @@
+
+
+# VirtualNetworkGatewayConnectionListResult
+
+Response for ListVirtualNetworkGatewayConnections Api service call
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**nextLink** | **String** | Gets the URL to get the next set of results. |  [optional] |
+|**value** | [**List&lt;VirtualNetworkGatewayConnection&gt;**](VirtualNetworkGatewayConnection.md) | Gets List of VirtualNetworkGatewayConnections that exists in a resource group |  [optional] |
+
+
+
